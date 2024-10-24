@@ -1,391 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shuvam Banerji Seal - Portfolio</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --primary-color: #6366f1;
-            --text-color: #f8fafc;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+    :root {
+      --neon: #ffff00;
+      --neon-glow: rgba(255, 255, 0, 0.3);
+      --glass: rgba(20, 20, 20, 0.7);
+    }
 
-        body {
-            background: linear-gradient(45deg, #0f172a, #1e293b);
-            color: var(--text-color);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
 
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
+    nav {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      z-index: 100;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 0, 0.1);
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            padding: 1rem 0;
-        }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
+    .nav-links a {
+      color: var(--neon);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+    }
 
-        .nav-logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--neon);
+      transition: width 0.3s ease;
+    }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
 
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%);
+    }
 
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
+    .hero-content {
+      text-align: center;
+      max-width: 800px;
+    }
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1920/1080');
-            background-size: cover;
-            background-position: center;
-        }
+    .glass-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid rgba(255, 255, 0, 0.1);
+      animation: fadeInUp 1s ease forwards;
+    }
 
-        .hero-content {
-            max-width: 800px;
-        }
+    .title {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, var(--neon), #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
+    .subtitle {
+      font-size: 1.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 2rem;
+    }
 
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-        }
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-        /* Sections */
-        section {
-            padding: 5rem 0;
-        }
+    .section-title {
+      font-size: 2.5rem;
+      color: var(--neon);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
 
-        /* About */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
+    .skill-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 0, 0.1);
+      transition: all 0.3s ease;
+    }
 
-        /* Blog */
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px var(--neon-glow);
+    }
 
-        .blog-card {
-            transition: transform 0.3s;
-        }
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 0, 0.1);
+    }
 
-        .blog-card:hover {
-            transform: translateY(-5px);
-        }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
 
-        /* Gallery */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--neon);
+    }
 
-        .gallery-item {
-            aspect-ratio: 1;
-            overflow: hidden;
-            border-radius: 8px;
-        }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 0, 0.2);
+      border-radius: 8px;
+      color: white;
+      transition: all 0.3s ease;
+    }
 
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--neon);
+      box-shadow: 0 0 10px var(--neon-glow);
+    }
 
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
+    .submit-btn {
+      background: rgba(255, 255, 0, 0.2);
+      color: var(--neon);
+      border: 2px solid var(--neon);
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      width: 100%;
+    }
 
-        /* Contact Form */
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    .submit-btn:hover {
+      background: rgba(255, 255, 0, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px var(--neon-glow);
+    }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+    .education-timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            color: var(--text-color);
-        }
+    .timeline-item {
+      margin-bottom: 3rem;
+      position: relative;
+      padding-left: 2rem;
+      border-left: 2px solid var(--neon);
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
+    }
 
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--neon);
+      box-shadow: 0 0 10px var(--neon-glow);
+    }
 
-        .btn:hover {
-            background: #4f46e5;
-        }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        /* Diary */
-        .diary-entries {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .diary-entry {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .diary-entry::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 2px;
-            height: 100%;
-            background: var(--primary-color);
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(15, 23, 42, 0.8);
-            padding: 2rem 0;
-            margin-top: 5rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-links a {
-            color: var(--text-color);
-            font-size: 1.5rem;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: var(--primary-color);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px var(--neon-glow),
+                     0 0 10px var(--neon-glow);
+      }
+      to {
+        text-shadow: 0 0 20px var(--neon-glow),
+                     0 0 30px var(--neon-glow);
+      }
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <a href="#" class="nav-logo">SBS</a>
-            <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#blog">Blog</a>
-                <a href="#gallery">Gallery</a>
-                <a href="#diary">Diary</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </div>
-    </nav>
+  <nav>
+    <div class="nav-content">
+      <div class="logo">SBS</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
+        <a href="#research">Research</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
 
-    <section class="hero">
-        <div class="hero-content glass">
-            <h1>Shuvam Banerji Seal</h1>
-            <p>BS-MS Student | Educator | Developer</p>
-            <a href="#contact" class="btn">Get in Touch</a>
-        </div>
-    </section>
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="glass-card">
+        <h1 class="title">Shuvam Banerji Seal</h1>
+        <p class="subtitle">BS-MS Student | Educator | Researcher</p>
+        <p>IISER Kolkata</p>
+      </div>
+    </div>
+  </section>
 
-    <section id="about">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-grid">
-                <div class="glass">
-                    <h3>Education</h3>
-                    <p>Currently pursuing BS-MS at Indian Institute of Science Education and Research - Kolkata with a CGPA of 8.84</p>
-                    <p>Areas of Interest: Algorithm Development, Quantum Physics and Computation, Molecular Dynamics</p>
-                </div>
-                <div class="glass">
-                    <h3>Experience</h3>
-                    <p>Self-employed educator since 2018, teaching various subjects including Computer Science, Physics, and Chemistry</p>
-                    <p>PC Builder and Repairer with expertise in hardware and software configuration</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <section class="section" id="about">
+    <h2 class="section-title">About Me</h2>
+    <div class="glass-card">
+      <p>As a 2nd Year BS-MS student at IISER Kolkata, I combine my passion for Physics, Chemistry, and Mathematics with Computer Science. Beyond academics, I'm an educator, PC builder, and creative writer, constantly seeking to bridge the gap between theoretical knowledge and practical applications.</p>
+    </div>
+  </section>
 
-    <section id="blog">
-        <div class="container">
-            <h2 class="section-title">Blog</h2>
-            <div class="blog-grid">
-                <article class="glass blog-card">
-                    <h3>Latest Research Updates</h3>
-                    <p>Exploring symmetries in fine structure constants...</p>
-                    <a href="#" class="btn">Read More</a>
-                </article>
-                <article class="glass blog-card">
-                    <h3>Teaching Experiences</h3>
-                    <p>Insights from years of educational mentoring...</p>
-                    <a href="#" class="btn">Read More</a>
-                </article>
-            </div>
-        </div>
-    </section>
+  <section class="section" id="education">
+    <h2 class="section-title">Education</h2>
+    <div class="education-timeline">
+      <div class="timeline-item">
+        <h3>IISER Kolkata</h3>
+        <p>BS-MS with Physics, Chemistry and Mathematics</p>
+        <p>CGPA: 8.84</p>
+        <p>2022 - 2027 (Expected)</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Calcutta University</h3>
+        <p>B.Sc Honours in Physics</p>
+        <p>CGPA: 8.308</p>
+        <p>2021 - 2022</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Jodhpur Park Boys' High School</h3>
+        <p>Physics, Mathematics, Chemistry, Computer Science</p>
+        <p>Percentage: 83%</p>
+        <p>2019 - 2021</p>
+      </div>
+    </div>
+  </section>
 
-    <section id="gallery">
-        <div class="container">
-            <h2 class="section-title">Gallery</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item glass">
-                    <img src="https://pbs.twimg.com/profile_images/1499007672829747207/Um7ddDLA_400x400.jpg" alt="Gallery Image 1">
-                </div>
-                <div class="gallery-item glass">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUbkN2qM4qJvEAeKa0BlpORl-41Ash2NmqKA&s" alt="Gallery Image 2">
-                </div>
+  <section class="section" id="skills">
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>Programming Languages</h3>
+        <p>Python, C/C++, Java, Javascript, Rust, QBASIC, GWBASIC</p>
+      </div>
+      <div class="skill-card">
+        <h3>Developer Tools</h3>
+        <p>HTML, CSS, PHP, LaTeX, Scilab, Origin Pro, GNUPlot, VMD, LAMMPS</p>
+      </div>
+      <div class="skill-card">
+        <h3>Databases</h3>
+        <p>MongoDB, MySQL</p>
+      </div>
+    </div>
+  </section>
 
-            </div>
-        </div>
-    </section>
+  <section class="section" id="research">
+    <h2 class="section-title">Research</h2>
+    <div class="glass-card">
+      <h3>On the Nature of Information</h3>
+      <p>Implementing fundamentals of Information Theory and Entropy to contribute in the development of first three inflection points as per the dynamics of information evolution is concerned.</p>
+      <p><em>2023 - Present</em></p>
+    </div>
+  </section>
 
-    <section id="diary">
-        <div class="container">
-            <h2 class="section-title">Research Diary</h2>
-            <div class="diary-entries">
-                <div class="glass diary-entry">
-                    <h3>January 2024</h3>
-                    <p>Started new simulation experiments on quantum systems...</p>
-                </div>
-                <div class="glass diary-entry">
-                    <h3>February 2024</h3>
-                    <p>Breakthrough in understanding symmetry patterns...</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <section class="section" id="contact">
+    <h2 class="section-title">Contact Me</h2>
+    <form class="contact-form" id="contactForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+  </section>
 
-    <section id="contact">
-        <div class="container">
-            <h2 class="section-title">Contact Me</h2>
-            <form class="contact-form glass">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Your Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Your Email" required>
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
-                </div>
-                <button type="submit" class="btn">Send Message</button>
-            </form>
-        </div>
-    </section>
+  <script>
+    // Intersection Observer for animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'fadeInUp 1s ease forwards';
+        }
+      });
+    }, { threshold: 0.1 });
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="glass">
-                    <h3>Connect With Me</h3>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    document.querySelectorAll('.timeline-item, .skill-card, .glass-card').forEach((el) => {
+      observer.observe(el);
+    });
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollTop;
+      });
+    });
+
+    // Contact form handling
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value,
+        to: 'sbs22ms076@iiserkol.ac.in'
+      };
+
+      // You'll need to set up a server endpoint to handle this
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          alert('Message sent successfully!');
+          e.target.reset();
+        } else {
+          alert('Failed to send message. Please try again.');
+        }
+      } catch (error) {
+        alert('An error occurred. Please try again later.');
+      }
+    });
+  </script>
 </body>
 </html>
