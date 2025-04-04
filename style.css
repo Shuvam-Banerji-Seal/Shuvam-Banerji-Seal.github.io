@@ -1,0 +1,125 @@
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap');
+
+/* Apply base styles from Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Styles */
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        @apply bg-gray-900 text-gray-100 font-inter;
+        /* Fallback background if image/gradient fails */
+        background-color: #111827;
+        /* Optional: Add a subtle gradient or background image */
+        /* background-image: linear-gradient(to bottom right, #111827, #1f2937); */
+    }
+    /* Define custom font families */
+    .font-inter { font-family: 'Inter', sans-serif; }
+    .font-source-code { font-family: 'Source Code Pro', monospace; }
+}
+
+@layer components {
+    /* Glassmorphism Effect */
+    .glassmorphic {
+        background: rgba(31, 41, 55, 0.6); /* bg-gray-800 with opacity */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); /* Safari */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Tech Tags Styling */
+    .tech-tag {
+        @apply inline-block bg-cyan-900/50 text-cyan-300 text-xs font-medium px-2.5 py-0.5 rounded-full border border-cyan-700/50;
+    }
+
+    /* Section Title Styling */
+    .section-title {
+        position: relative;
+        padding-bottom: 1rem; /* Space for the underline */
+    }
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px; /* Width of the underline */
+        height: 3px; /* Thickness of the underline */
+        @apply bg-cyan-500 rounded-full; /* Color and shape */
+    }
+
+    /* Scroll Animation Base Class */
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .animate-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Navbar scrolled state */
+    #navbar.scrolled .glassmorphic {
+         background: rgba(17, 24, 39, 0.8); /* Darker bg-gray-900 with more opacity */
+         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+}
+
+/* Custom Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* 3D Canvas Container */
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10; /* Ensure it's behind everything */
+    opacity: 0.25; /* Adjust opacity as needed */
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+/* Ensure content is above the canvas */
+nav, header, main, footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile Menu Link Styling */
+.mobile-menu-link {
+    @apply block py-2 px-4 text-lg hover:text-cyan-400 transition-colors duration-300;
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 768px) {
+    .section-title {
+        @apply text-2xl; /* Smaller title on mobile */
+    }
+     .hero h1 {
+        @apply text-3xl;
+    }
+    .hero p {
+        @apply text-lg;
+    }
+}

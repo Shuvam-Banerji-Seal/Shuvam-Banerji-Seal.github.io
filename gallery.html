@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gallery showcasing Shuvam Banerji Seal's interests - Chemistry visuals, Anime art, and personal pictures.">
+    <title>Gallery - Shuvam Banerji Seal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Gallery specific styles */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem; /* rounded-lg */
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3); /* Cyan shadow */
+        }
+        .gallery-item img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-item .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+        .gallery-item .overlay-text {
+            color: white;
+            font-size: 0.9rem;
+            transform: translateY(10px);
+            opacity: 0;
+            transition: transform 0.3s ease 0.1s, opacity 0.3s ease 0.1s;
+        }
+         .gallery-item:hover .overlay-text {
+             transform: translateY(0);
+             opacity: 1;
+         }
+
+         /* Simple Lightbox Styles (optional, can be enhanced with JS library) */
+        .lightbox {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            cursor: pointer;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85%;
+            display: block;
+            margin: auto;
+            border-radius: 5px;
+        }
+        .lightbox-caption {
+            color: #ccc;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-inter">
+
+    <nav id="navbar" class="fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300 scrolled">
+        <div class="container mx-auto flex justify-between items-center glassmorphic p-3 rounded-lg">
+            <a href="index.html" class="text-xl font-bold text-cyan-400 hover:text-cyan-300 transition-colors flex items-center">
+                <i data-lucide="atom" class="mr-2"></i>
+                <span>Shuvam B. Seal</span>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html#about" class="hover:text-cyan-400 transition-colors">About</a>
+                <a href="resume.html" class="hover:text-cyan-400 transition-colors">Resume</a>
+                <a href="index.html#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
+                <a href="gallery.html" class="text-cyan-400 font-semibold">Gallery</a> <a href="blog.html" class="hover:text-cyan-400 transition-colors">Blog</a>
+                <a href="music.html" class="hover:text-cyan-400 transition-colors">Music</a>
+                <a href="index.html#contact" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full transition-colors text-sm">Contact</a>
+            </div>
+            <button id="menu-btn" class="md:hidden focus:outline-none z-50">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+         <div id="mobile-menu" class="fixed top-0 left-0 w-full h-full bg-gray-900/95 backdrop-blur-sm flex flex-col items-center justify-center space-y-6 text-xl transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden z-40">
+             <button id="close-menu-btn" class="absolute top-6 right-6 focus:outline-none">
+                 <i data-lucide="x" class="w-8 h-8 text-cyan-400"></i>
+             </button>
+             <a href="index.html#about" class="mobile-menu-link hover:text-cyan-400 transition-colors">About</a>
+             <a href="resume.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Resume</a>
+             <a href="index.html#projects" class="mobile-menu-link hover:text-cyan-400 transition-colors">Projects</a>
+             <a href="gallery.html" class="mobile-menu-link text-cyan-400 font-semibold">Gallery</a>
+             <a href="blog.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Blog</a>
+             <a href="music.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Music</a>
+             <a href="index.html#contact" class="mobile-menu-link bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-3 rounded-full transition-colors">Contact</a>
+         </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-24 md:py-32">
+        <header class="text-center mb-16 animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-cyan-400 flex items-center justify-center">
+                <i data-lucide="image" class="mr-3"></i> Gallery
+            </h1>
+            <p class="text-lg text-gray-300">A visual collection of interests: Chemistry, Anime, and more.</p>
+        </header>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+
+            <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz" data-caption="Visualization of a complex molecule.">
+                <img src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz" alt="Chemistry Visualization" loading="lazy">
+                <div class="overlay">
+                    <p class="overlay-text">Molecular Dynamics Snapshot</p>
+                </div>
+            </div>
+
+            <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene" data-caption="A scene from a favorite anime series.">
+                <img src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene" alt="Anime Scenery" loading="lazy">
+                 <div class="overlay">
+                    <p class="overlay-text">Favorite Anime Moment</p>
+                </div>
+            </div>
+
+            <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work" data-caption="Working on an experiment in the lab.">
+                <img src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work" alt="Lab Work" loading="lazy">
+                 <div class="overlay">
+                    <p class="overlay-text">Computational Setup</p>
+                </div>
+            </div>
+
+             <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby" data-caption="Engaging in a personal hobby (e.g., art, karate).">
+                <img src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby" alt="Personal Hobby" loading="lazy">
+                 <div class="overlay">
+                    <p class="overlay-text">Stroke Art Example</p>
+                </div>
+            </div>
+
+             <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel" data-caption="A cool manga panel.">
+                 <img src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel" alt="Manga Panel" loading="lazy">
+                 <div class="overlay">
+                     <p class="overlay-text">Inspiring Manga Art</p>
+                 </div>
+             </div>
+
+             <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot" data-caption="Density Functional Theory calculation result plot.">
+                 <img src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot" alt="DFT Plot" loading="lazy">
+                 <div class="overlay">
+                     <p class="overlay-text">Electron Density Plot</p>
+                 </div>
+             </div>
+
+             <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference" data-caption="Presenting at a conference or event.">
+                 <img src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference" alt="Conference Presentation" loading="lazy">
+                 <div class="overlay">
+                     <p class="overlay-text">Anicon 2.0 Event</p>
+                 </div>
+             </div>
+
+              <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/365314/ECFCCB?text=Nature" data-caption="A photo from a nature walk or travel.">
+                 <img src="https://placehold.co/600x400/365314/ECFCCB?text=Nature" alt="Nature Photo" loading="lazy">
+                 <div class="overlay">
+                     <p class="overlay-text">Campus Greenery</p>
+                 </div>
+             </div>
+
+            </div>
+
+    </main>
+
+     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Lightbox Image">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <footer class="bg-gray-800/50 py-8 mt-16">
+        <div class="container mx-auto text-center text-gray-400 text-sm">
+             <div class="flex justify-center space-x-6 mb-4">
+                 <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="hover:text-cyan-400 transition-colors" aria-label="Email">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
+             <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script> <script>
+        // Simple Lightbox Functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imgSrc = item.getAttribute('data-src');
+                const imgCaption = item.getAttribute('data-caption');
+                if (imgSrc && lightbox && lightboxImg && lightboxCaption) {
+                    lightboxImg.src = imgSrc;
+                    lightboxCaption.textContent = imgCaption || ''; // Use caption or empty string
+                    lightbox.style.display = 'flex'; // Show lightbox
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                }
+            });
+        });
+
+        function closeLightbox() {
+            if (lightbox) {
+                lightbox.style.display = 'none'; // Hide lightbox
+                document.body.style.overflow = 'auto'; // Restore scrolling
+                lightboxImg.src = ''; // Clear image source
+                lightboxCaption.textContent = '';
+            }
+        }
+
+        // Close lightbox on escape key
+         document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && lightbox.style.display === 'flex') {
+                closeLightbox();
+            }
+        });
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>

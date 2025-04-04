@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resume of Shuvam Banerji Seal - BS-MS Student (Chemistry Major, Computer Science Minor) at IISER Kolkata.">
+    <title>Resume - Shuvam Banerji Seal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles specific to resume page if needed */
+        .timeline {
+            position: relative;
+            padding-left: 40px; /* Space for icons and line */
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 5px;
+            bottom: 5px;
+            width: 2px;
+            background-color: var(--cyan-700, #0e7490); /* Tailwind cyan-700 */
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem; /* Space between items */
+        }
+        .timeline-icon {
+            position: absolute;
+            left: -5px; /* Adjust to center on the line */
+            top: 5px; /* Align with text */
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--cyan-500, #06b6d4); /* Tailwind cyan-500 */
+            color: var(--gray-900, #111827); /* Tailwind gray-900 */
+        }
+         .timeline-icon i {
+             width: 12px;
+             height: 12px;
+         }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-inter">
+
+    <nav id="navbar" class="fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300 scrolled">
+        <div class="container mx-auto flex justify-between items-center glassmorphic p-3 rounded-lg">
+            <a href="index.html" class="text-xl font-bold text-cyan-400 hover:text-cyan-300 transition-colors flex items-center">
+                <i data-lucide="atom" class="mr-2"></i>
+                <span>Shuvam B. Seal</span>
+            </a>
+             <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html#about" class="hover:text-cyan-400 transition-colors">About</a>
+                <a href="resume.html" class="text-cyan-400 font-semibold">Resume</a> <a href="index.html#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
+                <a href="gallery.html" class="hover:text-cyan-400 transition-colors">Gallery</a>
+                <a href="blog.html" class="hover:text-cyan-400 transition-colors">Blog</a>
+                <a href="music.html" class="hover:text-cyan-400 transition-colors">Music</a>
+                <a href="index.html#contact" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full transition-colors text-sm">Contact</a>
+            </div>
+            <button id="menu-btn" class="md:hidden focus:outline-none z-50">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+         <div id="mobile-menu" class="fixed top-0 left-0 w-full h-full bg-gray-900/95 backdrop-blur-sm flex flex-col items-center justify-center space-y-6 text-xl transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden z-40">
+             <button id="close-menu-btn" class="absolute top-6 right-6 focus:outline-none">
+                 <i data-lucide="x" class="w-8 h-8 text-cyan-400"></i>
+             </button>
+             <a href="index.html#about" class="mobile-menu-link hover:text-cyan-400 transition-colors">About</a>
+             <a href="resume.html" class="mobile-menu-link text-cyan-400 font-semibold">Resume</a>
+             <a href="index.html#projects" class="mobile-menu-link hover:text-cyan-400 transition-colors">Projects</a>
+             <a href="gallery.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Gallery</a>
+             <a href="blog.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Blog</a>
+             <a href="music.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Music</a>
+             <a href="index.html#contact" class="mobile-menu-link bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-3 rounded-full transition-colors">Contact</a>
+         </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-24 md:py-32">
+        <header class="text-center mb-16 animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2 text-cyan-400">Shuvam Banerji Seal</h1>
+            <p class="text-lg text-gray-300">BS-MS Student (Chemistry Major, Computer Science Minor)</p>
+            <p class="text-md text-gray-400">Indian Institute of Science Education and Research - Kolkata</p>
+             <div class="flex justify-center space-x-4 mt-4 text-sm text-cyan-400">
+                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="hover:underline flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-1"></i> sbs22ms076@iiserkol.ac.in</a>
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center"><i data-lucide="github" class="w-4 h-4 mr-1"></i> GitHub</a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="hover:underline flex items-center"><i data-lucide="linkedin" class="w-4 h-4 mr-1"></i> LinkedIn</a>
+            </div>
+            </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+
+            <div class="md:col-span-2 space-y-12">
+
+                <section class="animate-on-scroll">
+                    <h2 class="text-2xl font-semibold mb-6 text-cyan-300 border-l-4 border-cyan-500 pl-3">Research Experience</h2>
+                    <div class="space-y-6">
+                        <div class="glassmorphic p-5 rounded-lg">
+                            <h3 class="font-semibold text-lg text-cyan-400">Developing an Advanced Retrieval Model for TREC-Tip of Tongue Queries</h3>
+                            <p class="text-sm text-gray-400 mb-1">Guided by Dr. Dwaipayan Roy, IISER-Kolkata | 2024 (Submitted)</p>
+                            <p class="text-gray-300 text-sm">Engineered multi-layer BM-25 filtering (Lucene, Java), dynamic search-domain contraction, transformer-based query expansion, and semantic matching using Local LLMs.</p>
+                        </div>
+                        <div class="glassmorphic p-5 rounded-lg">
+                            <h3 class="font-semibold text-lg text-cyan-400">Computational Modeling of [VO(SALIEP) (DTP)] as Water Reducing Catalyst</h3>
+                            <p class="text-sm text-gray-400 mb-1">Guided by Dr. Soumyajit Roy, IISER-Kolkata | 2024 (to be submitted)</p>
+                            <p class="text-gray-300 text-sm">Implemented DFT methods (B3LYP) for MO energy calculations (Gaussian), mechanistic studies using transition state theory, and reaction pathway analysis.</p>
+                        </div>
+                         <div class="glassmorphic p-5 rounded-lg">
+                            <h3 class="font-semibold text-lg text-cyan-400">On the Nature of Information</h3>
+                            <p class="text-sm text-gray-400 mb-1">Guided by Dr. Soumyajit Roy, IISER-Kolkata | 2023-24 (Under Review)</p>
+                            <p class="text-gray-300 text-sm">Developed novel mathematical models for information flow analysis, applied entropy principles to quantify information evolution under constraints.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="projects" class="animate-on-scroll scroll-mt-20">
+                    <h2 class="text-2xl font-semibold mb-6 text-cyan-300 border-l-4 border-cyan-500 pl-3">Projects</h2>
+                     <div class="space-y-6">
+                         <div class="glassmorphic p-5 rounded-lg">
+                            <h3 class="font-semibold text-lg text-cyan-400">Developing a complete GUI full-stack application using GTK4 in C</h3>
+                            <p class="text-sm text-gray-400 mb-1">Supervised by Dr. Kripabandhu Ghosh, IISER-Kolkata | 2024 (ongoing)</p>
+                            <p class="text-gray-300 text-sm">Implementing a GUI application in C using GTK4 and Glade with SQLite3 for local database management (CS3101 Course Project).</p>
+                        </div>
+                         <div class="glassmorphic p-5 rounded-lg">
+                            <h3 class="font-semibold text-lg text-cyan-400">Porting the SMC Canteen system for IISER-Kolkata to Python3 Django</h3>
+                            <p class="text-sm text-gray-400 mb-1">Student Monitored Canteen System | 2024 (ongoing)</p>
+                            <p class="text-gray-300 text-sm">Contributing to modernizing the SMC system (serving 2000+ students) using the Django Framework.</p>
+                        </div>
+                         </div>
+                </section>
+
+                 <section class="animate-on-scroll">
+                    <h2 class="text-2xl font-semibold mb-6 text-cyan-300 border-l-4 border-cyan-500 pl-3">Education</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                             <div class="timeline-icon"><i data-lucide="graduation-cap"></i></div>
+                            <div class="glassmorphic p-5 rounded-lg ml-4">
+                                <h3 class="font-semibold text-lg text-cyan-400">BS-MS, Chemistry Major, Computer Science Minor</h3>
+                                <p class="text-sm text-gray-400 mb-1">Indian Institute of Science Education and Research (IISER) - Kolkata</p>
+                                <p class="text-sm text-gray-500">Expected Graduation: [Enter Expected Year]</p>
+                                </div>
+                        </div>
+                         </div>
+                </section>
+
+                 <section class="animate-on-scroll">
+                    <h2 class="text-2xl font-semibold mb-6 text-cyan-300 border-l-4 border-cyan-500 pl-3">Awards & Honors</h2>
+                     <ul class="list-disc list-inside space-y-2 text-gray-300 pl-4">
+                        <li>Reliance Foundation Undergraduate Scholar (2023)</li>
+                        <li>StatusCode0 Hackathon (MATLAB Track) - 1st Rank (2023)</li>
+                        <li>Mimansa National Basic Sciences Competition - Zonal Topper (2024)</li>
+                        <li>NAEST National Anveshika Experimental Skill Test - Zonal Runners Up (2023)</li>
+                        <li>Best Young Scientist Speaker on NanoTechnology, World Science Conference (2019)</li>
+                        <li>Qualified JEE Mains and Advanced (2022)</li>
+                        <li>Qualified IAT (IISER-Aptitude Test) (2022)</li>
+                        <li>Qualified WBJEE (2022)</li>
+                    </ul>
+                </section>
+
+
+            </div>
+
+            <div class="space-y-12">
+
+                <section class="animate-on-scroll">
+                    <h2 class="text-2xl font-semibold mb-6 text-cyan-300 border-l-4 border-cyan-500 pl-3">Technical Skills</h2>
+                    <div class="glassmorphic p-5 rounded-lg space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-cyan-400 mb-2">Programming Languages:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">C</span>
+                                <span class="tech-tag">Java</span>
+                                <span class="tech-tag">MATLAB</span>
+                                <span class="tech-tag">HTML</span>
+                                <span class="tech-tag">CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-cyan-400 mb-2">Frameworks & Libraries:</h4>
+                             <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Django</span>
+                                <span class="tech-tag">GTK4</span>
+                                <span class="tech-tag">Lucene</span>
+                                <span class="tech-tag">NumPy</span>
+                                <span class="tech-tag">Pandas</span>
+                                <span class="tech-tag">Scikit-learn</span>
+                                 <span class="tech-tag">TensorFlow (Basic)</span>
+                                 <span class="tech-tag">Tailwind CSS</span>
+                                 <span class="tech-tag">Three.js</span>
+                            </div>
+                        </div>
+                         <div>
+                            <h4 class="font-semibold text-cyan-400 mb-2">Tools & Technologies:</h4>
+                             <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Git</span>
+                                <span class="tech-tag">Docker (Basic)</span>
+                                <span class="tech-tag">Linux</span>
+                                <span class="tech-tag">Gaussian</span>
+                                <span class="tech-tag">SQLite3</span>
+                                <span class="tech-tag">LaTeX</span>
+                                <span class="tech-tag">Jupyter</span>
+                            </div>
+                        </div>
+                         <div>
+                            <h4 class="font-semibold text-cyan-400 mb-2">Areas of Interest:</h4>
+                             <div class="flex flex-wrap gap-2">
+                                <span class="tech-tag">Computational Chemistry</span>
+                                <span class="tech-tag">Machine Learning</span>
+                                <span class="tech-tag">Information Retrieval</span>
+                                <span class="tech-tag">Algorithm Development</span>
+                                <span class="tech-tag">Data Science</span>
+                                <span class="tech-tag">Full-Stack Development</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="animate-on-scroll">
+                    <h2 class="text-2xl font-semibold mb-6 text-cyan-300 border-l-4 border-cyan-500 pl-3">Leadership & Activities</h2>
+                    <div class="glassmorphic p-5 rounded-lg space-y-3 text-sm text-gray-300">
+                         <p><strong class="text-cyan-400">Event Management:</strong> Organized Anicon 2.0 (500+ participants), Coordinated Technical Workshops.</p>
+                         <p><strong class="text-cyan-400">Social Impact:</strong> COVID-19 relief coordinator, Educational mentor for Ek-Pehal program.</p>
+                         <p><strong class="text-cyan-400">Additional Activities:</strong> District Level Debate and Quiz finalist, Shotokan Karate practitioner, 4th Year Art and Painting Student (Stroke art, Portraits).</p>
+                    </div>
+                </section>
+
+                 <section class="animate-on-scroll">
+                    <h2 class="text-2xl font-semibold mb-6 text-cyan-300 border-l-4 border-cyan-500 pl-3">Languages</h2>
+                     <div class="glassmorphic p-5 rounded-lg space-y-2 text-sm text-gray-300">
+                         <p><strong>English:</strong> Fluent</p>
+                         <p><strong>Bengali:</strong> Native</p>
+                         <p><strong>Hindi:</strong> Proficient</p>
+                         </div>
+                 </section>
+
+                <section class="animate-on-scroll">
+                    <h2 class="text-2xl font-semibold mb-6 text-cyan-300 border-l-4 border-cyan-500 pl-3">Download Resume</h2>
+                    <div class="glassmorphic p-5 rounded-lg space-y-2 text-sm text-gray-300">
+                        <a href="https://github.com/Shuvam-Banerji-Seal/My-CV/blob/main/Shuvam_Banerji_Seal__CV.pdf" class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold px-8 py-3 rounded-full transition-colors inline-block">
+                             Click Here <i data-lucide="file-text" class="inline-block ml-1 w-5 h-5"></i>
+                        </a>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-800/50 py-8 mt-16">
+        <div class="container mx-auto text-center text-gray-400 text-sm">
+             <div class="flex justify-center space-x-6 mb-4">
+                 <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="hover:text-cyan-400 transition-colors" aria-label="Email">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
+             <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script> <script>
+      lucide.createIcons();
+    </script>
+
+</body>
+</html>

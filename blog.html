@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog by Shuvam Banerji Seal on Computational Chemistry, Programming, Anime, and other thoughts.">
+    <title>Blog - Shuvam Banerji Seal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Blog specific styles */
+        .blog-post-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .blog-post-card:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 8px 25px rgba(6, 182, 212, 0.2); /* Cyan shadow */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-inter">
+
+    <nav id="navbar" class="fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300 scrolled">
+        <div class="container mx-auto flex justify-between items-center glassmorphic p-3 rounded-lg">
+            <a href="index.html" class="text-xl font-bold text-cyan-400 hover:text-cyan-300 transition-colors flex items-center">
+                <i data-lucide="atom" class="mr-2"></i>
+                <span>Shuvam B. Seal</span>
+            </a>
+             <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html#about" class="hover:text-cyan-400 transition-colors">About</a>
+                <a href="resume.html" class="hover:text-cyan-400 transition-colors">Resume</a>
+                <a href="index.html#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
+                <a href="gallery.html" class="hover:text-cyan-400 transition-colors">Gallery</a>
+                <a href="blog.html" class="text-cyan-400 font-semibold">Blog</a> <a href="music.html" class="hover:text-cyan-400 transition-colors">Music</a>
+                <a href="index.html#contact" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full transition-colors text-sm">Contact</a>
+            </div>
+            <button id="menu-btn" class="md:hidden focus:outline-none z-50">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+         <div id="mobile-menu" class="fixed top-0 left-0 w-full h-full bg-gray-900/95 backdrop-blur-sm flex flex-col items-center justify-center space-y-6 text-xl transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden z-40">
+             <button id="close-menu-btn" class="absolute top-6 right-6 focus:outline-none">
+                 <i data-lucide="x" class="w-8 h-8 text-cyan-400"></i>
+             </button>
+             <a href="index.html#about" class="mobile-menu-link hover:text-cyan-400 transition-colors">About</a>
+             <a href="resume.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Resume</a>
+             <a href="index.html#projects" class="mobile-menu-link hover:text-cyan-400 transition-colors">Projects</a>
+             <a href="gallery.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Gallery</a>
+             <a href="blog.html" class="mobile-menu-link text-cyan-400 font-semibold">Blog</a>
+             <a href="music.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Music</a>
+             <a href="index.html#contact" class="mobile-menu-link bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-3 rounded-full transition-colors">Contact</a>
+         </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-24 md:py-32">
+        <header class="text-center mb-16 animate-fade-in-up">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-cyan-400 flex items-center justify-center">
+                <i data-lucide="notebook-pen" class="mr-3"></i> My Blog
+            </h1>
+            <p class="text-lg text-gray-300">Thoughts on Chemistry, Code, Anime, and Life.</p>
+        </header>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <article class="glassmorphic p-6 rounded-lg shadow-lg blog-post-card animate-on-scroll">
+                <header>
+                     <div class="mb-2">
+                        <span class="tech-tag">Computational Chemistry</span>
+                        <span class="tech-tag">DFT</span>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2 text-cyan-300 hover:text-cyan-200 transition-colors">
+                        <a href="#">Understanding DFT Methods in Catalyst Design</a>
+                    </h2>
+                    <p class="text-sm text-gray-400 mb-3">Published on: April 5, 2025</p>
+                </header>
+                <p class="text-gray-300 text-sm mb-4">
+                    A brief overview of how Density Functional Theory is applied in computational chemistry to predict and understand catalytic processes...
+                </p>
+                <a href="#" class="text-cyan-400 hover:underline text-sm font-medium">Read More <i data-lucide="arrow-right" class="inline-block w-4 h-4 ml-1"></i></a>
+            </article>
+
+             <article class="glassmorphic p-6 rounded-lg shadow-lg blog-post-card animate-on-scroll">
+                 <header>
+                     <div class="mb-2">
+                        <span class="tech-tag">Anime</span>
+                        <span class="tech-tag">Analysis</span>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2 text-cyan-300 hover:text-cyan-200 transition-colors">
+                        <a href="#">Thematic Depth in [Favorite Anime Series]</a>
+                    </h2>
+                    <p class="text-sm text-gray-400 mb-3">Published on: March 28, 2025</p>
+                </header>
+                <p class="text-gray-300 text-sm mb-4">
+                    Exploring the complex themes and character arcs present in [Favorite Anime Series] and why it resonates so deeply...
+                </p>
+                <a href="#" class="text-cyan-400 hover:underline text-sm font-medium">Read More <i data-lucide="arrow-right" class="inline-block w-4 h-4 ml-1"></i></a>
+            </article>
+
+             <article class="glassmorphic p-6 rounded-lg shadow-lg blog-post-card animate-on-scroll">
+                 <header>
+                     <div class="mb-2">
+                        <span class="tech-tag">Programming</span>
+                        <span class="tech-tag">C</span>
+                         <span class="tech-tag">GTK</span>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2 text-cyan-300 hover:text-cyan-200 transition-colors">
+                        <a href="#">Challenges Building a GUI App with C and GTK4</a>
+                    </h2>
+                    <p class="text-sm text-gray-400 mb-3">Published on: March 15, 2025</p>
+                </header>
+                <p class="text-gray-300 text-sm mb-4">
+                    Reflections on the learning curve and intricacies involved in developing graphical user interfaces using C and the GTK4 toolkit...
+                </p>
+                <a href="#" class="text-cyan-400 hover:underline text-sm font-medium">Read More <i data-lucide="arrow-right" class="inline-block w-4 h-4 ml-1"></i></a>
+            </article>
+
+            </div>
+
+        </main>
+
+    <footer class="bg-gray-800/50 py-8 mt-16">
+        <div class="container mx-auto text-center text-gray-400 text-sm">
+             <div class="flex justify-center space-x-6 mb-4">
+                 <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="hover:text-cyan-400 transition-colors" aria-label="Email">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
+             <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script> <script>
+      lucide.createIcons();
+    </script>
+
+</body>
+</html>
