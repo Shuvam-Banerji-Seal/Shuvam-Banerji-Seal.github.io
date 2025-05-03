@@ -1,0 +1,3 @@
+[submodule "EFAML_WEB"]
+    path = EFAML_WEB
+    url = https://github.com/shuvam-banerji-seal/EFAML_WEB.git
