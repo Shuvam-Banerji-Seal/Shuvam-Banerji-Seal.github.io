@@ -192,6 +192,13 @@ nav, header, main, footer {
     align-items: center;
 }
 
+/* Nav Actions Container */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 @media (min-width: 768px) { /* md: */
     .nav-links {
         display: flex;

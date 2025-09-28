@@ -10,7 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
     <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Enhanced CSS System -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/animations.css">
+    <link rel="stylesheet" href="../assets/css/mobile.css">
     <style>
         /* Additional styles specific to resume page if needed */
         .timeline {
@@ -53,19 +56,19 @@
 
     <nav id="navbar" class="scrolled">
         <div class="container nav-content glassmorphic">
-            <a href="index.html" class="nav-logo">
+            <a href="../index.html" class="nav-logo">
                 <i data-lucide="atom" class="mr-2"></i>
                 <span>Shuvam B. Seal</span>
             </a>
              <div class="nav-links">
-                <a href="index.html#about" class="nav-link">About</a>
+                <a href="../index.html#about" class="nav-link">About</a>
                 <a href="resume.html" class="nav-link active">Resume</a>
-                <a href="index.html#projects" class="nav-link">Projects</a>
-                <a href="index.html#github" class="nav-link">GitHub</a>
+                <a href="../index.html#projects" class="nav-link">Projects</a>
+                <a href="../index.html#github" class="nav-link">GitHub</a>
                 <a href="gallery.html" class="nav-link">Gallery</a>
                 <a href="blog.html" class="nav-link">Blog</a>
                 <a href="music.html" class="nav-link">Music</a>
-                <a href="index.html#contact" class="btn btn-primary">Contact</a>
+                <a href="../index.html#contact" class="btn btn-primary">Contact</a>
                 <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
                     <i data-lucide="moon" class="w-5 h-5"></i>
                 </button>
@@ -78,10 +81,10 @@
              <button id="close-menu-btn">
                  <i data-lucide="x" class="w-8 h-8"></i>
              </button>
-             <a href="index.html#about" class="mobile-menu-link">About</a>
+             <a href="../index.html#about" class="mobile-menu-link">About</a>
              <a href="resume.html" class="mobile-menu-link active">Resume</a>
-             <a href="index.html#projects" class="mobile-menu-link">Projects</a>
-             <a href="index.html#github" class="mobile-menu-link">GitHub</a>
+             <a href="../index.html#projects" class="mobile-menu-link">Projects</a>
+             <a href="../index.html#github" class="mobile-menu-link">GitHub</a>
              <a href="gallery.html" class="mobile-menu-link">Gallery</a>
              <a href="blog.html" class="mobile-menu-link">Blog</a>
              <a href="music.html" class="mobile-menu-link">Music</a>
@@ -94,10 +97,10 @@
     <div id="mobile-menu-backdrop"></div>
 
     <main class="container section">
-        <header class="text-center mb-16 animate-fade-in-up">
-            <h1 class="resume-title">Shuvam Banerji Seal</h1>
-            <p class="resume-subtitle">BS-MS Student (Chemistry Major, Computer Science Minor)</p>
-            <p class="resume-affiliation">Indian Institute of Science Education and Research - Kolkata</p>
+        <header class="text-center mb-16 animate-fade-in-up" data-animate="fade-in">
+            <h1 class="resume-title typewriter" data-speed="80">Shuvam Banerji Seal</h1>
+            <p class="resume-subtitle" data-animate="slide-left" data-delay="1000">BS-MS Student (Chemistry Major, Computer Science Minor)</p>
+            <p class="resume-affiliation" data-animate="slide-right" data-delay="1200">Indian Institute of Science Education and Research - Kolkata</p>
              <div class="contact-links">
                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="contact-link"><i data-lucide="mail" class="w-4 h-4 mr-1"></i> sbs22ms076@iiserkol.ac.in</a>
                 <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="contact-link"><i data-lucide="github" class="w-4 h-4 mr-1"></i> GitHub</a>
@@ -109,10 +112,10 @@
 
             <div class="md:col-span-2 space-y-12">
 
-                <section class="animate-on-scroll">
-                    <h2 class="section-subtitle-left">Research Experience</h2>
+                <section class="animate-on-scroll" data-animate="fade-in" data-delay="1600">
+                    <h2 class="section-subtitle-left" data-animate="slide-left" data-delay="1700">Research Experience</h2>
                     <div class="space-y-6">
-                        <div class="card glassmorphic">
+                        <div class="card glassmorphic advanced-hover" data-animate="scale-up" data-delay="1800">
                             <h3 class="item-title">Developing an Advanced Retrieval Model for TREC-Tip of Tongue Queries</h3>
                             <p class="item-meta">Guided by Dr. Dwaipayan Roy, IISER-Kolkata | 2024 (Submitted)</p>
                             <p class="item-description">Engineered multi-layer BM-25 filtering (Lucene, Java), dynamic search-domain contraction, transformer-based query expansion, and semantic matching using Local LLMs.</p>
@@ -302,7 +305,11 @@
         </div>
     </footer>
 
-    <script src="script.js"></script> <script>
+    <!-- Original functionality -->
+    <script src="../assets/js/main.js"></script>
+    <!-- Enhanced features -->
+    <script src="../assets/js/enhanced.js"></script>
+    <script>
       lucide.createIcons();
     </script>
 

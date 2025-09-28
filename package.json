@@ -1,0 +1,40 @@
+{
+  "name": "shuvam-portfolio",
+  "version": "2.0.0",
+  "description": "Professional portfolio website for Shuvam Banerji Seal",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server",
+    "build": "echo 'Static site - no build required'",
+    "test": "echo 'Run accessibility and performance tests'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io.git"
+  },
+  "keywords": [
+    "portfolio",
+    "chemistry",
+    "computer-science",
+    "research",
+    "responsive",
+    "animations",
+    "accessibility"
+  ],
+  "author": "Shuvam Banerji Seal <sbs22ms076@iiserkol.ac.in>",
+  "license": "MIT",
+  "homepage": "https://shuvam-banerji-seal.github.io",
+  "devDependencies": {
+    "lighthouse": "^11.0.0",
+    "axe-core": "^4.8.0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

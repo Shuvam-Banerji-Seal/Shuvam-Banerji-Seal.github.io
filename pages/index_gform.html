@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shuvam Banerji Seal's Portfolio - Computational Chemist & Otaku. Showcasing research, skills, and projects with dynamic animations and design.">
+    <title>Shuvam Banerji Seal - Portfolio</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="overflow-x-hidden">
+
+    <div id="canvas-container" class="fixed top-0 left-0 w-full h-full -z-10 opacity-30"></div>
+
+    <nav id="navbar" class="fixed top-0 left-0 w-full p-4 z-50 transition-all duration-300">
+        <div class="container mx-auto flex justify-between items-center glassmorphic p-3 rounded-lg">
+            <a href="index.html" class="text-xl font-bold text-cyan-400 hover:text-cyan-300 transition-colors flex items-center">
+                <i data-lucide="atom" class="mr-2"></i>
+                <span>Shuvam B. Seal</span>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html#about" class="hover:text-cyan-400 transition-colors">About</a>
+                <a href="resume.html" class="hover:text-cyan-400 transition-colors">Resume</a>
+                <a href="index.html#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
+                <a href="gallery.html" class="hover:text-cyan-400 transition-colors">Gallery</a>
+                <a href="blog.html" class="hover:text-cyan-400 transition-colors">Blog</a>
+                <a href="music.html" class="hover:text-cyan-400 transition-colors">Music</a>
+                <a href="index.html#contact" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-4 py-2 rounded-full transition-colors text-sm">Contact</a>
+                <button data-theme-toggle class="ml-2 p-2 rounded-md border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 transition-colors" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <button id="menu-btn" class="md:hidden focus:outline-none z-50">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="fixed top-0 left-0 w-full h-full bg-gray-900/95 backdrop-blur-sm flex flex-col items-center justify-center space-y-6 text-xl transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden z-40">
+            <button id="close-menu-btn" class="absolute top-6 right-6 focus:outline-none">
+                <i data-lucide="x" class="w-8 h-8 text-cyan-400"></i>
+            </button>
+            <a href="index.html#about" class="mobile-menu-link hover:text-cyan-400 transition-colors">About</a>
+            <a href="resume.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Resume</a>
+            <a href="index.html#projects" class="mobile-menu-link hover:text-cyan-400 transition-colors">Projects</a>
+            <a href="gallery.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Gallery</a>
+            <a href="blog.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Blog</a>
+            <a href="music.html" class="mobile-menu-link hover:text-cyan-400 transition-colors">Music</a>
+            <a href="index.html#contact" class="mobile-menu-link bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-6 py-3 rounded-full transition-colors">Contact</a>
+            <button data-theme-toggle class="mobile-menu-link border border-cyan-400 text-cyan-400 rounded-md text-base px-6 py-2">Toggle Theme</button>
+        </div>
+    </nav>
+
+    <header class="h-screen flex items-center justify-center text-center relative overflow-hidden px-4">
+        <div class="z-10 animate-fade-in-up">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">
+                Shuvam Banerji Seal
+            </h1>
+            <p class="text-xl md:text-2xl text-cyan-400 mb-8 font-source-code">
+                Computational Chemist <span class="text-gray-400">&</span> Otaku Enthusiast
+            </p>
+            <p class="max-w-2xl mx-auto text-gray-300 mb-10">
+                Exploring the molecular world through code and computation, while diving deep into the realms of anime and manga. Welcome to my digital space!
+            </p>
+            <a href="#about" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-8 py-3 rounded-full transition-colors mr-4 inline-block">
+                Discover More <i data-lucide="arrow-down" class="inline-block ml-1 w-5 h-5"></i>
+            </a>
+             <a href="resume.html" class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold px-8 py-3 rounded-full transition-colors inline-block">
+                View Resume <i data-lucide="file-text" class="inline-block ml-1 w-5 h-5"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-16">
+
+        <section id="about" class="mb-24 scroll-mt-20">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12 text-cyan-400 flex items-center justify-center">
+                <i data-lucide="user-round" class="mr-3"></i> About Me
+            </h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center glassmorphic p-8 rounded-lg animate-on-scroll">
+                <div class="text-gray-300 space-y-4">
+                    <p>Hello! I'm Shuvam, a BS-MS student at IISER Kolkata, majoring in Chemistry with a minor in Computer Science. My passion lies at the intersection of these fields – using computational tools to unravel the complexities of chemical systems.</p>
+                    <p>From developing retrieval models for complex queries to computationally modeling catalysts using DFT methods, I thrive on tackling challenging problems. My academic journey is complemented by a strong interest in software development, algorithms, and data science.</p>
+                    <p>Outside academics, I'm an avid Otaku, fascinated by the storytelling and art of anime and manga. I also enjoy contributing to open-source projects, participating in hackathons, and exploring new technologies.</p>
+                     <div class="flex space-x-4 mt-6">
+                        <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-cyan-400 transition-colors" aria-label="GitHub Profile">
+                            <i data-lucide="github" class="w-6 h-6"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-cyan-400 transition-colors" aria-label="LinkedIn Profile">
+                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+                        </a>
+                        </div>
+                </div>
+                <div class="relative h-64 md:h-80 rounded-lg overflow-hidden shadow-lg group">
+                    <img src="https://placehold.co/600x400/1E293B/94A3B8?text=Shuvam+B.+Seal"
+                         alt="Shuvam Banerji Seal"
+                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                     <div class="absolute bottom-4 left-4 text-white">
+                         <p class="font-semibold">Computational Chemist & Developer</p>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="mb-24 scroll-mt-20">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12 text-cyan-400 flex items-center justify-center">
+                <i data-lucide="lightbulb" class="mr-3"></i> Featured Projects
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glassmorphic p-6 rounded-lg shadow-lg hover:shadow-cyan-500/30 transition-shadow duration-300 animate-on-scroll flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-cyan-300 flex items-center"><i data-lucide="search-code" class="mr-2 w-5 h-5"></i>Advanced Retrieval Model</h3>
+                        <p class="text-sm text-gray-400 mb-4">Engineered a multi-layer BM25 filtering system with transformer-based query expansion for TREC-Tip of Tongue queries.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-tag">Java</span>
+                            <span class="tech-tag">Lucene</span>
+                            <span class="tech-tag">LLMs</span>
+                            <span class="tech-tag">NLP</span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-xs text-gray-500">Status: Submitted (2024)</span>
+                         </div>
+                </div>
+
+                <div class="glassmorphic p-6 rounded-lg shadow-lg hover:shadow-cyan-500/30 transition-shadow duration-300 animate-on-scroll flex flex-col justify-between">
+                     <div>
+                        <h3 class="text-xl font-semibold mb-2 text-cyan-300 flex items-center"><i data-lucide="flask-conical" class="mr-2 w-5 h-5"></i>Catalyst Computational Modeling</h3>
+                        <p class="text-sm text-gray-400 mb-4">Modeled [VO(SALIEP)(DTP)] as a water-reducing catalyst using DFT (B3LYP) methods and mechanistic studies.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-tag">DFT</span>
+                            <span class="tech-tag">Gaussian</span>
+                            <span class="tech-tag">Chemistry</span>
+                            <span class="tech-tag">Catalysis</span>
+                        </div>
+                    </div>
+                     <div class="mt-4">
+                        <span class="text-xs text-gray-500">Status: To Be Submitted (2024)</span>
+                         </div>
+                </div>
+
+                 <div class="glassmorphic p-6 rounded-lg shadow-lg hover:shadow-cyan-500/30 transition-shadow duration-300 animate-on-scroll flex flex-col justify-between">
+                     <div>
+                        <h3 class="text-xl font-semibold mb-2 text-cyan-300 flex items-center"><i data-lucide="app-window" class="mr-2 w-5 h-5"></i>Full-Stack GTK4 App</h3>
+                        <p class="text-sm text-gray-400 mb-4">Developing a GUI application using GTK4 and Glade in C, with SQLite3 for database management.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="tech-tag">C</span>
+                            <span class="tech-tag">GTK4</span>
+                            <span class="tech-tag">SQLite3</span>
+                            <span class="tech-tag">GUI</span>
+                        </div>
+                    </div>
+                     <div class="mt-4">
+                        <span class="text-xs text-gray-500">Status: Ongoing (2024)</span>
+                         </div>
+                </div>
+                 </div>
+             <div class="text-center mt-12">
+                 <a href="resume.html#projects" class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold px-6 py-2 rounded-full transition-colors inline-block">
+                    See All Projects <i data-lucide="arrow-right" class="inline-block ml-1 w-4 h-4"></i>
+                </a>
+            </div>
+        </section>
+
+        <section id="contact" class="mb-16 scroll-mt-20">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12 text-cyan-400 flex items-center justify-center">
+                <i data-lucide="mail" class="mr-3"></i> Get In Touch
+            </h2>
+            <div class="glassmorphic p-8 md:p-12 rounded-lg max-w-3xl mx-auto animate-on-scroll">
+                <p class="text-center text-gray-300 mb-8">
+                    Interested in collaborating, have a question, or just want to connect? Fill out the form below or reach out via the links in the footer.
+                </p>
+                <form id="contact-form" action="YOUR_GOOGLE_FORM_SHARE_LINK/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-cyan-300 mb-1">Name</label>
+                            <input type="text" id="name" name="entry.xxxx_NAME_ID" required
+                                   class="w-full px-4 py-2 rounded-md bg-gray-700/50 border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition placeholder-gray-500">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-cyan-300 mb-1">Email</label>
+                             <input type="email" id="email" name="entry.xxxx_EMAIL_ID" required
+                                   class="w-full px-4 py-2 rounded-md bg-gray-700/50 border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition placeholder-gray-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-cyan-300 mb-1">Subject</label>
+                         <input type="text" id="subject" name="entry.xxxx_SUBJECT_ID" required
+                               class="w-full px-4 py-2 rounded-md bg-gray-700/50 border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition placeholder-gray-500">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-cyan-300 mb-1">Message</label>
+                         <textarea id="message" name="entry.xxxx_MESSAGE_ID" rows="5" required
+                                  class="w-full px-4 py-2 rounded-md bg-gray-700/50 border border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition placeholder-gray-500 resize-none"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-semibold px-8 py-3 rounded-full transition-colors w-full md:w-auto">
+                            Send Message <i data-lucide="send" class="inline-block ml-2 w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <p id="form-status" class="text-center text-sm mt-4 h-5"></p> </form>
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { showConfirmationMessage(); }"></iframe>
+                </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800/50 py-8 mt-16">
+        <div class="container mx-auto text-center text-gray-400 text-sm">
+            <div class="flex justify-center space-x-6 mb-4">
+                 <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="hover:text-cyan-400 transition-colors" aria-label="Email">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
+            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+            <div class="mt-4">
+                <button data-theme-toggle class="border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-gray-900 font-semibold px-4 py-2 rounded-full transition-colors inline-flex items-center">
+                    <i data-lucide="moon" class="w-4 h-4 mr-2"></i> Toggle Theme
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      lucide.createIcons();
+
+      // --- Google Form Submission Handling ---
+      let submitted = false; // Variable to track submission
+
+      function showConfirmationMessage() {
+        const formStatus = document.getElementById('form-status');
+        const contactForm = document.getElementById('contact-form');
+        if (formStatus && contactForm) {
+          formStatus.textContent = "Thanks! Your message has been sent.";
+          formStatus.style.color = '#06b6d4'; // Tailwind cyan-500
+          contactForm.reset(); // Clear the form
+          submitted = false; // Reset submission status
+          // Optionally hide the message after a few seconds
+          setTimeout(() => {
+            formStatus.textContent = "";
+          }, 5000);
+        }
+      }
+      // --- End Google Form Handling ---
+
+    </script>
+</body>
+</html>
