@@ -858,15 +858,35 @@ body[data-theme='dark'] .error-text {
 /* Contact form container */
 #contact {
     position: relative;
+    padding: 4rem 0;
 }
 
 #contact .card {
     position: relative;
     z-index: 1;
+    padding: 3rem;
+    max-width: 48rem;
+    margin: 0 auto;
 }
 
 .text-center {
     text-align: center;
+}
+
+/* Form grid layout */
+.grid {
+    display: grid;
+}
+
+.gap-6 {
+    gap: 1.5rem;
+}
+
+@media (max-width: 767px) {
+    #contact .card {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+    }
 }
 
 .text-sm {
@@ -903,9 +923,27 @@ body[data-theme='dark'] .error-text {
     width: 100%;
 }
 
+.resize-none {
+    resize: none;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
 @media (min-width: 768px) {
     .md\:w-auto {
         width: auto;
+    }
+
+    .md\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -929,8 +967,51 @@ body[data-theme='dark'] .error-text {
     }
 }
 
+@media (min-width: 1024px) { /* lg: */
+    .lg\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
 .gap-6 {
     gap: 1.5rem;
+}
+
+.gap-8 {
+    gap: 2rem;
+}
+
+/* Flex utilities */
+.flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.ml-2 {
+    margin-left: 0.5rem;
+}
+
+.mr-3 {
+    margin-right: 0.75rem;
+}
+
+.inline-block {
+    display: inline-block;
 }
 
 /* Form elements */
@@ -1000,6 +1081,40 @@ body[data-theme='dark'] .form-input:invalid:focus {
 
 body[data-theme='dark'] .form-input::placeholder {
     color: #6b7280;
+}
+
+/* Button styling improvements */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0891b2, #0e7490);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3);
+}
+
+body[data-theme='dark'] .btn-primary {
+    background: linear-gradient(135deg, #22d3ee, #06b6d4);
+}
+
+body[data-theme='dark'] .btn-primary:hover {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
 }
 
 /* Form status messages */

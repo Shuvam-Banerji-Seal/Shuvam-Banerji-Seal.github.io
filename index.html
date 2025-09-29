@@ -30,7 +30,7 @@
                 <a href="index.html#about" class="nav-link">About</a>
                 <a href="pages/resume.html" class="nav-link">Resume</a>
                 <a href="index.html#projects" class="nav-link">Projects</a>
-                <a href="#github" class="nav-link">GitHub</a>
+                <a href="pages/github-projects.html" class="nav-link">GitHub</a>
                 <a href="pages/gallery.html" class="nav-link">Gallery</a>
                 <a href="pages/blog.html" class="nav-link">Blog</a>
                 <a href="pages/music.html" class="nav-link">Music</a>
@@ -52,7 +52,7 @@
             <a href="index.html#about" class="mobile-menu-link">About</a>
             <a href="pages/resume.html" class="mobile-menu-link">Resume</a>
             <a href="index.html#projects" class="mobile-menu-link">Projects</a>
-            <a href="#github" class="mobile-menu-link">GitHub</a>
+            <a href="pages/github-projects.html" class="mobile-menu-link">GitHub</a>
             <a href="pages/gallery.html" class="mobile-menu-link">Gallery</a>
             <a href="pages/blog.html" class="mobile-menu-link">Blog</a>
             <a href="pages/music.html" class="mobile-menu-link">Music</a>
@@ -170,11 +170,18 @@
                 </div>
                  </div>
             <div id="github" class="mt-16 scroll-mt-20">
-                <h3 class="section-subtitle"><i data-lucide="github" class="mr-2 w-5 h-5"></i> Latest GitHub Repositories</h3>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-github-repos="Shuvam-Banerji-Seal" data-per-page="6"></div>
+                <div class="glassmorphic card text-center p-8 advanced-hover" data-animate="fade-in" data-delay="1600">
+                    <i data-lucide="github" class="w-16 h-16 mx-auto mb-4 text-gray-600"></i>
+                    <h3 class="text-2xl font-semibold mb-4">Explore My GitHub</h3>
+                    <p class="text-gray-600 mb-6">Discover my open source contributions, research code, and development projects with beautiful visualizations and detailed insights.</p>
+                    <a href="pages/github-projects.html" class="btn btn-primary magnetic pulse-on-hover">
+                        <i data-lucide="external-link" class="w-5 h-5 mr-2"></i>
+                        View GitHub Projects
+                    </a>
+                </div>
             </div>
              <div class="text-center mt-12">
-                 <a href="resume.html#projects" class="btn btn-secondary">
+                 <a href="pages/resume.html#projects" class="btn btn-secondary">
                     See All Projects <i data-lucide="arrow-right" class="inline-block ml-1 w-4 h-4"></i>
                 </a>
             </div>
@@ -188,30 +195,30 @@
                 <p class="text-center mb-8">
                     Interested in collaborating, have a question, or just want to connect? Feel free to reach out!
                 </p>
-                <form id="contact-form" action="https://formspree.io/f/manepvkq" method="POST" class="space-y-6">
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
+                <form id="contact-form" action="https://formspree.io/f/manepvkq" method="POST" class="contact-form space-y-6">
+                    <div class="form-group grid md:grid-cols-2 gap-6">
+                        <div class="form-field">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" id="name" name="name" required
-                                   class="form-input">
+                                   class="form-input" placeholder="Your full name">
                         </div>
-                        <div>
+                        <div class="form-field">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" id="email" name="email" required
-                                   class="form-input">
+                                   class="form-input" placeholder="your@email.com">
                         </div>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="subject" class="form-label">Subject</label>
                         <input type="text" id="subject" name="subject" required
-                               class="form-input">
+                               class="form-input" placeholder="What's this about?">
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="message" class="form-label">Message</label>
                         <textarea id="message" name="message" rows="5" required
-                                  class="form-input resize-none"></textarea>
+                                  class="form-input resize-none" placeholder="Tell me more about your project or inquiry..."></textarea>
                     </div>
-                    <div class="text-center">
+                    <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary w-full md:w-auto">
                             Send Message <i data-lucide="send" class="inline-block ml-2 w-5 h-5"></i>
                         </button>

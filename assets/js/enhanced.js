@@ -513,11 +513,226 @@ const debouncedScrollHandler = debounce(() => {
 
 window.addEventListener('scroll', debouncedScrollHandler, { passive: true });
 
+// Contact Form Enhancement Class
+class ContactFormEnhancer {
+    constructor() {
+        this.form = document.getElementById('contact-form');
+        this.inputs = document.querySelectorAll('.form-input');
+        this.submitButton = document.querySelector('#contact-form button[type="submit"]');
+        this.statusElement = document.getElementById('form-status');
+        
+        if (this.form) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.setupInputAnimations();
+        this.setupFormSubmission();
+        this.setupValidation();
+    }
+
+    setupInputAnimations() {
+        this.inputs.forEach(input => {
+            // Focus animations with ripple effect
+            input.addEventListener('focus', (e) => {
+                this.createRipple(e.target, e);
+                this.clearValidationState(e.target);
+            });
+
+            // Hover effects
+            input.addEventListener('mouseenter', (e) => {
+                if (document.activeElement !== e.target) {
+                    e.target.style.transform = 'translateY(-2px)';
+                }
+            });
+
+            input.addEventListener('mouseleave', (e) => {
+                if (document.activeElement !== e.target) {
+                    e.target.style.transform = 'translateY(0)';
+                }
+            });
+
+            // Real-time validation
+            input.addEventListener('input', (e) => {
+                this.clearValidationState(e.target);
+                clearTimeout(e.target.validationTimer);
+                e.target.validationTimer = setTimeout(() => {
+                    this.validateField(e.target);
+                }, 500);
+            });
+
+            // Blur validation
+            input.addEventListener('blur', (e) => {
+                this.validateField(e.target);
+            });
+        });
+    }
+
+    createRipple(element, event) {
+        const ripple = document.createElement('div');
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = (event.clientX - rect.left - size / 2);
+        const y = (event.clientY - rect.top - size / 2);
+
+        ripple.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}px;
+            top: ${y}px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s ease-out;
+            pointer-events: none;
+            z-index: 1;
+        `;
+
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    }
+
+    validateField(field) {
+        const value = field.value.trim();
+        let isValid = true;
+
+        this.clearValidationState(field);
+
+        if (field.hasAttribute('required') && !value) {
+            isValid = false;
+        } else if (field.type === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            isValid = emailRegex.test(value);
+        }
+
+        if (value) {
+            field.classList.add(isValid ? 'success' : 'error');
+        }
+
+        return isValid;
+    }
+
+    clearValidationState(field) {
+        field.classList.remove('success', 'error');
+    }
+
+    setupFormSubmission() {
+        this.form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Validate all fields
+            let isValid = true;
+            this.inputs.forEach(input => {
+                if (!this.validateField(input)) {
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                await this.submitWithAnimation();
+            } else {
+                this.shakeForm();
+            }
+        });
+    }
+
+    async submitWithAnimation() {
+        // Add loading state
+        this.submitButton.classList.add('loading');
+        this.submitButton.disabled = true;
+        const originalText = this.submitButton.innerHTML;
+
+        try {
+            const formData = new FormData(this.form);
+            const response = await fetch(this.form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                this.showSuccess();
+                setTimeout(() => {
+                    this.resetForm(originalText);
+                }, 2000);
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        } catch (error) {
+            this.showError();
+            setTimeout(() => {
+                this.resetForm(originalText);
+            }, 2000);
+        }
+    }
+
+    showSuccess() {
+        this.submitButton.innerHTML = '✓ Sent Successfully!';
+        this.submitButton.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        this.statusElement.textContent = 'Thank you! Your message has been sent.';
+        this.statusElement.className = 'text-center text-sm mt-4 text-green-400';
+    }
+
+    showError() {
+        this.submitButton.innerHTML = '✗ Error Occurred';
+        this.submitButton.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        this.statusElement.textContent = 'Sorry, there was an error sending your message. Please try again.';
+        this.statusElement.className = 'text-center text-sm mt-4 text-red-400';
+    }
+
+    resetForm(originalText) {
+        this.submitButton.classList.remove('loading');
+        this.submitButton.disabled = false;
+        this.submitButton.innerHTML = originalText;
+        this.submitButton.style.background = '';
+        this.form.reset();
+        this.statusElement.textContent = '';
+        
+        // Clear all validation states
+        this.inputs.forEach(input => {
+            this.clearValidationState(input);
+        });
+    }
+
+    shakeForm() {
+        this.form.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => {
+            this.form.style.animation = '';
+        }, 500);
+    }
+
+    setupValidation() {
+        // Add real-time validation feedback
+        this.inputs.forEach(input => {
+            input.addEventListener('keyup', () => {
+                if (input.value.length > 0) {
+                    this.validateField(input);
+                }
+            });
+        });
+    }
+}
+
+// Initialize contact form enhancements when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new ContactFormEnhancer();
+});
+
 // Export for potential external use
 window.EnhancedFeatures = {
     AnimationController,
     MobileNavigation,
     PerformanceMonitor,
     LazyLoader,
-    ThemeController
+    ThemeController,
+    ContactFormEnhancer
 };
