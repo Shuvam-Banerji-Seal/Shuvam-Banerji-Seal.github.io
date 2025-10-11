@@ -76,6 +76,11 @@
             backdrop.classList.add('is-open');
             body.style.overflow = 'hidden';
             console.log('Menu opened, classes added');
+
+            // Trigger anime.js animation if available
+            if (window.openMenu && window.openMenu !== openMenu) {
+                window.openMenu();
+            }
         }
         
         function closeMenu() {
@@ -83,6 +88,11 @@
             backdrop.classList.remove('is-open');
             body.style.overflow = '';
             console.log('Menu closed, classes removed');
+
+            // Trigger anime.js animation if available
+            if (window.closeMenu && window.closeMenu !== closeMenu) {
+                window.closeMenu();
+            }
         }
     }
 })();

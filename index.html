@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <!-- Enhanced CSS System -->
     <link rel="stylesheet" href="assets/css/mobile-fixes.css">
     <link rel="stylesheet" href="assets/css/main.css">
@@ -19,7 +20,18 @@
 </head>
 <body class="">
 
-    <div id="canvas-container"></div>
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i data-lucide="atom" class="loading-icon"></i>
+                <span>SBS</span>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Initializing Portfolio...</p>
+        </div>
+    </div>
 
     <nav id="navbar">
         <div class="nav-content container glassmorphic">
@@ -279,6 +291,8 @@
     <script src="assets/js/main.js"></script>
     <!-- Enhanced features -->
     <script src="assets/js/enhanced.js"></script>
+    <!-- Anime.js Animations -->
+    <script src="assets/js/anime-animations.js"></script>
     <script>
       // Initialize Lucide icons
       lucide.createIcons();
