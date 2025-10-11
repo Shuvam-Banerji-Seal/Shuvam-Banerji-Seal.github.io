@@ -54,11 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Navbar Functionality ---
     const navbar = document.getElementById('navbar');
-    const menuBtn = document.getElementById('menu-btn');
-    const closeMenuBtn = document.getElementById('close-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
-    const mobileMenuLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
 
     // Toggle navbar background on scroll
     window.addEventListener('scroll', () => {
@@ -68,43 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.remove('scrolled');
         }
     });
-
-    // Open mobile menu
-    if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('is-open');
-            if (mobileMenuBackdrop) {
-                mobileMenuBackdrop.classList.add('is-open');
-            }
-        });
-    }
-
-    // Close mobile menu function
-    function closeMobileMenu() {
-        if (mobileMenu) {
-            mobileMenu.classList.remove('is-open');
-        }
-        if (mobileMenuBackdrop) {
-            mobileMenuBackdrop.classList.remove('is-open');
-        }
-    }
-
-    // Close mobile menu
-    if (closeMenuBtn) {
-        closeMenuBtn.addEventListener('click', closeMobileMenu);
-    }
-
-    // Close mobile menu when backdrop is clicked
-    if (mobileMenuBackdrop) {
-        mobileMenuBackdrop.addEventListener('click', closeMobileMenu);
-    }
-
-    // Close mobile menu when a link is clicked
-    if (mobileMenu) {
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', closeMobileMenu);
-        });
-    }
 
     // --- Scroll Animations ---
     let scrollElements = document.querySelectorAll('.animate-on-scroll');

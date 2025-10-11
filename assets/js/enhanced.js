@@ -171,15 +171,42 @@ class MobileNavigation {
         const backdrop = document.getElementById('mobile-menu-backdrop');
 
         if (menuBtn && mobileMenu) {
-            menuBtn.addEventListener('click', () => this.openNav());
+            menuBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.openNav();
+            });
+        } else {
+            console.warn('Mobile menu elements not found:', { menuBtn, mobileMenu });
         }
 
         if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.closeNav());
+            closeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.closeNav();
+            });
         }
 
         if (backdrop) {
-            backdrop.addEventListener('click', () => this.closeNav());
+            backdrop.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.closeNav();
+            });
+        }
+
+        // Close mobile menu when a link is clicked
+        if (mobileMenu) {
+            const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Only close if it's not a theme toggle button
+                    if (!link.hasAttribute('data-theme-toggle')) {
+                        this.closeNav();
+                    }
+                });
+            });
         }
 
         // Close on escape key
@@ -417,7 +444,7 @@ class ThemeController {
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize core systems
     new AnimationController();
-    new MobileNavigation();
+    // new MobileNavigation(); // Disabled - using mobile-menu-fix.js instead
     new PerformanceMonitor();
     new LazyLoader();
     new ThemeController();

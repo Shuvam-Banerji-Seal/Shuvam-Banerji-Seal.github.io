@@ -4,10 +4,13 @@
   "description": "Professional portfolio website for Shuvam Banerji Seal",
   "main": "index.html",
   "scripts": {
-    "dev": "python3 -m http.server 8080",
-    "serve": "python3 -m http.server",
-    "build": "echo 'Static site - no build required'",
-    "test": "echo 'Run accessibility and performance tests'"
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "python3 -m http.server 8080",
+    "lint:css": "stylelint \"**/*.css\" --fix",
+    "format": "prettier --write \"**/*.{html,css,js,json,md}\"",
+    "clean": "rm -rf dist"
   },
   "repository": {
     "type": "git",
@@ -26,8 +29,16 @@
   "license": "MIT",
   "homepage": "https://shuvam-banerji-seal.github.io",
   "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "axe-core": "^4.8.0",
+    "cssnano": "^6.0.1",
     "lighthouse": "^11.0.0",
-    "axe-core": "^4.8.0"
+    "postcss": "^8.4.32",
+    "prettier": "^3.1.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0",
+    "terser": "^5.44.0",
+    "vite": "^5.0.0"
   },
   "browserslist": [
     "last 2 versions",

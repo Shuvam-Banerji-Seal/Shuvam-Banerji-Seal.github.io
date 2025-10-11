@@ -13,10 +13,12 @@ A modern, responsive portfolio website showcasing research, projects, and skills
 
 ### Technical Stack
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Build Tool**: Vite for development and production builds
 - **Icons**: Lucide React Icons
 - **Fonts**: Inter & Source Code Pro from Google Fonts
 - **3D Graphics**: Three.js for interactive elements
 - **Forms**: Formspree integration for contact form
+- **Deployment**: GitHub Actions with automated builds
 
 ### Enhanced Features
 - **Theme System**: Dark/Light mode with system preference detection
@@ -100,7 +102,11 @@ Shuvam-Banerji-Seal.github.io/
 
 ## 🛠️ Development
 
-### Local Development
+### Prerequisites
+- Node.js 18+ (for build tools)
+- npm or yarn
+
+### Installation
 ```bash
 # Clone the repository
 git clone https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io.git
@@ -108,11 +114,41 @@ git clone https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io.g
 # Navigate to directory
 cd Shuvam-Banerji-Seal.github.io
 
-# Start local server
-python3 -m http.server 8080
+# Install dependencies
+npm install
+```
+
+### Local Development
+```bash
+# Start development server with Vite (recommended)
+npm run dev
+
+# Alternative: Start simple HTTP server
+npm run serve
 
 # Open browser
 open http://localhost:8080
+```
+
+### Building for Production
+```bash
+# Build optimized production files
+npm run build
+
+# Preview production build locally
+npm run preview
+
+# Clean build directory
+npm run clean
+```
+
+### Code Quality
+```bash
+# Format code with Prettier
+npm run format
+
+# Lint CSS files
+npm run lint:css
 ```
 
 ### File Organization Principles
@@ -184,7 +220,30 @@ open http://localhost:8080
 
 ## 🚀 Deployment
 
-The website is deployed on GitHub Pages and automatically updates from the main branch.
+The website is automatically deployed to GitHub Pages using GitHub Actions.
+
+### Quick Start
+```bash
+# Enable GitHub Pages (one-time setup)
+# Go to: Settings → Pages → Source: gh-pages branch
+
+# Deploy (automatic on push to main)
+git add .
+git commit -m "Update site"
+git push origin main
+```
+
+### Deployment Features
+- ✅ **Automatic Builds**: Triggered on push to main
+- ✅ **Vite Optimization**: Production-ready builds
+- ✅ **Custom Domain Support**: Optional CNAME configuration
+- ✅ **Zero Downtime**: Seamless updates
+- ✅ **Build Status**: Real-time deployment monitoring
+
+### Documentation
+- 📘 [Quick Start Guide](./DEPLOY_QUICK_START.md) - Get started in 3 steps
+- 📚 [Full Deployment Guide](./DEPLOYMENT_GUIDE.md) - Comprehensive setup instructions
+- 🔐 [SSH Key Generation](./scripts/generate-deploy-key.sh) - Optional advanced setup
 
 **Live URL**: [https://shuvam-banerji-seal.github.io](https://shuvam-banerji-seal.github.io)
 

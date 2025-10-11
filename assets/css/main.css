@@ -4,6 +4,8 @@
 /* Base Styles */
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
@@ -11,6 +13,8 @@ body {
     background-color: #f3f4f6; /* gray-100 */
     color: #1f2937; /* gray-800 */
     transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 /* Dark Theme - Tailwind will handle this via the 'dark' class and its utility variants (e.g., dark:bg-gray-900) */

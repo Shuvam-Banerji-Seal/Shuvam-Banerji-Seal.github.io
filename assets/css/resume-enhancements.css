@@ -1,0 +1,478 @@
+/* Modern Resume Enhancements - Visual Appeal & Animations */
+
+/* ===== ROOT VARIABLES ===== */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.15);
+  --border-radius: 16px;
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== MODERN GLASSMORPHIC CARDS ===== */
+.resume-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.resume-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s;
+}
+
+.resume-card:hover::before {
+  left: 100%;
+}
+
+.resume-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-strong);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== CARD CONTENT SPACING ===== */
+.resume-card > div {
+  padding: 2rem;
+}
+
+.resume-card .item-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  color: inherit;
+}
+
+.resume-card .item-meta {
+  margin-bottom: 1.25rem;
+}
+
+.resume-card .item-description {
+  line-height: 1.6;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
+  margin-bottom: 0;
+}
+
+.resume-card .item-date {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+/* ===== TIMELINE CARD SPACING ===== */
+.timeline-node .resume-card > div {
+  padding: 1.5rem;
+}
+
+.timeline-node .item-title {
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-node .item-meta,
+.timeline-node .item-date {
+  margin-bottom: 0.5rem;
+}
+
+/* ===== ANIMATED PROGRESS BARS ===== */
+.skill-progress {
+  position: relative;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 8px 0 1rem 0;
+}
+
+.skill-progress + .skill-progress {
+  margin-top: 1.5rem;
+}
+
+.skill-progress-bar {
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: 4px;
+  width: 0;
+  animation: fillProgress 2s ease-out forwards;
+  position: relative;
+}
+
+.skill-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes fillProgress {
+  from { width: 0; }
+  to { width: var(--progress-width); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ===== MODERN BADGES ===== */
+.modern-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  margin: 0.25rem;
+}
+
+.modern-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.modern-badge:hover::before {
+  left: 100%;
+}
+
+.modern-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== ENHANCED TIMELINE ===== */
+.modern-timeline {
+  position: relative;
+  padding-left: 50px;
+}
+
+.modern-timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+.timeline-node {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -30px;
+  top: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  border: 4px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  box-shadow: var(--shadow-soft);
+  animation: pulse 2s infinite;
+}
+
+.timeline-dot:hover {
+  transform: scale(1.1);
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* ===== FLOATING ANIMATIONS ===== */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* ===== GRADIENT TEXT ===== */
+.gradient-text {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ===== SECTION ENTRANCE ANIMATIONS ===== */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-left {
+  animation: slideInFromLeft 0.8s ease-out forwards;
+}
+
+.animate-slide-right {
+  animation: slideInFromRight 0.8s ease-out forwards;
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+/* ===== STAGGERED ANIMATIONS ===== */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* ===== INTERACTIVE ELEMENTS ===== */
+.interactive-card {
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.interactive-card:hover {
+  transform: translateY(-5px) rotate(1deg);
+}
+
+.interactive-card:active {
+  transform: translateY(-2px) rotate(0.5deg);
+}
+
+/* ===== PARTICLE BACKGROUND ===== */
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: float-particle 10s infinite linear;
+}
+
+@keyframes float-particle {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ===== LOADING SKELETON ===== */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ===== DARK THEME ADAPTATIONS ===== */
+[data-theme="dark"] .resume-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .resume-card .item-description {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+[data-theme="dark"] .skill-progress {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .modern-badge {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== RESPONSIVE SPACING ===== */
+@media (max-width: 768px) {
+  .resume-card > div {
+    padding: 1.5rem;
+  }
+
+  .timeline-node .resume-card > div {
+    padding: 1.25rem;
+  }
+
+  .resume-card .item-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .resume-card .item-meta {
+    margin-bottom: 1rem;
+  }
+
+  .skill-progress {
+    height: 6px;
+    margin: 6px 0 0.875rem 0;
+  }
+
+  .modern-badge {
+    padding: 4px 8px;
+    font-size: 0.8125rem;
+    margin: 0.1875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .resume-card > div {
+    padding: 1.25rem;
+  }
+
+  .resume-card .item-title {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .modern-badge {
+    padding: 3px 6px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  .float-animation,
+  .float-delayed,
+  .timeline-dot,
+  .resume-card::before,
+  .modern-badge::before,
+  .skill-progress-bar::after {
+    animation: none;
+  }
+
+  .resume-card,
+  .modern-badge,
+  .interactive-card {
+    transition: none;
+  }
+}

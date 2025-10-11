@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <m                 <div class="gallery-overlay">
-                    <p class="overlay-text">Molecular Dynamics Snapshot</p>
-                </div> name="description" content="Gallery showcasing Shuvam Banerji Seal's interests - Chemistry visuals, Anime art, and personal pictures.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Gallery showcasing Shuvam Banerji Seal's interests - Chemistry visuals, Anime art, and personal pictures.">
     <title>Gallery - Shuvam Banerji Seal</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
     <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
     <!-- Enhanced CSS System -->
+    <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/animations.css">
     <link rel="stylesheet" href="../assets/css/mobile.css">
@@ -115,7 +114,7 @@
                     <i data-lucide="moon" class="w-5 h-5"></i>
                 </button>
             </div>
-            <button id="menu-btn" class="md-hidden">
+                            <button id="menu-btn" aria-label="Open mobile menu">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
