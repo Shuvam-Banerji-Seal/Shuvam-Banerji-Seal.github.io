@@ -256,47 +256,12 @@
     <script src="../assets/js/mobile-menu-fix.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/enhanced.js"></script>
+    <script src="../assets/js/reader.js"></script>
     <script>
-        // E-Reader Logic
-        const booksData = {
-            'Book_1_The_Journey_of_Adi': {
-                title: 'The Journey of Adi',
-                chapters: ['Chapter_01_The_Beginning']
-            }
-        };
-
-        let currentBook = null;
-        let currentChapter = null;
-
-        // Initialize
-        function init() {
-            populateBookSelector();
-            
-            document.getElementById('book-select').addEventListener('change', handleBookSelection);
-            document.getElementById('prev-chapter').addEventListener('click', () => navigateChapter(-1));
-            document.getElementById('next-chapter').addEventListener('click', () => navigateChapter(1));
-            
-            lucide.createIcons();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-        }
-
-        function populateBookSelector() {
-            const select = document.getElementById('book-select');
-            Object.entries(booksData).forEach(([key, book]) => {
-                const option = document.createElement('option');
-                option.value = key;
-                option.textContent = book.title;
-                select.appendChild(option);
-            });
-        }
-
-        function handleBookSelection(e) {
-            const bookKey = e.target.value;
-            if (!bookKey) {
-                document.getElementById('chapter-navigation').style.display = 'none';
-                document.getElementById('reader-content-area').innerHTML = '';
-                return;
-            }
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
 
             currentBook = bookKey;
             const book = booksData[bookKey];

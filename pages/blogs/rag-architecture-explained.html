@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Building Effective RAG Architectures: A Comprehensive Guide">
+    <title>Building Effective RAG Architectures - Shuvam Banerji Seal</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/animations.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/chemistry-theme.css">
+    <style>
+        .blog-post {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .blog-header {
+            margin-bottom: 3rem;
+        }
+        .blog-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .blog-meta {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        .blog-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        .blog-content h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .blog-content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .blog-content p {
+            margin-bottom: 1.5rem;
+        }
+        .blog-content code {
+            background: var(--accent-color-alpha);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Source Code Pro', monospace;
+        }
+        .blog-content pre {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar" class="scrolled">
+        <div class="container nav-content glassmorphic">
+            <a href="../../index.html" class="nav-logo">
+                <i data-lucide="atom" class="mr-2"></i>
+                <span>SBS</span>
+            </a>
+            <div class="nav-links">
+                <a href="../../index.html#about" class="nav-link">About</a>
+                <a href="../resume.html" class="nav-link">Resume</a>
+                <a href="../../index.html#projects" class="nav-link">Projects</a>
+                <a href="../github-projects.html" class="nav-link">GitHub</a>
+                <a href="../gallery.html" class="nav-link">Gallery</a>
+                <a href="../blog.html" class="nav-link active">Blog</a>
+                <a href="../music.html" class="nav-link">Music</a>
+                <a href="../tools.html" class="nav-link">Tools</a>
+                <a href="../../index.html#contact" class="btn btn-primary">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-5 h-5"></i>
+                </button>
+                <button id="menu-btn" aria-label="Open mobile menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="blog-post">
+        <header class="blog-header">
+            <div class="mb-4">
+                <span class="tech-tag">RAG</span>
+                <span class="tech-tag">AI</span>
+                <span class="tech-tag">Information Retrieval</span>
+            </div>
+            <h1 class="blog-title">Building Effective RAG Architectures: A Comprehensive Guide</h1>
+            <p class="blog-meta">Published on: October 31, 2025 • By Shuvam Banerji Seal</p>
+        </header>
+
+        <article class="blog-content glassmorphic card">
+            <h2>Introduction</h2>
+            <p>
+                Retrieval-Augmented Generation (RAG) has emerged as a powerful paradigm for building AI systems that can provide accurate, 
+                verifiable answers by combining information retrieval with large language models. In this post, I'll share insights from 
+                building a comprehensive RAG system for the IISER-K intranet.
+            </p>
+
+            <h2>Understanding RAG Architecture</h2>
+            <p>
+                At its core, RAG consists of three main components:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li><strong>Data Acquisition & Processing:</strong> Collecting and preprocessing documents</li>
+                <li><strong>Retrieval System:</strong> Finding relevant information using vector embeddings and keyword search</li>
+                <li><strong>Generation:</strong> Using an LLM to synthesize answers from retrieved context</li>
+            </ul>
+
+            <h3>1. Data Acquisition Pipeline</h3>
+            <p>
+                The first challenge is gathering and structuring data. For our IISER-K project, we built an automated scraping system 
+                that extracts content from the intranet. Key considerations include:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li>Handling different content formats (PDF, HTML, images)</li>
+                <li>OCR processing for scanned documents</li>
+                <li>Maintaining document metadata for attribution</li>
+                <li>Regular updates and synchronization</li>
+            </ul>
+
+            <h3>2. Hybrid Search: The Best of Both Worlds</h3>
+            <p>
+                One of our key innovations was implementing hybrid search that combines:
+            </p>
+            <p>
+                <strong>Dense Vector Retrieval:</strong> Using FAISS with embedding models to capture semantic similarity. 
+                This excels at understanding conceptual queries and synonyms.
+            </p>
+            <p>
+                <strong>Sparse Keyword Search (BM25):</strong> Traditional keyword matching that performs well for exact 
+                terms and proper nouns.
+            </p>
+            <p>
+                By combining these approaches with reciprocal rank fusion, we achieve significantly better recall than 
+                either method alone.
+            </p>
+
+            <h3>3. LLM Integration and Answer Synthesis</h3>
+            <p>
+                We use Qwen3-4B, a compact but powerful model that balances performance with resource constraints. 
+                The key is crafting effective prompts that:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li>Instruct the model to ground answers in retrieved context</li>
+                <li>Avoid hallucination by citing sources</li>
+                <li>Maintain consistency in formatting and tone</li>
+            </ul>
+
+            <h2>Practical Implementation Tips</h2>
+            
+            <h3>Chunking Strategy</h3>
+            <p>
+                Document chunking is critical for retrieval quality. We experimented with different approaches:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li><strong>Fixed-size chunks:</strong> Simple but can break context</li>
+                <li><strong>Sentence-based:</strong> Preserves semantic units</li>
+                <li><strong>Paragraph-based:</strong> Better for longer context</li>
+            </ul>
+            <p>
+                We found that a hybrid approach using semantic boundaries with a maximum chunk size works best.
+            </p>
+
+            <h3>Evaluation Metrics</h3>
+            <p>
+                Measuring RAG performance requires multiple metrics:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li><strong>Retrieval Recall:</strong> Are relevant documents being retrieved?</li>
+                <li><strong>Answer Accuracy:</strong> Manual evaluation of generated responses</li>
+                <li><strong>Citation Quality:</strong> Are sources properly attributed?</li>
+                <li><strong>Latency:</strong> Response time matters for user experience</li>
+            </ul>
+
+            <h2>Challenges and Solutions</h2>
+            
+            <h3>Challenge 1: Context Window Limitations</h3>
+            <p>
+                LLMs have limited context windows. We addressed this by:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li>Implementing intelligent re-ranking to prioritize most relevant chunks</li>
+                <li>Using compression techniques to fit more context</li>
+                <li>Multi-hop retrieval for complex queries</li>
+            </ul>
+
+            <h3>Challenge 2: Keeping Information Current</h3>
+            <p>
+                Information changes. Our solution includes:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li>Scheduled re-indexing pipelines</li>
+                <li>Version tracking for documents</li>
+                <li>Incremental updates rather than full rebuilds</li>
+            </ul>
+
+            <h2>Results and Learnings</h2>
+            <p>
+                Our RAG system has proven highly effective for the IISER-K community, providing quick access to 
+                institutional knowledge with high accuracy. Key takeaways:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li>Hybrid search significantly outperforms single-method approaches</li>
+                <li>Quality of embeddings matters more than retrieval algorithm complexity</li>
+                <li>User feedback loops are essential for continuous improvement</li>
+                <li>Explainability through citations builds trust</li>
+            </ul>
+
+            <h2>Future Directions</h2>
+            <p>
+                We're exploring several enhancements:
+            </p>
+            <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                <li>Multi-modal retrieval incorporating images and tables</li>
+                <li>Query expansion using local LLMs</li>
+                <li>Personalization based on user context</li>
+                <li>Integration with knowledge graphs</li>
+            </ul>
+
+            <h2>Conclusion</h2>
+            <p>
+                Building effective RAG systems requires careful attention to each component of the pipeline. 
+                By combining robust retrieval methods with thoughtful LLM integration, we can create systems 
+                that provide accurate, verifiable information at scale.
+            </p>
+            <p>
+                If you're interested in learning more about RAG architectures or discussing implementation details, 
+                feel free to reach out!
+            </p>
+        </article>
+
+        <div class="mt-12 text-center">
+            <a href="../blog.html" class="btn btn-secondary">
+                <i data-lucide="arrow-left"></i> Back to Blog
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/mobile-menu-fix.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/enhanced.js"></script>
+    <script>
+        lucide.createIcons();
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
