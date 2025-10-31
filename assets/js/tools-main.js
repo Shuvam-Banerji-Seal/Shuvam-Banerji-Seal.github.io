@@ -27,6 +27,12 @@ function openTool(toolId) {
         case 'games':
             content = createGamesTool();
             break;
+        case 'unit-converter':
+            content = createUnitConverterTool();
+            break;
+        case 'mol-weight':
+            content = createMolWeightTool();
+            break;
     }
     
     modal.innerHTML = `
@@ -882,6 +888,10 @@ function initializeTool(toolId) {
     if (toolId === 'molecule-viz') {
         initMoleculeVisualizer();
     }
+    
+    if (toolId === 'unit-converter') {
+        updateUnitOptions();
+    }
 }
 
 function initMoleculeVisualizer() {
@@ -963,6 +973,248 @@ function rotateMolecule() {
     if (window.moleculeScene) {
         window.moleculeScene.scene.rotation.y += Math.PI / 4;
     }
+}
+
+// Unit Converter Tool
+function createUnitConverterTool() {
+    return `
+        <div class="tool-modal-header">
+            <h2><i data-lucide="ruler"></i> Unit Converter</h2>
+            <button class="close-modal" onclick="closeModal(this.closest('.tool-modal'))">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="form-group">
+            <label for="unit-category">Category</label>
+            <select id="unit-category" onchange="updateUnitOptions()">
+                <option value="length">Length</option>
+                <option value="mass">Mass</option>
+                <option value="temperature">Temperature</option>
+                <option value="energy">Energy</option>
+                <option value="pressure">Pressure</option>
+            </select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div>
+                <div class="form-group">
+                    <label for="from-unit">From</label>
+                    <select id="from-unit"></select>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="from-value" placeholder="Enter value" oninput="convertUnits()">
+                </div>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label for="to-unit">To</label>
+                    <select id="to-unit"></select>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="to-value" placeholder="Result" readonly style="background: var(--hover-bg);">
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+const unitData = {
+    length: {
+        meter: 1,
+        kilometer: 1000,
+        centimeter: 0.01,
+        millimeter: 0.001,
+        mile: 1609.34,
+        yard: 0.9144,
+        foot: 0.3048,
+        inch: 0.0254,
+        angstrom: 1e-10
+    },
+    mass: {
+        kilogram: 1,
+        gram: 0.001,
+        milligram: 1e-6,
+        pound: 0.453592,
+        ounce: 0.0283495,
+        ton: 1000
+    },
+    temperature: {
+        celsius: { offset: 0, factor: 1 },
+        fahrenheit: { offset: -32, factor: 5/9 },
+        kelvin: { offset: -273.15, factor: 1 }
+    },
+    energy: {
+        joule: 1,
+        kilojoule: 1000,
+        calorie: 4.184,
+        kilocalorie: 4184,
+        electronvolt: 1.60218e-19,
+        hartree: 4.3597e-18
+    },
+    pressure: {
+        pascal: 1,
+        bar: 100000,
+        atmosphere: 101325,
+        torr: 133.322,
+        psi: 6894.76
+    }
+};
+
+function updateUnitOptions() {
+    const category = document.getElementById('unit-category').value;
+    const fromSelect = document.getElementById('from-unit');
+    const toSelect = document.getElementById('to-unit');
+    
+    fromSelect.innerHTML = '';
+    toSelect.innerHTML = '';
+    
+    const units = Object.keys(unitData[category]);
+    units.forEach(unit => {
+        fromSelect.innerHTML += `<option value="${unit}">${unit}</option>`;
+        toSelect.innerHTML += `<option value="${unit}">${unit}</option>`;
+    });
+    
+    lucide.createIcons();
+}
+
+function convertUnits() {
+    const category = document.getElementById('unit-category').value;
+    const fromUnit = document.getElementById('from-unit').value;
+    const toUnit = document.getElementById('to-unit').value;
+    const fromValue = parseFloat(document.getElementById('from-value').value);
+    
+    if (isNaN(fromValue)) {
+        document.getElementById('to-value').value = '';
+        return;
+    }
+    
+    let result;
+    
+    if (category === 'temperature') {
+        // Special handling for temperature
+        const from = unitData.temperature[fromUnit];
+        const to = unitData.temperature[toUnit];
+        
+        // Convert to Celsius first
+        let celsius = (fromValue + from.offset) * from.factor;
+        // Convert from Celsius to target
+        result = (celsius / to.factor) - to.offset;
+    } else {
+        // Standard conversion
+        const fromFactor = unitData[category][fromUnit];
+        const toFactor = unitData[category][toUnit];
+        result = (fromValue * fromFactor) / toFactor;
+    }
+    
+    document.getElementById('to-value').value = result.toExponential(6);
+}
+
+// Molecular Weight Calculator Tool
+function createMolWeightTool() {
+    return `
+        <div class="tool-modal-header">
+            <h2><i data-lucide="calculator"></i> Molecular Weight Calculator</h2>
+            <button class="close-modal" onclick="closeModal(this.closest('.tool-modal'))">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="form-group">
+            <label for="chemical-formula">Chemical Formula</label>
+            <input type="text" id="chemical-formula" placeholder="e.g., H2O, C6H12O6, Ca(OH)2" 
+                   style="font-family: 'Source Code Pro', monospace; font-size: 1.2rem;">
+            <small style="color: var(--text-secondary); margin-top: 0.5rem; display: block;">
+                Use standard chemical notation. Numbers are subscripts.
+            </small>
+        </div>
+        <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="calculateMolWeight()">
+            <i data-lucide="calculator"></i> Calculate
+        </button>
+        <div id="mol-weight-result" style="margin-top: 2rem;"></div>
+    `;
+}
+
+const atomicWeights = {
+    H: 1.008, He: 4.003, Li: 6.941, Be: 9.012, B: 10.81, C: 12.01, N: 14.01, O: 16.00,
+    F: 19.00, Ne: 20.18, Na: 22.99, Mg: 24.31, Al: 26.98, Si: 28.09, P: 30.97, S: 32.07,
+    Cl: 35.45, Ar: 39.95, K: 39.10, Ca: 40.08, Sc: 44.96, Ti: 47.87, V: 50.94, Cr: 52.00,
+    Mn: 54.94, Fe: 55.85, Co: 58.93, Ni: 58.69, Cu: 63.55, Zn: 65.38, Ga: 69.72, Ge: 72.63,
+    As: 74.92, Se: 78.97, Br: 79.90, Kr: 83.80, Rb: 85.47, Sr: 87.62, Y: 88.91, Zr: 91.22,
+    Nb: 92.91, Mo: 95.95, Tc: 98.00, Ru: 101.1, Rh: 102.9, Pd: 106.4, Ag: 107.9, Cd: 112.4,
+    In: 114.8, Sn: 118.7, Sb: 121.8, Te: 127.6, I: 126.9, Xe: 131.3, Cs: 132.9, Ba: 137.3,
+    La: 138.9, Ce: 140.1, Pr: 140.9, Nd: 144.2, Pm: 145.0, Sm: 150.4, Eu: 152.0, Gd: 157.3,
+    Tb: 158.9, Dy: 162.5, Ho: 164.9, Er: 167.3, Tm: 168.9, Yb: 173.1, Lu: 175.0, Hf: 178.5,
+    Ta: 180.9, W: 183.8, Re: 186.2, Os: 190.2, Ir: 192.2, Pt: 195.1, Au: 197.0, Hg: 200.6,
+    Tl: 204.4, Pb: 207.2, Bi: 209.0, Po: 209.0, At: 210.0, Rn: 222.0, Fr: 223.0, Ra: 226.0
+};
+
+function calculateMolWeight() {
+    const formula = document.getElementById('chemical-formula').value.trim();
+    const resultDiv = document.getElementById('mol-weight-result');
+    
+    if (!formula) {
+        resultDiv.innerHTML = '<p style="color: red;">Please enter a chemical formula</p>';
+        return;
+    }
+    
+    try {
+        const { weight, breakdown } = parseMolecularFormula(formula);
+        
+        resultDiv.innerHTML = `
+            <div class="paper-card">
+                <h3 style="margin-bottom: 1rem; color: var(--accent-color);">Results for ${formula}</h3>
+                <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">
+                    ${weight.toFixed(3)} g/mol
+                </div>
+                <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Elemental Breakdown:</h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="border-bottom: 2px solid var(--border-color);">
+                        <th style="padding: 0.5rem; text-align: left;">Element</th>
+                        <th style="padding: 0.5rem; text-align: center;">Count</th>
+                        <th style="padding: 0.5rem; text-align: right;">Contribution (g/mol)</th>
+                    </tr>
+                    ${breakdown.map(item => `
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.5rem;">${item.element}</td>
+                            <td style="padding: 0.5rem; text-align: center;">${item.count}</td>
+                            <td style="padding: 0.5rem; text-align: right;">${item.contribution.toFixed(3)}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            </div>
+        `;
+        
+        lucide.createIcons();
+    } catch (error) {
+        resultDiv.innerHTML = `<div class="paper-card" style="color: red;">Error: ${error.message}</div>`;
+    }
+}
+
+function parseMolecularFormula(formula) {
+    const elements = {};
+    const regex = /([A-Z][a-z]?)(\d*)/g;
+    let match;
+    
+    // Simple parser (doesn't handle parentheses)
+    while ((match = regex.exec(formula)) !== null) {
+        const element = match[1];
+        const count = match[2] ? parseInt(match[2]) : 1;
+        
+        if (!atomicWeights[element]) {
+            throw new Error(`Unknown element: ${element}`);
+        }
+        
+        elements[element] = (elements[element] || 0) + count;
+    }
+    
+    let totalWeight = 0;
+    const breakdown = [];
+    
+    for (const [element, count] of Object.entries(elements)) {
+        const contribution = atomicWeights[element] * count;
+        totalWeight += contribution;
+        breakdown.push({ element, count, contribution });
+    }
+    
+    return { weight: totalWeight, breakdown };
 }
 
 // Load external libraries
