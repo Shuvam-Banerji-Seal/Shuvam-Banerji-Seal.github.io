@@ -1,0 +1,450 @@
+/* Chemistry Theme Enhancements */
+
+/* Hero section enhancements */
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.05) 0%, 
+        rgba(16, 185, 129, 0.05) 50%, 
+        rgba(139, 92, 246, 0.05) 100%);
+}
+
+body[data-theme='dark'] .hero {
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.1) 0%, 
+        rgba(16, 185, 129, 0.1) 50%, 
+        rgba(139, 92, 246, 0.1) 100%);
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, 
+        rgba(59, 130, 246, 0.1) 0%, 
+        transparent 50%);
+    animation: pulse-glow 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+.hero h1 {
+    background: linear-gradient(135deg, 
+        #3b82f6 0%, 
+        #06b6d4 50%, 
+        #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+    animation: gradient-shift 5s ease infinite;
+    background-size: 200% 200%;
+}
+
+body[data-theme='dark'] .hero h1 {
+    text-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+}
+
+@keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.subtitle {
+    position: relative;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.subtitle::before,
+.subtitle::after {
+    content: '⚛️';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    opacity: 0.6;
+}
+
+.subtitle::before {
+    left: 0;
+    animation: rotate-atom 4s linear infinite;
+}
+
+.subtitle::after {
+    right: 0;
+    animation: rotate-atom 4s linear infinite reverse;
+}
+
+@keyframes rotate-atom {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Enhanced Cards */
+.card {
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(59, 130, 246, 0.1), 
+        transparent);
+    transition: left 0.5s ease;
+}
+
+.card:hover::before {
+    left: 100%;
+}
+
+/* Molecule icon animations */
+@keyframes float-molecule {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.tool-icon,
+.project-title i {
+    animation: float-molecule 6s ease-in-out infinite;
+}
+
+/* Enhanced tech tags with chemistry elements */
+.tech-tag {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tech-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.tech-tag::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6);
+    border-radius: 9999px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    filter: blur(4px);
+}
+
+.tech-tag:hover::before {
+    opacity: 0.3;
+}
+
+/* Periodic table style for project cards */
+.project-card {
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.project-card:nth-child(4n+1) {
+    border-left-color: #3b82f6; /* Blue - like Hydrogen */
+}
+
+.project-card:nth-child(4n+2) {
+    border-left-color: #10b981; /* Green - like Carbon */
+}
+
+.project-card:nth-child(4n+3) {
+    border-left-color: #f59e0b; /* Amber - like Oxygen */
+}
+
+.project-card:nth-child(4n+4) {
+    border-left-color: #8b5cf6; /* Purple - like Nitrogen */
+}
+
+/* Chemistry-themed section dividers */
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        #3b82f6, 
+        #06b6d4, 
+        #8b5cf6, 
+        transparent);
+}
+
+/* Molecular orbital visualizations on scroll */
+@keyframes orbital-rotation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.glassmorphic::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, 
+        rgba(59, 130, 246, 0.1) 0%, 
+        transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: orbital-rotation 20s linear infinite;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.glassmorphic:hover::after {
+    opacity: 1;
+}
+
+/* Enhanced form inputs with chemistry theme */
+.form-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1),
+                0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+body[data-theme='dark'] .form-input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2),
+                0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Animated chemical bonds on page transitions */
+.page-transition-bond {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        #3b82f6 0%, 
+        #06b6d4 50%, 
+        #8b5cf6 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 9999;
+    animation: bond-growth 0.5s ease-out forwards;
+}
+
+@keyframes bond-growth {
+    to { transform: scaleX(1); }
+}
+
+/* Chemistry equation style for navigation links */
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Electron cloud effect on buttons */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:active::before {
+    width: 0;
+    height: 0;
+    transition: width 0s, height 0s;
+}
+
+/* Periodic table hover effect for grid items */
+.grid > * {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.grid:hover > * {
+    opacity: 0.5;
+    filter: blur(2px);
+}
+
+.grid > *:hover {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+/* Molecular formula style for code blocks */
+code {
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.1), 
+        rgba(139, 92, 246, 0.1));
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-family: 'Source Code Pro', monospace;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+body[data-theme='dark'] code {
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.2), 
+        rgba(139, 92, 246, 0.2));
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Atomic number labels for list items */
+ol {
+    counter-reset: atomic-number;
+}
+
+ol li {
+    counter-increment: atomic-number;
+    position: relative;
+    padding-left: 3rem;
+}
+
+ol li::before {
+    content: counter(atomic-number);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+/* Chemical structure wireframe background for sections */
+.section {
+    position: relative;
+}
+
+.section:nth-child(even)::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: 5%;
+    width: 200px;
+    height: 200px;
+    background-image: 
+        linear-gradient(#3b82f620 1px, transparent 1px),
+        linear-gradient(90deg, #3b82f620 1px, transparent 1px);
+    background-size: 40px 40px;
+    transform: rotate(45deg);
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+body[data-theme='dark'] .section:nth-child(even)::before {
+    opacity: 0.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .subtitle::before,
+    .subtitle::after {
+        font-size: 1rem;
+    }
+    
+    .hero::before {
+        display: none;
+    }
+}
+
+/* Animation for loading states */
+.loading-molecule {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.loading-molecule::before,
+.loading-molecule::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #3b82f6;
+    animation: molecule-bounce 1.5s ease-in-out infinite;
+}
+
+.loading-molecule::before {
+    left: 0;
+}
+
+.loading-molecule::after {
+    right: 0;
+    animation-delay: 0.75s;
+}
+
+@keyframes molecule-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
