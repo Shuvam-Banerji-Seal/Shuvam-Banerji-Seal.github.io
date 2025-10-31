@@ -74,7 +74,7 @@ function createLLMChatTool() {
         <div class="llm-config">
             <div class="form-group">
                 <label for="llm-provider">AI Provider</label>
-                <select id="llm-provider">
+                <select id="llm-provider" onchange="updateModelOptions()">
                     <option value="openai">OpenAI</option>
                     <option value="groq">Groq</option>
                     <option value="anthropic">Anthropic</option>
@@ -91,6 +91,7 @@ function createLLMChatTool() {
                 <label for="llm-model">Model</label>
                 <select id="llm-model">
                     <option value="gpt-4">GPT-4</option>
+                    <option value="gpt-4-turbo">GPT-4 Turbo</option>
                     <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
                 </select>
             </div>
@@ -107,6 +108,50 @@ function createLLMChatTool() {
             </button>
         </div>
     `;
+}
+
+function updateModelOptions() {
+    const provider = document.getElementById('llm-provider').value;
+    const modelSelect = document.getElementById('llm-model');
+    
+    const modelsByProvider = {
+        openai: [
+            { value: 'gpt-4', label: 'GPT-4' },
+            { value: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
+            { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' }
+        ],
+        groq: [
+            { value: 'llama3-70b-8192', label: 'Llama 3 70B' },
+            { value: 'llama3-8b-8192', label: 'Llama 3 8B' },
+            { value: 'mixtral-8x7b-32768', label: 'Mixtral 8x7B' },
+            { value: 'gemma-7b-it', label: 'Gemma 7B' }
+        ],
+        anthropic: [
+            { value: 'claude-3-opus-20240229', label: 'Claude 3 Opus' },
+            { value: 'claude-3-sonnet-20240229', label: 'Claude 3 Sonnet' },
+            { value: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku' }
+        ],
+        gemini: [
+            { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
+            { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
+            { value: 'gemini-pro', label: 'Gemini Pro' }
+        ],
+        openrouter: [
+            { value: 'openai/gpt-4-turbo', label: 'GPT-4 Turbo' },
+            { value: 'anthropic/claude-3-opus', label: 'Claude 3 Opus' },
+            { value: 'google/gemini-pro', label: 'Gemini Pro' },
+            { value: 'meta-llama/llama-3-70b', label: 'Llama 3 70B' }
+        ]
+    };
+    
+    modelSelect.innerHTML = '';
+    const models = modelsByProvider[provider] || [];
+    models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model.value;
+        option.textContent = model.label;
+        modelSelect.appendChild(option);
+    });
 }
 
 async function sendChatMessage() {
@@ -158,7 +203,7 @@ async function callLLMAPI(provider, apiKey, model, message) {
         groq: 'https://api.groq.com/openai/v1/chat/completions',
         anthropic: 'https://api.anthropic.com/v1/messages',
         openrouter: 'https://openrouter.ai/api/v1/chat/completions',
-        gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
+        gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
     };
     
     const headers = {
@@ -176,8 +221,7 @@ async function callLLMAPI(provider, apiKey, model, message) {
             max_tokens: 1024
         };
     } else if (provider === 'gemini') {
-        // Gemini API - use header for API key
-        headers['x-goog-api-key'] = apiKey;
+        // Gemini API - API key in URL
         body = {
             contents: [{
                 parts: [{ text: message }]
