@@ -1140,7 +1140,7 @@ function createMolWeightTool() {
                    style="font-family: 'Source Code Pro', monospace; font-size: 1.2rem;">
             <small style="color: var(--text-secondary); margin-top: 0.5rem; display: block;">
                 Use standard chemical notation. Numbers are subscripts.<br>
-                Note: Parentheses (e.g., Ca(OH)2) are not yet supported. Use CaO2H2 instead.
+                Note: Parentheses (e.g., Ca(OH)2) are not yet supported. Use CaH2O2 instead.
             </small>
         </div>
         <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="calculateMolWeight()">
@@ -1210,17 +1210,35 @@ function parseMolecularFormula(formula) {
     const elements = {};
     const regex = /([A-Z][a-z]?)(\d*)/g;
     let match;
+    let lastIndex = 0;
     
-    // Simple parser (doesn't handle parentheses)
+    // Parse formula
     while ((match = regex.exec(formula)) !== null) {
-        const element = match[1];
-        const count = match[2] ? parseInt(match[2]) : 1;
-        
-        if (!atomicWeights[element]) {
-            throw new Error(`Unknown element: ${element}`);
+        // Check if we're consuming the entire string
+        if (match.index !== lastIndex && match[1]) {
+            throw new Error(`Invalid character at position ${lastIndex}: '${formula[lastIndex]}'`);
         }
         
-        elements[element] = (elements[element] || 0) + count;
+        if (match[1]) { // Only process if element symbol exists
+            const element = match[1];
+            const count = match[2] ? parseInt(match[2]) : 1;
+            
+            if (!atomicWeights[element]) {
+                throw new Error(`Unknown element: ${element}`);
+            }
+            
+            elements[element] = (elements[element] || 0) + count;
+            lastIndex = match.index + match[0].length;
+        }
+    }
+    
+    // Verify we consumed the entire formula
+    if (lastIndex !== formula.length) {
+        throw new Error(`Invalid formula: could not parse '${formula.substring(lastIndex)}'`);
+    }
+    
+    if (Object.keys(elements).length === 0) {
+        throw new Error('No valid elements found in formula');
     }
     
     let totalWeight = 0;
