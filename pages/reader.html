@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="E-Reader - Read books by Shuvam Banerji Seal">
+    <title>E-Reader - Shuvam Banerji Seal</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/animations.css">
+    <link rel="stylesheet" href="../assets/css/mobile.css">
+    <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
+    <style>
+        .reader-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .reader-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .book-selector {
+            margin-bottom: 3rem;
+        }
+        
+        .chapter-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .chapter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--accent-color);
+            background: transparent;
+            color: var(--accent-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .chapter-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .chapter-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .reader-content {
+            font-family: 'Merriweather', serif;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .reader-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .reader-content h2 {
+            font-size: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .reader-content h3 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .reader-content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        .reader-content hr {
+            margin: 2rem 0;
+            border: none;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .reader-content code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9em;
+        }
+        
+        .reader-content pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .reader-content pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .reader-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        
+        :root {
+            --code-bg: rgba(205, 180, 150, 0.2);
+        }
+        
+        [data-theme="dark"] {
+            --code-bg: rgba(255, 255, 255, 0.05);
+        }
+        
+        @media (max-width: 768px) {
+            .reader-content {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar" class="scrolled">
+        <div class="nav-content container glassmorphic">
+            <a href="../index.html" class="nav-logo">
+                <i data-lucide="atom" class="mr-2"></i>
+                <span>SBS</span>
+            </a>
+            <div class="nav-links">
+                <a href="../index.html#about" class="nav-link">About</a>
+                <a href="resume.html" class="nav-link">Resume</a>
+                <a href="../index.html#projects" class="nav-link">Projects</a>
+                <a href="github-projects.html" class="nav-link">GitHub</a>
+                <a href="gallery.html" class="nav-link">Gallery</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="music.html" class="nav-link">Music</a>
+                <a href="tools.html" class="nav-link">Tools</a>
+                <a href="../index.html#contact" class="btn btn-primary">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-5 h-5"></i>
+                </button>
+                <button id="menu-btn" aria-label="Open mobile menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu">
+            <button id="close-menu-btn">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            <a href="../index.html#about" class="mobile-menu-link">About</a>
+            <a href="resume.html" class="mobile-menu-link">Resume</a>
+            <a href="../index.html#projects" class="mobile-menu-link">Projects</a>
+            <a href="github-projects.html" class="mobile-menu-link">GitHub</a>
+            <a href="gallery.html" class="mobile-menu-link">Gallery</a>
+            <a href="blog.html" class="mobile-menu-link">Blog</a>
+            <a href="music.html" class="mobile-menu-link">Music</a>
+            <a href="tools.html" class="mobile-menu-link">Tools</a>
+            <a href="../index.html#contact" class="btn btn-primary mobile-menu-link">Contact</a>
+            <button data-theme-toggle class="theme-toggle-btn mobile-menu-link">Toggle Theme</button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu-backdrop"></div>
+
+    <main class="container">
+        <div class="reader-container">
+            <header class="reader-header">
+                <h1 class="page-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">
+                    <i data-lucide="book-open" class="inline-block"></i>
+                    E-Reader
+                </h1>
+                <p class="page-subtitle">Read stories and books by Shuvam Banerji Seal</p>
+            </header>
+
+            <div class="book-selector glassmorphic card">
+                <h2 style="margin-bottom: 1rem;">Available Books</h2>
+                <select id="book-select" class="form-group" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid var(--border-color); background: var(--input-bg); color: var(--text-primary); font-size: 1rem;">
+                    <option value="">Select a book...</option>
+                </select>
+            </div>
+
+            <div id="chapter-navigation" style="display: none;">
+                <h3 style="margin-bottom: 1rem;">Chapters</h3>
+                <div class="chapter-nav" id="chapter-list"></div>
+            </div>
+
+            <div id="reader-content-area"></div>
+
+            <div class="reader-controls" id="reader-controls" style="display: none;">
+                <button class="btn btn-secondary" id="prev-chapter">
+                    <i data-lucide="arrow-left"></i> Previous Chapter
+                </button>
+                <button class="btn btn-secondary" id="next-chapter">
+                    Next Chapter <i data-lucide="arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/mobile-menu-fix.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/enhanced.js"></script>
+    <script>
+        // E-Reader Logic
+        const booksData = {
+            'Book_1_The_Journey_of_Adi': {
+                title: 'The Journey of Adi',
+                chapters: ['Chapter_01_The_Beginning']
+            }
+        };
+
+        let currentBook = null;
+        let currentChapter = null;
+
+        // Initialize
+        function init() {
+            populateBookSelector();
+            
+            document.getElementById('book-select').addEventListener('change', handleBookSelection);
+            document.getElementById('prev-chapter').addEventListener('click', () => navigateChapter(-1));
+            document.getElementById('next-chapter').addEventListener('click', () => navigateChapter(1));
+            
+            lucide.createIcons();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        }
+
+        function populateBookSelector() {
+            const select = document.getElementById('book-select');
+            Object.entries(booksData).forEach(([key, book]) => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = book.title;
+                select.appendChild(option);
+            });
+        }
+
+        function handleBookSelection(e) {
+            const bookKey = e.target.value;
+            if (!bookKey) {
+                document.getElementById('chapter-navigation').style.display = 'none';
+                document.getElementById('reader-content-area').innerHTML = '';
+                return;
+            }
+
+            currentBook = bookKey;
+            const book = booksData[bookKey];
+            
+            // Show chapters
+            const chapterList = document.getElementById('chapter-list');
+            chapterList.innerHTML = '';
+            
+            book.chapters.forEach((chapter, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'chapter-btn';
+                btn.textContent = parseChapterTitle(chapter);
+                btn.onclick = () => loadChapter(index);
+                chapterList.appendChild(btn);
+            });
+            
+            document.getElementById('chapter-navigation').style.display = 'block';
+            
+            // Load first chapter
+            loadChapter(0);
+        }
+
+        function parseChapterTitle(chapterKey) {
+            // Extract number and title from "Chapter_01_The_Beginning"
+            const match = chapterKey.match(/Chapter_(\d+)_(.+)/);
+            if (match) {
+                const num = parseInt(match[1]);
+                const title = match[2].replace(/_/g, ' ');
+                return `Chapter ${num}: ${title}`;
+            }
+            return chapterKey;
+        }
+
+        async function loadChapter(index) {
+            const book = booksData[currentBook];
+            const chapterKey = book.chapters[index];
+            currentChapter = index;
+            
+            // Update active chapter button
+            document.querySelectorAll('.chapter-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            
+            const contentArea = document.getElementById('reader-content-area');
+            contentArea.innerHTML = '<div class="loading"><span class="loading-spinner"></span> Loading chapter...</div>';
+            
+            try {
+                // Fetch markdown content
+                const response = await fetch(`../books/all_books/${currentBook}/${chapterKey}/content.md`);
+                if (!response.ok) throw new Error('Chapter not found');
+                
+                const markdown = await response.text();
+                
+                // Convert markdown to HTML
+                marked.setOptions({
+                    breaks: true,
+                    gfm: true
+                });
+                const html = marked.parse(markdown);
+                
+                contentArea.innerHTML = `<div class="reader-content">${html}</div>`;
+                
+                // Render math with KaTeX
+                renderMathInElement(contentArea, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+                
+                // Show navigation controls
+                document.getElementById('reader-controls').style.display = 'flex';
+                document.getElementById('prev-chapter').disabled = index === 0;
+                document.getElementById('next-chapter').disabled = index === book.chapters.length - 1;
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                lucide.createIcons();
+            } catch (error) {
+                contentArea.innerHTML = `<div class="reader-content" style="color: red;">Error loading chapter: ${error.message}</div>`;
+            }
+        }
+
+        function navigateChapter(direction) {
+            const book = booksData[currentBook];
+            const newIndex = currentChapter + direction;
+            if (newIndex >= 0 && newIndex < book.chapters.length) {
+                loadChapter(newIndex);
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

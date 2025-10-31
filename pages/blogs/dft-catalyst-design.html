@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Understanding DFT Methods in Catalyst Design - Computational Chemistry Blog Post">
+    <title>Understanding DFT Methods in Catalyst Design - Shuvam Banerji Seal</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/animations.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/chemistry-theme.css">
+    <style>
+        .blog-post {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .blog-header {
+            margin-bottom: 3rem;
+        }
+        .blog-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .blog-meta {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        .blog-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        .blog-content h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .blog-content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .blog-content p {
+            margin-bottom: 1.5rem;
+        }
+        .blog-content code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9em;
+        }
+        .blog-content pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        :root {
+            --code-bg: rgba(205, 180, 150, 0.2);
+        }
+        [data-theme="dark"] {
+            --code-bg: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar" class="scrolled">
+        <div class="nav-content container glassmorphic">
+            <a href="../../index.html" class="nav-logo">
+                <i data-lucide="atom" class="mr-2"></i>
+                <span>SBS</span>
+            </a>
+            <div class="nav-links">
+                <a href="../../index.html#about" class="nav-link">About</a>
+                <a href="../resume.html" class="nav-link">Resume</a>
+                <a href="../../index.html#projects" class="nav-link">Projects</a>
+                <a href="../github-projects.html" class="nav-link">GitHub</a>
+                <a href="../gallery.html" class="nav-link">Gallery</a>
+                <a href="../blog.html" class="nav-link active">Blog</a>
+                <a href="../music.html" class="nav-link">Music</a>
+                <a href="../tools.html" class="nav-link">Tools</a>
+                <a href="../../index.html#contact" class="btn btn-primary">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-5 h-5"></i>
+                </button>
+                <button id="menu-btn" aria-label="Open mobile menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu">
+            <button id="close-menu-btn">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            <a href="../../index.html#about" class="mobile-menu-link">About</a>
+            <a href="../resume.html" class="mobile-menu-link">Resume</a>
+            <a href="../../index.html#projects" class="mobile-menu-link">Projects</a>
+            <a href="../github-projects.html" class="mobile-menu-link">GitHub</a>
+            <a href="../gallery.html" class="mobile-menu-link">Gallery</a>
+            <a href="../blog.html" class="mobile-menu-link active">Blog</a>
+            <a href="../music.html" class="mobile-menu-link">Music</a>
+            <a href="../tools.html" class="mobile-menu-link">Tools</a>
+            <a href="../../index.html#contact" class="btn btn-primary mobile-menu-link">Contact</a>
+            <button data-theme-toggle class="theme-toggle-btn mobile-menu-link">Toggle Theme</button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu-backdrop"></div>
+
+    <main class="container">
+        <article class="blog-post glassmorphic card">
+            <header class="blog-header">
+                <div style="margin-bottom: 1rem;">
+                    <span class="tech-tag">Computational Chemistry</span>
+                    <span class="tech-tag">DFT</span>
+                    <span class="tech-tag">Catalysis</span>
+                </div>
+                <h1 class="blog-title">Understanding DFT Methods in Catalyst Design</h1>
+                <div class="blog-meta">
+                    Published on October 31, 2025 • By Shuvam Banerji Seal • 10 min read
+                </div>
+            </header>
+
+            <div class="blog-content">
+                <p>
+                    Density Functional Theory (DFT) has revolutionized the field of computational chemistry, particularly in the design and optimization of catalysts. As someone who has worked extensively with DFT calculations using Gaussian for catalyst modeling, I'd like to share insights into how these methods are applied in real-world research.
+                </p>
+
+                <h2>What is DFT?</h2>
+                <p>
+                    Density Functional Theory is a quantum mechanical modeling method used to investigate the electronic structure of many-body systems. Unlike traditional wave function-based methods, DFT focuses on electron density rather than the many-electron wave function, making it computationally more tractable for larger systems.
+                </p>
+
+                <p>
+                    The fundamental principle behind DFT is the Hohenberg-Kohn theorem, which states that the ground state properties of a many-electron system are uniquely determined by its electron density. This elegant reduction in complexity allows us to study systems with dozens or even hundreds of atoms.
+                </p>
+
+                <h2>DFT in Catalyst Design</h2>
+                <p>
+                    In my research on water-reducing catalysts, I've used B3LYP (Becke, three-parameter, Lee-Yang-Parr) functional to perform DFT calculations. This hybrid functional combines Hartree-Fock exchange with DFT exchange-correlation, providing a good balance between accuracy and computational cost.
+                </p>
+
+                <h3>Key Applications in My Research</h3>
+                
+                <p><strong>1. Molecular Orbital Energy Calculations</strong></p>
+                <p>
+                    Understanding the energy levels of molecular orbitals is crucial for predicting reactivity. Using DFT, we can calculate:
+                </p>
+                <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>HOMO (Highest Occupied Molecular Orbital) energies</li>
+                    <li>LUMO (Lowest Unoccupied Molecular Orbital) energies</li>
+                    <li>The HOMO-LUMO gap, which indicates chemical stability</li>
+                </ul>
+
+                <p><strong>2. Electronic Structure Analysis</strong></p>
+                <p>
+                    For the vanadium-based catalyst [VO(SALIEP)(DTP)], DFT calculations revealed critical information about electron distribution and bonding characteristics. This helped us understand how the catalyst facilitates water reduction through electron transfer mechanisms.
+                </p>
+
+                <p><strong>3. Transition State Theory Applications</strong></p>
+                <p>
+                    One of the most powerful applications of DFT is in studying reaction mechanisms. By calculating transition states, we can:
+                </p>
+                <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>Determine activation energies</li>
+                    <li>Identify rate-limiting steps</li>
+                    <li>Predict reaction pathways</li>
+                    <li>Optimize catalyst structures for lower barriers</li>
+                </ul>
+
+                <h2>Practical Workflow</h2>
+                <p>
+                    When performing DFT calculations for catalyst design, I typically follow this workflow:
+                </p>
+
+                <ol style="margin-left: 2rem; margin-bottom: 1.5rem; line-height: 1.8;">
+                    <li><strong>Geometry Optimization:</strong> Start with an initial structure and optimize to find the minimum energy configuration</li>
+                    <li><strong>Frequency Calculations:</strong> Verify that the optimized structure is a true minimum (no imaginary frequencies)</li>
+                    <li><strong>Electronic Structure Analysis:</strong> Calculate molecular orbitals, charges, and bonding characteristics</li>
+                    <li><strong>Reaction Path Studies:</strong> If studying mechanisms, locate transition states and calculate IRC (Intrinsic Reaction Coordinate)</li>
+                </ol>
+
+                <h2>Challenges and Considerations</h2>
+                
+                <h3>Choosing the Right Functional</h3>
+                <p>
+                    While B3LYP is widely used, it's not always the best choice. Some considerations:
+                </p>
+                <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>B3LYP can struggle with dispersion interactions</li>
+                    <li>M06 family functionals often perform better for transition metals</li>
+                    <li>Long-range corrected functionals (e.g., ωB97XD) are better for charge transfer</li>
+                </ul>
+
+                <h3>Basis Set Selection</h3>
+                <p>
+                    The basis set determines the quality of the calculation. For my catalyst studies, I've used:
+                </p>
+                <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>6-31G(d,p) for initial optimizations</li>
+                    <li>6-311++G(d,p) for more accurate energetics</li>
+                    <li>Effective core potentials (ECPs) for heavy elements like vanadium</li>
+                </ul>
+
+                <h2>Real-World Impact</h2>
+                <p>
+                    The insights from DFT calculations directly inform experimental design. In my water reduction catalyst project, DFT revealed:
+                </p>
+                <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>The preferred coordination geometry around the vanadium center</li>
+                    <li>Potential ligand modifications to improve activity</li>
+                    <li>The mechanism of proton-coupled electron transfer</li>
+                </ul>
+
+                <p>
+                    This computational insight saved significant experimental time and resources by guiding synthesis toward the most promising candidates.
+                </p>
+
+                <h2>Future Directions</h2>
+                <p>
+                    As computational power increases and methods improve, DFT continues to evolve. Exciting developments include:
+                </p>
+                <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                    <li>Machine learning potentials trained on DFT data</li>
+                    <li>More accurate functionals for complex systems</li>
+                    <li>Integration with molecular dynamics for realistic simulations</li>
+                    <li>High-throughput screening of catalyst candidates</li>
+                </ul>
+
+                <h2>Conclusion</h2>
+                <p>
+                    Density Functional Theory has become an indispensable tool in modern catalyst design. By providing atomic-level insights into electronic structure and reactivity, DFT bridges the gap between fundamental understanding and practical application. Whether you're studying water reduction, CO₂ activation, or any other catalytic process, DFT offers a powerful computational microscope to guide your research.
+                </p>
+
+                <p>
+                    The key is to understand both the capabilities and limitations of these methods, choose appropriate computational parameters, and always validate predictions with experimental results. This synergy between theory and experiment is what drives innovation in catalysis forward.
+                </p>
+
+                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border-color);">
+                    <p><strong>About the Author:</strong> Shuvam Banerji Seal is a BS-MS student at IISER Kolkata, specializing in computational chemistry and catalysis research. His work focuses on applying quantum chemical methods to understand and design catalysts for sustainable energy applications.</p>
+                </div>
+            </div>
+        </article>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="../blog.html" class="btn btn-secondary">
+                <i data-lucide="arrow-left" class="inline-block mr-2"></i> Back to Blog
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
+            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/mobile-menu-fix.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/enhanced.js"></script>
+    <script>
+        lucide.createIcons();
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
