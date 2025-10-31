@@ -158,7 +158,7 @@ async function callLLMAPI(provider, apiKey, model, message) {
         groq: 'https://api.groq.com/openai/v1/chat/completions',
         anthropic: 'https://api.anthropic.com/v1/messages',
         openrouter: 'https://openrouter.ai/api/v1/chat/completions',
-        gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
+        gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
     };
     
     const headers = {
@@ -176,7 +176,8 @@ async function callLLMAPI(provider, apiKey, model, message) {
             max_tokens: 1024
         };
     } else if (provider === 'gemini') {
-        // Gemini API uses different format
+        // Gemini API - use header for API key
+        headers['x-goog-api-key'] = apiKey;
         body = {
             contents: [{
                 parts: [{ text: message }]
@@ -1038,9 +1039,9 @@ const unitData = {
         ton: 1000
     },
     temperature: {
-        celsius: { offset: 0, factor: 1 },
-        fahrenheit: { offset: -32, factor: 5/9 },
-        kelvin: { offset: -273.15, factor: 1 }
+        celsius: 1,
+        fahrenheit: 1,
+        kelvin: 1
     },
     energy: {
         joule: 1,
@@ -1091,13 +1092,24 @@ function convertUnits() {
     
     if (category === 'temperature') {
         // Special handling for temperature
-        const from = unitData.temperature[fromUnit];
-        const to = unitData.temperature[toUnit];
+        // Convert to Celsius first, then to target unit
+        let celsius;
+        if (fromUnit === 'celsius') {
+            celsius = fromValue;
+        } else if (fromUnit === 'fahrenheit') {
+            celsius = (fromValue - 32) * 5/9;
+        } else if (fromUnit === 'kelvin') {
+            celsius = fromValue - 273.15;
+        }
         
-        // Convert to Celsius first
-        let celsius = (fromValue + from.offset) * from.factor;
         // Convert from Celsius to target
-        result = (celsius / to.factor) - to.offset;
+        if (toUnit === 'celsius') {
+            result = celsius;
+        } else if (toUnit === 'fahrenheit') {
+            result = (celsius * 9/5) + 32;
+        } else if (toUnit === 'kelvin') {
+            result = celsius + 273.15;
+        }
     } else {
         // Standard conversion
         const fromFactor = unitData[category][fromUnit];
@@ -1105,7 +1117,12 @@ function convertUnits() {
         result = (fromValue * fromFactor) / toFactor;
     }
     
-    document.getElementById('to-value').value = result.toExponential(6);
+    // Format result appropriately
+    if (Math.abs(result) < 0.001 || Math.abs(result) > 1000000) {
+        document.getElementById('to-value').value = result.toExponential(6);
+    } else {
+        document.getElementById('to-value').value = result.toFixed(6);
+    }
 }
 
 // Molecular Weight Calculator Tool
@@ -1119,10 +1136,11 @@ function createMolWeightTool() {
         </div>
         <div class="form-group">
             <label for="chemical-formula">Chemical Formula</label>
-            <input type="text" id="chemical-formula" placeholder="e.g., H2O, C6H12O6, Ca(OH)2" 
+            <input type="text" id="chemical-formula" placeholder="e.g., H2O, C6H12O6, NaCl" 
                    style="font-family: 'Source Code Pro', monospace; font-size: 1.2rem;">
             <small style="color: var(--text-secondary); margin-top: 0.5rem; display: block;">
-                Use standard chemical notation. Numbers are subscripts.
+                Use standard chemical notation. Numbers are subscripts.<br>
+                Note: Parentheses (e.g., Ca(OH)2) are not yet supported. Use CaO2H2 instead.
             </small>
         </div>
         <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="calculateMolWeight()">
