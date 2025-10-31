@@ -212,6 +212,7 @@ async function callLLMAPI(provider, apiKey, model, message) {
         groq: 'https://api.groq.com/openai/v1/chat/completions',
         anthropic: 'https://api.anthropic.com/v1/messages',
         openrouter: 'https://openrouter.ai/api/v1/chat/completions',
+        // Note: Gemini API requires API key in URL per Google's official documentation
         gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
     };
     
@@ -1449,16 +1450,27 @@ function balanceEquation() {
         return;
     }
 
-    // Simple example - in reality, this would need a complex algorithm
+    // Note: This is a simplified demonstration. A complete implementation would:
+    // 1. Parse the chemical formulas
+    // 2. Set up a system of linear equations for atom conservation
+    // 3. Solve using matrix methods (Gaussian elimination)
+    // For educational purposes, showing the concept with placeholder
     result.style.display = 'block';
     result.innerHTML = `
-        <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Balanced Equation:</h3>
+        <div style="padding: 1rem; background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; border-radius: 8px; margin-bottom: 1rem;">
+            <strong>⚠️ Educational Tool:</strong> This is a demonstration interface. 
+            For accurate chemical equation balancing, please use dedicated tools or manual calculation.
+        </div>
+        <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Input Equation:</h3>
         <div style="font-size: 1.5rem; text-align: center; padding: 1rem; background: var(--accent-color-alpha); border-radius: 8px; margin-bottom: 1rem;">
-            2${reactants} → 2${products}
+            ${reactants} → ${products}
         </div>
         <p style="color: var(--text-secondary);">
-            <strong>Note:</strong> This is a simplified balancer. For accurate results, please verify coefficients manually.
-            A complete implementation would solve systems of linear equations to balance complex reactions.
+            <strong>How to balance equations:</strong><br>
+            1. Count atoms of each element on both sides<br>
+            2. Adjust coefficients to equalize atom counts<br>
+            3. Ensure smallest whole number ratios<br>
+            4. Verify conservation of mass and charge
         </p>
     `;
     lucide.createIcons();
@@ -1508,19 +1520,23 @@ function calculatePH() {
     }
 
     let pH;
+    let note = '';
     if (solutionType === 'acid') {
         pH = -Math.log10(concentration);
     } else if (solutionType === 'base') {
         const pOH = -Math.log10(concentration);
         pH = 14 - pOH;
     } else {
-        pH = 7; // Simplified for buffer
+        // Buffer calculation is simplified - would need pKa and Henderson-Hasselbalch
+        pH = 7;
+        note = '<div style="padding: 1rem; background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; border-radius: 8px; margin-bottom: 1rem;"><strong>Note:</strong> Buffer pH calculation requires pKa values and concentration ratios (Henderson-Hasselbalch equation). This shows a neutral pH as a placeholder.</div>';
     }
 
     const pOH = 14 - pH;
     
     result.style.display = 'block';
     result.innerHTML = `
+        ${note}
         <div style="text-align: center;">
             <div style="font-size: 3rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1rem;">
                 pH = ${pH.toFixed(2)}
