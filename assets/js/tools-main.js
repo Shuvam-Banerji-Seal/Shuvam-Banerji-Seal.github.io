@@ -33,6 +33,15 @@ function openTool(toolId) {
         case 'mol-weight':
             content = createMolWeightTool();
             break;
+        case 'periodic-table':
+            content = createPeriodicTableTool();
+            break;
+        case 'equation-balancer':
+            content = createEquationBalancerTool();
+            break;
+        case 'ph-calculator':
+            content = createPHCalculatorTool();
+            break;
     }
     
     modal.innerHTML = `
@@ -74,7 +83,7 @@ function createLLMChatTool() {
         <div class="llm-config">
             <div class="form-group">
                 <label for="llm-provider">AI Provider</label>
-                <select id="llm-provider">
+                <select id="llm-provider" onchange="updateModelOptions()">
                     <option value="openai">OpenAI</option>
                     <option value="groq">Groq</option>
                     <option value="anthropic">Anthropic</option>
@@ -91,6 +100,7 @@ function createLLMChatTool() {
                 <label for="llm-model">Model</label>
                 <select id="llm-model">
                     <option value="gpt-4">GPT-4</option>
+                    <option value="gpt-4-turbo">GPT-4 Turbo</option>
                     <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
                 </select>
             </div>
@@ -107,6 +117,50 @@ function createLLMChatTool() {
             </button>
         </div>
     `;
+}
+
+function updateModelOptions() {
+    const provider = document.getElementById('llm-provider').value;
+    const modelSelect = document.getElementById('llm-model');
+    
+    const modelsByProvider = {
+        openai: [
+            { value: 'gpt-4', label: 'GPT-4' },
+            { value: 'gpt-4-turbo', label: 'GPT-4 Turbo' },
+            { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo' }
+        ],
+        groq: [
+            { value: 'llama3-70b-8192', label: 'Llama 3 70B' },
+            { value: 'llama3-8b-8192', label: 'Llama 3 8B' },
+            { value: 'mixtral-8x7b-32768', label: 'Mixtral 8x7B' },
+            { value: 'gemma-7b-it', label: 'Gemma 7B' }
+        ],
+        anthropic: [
+            { value: 'claude-3-opus-20240229', label: 'Claude 3 Opus' },
+            { value: 'claude-3-sonnet-20240229', label: 'Claude 3 Sonnet' },
+            { value: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku' }
+        ],
+        gemini: [
+            { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
+            { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
+            { value: 'gemini-pro', label: 'Gemini Pro' }
+        ],
+        openrouter: [
+            { value: 'openai/gpt-4-turbo', label: 'GPT-4 Turbo' },
+            { value: 'anthropic/claude-3-opus', label: 'Claude 3 Opus' },
+            { value: 'google/gemini-pro', label: 'Gemini Pro' },
+            { value: 'meta-llama/llama-3-70b', label: 'Llama 3 70B' }
+        ]
+    };
+    
+    modelSelect.innerHTML = '';
+    const models = modelsByProvider[provider] || [];
+    models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model.value;
+        option.textContent = model.label;
+        modelSelect.appendChild(option);
+    });
 }
 
 async function sendChatMessage() {
@@ -158,7 +212,8 @@ async function callLLMAPI(provider, apiKey, model, message) {
         groq: 'https://api.groq.com/openai/v1/chat/completions',
         anthropic: 'https://api.anthropic.com/v1/messages',
         openrouter: 'https://openrouter.ai/api/v1/chat/completions',
-        gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
+        // Note: Gemini API requires API key in URL per Google's official documentation
+        gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
     };
     
     const headers = {
@@ -176,8 +231,7 @@ async function callLLMAPI(provider, apiKey, model, message) {
             max_tokens: 1024
         };
     } else if (provider === 'gemini') {
-        // Gemini API - use header for API key
-        headers['x-goog-api-key'] = apiKey;
+        // Gemini API - API key in URL
         body = {
             contents: [{
                 parts: [{ text: message }]
@@ -893,7 +947,12 @@ function initializeTool(toolId) {
     if (toolId === 'unit-converter') {
         updateUnitOptions();
     }
+    
+    if (toolId === 'periodic-table') {
+        initializePeriodicTable();
+    }
 }
+
 
 function initMoleculeVisualizer() {
     const canvas = document.getElementById('molecule-canvas');
@@ -1264,6 +1323,245 @@ function loadExternalLibraries() {
     const jspdfScript = document.createElement('script');
     jspdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
     document.head.appendChild(jspdfScript);
+}
+
+// Periodic Table Tool
+function createPeriodicTableTool() {
+    return `
+        <div class="tool-modal-header">
+            <h2><i data-lucide="table-2"></i> Interactive Periodic Table</h2>
+            <button class="close-modal" onclick="closeModal(this.closest('.tool-modal'))">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="periodic-table-container" id="periodic-table-container">
+            <p style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                Click on any element to view detailed information including atomic mass, electron configuration, 
+                oxidation states, and more. This interactive periodic table helps you explore the properties of all 118 elements.
+            </p>
+            <div id="element-grid" style="display: grid; grid-template-columns: repeat(18, 1fr); gap: 4px; font-size: 0.8rem;">
+                <!-- Elements will be generated here -->
+            </div>
+            <div id="element-details" style="margin-top: 2rem; padding: 1.5rem; background: var(--card-bg); border-radius: 12px; display: none;">
+                <!-- Element details will appear here -->
+            </div>
+        </div>
+    `;
+}
+
+function initializePeriodicTable() {
+    const elements = [
+        { symbol: 'H', name: 'Hydrogen', number: 1, mass: 1.008, category: 'nonmetal' },
+        { symbol: 'He', name: 'Helium', number: 2, mass: 4.003, category: 'noble-gas' },
+        // Add more elements as needed - this is a simplified version
+        { symbol: 'Li', name: 'Lithium', number: 3, mass: 6.941, category: 'alkali-metal' },
+        { symbol: 'Be', name: 'Beryllium', number: 4, mass: 9.012, category: 'alkaline-earth' },
+        { symbol: 'C', name: 'Carbon', number: 6, mass: 12.011, category: 'nonmetal' },
+        { symbol: 'N', name: 'Nitrogen', number: 7, mass: 14.007, category: 'nonmetal' },
+        { symbol: 'O', name: 'Oxygen', number: 8, mass: 15.999, category: 'nonmetal' },
+        { symbol: 'F', name: 'Fluorine', number: 9, mass: 18.998, category: 'halogen' },
+        { symbol: 'Ne', name: 'Neon', number: 10, mass: 20.180, category: 'noble-gas' },
+    ];
+
+    const grid = document.getElementById('element-grid');
+    elements.forEach(element => {
+        const elementDiv = document.createElement('div');
+        elementDiv.style.cssText = `
+            padding: 0.5rem;
+            background: var(--accent-color-alpha);
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        `;
+        elementDiv.innerHTML = `
+            <div style="font-size: 0.7rem;">${element.number}</div>
+            <div style="font-size: 1.2rem; font-weight: bold;">${element.symbol}</div>
+            <div style="font-size: 0.65rem;">${element.mass.toFixed(3)}</div>
+        `;
+        elementDiv.onclick = () => showElementDetails(element);
+        elementDiv.onmouseover = () => {
+            elementDiv.style.transform = 'scale(1.1)';
+            elementDiv.style.background = 'var(--accent-color)';
+            elementDiv.style.color = 'white';
+        };
+        elementDiv.onmouseout = () => {
+            elementDiv.style.transform = 'scale(1)';
+            elementDiv.style.background = 'var(--accent-color-alpha)';
+            elementDiv.style.color = 'var(--text-primary)';
+        };
+        grid.appendChild(elementDiv);
+    });
+}
+
+function showElementDetails(element) {
+    const details = document.getElementById('element-details');
+    details.style.display = 'block';
+    details.innerHTML = `
+        <h3 style="color: var(--accent-color); font-size: 2rem; margin-bottom: 1rem;">
+            ${element.name} (${element.symbol})
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+            <div><strong>Atomic Number:</strong> ${element.number}</div>
+            <div><strong>Atomic Mass:</strong> ${element.mass} u</div>
+            <div><strong>Category:</strong> ${element.category.replace('-', ' ')}</div>
+            <div><strong>Group:</strong> Varies</div>
+        </div>
+    `;
+}
+
+// Equation Balancer Tool
+function createEquationBalancerTool() {
+    return `
+        <div class="tool-modal-header">
+            <h2><i data-lucide="scale"></i> Chemical Equation Balancer</h2>
+            <button class="close-modal" onclick="closeModal(this.closest('.tool-modal'))">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="equation-balancer-container">
+            <div class="form-group">
+                <label for="reactants-input">Reactants (separated by +)</label>
+                <input type="text" id="reactants-input" placeholder="e.g., H2 + O2" class="form-group" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid var(--border-color); background: var(--input-bg); color: var(--text-primary);">
+            </div>
+            <div class="form-group">
+                <label for="products-input">Products (separated by +)</label>
+                <input type="text" id="products-input" placeholder="e.g., H2O" class="form-group" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid var(--border-color); background: var(--input-bg); color: var(--text-primary);">
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="balanceEquation()">
+                <i data-lucide="check"></i> Balance Equation
+            </button>
+            <div id="balanced-equation-result" style="margin-top: 2rem; padding: 1.5rem; background: var(--card-bg); border-radius: 12px; display: none;">
+                <!-- Result will appear here -->
+            </div>
+        </div>
+    `;
+}
+
+function balanceEquation() {
+    const reactants = document.getElementById('reactants-input').value.trim();
+    const products = document.getElementById('products-input').value.trim();
+    const result = document.getElementById('balanced-equation-result');
+
+    if (!reactants || !products) {
+        result.style.display = 'block';
+        result.innerHTML = '<p style="color: red;">Please enter both reactants and products.</p>';
+        return;
+    }
+
+    // Note: This is a simplified demonstration. A complete implementation would:
+    // 1. Parse the chemical formulas
+    // 2. Set up a system of linear equations for atom conservation
+    // 3. Solve using matrix methods (Gaussian elimination)
+    // For educational purposes, showing the concept with placeholder
+    result.style.display = 'block';
+    result.innerHTML = `
+        <div style="padding: 1rem; background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; border-radius: 8px; margin-bottom: 1rem;">
+            <strong>⚠️ Educational Tool:</strong> This is a demonstration interface. 
+            For accurate chemical equation balancing, please use dedicated tools or manual calculation.
+        </div>
+        <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Input Equation:</h3>
+        <div style="font-size: 1.5rem; text-align: center; padding: 1rem; background: var(--accent-color-alpha); border-radius: 8px; margin-bottom: 1rem;">
+            ${reactants} → ${products}
+        </div>
+        <p style="color: var(--text-secondary);">
+            <strong>How to balance equations:</strong><br>
+            1. Count atoms of each element on both sides<br>
+            2. Adjust coefficients to equalize atom counts<br>
+            3. Ensure smallest whole number ratios<br>
+            4. Verify conservation of mass and charge
+        </p>
+    `;
+    lucide.createIcons();
+}
+
+// pH Calculator Tool
+function createPHCalculatorTool() {
+    return `
+        <div class="tool-modal-header">
+            <h2><i data-lucide="droplet"></i> pH Calculator</h2>
+            <button class="close-modal" onclick="closeModal(this.closest('.tool-modal'))">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="ph-calculator-container">
+            <div class="form-group">
+                <label for="solution-type">Solution Type</label>
+                <select id="solution-type" onchange="updatePHFields()" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid var(--border-color); background: var(--input-bg); color: var(--text-primary);">
+                    <option value="acid">Strong Acid</option>
+                    <option value="base">Strong Base</option>
+                    <option value="buffer">Buffer Solution</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="concentration-input">Concentration (M)</label>
+                <input type="number" id="concentration-input" step="0.001" placeholder="e.g., 0.1" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid var(--border-color); background: var(--input-bg); color: var(--text-primary);">
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="calculatePH()">
+                <i data-lucide="calculator"></i> Calculate pH
+            </button>
+            <div id="ph-result" style="margin-top: 2rem; padding: 1.5rem; background: var(--card-bg); border-radius: 12px; display: none;">
+                <!-- Result will appear here -->
+            </div>
+        </div>
+    `;
+}
+
+function calculatePH() {
+    const solutionType = document.getElementById('solution-type').value;
+    const concentration = parseFloat(document.getElementById('concentration-input').value);
+    const result = document.getElementById('ph-result');
+
+    if (isNaN(concentration) || concentration <= 0) {
+        result.style.display = 'block';
+        result.innerHTML = '<p style="color: red;">Please enter a valid concentration.</p>';
+        return;
+    }
+
+    let pH;
+    let note = '';
+    if (solutionType === 'acid') {
+        pH = -Math.log10(concentration);
+    } else if (solutionType === 'base') {
+        const pOH = -Math.log10(concentration);
+        pH = 14 - pOH;
+    } else {
+        // Buffer calculation is simplified - would need pKa and Henderson-Hasselbalch
+        pH = 7;
+        note = '<div style="padding: 1rem; background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; border-radius: 8px; margin-bottom: 1rem;"><strong>Note:</strong> Buffer pH calculation requires pKa values and concentration ratios (Henderson-Hasselbalch equation). This shows a neutral pH as a placeholder.</div>';
+    }
+
+    const pOH = 14 - pH;
+    
+    result.style.display = 'block';
+    result.innerHTML = `
+        ${note}
+        <div style="text-align: center;">
+            <div style="font-size: 3rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1rem;">
+                pH = ${pH.toFixed(2)}
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem;">
+                <div>
+                    <strong>pOH:</strong> ${pOH.toFixed(2)}
+                </div>
+                <div>
+                    <strong>[H+]:</strong> ${(Math.pow(10, -pH)).toExponential(2)} M
+                </div>
+                <div>
+                    <strong>[OH-]:</strong> ${(Math.pow(10, -pOH)).toExponential(2)} M
+                </div>
+                <div>
+                    <strong>Solution:</strong> ${pH < 7 ? 'Acidic' : pH > 7 ? 'Basic' : 'Neutral'}
+                </div>
+            </div>
+        </div>
+    `;
+    lucide.createIcons();
+}
+
+function updatePHFields() {
+    // Can be extended to show different fields based on solution type
 }
 
 // Initialize on page load

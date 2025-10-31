@@ -45,6 +45,7 @@
     animation: fadeInUp 0.6s ease-out backwards;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
+    opacity: 1;
 }
 
 .tool-card:nth-child(1) { animation-delay: 0.1s; }
@@ -486,8 +487,8 @@
     --chat-bg: #fef5e7;
     --canvas-bg: #ffffff;
     --input-bg: #ffffff;
-    --card-bg: rgba(254, 248, 243, 0.95);
-    --border-color: rgba(205, 180, 150, 0.5);
+    --card-bg: rgba(254, 248, 243, 0.98);
+    --border-color: rgba(139, 101, 68, 0.3);
     --text-primary: #2d1810;
     --text-secondary: #6d4c41;
     --hover-bg: rgba(205, 180, 150, 0.2);
@@ -500,12 +501,34 @@
     --chat-bg: #1e293b;
     --canvas-bg: #0f172a;
     --input-bg: #1e293b;
-    --card-bg: rgba(31, 41, 55, 0.98);
-    --border-color: rgba(255, 255, 255, 0.1);
+    --card-bg: rgba(31, 41, 55, 0.95);
+    --border-color: rgba(255, 255, 255, 0.15);
     --text-primary: #f3f4f6;
-    --text-secondary: #9ca3af;
+    --text-secondary: #d1d5db;
     --hover-bg: rgba(255, 255, 255, 0.05);
     --accent-color: #22d3ee;
     --secondary-accent: #60a5fa;
     --accent-color-alpha: rgba(34, 211, 238, 0.2);
+}
+
+[data-theme="dark"] .tool-card {
+    background: rgba(31, 41, 55, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    opacity: 1;
+}
+
+[data-theme="dark"] .tool-card h3,
+[data-theme="dark"] .tool-description {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .chat-message.assistant {
+    background: rgba(31, 41, 55, 0.9);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+[data-theme="dark"] .paper-card {
+    background: rgba(31, 41, 55, 0.9);
+    color: var(--text-primary);
 }
