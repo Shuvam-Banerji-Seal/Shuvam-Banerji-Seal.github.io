@@ -73,6 +73,7 @@ function createLLMChatTool() {
                     <option value="groq">Groq</option>
                     <option value="anthropic">Anthropic</option>
                     <option value="openrouter">OpenRouter</option>
+                    <option value="gemini">Google Gemini</option>
                 </select>
             </div>
             <div class="form-group">
@@ -150,7 +151,8 @@ async function callLLMAPI(provider, apiKey, model, message) {
         openai: 'https://api.openai.com/v1/chat/completions',
         groq: 'https://api.groq.com/openai/v1/chat/completions',
         anthropic: 'https://api.anthropic.com/v1/messages',
-        openrouter: 'https://openrouter.ai/api/v1/chat/completions'
+        openrouter: 'https://openrouter.ai/api/v1/chat/completions',
+        gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
     };
     
     const headers = {
@@ -163,9 +165,16 @@ async function callLLMAPI(provider, apiKey, model, message) {
         headers['x-api-key'] = apiKey;
         headers['anthropic-version'] = '2023-06-01';
         body = {
-            model: 'claude-3-sonnet-20240229',
+            model: model || 'claude-3-sonnet-20240229',
             messages: [{ role: 'user', content: message }],
             max_tokens: 1024
+        };
+    } else if (provider === 'gemini') {
+        // Gemini API uses different format
+        body = {
+            contents: [{
+                parts: [{ text: message }]
+            }]
         };
     } else {
         headers['Authorization'] = `Bearer ${apiKey}`;
@@ -182,13 +191,16 @@ async function callLLMAPI(provider, apiKey, model, message) {
     });
     
     if (!response.ok) {
-        throw new Error(`API Error: ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(`API Error: ${response.statusText} - ${errorText}`);
     }
     
     const data = await response.json();
     
     if (provider === 'anthropic') {
         return data.content[0].text;
+    } else if (provider === 'gemini') {
+        return data.candidates[0].content.parts[0].text;
     } else {
         return data.choices[0].message.content;
     }
@@ -376,6 +388,9 @@ async function convertPDFToJPG(file) {
         
         preview.innerHTML = '';
         
+        // Store images for bulk download
+        window.pdfImages = [];
+        
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
             const viewport = page.getViewport({ scale: 2 });
@@ -387,16 +402,29 @@ async function convertPDFToJPG(file) {
             
             await page.render({ canvasContext: context, viewport: viewport }).promise;
             
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+            window.pdfImages.push({ dataUrl, filename: `page-${i}.jpg` });
+            
             const pageDiv = document.createElement('div');
             pageDiv.className = 'pdf-page-preview';
             pageDiv.innerHTML = `
-                <img src="${canvas.toDataURL('image/jpeg', 0.95)}" alt="Page ${i}">
+                <img src="${dataUrl}" alt="Page ${i}">
                 <button class="btn btn-secondary" style="width: 100%; margin-top: 0.5rem;" onclick="downloadImage(this, 'page-${i}.jpg')">
                     <i data-lucide="download"></i> Download Page ${i}
                 </button>
             `;
             preview.appendChild(pageDiv);
         }
+        
+        // Add bulk download button
+        const bulkDownloadBtn = document.createElement('div');
+        bulkDownloadBtn.style.cssText = 'grid-column: 1 / -1; margin-top: 1rem;';
+        bulkDownloadBtn.innerHTML = `
+            <button class="btn btn-primary" style="width: 100%;" onclick="downloadAllAsZip()">
+                <i data-lucide="download"></i> Download All as ZIP
+            </button>
+        `;
+        preview.appendChild(bulkDownloadBtn);
         
         lucide.createIcons();
     } catch (error) {
@@ -411,6 +439,47 @@ function downloadImage(button, filename) {
     link.download = filename;
     link.click();
 }
+
+// Download all images as ZIP
+async function downloadAllAsZip() {
+    if (!window.pdfImages || window.pdfImages.length === 0) {
+        alert('No images to download');
+        return;
+    }
+    
+    try {
+        // Load JSZip from CDN if not already loaded
+        if (!window.JSZip) {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+            await new Promise((resolve, reject) => {
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+        
+        const zip = new JSZip();
+        
+        // Add each image to the ZIP
+        for (const { dataUrl, filename } of window.pdfImages) {
+            // Convert data URL to blob
+            const base64Data = dataUrl.split(',')[1];
+            const blob = await fetch(dataUrl).then(r => r.blob());
+            zip.file(filename, blob);
+        }
+        
+        // Generate ZIP and trigger download
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(zipBlob);
+        link.download = 'pdf-images.zip';
+        link.click();
+    } catch (error) {
+        alert('Error creating ZIP file: ' + error.message);
+    }
+}
+
 
 // PDF Size Reducer Tool
 function createPDFReducerTool() {
@@ -792,10 +861,11 @@ function initializeTool(toolId) {
         document.getElementById('llm-provider').addEventListener('change', (e) => {
             const modelSelect = document.getElementById('llm-model');
             const models = {
-                openai: ['gpt-4', 'gpt-3.5-turbo', 'gpt-4-turbo'],
-                groq: ['llama3-70b-8192', 'mixtral-8x7b-32768'],
-                anthropic: ['claude-3-opus', 'claude-3-sonnet'],
-                openrouter: ['openai/gpt-4', 'anthropic/claude-3']
+                openai: ['gpt-4', 'gpt-3.5-turbo', 'gpt-4-turbo', 'gpt-4o'],
+                groq: ['llama3-70b-8192', 'mixtral-8x7b-32768', 'llama-3.1-70b-versatile'],
+                anthropic: ['claude-3-opus-20240229', 'claude-3-sonnet-20240229', 'claude-3-haiku-20240307'],
+                openrouter: ['openai/gpt-4', 'anthropic/claude-3', 'meta-llama/llama-3-70b'],
+                gemini: ['gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-1.0-pro']
             };
             
             modelSelect.innerHTML = models[e.target.value].map(m => 

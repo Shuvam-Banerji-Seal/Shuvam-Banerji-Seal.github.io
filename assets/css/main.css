@@ -10,8 +10,9 @@ html {
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #f3f4f6; /* gray-100 */
-    color: #1f2937; /* gray-800 */
+    /* Warm cream background with subtle gradient */
+    background: linear-gradient(135deg, #fef5e7 0%, #fdf8f3 50%, #fef5e7 100%);
+    color: #2d1810; /* Warm dark brown text */
     transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
     width: 100%;
@@ -30,11 +31,12 @@ body[data-theme='dark'] {
 
 /* Components */
 .glassmorphic {
-    background: rgba(255, 255, 255, 0.6);
+    /* Warm cream glassmorphic effect */
+    background: rgba(254, 248, 243, 0.7);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(205, 180, 150, 0.3);
+    box-shadow: 0 4px 30px rgba(139, 101, 68, 0.1);
 }
 
 body[data-theme='dark'] .glassmorphic {
@@ -44,8 +46,8 @@ body[data-theme='dark'] .glassmorphic {
 }
 
 #navbar.scrolled .glassmorphic {
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    background: rgba(254, 248, 243, 0.9);
+    box-shadow: 0 8px 32px 0 rgba(139, 101, 68, 0.15);
 }
 
 body[data-theme='dark'] #navbar.scrolled .glassmorphic {
