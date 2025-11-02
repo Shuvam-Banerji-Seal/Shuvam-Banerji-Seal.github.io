@@ -201,7 +201,13 @@
                 // Update source
                 audioSource.src = track.file;
                 audioPlayer.load();
-                audioPlayer.play();
+                
+                // Play audio with error handling
+                audioPlayer.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                    // User interaction may be required to play audio
+                    trackTitle.textContent = track.title + ' (Click play to start)';
+                });
                 
                 // Update track info
                 trackTitle.textContent = track.title;
