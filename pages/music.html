@@ -78,67 +78,150 @@
             <p class="page-subtitle">Some tracks and artists currently on repeat.</p>
         </header>
 
+        <!-- Music Player Section -->
+        <div class="music-player-container card glassmorphic animate-on-scroll mb-8">
+            <h2 class="section-subtitle-left mb-6">
+                <i data-lucide="play" class="inline-block w-6 h-6 mr-2"></i>
+                Music Player
+            </h2>
+            
+            <!-- Audio Player -->
+            <div class="audio-player-wrapper mb-6">
+                <audio id="audio-player" controls class="w-full" style="border-radius: 8px;">
+                    <source id="audio-source" src="" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="current-track-info mt-4 text-center">
+                    <p class="text-lg font-semibold" id="current-track-title">No track selected</p>
+                    <p class="text-sm text-gray-600" id="current-track-artist">Select a song from the list below</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Music Library -->
         <div class="music-container card glassmorphic animate-on-scroll">
-            <h2 class="section-subtitle-left">Current Jams</h2>
-            <ul class="music-list">
-                <li class="music-item">
-                    <div class="music-info">
-                        <i data-lucide="play-circle" class="w-5 h-5 text-cyan-400"></i>
-                        <div>
-                            <p class="music-title">KICK BACK</p>
-                            <p class="music-artist">Kenshi Yonezu (Chainsaw Man OST)</p>
-                        </div>
-                    </div>
-                    <span class="music-genre">J-Pop / Anime OST</span>
+            <h2 class="section-subtitle-left mb-6">
+                <i data-lucide="music-4" class="inline-block w-6 h-6 mr-2"></i>
+                Music Library
+            </h2>
+            <p class="text-sm text-gray-600 mb-4">
+                <i data-lucide="info" class="inline-block w-4 h-4 mr-1"></i>
+                Music files are streamed from the <a href="https://github.com/Shuvam-Banerji-Seal/assets_for_my_website" target="_blank" rel="noopener noreferrer" class="text-cyan-500 hover:text-cyan-600">assets repository</a> using Git LFS.
+            </p>
+            <ul class="music-list" id="music-list">
+                <!-- Music list will be dynamically generated -->
+                <li class="music-item text-center py-4">
+                    <i data-lucide="loader" class="inline-block w-5 h-5 animate-spin mr-2"></i>
+                    Loading music library...
                 </li>
+            </ul>
+        </div>
+        
+        <script>
+            // Music library data - update this with your music files
+            const musicLibrary = [
+                {
+                    title: "Scarborough Fair",
+                    artist: "山田タマル (Yamada Tamaru)",
+                    category: "Suka Suka",
+                    genre: "Anime OST",
+                    file: "../assets_for_my_website/Music/Suka suka/「Scarborough Fair」史卡博羅市集－山田タマル (中英字幕).opus"
+                },
+                {
+                    title: "Always in my heart",
+                    artist: "山田タマル (Yamada Tamaru)",
+                    category: "Suka Suka",
+                    genre: "Anime OST",
+                    file: "../assets_for_my_website/Music/Suka suka/山田タマル Always in my heart full.opus"
+                },
+                {
+                    title: "Suka Suka - Best Vocal Soundtracks",
+                    artist: "Various Artists",
+                    category: "Suka Suka",
+                    genre: "Anime OST",
+                    file: "../assets_for_my_website/Music/Suka suka/Suka Suka - Best Vocal Sountracks - [ 終末なにしてますか 忙しいですか 救ってもらっていいですか ].mp3"
+                },
+                {
+                    title: "Heart Attack",
+                    artist: "Demi Lovato (Cover by Sam Tsui & Chrissy Costanza)",
+                    category: "Covers",
+                    genre: "Pop Cover",
+                    file: "../assets_for_my_website/Music/Alex Groot, Kurt and Crissy/Heart Attack - Demi Lovato (Sam Tsui & Chrissy Costanza of ATC).mp3"
+                },
+                {
+                    title: "22",
+                    artist: "Taylor Swift (Cover by Alex Goot, Sam Tsui, Chrissy)",
+                    category: "Covers",
+                    genre: "Pop Cover",
+                    file: "../assets_for_my_website/Music/Alex Groot, Kurt and Crissy/22_taylor_swift_alex_goot_sam_tsui_chrissy_king_the_kid_cover_-7443934852967229262.mp3"
+                }
+            ];
 
-                 <li class="music-item">
-                    <div class="music-info">
-                        <i data-lucide="play-circle" class="w-5 h-5 text-cyan-400"></i>
-                        <div>
-                            <p class="music-title">Racing into the Night (夜に駆ける)</p>
-                            <p class="music-artist">YOASOBI</p>
+            // Function to render music list
+            function renderMusicList() {
+                const musicList = document.getElementById('music-list');
+                musicList.innerHTML = '';
+                
+                musicLibrary.forEach((track, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'music-item cursor-pointer';
+                    li.onclick = () => playTrack(index);
+                    
+                    li.innerHTML = `
+                        <div class="music-info">
+                            <i data-lucide="play-circle" class="w-5 h-5 text-cyan-400"></i>
+                            <div>
+                                <p class="music-title">${track.title}</p>
+                                <p class="music-artist">${track.artist}</p>
+                            </div>
                         </div>
-                    </div>
-                    <span class="music-genre">J-Pop</span>
-                </li>
-
-                 <li class="music-item">
-                    <div class="music-info">
-                        <i data-lucide="play-circle" class="w-5 h-5 text-cyan-400"></i>
-                        <div>
-                            <p class="music-title">Unravel</p>
-                            <p class="music-artist">TK from Ling tosite sigure (Tokyo Ghoul OST)</p>
+                        <div class="flex flex-col items-end">
+                            <span class="music-genre text-xs">${track.genre}</span>
+                            <span class="text-xs text-gray-500">${track.category}</span>
                         </div>
-                    </div>
-                    <span class="music-genre">J-Rock / Anime OST</span>
-                </li>
+                    `;
+                    
+                    musicList.appendChild(li);
+                });
+                
+                // Reinitialize Lucide icons
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
 
-                 <li class="music-item">
-                    <div class="music-info">
-                        <i data-lucide="play-circle" class="w-5 h-5 text-cyan-400"></i>
-                        <div>
-                            <p class="music-title">Gurenge</p>
-                            <p class="music-artist">LiSA (Demon Slayer OST)</p>
-                        </div>
-                    </div>
-                    <span class="music-genre">J-Rock / Anime OST</span>
-                </li>
+            // Function to play a track
+            function playTrack(index) {
+                const track = musicLibrary[index];
+                const audioPlayer = document.getElementById('audio-player');
+                const audioSource = document.getElementById('audio-source');
+                const trackTitle = document.getElementById('current-track-title');
+                const trackArtist = document.getElementById('current-track-artist');
+                
+                // Update source
+                audioSource.src = track.file;
+                audioPlayer.load();
+                audioPlayer.play();
+                
+                // Update track info
+                trackTitle.textContent = track.title;
+                trackArtist.textContent = track.artist;
+                
+                // Highlight current track
+                document.querySelectorAll('.music-item').forEach((item, i) => {
+                    if (i === index) {
+                        item.style.backgroundColor = 'rgba(6, 182, 212, 0.2)';
+                    } else {
+                        item.style.backgroundColor = '';
+                    }
+                });
+            }
 
-                 <li class="music-item">
-                    <div class="music-info">
-                        <i data-lucide="play-circle" class="w-5 h-5 text-cyan-400"></i>
-                        <div>
-                            <p class="music-title">[Another Favorite Song]</p>
-                            <p class="music-artist">[Artist Name]</p>
-                        </div>
-                    </div>
-                    <span class="music-genre">[Genre]</span>
-                </li>
-
-                </ul>
-
-             </div>
+            // Initialize music list when page loads
+            document.addEventListener('DOMContentLoaded', function() {
+                renderMusicList();
+            });
+        </script>
 
     </main>
 
@@ -165,11 +248,16 @@
         </div>
     </footer>
 
+    <!-- Mobile Menu Fix - Load First -->
+    <script src="../assets/js/mobile-menu-fix.js"></script>
     <!-- Original functionality -->
     <script src="../assets/js/main.js"></script>
     <!-- Enhanced features -->
-    <script src="../assets/js/enhanced.js"></script> <script>
+    <script src="../assets/js/enhanced.js"></script>
+    <script>
       lucide.createIcons();
+      // Set current year in footer
+      document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
 
 </body>
