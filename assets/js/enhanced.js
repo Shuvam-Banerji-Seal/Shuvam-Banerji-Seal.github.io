@@ -469,14 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
         section.setAttribute('data-delay', index * 200);
     });
 
-    // Enhanced scroll behavior
-    if (window.innerWidth > 768) {
-        const scrollElements = document.querySelectorAll('.animate-on-scroll');
-        scrollElements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-        });
-    }
+    // Enhanced scroll behavior - CSS classes handle opacity/transform, no need for inline styles
 
     // Add enhanced hover effects to cards
     const cards = document.querySelectorAll('.card');
