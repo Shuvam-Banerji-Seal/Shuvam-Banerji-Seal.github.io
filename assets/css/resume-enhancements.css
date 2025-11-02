@@ -549,3 +549,24 @@ html {
     margin-bottom: 2rem;
   }
 }
+
+/* ===== PDF VIEWER IFRAME ===== */
+.resume-iframe {
+  width: 100%;
+  height: 600px;
+  border: none;
+  border-radius: var(--border-radius);
+  background: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .resume-iframe {
+    height: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .resume-iframe {
+    height: 400px;
+  }
+}
