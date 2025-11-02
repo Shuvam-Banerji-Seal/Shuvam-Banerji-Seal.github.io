@@ -134,42 +134,13 @@
             
             <!-- Audio Player -->
             <div class="audio-player-wrapper mb-6">
-                <audio id="audio-player" controls class="w-full" style="border-radius: 8px;" 
-                       onended="handleTrackEnd()" ontimeupdate="updateProgress()">
+                <audio id="audio-player" controls class="w-full" style="border-radius: 8px;">
                     <source id="audio-source" src="" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
-                
-                <!-- Custom Controls -->
-                <div class="player-controls flex items-center justify-center gap-4 mt-4">
-                    <button onclick="toggleShuffle()" id="shuffle-btn" title="Shuffle" class="text-gray-600 hover:text-cyan-500">
-                        <i data-lucide="shuffle" class="w-5 h-5"></i>
-                    </button>
-                    <button onclick="previousTrack()" title="Previous" class="text-gray-600 hover:text-cyan-500">
-                        <i data-lucide="skip-back" class="w-6 h-6"></i>
-                    </button>
-                    <button onclick="togglePlayPause()" id="play-pause-btn" title="Play/Pause" 
-                            class="text-cyan-500 bg-cyan-500 bg-opacity-10 p-3">
-                        <i data-lucide="play" class="w-8 h-8" id="play-pause-icon"></i>
-                    </button>
-                    <button onclick="nextTrack()" title="Next" class="text-gray-600 hover:text-cyan-500">
-                        <i data-lucide="skip-forward" class="w-6 h-6"></i>
-                    </button>
-                    <button onclick="toggleRepeat()" id="repeat-btn" title="Repeat Off" class="text-gray-600 hover:text-cyan-500">
-                        <i data-lucide="repeat" class="w-5 h-5"></i>
-                    </button>
-                </div>
-                
                 <div class="current-track-info mt-4 text-center">
                     <p class="text-lg font-semibold" id="current-track-title">No track selected</p>
                     <p class="text-sm text-gray-600" id="current-track-artist">Select a song from the list below</p>
-                    <p class="text-xs text-gray-500 mt-1" id="current-track-folder"></p>
-                </div>
-                
-                <!-- Progress Info -->
-                <div class="flex justify-between text-xs text-gray-500 mt-2">
-                    <span id="current-time">0:00</span>
-                    <span id="total-time">0:00</span>
                 </div>
             </div>
         </div>
@@ -179,11 +150,10 @@
             <h2 class="section-subtitle-left mb-6">
                 <i data-lucide="music-4" class="inline-block w-6 h-6 mr-2"></i>
                 Music Library
-                <span class="text-sm font-normal text-gray-500 ml-2" id="song-count"></span>
             </h2>
             <p class="text-sm text-gray-600 mb-4">
                 <i data-lucide="info" class="inline-block w-4 h-4 mr-1"></i>
-                Music files are streamed from the <a href="https://github.com/Shuvam-Banerji-Seal/assets_for_my_website" target="_blank" rel="noopener noreferrer" class="text-cyan-500 hover:text-cyan-600">assets repository</a> using Git LFS. Click songs to play, folders to expand/collapse.
+                Music files are streamed from the <a href="https://github.com/Shuvam-Banerji-Seal/assets_for_my_website" target="_blank" rel="noopener noreferrer" class="text-cyan-500 hover:text-cyan-600">assets repository</a> using Git LFS.
             </p>
             <ul class="music-list" id="music-list">
                 <!-- Music list will be dynamically generated -->
@@ -337,8 +307,6 @@
     <script src="../assets/js/main.js"></script>
     <!-- Enhanced features -->
     <script src="../assets/js/enhanced.js"></script>
-    <!-- Enhanced Music Player with Full Library -->
-    <script src="../assets/js/music-player-enhanced.js"></script>
     <script>
       lucide.createIcons();
       // Set current year in footer

@@ -1323,16 +1323,7 @@ body.dark .btn-secondary:hover {
     background-color: #1e293b; /* dark:hover:bg-slate-800 */
 }
 
-/* Mobile Menu */
-#mobile-menu {
-    display: none; /* hidden */
-    position: absolute;
-    top: 4.5rem; /* h-18 */
-    left: 0;
-    right: 0;
-    padding: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+/* Mobile Menu - Styles moved to mobile-fixes.css */
 body.dark #mobile-menu {
     background: linear-gradient(180deg, rgba(17, 24, 39, 0.98), rgba(31, 41, 55, 0.96));
 }
