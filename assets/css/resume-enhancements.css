@@ -14,7 +14,12 @@
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ===== MODERN GLASSMORPHIC CARDS ===== */
+/* ===== RESUME PAGE SPECIFIC LAYOUT ===== */
+.resume-page-wrapper {
+  scroll-behavior: smooth;
+}
+
+/* Add more spacing between major sections */
 .resume-card {
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
@@ -25,6 +30,7 @@
   transition: var(--transition-smooth);
   position: relative;
   overflow: hidden;
+  margin-bottom: 2rem; /* Add spacing between cards */
 }
 
 .resume-card::before {
@@ -474,5 +480,72 @@
   .modern-badge,
   .interactive-card {
     transition: none;
+  }
+}
+/* ===== IMPROVED RESUME PAGE LAYOUT ===== */
+/* Add Apple-style smooth scrolling and better spacing */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Resume page sections - add more breathing room */
+.section {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+/* Section titles - more prominent */
+.section-subtitle-left {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+  position: relative;
+}
+
+.section-subtitle-left::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 2px;
+}
+
+[data-theme="dark"] .section-subtitle-left::after {
+  background: linear-gradient(90deg, #22d3ee, #60a5fa);
+}
+
+/* Space between resume sections for better readability */
+.space-y-12 > * + * {
+  margin-top: 4rem !important;
+}
+
+/* Better card spacing in resume */
+.space-y-6 > * + * {
+  margin-top: 2rem !important;
+}
+
+/* Make sure sections don't overlap */
+.grid.gap-12 {
+  gap: 4rem;
+}
+
+/* Responsive adjustments for resume spacing */
+@media (max-width: 768px) {
+  .section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .space-y-12 > * + * {
+    margin-top: 2.5rem !important;
+  }
+  
+  .section-subtitle-left {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
   }
 }

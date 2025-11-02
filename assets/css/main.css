@@ -265,7 +265,11 @@ nav, header, main, footer {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: inherit;
+    color: #2d1810; /* Warm dark brown for light mode */
+}
+
+body[data-theme='dark'] .nav-logo {
+    color: #f3f4f6; /* Light gray for dark mode */
 }
 
 .nav-logo i {
@@ -298,9 +302,13 @@ nav, header, main, footer {
 .nav-link {
     font-weight: 500; /* font-medium */
     transition: color 0.3s ease;
+    color: #2d1810; /* Warm dark brown for light mode */
 }
 .nav-link:hover {
     color: #06b6d4; /* hover:text-cyan-500 */
+}
+body[data-theme='dark'] .nav-link {
+    color: #f3f4f6; /* Light gray for dark mode */
 }
 body[data-theme='dark'] .nav-link:hover {
     color: #22d3ee; /* dark:hover:text-cyan-400 */
@@ -476,9 +484,13 @@ body[data-theme='dark'] #mobile-menu {
     font-weight: 600;
     text-align: center;
     transition: color 0.3s ease;
+    color: #2d1810; /* Warm dark brown for light mode */
 }
 .mobile-menu-link:hover {
     color: #06b6d4;
+}
+body[data-theme='dark'] .mobile-menu-link {
+    color: #f3f4f6; /* Light gray for dark mode */
 }
 body[data-theme='dark'] .mobile-menu-link:hover {
     color: #22d3ee;
@@ -495,7 +507,7 @@ body[data-theme='dark'] .mobile-menu-link:hover {
     background: none;
     border: none;
     cursor: pointer;
-    color: inherit;
+    color: #2d1810; /* Warm dark brown for light mode */
     transition: color 0.3s ease;
     border-radius: 0.375rem;
 }
@@ -503,6 +515,10 @@ body[data-theme='dark'] .mobile-menu-link:hover {
 #close-menu-btn:hover {
     color: #06b6d4;
     background-color: rgba(6, 182, 212, 0.1);
+}
+
+body[data-theme='dark'] #close-menu-btn {
+    color: #f3f4f6; /* Light gray for dark mode */
 }
 
 body[data-theme='dark'] #close-menu-btn:hover {
