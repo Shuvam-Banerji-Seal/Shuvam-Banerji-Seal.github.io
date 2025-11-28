@@ -45,6 +45,21 @@ jobs:
         env:
           NODE_ENV: production
 
+      - name: Copy Music Files to Dist
+        run: |
+          echo "📦 Copying assets_for_my_website to dist..."
+          cp -r assets_for_my_website ./dist/
+          echo "✅ Music files copied successfully"
+          echo "📁 Checking dist contents:"
+          ls -la ./dist/assets_for_my_website/Music/ | head -20
+
+      - name: Copy Music Files to Dist
+        run: |
+          echo "📦 Copying assets_for_my_website to dist..."
+          cp -r assets_for_my_website ./dist/
+          echo "✅ Music files copied successfully"
+          ls -la ./dist/assets_for_my_website/Music/ | head -20
+
       - name: Add CNAME for custom domain (if configured)
         run: |
           if [ ! -z "${{ secrets.CUSTOM_DOMAIN }}" ]; then
