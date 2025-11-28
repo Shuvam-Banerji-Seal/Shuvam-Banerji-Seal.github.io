@@ -279,11 +279,49 @@ window.playTrack = function (index) {
 
     console.log('Loading track:', track.title);
 
-    // Encode the URL to handle special characters
-    const encodedFile = encodeURI(track.file).replace(/#/g, '%23');
+    // Encode the URL properly by splitting path segments
+    // This handles special characters in filenames (like ?, #) correctly while preserving path structure
+    const encodedFile = track.file.split('/').map(segment => encodeURIComponent(segment)).join('/');
+
+    console.log('Original file path:', track.file);
+    console.log('Encoded file URL:', encodedFile);
 
     // Update source
     audioSource.src = encodedFile;
+
+    // Add explicit error listener for loading errors
+    const errorHandler = (e) => {
+        const error = audioPlayer.error;
+        let errorMessage = 'Unknown error';
+        if (error) {
+            switch (error.code) {
+                case error.MEDIA_ERR_ABORTED:
+                    errorMessage = 'Aborted';
+                    break;
+                case error.MEDIA_ERR_NETWORK:
+                    errorMessage = 'Network error';
+                    break;
+                case error.MEDIA_ERR_DECODE:
+                    errorMessage = 'Decode error';
+                    break;
+                case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                    errorMessage = 'Source not supported (404 or bad format)';
+                    break;
+                default:
+                    errorMessage = `Error code: ${error.code}`;
+            }
+        }
+        console.error(`Media load error for ${track.title}: ${errorMessage}`, error);
+
+        // Try to recover or show message
+        if (trackTitle) trackTitle.textContent = `Error: ${track.title} (${errorMessage})`;
+
+        // Remove listener to prevent memory leaks (though it's one-time usually)
+        audioPlayer.removeEventListener('error', errorHandler);
+    };
+
+    audioPlayer.addEventListener('error', errorHandler, { once: true });
+
     audioPlayer.load();
 
     // Play audio with error handling
@@ -294,12 +332,17 @@ window.playTrack = function (index) {
             playerState.isPlaying = true;
             updatePlayPauseIcon();
             console.log('Playing:', track.title);
+            // Remove error listener if playback started successfully
+            audioPlayer.removeEventListener('error', errorHandler);
         })
             .catch(error => {
                 console.error('Error playing audio:', error);
-                playerState.isPlaying = false;
-                updatePlayPauseIcon();
-                if (trackTitle) trackTitle.textContent = track.title + ' (Click play to start)';
+                // Don't change text if it was just an abort/interruption
+                if (error.name !== 'AbortError') {
+                    playerState.isPlaying = false;
+                    updatePlayPauseIcon();
+                    if (trackTitle) trackTitle.textContent = track.title + ' (Click play to start)';
+                }
             });
     }
 
