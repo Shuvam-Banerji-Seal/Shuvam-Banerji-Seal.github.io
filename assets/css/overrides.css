@@ -1,0 +1,44 @@
+/* Navbar Spacing Fix - Add space between navbar and main content */
+main.section,
+main.container {
+    margin-top: 120px !important;
+    /* Space for fixed navbar */
+}
+
+/* Override blur effects - Remove all blur filters for better visibility */
+.glassmorphic,
+body[data-theme='dark'] .glassmorphic,
+#navbar.scrolled .glassmorphic,
+.card,
+.modal,
+.popup,
+#mobile-menu {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Keep glassmorphic effect with just opacity, no blur */
+.glassmorphic {
+    background: rgba(254, 248, 243, 0.95) !important;
+}
+
+body[data-theme='dark'] .glassmorphic {
+    background: rgba(31, 41, 55, 0.95) !important;
+}
+
+/* Remove filter blur from chemistry animations */
+.molecule-container *,
+.atom,
+.bond,
+.electron {
+    filter: none !important;
+}
+
+/* Fix for mobile menu - solid background instead of blur */
+#mobile-menu {
+    background: rgba(0, 0, 0, 0.98) !important;
+}
+
+body[data-theme='dark'] #mobile-menu {
+    background: rgba(17, 24, 39, 0.98) !important;
+}

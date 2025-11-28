@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description" content="Gallery showcasing Shuvam Banerji Seal's interests - Chemistry visuals, Anime art, and personal pictures.">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description"
+        content="Gallery showcasing Shuvam Banerji Seal's interests - Chemistry visuals, Anime art, and personal pictures.">
     <title>Gallery - Shuvam Banerji Seal</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
     <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
     <!-- Enhanced CSS System -->
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
@@ -16,19 +21,25 @@
     <link rel="stylesheet" href="../assets/css/animations.css">
     <link rel="stylesheet" href="../assets/css/mobile.css">
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../assets/css/overrides.css">
     <style>
         /* Gallery specific styles */
         .gallery-item {
             position: relative;
             overflow: hidden;
-            border-radius: 0.5rem; /* rounded-lg */
+            border-radius: 0.5rem;
+            /* rounded-lg */
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .gallery-item:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3); /* Cyan shadow */
+            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3);
+            /* Cyan shadow */
         }
+
         .gallery-item img {
             display: block;
             width: 100%;
@@ -36,9 +47,11 @@
             object-fit: cover;
             transition: transform 0.5s ease;
         }
+
         .gallery-item:hover img {
             transform: scale(1.1);
         }
+
         .gallery-item .overlay {
             position: absolute;
             inset: 0;
@@ -49,9 +62,11 @@
             align-items: flex-end;
             padding: 1rem;
         }
+
         .gallery-item:hover .overlay {
             opacity: 1;
         }
+
         .gallery-item .overlay-text {
             color: white;
             font-size: 0.9rem;
@@ -59,14 +74,16 @@
             opacity: 0;
             transition: transform 0.3s ease 0.1s, opacity 0.3s ease 0.1s;
         }
-         .gallery-item:hover .overlay-text {
-             transform: translateY(0);
-             opacity: 1;
-         }
 
-         /* Simple Lightbox Styles (optional, can be enhanced with JS library) */
+        .gallery-item:hover .overlay-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Simple Lightbox Styles (optional, can be enhanced with JS library) */
         .lightbox {
-            display: none; /* Hidden by default */
+            display: none;
+            /* Hidden by default */
             position: fixed;
             z-index: 1000;
             left: 0;
@@ -79,6 +96,7 @@
             padding: 20px;
             cursor: pointer;
         }
+
         .lightbox img {
             max-width: 90%;
             max-height: 85%;
@@ -86,6 +104,7 @@
             margin: auto;
             border-radius: 5px;
         }
+
         .lightbox-caption {
             color: #ccc;
             text-align: center;
@@ -94,51 +113,12 @@
         }
     </style>
 </head>
+
 <body class="">
 
-    <nav id="navbar" class="scrolled">
-        <div class="container nav-content glassmorphic">
-            <a href="../index.html" class="nav-logo">
-                <i data-lucide="atom" class="mr-2"></i>
-                <span>Shuvam B. Seal</span>
-            </a>
-            <div class="nav-links">
-                <a href="../index.html#about" class="nav-link">About</a>
-                <a href="resume.html" class="nav-link">Resume</a>
-                <a href="../index.html#projects" class="nav-link">Projects</a>
-                <a href="github-projects.html" class="nav-link">GitHub</a>
-                <a href="gallery.html" class="nav-link active">Gallery</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="music.html" class="nav-link">Music</a>
-                <a href="tools.html" class="nav-link">Tools</a>
-                <a href="../index.html#contact" class="btn btn-primary">Contact</a>
-                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
-                    <i data-lucide="moon" class="w-5 h-5"></i>
-                </button>
-            </div>
-                            <button id="menu-btn" aria-label="Open mobile menu">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
-        </div>
-         <div id="mobile-menu">
-             <button id="close-menu-btn">
-                 <i data-lucide="x" class="w-8 h-8"></i>
-             </button>
-             <a href="../index.html#about" class="mobile-menu-link">About</a>
-             <a href="resume.html" class="mobile-menu-link">Resume</a>
-             <a href="../index.html#projects" class="mobile-menu-link">Projects</a>
-             <a href="github-projects.html" class="mobile-menu-link">GitHub</a>
-             <a href="gallery.html" class="mobile-menu-link active">Gallery</a>
-             <a href="blog.html" class="mobile-menu-link">Blog</a>
-             <a href="music.html" class="mobile-menu-link">Music</a>
-            <a href="tools.html" class="mobile-menu-link">Tools</a>
-             <a href="../index.html#contact" class="btn btn-primary mobile-menu-link">Contact</a>
-             <button data-theme-toggle class="theme-toggle-btn mobile-menu-link">Toggle Theme</button>
-         </div>
-    </nav>
-
-    <!-- Mobile menu backdrop -->
-    <div id="mobile-menu-backdrop"></div>
+    <div id="navbar-container"></div>
+    <script src="../assets/js/navbar.js"></script>
+    <script src="../assets/js/mobile-menu-fix.js"></script>
 
     <main class="container section">
         <header class="text-center mb-16 animate-fade-in-up">
@@ -150,86 +130,108 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz" data-caption="Visualization of a complex molecule.">
-                <img src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz" alt="Chemistry Visualization" loading="lazy">
+            <div class="gallery-item animate-on-scroll"
+                data-src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz"
+                data-caption="Visualization of a complex molecule.">
+                <img src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz" alt="Chemistry Visualization"
+                    loading="lazy">
                 <div class="gallery-overlay">
                     <p class="overlay-text">Molecular Dynamics Snapshot</p>
                 </div>
             </div>
 
-            <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene" data-caption="A scene from a favorite anime series.">
-                <img src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene" alt="Anime Scenery" loading="lazy">
-                 <div class="gallery-overlay">
+            <div class="gallery-item animate-on-scroll"
+                data-src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene"
+                data-caption="A scene from a favorite anime series.">
+                <img src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene" alt="Anime Scenery"
+                    loading="lazy">
+                <div class="gallery-overlay">
                     <p class="overlay-text">Favorite Anime Moment</p>
                 </div>
             </div>
 
-            <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work" data-caption="Working on an experiment in the lab.">
+            <div class="gallery-item animate-on-scroll"
+                data-src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work"
+                data-caption="Working on an experiment in the lab.">
                 <img src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work" alt="Lab Work" loading="lazy">
-                 <div class="gallery-overlay">
+                <div class="gallery-overlay">
                     <p class="overlay-text">Computational Setup</p>
                 </div>
             </div>
 
-             <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby" data-caption="Engaging in a personal hobby (e.g., art, karate).">
+            <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby"
+                data-caption="Engaging in a personal hobby (e.g., art, karate).">
                 <img src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby" alt="Personal Hobby" loading="lazy">
-                 <div class="gallery-overlay">
+                <div class="gallery-overlay">
                     <p class="overlay-text">Stroke Art Example</p>
                 </div>
             </div>
 
-             <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel" data-caption="A cool manga panel.">
-                 <img src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel" alt="Manga Panel" loading="lazy">
-                 <div class="gallery-overlay">
-                     <p class="overlay-text">Inspiring Manga Art</p>
-                 </div>
-             </div>
-
-             <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot" data-caption="Density Functional Theory calculation result plot.">
-                 <img src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot" alt="DFT Plot" loading="lazy">
-                 <div class="gallery-overlay">
-                     <p class="overlay-text">Electron Density Plot</p>
-                 </div>
-             </div>
-
-             <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference" data-caption="Presenting at a conference or event.">
-                 <img src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference" alt="Conference Presentation" loading="lazy">
-                 <div class="gallery-overlay">
-                     <p class="overlay-text">Anicon 2.0 Event</p>
-                 </div>
-             </div>
-
-              <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/365314/ECFCCB?text=Nature" data-caption="A photo from a nature walk or travel.">
-                 <img src="https://placehold.co/600x400/365314/ECFCCB?text=Nature" alt="Nature Photo" loading="lazy">
-                 <div class="gallery-overlay">
-                     <p class="overlay-text">Campus Greenery</p>
-                 </div>
-             </div>
-
+            <div class="gallery-item animate-on-scroll"
+                data-src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel"
+                data-caption="A cool manga panel.">
+                <img src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel" alt="Manga Panel" loading="lazy">
+                <div class="gallery-overlay">
+                    <p class="overlay-text">Inspiring Manga Art</p>
+                </div>
             </div>
+
+            <div class="gallery-item animate-on-scroll"
+                data-src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot"
+                data-caption="Density Functional Theory calculation result plot.">
+                <img src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot" alt="DFT Plot" loading="lazy">
+                <div class="gallery-overlay">
+                    <p class="overlay-text">Electron Density Plot</p>
+                </div>
+            </div>
+
+            <div class="gallery-item animate-on-scroll"
+                data-src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference"
+                data-caption="Presenting at a conference or event.">
+                <img src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference" alt="Conference Presentation"
+                    loading="lazy">
+                <div class="gallery-overlay">
+                    <p class="overlay-text">Anicon 2.0 Event</p>
+                </div>
+            </div>
+
+            <div class="gallery-item animate-on-scroll"
+                data-src="https://placehold.co/600x400/365314/ECFCCB?text=Nature"
+                data-caption="A photo from a nature walk or travel.">
+                <img src="https://placehold.co/600x400/365314/ECFCCB?text=Nature" alt="Nature Photo" loading="lazy">
+                <div class="gallery-overlay">
+                    <p class="overlay-text">Campus Greenery</p>
+                </div>
+            </div>
+
+        </div>
 
     </main>
 
-     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <img id="lightbox-img" src="" alt="Lightbox Image">
         <div id="lightbox-caption" class="lightbox-caption"></div>
     </div>
 
     <footer>
         <div class="container">
-             <div class="social-links">
-                 <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
+            <div class="social-links">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="GitHub Profile">
                     <i data-lucide="github" class="w-5 h-5"></i>
                 </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="LinkedIn Profile">
                     <i data-lucide="linkedin" class="w-5 h-5"></i>
                 </a>
-                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
+                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
                     <i data-lucide="mail" class="w-5 h-5"></i>
                 </a>
             </div>
             <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-             <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i
+                    data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i
+                    data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
             <div class="mt-4">
                 <button data-theme-toggle class="theme-toggle-btn">
                     <i data-lucide="moon" class="w-4 h-4 mr-2"></i> Toggle Theme
@@ -241,7 +243,8 @@
     <!-- Original functionality -->
     <script src="../assets/js/main.js"></script>
     <!-- Enhanced features -->
-    <script src="../assets/js/enhanced.js"></script> <script>
+    <script src="../assets/js/enhanced.js"></script>
+    <script>
         // Simple Lightbox Functionality
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
@@ -271,7 +274,7 @@
         }
 
         // Close lightbox on escape key
-         document.addEventListener('keydown', (event) => {
+        document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && lightbox.style.display === 'flex') {
                 closeLightbox();
             }
@@ -282,4 +285,5 @@
     </script>
 
 </body>
+
 </html>

@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description" content="Chemistry Tools & Utilities - LLM Chat, PDF Tools, Games, and Research Paper Finder">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description"
+        content="Chemistry Tools & Utilities - LLM Chat, PDF Tools, Games, and Research Paper Finder">
     <title>Tools - Shuvam Banerji Seal</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
@@ -16,53 +21,14 @@
     <link rel="stylesheet" href="../assets/css/animations.css">
     <link rel="stylesheet" href="../assets/css/mobile.css">
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../assets/css/overrides.css">
     <link rel="stylesheet" href="../assets/css/tools.css">
 </head>
-<body>
-    <nav id="navbar">
-        <div class="nav-content container glassmorphic">
-            <a href="../index.html" class="nav-logo">
-                <i data-lucide="atom" class="mr-2"></i>
-                <span>SBS</span>
-            </a>
-            <div class="nav-links">
-                <a href="../index.html#about" class="nav-link">About</a>
-                <a href="resume.html" class="nav-link">Resume</a>
-                <a href="../index.html#projects" class="nav-link">Projects</a>
-                <a href="github-projects.html" class="nav-link">GitHub</a>
-                <a href="gallery.html" class="nav-link">Gallery</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="music.html" class="nav-link">Music</a>
-                <a href="tools.html" class="nav-link active">Tools</a>
-                <a href="../index.html#contact" class="btn btn-primary">Contact</a>
-            </div>
-            <div class="nav-actions">
-                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
-                    <i data-lucide="moon" class="w-5 h-5"></i>
-                </button>
-                <button id="menu-btn" aria-label="Open mobile menu">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu">
-            <button id="close-menu-btn">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            <a href="../index.html#about" class="mobile-menu-link">About</a>
-            <a href="resume.html" class="mobile-menu-link">Resume</a>
-            <a href="../index.html#projects" class="mobile-menu-link">Projects</a>
-            <a href="github-projects.html" class="mobile-menu-link">GitHub</a>
-            <a href="gallery.html" class="mobile-menu-link">Gallery</a>
-            <a href="blog.html" class="mobile-menu-link">Blog</a>
-            <a href="music.html" class="mobile-menu-link">Music</a>
-            <a href="tools.html" class="mobile-menu-link active">Tools</a>
-            <a href="../index.html#contact" class="btn btn-primary mobile-menu-link">Contact</a>
-            <button data-theme-toggle class="theme-toggle-btn mobile-menu-link">Toggle Theme</button>
-        </div>
-    </nav>
 
-    <div id="mobile-menu-backdrop"></div>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../assets/js/navbar.js"></script>
 
     <!-- Molecule Canvas Background -->
     <canvas id="molecules-canvas"></canvas>
@@ -84,7 +50,8 @@
                     <i data-lucide="message-circle" class="tool-icon"></i>
                     <h3>Chat with LLMs</h3>
                 </div>
-                <p class="tool-description">Chat with various AI models using your own API keys (OpenAI, Groq, Anthropic, OpenRouter)</p>
+                <p class="tool-description">Chat with various AI models using your own API keys (OpenAI, Groq,
+                    Anthropic, OpenRouter)</p>
                 <button class="btn btn-primary tool-btn" onclick="openTool('llm-chat')">
                     Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
                 </button>
@@ -96,7 +63,8 @@
                     <i data-lucide="search" class="tool-icon"></i>
                     <h3>Research Paper Finder</h3>
                 </div>
-                <p class="tool-description">Search and discover research papers using Semantic Scholar and arXiv APIs</p>
+                <p class="tool-description">Search and discover research papers using Semantic Scholar and arXiv APIs
+                </p>
                 <button class="btn btn-primary tool-btn" onclick="openTool('paper-finder')">
                     Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
                 </button>
@@ -156,7 +124,8 @@
                     <i data-lucide="ruler" class="tool-icon"></i>
                     <h3>Unit Converter</h3>
                 </div>
-                <p class="tool-description">Convert between various scientific units (length, mass, temperature, energy, etc.)</p>
+                <p class="tool-description">Convert between various scientific units (length, mass, temperature, energy,
+                    etc.)</p>
                 <button class="btn btn-primary tool-btn" onclick="openTool('unit-converter')">
                     Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
                 </button>
@@ -180,7 +149,8 @@
                     <i data-lucide="table-2" class="tool-icon"></i>
                     <h3>Interactive Periodic Table</h3>
                 </div>
-                <p class="tool-description">Explore elements with detailed information, properties, and electron configurations</p>
+                <p class="tool-description">Explore elements with detailed information, properties, and electron
+                    configurations</p>
                 <button class="btn btn-primary tool-btn" onclick="openTool('periodic-table')">
                     Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
                 </button>
@@ -218,13 +188,16 @@
     <footer>
         <div class="container">
             <div class="social-links">
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="GitHub Profile">
                     <i data-lucide="github" class="w-5 h-5"></i>
                 </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="LinkedIn Profile">
                     <i data-lucide="linkedin" class="w-5 h-5"></i>
                 </a>
-                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="ORCID Profile">
+                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="ORCID Profile">
                     <i data-lucide="award" class="w-5 h-5"></i>
                 </a>
                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
@@ -232,7 +205,9 @@
                 </a>
             </div>
             <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i
+                    data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i
+                    data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
         </div>
     </footer>
 
@@ -246,4 +221,5 @@
         document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
 </body>
+
 </html>

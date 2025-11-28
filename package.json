@@ -5,7 +5,9 @@
   "main": "index.html",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
+    "build": "npm test && npm run generate:music && vite build",
+    "test": "node tests/basic-tests.js",
+    "generate:music": "node scripts/generate-music-manifest.js",
     "preview": "vite preview",
     "serve": "python3 -m http.server 8080",
     "lint:css": "stylelint \"**/*.css\" --fix",

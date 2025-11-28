@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <meta name="google-site-verification" content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g" />
-    <meta name="description" content="Shuvam Banerji Seal's Portfolio - Computational Chemist & Otaku. Showcasing research, skills, and projects with dynamic animations and design.">
+    <meta name="description"
+        content="Shuvam Banerji Seal's Portfolio - Computational Chemist & Otaku. Showcasing research, skills, and projects with dynamic animations and design.">
     <title>Shuvam Banerji Seal - Portfolio</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <!-- Enhanced CSS System -->
@@ -18,64 +23,28 @@
     <link rel="stylesheet" href="assets/css/animations.css">
     <link rel="stylesheet" href="assets/css/mobile.css">
     <link rel="stylesheet" href="assets/css/chemistry-theme.css">
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="assets/css/overrides.css">
 </head>
+
 <body class="">
 
     <div id="loading-screen">
         <div class="loading-content">
             <div id="benzene-loader-canvas" style="width: 400px; height: 400px; max-width: 90vw; margin: 0 auto;"></div>
-            <p class="loading-text" style="margin-top: 2rem; font-size: 1.2rem; font-weight: 500;">Constructing Molecular Portfolio...</p>
+            <p class="loading-text" style="margin-top: 2rem; font-size: 1.2rem; font-weight: 500;">Constructing
+                Molecular Portfolio...</p>
         </div>
     </div>
 
-    <nav id="navbar">
-        <div class="nav-content container glassmorphic">
-            <a href="index.html" class="nav-logo">
-                <i data-lucide="atom" class="mr-2"></i>
-                <span>SBS</span>
-            </a>
-            <div class="nav-links">
-                <a href="index.html#about" class="nav-link">About</a>
-                <a href="pages/resume.html" class="nav-link">Resume</a>
-                <a href="index.html#projects" class="nav-link">Projects</a>
-                <a href="pages/github-projects.html" class="nav-link">GitHub</a>
-                <a href="pages/gallery.html" class="nav-link">Gallery</a>
-                <a href="pages/blog.html" class="nav-link">Blog</a>
-                <a href="pages/reader.html" class="nav-link">E-Reader</a>
-                <a href="pages/music.html" class="nav-link">Music</a>
-                <a href="pages/tools.html" class="nav-link">Tools</a>
-                <a href="index.html#contact" class="btn btn-primary">Contact</a>
-            </div>
-            <div class="nav-actions">
-                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
-                    <i data-lucide="moon" class="w-5 h-5"></i>
-                </button>
-                <button id="menu-btn" aria-label="Open mobile menu">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu">
-            <button id="close-menu-btn">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            <a href="index.html#about" class="mobile-menu-link">About</a>
-            <a href="pages/resume.html" class="mobile-menu-link">Resume</a>
-            <a href="index.html#projects" class="mobile-menu-link">Projects</a>
-            <a href="pages/github-projects.html" class="mobile-menu-link">GitHub</a>
-            <a href="pages/gallery.html" class="mobile-menu-link">Gallery</a>
-            <a href="pages/blog.html" class="mobile-menu-link">Blog</a>
-            <a href="pages/reader.html" class="mobile-menu-link">E-Reader</a>
-            <a href="pages/music.html" class="mobile-menu-link">Music</a>
-            <a href="pages/tools.html" class="mobile-menu-link">Tools</a>
-            <a href="index.html#contact" class="btn btn-primary mobile-menu-link">Contact</a>
-            <button data-theme-toggle class="theme-toggle-btn mobile-menu-link">Toggle Theme</button>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
+    <script src="assets/js/navbar.js"></script>
 
-    <!-- Mobile menu backdrop -->
-    <div id="mobile-menu-backdrop"></div>
+    <!-- Molecule Canvas Background -->
+    <canvas id="molecules-canvas"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(3px); opacity: 0.4;"></canvas>
 
+    <!-- Hero Section -->
     <header class="hero parallax-element">
         <div class="animate-fade-in-up" data-animate="fade-in">
             <h1 class="typewriter" data-speed="100">
@@ -85,12 +54,15 @@
                 BS-MS Student in Chemistry & Computer Science
             </p>
             <p class="description">
-                Passionate about computational chemistry, information retrieval systems, and AI-driven research. Currently pursuing BS-MS at IISER Kolkata with expertise in RAG architectures, molecular modeling, and full-stack development.
+                Passionate about computational chemistry, information retrieval systems, and AI-driven research.
+                Currently pursuing BS-MS at IISER Kolkata with expertise in RAG architectures, molecular modeling, and
+                full-stack development.
             </p>
             <a href="#about" class="btn btn-primary magnetic pulse-on-hover" data-animate="slide-left" data-delay="800">
                 Discover More <i data-lucide="arrow-down" class="inline-block ml-1 w-5 h-5"></i>
             </a>
-             <a href="pages/resume.html" class="btn btn-secondary magnetic pulse-on-hover" data-animate="slide-right" data-delay="1000">
+            <a href="pages/resume.html" class="btn btn-secondary magnetic pulse-on-hover" data-animate="slide-right"
+                data-delay="1000">
                 View Resume <i data-lucide="file-text" class="inline-block ml-1 w-5 h-5"></i>
             </a>
         </div>
@@ -102,31 +74,46 @@
             <h2 class="section-title" data-animate="slide-right" data-delay="300">
                 <i data-lucide="user-round" class="mr-3"></i> About Me
             </h2>
-            <div class="grid grid-cols-2 items-center glassmorphic card animate-on-scroll advanced-hover float-on-hover" data-animate="scale-up" data-delay="400">
+            <div class="grid grid-cols-2 items-center glassmorphic card animate-on-scroll advanced-hover float-on-hover"
+                data-animate="scale-up" data-delay="400">
                 <div class="space-y-4">
-                    <p>Hello! I'm Shuvam, a BS-MS student at IISER Kolkata pursuing Chemistry with a Computer Science minor (CGPA: 8.2). My research focuses on computational chemistry, information retrieval systems, and AI-driven solutions for scientific challenges.</p>
-                    <p>I've developed advanced RAG architectures for verifiable answer synthesis, engineered retrieval models for TREC competitions, and conducted DFT computational modeling of catalysts. My work spans from molecular dynamics simulations to full-stack application development using technologies like Python, Java, C, and modern web frameworks.</p>
-                    <p>I'm passionate about interdisciplinary research that bridges computational methods with scientific discovery. My achievements include winning hackathons, publishing in TREC proceedings, and contributing to open-source projects in areas ranging from bioinformatics to GUI development.</p>
-                     <div class="flex space-x-4 mt-6">
-                        <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link magnetic pulse-on-hover" aria-label="GitHub Profile" data-animate="rotate-in" data-delay="1200">
+                    <p>Hello! I'm Shuvam, a BS-MS student at IISER Kolkata pursuing Chemistry with a Computer Science
+                        minor (CGPA: 8.2). My research focuses on computational chemistry, information retrieval
+                        systems, and AI-driven solutions for scientific challenges.</p>
+                    <p>I've developed advanced RAG architectures for verifiable answer synthesis, engineered retrieval
+                        models for TREC competitions, and conducted DFT computational modeling of catalysts. My work
+                        spans from molecular dynamics simulations to full-stack application development using
+                        technologies like Python, Java, C, and modern web frameworks.</p>
+                    <p>I'm passionate about interdisciplinary research that bridges computational methods with
+                        scientific discovery. My achievements include winning hackathons, publishing in TREC
+                        proceedings, and contributing to open-source projects in areas ranging from bioinformatics to
+                        GUI development.</p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
+                            class="social-link magnetic pulse-on-hover" aria-label="GitHub Profile"
+                            data-animate="rotate-in" data-delay="1200">
                             <i data-lucide="github" class="w-6 h-6"></i>
                         </a>
-                        <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link magnetic pulse-on-hover" aria-label="LinkedIn Profile" data-animate="rotate-in" data-delay="1400">
+                        <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
+                            class="social-link magnetic pulse-on-hover" aria-label="LinkedIn Profile"
+                            data-animate="rotate-in" data-delay="1400">
                             <i data-lucide="linkedin" class="w-6 h-6"></i>
                         </a>
-                        <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer" class="social-link magnetic pulse-on-hover" aria-label="ORCID Profile" data-animate="rotate-in" data-delay="1600">
+                        <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer"
+                            class="social-link magnetic pulse-on-hover" aria-label="ORCID Profile"
+                            data-animate="rotate-in" data-delay="1600">
                             <i data-lucide="award" class="w-6 h-6"></i>
                         </a>
-                        </div>
+                    </div>
                 </div>
                 <div class="relative h-64 md:h-80 rounded-lg overflow-hidden shadow-lg group">
-                    <img src="https://raw.githubusercontent.com/Shuvam-Banerji-Seal/assets_for_my_website/main/my_pictures/sbs_001.webp"
-                         alt="Shuvam Banerji Seal"
-                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                     <div class="absolute bottom-4 left-4 text-white">
-                         <p class="font-semibold">BS-MS Student & Researcher</p>
-                     </div>
+                    <img src="assets_for_my_website/my_pictures/sbs_001.webp" alt="Shuvam Banerji Seal"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/assets_for_my_website/main/my_pictures/sbs_001.webp';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <p class="font-semibold">BS-MS Student & Researcher</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -136,10 +123,14 @@
                 <i data-lucide="lightbulb" class="mr-3"></i> Featured Projects
             </h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover" data-animate="scale-up" data-delay="800">
+                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover"
+                    data-animate="scale-up" data-delay="800">
                     <div>
-                        <h3 class="project-title"><i data-lucide="database" class="mr-2 w-5 h-5"></i>Hybrid RAG Architecture</h3>
-                        <p class="project-description">Developed a comprehensive RAG pipeline for IISER-K intranet with automated data acquisition, OCR processing, and hybrid search combining dense vector retrieval with BM25 keyword search.</p>
+                        <h3 class="project-title"><i data-lucide="database" class="mr-2 w-5 h-5"></i>Hybrid RAG
+                            Architecture</h3>
+                        <p class="project-description">Developed a comprehensive RAG pipeline for IISER-K intranet with
+                            automated data acquisition, OCR processing, and hybrid search combining dense vector
+                            retrieval with BM25 keyword search.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="tech-tag">Python</span>
                             <span class="tech-tag">RAG</span>
@@ -150,13 +141,17 @@
                     </div>
                     <div class="mt-4">
                         <span class="project-status">Status: Completed (2025)</span>
-                         </div>
+                    </div>
                 </div>
 
-                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover" data-animate="scale-up" data-delay="1000">
-                     <div>
-                        <h3 class="project-title"><i data-lucide="search" class="mr-2 w-5 h-5"></i>TREC Retrieval Model</h3>
-                        <p class="project-description">Engineered multi-layer BM-25 filtering system with dynamic search-domain contraction and transformer-based query expansion using Local LLMs for TREC 2024 Tip-of-Tongue track.</p>
+                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover"
+                    data-animate="scale-up" data-delay="1000">
+                    <div>
+                        <h3 class="project-title"><i data-lucide="search" class="mr-2 w-5 h-5"></i>TREC Retrieval Model
+                        </h3>
+                        <p class="project-description">Engineered multi-layer BM-25 filtering system with dynamic
+                            search-domain contraction and transformer-based query expansion using Local LLMs for TREC
+                            2024 Tip-of-Tongue track.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="tech-tag">Java</span>
                             <span class="tech-tag">Lucene</span>
@@ -164,15 +159,19 @@
                             <span class="tech-tag">NLP</span>
                         </div>
                     </div>
-                     <div class="mt-4">
+                    <div class="mt-4">
                         <span class="project-status">Status: Published (2024)</span>
-                         </div>
+                    </div>
                 </div>
 
-                 <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover" data-animate="scale-up" data-delay="1200">
-                     <div>
-                        <h3 class="project-title"><i data-lucide="flask-conical" class="mr-2 w-5 h-5"></i>Catalyst Computational Modeling</h3>
-                        <p class="project-description">Implemented DFT methods (B3LYP) for MO energy calculations and electronic structure analysis of [VO(SALIEP)(DTP)] as water-reducing catalyst using Gaussian and transition state theory.</p>
+                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover"
+                    data-animate="scale-up" data-delay="1200">
+                    <div>
+                        <h3 class="project-title"><i data-lucide="flask-conical" class="mr-2 w-5 h-5"></i>Catalyst
+                            Computational Modeling</h3>
+                        <p class="project-description">Implemented DFT methods (B3LYP) for MO energy calculations and
+                            electronic structure analysis of [VO(SALIEP)(DTP)] as water-reducing catalyst using Gaussian
+                            and transition state theory.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="tech-tag">DFT</span>
                             <span class="tech-tag">Gaussian</span>
@@ -180,15 +179,19 @@
                             <span class="tech-tag">Catalysis</span>
                         </div>
                     </div>
-                     <div class="mt-4">
+                    <div class="mt-4">
                         <span class="project-status">Status: To Be Submitted (2024-25)</span>
-                         </div>
+                    </div>
                 </div>
 
-                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover" data-animate="scale-up" data-delay="1400">
-                     <div>
-                        <h3 class="project-title"><i data-lucide="app-window" class="mr-2 w-5 h-5"></i>GTK4 Full-Stack Application</h3>
-                        <p class="project-description">Developed a complete GUI application in C using GTK4 and Glade, with SQLite3 database management and optimized BM25-based retrieval for NLP chatbot functionality.</p>
+                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover"
+                    data-animate="scale-up" data-delay="1400">
+                    <div>
+                        <h3 class="project-title"><i data-lucide="app-window" class="mr-2 w-5 h-5"></i>GTK4 Full-Stack
+                            Application</h3>
+                        <p class="project-description">Developed a complete GUI application in C using GTK4 and Glade,
+                            with SQLite3 database management and optimized BM25-based retrieval for NLP chatbot
+                            functionality.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="tech-tag">C</span>
                             <span class="tech-tag">GTK4</span>
@@ -196,24 +199,25 @@
                             <span class="tech-tag">NLP</span>
                         </div>
                     </div>
-                     <div class="mt-4">
+                    <div class="mt-4">
                         <span class="project-status">Status: Completed (2024)</span>
-                         </div>
+                    </div>
                 </div>
-                 </div>
+            </div>
             <div id="github" class="mt-16 scroll-mt-20">
                 <div class="glassmorphic card text-center p-8 advanced-hover" data-animate="fade-in" data-delay="1600">
                     <i data-lucide="github" class="w-16 h-16 mx-auto mb-4 text-gray-600"></i>
                     <h3 class="text-2xl font-semibold mb-4">Explore My GitHub</h3>
-                    <p class="text-gray-600 mb-6">Discover my open source contributions, research code, and development projects with beautiful visualizations and detailed insights.</p>
+                    <p class="text-gray-600 mb-6">Discover my open source contributions, research code, and development
+                        projects with beautiful visualizations and detailed insights.</p>
                     <a href="pages/github-projects.html" class="btn btn-primary magnetic pulse-on-hover">
                         <i data-lucide="external-link" class="w-5 h-5 mr-2"></i>
                         View GitHub Projects
                     </a>
                 </div>
             </div>
-             <div class="text-center mt-12">
-                 <a href="pages/resume.html#projects" class="btn btn-secondary">
+            <div class="text-center mt-12">
+                <a href="pages/resume.html#projects" class="btn btn-secondary">
                     See All Projects <i data-lucide="arrow-right" class="inline-block ml-1 w-4 h-4"></i>
                 </a>
             </div>
@@ -223,32 +227,34 @@
             <h2 class="section-title" data-animate="slide-right" data-delay="1500">
                 <i data-lucide="mail" class="mr-3"></i> Get In Touch
             </h2>
-            <div class="glassmorphic card max-w-3xl mx-auto animate-on-scroll advanced-hover" data-animate="scale-up" data-delay="1600">
+            <div class="glassmorphic card max-w-3xl mx-auto animate-on-scroll advanced-hover" data-animate="scale-up"
+                data-delay="1600">
                 <p class="text-center mb-8">
                     Interested in collaborating, have a question, or just want to connect? Feel free to reach out!
                 </p>
-                <form id="contact-form" action="https://formspree.io/f/manepvkq" method="POST" class="contact-form space-y-6">
+                <form id="contact-form" action="https://formspree.io/f/manepvkq" method="POST"
+                    class="contact-form space-y-6">
                     <div class="form-group grid md:grid-cols-2 gap-6">
                         <div class="form-field">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" id="name" name="name" required
-                                   class="form-input" placeholder="Your full name">
+                            <input type="text" id="name" name="name" required class="form-input"
+                                placeholder="Your full name">
                         </div>
                         <div class="form-field">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" id="email" name="email" required
-                                   class="form-input" placeholder="your@email.com">
+                            <input type="email" id="email" name="email" required class="form-input"
+                                placeholder="your@email.com">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="subject" class="form-label">Subject</label>
-                        <input type="text" id="subject" name="subject" required
-                               class="form-input" placeholder="What's this about?">
+                        <input type="text" id="subject" name="subject" required class="form-input"
+                            placeholder="What's this about?">
                     </div>
                     <div class="form-group">
                         <label for="message" class="form-label">Message</label>
-                        <textarea id="message" name="message" rows="5" required
-                                  class="form-input resize-none" placeholder="Tell me more about your project or inquiry..."></textarea>
+                        <textarea id="message" name="message" rows="5" required class="form-input resize-none"
+                            placeholder="Tell me more about your project or inquiry..."></textarea>
                     </div>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary w-full md:w-auto">
@@ -256,7 +262,7 @@
                         </button>
                     </div>
                     <p id="form-status" class="text-center text-sm mt-4"></p>
-                     <p class="text-xs text-center text-gray-500 mt-4">This form uses Formspree for email delivery.</p>
+                    <p class="text-xs text-center text-gray-500 mt-4">This form uses Formspree for email delivery.</p>
                 </form>
             </div>
         </section>
@@ -266,26 +272,33 @@
     <footer>
         <div class="container">
             <div class="social-links">
-                 <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="GitHub Profile">
                     <i data-lucide="github" class="w-5 h-5"></i>
                 </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="LinkedIn Profile">
                     <i data-lucide="linkedin" class="w-5 h-5"></i>
                 </a>
-                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="ORCID Profile">
+                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="ORCID Profile">
                     <i data-lucide="award" class="w-5 h-5"></i>
                 </a>
-                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
+                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
                     <i data-lucide="mail" class="w-5 h-5"></i>
                 </a>
             </div>
             <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i
+                    data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i
+                    data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
         </div>
     </footer>
 
     <!-- Mobile Menu Fix - Load First -->
     <script src="assets/js/mobile-menu-fix.js"></script>
+    <!-- Molecule Background - Load after Three.js -->
+    <script src="assets/js/molecule-background.js"></script>
     <!-- Benzene Loading Animation -->
     <script src="assets/js/benzene-loader.js"></script>
     <!-- Original functionality -->
@@ -299,13 +312,14 @@
     <!-- DNA Helix Animation -->
     <script src="assets/js/dna-helix.js"></script>
     <script>
-      // Initialize Lucide icons
-      lucide.createIcons();
-      
-      // Store original script for compatibility
-      window.originalScript = function() {
-        // Original script functionality will be preserved
-      };
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Store original script for compatibility
+        window.originalScript = function () {
+            // Original script functionality will be preserved
+        };
     </script>
 </body>
+
 </html>

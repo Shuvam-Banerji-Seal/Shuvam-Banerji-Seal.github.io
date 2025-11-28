@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,9 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Marked.js for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- KaTeX for math rendering -->
@@ -20,245 +23,393 @@
     <link rel="stylesheet" href="../assets/css/animations.css">
     <link rel="stylesheet" href="../assets/css/mobile.css">
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
+    <link rel="stylesheet" href="../assets/css/overrides.css">
     <style>
-        .reader-container {
-            max-width: 800px;
+        :root {
+            --reader-bg: #f5f5f0;
+            --reader-content-bg: #ffffff;
+            --reader-text: #2d2d2d;
+            --reader-accent: #8B4513;
+        }
+
+        body[data-theme='dark'] {
+            --reader-bg: #1a1a1a;
+            --reader-content-bg: #2d2d2d;
+            --reader-text: #e5e5e5;
+        }
+
+        body {
+            background: var(--reader-bg);
+            color: var(--reader-text);
+        }
+
+        .reader-wrapper {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 100px 20px 40px;
         }
-        
-        .reader-header {
-            text-align: center;
-            margin-bottom: 2rem;
+
+        .reader-controls {
+            background: var(--reader-content-bg);
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        
-        .book-selector {
-            margin-bottom: 3rem;
-        }
-        
-        .chapter-nav {
+
+        .control-row {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 16px;
             flex-wrap: wrap;
         }
-        
-        .chapter-btn {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid var(--accent-color);
-            background: transparent;
-            color: var(--accent-color);
+
+        .control-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            font-weight: 600;
+            min-width: 120px;
+            color: var(--reader-accent);
+        }
+
+        .book-select,
+        .chapter-select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            border: 2px solid var(--reader-accent);
             border-radius: 8px;
+            background: var(--reader-content-bg);
+            color: var(--reader-text);
+            font-size: 16px;
             cursor: pointer;
-            font-weight: 500;
             transition: all 0.3s ease;
         }
-        
-        .chapter-btn:hover {
-            background: var(--accent-color);
+
+        .book-select:hover,
+        .chapter-select:hover {
+            border-color: #A0522D;
+            transform: translateY(-2px);
+        }
+
+        .chapter-select:focus,
+        .book-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.2);
+        }
+
+        .reader-settings {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .setting-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .setting-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--reader-accent);
+            background: transparent;
+            color: var(--reader-text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .setting-btn:hover {
+            background: var(--reader-accent);
             color: white;
         }
-        
-        .chapter-btn.active {
-            background: var(--accent-color);
-            color: white;
+
+        .font-size-display {
+            min-width: 60px;
+            text-align: center;
+            font-weight: 600;
         }
-        
+
         .reader-content {
-            font-family: 'Merriweather', serif;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            padding: 2rem;
-            background: var(--card-bg);
+            background: var(--reader-content-bg);
+            padding: 60px 80px;
             border-radius: 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 600px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            font-family: 'Lora', 'Merriweather', serif;
+            line-height: 1.8;
+            font-size: var(--font-size, 18px);
         }
-        
-        .reader-content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-        }
-        
-        .reader-content h2 {
-            font-size: 2rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-        }
-        
+
+        .reader-content h1,
+        .reader-content h2,
         .reader-content h3 {
-            font-size: 1.5rem;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
+            color: var(--reader-accent);
+            margin-top: 2em;
+            margin-bottom: 0.8em;
+            font-weight: 700;
         }
-        
+
+        .reader-content h1 {
+            font-size: 2.5em;
+            border-bottom: 3px solid var(--reader-accent);
+            padding-bottom: 0.3em;
+        }
+
+        .reader-content h2 {
+            font-size: 2em;
+        }
+
+        .reader-content h3 {
+            font-size: 1.5em;
+        }
+
         .reader-content p {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.5em;
             text-align: justify;
         }
-        
-        .reader-content hr {
-            margin: 2rem 0;
-            border: none;
-            border-top: 2px solid var(--border-color);
-        }
-        
+
         .reader-content code {
-            background: var(--code-bg);
-            padding: 0.2rem 0.4rem;
+            background: rgba(139, 69, 19, 0.1);
+            padding: 2px 6px;
             border-radius: 4px;
             font-family: 'Source Code Pro', monospace;
             font-size: 0.9em;
         }
-        
+
         .reader-content pre {
-            background: var(--code-bg);
-            padding: 1rem;
+            background: rgba(139, 69, 19, 0.05);
+            padding: 20px;
             border-radius: 8px;
             overflow-x: auto;
-            margin: 1.5rem 0;
+            margin: 20px 0;
         }
-        
+
         .reader-content pre code {
             background: none;
             padding: 0;
         }
-        
-        .reader-controls {
+
+        .reader-content blockquote {
+            border-left: 4px solid var(--reader-accent);
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        body[data-theme='dark'] .reader-content blockquote {
+            color: #aaa;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 24px;
+            opacity: 0.3;
+        }
+
+        .pagination {
             display: flex;
             justify-content: space-between;
-            margin-top: 3rem;
-            flex-wrap: wrap;
-            gap: 1rem;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid rgba(139, 69, 19, 0.2);
         }
-        
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-secondary);
+
+        .pagination-btn {
+            padding: 12px 24px;
+            background: var(--reader-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        :root {
-            --code-bg: rgba(205, 180, 150, 0.2);
+
+        .pagination-btn:hover:not(:disabled) {
+            background: #A0522D;
+            transform: translateY(-2px);
         }
-        
-        [data-theme="dark"] {
-            --code-bg: rgba(255, 255, 255, 0.05);
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
-        
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
+            .reader-wrapper {
+                padding: 90px 12px 20px;
+            }
+
             .reader-content {
-                padding: 1rem;
-                font-size: 1rem;
+                padding: 32px 24px;
+            }
+
+            .control-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .control-label {
+                min-width: auto;
+            }
+
+            .reader-settings {
+                justify-content: center;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+
+            .reader-controls,
+            .pagination,
+            #navbar-container {
+                display: none !important;
+            }
+
+            .reader-content {
+                box-shadow: none;
+                padding: 0;
             }
         }
     </style>
 </head>
+
 <body>
-    <nav id="navbar" class="scrolled">
-        <div class="nav-content container glassmorphic">
-            <a href="../index.html" class="nav-logo">
-                <i data-lucide="atom" class="mr-2"></i>
-                <span>SBS</span>
-            </a>
-            <div class="nav-links">
-                <a href="../index.html#about" class="nav-link">About</a>
-                <a href="resume.html" class="nav-link">Resume</a>
-                <a href="../index.html#projects" class="nav-link">Projects</a>
-                <a href="github-projects.html" class="nav-link">GitHub</a>
-                <a href="gallery.html" class="nav-link">Gallery</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="music.html" class="nav-link">Music</a>
-                <a href="tools.html" class="nav-link">Tools</a>
-                <a href="../index.html#contact" class="btn btn-primary">Contact</a>
-            </div>
-            <div class="nav-actions">
-                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
-                    <i data-lucide="moon" class="w-5 h-5"></i>
-                </button>
-                <button id="menu-btn" aria-label="Open mobile menu">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu">
-            <button id="close-menu-btn">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            <a href="../index.html#about" class="mobile-menu-link">About</a>
-            <a href="resume.html" class="mobile-menu-link">Resume</a>
-            <a href="../index.html#projects" class="mobile-menu-link">Projects</a>
-            <a href="github-projects.html" class="mobile-menu-link">GitHub</a>
-            <a href="gallery.html" class="mobile-menu-link">Gallery</a>
-            <a href="blog.html" class="mobile-menu-link">Blog</a>
-            <a href="music.html" class="mobile-menu-link">Music</a>
-            <a href="tools.html" class="mobile-menu-link">Tools</a>
-            <a href="../index.html#contact" class="btn btn-primary mobile-menu-link">Contact</a>
-            <button data-theme-toggle class="theme-toggle-btn mobile-menu-link">Toggle Theme</button>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
+    <script src="../assets/js/navbar.js"></script>
 
-    <div id="mobile-menu-backdrop"></div>
-
-    <main class="container">
-        <div class="reader-container">
-            <header class="reader-header">
-                <h1 class="page-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">
-                    <i data-lucide="book-open" class="inline-block"></i>
-                    E-Reader
-                </h1>
-                <p class="page-subtitle">Read stories and books by Shuvam Banerji Seal</p>
-            </header>
-
-            <div class="book-selector glassmorphic card">
-                <h2 style="margin-bottom: 1rem;">Available Books</h2>
-                <select id="book-select" class="form-group" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 2px solid var(--border-color); background: var(--input-bg); color: var(--text-primary); font-size: 1rem;">
+    <div class="reader-wrapper">
+        <div class="reader-controls">
+            <div class="control-row">
+                <span class="control-label">
+                    <i data-lucide="book-open" class="inline w-5 h-5"></i> Book
+                </span>
+                <select class="book-select" id="book-select">
                     <option value="">Select a book...</option>
+                    <option value="sample">Sample Book</option>
                 </select>
             </div>
 
-            <div id="chapter-navigation" style="display: none;">
-                <h3 style="margin-bottom: 1rem;">Chapters</h3>
-                <div class="chapter-nav" id="chapter-list"></div>
+            <div class="control-row">
+                <span class="control-label">
+                    <i data-lucide="bookmark" class="inline w-5 h-5"></i> Chapter
+                </span>
+                <select class="chapter-select" id="chapter-select" disabled>
+                    <option value="">Select a chapter...</option>
+                </select>
             </div>
 
-            <div id="reader-content-area"></div>
-
-            <div class="reader-controls" id="reader-controls" style="display: none;">
-                <button class="btn btn-secondary" id="prev-chapter">
-                    <i data-lucide="arrow-left"></i> Previous Chapter
-                </button>
-                <button class="btn btn-secondary" id="next-chapter">
-                    Next Chapter <i data-lucide="arrow-right"></i>
-                </button>
+            <div class="control-row">
+                <span class="control-label">
+                    <i data-lucide="settings" class="inline w-5 h-5"></i> Settings
+                </span>
+                <div class="reader-settings">
+                    <div class="setting-group">
+                        <button class="setting-btn" onclick="changeFontSize(-2)" title="Decrease font size">A-</button>
+                        <span class="font-size-display" id="font-size-display">18px</span>
+                        <button class="setting-btn" onclick="changeFontSize(2)" title="Increase font size">A+</button>
+                    </div>
+                    <button class="setting-btn" onclick="toggleTheme()" title="Toggle theme">
+                        <i data-lucide="sun"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </main>
 
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
-                    <i data-lucide="github" class="w-5 h-5"></i>
-                </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
-                    <i data-lucide="linkedin" class="w-5 h-5"></i>
-                </a>
-                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
-                </a>
+        <div class="reader-content" id="reader-content">
+            <div class="empty-state">
+                <div>
+                    <i data-lucide="book-open" class="w-16 h-16 mx-auto mb-4 opacity-30"></i>
+                </div>
+                <h2>Welcome to E-Reader</h2>
+                <p>Select a book from the dropdown above to start reading</p>
             </div>
-            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
         </div>
-    </footer>
+    </div>
 
     <script src="../assets/js/mobile-menu-fix.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/enhanced.js"></script>
     <script src="../assets/js/reader.js"></script>
     <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+        lucide.createIcons();
+
+        let currentFontSize = 18;
+        let currentBook = null;
+
+        function changeFontSize(delta) {
+            currentFontSize = Math.max(14, Math.min(28, currentFontSize + delta));
+            document.getElementById('reader-content').style.setProperty('--font-size', currentFontSize + 'px');
+            document.getElementById('font-size-display').textContent = currentFontSize + 'px';
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            body.setAttribute('data-theme', currentTheme === 'dark' ? '' : 'dark');
+        }
+
+        // Initialize
+        document.getElementById('book-select').addEventListener('change', function () {
+            const bookId = this.value;
+            if (bookId === 'sample') {
+                // Load sample content
+                const content = `
+# Sample Chapter
+
+This is a sample book to demonstrate the E-Reader functionality.
+
+## Introduction
+
+The E-Reader provides a beautiful, distraction-free reading experience with:
+
+- Clean, book-like typography
+- Adjustable font sizes
+- Dark/light theme toggle
+- Markdown support with math rendering
+
+## Features
+
+You can write **bold text**, *italic text*, and even \`inline code\`.
+
+### Code Blocks
+
+\`\`\`python
+def hello_world():
+    print("Hello from E-Reader!")
+\`\`\`
+
+### Mathematics
+
+When you add KaTeX support, you can render beautiful math like:
+$$E = mc^2$$
+
+> "The best way to predict the future is to invent it." - Alan Kay
+
+Enjoy reading!
+                `;
+
+                document.getElementById('reader-content').innerHTML = marked.parse(content);
+                document.getElementById('chapter-select').disabled = false;
+            }
+        });
     </script>
 </body>
+
 </html>

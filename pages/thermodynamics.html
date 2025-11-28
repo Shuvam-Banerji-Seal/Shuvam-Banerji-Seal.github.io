@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,24 +9,28 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/animations.css">
     <link rel="stylesheet" href="../assets/css/mobile.css">
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../assets/css/overrides.css">
     <style>
         .thermo-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem 1rem;
         }
-        
+
         .hero-section {
             text-align: center;
             padding: 3rem 0;
         }
-        
+
         .hero-section h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
@@ -34,14 +39,14 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .content-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
-        
+
         .info-card {
             padding: 2rem;
             border-radius: 12px;
@@ -49,22 +54,22 @@
             border: 2px solid var(--border-color);
             transition: transform 0.3s ease;
         }
-        
+
         .info-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .info-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--accent-color);
         }
-        
+
         .feature-list {
             list-style: none;
             padding: 0;
         }
-        
+
         .feature-list li {
             padding: 0.75rem 0;
             border-bottom: 1px solid var(--border-color);
@@ -72,16 +77,16 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .feature-list li:last-child {
             border-bottom: none;
         }
-        
+
         .cta-section {
             text-align: center;
             margin: 4rem 0;
         }
-        
+
         .github-btn {
             display: inline-flex;
             align-items: center;
@@ -96,19 +101,19 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
+
         .github-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
-        
+
         .topics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
             margin-top: 2rem;
         }
-        
+
         .topic-tag {
             padding: 1rem;
             background: var(--accent-color-alpha);
@@ -120,51 +125,10 @@
         }
     </style>
 </head>
+
 <body>
-    <nav id="navbar" class="scrolled">
-        <div class="nav-content container glassmorphic">
-            <a href="../index.html" class="nav-logo">
-                <i data-lucide="atom" class="mr-2"></i>
-                <span>SBS</span>
-            </a>
-            <div class="nav-links">
-                <a href="../index.html#about" class="nav-link">About</a>
-                <a href="resume.html" class="nav-link">Resume</a>
-                <a href="../index.html#projects" class="nav-link">Projects</a>
-                <a href="github-projects.html" class="nav-link">GitHub</a>
-                <a href="gallery.html" class="nav-link">Gallery</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="reader.html" class="nav-link">E-Reader</a>
-                <a href="music.html" class="nav-link">Music</a>
-                <a href="tools.html" class="nav-link">Tools</a>
-                <a href="../index.html#contact" class="btn btn-primary">Contact</a>
-            </div>
-            <div class="nav-actions">
-                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
-                    <i data-lucide="moon" class="w-5 h-5"></i>
-                </button>
-                <button id="menu-btn" aria-label="Open mobile menu">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu">
-            <button id="close-menu-btn">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            <a href="../index.html#about" class="mobile-menu-link">About</a>
-            <a href="resume.html" class="mobile-menu-link">Resume</a>
-            <a href="../index.html#projects" class="mobile-menu-link">Projects</a>
-            <a href="github-projects.html" class="mobile-menu-link">GitHub</a>
-            <a href="gallery.html" class="mobile-menu-link">Gallery</a>
-            <a href="blog.html" class="mobile-menu-link">Blog</a>
-            <a href="reader.html" class="mobile-menu-link">E-Reader</a>
-            <a href="music.html" class="mobile-menu-link">Music</a>
-            <a href="tools.html" class="mobile-menu-link">Tools</a>
-            <a href="../index.html#contact" class="btn btn-primary mobile-menu-link">Contact</a>
-            <button data-theme-toggle class="theme-toggle-btn mobile-menu-link">Toggle Theme</button>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
+    <script src="../assets/js/navbar.js"></script>
 
     <div id="mobile-menu-backdrop"></div>
 
@@ -172,17 +136,19 @@
         <div class="thermo-container">
             <div class="hero-section">
                 <h1>
-                    <i data-lucide="flame" style="width: 3rem; height: 3rem; display: inline-block; vertical-align: middle;"></i>
+                    <i data-lucide="flame"
+                        style="width: 3rem; height: 3rem; display: inline-block; vertical-align: middle;"></i>
                     Thermodynamics Open Source
                 </h1>
                 <p style="font-size: 1.3rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
-                    A comprehensive, open-source resource for learning and teaching thermodynamics. 
+                    A comprehensive, open-source resource for learning and teaching thermodynamics.
                     Written in LaTeX, freely available for students and educators worldwide.
                 </p>
             </div>
 
             <div class="cta-section">
-                <a href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source" target="_blank" rel="noopener noreferrer" class="github-btn">
+                <a href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source" target="_blank"
+                    rel="noopener noreferrer" class="github-btn">
                     <i data-lucide="github" style="width: 1.5rem; height: 1.5rem;"></i>
                     View on GitHub
                 </a>
@@ -191,40 +157,49 @@
             <div class="content-grid">
                 <div class="info-card glassmorphic">
                     <h3>
-                        <i data-lucide="book-open" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle;"></i>
+                        <i data-lucide="book-open"
+                            style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle;"></i>
                         About the Project
                     </h3>
                     <p style="line-height: 1.8; color: var(--text-secondary);">
-                        This project aims to provide a complete, high-quality thermodynamics textbook that is freely accessible to everyone. 
-                        Written in LaTeX with detailed explanations, derivations, and examples, it covers classical and statistical thermodynamics 
+                        This project aims to provide a complete, high-quality thermodynamics textbook that is freely
+                        accessible to everyone.
+                        Written in LaTeX with detailed explanations, derivations, and examples, it covers classical and
+                        statistical thermodynamics
                         from fundamental principles to advanced applications.
                     </p>
                 </div>
 
                 <div class="info-card glassmorphic">
                     <h3>
-                        <i data-lucide="star" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle;"></i>
+                        <i data-lucide="star"
+                            style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle;"></i>
                         Key Features
                     </h3>
                     <ul class="feature-list">
                         <li>
-                            <i data-lucide="check-circle" style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
+                            <i data-lucide="check-circle"
+                                style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
                             Complete LaTeX source code
                         </li>
                         <li>
-                            <i data-lucide="check-circle" style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
+                            <i data-lucide="check-circle"
+                                style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
                             Comprehensive coverage of topics
                         </li>
                         <li>
-                            <i data-lucide="check-circle" style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
+                            <i data-lucide="check-circle"
+                                style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
                             Worked examples and problems
                         </li>
                         <li>
-                            <i data-lucide="check-circle" style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
+                            <i data-lucide="check-circle"
+                                style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
                             Figures and diagrams
                         </li>
                         <li>
-                            <i data-lucide="check-circle" style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
+                            <i data-lucide="check-circle"
+                                style="width: 1rem; height: 1rem; color: var(--accent-color);"></i>
                             Open for contributions
                         </li>
                     </ul>
@@ -232,12 +207,15 @@
 
                 <div class="info-card glassmorphic">
                     <h3>
-                        <i data-lucide="users" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle;"></i>
+                        <i data-lucide="users"
+                            style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle;"></i>
                         For Educators & Students
                     </h3>
                     <p style="line-height: 1.8; color: var(--text-secondary);">
-                        Whether you're teaching thermodynamics or learning it for the first time, this resource is designed to be 
-                        both rigorous and accessible. The LaTeX source allows instructors to modify and adapt the content for their courses, 
+                        Whether you're teaching thermodynamics or learning it for the first time, this resource is
+                        designed to be
+                        both rigorous and accessible. The LaTeX source allows instructors to modify and adapt the
+                        content for their courses,
                         while students benefit from clear explanations and extensive problem sets.
                     </p>
                 </div>
@@ -277,11 +255,12 @@
                         <li>Submit issues for errors or suggestions</li>
                         <li>Contribute improvements via pull requests</li>
                     </ol>
-                    
-                    <div style="margin-top: 2rem; padding: 1.5rem; background: var(--accent-color-alpha); border-radius: 8px; border: 2px solid var(--accent-color);">
+
+                    <div
+                        style="margin-top: 2rem; padding: 1.5rem; background: var(--accent-color-alpha); border-radius: 8px; border: 2px solid var(--accent-color);">
                         <h4 style="margin-bottom: 0.5rem; font-size: 1.2rem;">License</h4>
                         <p style="margin: 0; color: var(--text-secondary);">
-                            This project is open source and available under a Creative Commons license, 
+                            This project is open source and available under a Creative Commons license,
                             allowing free use, modification, and distribution for educational purposes.
                         </p>
                     </div>
@@ -290,15 +269,19 @@
 
             <div style="text-align: center; margin: 4rem 0;">
                 <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Contribute to the Project</h3>
-                <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                    Help improve this resource by reporting issues, suggesting improvements, or contributing new content.
+                <p
+                    style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Help improve this resource by reporting issues, suggesting improvements, or contributing new
+                    content.
                 </p>
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source/issues" target="_blank" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <a href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source/issues" target="_blank"
+                        class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
                         <i data-lucide="alert-circle"></i>
                         Report Issue
                     </a>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source/fork" target="_blank" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <a href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source/fork" target="_blank"
+                        class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
                         <i data-lucide="git-fork"></i>
                         Fork Project
                     </a>
@@ -310,10 +293,12 @@
     <footer>
         <div class="container">
             <div class="social-links">
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="GitHub Profile">
                     <i data-lucide="github" class="w-5 h-5"></i>
                 </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="LinkedIn Profile">
                     <i data-lucide="linkedin" class="w-5 h-5"></i>
                 </a>
                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
@@ -332,4 +317,5 @@
         document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
 </body>
+
 </html>

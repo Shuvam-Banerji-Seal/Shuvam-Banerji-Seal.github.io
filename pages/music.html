@@ -1,349 +1,825 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description" content="Favorite music of Shuvam Banerji Seal - featuring J-Rock, Anime OSTs, and more.">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Favorite music of Shuvam Banerji Seal - Spotify-style music player">
     <title>Music - Shuvam Banerji Seal</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
-    <!-- Enhanced CSS System -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/animations.css">
     <link rel="stylesheet" href="../assets/css/mobile.css">
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
+    <link rel="stylesheet" href="../assets/css/overrides.css">
     <style>
-        /* Music specific styles */
-        .music-item {
-            transition: background-color 0.3s ease;
+        /* Spotify-style Music Player */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .spotify-container {
+            display: flex;
+            height: 100vh;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: #000000;
+            padding: 24px 12px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #282828;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 12px 24px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1db954;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            border-radius: 4px;
             cursor: pointer;
-            border-radius: 8px;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-        }
-        .music-item:hover {
-            background-color: rgba(6, 182, 212, 0.1); /* Light cyan background on hover */
-        }
-        .music-item.active {
-            background-color: rgba(6, 182, 212, 0.2);
-            border-left: 3px solid #06b6d4;
-        }
-        .music-item.playing {
-            background-color: rgba(6, 182, 212, 0.25);
-        }
-        .player-controls button {
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-        .player-controls button:hover {
-            background-color: rgba(6, 182, 212, 0.2);
-            transform: scale(1.1);
-        }
-        .player-controls button.active {
-            background-color: rgba(6, 182, 212, 0.3);
-            color: #06b6d4;
-        }
-        .folder-section {
-            margin-bottom: 1.5rem;
-        }
-        .folder-title {
+            transition: background 0.2s;
             font-weight: 600;
-            font-size: 1.1rem;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
-            margin-bottom: 0.75rem;
+            color: #b3b3b3;
+        }
+
+        .sidebar-nav-item:hover,
+        .sidebar-nav-item.active {
+            background: #282828;
+            color: #ffffff;
+        }
+
+        .sidebar-playlists {
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 12px;
+        }
+
+        .sidebar-playlists::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .sidebar-playlists::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-playlists::-webkit-scrollbar-thumb {
+            background: #282828;
+            border-radius: 6px;
+        }
+
+        .playlist-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #b3b3b3;
+            padding: 12px;
+            letter-spacing: 1.5px;
+        }
+
+        .playlist-item {
+            padding: 8px 12px;
+            border-radius: 4px;
             cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+
+        .playlist-item:hover {
+            background: #282828;
+            color: #ffffff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background: linear-gradient(180deg, #1e3a8a 0%, #121212 300px);
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+
+        .main-header {
+            padding: 24px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .folder-title:hover {
-            color: #06b6d4;
+
+        .greeting {
+            font-size: 32px;
+            font-weight: 900;
         }
-        .folder-songs {
-            padding-left: 1rem;
+
+        .search-bar {
+            background: #282828;
+            border: none;
+            border-radius: 500px;
+            padding: 12px 48px 12px 48px;
+            font-size: 14px;
+            color: #ffffff;
+            width: 400px;
+            position: relative;
         }
-        .folder-songs.collapsed {
-            display: none;
+
+        .search-bar::placeholder {
+            color: #b3b3b3;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b3b3b3;
+        }
+
+        /* Song Grid */
+        .content-section {
+            padding: 0 32px 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+        }
+
+        .song-card {
+            background: #181818;
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            position: relative;
+        }
+
+        .song-card:hover {
+            background: #282828;
+        }
+
+        .song-card:hover .play-button {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .album-art {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #1db954, #191414);
+            border-radius: 4px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+
+        .play-button {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 48px;
+            height: 48px;
+            background: #1db954;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+            background: #1ed760;
+        }
+
+        .song-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-artist {
+            font-size: 14px;
+            color: #b3b3b3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Player Bar */
+        .player-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #181818;
+            border-top: 1px solid #282828;
+            padding: 16px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            gap: 16px;
+            z-index: 1000;
+        }
+
+        .now-playing {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .now-playing-art {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #1db954, #191414);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .now-playing-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .now-playing-title {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .now-playing-artist {
+            font-size: 12px;
+            color: #b3b3b3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: #b3b3b3;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .control-btn:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .control-btn.active {
+            color: #1db954;
+        }
+
+        .play-pause-btn {
+            width: 32px;
+            height: 32px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .play-pause-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: #b3b3b3;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: #4d4d4d;
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-bar:hover .progress-fill::after {
+            opacity: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #1db954;
+            border-radius: 2px;
+            position: relative;
+            transition: width 0.1s;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .volume-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 4px;
+            background: #4d4d4d;
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .volume-fill {
+            height: 100%;
+            background: #ffffff;
+            border-radius: 2px;
+            width: 70%;
+        }
+
+        /* Loading State */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #1db954;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .spotify-container {
+                padding-top: 70px;
+                /* Space for navbar */
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 70px;
+                bottom: 90px;
+                z-index: 999;
+                transition: left 0.3s ease;
+                border-right: none;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                padding-bottom: 180px;
+                /* Space for player + nav */
+            }
+
+            .main-header {
+                padding: 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .greeting {
+                font-size: 24px;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .song-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .song-card {
+                padding: 12px;
+            }
+
+            .song-title,
+            .song-artist {
+                font-size: 13px;
+            }
+
+            .player-bar {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .now-playing {
+                order: 2;
+            }
+
+            .player-controls {
+                order: 1;
+            }
+
+            .volume-controls {
+                display: none;
+            }
+
+            .control-buttons {
+                gap: 12px;
+            }
+
+            /* Mobile Bottom Navigation */
+            .mobile-bottom-nav {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                position: fixed;
+                bottom: 90px;
+                left: 0;
+                right: 0;
+                background: #000000;
+                border-top: 1px solid #282828;
+                padding: 8px 0;
+                z-index: 998;
+            }
+
+            .mobile-nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                color: #b3b3b3;
+                font-size: 11px;
+                padding: 8px;
+                cursor: pointer;
+                transition: color 0.2s;
+            }
+
+            .mobile-nav-item.active,
+            .mobile-nav-item:active {
+                color: #1db954;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-bottom-nav {
+                display: none;
+            }
+
+            #menu-toggle-btn {
+                display: none;
+            }
         }
     </style>
 </head>
-<body class="">
 
-    <nav id="navbar" class="scrolled">
-        <div class="container nav-content glassmorphic">
-            <a href="../index.html" class="nav-logo">
-                <i data-lucide="atom" class="mr-2"></i>
-                <span>Shuvam B. Seal</span>
-            </a>
-            <div class="nav-links">
-                <a href="../index.html#about" class="nav-link">About</a>
-                <a href="resume.html" class="nav-link">Resume</a>
-                <a href="../index.html#projects" class="nav-link">Projects</a>
-                <a href="github-projects.html" class="nav-link">GitHub</a>
-                <a href="gallery.html" class="nav-link">Gallery</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="music.html" class="nav-link active">Music</a>
-                <a href="../index.html#contact" class="btn btn-primary">Contact</a>
-                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
-                    <i data-lucide="moon" class="w-5 h-5"></i>
-                </button>
-                <button id="menu-btn" aria-label="Open mobile menu">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
+<body>
+    <!-- Navbar -->
+    <div id="navbar-container" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1001;"></div>
+    <script src="../assets/js/navbar.js"></script>
+
+    <!-- Spotify-style Container -->
+    <div class="spotify-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <i data-lucide="music" class="w-6 h-6"></i>
+                <span>My Music</span>
             </div>
-        </div>
-         <div id="mobile-menu">
-             <button id="close-menu-btn">
-                 <i data-lucide="x" class="w-8 h-8"></i>
-             </button>
-             <a href="../index.html#about" class="mobile-menu-link">About</a>
-             <a href="resume.html" class="mobile-menu-link">Resume</a>
-             <a href="../index.html#projects" class="mobile-menu-link">Projects</a>
-             <a href="github-projects.html" class="mobile-menu-link">GitHub</a>
-             <a href="gallery.html" class="mobile-menu-link">Gallery</a>
-             <a href="blog.html" class="mobile-menu-link">Blog</a>
-             <a href="music.html" class="mobile-menu-link active">Music</a>
-             <a href="../index.html#contact" class="btn btn-primary mobile-menu-link">Contact</a>
-             <button data-theme-toggle class="theme-toggle-btn mobile-menu-link">Toggle Theme</button>
-         </div>
-    </nav>
 
-    <!-- Mobile menu backdrop -->
-    <div id="mobile-menu-backdrop"></div>
-
-    <main class="container section">
-        <header class="text-center mb-16 animate-fade-in-up">
-            <h1 class="page-title">
-                <i data-lucide="music-4" class="mr-3"></i> Favorite Music
-            </h1>
-            <p class="page-subtitle">Some tracks and artists currently on repeat.</p>
-        </header>
-
-        <!-- Music Player Section -->
-        <div class="music-player-container card glassmorphic animate-on-scroll mb-8">
-            <h2 class="section-subtitle-left mb-6">
-                <i data-lucide="play" class="inline-block w-6 h-6 mr-2"></i>
-                Music Player
-            </h2>
-            
-            <!-- Audio Player -->
-            <div class="audio-player-wrapper mb-6">
-                <audio id="audio-player" controls class="w-full" style="border-radius: 8px;" 
-                       onended="handleTrackEnd()" ontimeupdate="updateProgress()">
-                    <source id="audio-source" src="" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                
-                <!-- Custom Controls -->
-                <div class="player-controls flex items-center justify-center gap-4 mt-4">
-                    <button onclick="toggleShuffle()" id="shuffle-btn" title="Shuffle" class="text-gray-600 hover:text-cyan-500">
-                        <i data-lucide="shuffle" class="w-5 h-5"></i>
-                    </button>
-                    <button onclick="previousTrack()" title="Previous" class="text-gray-600 hover:text-cyan-500">
-                        <i data-lucide="skip-back" class="w-6 h-6"></i>
-                    </button>
-                    <button onclick="togglePlayPause()" id="play-pause-btn" title="Play/Pause" 
-                            class="text-cyan-500 bg-cyan-500 bg-opacity-10 p-3">
-                        <i data-lucide="play" class="w-8 h-8" id="play-pause-icon"></i>
-                    </button>
-                    <button onclick="nextTrack()" title="Next" class="text-gray-600 hover:text-cyan-500">
-                        <i data-lucide="skip-forward" class="w-6 h-6"></i>
-                    </button>
-                    <button onclick="toggleRepeat()" id="repeat-btn" title="Repeat Off" class="text-gray-600 hover:text-cyan-500">
-                        <i data-lucide="repeat" class="w-5 h-5"></i>
-                    </button>
-                </div>
-                
-                <div class="current-track-info mt-4 text-center">
-                    <p class="text-lg font-semibold" id="current-track-title">No track selected</p>
-                    <p class="text-sm text-gray-600" id="current-track-artist">Select a song from the list below</p>
-                    <p class="text-xs text-gray-500 mt-1" id="current-track-folder"></p>
-                </div>
-                
-                <!-- Progress Info -->
-                <div class="flex justify-between text-xs text-gray-500 mt-2">
-                    <span id="current-time">0:00</span>
-                    <span id="total-time">0:00</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Music Library -->
-        <div class="music-container card glassmorphic animate-on-scroll">
-            <h2 class="section-subtitle-left mb-6">
-                <i data-lucide="music-4" class="inline-block w-6 h-6 mr-2"></i>
-                Music Library
-                <span class="text-sm font-normal text-gray-500 ml-2" id="song-count"></span>
-            </h2>
-            <p class="text-sm text-gray-600 mb-4">
-                <i data-lucide="info" class="inline-block w-4 h-4 mr-1"></i>
-                Music files are streamed from the <a href="https://github.com/Shuvam-Banerji-Seal/assets_for_my_website" target="_blank" rel="noopener noreferrer" class="text-cyan-500 hover:text-cyan-600">assets repository</a> using Git LFS. Click songs to play, folders to expand/collapse.
-            </p>
-            <ul class="music-list" id="music-list">
-                <!-- Music list will be dynamically generated -->
-                <li class="music-item text-center py-4">
-                    <i data-lucide="loader" class="inline-block w-5 h-5 animate-spin mr-2"></i>
-                    Loading music library...
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item active">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    <span>Home</span>
+                </li>
+                <li class="sidebar-nav-item" onclick="document.getElementById('search-input').focus()">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                    <span>Search</span>
+                </li>
+                <li class="sidebar-nav-item">
+                    <i data-lucide="library" class="w-5 h-5"></i>
+                    <span>Your Library</span>
                 </li>
             </ul>
-        </div>
-        
-        <script>
-            // Music library data - update this with your music files
-            const musicLibrary = [
-                {
-                    title: "Scarborough Fair",
-                    artist: "山田タマル (Yamada Tamaru)",
-                    category: "Suka Suka",
-                    genre: "Anime OST",
-                    file: "../assets_for_my_website/Music/Suka suka/「Scarborough Fair」史卡博羅市集－山田タマル (中英字幕).opus"
-                },
-                {
-                    title: "Always in my heart",
-                    artist: "山田タマル (Yamada Tamaru)",
-                    category: "Suka Suka",
-                    genre: "Anime OST",
-                    file: "../assets_for_my_website/Music/Suka suka/山田タマル Always in my heart full.opus"
-                },
-                {
-                    title: "Suka Suka - Best Vocal Soundtracks",
-                    artist: "Various Artists",
-                    category: "Suka Suka",
-                    genre: "Anime OST",
-                    file: "../assets_for_my_website/Music/Suka suka/Suka Suka - Best Vocal Sountracks - [ 終末なにしてますか 忙しいですか 救ってもらっていいですか ].mp3"
-                },
-                {
-                    title: "Heart Attack",
-                    artist: "Demi Lovato (Cover by Sam Tsui & Chrissy Costanza)",
-                    category: "Covers",
-                    genre: "Pop Cover",
-                    file: "../assets_for_my_website/Music/Alex Groot, Kurt and Crissy/Heart Attack - Demi Lovato (Sam Tsui & Chrissy Costanza of ATC).mp3"
-                },
-                {
-                    title: "22",
-                    artist: "Taylor Swift (Cover by Alex Goot, Sam Tsui, Chrissy)",
-                    category: "Covers",
-                    genre: "Pop Cover",
-                    file: "../assets_for_my_website/Music/Alex Groot, Kurt and Crissy/22_taylor_swift_alex_goot_sam_tsui_chrissy_king_the_kid_cover_-7443934852967229262.mp3"
-                }
-            ];
 
-            // Function to render music list
-            function renderMusicList() {
-                const musicList = document.getElementById('music-list');
-                musicList.innerHTML = '';
-                
-                musicLibrary.forEach((track, index) => {
-                    const li = document.createElement('li');
-                    li.className = 'music-item cursor-pointer';
-                    li.onclick = () => playTrack(index);
-                    
-                    li.innerHTML = `
-                        <div class="music-info">
-                            <i data-lucide="play-circle" class="w-5 h-5 text-cyan-400"></i>
-                            <div>
-                                <p class="music-title">${track.title}</p>
-                                <p class="music-artist">${track.artist}</p>
-                            </div>
-                        </div>
-                        <div class="flex flex-col items-end">
-                            <span class="music-genre text-xs">${track.genre}</span>
-                            <span class="text-xs text-gray-500">${track.category}</span>
-                        </div>
-                    `;
-                    
-                    musicList.appendChild(li);
-                });
-                
-                // Reinitialize Lucide icons
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            }
-
-            // Function to play a track
-            function playTrack(index) {
-                const track = musicLibrary[index];
-                const audioPlayer = document.getElementById('audio-player');
-                const audioSource = document.getElementById('audio-source');
-                const trackTitle = document.getElementById('current-track-title');
-                const trackArtist = document.getElementById('current-track-artist');
-                
-                // Update source
-                audioSource.src = track.file;
-                audioPlayer.load();
-                
-                // Play audio with error handling
-                audioPlayer.play().catch(error => {
-                    console.error('Error playing audio:', error);
-                    // User interaction may be required to play audio
-                    trackTitle.textContent = track.title + ' (Click play to start)';
-                });
-                
-                // Update track info
-                trackTitle.textContent = track.title;
-                trackArtist.textContent = track.artist;
-                
-                // Highlight current track
-                document.querySelectorAll('.music-item').forEach((item, i) => {
-                    if (i === index) {
-                        item.style.backgroundColor = 'rgba(6, 182, 212, 0.2)';
-                    } else {
-                        item.style.backgroundColor = '';
-                    }
-                });
-            }
-
-            // Initialize music list when page loads
-            document.addEventListener('DOMContentLoaded', function() {
-                renderMusicList();
-            });
-        </script>
-
-    </main>
-
-    <footer>
-        <div class="container">
-             <div class="social-links">
-                 <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
-                    <i data-lucide="github" class="w-5 h-5"></i>
-                </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
-                    <i data-lucide="linkedin" class="w-5 h-5"></i>
-                </a>
-                 <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
-                </a>
+            <div class="sidebar-playlists">
+                <div class="playlist-title">Playlists</div>
+                <div id="folder-list">
+                    <div class="loading-spinner" style="margin: 20px auto;"></div>
+                </div>
             </div>
-            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-             <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
-            <div class="mt-4">
-                <button data-theme-toggle class="theme-toggle-btn">
-                    <i data-lucide="moon" class="w-4 h-4 mr-2"></i> Toggle Theme
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1 class="greeting" id="greeting">Good Evening</h1>
+                <div style="position: relative;">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" class="search-bar" placeholder="Search songs, artists..." id="search-input">
+                </div>
+            </header>
+
+            <section class="content-section">
+                <h2 class="section-title" id="section-title">All Songs</h2>
+                <div class="song-grid" id="song-grid">
+                    <div class="loading-spinner" style="margin: 40px auto;"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Player Bar -->
+    <div class="player-bar">
+        <div class="now-playing">
+            <div class="now-playing-art">
+                <i data-lucide="music-2" class="w-6 h-6"></i>
+            </div>
+            <div class="now-playing-info">
+                <div class="now-playing-title" id="current-track-title">No track selected</div>
+                <div class="now-playing-artist" id="current-track-artist">Select a song to play</div>
+            </div>
+            <button class="control-btn" title="Add to favorites">
+                <i data-lucide="heart" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div class="player-controls">
+            <div class="control-buttons">
+                <button class="control-btn" onclick="toggleShuffle()" id="shuffle-btn" title="Shuffle">
+                    <i data-lucide="shuffle" class="w-5 h-5"></i>
+                </button>
+                <button class="control-btn" onclick="previousTrack()" title="Previous">
+                    <i data-lucide="skip-back" class="w-5 h-5"></i>
+                </button>
+                <button class="play-pause-btn" onclick="togglePlayPause()" title="Play/Pause">
+                    <i data-lucide="play" class="w-5 h-5" id="play-pause-icon" style="color: #000;"></i>
+                </button>
+                <button class="control-btn" onclick="nextTrack()" title="Next">
+                    <i data-lucide="skip-forward" class="w-5 h-5"></i>
+                </button>
+                <button class="control-btn" onclick="toggleRepeat()" id="repeat-btn" title="Repeat Off">
+                    <i data-lucide="repeat" class="w-5 h-5"></i>
                 </button>
             </div>
+            <div class="progress-bar-container">
+                <span class="time-label" id="current-time">0:00</span>
+                <div class="progress-bar" onclick="seekTrack(event)">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="time-label" id="total-time">0:00</span>
+            </div>
         </div>
-    </footer>
 
-    <!-- Mobile Menu Fix - Load First -->
+        <div class="volume-controls">
+            <button class="control-btn">
+                <i data-lucide="volume-2" class="w-5 h-5"></i>
+            </button>
+            <div class="volume-slider">
+                <div class="volume-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <div class="mobile-nav-item active">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </div>
+        <div class="mobile-nav-item" onclick="document.getElementById('search-input').focus()">
+            <i data-lucide="search" class="w-5 h-5"></i>
+            <span>Search</span>
+        </div>
+        <div class="mobile-nav-item" onclick="document.getElementById('sidebar').classList.toggle('active')">
+            <i data-lucide="folder" class="w-5 h-5"></i>
+            <span>Library</span>
+        </div>
+        <div class="mobile-nav-item">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </div>
+    </div>
+
+    <!-- Hidden Audio Player -->
+    <audio id="audio-player" onended="handleTrackEnd()" ontimeupdate="updateProgress()">
+        <source id="audio-source" src="" type="audio/mpeg">
+    </audio>
+
+    <!-- Scripts -->
     <script src="../assets/js/mobile-menu-fix.js"></script>
-    <!-- Original functionality -->
-    <script src="../assets/js/main.js"></script>
-    <!-- Enhanced features -->
-    <script src="../assets/js/enhanced.js"></script>
-    <!-- Enhanced Music Player with Full Library -->
     <script src="../assets/js/music-player-enhanced.js"></script>
     <script>
-      lucide.createIcons();
-      // Set current year in footer
-      document.getElementById('current-year').textContent = new Date().getFullYear();
-    </script>
+        // Initialize Lucide icons
+        lucide.createIcons();
 
+        // Set greeting based on time
+        const hour = new Date().getHours();
+        const greetingEl = document.getElementById('greeting');
+        if (hour < 12) greetingEl.textContent = 'Good Morning';
+        else if (hour < 18) greetingEl.textContent = 'Good Afternoon';
+        else greetingEl.textContent = 'Good Evening';
+
+        // Render UI after library loads
+        async function renderSpotifyUI() {
+            // Wait for library to load
+            await new Promise(resolve => {
+                const checkLibrary = setInterval(() => {
+                    if (window.musicLibrary && window.musicLibrary.length > 0) {
+                        clearInterval(checkLibrary);
+                        resolve();
+                    }
+                }, 100);
+            });
+
+            const library = window.musicLibrary;
+
+            // Render folders in sidebar
+            const folders = [...new Set(library.map(track => track.folder))].sort();
+            const folderList = document.getElementById('folder-list');
+            folderList.innerHTML = folders.map(folder => `
+                <div class="playlist-item" onclick="filterByFolder('${folder}')">
+                    📁 ${folder}
+                </div>
+            `).join('');
+
+            // Render all songs
+            renderSongs(library);
+        }
+
+        function renderSongs(songs) {
+            const grid = document.getElementById('song-grid');
+            const fullLibrary = window.musicLibrary;
+
+            grid.innerHTML = songs.map((track) => {
+                // Find the correct global index from full library
+                const globalIndex = fullLibrary.findIndex(t =>
+                    t.title === track.title && t.artist === track.artist && t.file === track.file
+                );
+
+                return `
+                <div class="song-card" onclick="playTrackByIndex(${globalIndex})">
+                    <div class="album-art">
+                        ${track.folder === 'Ishaan' ? '🎭' : track.folder === 'Pokémon' ? '⚡' : track.folder === 'Suka Suka' ? '💫' : '🎵'}
+                        <button class="play-button" onclick="event.stopPropagation(); playTrackByIndex(${globalIndex})">
+                            <i data-lucide="play" class="w-5 h-5" style="color: #000;"></i>
+                        </button>
+                    </div>
+                    <div class="song-title">${track.title}</div>
+                    <div class="song-artist">${track.artist}</div>
+                </div>
+            `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        let library = [];
+        window.filterByFolder = function (folder) {
+            const filtered = window.musicLibrary.filter(t => t.folder === folder);
+            document.getElementById('section-title').textContent = folder;
+            renderSongs(filtered);
+        };
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (!query) {
+                renderSongs(window.musicLibrary);
+                document.getElementById('section-title').textContent = 'All Songs';
+                return;
+            }
+
+            const filtered = window.musicLibrary.filter(track =>
+                track.title.toLowerCase().includes(query) ||
+                track.artist.toLowerCase().includes(query) ||
+                track.folder.toLowerCase().includes(query)
+            );
+            document.getElementById('section-title').textContent = `Search Results (${filtered.length})`;
+            renderSongs(filtered);
+        });
+
+        // Seek functionality
+        window.seekTrack = function (event) {
+            const progressBar = event.currentTarget;
+            const percent = event.offsetX / progressBar.offsetWidth;
+            const player = document.getElementById('audio-player');
+            if (player.duration) {
+                player.currentTime = percent * player.duration;
+            }
+        };
+
+        // Initialize when DOM loads
+        document.addEventListener('DOMContentLoaded', renderSpotifyUI);
+
+        // Store library reference
+        setInterval(() => {
+            if (window.musicLibrary) {
+                library = window.musicLibrary;
+            }
+        }, 100);
+    </script>
 </body>
+
 </html>
