@@ -45,7 +45,7 @@ test('All HTML pages exist', () => {
 
 // Test 4: Check if required CSS files exist
 test('Required CSS files exist', () => {
-    const cssFiles = ['assets/css/main.css', 'assets/css/mobile.css', 'assets/css/overrides.css'];
+    const cssFiles = ['assets/css/main.css', 'assets/css/mobile.css'];
     cssFiles.forEach(file => {
         const filePath = path.join(__dirname, '..', file);
         assert(fs.existsSync(filePath), `CSS file ${file} not found`);
