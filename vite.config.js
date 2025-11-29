@@ -3,7 +3,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   root: '.',
-  base: '/',
+  base: '/Shuvam-Banerji-Seal.github.io/',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
