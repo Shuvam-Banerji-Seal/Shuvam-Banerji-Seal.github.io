@@ -33,8 +33,6 @@ body[data-theme='dark'] {
 .glassmorphic {
     /* Warm cream glassmorphic effect */
     background: rgba(254, 248, 243, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(205, 180, 150, 0.3);
     box-shadow: 0 4px 30px rgba(139, 101, 68, 0.1);
 }
@@ -438,8 +436,6 @@ body[data-theme='dark'] .btn-secondary:hover {
     
     /* Glassmorphic effect for the menu itself */
     background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -1464,8 +1460,6 @@ body.dark .music-item:hover {
 /* Custom Components */
 .glassmorphic {
     background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
