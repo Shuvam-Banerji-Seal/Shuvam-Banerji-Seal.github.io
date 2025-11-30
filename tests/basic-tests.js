@@ -22,13 +22,13 @@ function test(name, fn) {
 
 // Test 1: Check if music manifest exists
 test('Music manifest exists', () => {
-    const manifestPath = path.join(__dirname, '../public/music-library.json');
-    assert(fs.existsSync(manifestPath), 'Music manifest file not found');
+    const manifestPath = path.join(__dirname, '../music-library.json');
+    assert(fs.existsSync(manifestPath), 'Music manifest file not found in root');
 });
 
 // Test 2: Check if music manifest is valid JSON
 test('Music manifest is valid JSON', () => {
-    const manifestPath = path.join(__dirname, '../public/music-library.json');
+    const manifestPath = path.join(__dirname, '../music-library.json');
     const content = fs.readFileSync(manifestPath, 'utf8');
     const json = JSON.parse(content);
     assert(Array.isArray(json), 'Music manifest should be an array');
@@ -45,7 +45,7 @@ test('All HTML pages exist', () => {
 
 // Test 4: Check if required CSS files exist
 test('Required CSS files exist', () => {
-    const cssFiles = ['assets/css/main.css', 'assets/css/mobile.css'];
+    const cssFiles = ['assets/css/main.css', 'assets/css/mobile.css', 'assets/css/music-player.css'];
     cssFiles.forEach(file => {
         const filePath = path.join(__dirname, '..', file);
         assert(fs.existsSync(filePath), `CSS file ${file} not found`);

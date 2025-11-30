@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="../assets/css/music-player.css">
 </head>
 
-<body>
+<body class="music-player-page">
     <!-- Navbar -->
     <div id="navbar-container" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1001;"></div>
     <script src="../assets/js/navbar.js"></script>
@@ -35,9 +35,8 @@
                 <i data-lucide="music" class="w-6 h-6"></i>
                 <span>My Music</span>
             </div>
-
             <ul class="sidebar-nav">
-                <li class="sidebar-nav-item active">
+                <li class="sidebar-nav-item active" onclick="showAllSongs()">
                     <i data-lucide="home" class="w-5 h-5"></i>
                     <span>Home</span>
                 </li>
@@ -50,7 +49,6 @@
                     <span>Your Library</span>
                 </li>
             </ul>
-
             <div class="sidebar-playlists">
                 <div class="playlist-title">Playlists</div>
                 <div id="folder-list">
@@ -68,7 +66,6 @@
                     <input type="text" class="search-bar" placeholder="Search songs, artists..." id="search-input">
                 </div>
             </header>
-
             <section class="content-section">
                 <h2 class="section-title" id="section-title">All Songs</h2>
                 <div class="song-grid" id="song-grid">
@@ -88,11 +85,7 @@
                 <div class="now-playing-title" id="current-track-title">No track selected</div>
                 <div class="now-playing-artist" id="current-track-artist">Select a song to play</div>
             </div>
-            <button class="control-btn" title="Add to favorites">
-                <i data-lucide="heart" class="w-5 h-5"></i>
-            </button>
         </div>
-
         <div class="player-controls">
             <div class="control-buttons">
                 <button class="control-btn" onclick="toggleShuffle()" id="shuffle-btn" title="Shuffle">
@@ -102,7 +95,7 @@
                     <i data-lucide="skip-back" class="w-5 h-5"></i>
                 </button>
                 <button class="play-pause-btn" onclick="togglePlayPause()" title="Play/Pause">
-                    <i data-lucide="play" class="w-5 h-5" id="play-pause-icon" style="color: #000;"></i>
+                    <i data-lucide="play" class="w-5 h-5" id="play-pause-icon"></i>
                 </button>
                 <button class="control-btn" onclick="nextTrack()" title="Next">
                     <i data-lucide="skip-forward" class="w-5 h-5"></i>
@@ -119,7 +112,6 @@
                 <span class="time-label" id="total-time">0:00</span>
             </div>
         </div>
-
         <div class="volume-controls">
             <button class="control-btn">
                 <i data-lucide="volume-2" class="w-5 h-5"></i>
@@ -132,7 +124,7 @@
 
     <!-- Mobile Bottom Navigation -->
     <div class="mobile-bottom-nav">
-        <div class="mobile-nav-item active">
+        <div class="mobile-nav-item active" onclick="showAllSongs()">
             <i data-lucide="home" class="w-5 h-5"></i>
             <span>Home</span>
         </div>
@@ -144,10 +136,6 @@
             <i data-lucide="folder" class="w-5 h-5"></i>
             <span>Library</span>
         </div>
-        <div class="mobile-nav-item">
-            <i data-lucide="user" class="w-5 h-5"></i>
-            <span>Profile</span>
-        </div>
     </div>
 
     <!-- Hidden Audio Player -->
@@ -156,34 +144,19 @@
     </audio>
 
     <!-- Scripts -->
-    <script src="../assets/js/mobile-menu-fix.js"></script>
-    <script src="../assets/js/music-player-enhanced.js"></script>
+    <script type="module" src="../assets/js/music-player-enhanced.js"></script>
     <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-
         // Set greeting based on time
-        const hour = new Date().getHours();
-        const greetingEl = document.getElementById('greeting');
-        if (hour < 12) greetingEl.textContent = 'Good Morning';
-        else if (hour < 18) greetingEl.textContent = 'Good Afternoon';
-        else greetingEl.textContent = 'Good Evening';
+        function setGreeting() {
+            const hour = new Date().getHours();
+            const greetingEl = document.getElementById('greeting');
+            if (hour < 12) greetingEl.textContent = 'Good Morning';
+            else if (hour < 18) greetingEl.textContent = 'Good Afternoon';
+            else greetingEl.textContent = 'Good Evening';
+        }
 
-        // Render UI after library loads
-        async function renderSpotifyUI() {
-            // Wait for library to load
-            await new Promise(resolve => {
-                const checkLibrary = setInterval(() => {
-                    if (window.musicLibrary && window.musicLibrary.length > 0) {
-                        clearInterval(checkLibrary);
-                        resolve();
-                    }
-                }, 100);
-            });
-
-            const library = window.musicLibrary;
-
-            // Render folders in sidebar
+        // Render folders in the sidebar
+        function renderFolders(library) {
             const folders = [...new Set(library.map(track => track.folder))].sort();
             const folderList = document.getElementById('folder-list');
             folderList.innerHTML = folders.map(folder => `
@@ -191,63 +164,47 @@
                     📁 ${folder}
                 </div>
             `).join('');
-
-            // Render all songs
-            renderSongs(library);
         }
 
+        // Render songs in the main grid
         function renderSongs(songs) {
             const grid = document.getElementById('song-grid');
             const fullLibrary = window.musicLibrary;
 
-            grid.innerHTML = songs.map((track) => {
-                // Find the correct global index from full library
-                const globalIndex = fullLibrary.findIndex(t =>
-                    t.title === track.title && t.artist === track.artist && t.file === track.file
-                );
+            if (!songs || songs.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No songs found.</p>';
+                return;
+            }
 
+            grid.innerHTML = songs.map((track) => {
+                const globalIndex = fullLibrary.findIndex(t => t.file === track.file);
                 return `
                 <div class="song-card" onclick="playTrackByIndex(${globalIndex})">
                     <div class="album-art">
                         ${track.folder === 'Ishaan' ? '🎭' : track.folder === 'Pokémon' ? '⚡' : track.folder === 'Suka Suka' ? '💫' : '🎵'}
                         <button class="play-button" onclick="event.stopPropagation(); playTrackByIndex(${globalIndex})">
-                            <i data-lucide="play" class="w-5 h-5" style="color: #000;"></i>
+                            <i data-lucide="play" class="w-5 h-5"></i>
                         </button>
                     </div>
                     <div class="song-title">${track.title}</div>
                     <div class="song-artist">${track.artist}</div>
-                </div>
-            `;
+                </div>`;
             }).join('');
             lucide.createIcons();
         }
 
-        let library = [];
+        // --- Global UI Functions ---
         window.filterByFolder = function (folder) {
             const filtered = window.musicLibrary.filter(t => t.folder === folder);
             document.getElementById('section-title').textContent = folder;
             renderSongs(filtered);
         };
 
-        // Search functionality
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            if (!query) {
-                renderSongs(window.musicLibrary);
-                document.getElementById('section-title').textContent = 'All Songs';
-                return;
-            }
+        window.showAllSongs = function () {
+            document.getElementById('section-title').textContent = 'All Songs';
+            renderSongs(window.musicLibrary);
+        };
 
-            const filtered = window.musicLibrary.filter(track =>
-                track.title.toLowerCase().includes(query) ||
-                track.artist.toLowerCase().includes(query) ||
-                track.folder.toLowerCase().includes(query)
-            );
-            document.getElementById('section-title').textContent = `Search Results (${filtered.length})`;
-            renderSongs(filtered);
-        });
-
-        // Seek functionality
         window.seekTrack = function (event) {
             const progressBar = event.currentTarget;
             const percent = event.offsetX / progressBar.offsetWidth;
@@ -257,16 +214,45 @@
             }
         };
 
-        // Initialize when DOM loads
-        document.addEventListener('DOMContentLoaded', renderSpotifyUI);
+        // --- Search Functionality ---
+        function setupSearch() {
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const library = window.musicLibrary;
+                if (!query) {
+                    showAllSongs();
+                    return;
+                }
+                const filtered = library.filter(track =>
+                    track.title.toLowerCase().includes(query) ||
+                    track.artist.toLowerCase().includes(query) ||
+                    track.folder.toLowerCase().includes(query)
+                );
+                document.getElementById('section-title').textContent = `Search Results (${filtered.length})`;
+                renderSongs(filtered);
+            });
+        }
 
-        // Store library reference
-        setInterval(() => {
-            if (window.musicLibrary) {
-                library = window.musicLibrary;
+        // --- Main Initialization ---
+        async function main() {
+            lucide.createIcons();
+            setGreeting();
+
+            // Wait for the player and library to be ready
+            await window.initializeMusicPlayer();
+
+            const library = window.musicLibrary;
+            if (library && library.length > 0) {
+                renderFolders(library);
+                renderSongs(library);
+                setupSearch();
+            } else {
+                document.getElementById('song-grid').innerHTML = '<p style="text-align: center; color: var(--text-accent-error);">Could not load music library. Please check the console.</p>';
+                 document.getElementById('folder-list').innerHTML = '';
             }
-        }, 100);
+        }
+
+        document.addEventListener('DOMContentLoaded', main);
     </script>
 </body>
-
 </html>
