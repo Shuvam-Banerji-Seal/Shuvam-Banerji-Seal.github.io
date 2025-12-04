@@ -16,8 +16,8 @@ async function loadBlogList() {
     container.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Loading posts...</div>';
 
     try {
-        const response = await fetch('/blog-manifest.json');
-        if (!response.ok) throw new Error('Failed to load blog manifest');
+        const response = await fetch('/blog-manifest.json?v=' + Date.now());
+        if (!response.ok) throw new Error(`Failed to load blog manifest: ${response.status} ${response.statusText}`);
 
         const posts = await response.json();
 
