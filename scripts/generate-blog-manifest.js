@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const POSTS_DIR = path.join(__dirname, '../assets/posts');
-const OUTPUT_FILE = path.join(__dirname, '../assets/blog-manifest.json');
+const POSTS_DIR = path.join(__dirname, '../public/posts');
+const OUTPUT_FILE = path.join(__dirname, '../public/blog-manifest.json');
 
 // Ensure posts directory exists
 if (!fs.existsSync(POSTS_DIR)) {

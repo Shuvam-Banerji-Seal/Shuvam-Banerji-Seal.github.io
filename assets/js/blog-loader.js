@@ -16,7 +16,7 @@ async function loadBlogList() {
     container.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Loading posts...</div>';
 
     try {
-        const response = await fetch('../assets/blog-manifest.json');
+        const response = await fetch('/blog-manifest.json');
         if (!response.ok) throw new Error('Failed to load blog manifest');
 
         const posts = await response.json();
@@ -68,7 +68,7 @@ async function loadBlogPost(filename) {
     container.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Loading post...</div>';
 
     try {
-        const response = await fetch(`../assets/posts/${filename}`);
+        const response = await fetch(`/posts/${filename}`);
         if (!response.ok) throw new Error('Failed to load post');
 
         const text = await response.text();

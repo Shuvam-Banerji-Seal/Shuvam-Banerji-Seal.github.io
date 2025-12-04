@@ -1,0 +1,61 @@
+[
+  {
+    "filename": "chemistry-ai-revolution.md",
+    "title": "\"Computational Chemistry in the Age of AI: From DFT to Neural Potentials\"",
+    "date": "2025-12-09",
+    "tags": [
+      "Chemistry",
+      "Computational Science",
+      "DFT",
+      "Machine Learning"
+    ],
+    "description": "A comprehensive look at how Machine Learning is revolutionizing computational chemistry, bridging the gap between quantum accuracy and classical speed."
+  },
+  {
+    "filename": "llm-deep-dive.md",
+    "title": "\"Large Language Models: A Deep Dive into Architecture and Capabilities\"",
+    "date": "2025-12-08",
+    "tags": [
+      "AI",
+      "LLM",
+      "Deep Learning",
+      "NLP"
+    ],
+    "description": "An in-depth exploration of Transformer architecture, Attention mechanisms, and the evolution of LLMs from GPT-1 to GPT-4 and beyond."
+  },
+  {
+    "filename": "scalable-web-apps.md",
+    "title": "Building Scalable Web Apps with Modern Stacks",
+    "date": "2025-12-07",
+    "tags": [
+      "Web Dev",
+      "Architecture",
+      "Performance",
+      "JavaScript"
+    ],
+    "description": "A guide to modern web architecture, focusing on performance, scalability, and the shift towards edge computing and serverless patterns."
+  },
+  {
+    "filename": "future-computational-chemistry.md",
+    "title": "The Future of Computational Chemistry: AI & Quantum Computing",
+    "date": "2025-12-06",
+    "tags": [
+      "Chemistry",
+      "AI",
+      "Quantum Computing",
+      "Research"
+    ],
+    "description": "Exploring how Artificial Intelligence and Quantum Computing are revolutionizing the field of computational chemistry, from drug discovery to materials science."
+  },
+  {
+    "filename": "welcome.md",
+    "title": "Welcome to My Enhanced Blog",
+    "date": "2025-12-05",
+    "tags": [
+      "Update",
+      "Markdown",
+      "Tech"
+    ],
+    "description": "A demonstration of the new Markdown-based blog system with Math and Code support."
+  }
+]
