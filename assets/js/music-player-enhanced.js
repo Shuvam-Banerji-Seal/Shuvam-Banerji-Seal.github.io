@@ -336,13 +336,14 @@ window.playTrack = function (index) {
             audioPlayer.removeEventListener('error', errorHandler);
         })
             .catch(error => {
-                console.error('Error playing audio:', error);
-                // Don't change text if it was just an abort/interruption
-                if (error.name !== 'AbortError') {
-                    playerState.isPlaying = false;
-                    updatePlayPauseIcon();
-                    if (trackTitle) trackTitle.textContent = track.title + ' (Click play to start)';
+                // AbortError is harmless - happens when switching tracks quickly
+                if (error.name === 'AbortError') {
+                    return; // Silently ignore abort errors
                 }
+                console.error('Error playing audio:', error);
+                playerState.isPlaying = false;
+                updatePlayPauseIcon();
+                if (trackTitle) trackTitle.textContent = track.title + ' (Click play to start)';
             });
     }
 
