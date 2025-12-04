@@ -37,7 +37,7 @@ function scanMusicDirectory(dir, baseFolder = '') {
                         title: title,
                         artist: inferArtist(folder, title),
                         folder: folder,
-                        file: `../assets_for_my_website/${relativePath.replace(/\\/g, '/')}`
+                        file: `/assets_for_my_website/${relativePath.replace(/\\/g, '/')}`
                     });
                 }
             }
