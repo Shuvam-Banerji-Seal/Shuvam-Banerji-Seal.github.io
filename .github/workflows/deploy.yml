@@ -27,6 +27,16 @@ jobs:
           submodules: 'recursive'
           lfs: true
 
+      - name: Pull LFS files from submodule
+        run: |
+          echo "📥 Pulling LFS files from assets_for_my_website..."
+          cd assets_for_my_website
+          git lfs install
+          git lfs pull
+          echo "✅ LFS files pulled successfully"
+          echo "📁 Checking a sample MP3 file:"
+          file "Music/Ishaan/BODMAS.mp3" || echo "File check failed"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:

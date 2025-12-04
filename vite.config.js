@@ -3,7 +3,8 @@ import { resolve } from 'path';
 
 export default defineConfig({
   root: '.',
-  base: '/Shuvam-Banerji-Seal.github.io/',
+  base: '/',
+  publicDir: 'public',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
@@ -25,9 +26,17 @@ export default defineConfig({
     port: 8080,
     host: true,
     open: true,
+    fs: {
+      // Allow serving files from parent directory (for symlinked assets)
+      allow: ['..'],
+      strict: false,
+    },
   },
   preview: {
     port: 8080,
     host: true,
+  },
+  resolve: {
+    preserveSymlinks: true,
   },
 });
