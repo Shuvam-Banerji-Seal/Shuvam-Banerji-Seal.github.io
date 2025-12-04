@@ -84,31 +84,33 @@ class MusicPlayer {
             this.analyser = this.audioCtx.createAnalyser();
             this.analyser.fftSize = 256;
 
-            // Create Equalizer Bands
-            this.bassFilter = this.audioCtx.createBiquadFilter();
-            this.bassFilter.type = 'lowshelf';
-            this.bassFilter.frequency.value = 200;
+            // EQ State
+            this.eqBands = [60, 150, 400, 1000, 2400, 6000, 15000];
+            this.filters = [];
+            this.state.eqValues = JSON.parse(localStorage.getItem('music_eq_values')) || [0, 0, 0, 0, 0, 0, 0];
 
-            this.midFilter = this.audioCtx.createBiquadFilter();
-            this.midFilter.type = 'peaking';
-            this.midFilter.frequency.value = 1000;
-            this.midFilter.Q.value = 1;
-
-            this.trebleFilter = this.audioCtx.createBiquadFilter();
-            this.trebleFilter.type = 'highshelf';
-            this.trebleFilter.frequency.value = 3000;
+            // Create Filters
+            this.eqBands.forEach((freq, index) => {
+                const filter = this.audioCtx.createBiquadFilter();
+                filter.type = index === 0 ? 'lowshelf' : (index === this.eqBands.length - 1 ? 'highshelf' : 'peaking');
+                filter.frequency.value = freq;
+                filter.gain.value = this.state.eqValues[index];
+                filter.Q.value = 1;
+                this.filters.push(filter);
+            });
 
             // Connect audio element to analyser
-            // Note: This requires CORS to be handled correctly for cross-origin audio
             if (this.audio) {
-                // Check if source already exists to avoid errors on re-init
                 if (!this.source) {
                     this.source = this.audioCtx.createMediaElementSource(this.audio);
-                    // Chain: Source -> Bass -> Mid -> Treble -> Analyser -> Destination
-                    this.source.connect(this.bassFilter);
-                    this.bassFilter.connect(this.midFilter);
-                    this.midFilter.connect(this.trebleFilter);
-                    this.trebleFilter.connect(this.analyser);
+
+                    // Chain: Source -> Filter 0 -> ... -> Filter 6 -> Analyser -> Destination
+                    let currentNode = this.source;
+                    this.filters.forEach(filter => {
+                        currentNode.connect(filter);
+                        currentNode = filter;
+                    });
+                    currentNode.connect(this.analyser);
                     this.analyser.connect(this.audioCtx.destination);
                 }
             }
@@ -117,14 +119,46 @@ class MusicPlayer {
         }
     }
 
-    setEqualizer(band, value) {
-        // Value in dB (-10 to 10)
-        if (!this.audioCtx) return;
-        switch (band) {
-            case 'bass': this.bassFilter.gain.value = value; break;
-            case 'mid': this.midFilter.gain.value = value; break;
-            case 'treble': this.trebleFilter.gain.value = value; break;
-        }
+    setEqualizer(bandIndex, value) {
+        if (!this.audioCtx || !this.filters[bandIndex]) return;
+
+        const val = parseFloat(value);
+        this.filters[bandIndex].gain.value = val;
+        this.state.eqValues[bandIndex] = val;
+
+        // Save to local storage
+        localStorage.setItem('music_eq_values', JSON.stringify(this.state.eqValues));
+    }
+
+    applyPreset(presetName) {
+        const presets = {
+            'flat': [0, 0, 0, 0, 0, 0, 0],
+            'bass-boost': [8, 6, 3, 0, 0, 0, 0],
+            'bass-reduce': [-6, -4, -2, 0, 0, 0, 0],
+            'treble-boost': [0, 0, 0, 0, 3, 6, 8],
+            'rock': [5, 3, -2, -4, 0, 4, 6],
+            'pop': [3, 1, 0, -2, -4, 2, 4],
+            'jazz': [4, 2, -2, -2, 0, 2, 5],
+            'classical': [5, 3, -2, -2, -2, 2, 4],
+            'electronic': [7, 5, 1, -2, 2, 5, 6],
+            'custom': this.state.eqValues
+        };
+
+        const values = presets[presetName] || presets['flat'];
+
+        values.forEach((val, index) => {
+            this.setEqualizer(index, val);
+            // Update UI slider if exists
+            const slider = document.querySelector(`input[data-band="${this.eqBands[index]}"]`);
+            if (slider) slider.value = val;
+        });
+
+        this.log(`Applied EQ preset: ${presetName}`);
+    }
+
+    resetEq() {
+        this.applyPreset('flat');
+        document.getElementById('eq-preset').value = 'flat';
     }
 
     setVolume(value) {
@@ -475,8 +509,27 @@ window.setVolume = (event) => {
     const volume = x / width;
     window.musicPlayer.setVolume(volume);
 };
-window.setEqualizer = (band, value) => {
-    window.musicPlayer.setEqualizer(band, value);
+window.updateEqBand = (index, value) => {
+    window.musicPlayer.setEqualizer(index, value);
+};
+window.applyEqPreset = (preset) => {
+    window.musicPlayer.applyPreset(preset);
+};
+window.resetEq = () => {
+    window.musicPlayer.resetEq();
+};
+window.openEqModal = () => {
+    document.getElementById('eq-modal').style.display = 'block';
+    // Sync sliders with current state
+    const values = window.musicPlayer.state.eqValues;
+    const bands = window.musicPlayer.eqBands;
+    values.forEach((val, index) => {
+        const slider = document.querySelector(`input[data-band="${bands[index]}"]`);
+        if (slider) slider.value = val;
+    });
+};
+window.closeEqModal = () => {
+    document.getElementById('eq-modal').style.display = 'none';
 };
 
 // Start loading when DOM is ready
