@@ -156,6 +156,12 @@
                 <button class="control-btn" onclick="toggleRepeat()" id="repeat-btn" title="Repeat Off">
                     <i data-lucide="repeat" class="w-5 h-5"></i>
                 </button>
+                <!-- Mobile Only Equalizer Button -->
+                <button class="control-btn mobile-equalizer-btn"
+                    onclick="document.getElementById('eq-modal').style.display = 'block'" title="Equalizer"
+                    style="display: none;">
+                    <i data-lucide="sliders" class="w-5 h-5"></i>
+                </button>
             </div>
             <div class="progress-bar-container">
                 <span class="time-label" id="current-time">0:00</span>
@@ -234,6 +240,9 @@
             <div>Channels: <span id="stat-ch">2</span></div>
             <div>Buffer Size: <span id="stat-buf">256</span></div>
             <div>Current Time: <span id="stat-time">0.00</span></div>
+            <div>Volume: <span id="stat-vol">100%</span></div>
+            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;">Source: <span
+                    id="stat-src" style="font-size: 10px;">-</span></div>
         </div>
     </div>
 
@@ -269,11 +278,43 @@
         lucide.createIcons();
 
         // Set greeting based on time
+        // Set greeting based on time with funny quotes
+        const quotes = {
+            morning: [
+                "Rise and shine! Music time! ☀️",
+                "Coffee in one hand, music in the other. ☕",
+                "Let's start the day on a high note! 🎵",
+                "Debugging life, one song at a time. 🐛"
+            ],
+            afternoon: [
+                "Power through the slump with some beats! 🔋",
+                "Good vibes only this afternoon. 😎",
+                "Keep calm and listen to music. 🎧",
+                "Coding fuel: 90% caffeine, 10% music. 💻"
+            ],
+            evening: [
+                "Time to unwind and relax. 🌙",
+                "Ending the day with the perfect soundtrack. 🌌",
+                "Music is the moonlight in the gloomy night of life. 🌃",
+                "Late night coding sessions require epic tunes. 🦉"
+            ]
+        };
+
         const hour = new Date().getHours();
         const greetingEl = document.getElementById('greeting');
-        if (hour < 12) greetingEl.textContent = 'Good Morning';
-        else if (hour < 18) greetingEl.textContent = 'Good Afternoon';
-        else greetingEl.textContent = 'Good Evening';
+        let timeOfDay = 'morning';
+        let greetingText = 'Good Morning';
+
+        if (hour >= 12 && hour < 18) {
+            timeOfDay = 'afternoon';
+            greetingText = 'Good Afternoon';
+        } else if (hour >= 18) {
+            timeOfDay = 'evening';
+            greetingText = 'Good Evening';
+        }
+
+        const randomQuote = quotes[timeOfDay][Math.floor(Math.random() * quotes[timeOfDay].length)];
+        greetingEl.innerHTML = `${greetingText}<br><span style="font-size: 14px; font-weight: 400; color: #b3b3b3; display: block; margin-top: 4px;">${randomQuote}</span>`;
 
         // Listen for library loaded event from MusicPlayer
         document.addEventListener('libraryLoaded', (e) => {

@@ -534,6 +534,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('stat-ch').textContent = window.musicPlayer.analyser.channelCount;
             document.getElementById('stat-buf').textContent = window.musicPlayer.analyser.fftSize;
             document.getElementById('stat-time').textContent = window.musicPlayer.audio.currentTime.toFixed(3);
+            document.getElementById('stat-vol').textContent = Math.round(window.musicPlayer.audio.volume * 100) + '%';
+            document.getElementById('stat-src').textContent = window.musicPlayer.audio.src;
         }
     }
 
