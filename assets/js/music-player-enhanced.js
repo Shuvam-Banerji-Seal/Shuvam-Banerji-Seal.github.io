@@ -372,7 +372,8 @@ class MusicPlayer {
         const heartBtn = document.getElementById('favorite-btn');
         if (heartBtn) {
             const isFav = this.isFavorite(track);
-            const icon = heartBtn.querySelector('i');
+            // Lucide replaces <i> with <svg>, so we need to check for both
+            const icon = heartBtn.querySelector('svg') || heartBtn.querySelector('i');
             if (icon) {
                 if (isFav) {
                     icon.setAttribute('fill', '#1db954');
@@ -394,13 +395,11 @@ class MusicPlayer {
 
     updateControlsUI() {
         // Play/Pause Icon
-        const playIcon = document.getElementById('play-pause-icon');
-        if (playIcon) {
-            if (this.state.isPlaying) {
-                playIcon.setAttribute('data-lucide', 'pause');
-            } else {
-                playIcon.setAttribute('data-lucide', 'play');
-            }
+        const playBtn = document.querySelector('.play-pause-btn');
+        if (playBtn) {
+            // Re-create the element to ensure Lucide picks it up
+            const iconName = this.state.isPlaying ? 'pause' : 'play';
+            playBtn.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5" id="play-pause-icon" style="color: #000;"></i>`;
         }
 
         // Shuffle Button
