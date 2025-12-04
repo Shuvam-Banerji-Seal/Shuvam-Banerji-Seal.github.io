@@ -4,6 +4,7 @@
   "description": "Professional portfolio website for Shuvam Banerji Seal",
   "main": "index.html",
   "scripts": {
+    "setup:local": "rm -rf public/assets_for_my_website && cp -r assets_for_my_website public/",
     "dev": "vite --host",
     "build": "npm test && npm run generate:music && vite build",
     "test": "node tests/basic-tests.js",
