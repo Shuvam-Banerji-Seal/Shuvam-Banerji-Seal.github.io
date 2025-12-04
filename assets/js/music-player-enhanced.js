@@ -34,7 +34,7 @@ class MusicPlayer {
         // Initialize Audio Context for Visualizer
         this.initAudioContext();
 
-        this.log('MusicPlayer initialized');
+        this.log('MusicPlayer initialized - Version 3.0 (Fallback Enabled)');
     }
 
     toggleFavorite(track) {
