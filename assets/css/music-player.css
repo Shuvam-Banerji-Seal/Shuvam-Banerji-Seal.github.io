@@ -492,7 +492,8 @@ body {
 @media (max-width: 768px) {
     .spotify-container {
         flex-direction: column;
-        padding-top: 60px;
+        padding-top: 80px;
+        /* Increased to prevent navbar overlap */
         padding-bottom: 160px;
         height: auto;
         min-height: 100vh;
@@ -567,17 +568,71 @@ body {
     }
 
     .song-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
     }
 
     .song-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         padding: 12px;
+        height: 80px;
     }
 
-    .song-title,
+    .album-art {
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        margin-bottom: 0;
+        font-size: 24px;
+    }
+
+    .song-info {
+        flex: 1;
+        min-width: 0;
+        /* Enable text truncation */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .song-title {
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
     .song-artist {
-        font-size: 14px;
+        font-size: 13px;
+    }
+
+    /* Move play button to the right for list view */
+    .song-card .play-button {
+        position: static;
+        /* Reset absolute positioning */
+        width: 40px;
+        height: 40px;
+        opacity: 1;
+        /* Always visible on mobile */
+        transform: none;
+        background: transparent;
+        box-shadow: none;
+        color: #1db954;
+        border: 1px solid #282828;
+    }
+
+    .song-card .play-button:hover {
+        transform: scale(1.1);
+        background: #282828;
+    }
+
+    .song-card .play-button i,
+    .song-card .play-button svg {
+        width: 20px;
+        height: 20px;
+        color: #1db954 !important;
+        /* Force green color */
     }
 
     /* Mobile Player Bar Fixes */
@@ -637,6 +692,18 @@ body {
         width: 48px;
         height: 48px;
         flex-shrink: 0;
+        background: #ffffff;
+        /* Ensure white background */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .play-pause-btn i,
+    .play-pause-btn svg {
+        color: #000000 !important;
+        /* Force black icon */
+        fill: #000000 !important;
     }
 
     .volume-controls {

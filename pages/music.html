@@ -272,6 +272,7 @@
 
     <!-- Scripts -->
     <script src="/assets/js/navbar.js"></script>
+    <script src="/assets/js/mobile-menu-fix.js"></script>
     <script src="/assets/js/music-player-enhanced.js?v=3.1"></script>
     <script>
         // Initialize Lucide icons
@@ -350,12 +351,14 @@
                 <div class="song-card" onclick="playTrackByIndex(${globalIndex})">
                     <div class="album-art">
                         ${track.folder === 'Ishaan' ? '🎭' : track.folder === 'Pokémon' ? '⚡' : track.folder === 'Suka suka' ? '💫' : '🎵'}
-                        <button class="play-button" onclick="event.stopPropagation(); playTrackByIndex(${globalIndex})">
-                            <i data-lucide="play" class="w-5 h-5" style="color: #000;"></i>
-                        </button>
                     </div>
-                    <div class="song-title">${track.title}</div>
-                    <div class="song-artist">${track.artist}</div>
+                    <div class="song-info">
+                        <div class="song-title">${track.title}</div>
+                        <div class="song-artist">${track.artist}</div>
+                    </div>
+                    <button class="play-button" onclick="event.stopPropagation(); playTrackByIndex(${globalIndex})">
+                        <i data-lucide="play" class="w-5 h-5"></i>
+                    </button>
                 </div>
                     `;
             }).join('');
