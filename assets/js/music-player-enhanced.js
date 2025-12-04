@@ -24,6 +24,7 @@ class MusicPlayer {
 
         // Initialize listeners
         if (this.audio) {
+            this.audio.crossOrigin = 'anonymous'; // Enable CORS for Web Audio API
             this.audio.addEventListener('ended', this.handleTrackEnd);
             this.audio.addEventListener('error', this.handleError);
             this.audio.addEventListener('timeupdate', this.updateProgress);
@@ -34,7 +35,7 @@ class MusicPlayer {
         // Initialize Audio Context for Visualizer
         this.initAudioContext();
 
-        this.log('MusicPlayer initialized - Version 3.0 (Fallback Enabled)');
+        this.log('MusicPlayer initialized - Version 3.1 (CORS Fix)');
     }
 
     toggleFavorite(track) {

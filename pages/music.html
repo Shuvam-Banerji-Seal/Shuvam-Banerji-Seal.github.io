@@ -255,62 +255,44 @@
         <div class="mobile-nav-item">
             <i data-lucide="user" class="w-5 h-5"></i>
             <span>Profile</span>
-        </div>
-    </div>
+            const greetingEl = document.getElementById('greeting');
+            if (hour < 12) greetingEl.textContent='Good Morning' ; else if (hour < 18)
+                greetingEl.textContent='Good Afternoon' ; else greetingEl.textContent='Good Evening' ; // Listen for
+                library loaded event from MusicPlayer document.addEventListener('libraryLoaded', (e)=> {
+                const library = e.detail;
+                renderSpotifyUI(library);
+                });
 
-    <!-- Hidden Audio Player -->
-    <audio id="audio-player">
-        <source id="audio-source" src="" type="audio/mpeg">
-    </audio>
-
-    <!-- Scripts -->
-    <script src="/assets/js/navbar.js"></script>
-    <script src="/assets/js/music-player-enhanced.js?v=3.0"></script>
-    <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-
-        // Set greeting based on time
-        const hour = new Date().getHours();
-        const greetingEl = document.getElementById('greeting');
-        if (hour < 12) greetingEl.textContent = 'Good Morning';
-        else if (hour < 18) greetingEl.textContent = 'Good Afternoon';
-        else greetingEl.textContent = 'Good Evening';
-
-        // Listen for library loaded event from MusicPlayer
-        document.addEventListener('libraryLoaded', (e) => {
-            const library = e.detail;
-            renderSpotifyUI(library);
-        });
-
-        function renderSpotifyUI(library) {
-            // Render folders in sidebar
-            const folders = [...new Set(library.map(track => track.folder))].sort();
-            const folderList = document.getElementById('folder-list');
-            folderList.innerHTML = folders.map(folder => `
-                <div class="playlist-item" onclick="filterByFolder('${folder}'); document.getElementById('sidebar').classList.remove('active')">
+                function renderSpotifyUI(library) {
+                // Render folders in sidebar
+                const folders = [...new Set(library.map(track => track.folder))].sort();
+                const folderList = document.getElementById('folder-list');
+                folderList.innerHTML = folders.map(folder => `
+                <div class="playlist-item"
+                    onclick="filterByFolder('${folder}'); document.getElementById('sidebar').classList.remove('active')">
                     📁 ${folder}
                 </div>
-            `).join('');
+                `).join('');
 
-            // Render all songs
-            renderSongs(library);
-        }
+                // Render all songs
+                renderSongs(library);
+                }
 
-        function renderSongs(songs) {
-            const grid = document.getElementById('song-grid');
-            const fullLibrary = window.musicLibrary;
+                function renderSongs(songs) {
+                const grid = document.getElementById('song-grid');
+                const fullLibrary = window.musicLibrary;
 
-            grid.innerHTML = songs.map((track) => {
+                grid.innerHTML = songs.map((track) => {
                 // Find the correct global index from full library
                 const globalIndex = fullLibrary.findIndex(t =>
-                    t.title === track.title && t.artist === track.artist && t.file === track.file
+                t.title === track.title && t.artist === track.artist && t.file === track.file
                 );
 
                 return `
                 <div class="song-card" onclick="playTrackByIndex(${globalIndex})">
                     <div class="album-art">
-                        ${track.folder === 'Ishaan' ? '🎭' : track.folder === 'Pokémon' ? '⚡' : track.folder === 'Suka Suka' ? '💫' : '🎵'}
+                        ${track.folder === 'Ishaan' ? '🎭' : track.folder === 'Pokémon' ? '⚡' : track.folder === 'Suka
+                        Suka' ? '💫' : '🎵'}
                         <button class="play-button" onclick="event.stopPropagation(); playTrackByIndex(${globalIndex})">
                             <i data-lucide="play" class="w-5 h-5" style="color: #000;"></i>
                         </button>
@@ -318,45 +300,47 @@
                     <div class="song-title">${track.title}</div>
                     <div class="song-artist">${track.artist}</div>
                 </div>
-            `;
-            }).join('');
-            lucide.createIcons();
-        }
+                `;
+                }).join('');
+                lucide.createIcons();
+                }
 
-        window.filterByFolder = function (folder) {
-            const filtered = window.musicLibrary.filter(t => t.folder === folder);
-            document.getElementById('section-title').textContent = folder;
-            renderSongs(filtered);
-        };
+                window.filterByFolder = function (folder) {
+                const filtered = window.musicLibrary.filter(t => t.folder === folder);
+                document.getElementById('section-title').textContent = folder;
+                renderSongs(filtered);
+                };
 
-        window.filterByFavorites = function () {
-            const favorites = window.musicPlayer.state.favorites;
-            document.getElementById('section-title').textContent = 'Favorites';
-            if (favorites.length === 0) {
-                document.getElementById('song-grid').innerHTML = '<div style="color: #b3b3b3; grid-column: 1/-1; text-align: center; padding: 40px;">No favorites yet. Click the heart icon to add songs!</div>';
-            } else {
+                window.filterByFavorites = function () {
+                const favorites = window.musicPlayer.state.favorites;
+                document.getElementById('section-title').textContent = 'Favorites';
+                if (favorites.length === 0) {
+                document.getElementById('song-grid').innerHTML = '<div
+                    style="color: #b3b3b3; grid-column: 1/-1; text-align: center; padding: 40px;">No favorites yet.
+                    Click the heart icon to add songs!</div>';
+                } else {
                 renderSongs(favorites);
-            }
-        };
+                }
+                };
 
-        // Search functionality
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            if (!query) {
+                // Search functionality
+                document.getElementById('search-input').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                if (!query) {
                 renderSongs(window.musicLibrary);
                 document.getElementById('section-title').textContent = 'All Songs';
                 return;
-            }
+                }
 
-            const filtered = window.musicLibrary.filter(track =>
+                const filtered = window.musicLibrary.filter(track =>
                 track.title.toLowerCase().includes(query) ||
                 track.artist.toLowerCase().includes(query) ||
                 track.folder.toLowerCase().includes(query)
-            );
-            document.getElementById('section-title').textContent = `Search Results (${filtered.length})`;
-            renderSongs(filtered);
-        });
-    </script>
+                );
+                document.getElementById('section-title').textContent = `Search Results (${filtered.length})`;
+                renderSongs(filtered);
+                });
+                </script>
 </body>
 
 </html>
