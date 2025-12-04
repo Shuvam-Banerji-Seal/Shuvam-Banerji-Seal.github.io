@@ -20,6 +20,41 @@
     <link rel="stylesheet" href="../assets/css/mobile.css">
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
     <link rel="stylesheet" href="../assets/css/music-player.css">
+    <style>
+        /* Override navbar styles for music player */
+        #navbar {
+            background: #000000 !important;
+            border-bottom: 1px solid #282828;
+            padding: 10px 0 !important;
+        }
+
+        .nav-content {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            max-width: 100% !important;
+            padding: 0 24px !important;
+        }
+
+        .nav-link {
+            color: #b3b3b3 !important;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #ffffff !important;
+        }
+
+        .nav-logo span {
+            color: #ffffff !important;
+        }
+
+        .theme-toggle-btn {
+            display: none !important;
+            /* Hide theme toggle on music page as it's always dark */
+        }
+    </style>
 </head>
 
 <body>
@@ -34,6 +69,10 @@
             <div class="sidebar-logo">
                 <i data-lucide="music" class="w-6 h-6"></i>
                 <span>My Music</span>
+                <button class="control-btn" onclick="document.getElementById('sidebar').classList.remove('active')"
+                    style="margin-left: auto; display: none;" id="sidebar-close-btn">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
 
             <ul class="sidebar-nav">
@@ -41,13 +80,19 @@
                     <i data-lucide="home" class="w-5 h-5"></i>
                     <span>Home</span>
                 </li>
-                <li class="sidebar-nav-item" onclick="document.getElementById('search-input').focus()">
+                <li class="sidebar-nav-item"
+                    onclick="document.getElementById('search-input').focus(); document.getElementById('sidebar').classList.remove('active')">
                     <i data-lucide="search" class="w-5 h-5"></i>
                     <span>Search</span>
                 </li>
                 <li class="sidebar-nav-item">
                     <i data-lucide="library" class="w-5 h-5"></i>
                     <span>Your Library</span>
+                </li>
+                <li class="sidebar-nav-item"
+                    onclick="filterByFavorites(); document.getElementById('sidebar').classList.remove('active')">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span>Favorites</span>
                 </li>
             </ul>
 
@@ -58,6 +103,7 @@
                 </div>
             </div>
         </aside>
+        <div class="sidebar-backdrop" onclick="document.getElementById('sidebar').classList.remove('active')"></div>
 
         <!-- Main Content -->
         <main class="main-content">
@@ -88,7 +134,7 @@
                 <div class="now-playing-title" id="current-track-title">No track selected</div>
                 <div class="now-playing-artist" id="current-track-artist">Select a song to play</div>
             </div>
-            <button class="control-btn" title="Add to favorites">
+            <button class="control-btn" title="Add to favorites" id="favorite-btn" onclick="toggleFavorite()">
                 <i data-lucide="heart" class="w-5 h-5"></i>
             </button>
         </div>
@@ -121,12 +167,73 @@
         </div>
 
         <div class="volume-controls">
+            <button class="control-btn" onclick="document.getElementById('eq-modal').style.display = 'block'"
+                title="Equalizer">
+                <i data-lucide="sliders" class="w-5 h-5"></i>
+            </button>
+            <button class="control-btn" onclick="document.getElementById('stats-modal').style.display = 'block'"
+                title="Stats for Nerds">
+                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+            </button>
             <button class="control-btn">
                 <i data-lucide="volume-2" class="w-5 h-5"></i>
             </button>
-            <div class="volume-slider">
-                <div class="volume-fill"></div>
+            <div class="volume-slider" onclick="setVolume(event)">
+                <div class="volume-fill" style="width: 100%"></div>
             </div>
+        </div>
+    </div>
+
+    <!-- Equalizer Modal -->
+    <div id="eq-modal"
+        style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(24, 24, 24, 0.95); padding: 24px; border: 1px solid #333; border-radius: 8px; z-index: 2000; color: #fff; min-width: 300px; backdrop-filter: blur(10px);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center;">
+            <h3 style="margin: 0;">Equalizer</h3>
+            <button onclick="document.getElementById('eq-modal').style.display = 'none'"
+                style="background: none; border: none; color: #fff; cursor: pointer;">✕</button>
+        </div>
+        <div style="display: flex; justify-content: space-around; gap: 20px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                <input type="range" min="-10" max="10" value="0" orient="vertical"
+                    style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; appearance: slider-vertical; height: 100px;"
+                    oninput="setEqualizer('bass', this.value)">
+                <span style="font-size: 12px; color: #b3b3b3;">Bass</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                <input type="range" min="-10" max="10" value="0" orient="vertical"
+                    style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; appearance: slider-vertical; height: 100px;"
+                    oninput="setEqualizer('mid', this.value)">
+                <span style="font-size: 12px; color: #b3b3b3;">Mid</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                <input type="range" min="-10" max="10" value="0" orient="vertical"
+                    style="writing-mode: bt-lr; -webkit-appearance: slider-vertical; appearance: slider-vertical; height: 100px;"
+                    oninput="setEqualizer('treble', this.value)">
+                <span style="font-size: 12px; color: #b3b3b3;">Treble</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizer Canvas (Absolute positioned behind content or somewhere visible) -->
+    <div
+        style="position: fixed; bottom: 90px; right: 20px; width: 300px; height: 100px; z-index: 999; pointer-events: none; opacity: 0.8;">
+        <canvas id="visualizer" width="300" height="100"></canvas>
+    </div>
+
+    <!-- Stats for Nerds Modal -->
+    <div id="stats-modal"
+        style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); padding: 20px; border: 1px solid #333; border-radius: 8px; z-index: 2000; color: #0f0; font-family: monospace; min-width: 300px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <h3>Stats for Nerds</h3>
+            <button onclick="document.getElementById('stats-modal').style.display = 'none'"
+                style="background: none; border: none; color: #fff; cursor: pointer;">✕</button>
+        </div>
+        <div id="stats-content">
+            <div>Audio Context: <span id="stat-ctx">Running</span></div>
+            <div>Sample Rate: <span id="stat-sr">44100</span> Hz</div>
+            <div>Channels: <span id="stat-ch">2</span></div>
+            <div>Buffer Size: <span id="stat-buf">256</span></div>
+            <div>Current Time: <span id="stat-time">0.00</span></div>
         </div>
     </div>
 
@@ -140,7 +247,8 @@
             <i data-lucide="search" class="w-5 h-5"></i>
             <span>Search</span>
         </div>
-        <div class="mobile-nav-item" onclick="document.getElementById('sidebar').classList.toggle('active')">
+        <div class="mobile-nav-item"
+            onclick="document.getElementById('sidebar').classList.toggle('active'); lucide.createIcons();">
             <i data-lucide="folder" class="w-5 h-5"></i>
             <span>Library</span>
         </div>
@@ -151,7 +259,7 @@
     </div>
 
     <!-- Hidden Audio Player -->
-    <audio id="audio-player" onended="handleTrackEnd()" ontimeupdate="updateProgress()">
+    <audio id="audio-player">
         <source id="audio-source" src="" type="audio/mpeg">
     </audio>
 
@@ -169,25 +277,18 @@
         else if (hour < 18) greetingEl.textContent = 'Good Afternoon';
         else greetingEl.textContent = 'Good Evening';
 
-        // Render UI after library loads
-        async function renderSpotifyUI() {
-            // Wait for library to load
-            await new Promise(resolve => {
-                const checkLibrary = setInterval(() => {
-                    if (window.musicLibrary && window.musicLibrary.length > 0) {
-                        clearInterval(checkLibrary);
-                        resolve();
-                    }
-                }, 100);
-            });
+        // Listen for library loaded event from MusicPlayer
+        document.addEventListener('libraryLoaded', (e) => {
+            const library = e.detail;
+            renderSpotifyUI(library);
+        });
 
-            const library = window.musicLibrary;
-
+        function renderSpotifyUI(library) {
             // Render folders in sidebar
             const folders = [...new Set(library.map(track => track.folder))].sort();
             const folderList = document.getElementById('folder-list');
             folderList.innerHTML = folders.map(folder => `
-                <div class="playlist-item" onclick="filterByFolder('${folder}')">
+                <div class="playlist-item" onclick="filterByFolder('${folder}'); document.getElementById('sidebar').classList.remove('active')">
                     📁 ${folder}
                 </div>
             `).join('');
@@ -222,11 +323,20 @@
             lucide.createIcons();
         }
 
-        let library = [];
         window.filterByFolder = function (folder) {
             const filtered = window.musicLibrary.filter(t => t.folder === folder);
             document.getElementById('section-title').textContent = folder;
             renderSongs(filtered);
+        };
+
+        window.filterByFavorites = function () {
+            const favorites = window.musicPlayer.state.favorites;
+            document.getElementById('section-title').textContent = 'Favorites';
+            if (favorites.length === 0) {
+                document.getElementById('song-grid').innerHTML = '<div style="color: #b3b3b3; grid-column: 1/-1; text-align: center; padding: 40px;">No favorites yet. Click the heart icon to add songs!</div>';
+            } else {
+                renderSongs(favorites);
+            }
         };
 
         // Search functionality
@@ -246,26 +356,6 @@
             document.getElementById('section-title').textContent = `Search Results (${filtered.length})`;
             renderSongs(filtered);
         });
-
-        // Seek functionality
-        window.seekTrack = function (event) {
-            const progressBar = event.currentTarget;
-            const percent = event.offsetX / progressBar.offsetWidth;
-            const player = document.getElementById('audio-player');
-            if (player.duration) {
-                player.currentTime = percent * player.duration;
-            }
-        };
-
-        // Initialize when DOM loads
-        document.addEventListener('DOMContentLoaded', renderSpotifyUI);
-
-        // Store library reference
-        setInterval(() => {
-            if (window.musicLibrary) {
-                library = window.musicLibrary;
-            }
-        }, 100);
     </script>
 </body>
 

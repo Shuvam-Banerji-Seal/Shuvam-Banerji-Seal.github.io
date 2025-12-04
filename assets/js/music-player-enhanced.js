@@ -1,382 +1,524 @@
-// Enhanced Music Player - Dynamic Loading
-// Loads music library from generated manifest
+/**
+ * MusicPlayer Class
+ * Handles audio playback, state management, and logging for the music player.
+ */
+class MusicPlayer {
+    constructor() {
+        this.audio = document.getElementById('audio-player');
+        this.state = {
+            playlist: [],
+            currentIndex: -1,
+            isPlaying: false,
+            repeatMode: 'off', // 'off', 'one', 'all', 'folder'
+            shuffle: false,
+            currentFolder: null,
+            volume: 1.0,
+            favorites: JSON.parse(localStorage.getItem('music_favorites')) || [],
+            playlists: JSON.parse(localStorage.getItem('music_playlists')) || []
+        };
 
-let completeMusicLibrary = [];
-let playerState = {
-    currentIndex: -1,
-    isPlaying: false,
-    repeatMode: 'off',
-    shuffleMode: false,
-    queue: [],
-    currentFolder: null
-};
+        // Bind methods
+        this.handleTrackEnd = this.handleTrackEnd.bind(this);
+        this.handleError = this.handleError.bind(this);
+        this.updateProgress = this.updateProgress.bind(this);
 
-// Load music library from JSON manifest
-async function loadMusicLibrary() {
-    try {
-        console.log('Loading music library from manifest...');
-        const response = await fetch('/music-library.json');
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        // Initialize listeners
+        if (this.audio) {
+            this.audio.addEventListener('ended', this.handleTrackEnd);
+            this.audio.addEventListener('error', this.handleError);
+            this.audio.addEventListener('timeupdate', this.updateProgress);
+            this.audio.addEventListener('play', () => this.updateState({ isPlaying: true }));
+            this.audio.addEventListener('pause', () => this.updateState({ isPlaying: false }));
         }
 
-        completeMusicLibrary = await response.json();
-        console.log(`Loaded ${completeMusicLibrary.length} songs from manifest`);
+        // Initialize Audio Context for Visualizer
+        this.initAudioContext();
 
-        return completeMusicLibrary;
-    } catch (error) {
-        console.error('Error loading music library:', error);
-        console.log('Falling back to empty library');
-        return [];
-    }
-}
-
-// Initialize enhanced player
-async function initEnhancedPlayer() {
-    console.log('Initializing enhanced player...');
-
-    // Load the library
-    await loadMusicLibrary();
-
-    // Expose globally
-    if (typeof window !== 'undefined') {
-        window.musicLibrary = completeMusicLibrary;
-        window.playerState = playerState;
+        this.log('MusicPlayer initialized');
     }
 
-    // Render music list
-    renderEnhancedMusicList();
-
-    // Add control handlers
-    setupPlayerControls();
-
-    console.log(`Enhanced player initialized with ${completeMusicLibrary.length} songs`);
-}
-
-// Expose globally
-window.initEnhancedPlayer = initEnhancedPlayer;
-
-// Render music list organized by folders
-function renderEnhancedMusicList() {
-    const musicList = document.getElementById('music-list');
-
-    // Skip if music-list doesn't exist (e.g., in Spotify UI)
-    if (!musicList) {
-        console.log('Skipping renderEnhancedMusicList - using custom UI');
-        return;
-    }
-
-    if (completeMusicLibrary.length === 0) {
-        musicList.innerHTML = '<li class="music-item text-center py-4">No music files found. Please check the manifest.</li>';
-        return;
-    }
-
-    console.log('Rendering music list...');
-
-    // Group by folder
-    const byFolder = {};
-    completeMusicLibrary.forEach((track, index) => {
-        if (!byFolder[track.folder]) {
-            byFolder[track.folder] = [];
+    toggleFavorite(track) {
+        const index = this.state.favorites.findIndex(t => t.file === track.file);
+        if (index === -1) {
+            this.state.favorites.push(track);
+            this.log(`Added to favorites: ${track.title}`);
+        } else {
+            this.state.favorites.splice(index, 1);
+            this.log(`Removed from favorites: ${track.title}`);
         }
-        byFolder[track.folder].push({ ...track, index });
-    });
+        localStorage.setItem('music_favorites', JSON.stringify(this.state.favorites));
+        this.updateUI(this.state.playlist[this.state.currentIndex]);
 
-    // Build HTML
-    let html = '';
-    Object.keys(byFolder).sort().forEach(folder => {
-        const songs = byFolder[folder];
-        html += `
-            <div class="folder-section">
-                <div class="folder-title" onclick="toggleFolder('${folder}')">
-                    <span>📁 ${folder} (${songs.length} songs)</span>
-                    <span id="folder-icon-${folder.replace(/[^a-z0-9]/gi, '_')}">▼</span>
-                </div>
-                <div class="folder-songs" id="folder-${folder.replace(/[^a-z0-9]/gi, '_')}">
-                    ${songs.map(track => `
-                        <div class="music-item" onclick="playTrackByIndex(${track.index})" data-index="${track.index}">
-                            <div class="music-info">
-                                <i data-lucide="play-circle" class="w-5 h-5 text-cyan-400"></i>
-                                <div>
-                                    <p class="music-title">${track.title}</p>
-                                    <p class="music-artist">${track.artist}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    });
-
-    musicList.innerHTML = html;
-
-    console.log('Music list rendered with', Object.keys(byFolder).length, 'folders');
-
-    // Reinitialize icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+        // Dispatch event for UI updates
+        document.dispatchEvent(new CustomEvent('favoritesUpdated', { detail: this.state.favorites }));
     }
 
-    // Update song count
-    const songCount = document.getElementById('song-count');
-    if (songCount) {
-        songCount.textContent = `(${completeMusicLibrary.length} songs in ${Object.keys(byFolder).length} folders)`;
-    }
-}
-
-// Toggle folder visibility
-window.toggleFolder = function (folder) {
-    const folderId = `folder-${folder.replace(/[^a-z0-9]/gi, '_')}`;
-    const folderEl = document.getElementById(folderId);
-    const iconEl = document.getElementById(`folder-icon-${folder.replace(/[^a-z0-9]/gi, '_')}`);
-
-    if (folderEl) {
-        folderEl.classList.toggle('collapsed');
-        if (iconEl) {
-            iconEl.textContent = folderEl.classList.contains('collapsed') ? '▶' : '▼';
-        }
-    }
-};
-
-// Play track by index
-window.playTrackByIndex = function (index) {
-    // Validate index
-    if (index < 0 || index >= completeMusicLibrary.length) {
-        console.error('Invalid track index:', index);
-        return;
+    createPlaylist(name) {
+        const playlist = { id: Date.now(), name, tracks: [] };
+        this.state.playlists.push(playlist);
+        localStorage.setItem('music_playlists', JSON.stringify(this.state.playlists));
+        document.dispatchEvent(new CustomEvent('playlistsUpdated', { detail: this.state.playlists }));
     }
 
-    console.log('Playing track index:', index);
-    if (window.playTrack) {
-        window.playTrack(index);
-    } else {
-        console.error('playTrack function not yet defined');
-    }
-};
-
-// Update active track styling
-function updateActiveTrack(index) {
-    document.querySelectorAll('.music-item').forEach((item) => {
-        item.classList.remove('active', 'playing');
-        if (parseInt(item.dataset.index) === index) {
-            item.classList.add('active', 'playing');
-        }
-    });
-}
-
-// Setup player controls
-function setupPlayerControls() {
-    window.toggleShuffle = function () {
-        playerState.shuffleMode = !playerState.shuffleMode;
-        const btn = document.getElementById('shuffle-btn');
-        if (btn) {
-            btn.classList.toggle('active', playerState.shuffleMode);
-        }
-        console.log('Shuffle:', playerState.shuffleMode);
-    };
-
-    window.toggleRepeat = function () {
-        const modes = ['off', 'one', 'all', 'folder'];
-        const currentIndex = modes.indexOf(playerState.repeatMode);
-        playerState.repeatMode = modes[(currentIndex + 1) % modes.length];
-
-        const btn = document.getElementById('repeat-btn');
-        if (btn) {
-            btn.classList.toggle('active', playerState.repeatMode !== 'off');
-            btn.title = `Repeat: ${playerState.repeatMode}`;
-        }
-        console.log('Repeat mode:', playerState.repeatMode);
-    };
-
-    window.previousTrack = function () {
-        if (playerState.currentIndex > 0) {
-            window.playTrackByIndex(playerState.currentIndex - 1);
-        }
-    };
-
-    window.nextTrack = function () {
-        if (playerState.currentIndex < completeMusicLibrary.length - 1) {
-            window.playTrackByIndex(playerState.currentIndex + 1);
-        } else if (playerState.repeatMode === 'all') {
-            window.playTrackByIndex(0);
-        }
-    };
-
-    window.togglePlayPause = function () {
-        const player = document.getElementById('audio-player');
-        if (player) {
-            if (player.paused) {
-                player.play().catch(e => console.error('Play error:', e));
-            } else {
-                player.pause();
+    addToPlaylist(playlistId, track) {
+        const playlist = this.state.playlists.find(p => p.id === playlistId);
+        if (playlist) {
+            if (!playlist.tracks.some(t => t.file === track.file)) {
+                playlist.tracks.push(track);
+                localStorage.setItem('music_playlists', JSON.stringify(this.state.playlists));
+                this.log(`Added ${track.title} to playlist ${playlist.name}`);
             }
         }
-    };
+    }
 
-    window.handleTrackEnd = function () {
-        const player = document.getElementById('audio-player');
-        if (!player) return;
+    isFavorite(track) {
+        return this.state.favorites.some(t => t.file === track.file);
+    }
 
-        if (playerState.repeatMode === 'one') {
-            player.currentTime = 0;
-            player.play();
-        } else if (playerState.repeatMode === 'folder') {
-            const nextInFolder = completeMusicLibrary.find((t, i) =>
-                i > playerState.currentIndex && t.folder === playerState.currentFolder
-            );
-            if (nextInFolder) {
-                window.playTrackByIndex(completeMusicLibrary.indexOf(nextInFolder));
-            } else {
-                const firstInFolder = completeMusicLibrary.find(t => t.folder === playerState.currentFolder);
-                if (firstInFolder) {
-                    window.playTrackByIndex(completeMusicLibrary.indexOf(firstInFolder));
+
+    initAudioContext() {
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            this.audioCtx = new AudioContext();
+            this.analyser = this.audioCtx.createAnalyser();
+            this.analyser.fftSize = 256;
+
+            // Create Equalizer Bands
+            this.bassFilter = this.audioCtx.createBiquadFilter();
+            this.bassFilter.type = 'lowshelf';
+            this.bassFilter.frequency.value = 200;
+
+            this.midFilter = this.audioCtx.createBiquadFilter();
+            this.midFilter.type = 'peaking';
+            this.midFilter.frequency.value = 1000;
+            this.midFilter.Q.value = 1;
+
+            this.trebleFilter = this.audioCtx.createBiquadFilter();
+            this.trebleFilter.type = 'highshelf';
+            this.trebleFilter.frequency.value = 3000;
+
+            // Connect audio element to analyser
+            // Note: This requires CORS to be handled correctly for cross-origin audio
+            if (this.audio) {
+                // Check if source already exists to avoid errors on re-init
+                if (!this.source) {
+                    this.source = this.audioCtx.createMediaElementSource(this.audio);
+                    // Chain: Source -> Bass -> Mid -> Treble -> Analyser -> Destination
+                    this.source.connect(this.bassFilter);
+                    this.bassFilter.connect(this.midFilter);
+                    this.midFilter.connect(this.trebleFilter);
+                    this.trebleFilter.connect(this.analyser);
+                    this.analyser.connect(this.audioCtx.destination);
                 }
             }
-        } else if (playerState.shuffleMode) {
-            const randomIndex = Math.floor(Math.random() * completeMusicLibrary.length);
-            window.playTrackByIndex(randomIndex);
-        } else {
-            window.nextTrack();
+        } catch (e) {
+            this.error('Failed to initialize AudioContext', e);
         }
-    };
-
-    window.updateProgress = function () {
-        const player = document.getElementById('audio-player');
-        if (!player) return;
-
-        const currentTime = document.getElementById('current-time');
-        const totalTime = document.getElementById('total-time');
-
-        if (currentTime) {
-            const minutes = Math.floor(player.currentTime / 60);
-            const seconds = Math.floor(player.currentTime % 60);
-            currentTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        if (totalTime && player.duration) {
-            const minutes = Math.floor(player.duration / 60);
-            const seconds = Math.floor(player.duration % 60);
-            totalTime.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-    };
-}
-
-// Play track function
-window.playTrack = function (index) {
-    const track = completeMusicLibrary[index];
-    const audioPlayer = document.getElementById('audio-player');
-    const audioSource = document.getElementById('audio-source');
-    const trackTitle = document.getElementById('current-track-title');
-    const trackArtist = document.getElementById('current-track-artist');
-    const trackFolder = document.getElementById('current-track-folder');
-
-    if (!audioPlayer || !track) {
-        console.error('Audio player or track not found');
-        return;
     }
 
-    console.log('Loading track:', track.title);
+    setEqualizer(band, value) {
+        // Value in dB (-10 to 10)
+        if (!this.audioCtx) return;
+        switch (band) {
+            case 'bass': this.bassFilter.gain.value = value; break;
+            case 'mid': this.midFilter.gain.value = value; break;
+            case 'treble': this.trebleFilter.gain.value = value; break;
+        }
+    }
 
-    // Encode the URL properly by splitting path segments
-    // This handles special characters in filenames (like ?, #) correctly while preserving path structure
-    const encodedFile = track.file.split('/').map(segment => encodeURIComponent(segment)).join('/');
+    setVolume(value) {
+        // Value between 0 and 1
+        this.state.volume = Math.max(0, Math.min(1, value));
+        if (this.audio) {
+            this.audio.volume = this.state.volume;
+        }
+        this.updateVolumeUI();
+    }
 
-    console.log('Original file path:', track.file);
-    console.log('Encoded file URL:', encodedFile);
+    updateVolumeUI() {
+        const volumeFill = document.querySelector('.volume-fill');
+        if (volumeFill) {
+            volumeFill.style.width = `${this.state.volume * 100}%`;
+        }
+    }
 
-    // Update source
-    audioSource.src = encodedFile;
 
-    // Add explicit error listener for loading errors
-    const errorHandler = (e) => {
-        const error = audioPlayer.error;
-        let errorMessage = 'Unknown error';
+    /**
+     * Load the music library from the manifest
+     */
+    async loadLibrary() {
+        try {
+            this.log('Loading music library...');
+            const response = await fetch('/music-library.json');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            const data = await response.json();
+            this.state.playlist = data;
+            this.log(`Library loaded: ${data.length} tracks`);
+
+            // Expose globally for UI rendering
+            window.musicLibrary = data;
+
+            // Trigger UI update event
+            document.dispatchEvent(new CustomEvent('libraryLoaded', { detail: data }));
+
+            return data;
+        } catch (error) {
+            this.error('Failed to load library', error);
+            return [];
+        }
+    }
+
+    /**
+     * Play a track by its global index
+     * @param {number} index 
+     */
+    async playTrack(index) {
+        if (index < 0 || index >= this.state.playlist.length) {
+            this.error(`Invalid track index: ${index}`);
+            return;
+        }
+
+        const track = this.state.playlist[index];
+        this.state.currentIndex = index;
+        this.state.currentFolder = track.folder;
+
+        this.log(`Preparing to play: ${track.title} (${track.artist})`);
+
+        // Determine URL (Production vs Local)
+        const isProduction = window.location.hostname.includes('github.io');
+        let src = track.file;
+
+        if (isProduction && track.cdnUrl) {
+            src = track.cdnUrl;
+            this.log(`Using CDN URL: ${src}`);
+        } else {
+            // Use encodeURI to handle spaces but preserve special chars like &, +, ,
+            // which might be valid in the path and over-encoded by encodeURIComponent
+            src = encodeURI(track.file);
+            this.log(`Using local path: ${src}`);
+        }
+
+        this.audio.src = src;
+        this.audio.load();
+
+        try {
+            await this.audio.play();
+            this.updateState({ isPlaying: true });
+            this.updateUI(track);
+            this.log(`Playback started: ${track.title}`);
+        } catch (e) {
+            this.error(`Playback failed for ${track.title}`, e);
+            // Auto-skip on error if not user initiated pause? 
+            // Maybe wait a bit and try next
+        }
+    }
+
+    togglePlayPause() {
+        if (this.state.currentIndex === -1) {
+            // If nothing playing, play first track or random
+            this.playTrack(0);
+            return;
+        }
+
+        if (this.audio.paused) {
+            this.audio.play().catch(e => this.error('Play error', e));
+        } else {
+            this.audio.pause();
+        }
+    }
+
+    next() {
+        if (this.state.shuffle) {
+            this.playRandom();
+        } else {
+            let nextIndex = this.state.currentIndex + 1;
+            if (nextIndex >= this.state.playlist.length) {
+                if (this.state.repeatMode === 'all') {
+                    nextIndex = 0;
+                } else {
+                    return; // Stop at end
+                }
+            }
+            this.playTrack(nextIndex);
+        }
+    }
+
+    previous() {
+        // If played more than 3 seconds, restart track
+        if (this.audio.currentTime > 3) {
+            this.audio.currentTime = 0;
+            return;
+        }
+
+        let prevIndex = this.state.currentIndex - 1;
+        if (prevIndex < 0) {
+            prevIndex = this.state.playlist.length - 1;
+        }
+        this.playTrack(prevIndex);
+    }
+
+    playRandom() {
+        const index = Math.floor(Math.random() * this.state.playlist.length);
+        this.playTrack(index);
+    }
+
+    toggleShuffle() {
+        this.state.shuffle = !this.state.shuffle;
+        this.updateControlsUI();
+        this.log(`Shuffle: ${this.state.shuffle}`);
+    }
+
+    toggleRepeat() {
+        const modes = ['off', 'one', 'all', 'folder'];
+        const idx = modes.indexOf(this.state.repeatMode);
+        this.state.repeatMode = modes[(idx + 1) % modes.length];
+        this.updateControlsUI();
+        this.log(`Repeat mode: ${this.state.repeatMode}`);
+    }
+
+    handleTrackEnd() {
+        this.log('Track ended');
+        if (this.state.repeatMode === 'one') {
+            this.audio.currentTime = 0;
+            this.audio.play();
+        } else if (this.state.repeatMode === 'folder') {
+            this.playNextInFolder();
+        } else {
+            this.next();
+        }
+    }
+
+    playNextInFolder() {
+        // Find next track in same folder
+        let nextIndex = -1;
+        for (let i = this.state.currentIndex + 1; i < this.state.playlist.length; i++) {
+            if (this.state.playlist[i].folder === this.state.currentFolder) {
+                nextIndex = i;
+                break;
+            }
+        }
+
+        if (nextIndex !== -1) {
+            this.playTrack(nextIndex);
+        } else {
+            // Loop back to start of folder?
+            const firstInFolder = this.state.playlist.findIndex(t => t.folder === this.state.currentFolder);
+            if (firstInFolder !== -1) {
+                this.playTrack(firstInFolder);
+            }
+        }
+    }
+
+    handleError(e) {
+        const error = this.audio.error;
+        let msg = 'Unknown error';
         if (error) {
             switch (error.code) {
-                case error.MEDIA_ERR_ABORTED:
-                    errorMessage = 'Aborted';
-                    break;
-                case error.MEDIA_ERR_NETWORK:
-                    errorMessage = 'Network error';
-                    break;
-                case error.MEDIA_ERR_DECODE:
-                    errorMessage = 'Decode error';
-                    break;
-                case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                    errorMessage = 'Source not supported (404 or bad format)';
-                    break;
-                default:
-                    errorMessage = `Error code: ${error.code}`;
+                case 1: msg = 'Aborted'; break;
+                case 2: msg = 'Network error'; break;
+                case 3: msg = 'Decode error'; break;
+                case 4: msg = 'Source not supported'; break;
             }
         }
-        console.error(`Media load error for ${track.title}: ${errorMessage}`, error);
+        this.error(`Media Error: ${msg}`, error);
 
-        // Try to recover or show message
-        if (trackTitle) trackTitle.textContent = `Error: ${track.title} (${errorMessage})`;
-
-        // Remove listener to prevent memory leaks (though it's one-time usually)
-        audioPlayer.removeEventListener('error', errorHandler);
-    };
-
-    audioPlayer.addEventListener('error', errorHandler, { once: true });
-
-    audioPlayer.load();
-
-    // Play audio with error handling
-    const playPromise = audioPlayer.play();
-
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {
-            playerState.isPlaying = true;
-            updatePlayPauseIcon();
-            console.log('Playing:', track.title);
-            // Remove error listener if playback started successfully
-            audioPlayer.removeEventListener('error', errorHandler);
-        })
-            .catch(error => {
-                // AbortError is harmless - happens when switching tracks quickly
-                if (error.name === 'AbortError') {
-                    return; // Silently ignore abort errors
-                }
-                console.error('Error playing audio:', error);
-                playerState.isPlaying = false;
-                updatePlayPauseIcon();
-                if (trackTitle) trackTitle.textContent = track.title + ' (Click play to start)';
-            });
+        // Update UI to show error
+        const titleEl = document.getElementById('current-track-title');
+        if (titleEl) titleEl.textContent = `Error: ${msg}`;
     }
 
-    // Update track info
-    if (trackTitle) trackTitle.textContent = track.title;
-    if (trackArtist) trackArtist.textContent = track.artist;
-    if (trackFolder) trackFolder.textContent = `Folder: ${track.folder}`;
+    updateProgress() {
+        const current = this.audio.currentTime;
+        const duration = this.audio.duration || 0;
 
-    // Update player state
-    playerState.currentIndex = index;
-    playerState.currentFolder = track.folder;
+        // Update time labels
+        const curTimeEl = document.getElementById('current-time');
+        const totTimeEl = document.getElementById('total-time');
+        const fillEl = document.getElementById('progress-fill');
 
-    // Highlight current track
-    updateActiveTrack(index);
+        if (curTimeEl) curTimeEl.textContent = this.formatTime(current);
+        if (totTimeEl) totTimeEl.textContent = this.formatTime(duration);
+
+        if (fillEl) {
+            const percent = (current / duration) * 100;
+            fillEl.style.width = `${percent}%`;
+        }
+    }
+
+    seek(percent) {
+        if (this.audio.duration) {
+            this.audio.currentTime = percent * this.audio.duration;
+        }
+    }
+
+    formatTime(seconds) {
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    updateState(updates) {
+        Object.assign(this.state, updates);
+        this.updateControlsUI();
+    }
+
+    updateUI(track) {
+        // Update Now Playing Info
+        document.getElementById('current-track-title').textContent = track.title;
+        document.getElementById('current-track-artist').textContent = track.artist;
+
+        // Update Favorite Icon
+        const heartBtn = document.getElementById('favorite-btn');
+        if (heartBtn) {
+            const isFav = this.isFavorite(track);
+            const icon = heartBtn.querySelector('i');
+            if (icon) {
+                if (isFav) {
+                    icon.setAttribute('fill', '#1db954');
+                    icon.setAttribute('stroke', '#1db954');
+                } else {
+                    icon.setAttribute('fill', 'none');
+                    icon.setAttribute('stroke', 'currentColor');
+                }
+            }
+        }
+
+        // Update Active Track in List
+        document.querySelectorAll('.song-card').forEach(card => {
+            card.classList.remove('playing');
+        });
+        // This assumes we can find the card by some ID or index. 
+        // We might need to add IDs to the cards in the HTML generation.
+    }
+
+    updateControlsUI() {
+        // Play/Pause Icon
+        const playIcon = document.getElementById('play-pause-icon');
+        if (playIcon) {
+            if (this.state.isPlaying) {
+                playIcon.setAttribute('data-lucide', 'pause');
+            } else {
+                playIcon.setAttribute('data-lucide', 'play');
+            }
+        }
+
+        // Shuffle Button
+        const shuffleBtn = document.getElementById('shuffle-btn');
+        if (shuffleBtn) {
+            shuffleBtn.classList.toggle('active', this.state.shuffle);
+        }
+
+        // Repeat Button
+        const repeatBtn = document.getElementById('repeat-btn');
+        if (repeatBtn) {
+            repeatBtn.classList.toggle('active', this.state.repeatMode !== 'off');
+            // Optionally update icon based on mode
+        }
+
+        // Re-render icons
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    log(msg) {
+        console.log(`[MusicPlayer] ${msg}`);
+    }
+
+    error(msg, err) {
+        console.error(`[MusicPlayer] ${msg}`, err);
+    }
+}
+
+// Initialize
+window.musicPlayer = new MusicPlayer();
+
+// Expose global functions for HTML onclick handlers (backward compatibility)
+window.playTrackByIndex = (index) => window.musicPlayer.playTrack(index);
+window.togglePlayPause = () => window.musicPlayer.togglePlayPause();
+window.nextTrack = () => window.musicPlayer.next();
+window.previousTrack = () => window.musicPlayer.previous();
+window.toggleShuffle = () => window.musicPlayer.toggleShuffle();
+window.toggleRepeat = () => window.musicPlayer.toggleRepeat();
+window.toggleFavorite = () => {
+    const track = window.musicPlayer.state.playlist[window.musicPlayer.state.currentIndex];
+    if (track) {
+        window.musicPlayer.toggleFavorite(track);
+    }
+};
+window.seekTrack = (event) => {
+    const progressBar = event.currentTarget;
+    const percent = event.offsetX / progressBar.offsetWidth;
+    window.musicPlayer.seek(percent);
+};
+window.setVolume = (event) => {
+    const slider = event.currentTarget;
+    const rect = slider.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const width = rect.width;
+    const volume = x / width;
+    window.musicPlayer.setVolume(volume);
+};
+window.setEqualizer = (band, value) => {
+    window.musicPlayer.setEqualizer(band, value);
 };
 
-function updatePlayPauseIcon() {
-    const icon = document.getElementById('play-pause-icon');
-    if (icon) {
-        if (playerState.isPlaying) {
-            icon.setAttribute('data-lucide', 'pause');
-        } else {
-            icon.setAttribute('data-lucide', 'play');
+// Start loading when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    window.musicPlayer.loadLibrary();
+
+    // Resume AudioContext on first interaction
+    document.body.addEventListener('click', () => {
+        if (window.musicPlayer.audioCtx && window.musicPlayer.audioCtx.state === 'suspended') {
+            window.musicPlayer.audioCtx.resume();
         }
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
+    }, { once: true });
+
+    // Start visualizer loop
+    function drawVisualizer() {
+        requestAnimationFrame(drawVisualizer);
+
+        if (!window.musicPlayer.analyser) return;
+
+        const canvas = document.getElementById('visualizer');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const bufferLength = window.musicPlayer.analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        window.musicPlayer.analyser.getByteFrequencyData(dataArray);
+
+        ctx.fillStyle = '#121212'; // Background
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const barWidth = (canvas.width / bufferLength) * 2.5;
+        let barHeight;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+            barHeight = dataArray[i] / 2;
+
+            // Gradient fill
+            const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
+            gradient.addColorStop(0, '#1db954');
+            gradient.addColorStop(1, '#1ed760');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+            x += barWidth + 1;
+        }
+
+        // Update Stats
+        const modal = document.getElementById('stats-modal');
+        if (modal && modal.style.display !== 'none' && window.musicPlayer.audioCtx) {
+            document.getElementById('stat-ctx').textContent = window.musicPlayer.audioCtx.state;
+            document.getElementById('stat-sr').textContent = window.musicPlayer.audioCtx.sampleRate;
+            document.getElementById('stat-ch').textContent = window.musicPlayer.analyser.channelCount;
+            document.getElementById('stat-buf').textContent = window.musicPlayer.analyser.fftSize;
+            document.getElementById('stat-time').textContent = window.musicPlayer.audio.currentTime.toFixed(3);
         }
     }
-}
 
-// Auto-initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initEnhancedPlayer);
-} else {
-    initEnhancedPlayer();
-}
+    drawVisualizer();
+});
