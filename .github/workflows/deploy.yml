@@ -28,9 +28,15 @@ jobs:
           lfs: true
 
       - name: Pull LFS files from submodule
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "📥 Setting up LFS for submodule..."
           cd assets_for_my_website
+          
+          # Configure git to use the GitHub token for LFS
+          git config --local lfs.url "https://github.com/Shuvam-Banerji-Seal/assets_for_my_website.git/info/lfs"
+          git config --local lfs.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n x-access-token:${GITHUB_TOKEN} | base64)"
           
           # Configure LFS URL for the submodule
           SUBMODULE_URL=$(git remote get-url origin)
