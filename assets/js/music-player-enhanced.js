@@ -186,17 +186,23 @@ class MusicPlayer {
         this.log(`Preparing to play: ${track.title} (${track.artist})`);
 
         // Determine URL (Production vs Local)
-        const isProduction = window.location.hostname.includes('github.io');
+        // Determine URL (Production vs Local)
+        // We use the CDN URL if we are on GitHub Pages OR if we are testing locally but want to verify CDN links
+        const isProduction = window.location.hostname.includes('github.io') || window.location.hostname.includes('shuvam-banerji-seal.github.io');
         let src = track.file;
 
-        if (isProduction && track.cdnUrl) {
-            src = track.cdnUrl;
-            this.log(`Using CDN URL: ${src}`);
+        if (isProduction) {
+            if (track.cdnUrl) {
+                src = track.cdnUrl;
+                this.log(`Using CDN URL (Production): ${src}`);
+            } else {
+                this.error('CDN URL missing for track in production mode');
+            }
         } else {
             // Use encodeURI to handle spaces but preserve special chars like &, +, ,
             // which might be valid in the path and over-encoded by encodeURIComponent
             src = encodeURI(track.file);
-            this.log(`Using local path: ${src}`);
+            this.log(`Using local path (Dev): ${src}`);
         }
 
         this.audio.src = src;
