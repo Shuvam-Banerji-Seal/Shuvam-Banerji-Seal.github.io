@@ -149,7 +149,8 @@ class MusicPlayer {
     async loadLibrary() {
         try {
             this.log('Loading music library...');
-            const response = await fetch('/music-library.json');
+            // Add cache buster to prevent caching of the JSON file
+            const response = await fetch(`/music-library.json?v=${new Date().getTime()}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const data = await response.json();
@@ -186,7 +187,6 @@ class MusicPlayer {
         this.log(`Preparing to play: ${track.title} (${track.artist})`);
 
         // Determine URL (Production vs Local)
-        // Determine URL (Production vs Local)
         // We use the CDN URL if we are on GitHub Pages OR if we are testing locally but want to verify CDN links
         const isProduction = window.location.hostname.includes('github.io') || window.location.hostname.includes('shuvam-banerji-seal.github.io');
         let src = track.file;
@@ -196,7 +196,18 @@ class MusicPlayer {
                 src = track.cdnUrl;
                 this.log(`Using CDN URL (Production): ${src}`);
             } else {
-                this.error('CDN URL missing for track in production mode');
+                this.error('CDN URL missing for track in production mode. Attempting to construct fallback...');
+                // Fallback: Construct CDN URL dynamically
+                // Base: https://media.githubusercontent.com/media/Shuvam-Banerji-Seal/assets_for_my_website/main
+                // File path: /assets_for_my_website/Music/...
+
+                // Remove /assets_for_my_website prefix
+                const relativePath = track.file.replace(/^\/assets_for_my_website\//, '');
+                // Split and encode each segment
+                const encodedPath = relativePath.split('/').map(segment => encodeURIComponent(segment)).join('/');
+
+                src = `https://media.githubusercontent.com/media/Shuvam-Banerji-Seal/assets_for_my_website/main/${encodedPath}`;
+                this.log(`Generated Fallback CDN URL: ${src}`);
             }
         } else {
             // Use encodeURI to handle spaces but preserve special chars like &, +, ,
