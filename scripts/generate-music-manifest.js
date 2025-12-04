@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 const MUSIC_DIR = path.join(__dirname, '../assets_for_my_website/Music');
+const OUTPUT_FILE = path.join(__dirname, '../public/music-library.json');
 // GitHub LFS media URL base (serves actual files, not pointer files)
 const GITHUB_MEDIA_BASE = 'https://media.githubusercontent.com/media/Shuvam-Banerji-Seal/assets_for_my_website/main';
 
@@ -33,7 +34,7 @@ function scanMusicDirectory(dir, baseFolder = '') {
                     // Extract metadata from filename and path
                     const folder = baseFolder || path.basename(dir);
                     const title = path.basename(item.name, ext);
-                    
+
                     // URL-encode the path for GitHub media URL
                     const encodedPath = relativePath.replace(/\\/g, '/').split('/').map(segment => encodeURIComponent(segment)).join('/');
 
