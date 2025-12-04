@@ -1,0 +1,13 @@
+[
+  {
+    "filename": "welcome.md",
+    "title": "Welcome to My Enhanced Blog",
+    "date": "2025-12-05",
+    "tags": [
+      "Update",
+      "Markdown",
+      "Tech"
+    ],
+    "description": "A demonstration of the new Markdown-based blog system with Math and Code support."
+  }
+]
