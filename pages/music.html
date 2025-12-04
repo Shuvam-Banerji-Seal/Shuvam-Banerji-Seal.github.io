@@ -341,14 +341,14 @@
             const grid = document.getElementById('song-grid');
             const fullLibrary = window.musicLibrary;
 
-            grid.innerHTML = songs.map((track) => {
+            grid.innerHTML = songs.map((track, index) => {
                 // Find the correct global index from full library
                 const globalIndex = fullLibrary.findIndex(t =>
                     t.title === track.title && t.artist === track.artist && t.file === track.file
                 );
 
                 return `
-                <div class="song-card" onclick="playTrackByIndex(${globalIndex})">
+                <div class="song-card" onclick="playTrackByIndex(${globalIndex})" style="animation-delay: ${index * 0.05}s">
                     <div class="album-art">
                         ${track.folder === 'Ishaan' ? '🎭' : track.folder === 'Pokémon' ? '⚡' : track.folder === 'Suka suka' ? '💫' : '🎵'}
                     </div>
