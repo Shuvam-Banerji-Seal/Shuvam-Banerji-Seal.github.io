@@ -82,19 +82,65 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.body.insertAdjacentHTML('beforeend', mobileMenuHTML);
 
-    // Re-initialize icons and mobile menu
+    // Re-initialize icons
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
 
-    // Initialize mobile menu fix if available
-    if (typeof initMobileMenu === 'function') {
-        initMobileMenu();
-    } else {
-        // Dispatch event to signal navbar is ready
-        document.dispatchEvent(new Event('navbarLoaded'));
-    }
+    // Initialize Mobile Menu Logic Directly
+    initMobileMenuLogic();
 });
+
+function initMobileMenuLogic() {
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    const mobileLinks = document.querySelectorAll('.mobile-menu-link');
+
+    function openMenu() {
+        if (mobileMenu) mobileMenu.classList.add('active');
+        if (backdrop) backdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        if (mobileMenu) mobileMenu.classList.remove('active');
+        if (backdrop) backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (menuBtn) {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openMenu();
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeMenu();
+        });
+    }
+
+    if (backdrop) {
+        backdrop.addEventListener('click', closeMenu);
+    }
+
+    // Close menu when clicking a link
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+    });
+
+    // Dispatch event to signal navbar is ready
+    document.dispatchEvent(new Event('navbarLoaded'));
+}
 
 function isActive(href) {
     const currentPath = window.location.pathname;

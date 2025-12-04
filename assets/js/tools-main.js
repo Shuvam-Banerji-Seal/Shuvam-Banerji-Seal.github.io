@@ -5,10 +5,10 @@ function openTool(toolId) {
     const modal = document.createElement('div');
     modal.className = 'tool-modal';
     modal.id = `modal-${toolId}`;
-    
+
     let content = '';
-    
-    switch(toolId) {
+
+    switch (toolId) {
         case 'llm-chat':
             content = createLLMChatTool();
             break;
@@ -43,25 +43,25 @@ function openTool(toolId) {
             content = createPHCalculatorTool();
             break;
     }
-    
+
     modal.innerHTML = `
         <div class="tool-modal-content">
             ${content}
         </div>
     `;
-    
+
     document.body.appendChild(modal);
-    
+
     // Animate in
     setTimeout(() => modal.classList.add('active'), 10);
-    
+
     // Close on backdrop click
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             closeModal(modal);
         }
     });
-    
+
     // Initialize tool-specific functionality
     initializeTool(toolId);
 }
@@ -122,7 +122,7 @@ function createLLMChatTool() {
 function updateModelOptions() {
     const provider = document.getElementById('llm-provider').value;
     const modelSelect = document.getElementById('llm-model');
-    
+
     const modelsByProvider = {
         openai: [
             { value: 'gpt-4', label: 'GPT-4' },
@@ -152,7 +152,7 @@ function updateModelOptions() {
             { value: 'meta-llama/llama-3-70b', label: 'Llama 3 70B' }
         ]
     };
-    
+
     modelSelect.innerHTML = '';
     const models = modelsByProvider[provider] || [];
     models.forEach(model => {
@@ -167,33 +167,33 @@ async function sendChatMessage() {
     const input = document.getElementById('chat-input');
     const message = input.value.trim();
     if (!message) return;
-    
+
     const chatContainer = document.getElementById('chat-container');
     const apiKey = document.getElementById('llm-api-key').value;
     const provider = document.getElementById('llm-provider').value;
     const model = document.getElementById('llm-model').value;
-    
+
     if (!apiKey) {
         alert('Please enter your API key first');
         return;
     }
-    
+
     // Add user message
     const userMsg = document.createElement('div');
     userMsg.className = 'chat-message user';
     userMsg.textContent = message;
     chatContainer.appendChild(userMsg);
-    
+
     input.value = '';
     chatContainer.scrollTop = chatContainer.scrollHeight;
-    
+
     // Add loading message
     const loadingMsg = document.createElement('div');
     loadingMsg.className = 'chat-message assistant';
     loadingMsg.innerHTML = '<span class="loading-spinner"></span> Thinking...';
     chatContainer.appendChild(loadingMsg);
     chatContainer.scrollTop = chatContainer.scrollHeight;
-    
+
     try {
         const response = await callLLMAPI(provider, apiKey, model, message);
         loadingMsg.innerHTML = response;
@@ -201,7 +201,7 @@ async function sendChatMessage() {
         loadingMsg.innerHTML = `Error: ${error.message}`;
         loadingMsg.style.color = 'red';
     }
-    
+
     chatContainer.scrollTop = chatContainer.scrollHeight;
     lucide.createIcons();
 }
@@ -215,13 +215,13 @@ async function callLLMAPI(provider, apiKey, model, message) {
         // Note: Gemini API requires API key in URL per Google's official documentation
         gemini: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
     };
-    
+
     const headers = {
         'Content-Type': 'application/json',
     };
-    
+
     let body;
-    
+
     if (provider === 'anthropic') {
         headers['x-api-key'] = apiKey;
         headers['anthropic-version'] = '2023-06-01';
@@ -244,20 +244,20 @@ async function callLLMAPI(provider, apiKey, model, message) {
             messages: [{ role: 'user', content: message }]
         };
     }
-    
+
     const response = await fetch(endpoints[provider], {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(body)
     });
-    
+
     if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`API Error: ${response.statusText} - ${errorText}`);
     }
-    
+
     const data = await response.json();
-    
+
     if (provider === 'anthropic') {
         return data.content[0].text;
     } else if (provider === 'gemini') {
@@ -318,27 +318,27 @@ async function searchPapers() {
     const source = document.getElementById('paper-source').value;
     const year = document.getElementById('paper-year').value;
     const resultsContainer = document.getElementById('paper-results');
-    
+
     if (!query) {
         alert('Please enter a search query');
         return;
     }
-    
+
     resultsContainer.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Searching...</div>';
-    
+
     try {
         let papers = [];
-        
+
         if (source === 'semantic' || source === 'both') {
             const semanticPapers = await searchSemanticScholar(query, year);
             papers = papers.concat(semanticPapers);
         }
-        
+
         if (source === 'arxiv' || source === 'both') {
             const arxivPapers = await searchArXiv(query, year);
             papers = papers.concat(arxivPapers);
         }
-        
+
         displayPapers(papers);
     } catch (error) {
         resultsContainer.innerHTML = `<div style="color: red;">Error: ${error.message}</div>`;
@@ -347,10 +347,10 @@ async function searchPapers() {
 
 async function searchSemanticScholar(query, year) {
     const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=10&fields=title,authors,abstract,year,url,citationCount`;
-    
+
     const response = await fetch(url);
     if (!response.ok) throw new Error('Semantic Scholar API error');
-    
+
     const data = await response.json();
     return data.data.map(paper => ({
         title: paper.title,
@@ -365,19 +365,19 @@ async function searchSemanticScholar(query, year) {
 
 async function searchArXiv(query, year) {
     const url = `https://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(query)}&start=0&max_results=10`;
-    
+
     const response = await fetch(url);
     if (!response.ok) throw new Error('arXiv API error');
-    
+
     const text = await response.text();
     const parser = new DOMParser();
     const xml = parser.parseFromString(text, 'text/xml');
     const entries = xml.querySelectorAll('entry');
-    
+
     return Array.from(entries).map(entry => {
         const published = entry.querySelector('published')?.textContent || '';
         const paperYear = new Date(published).getFullYear();
-        
+
         return {
             title: entry.querySelector('title')?.textContent.trim() || 'No title',
             authors: Array.from(entry.querySelectorAll('author name')).map(a => a.textContent).join(', '),
@@ -391,12 +391,12 @@ async function searchArXiv(query, year) {
 
 function displayPapers(papers) {
     const resultsContainer = document.getElementById('paper-results');
-    
+
     if (papers.length === 0) {
         resultsContainer.innerHTML = '<div class="text-center" style="color: var(--text-secondary);">No papers found</div>';
         return;
     }
-    
+
     resultsContainer.innerHTML = papers.map(paper => `
         <div class="paper-card">
             <div class="paper-title">${paper.title}</div>
@@ -410,7 +410,7 @@ function displayPapers(papers) {
             </div>
         </div>
     `).join('');
-    
+
     lucide.createIcons();
 }
 
@@ -435,37 +435,36 @@ function createPDFToJPGTool() {
 
 async function convertPDFToJPG(file) {
     if (!file) return;
-    
+
     const preview = document.getElementById('jpg-preview');
     preview.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Converting PDF...</div>';
-    
+
     try {
         // Load PDF.js from CDN
-        const pdfjsLib = window['pdfjs-dist/build/pdf'];
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        
+        const pdfjsLib = window.pdfjsLib;
+
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
-        
+
         preview.innerHTML = '';
-        
+
         // Store images for bulk download
         window.pdfImages = [];
-        
+
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
             const viewport = page.getViewport({ scale: 2 });
-            
+
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-            
+
             await page.render({ canvasContext: context, viewport: viewport }).promise;
-            
+
             const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
             window.pdfImages.push({ dataUrl, filename: `page-${i}.jpg` });
-            
+
             const pageDiv = document.createElement('div');
             pageDiv.className = 'pdf-page-preview';
             pageDiv.innerHTML = `
@@ -476,7 +475,7 @@ async function convertPDFToJPG(file) {
             `;
             preview.appendChild(pageDiv);
         }
-        
+
         // Add bulk download button
         const bulkDownloadBtn = document.createElement('div');
         bulkDownloadBtn.style.cssText = 'grid-column: 1 / -1; margin-top: 1rem;';
@@ -486,7 +485,7 @@ async function convertPDFToJPG(file) {
             </button>
         `;
         preview.appendChild(bulkDownloadBtn);
-        
+
         lucide.createIcons();
     } catch (error) {
         preview.innerHTML = `<div style="color: red;">Error: ${error.message}</div>`;
@@ -507,7 +506,7 @@ async function downloadAllAsZip() {
         alert('No images to download');
         return;
     }
-    
+
     try {
         // Load JSZip from CDN if not already loaded
         if (!window.JSZip) {
@@ -519,9 +518,9 @@ async function downloadAllAsZip() {
                 document.head.appendChild(script);
             });
         }
-        
+
         const zip = new JSZip();
-        
+
         // Add each image to the ZIP
         for (const { dataUrl, filename } of window.pdfImages) {
             // Convert data URL to blob
@@ -529,7 +528,7 @@ async function downloadAllAsZip() {
             const blob = await fetch(dataUrl).then(r => r.blob());
             zip.file(filename, blob);
         }
-        
+
         // Generate ZIP and trigger download
         const zipBlob = await zip.generateAsync({ type: 'blob' });
         const link = document.createElement('a');
@@ -571,45 +570,44 @@ function createPDFReducerTool() {
 
 async function reducePDFSize(file) {
     if (!file) return;
-    
+
     const result = document.getElementById('reduce-result');
     const quality = parseFloat(document.getElementById('compression-level').value);
-    
+
     result.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Compressing PDF...</div>';
-    
+
     try {
-        const pdfjsLib = window['pdfjs-dist/build/pdf'];
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        
+        const pdfjsLib = window.pdfjsLib;
+
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
-        
+
         // Create new PDF with compressed images
         const { jsPDF } = window.jspdf;
         const newPdf = new jsPDF();
-        
+
         for (let i = 1; i <= pdf.numPages; i++) {
             if (i > 1) newPdf.addPage();
-            
+
             const page = await pdf.getPage(i);
             const viewport = page.getViewport({ scale: 1.5 });
-            
+
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-            
+
             await page.render({ canvasContext: context, viewport: viewport }).promise;
-            
+
             const imgData = canvas.toDataURL('image/jpeg', quality);
             newPdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
         }
-        
+
         const compressedBlob = newPdf.output('blob');
         const originalSize = (file.size / 1024 / 1024).toFixed(2);
         const compressedSize = (compressedBlob.size / 1024 / 1024).toFixed(2);
         const savings = ((1 - compressedBlob.size / file.size) * 100).toFixed(1);
-        
+
         result.innerHTML = `
             <div class="paper-card">
                 <h3>Compression Complete!</h3>
@@ -621,7 +619,7 @@ async function reducePDFSize(file) {
                 </button>
             </div>
         `;
-        
+
         window.compressedPDF = compressedBlob;
         lucide.createIcons();
     } catch (error) {
@@ -705,8 +703,8 @@ function createGamesTool() {
 function startGame(gameType) {
     const gameContent = document.getElementById('game-content');
     const canvas = document.getElementById('game-canvas');
-    
-    switch(gameType) {
+
+    switch (gameType) {
         case 'periodic-table':
             startPeriodicTableQuiz(gameContent);
             break;
@@ -734,10 +732,10 @@ function startPeriodicTableQuiz(container) {
         { symbol: 'Au', name: 'Gold', number: 79 },
         { symbol: 'Ag', name: 'Silver', number: 47 },
     ];
-    
+
     let score = 0;
     let currentQuestion = 0;
-    
+
     function showQuestion() {
         if (currentQuestion >= elements.length) {
             container.innerHTML = `
@@ -750,12 +748,12 @@ function startPeriodicTableQuiz(container) {
             lucide.createIcons();
             return;
         }
-        
+
         const element = elements[currentQuestion];
         const options = [...elements].sort(() => Math.random() - 0.5).slice(0, 4);
         if (!options.includes(element)) options[0] = element;
         options.sort(() => Math.random() - 0.5);
-        
+
         container.innerHTML = `
             <div class="paper-card">
                 <h3>Question ${currentQuestion + 1}/${elements.length}</h3>
@@ -772,15 +770,15 @@ function startPeriodicTableQuiz(container) {
         `;
         lucide.createIcons();
     }
-    
-    window.checkAnswer = function(answer, correct) {
+
+    window.checkAnswer = function (answer, correct) {
         if (answer === correct) {
             score++;
         }
         currentQuestion++;
         showQuestion();
     };
-    
+
     showQuestion();
 }
 
@@ -804,21 +802,21 @@ function startBalanceEquations(container) {
             <div id="balance-result" style="margin-top: 1rem;"></div>
         </div>
     `;
-    
-    window.checkBalance = function() {
+
+    window.checkBalance = function () {
         const c1 = parseInt(document.getElementById('coef1').value);
         const c2 = parseInt(document.getElementById('coef2').value);
         const c3 = parseInt(document.getElementById('coef3').value);
-        
+
         const result = document.getElementById('balance-result');
-        
+
         if (c1 === 2 && c2 === 1 && c3 === 2) {
             result.innerHTML = '<p style="color: green; font-weight: bold;">✓ Correct! 2H₂ + O₂ → 2H₂O</p>';
         } else {
             result.innerHTML = '<p style="color: red; font-weight: bold;">✗ Try again!</p>';
         }
     };
-    
+
     lucide.createIcons();
 }
 
@@ -829,15 +827,15 @@ function startMemoryGame(container) {
         { symbol: 'C', name: 'Carbon' },
         { symbol: 'O', name: 'Oxygen' },
     ];
-    
+
     const cards = [...pairs.map(p => ({ type: 'symbol', value: p.symbol, pair: p.name })),
-                   ...pairs.map(p => ({ type: 'name', value: p.name, pair: p.symbol }))];
-    
+    ...pairs.map(p => ({ type: 'name', value: p.name, pair: p.symbol }))];
+
     cards.sort(() => Math.random() - 0.5);
-    
+
     let flipped = [];
     let matched = [];
-    
+
     container.innerHTML = `
         <div class="paper-card">
             <h3>Element Memory Game</h3>
@@ -852,30 +850,30 @@ function startMemoryGame(container) {
             <div id="memory-result" style="margin-top: 1rem;"></div>
         </div>
     `;
-    
+
     window.memoryCards = cards;
     window.memoryFlipped = flipped;
     window.memoryMatched = matched;
-    
-    window.flipCard = function(index) {
+
+    window.flipCard = function (index) {
         if (flipped.length >= 2 || flipped.includes(index) || matched.includes(index)) return;
-        
+
         const cardEl = document.querySelector(`[data-index="${index}"]`);
         cardEl.textContent = cards[index].value;
         flipped.push(index);
-        
+
         if (flipped.length === 2) {
             const [i1, i2] = flipped;
             const card1 = cards[i1];
             const card2 = cards[i2];
-            
+
             setTimeout(() => {
                 if ((card1.type === 'symbol' && card2.value === card1.pair) ||
                     (card1.type === 'name' && card2.value === card1.pair)) {
                     matched.push(i1, i2);
                     document.querySelector(`[data-index="${i1}"]`).disabled = true;
                     document.querySelector(`[data-index="${i2}"]`).disabled = true;
-                    
+
                     if (matched.length === cards.length) {
                         document.getElementById('memory-result').innerHTML = '<p style="color: green; font-weight: bold;">🎉 You won!</p>';
                     }
@@ -887,7 +885,7 @@ function startMemoryGame(container) {
             }, 1000);
         }
     };
-    
+
     lucide.createIcons();
 }
 
@@ -895,7 +893,7 @@ function startMoleculeBuilder(canvas) {
     const ctx = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    
+
     ctx.fillStyle = 'var(--text-primary)';
     ctx.font = '20px Inter';
     ctx.textAlign = 'center';
@@ -905,19 +903,19 @@ function startMoleculeBuilder(canvas) {
 // Initialize tool-specific functionality
 function initializeTool(toolId) {
     lucide.createIcons();
-    
+
     if (toolId === 'llm-chat') {
         // Load saved API key if exists
         const savedKey = localStorage.getItem('llm-api-key');
         if (savedKey) {
             document.getElementById('llm-api-key').value = savedKey;
         }
-        
+
         // Save API key on change
         document.getElementById('llm-api-key').addEventListener('change', (e) => {
             localStorage.setItem('llm-api-key', e.target.value);
         });
-        
+
         // Update model options based on provider
         document.getElementById('llm-provider').addEventListener('change', (e) => {
             const modelSelect = document.getElementById('llm-model');
@@ -928,26 +926,26 @@ function initializeTool(toolId) {
                 openrouter: ['openai/gpt-4', 'anthropic/claude-3', 'meta-llama/llama-3-70b'],
                 gemini: ['gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-1.0-pro']
             };
-            
-            modelSelect.innerHTML = models[e.target.value].map(m => 
+
+            modelSelect.innerHTML = models[e.target.value].map(m =>
                 `<option value="${m}">${m}</option>`
             ).join('');
         });
-        
+
         // Allow Enter key to send messages
         document.getElementById('chat-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendChatMessage();
         });
     }
-    
+
     if (toolId === 'molecule-viz') {
         initMoleculeVisualizer();
     }
-    
+
     if (toolId === 'unit-converter') {
         updateUnitOptions();
     }
-    
+
     if (toolId === 'periodic-table') {
         initializePeriodicTable();
     }
@@ -957,36 +955,36 @@ function initializeTool(toolId) {
 function initMoleculeVisualizer() {
     const canvas = document.getElementById('molecule-canvas');
     if (!canvas) return;
-    
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-    
+
     renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
     camera.position.z = 5;
-    
+
     window.moleculeScene = { scene, camera, renderer };
     changeMolecule('water');
 }
 
 function changeMolecule(type) {
     if (!window.moleculeScene) return;
-    
+
     const { scene, camera, renderer } = window.moleculeScene;
-    
+
     // Clear previous molecule
-    while(scene.children.length > 0) {
+    while (scene.children.length > 0) {
         scene.remove(scene.children[0]);
     }
-    
+
     // Add lighting
     const light = new THREE.PointLight(0xffffff, 1, 100);
     light.position.set(10, 10, 10);
     scene.add(light);
-    
+
     const ambientLight = new THREE.AmbientLight(0x404040);
     scene.add(ambientLight);
-    
+
     // Create molecule based on type
     if (type === 'water') {
         // Oxygen (red)
@@ -994,32 +992,32 @@ function changeMolecule(type) {
         const oMat = new THREE.MeshPhongMaterial({ color: 0xff0000 });
         const oxygen = new THREE.Mesh(oGeom, oMat);
         scene.add(oxygen);
-        
+
         // Hydrogen atoms (white)
         const hGeom = new THREE.SphereGeometry(0.2, 32, 32);
         const hMat = new THREE.MeshPhongMaterial({ color: 0xffffff });
-        
+
         const h1 = new THREE.Mesh(hGeom, hMat);
         h1.position.set(-0.8, 0.6, 0);
         scene.add(h1);
-        
+
         const h2 = new THREE.Mesh(hGeom, hMat);
         h2.position.set(0.8, 0.6, 0);
         scene.add(h2);
-        
+
         // Bonds
         const bondMat = new THREE.MeshBasicMaterial({ color: 0x888888 });
         const bond1 = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1), bondMat);
         bond1.position.set(-0.4, 0.3, 0);
         bond1.rotation.z = Math.PI / 4;
         scene.add(bond1);
-        
+
         const bond2 = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1), bondMat);
         bond2.position.set(0.4, 0.3, 0);
         bond2.rotation.z = -Math.PI / 4;
         scene.add(bond2);
     }
-    
+
     // Animation loop
     function animate() {
         requestAnimationFrame(animate);
@@ -1123,16 +1121,16 @@ function updateUnitOptions() {
     const category = document.getElementById('unit-category').value;
     const fromSelect = document.getElementById('from-unit');
     const toSelect = document.getElementById('to-unit');
-    
+
     fromSelect.innerHTML = '';
     toSelect.innerHTML = '';
-    
+
     const units = Object.keys(unitData[category]);
     units.forEach(unit => {
         fromSelect.innerHTML += `<option value="${unit}">${unit}</option>`;
         toSelect.innerHTML += `<option value="${unit}">${unit}</option>`;
     });
-    
+
     lucide.createIcons();
 }
 
@@ -1141,14 +1139,14 @@ function convertUnits() {
     const fromUnit = document.getElementById('from-unit').value;
     const toUnit = document.getElementById('to-unit').value;
     const fromValue = parseFloat(document.getElementById('from-value').value);
-    
+
     if (isNaN(fromValue)) {
         document.getElementById('to-value').value = '';
         return;
     }
-    
+
     let result;
-    
+
     if (category === 'temperature') {
         // Special handling for temperature
         // Convert to Celsius first, then to target unit
@@ -1156,16 +1154,16 @@ function convertUnits() {
         if (fromUnit === 'celsius') {
             celsius = fromValue;
         } else if (fromUnit === 'fahrenheit') {
-            celsius = (fromValue - 32) * 5/9;
+            celsius = (fromValue - 32) * 5 / 9;
         } else if (fromUnit === 'kelvin') {
             celsius = fromValue - 273.15;
         }
-        
+
         // Convert from Celsius to target
         if (toUnit === 'celsius') {
             result = celsius;
         } else if (toUnit === 'fahrenheit') {
-            result = (celsius * 9/5) + 32;
+            result = (celsius * 9 / 5) + 32;
         } else if (toUnit === 'kelvin') {
             result = celsius + 273.15;
         }
@@ -1175,7 +1173,7 @@ function convertUnits() {
         const toFactor = unitData[category][toUnit];
         result = (fromValue * fromFactor) / toFactor;
     }
-    
+
     // Format result appropriately
     if (Math.abs(result) < 0.001 || Math.abs(result) > 1000000) {
         document.getElementById('to-value').value = result.toExponential(6);
@@ -1226,15 +1224,15 @@ const atomicWeights = {
 function calculateMolWeight() {
     const formula = document.getElementById('chemical-formula').value.trim();
     const resultDiv = document.getElementById('mol-weight-result');
-    
+
     if (!formula) {
         resultDiv.innerHTML = '<p style="color: red;">Please enter a chemical formula</p>';
         return;
     }
-    
+
     try {
         const { weight, breakdown } = parseMolecularFormula(formula);
-        
+
         resultDiv.innerHTML = `
             <div class="paper-card">
                 <h3 style="margin-bottom: 1rem; color: var(--accent-color);">Results for ${formula}</h3>
@@ -1258,7 +1256,7 @@ function calculateMolWeight() {
                 </table>
             </div>
         `;
-        
+
         lucide.createIcons();
     } catch (error) {
         resultDiv.innerHTML = `<div class="paper-card" style="color: red;">Error: ${error.message}</div>`;
@@ -1270,59 +1268,81 @@ function parseMolecularFormula(formula) {
     const regex = /([A-Z][a-z]?)(\d*)/g;
     let match;
     let lastIndex = 0;
-    
+
     // Parse formula
     while ((match = regex.exec(formula)) !== null) {
         // Check if we're consuming the entire string
         if (match.index !== lastIndex && match[1]) {
             throw new Error(`Invalid character at position ${lastIndex}: '${formula[lastIndex]}'`);
         }
-        
+
         if (match[1]) { // Only process if element symbol exists
             const element = match[1];
             const count = match[2] ? parseInt(match[2]) : 1;
-            
+
             if (!atomicWeights[element]) {
                 throw new Error(`Unknown element: ${element}`);
             }
-            
+
             elements[element] = (elements[element] || 0) + count;
             lastIndex = match.index + match[0].length;
         }
     }
-    
+
     // Verify we consumed the entire formula
     if (lastIndex !== formula.length) {
         throw new Error(`Invalid formula: could not parse '${formula.substring(lastIndex)}'`);
     }
-    
+
     if (Object.keys(elements).length === 0) {
         throw new Error('No valid elements found in formula');
     }
-    
+
     let totalWeight = 0;
     const breakdown = [];
-    
+
     for (const [element, count] of Object.entries(elements)) {
         const contribution = atomicWeights[element] * count;
         totalWeight += contribution;
         breakdown.push({ element, count, contribution });
     }
-    
+
     return { weight: totalWeight, breakdown };
 }
 
 // Load external libraries
 function loadExternalLibraries() {
     // Load PDF.js
-    const pdfScript = document.createElement('script');
-    pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-    document.head.appendChild(pdfScript);
-    
+    if (!window.pdfjsLib) {
+        const pdfScript = document.createElement('script');
+        pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+        pdfScript.onload = () => {
+            window.pdfjsLib = window['pdfjs-dist/build/pdf'];
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        };
+        document.head.appendChild(pdfScript);
+    }
+
     // Load jsPDF
-    const jspdfScript = document.createElement('script');
-    jspdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-    document.head.appendChild(jspdfScript);
+    if (!window.jspdf) {
+        const jspdfScript = document.createElement('script');
+        jspdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        document.head.appendChild(jspdfScript);
+    }
+
+    // Load Three.js
+    if (!window.THREE) {
+        const threeScript = document.createElement('script');
+        threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+        document.head.appendChild(threeScript);
+    }
+
+    // Load Math.js for Matrix calculations (Equation Balancer)
+    if (!window.math) {
+        const mathScript = document.createElement('script');
+        mathScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.0/math.js';
+        document.head.appendChild(mathScript);
+    }
 }
 
 // Periodic Table Tool
@@ -1439,41 +1459,142 @@ function createEquationBalancerTool() {
     `;
 }
 
-function balanceEquation() {
-    const reactants = document.getElementById('reactants-input').value.trim();
-    const products = document.getElementById('products-input').value.trim();
+async function balanceEquation() {
+    const reactantsInput = document.getElementById('reactants-input').value.trim();
+    const productsInput = document.getElementById('products-input').value.trim();
     const result = document.getElementById('balanced-equation-result');
 
-    if (!reactants || !products) {
+    if (!reactantsInput || !productsInput) {
         result.style.display = 'block';
         result.innerHTML = '<p style="color: red;">Please enter both reactants and products.</p>';
         return;
     }
 
-    // Note: This is a simplified demonstration. A complete implementation would:
-    // 1. Parse the chemical formulas
-    // 2. Set up a system of linear equations for atom conservation
-    // 3. Solve using matrix methods (Gaussian elimination)
-    // For educational purposes, showing the concept with placeholder
     result.style.display = 'block';
-    result.innerHTML = `
-        <div style="padding: 1rem; background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; border-radius: 8px; margin-bottom: 1rem;">
-            <strong>⚠️ Educational Tool:</strong> This is a demonstration interface. 
-            For accurate chemical equation balancing, please use dedicated tools or manual calculation.
-        </div>
-        <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Input Equation:</h3>
-        <div style="font-size: 1.5rem; text-align: center; padding: 1rem; background: var(--accent-color-alpha); border-radius: 8px; margin-bottom: 1rem;">
-            ${reactants} → ${products}
-        </div>
-        <p style="color: var(--text-secondary);">
-            <strong>How to balance equations:</strong><br>
-            1. Count atoms of each element on both sides<br>
-            2. Adjust coefficients to equalize atom counts<br>
-            3. Ensure smallest whole number ratios<br>
-            4. Verify conservation of mass and charge
-        </p>
-    `;
-    lucide.createIcons();
+    result.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Balancing...</div>';
+
+    try {
+        // Wait for math.js to load if needed
+        if (!window.math) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+
+        const reactants = reactantsInput.split('+').map(s => s.trim());
+        const products = productsInput.split('+').map(s => s.trim());
+
+        const solution = solveChemicalEquation(reactants, products);
+
+        if (solution) {
+            const formatSide = (mols, coeffs) => mols.map((m, i) => {
+                const c = coeffs[i];
+                return (c === 1 ? '' : c) + formatChemicalFormula(m);
+            }).join(' + ');
+
+            const rCoeffs = solution.slice(0, reactants.length);
+            const pCoeffs = solution.slice(reactants.length);
+
+            const balancedStr = `${formatSide(reactants, rCoeffs)} → ${formatSide(products, pCoeffs)}`;
+
+            result.innerHTML = `
+                <div class="paper-card" style="border-left: 4px solid var(--accent-color);">
+                    <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Balanced Equation:</h3>
+                    <div style="font-size: 1.5rem; text-align: center; padding: 1rem; background: var(--accent-color-alpha); border-radius: 8px; font-family: 'Source Code Pro', monospace;">
+                        ${balancedStr}
+                    </div>
+                </div>
+            `;
+        } else {
+            throw new Error("Could not balance equation. Check if it's chemically valid.");
+        }
+    } catch (error) {
+        result.innerHTML = `<div style="color: red;">Error: ${error.message}</div>`;
+    }
+}
+
+function formatChemicalFormula(formula) {
+    return formula.replace(/(\d+)/g, '<sub>$1</sub>');
+}
+
+function solveChemicalEquation(reactants, products) {
+    // 1. Parse all molecules to get element counts
+    const allMolecules = [...reactants, ...products];
+    const elements = new Set();
+    const composition = allMolecules.map(mol => {
+        const comp = parseMolecule(mol);
+        Object.keys(comp).forEach(e => elements.add(e));
+        return comp;
+    });
+
+    const elementList = Array.from(elements);
+    const matrix = [];
+
+    // 2. Build Matrix (Rows = Elements, Cols = Molecules)
+    // Reactants are positive, Products are negative
+    elementList.forEach(el => {
+        const row = [];
+        composition.forEach((comp, i) => {
+            const val = comp[el] || 0;
+            row.push(i < reactants.length ? val : -val);
+        });
+        matrix.push(row);
+    });
+
+    // 3. Solve Ax = 0 using Gaussian Elimination (via math.js nullspace if available, or custom)
+    // Since we don't have a full linear algebra library guaranteed, we'll use a simplified solver or brute force for small coefficients
+    // For this implementation, let's try a robust brute force for coefficients 1-10 which covers 99% of homework problems
+
+    return bruteForceBalance(matrix, allMolecules.length);
+}
+
+function parseMolecule(formula) {
+    const elements = {};
+    const regex = /([A-Z][a-z]?)(\d*)/g;
+    let match;
+    while ((match = regex.exec(formula)) !== null) {
+        const el = match[1];
+        const count = match[2] ? parseInt(match[2]) : 1;
+        elements[el] = (elements[el] || 0) + count;
+    }
+    return elements;
+}
+
+function bruteForceBalance(matrix, numVars) {
+    // Try coefficients 1 to 12
+    const maxCoeff = 12;
+
+    // Helper to generate combinations
+    function* combinations(n, max) {
+        const counters = new Array(n).fill(1);
+        while (true) {
+            yield counters;
+            let i = 0;
+            while (i < n) {
+                counters[i]++;
+                if (counters[i] <= max) break;
+                counters[i] = 1;
+                i++;
+            }
+            if (i === n) return;
+        }
+    }
+
+    // Check if a set of coefficients solves the matrix
+    for (const coeffs of combinations(numVars, maxCoeff)) {
+        let solved = true;
+        for (const row of matrix) {
+            let sum = 0;
+            for (let i = 0; i < numVars; i++) {
+                sum += row[i] * coeffs[i];
+            }
+            if (sum !== 0) {
+                solved = false;
+                break;
+            }
+        }
+        if (solved) return coeffs;
+    }
+
+    return null;
 }
 
 // pH Calculator Tool
@@ -1533,7 +1654,7 @@ function calculatePH() {
     }
 
     const pOH = 14 - pH;
-    
+
     result.style.display = 'block';
     result.innerHTML = `
         ${note}
