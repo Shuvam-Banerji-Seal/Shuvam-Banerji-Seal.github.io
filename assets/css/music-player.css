@@ -66,6 +66,8 @@ body {
     flex: 1;
     overflow-y: auto;
     margin-top: 12px;
+    padding-bottom: 100px;
+    /* Prevent player bar overlap */
 }
 
 .sidebar-playlists::-webkit-scrollbar {
