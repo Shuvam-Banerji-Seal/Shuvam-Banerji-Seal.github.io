@@ -185,7 +185,15 @@ class MusicPlayer {
         try {
             this.log('Loading music library...');
             // Add cache buster to prevent caching of the JSON file
-            const response = await fetch(`/music-library.json?v=${new Date().getTime()}`);
+            let response;
+            try {
+                response = await fetch(`../music-library.json?v=${new Date().getTime()}`);
+                if (!response.ok) throw new Error('Relative path failed');
+            } catch (e) {
+                console.log('Retrying with root path...');
+                response = await fetch(`/music-library.json?v=${new Date().getTime()}`);
+            }
+
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const data = await response.json();
