@@ -382,11 +382,14 @@
             // Render folders in sidebar
             const folders = [...new Set(library.map(track => track.folder))].sort();
             const folderList = document.getElementById('folder-list');
-            folderList.innerHTML = folders.map(folder => `
-                <div class="playlist-item" onclick="filterByFolder('${folder}'); document.getElementById('sidebar').classList.remove('active')">
+            folderList.innerHTML = folders.map(folder => {
+                const escapedFolder = folder.replace(/'/g, "\\'");
+                return `
+                <div class="playlist-item" onclick="filterByFolder('${escapedFolder}'); document.getElementById('sidebar').classList.remove('active')">
                     📁 ${folder}
                 </div>
-            `).join('');
+                `;
+            }).join('');
 
             // Render all songs
             renderSongs(library);
