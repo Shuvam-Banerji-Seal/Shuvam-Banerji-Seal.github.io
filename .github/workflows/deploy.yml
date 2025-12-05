@@ -74,6 +74,13 @@ jobs:
             npm install
           fi
 
+      - name: Generate Manifests
+        run: |
+          echo "🎵 Generating Music Manifest..."
+          node scripts/generate-music-manifest.js
+          echo "📝 Generating Blog Manifest..."
+          node scripts/generate-blog-manifest.js
+
       - name: Build with Vite
         run: npm run build
         env:
