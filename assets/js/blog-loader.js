@@ -16,7 +16,15 @@ async function loadBlogList() {
     container.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Loading posts...</div>';
 
     try {
-        const response = await fetch('/blog-manifest.json?v=' + Date.now());
+        let response;
+        try {
+            response = await fetch('../blog-manifest.json?v=' + Date.now());
+            if (!response.ok) throw new Error('Relative path failed');
+        } catch (e) {
+            console.log('Retrying with root path...');
+            response = await fetch('/blog-manifest.json?v=' + Date.now());
+        }
+
         if (!response.ok) throw new Error(`Failed to load blog manifest: ${response.status} ${response.statusText}`);
 
         const posts = await response.json();
@@ -68,7 +76,14 @@ async function loadBlogPost(filename) {
     container.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Loading post...</div>';
 
     try {
-        const response = await fetch(`/posts/${filename}`);
+        let response;
+        try {
+            response = await fetch(`../posts/${filename}`);
+            if (!response.ok) throw new Error('Relative path failed');
+        } catch (e) {
+            response = await fetch(`/posts/${filename}`);
+        }
+
         if (!response.ok) throw new Error('Failed to load post');
 
         const text = await response.text();
