@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Favorite music of Shuvam Banerji Seal - Spotify-style music player">
+    <title>Music - Shuvam Banerji Seal</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Override navbar styles for music player */
+        #navbar {
+            background: #000000 !important;
+            border-bottom: 1px solid #282828;
+            padding: 10px 0 !important;
+        }
+
+        .nav-content {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            max-width: 100% !important;
+            padding: 0 24px !important;
+        }
+
+        .nav-link {
+            color: #b3b3b3 !important;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #ffffff !important;
+        }
+
+        .nav-logo span {
+            color: #ffffff !important;
+        }
+
+        .theme-toggle-btn {
+            display: none !important;
+            /* Hide theme toggle on music page as it's always dark */
+        }
+    </style>
+  <link rel="stylesheet" crossorigin href="/assets/music-DYDCH5-d.css">
+  <link rel="stylesheet" crossorigin href="/assets/chemistry-theme-CzZmGv-e.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div id="navbar-container" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1100;"></div>
+    <script src="../assets/js/navbar.js?v=1.0"></script>
+
+    <!-- Spotify-style Container -->
+    <div class="spotify-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <i data-lucide="music" class="w-6 h-6"></i>
+                <span>My Music</span>
+                <button class="control-btn" onclick="document.getElementById('sidebar').classList.remove('active')"
+                    style="margin-left: auto; display: none;" id="sidebar-close-btn">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-item active">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                    <span>Home</span>
+                </li>
+                <li class="sidebar-nav-item"
+                    onclick="document.getElementById('search-input').focus(); document.getElementById('sidebar').classList.remove('active')">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                    <span>Search</span>
+                </li>
+                <li class="sidebar-nav-item">
+                    <i data-lucide="library" class="w-5 h-5"></i>
+                    <span>Your Library</span>
+                </li>
+                <li class="sidebar-nav-item"
+                    onclick="filterByFavorites(); document.getElementById('sidebar').classList.remove('active')">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span>Favorites</span>
+                </li>
+                <li class="sidebar-nav-item"
+                    onclick="openProfileModal(); document.getElementById('sidebar').classList.remove('active')">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                    <span>My Playlists</span>
+                </li>
+            </ul>
+
+            <div class="sidebar-playlists">
+                <div class="playlist-title">Playlists</div>
+                <div id="folder-list">
+                    <div class="loading-spinner" style="margin: 20px auto;"></div>
+                </div>
+            </div>
+        </aside>
+        <div class="sidebar-backdrop" onclick="document.getElementById('sidebar').classList.remove('active')"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1 class="greeting" id="greeting">Good Evening</h1>
+                <div style="position: relative;">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" class="search-bar" placeholder="Search songs, artists..." id="search-input">
+                </div>
+            </header>
+
+            <section class="content-section">
+                <h2 class="section-title" id="section-title">All Songs</h2>
+                <div class="song-grid" id="song-grid">
+                    <div class="loading-spinner" style="margin: 40px auto;"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Player Bar -->
+    <div class="player-bar">
+        <div class="now-playing">
+            <div class="now-playing-art">
+                <i data-lucide="music-2" class="w-6 h-6"></i>
+            </div>
+            <div class="now-playing-info">
+                <div class="now-playing-title" id="current-track-title">No track selected</div>
+                <div class="now-playing-artist" id="current-track-artist">Select a song to play</div>
+            </div>
+            <button class="control-btn" title="Add to favorites" id="favorite-btn" onclick="toggleFavorite()">
+                <i data-lucide="heart" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div class="player-controls">
+            <div class="control-buttons">
+                <button class="control-btn" onclick="toggleShuffle()" id="shuffle-btn" title="Shuffle"
+                    data-tooltip="Shuffle: Off">
+                    <i data-lucide="shuffle" class="w-5 h-5"></i>
+                </button>
+                <button class="control-btn" onclick="previousTrack()" title="Previous">
+                    <i data-lucide="skip-back" class="w-5 h-5"></i>
+                </button>
+                <button class="play-pause-btn" onclick="togglePlayPause()" title="Play/Pause">
+                    <i data-lucide="play" class="w-5 h-5" id="play-pause-icon"
+                        style="color: #000; stroke: #000; fill: #000;"></i>
+                </button>
+                <button class="control-btn" onclick="nextTrack()" title="Next">
+                    <i data-lucide="skip-forward" class="w-5 h-5"></i>
+                </button>
+                <button class="control-btn" onclick="toggleRepeat()" id="repeat-btn" title="Repeat Off"
+                    data-tooltip="Repeat: Off">
+                    <i data-lucide="repeat" class="w-5 h-5"></i>
+                </button>
+                <!-- Mobile Only Equalizer Button -->
+                <button class="control-btn mobile-equalizer-btn" onclick="openEqModal()" title="Equalizer"
+                    style="display: none;">
+                    <i data-lucide="sliders" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="progress-bar-container">
+                <span class="time-label" id="current-time">0:00</span>
+                <div class="progress-bar" onclick="seekTrack(event)">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="time-label" id="total-time">0:00</span>
+            </div>
+        </div>
+
+        <div class="volume-controls">
+            <button class="control-btn" onclick="openEqModal()" title="Equalizer">
+                <i data-lucide="sliders" class="w-5 h-5"></i>
+            </button>
+            <button class="control-btn" onclick="document.getElementById('stats-modal').style.display = 'block'"
+                title="Stats for Nerds">
+                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+            </button>
+            <button class="control-btn">
+                <i data-lucide="volume-2" class="w-5 h-5"></i>
+            </button>
+            <div class="volume-slider" onclick="setVolume(event)">
+                <div class="volume-fill" style="width: 100%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Equalizer Modal -->
+    <div id="eq-modal" class="eq-modal glassmorphic">
+        <div class="eq-header">
+            <h3>🎚️ Advanced Equalizer</h3>
+            <button class="close-btn" onclick="closeEqModal()">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div class="eq-presets-container">
+            <label for="eq-preset">Preset:</label>
+            <select id="eq-preset" class="eq-select" onchange="applyEqPreset(this.value)">
+                <option value="flat">Flat</option>
+                <option value="bass-boost">Bass Boost</option>
+                <option value="bass-reduce">Bass Reduce</option>
+                <option value="treble-boost">Treble Boost</option>
+                <option value="rock">Rock</option>
+                <option value="pop">Pop</option>
+                <option value="jazz">Jazz</option>
+                <option value="classical">Classical</option>
+                <option value="electronic">Electronic</option>
+                <option value="custom">Custom</option>
+            </select>
+            <button class="btn-reset" onclick="resetEq()">Reset</button>
+            <button class="btn-save" onclick="saveCustomPreset()" title="Save current settings">💾 Save</button>
+        </div>
+
+        <div class="eq-sliders">
+            <!-- 10 Bands: 31, 63, 125, 250, 500, 1k, 2k, 4k, 8k, 16k Hz -->
+            <div class="eq-band">
+                <span class="db-value" id="db-0">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="31"
+                        oninput="updateEqBand(0, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">31Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-1">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="63"
+                        oninput="updateEqBand(1, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">63Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-2">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="125"
+                        oninput="updateEqBand(2, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">125Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-3">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="250"
+                        oninput="updateEqBand(3, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">250Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-4">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="500"
+                        oninput="updateEqBand(4, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">500Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-5">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="1000"
+                        oninput="updateEqBand(5, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">1kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-6">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="2000"
+                        oninput="updateEqBand(6, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">2kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-7">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="4000"
+                        oninput="updateEqBand(7, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">4kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-8">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="8000"
+                        oninput="updateEqBand(8, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">8kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-9">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="16000"
+                        oninput="updateEqBand(9, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">16kHz</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizer Canvas (Absolute positioned behind content or somewhere visible) -->
+    <div
+        style="position: fixed; bottom: 90px; right: 20px; width: 300px; height: 100px; z-index: 999; pointer-events: none; opacity: 0.8;">
+        <canvas id="visualizer" width="300" height="100"></canvas>
+    </div>
+
+    <!-- Stats for Nerds Modal -->
+    <div id="stats-modal"
+        style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); padding: 20px; border: 1px solid #333; border-radius: 8px; z-index: 2000; color: #0f0; font-family: monospace; min-width: 300px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <h3>Stats for Nerds</h3>
+            <button onclick="document.getElementById('stats-modal').style.display = 'none'"
+                style="background: none; border: none; color: #fff; cursor: pointer;">✕</button>
+        </div>
+        <div id="stats-content">
+            <div>Audio Context: <span id="stat-ctx">Running</span></div>
+            <div>Sample Rate: <span id="stat-sr">44100</span> Hz</div>
+            <div>Channels: <span id="stat-ch">2</span></div>
+            <div>Buffer Size: <span id="stat-buf">256</span></div>
+            <div>Current Time: <span id="stat-time">0.00</span></div>
+            <div>Volume: <span id="stat-vol">100%</span></div>
+            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;">Source: <span
+                    id="stat-src" style="font-size: 10px;">-</span></div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <div class="mobile-nav-item active">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span>Home</span>
+        </div>
+        <div class="mobile-nav-item" onclick="document.getElementById('search-input').focus()">
+            <i data-lucide="search" class="w-5 h-5"></i>
+            <span>Search</span>
+        </div>
+        <div class="mobile-nav-item"
+            onclick="document.getElementById('sidebar').classList.toggle('active'); lucide.createIcons();">
+            <i data-lucide="folder" class="w-5 h-5"></i>
+            <span>Library</span>
+        </div>
+        <div class="mobile-nav-item" onclick="openProfileModal()">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span>Profile</span>
+        </div>
+    </div>
+
+    <!-- Profile Modal with Playlists -->
+    <div id="profile-modal" class="profile-modal glassmorphic">
+        <div class="profile-header">
+            <h3>👤 My Profile</h3>
+            <button class="close-btn" onclick="closeProfileModal()">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div class="profile-section">
+            <h4>🎵 My Playlists</h4>
+            <div class="create-playlist-container">
+                <input type="text" id="new-playlist-name" placeholder="New playlist name..." maxlength="50">
+                <button class="btn-create-playlist" onclick="createPlaylist()">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Create
+                </button>
+            </div>
+            <div id="user-playlists" class="user-playlists">
+                <!-- Playlists will be populated by JavaScript -->
+                <div class="empty-playlists">No playlists yet. Create one above!</div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h4>⏱️ Listening Stats</h4>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-tracks-played">0</span>
+                    <span class="stat-label">Tracks Played</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-total-time">0m</span>
+                    <span class="stat-label">Total Time</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add to Playlist Modal -->
+    <div id="add-to-playlist-modal" class="add-playlist-modal glassmorphic">
+        <div class="add-playlist-header">
+            <h4>Add to Playlist</h4>
+            <button class="close-btn" onclick="closeAddToPlaylistModal()">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <div id="playlist-select-list" class="playlist-select-list">
+            <!-- Will be populated with available playlists -->
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="audio-player" crossorigin="anonymous"></audio>
+
+    <!-- Scripts -->
+    <script src="/assets/js/navbar.js?v=1.0"></script>
+    <script src="/assets/js/music-player-enhanced.js?v=3.7"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Set greeting based on time
+        // Set greeting based on time with funny quotes
+        const quotes = {
+            morning: [
+                "Rise and shine! Music time! ☀️",
+                "Coffee in one hand, music in the other. ☕",
+                "Let's start the day on a high note! 🎵",
+                "Debugging life, one song at a time. 🐛"
+            ],
+            afternoon: [
+                "Power through the slump with some beats! 🔋",
+                "Good vibes only this afternoon. 😎",
+                "Keep calm and listen to music. 🎧",
+                "Coding fuel: 90% caffeine, 10% music. 💻"
+            ],
+            evening: [
+                "Time to unwind and relax. 🌙",
+                "Ending the day with the perfect soundtrack. 🌌",
+                "Music is the moonlight in the gloomy night of life. 🌃",
+                "Late night coding sessions require epic tunes. 🦉"
+            ]
+        };
+
+        const hour = new Date().getHours();
+        const greetingEl = document.getElementById('greeting');
+        let timeOfDay = 'morning';
+        let greetingText = 'Good Morning';
+
+        if (hour >= 12 && hour < 18) {
+            timeOfDay = 'afternoon';
+            greetingText = 'Good Afternoon';
+        } else if (hour >= 18) {
+            timeOfDay = 'evening';
+            greetingText = 'Good Evening';
+        }
+
+        const randomQuote = quotes[timeOfDay][Math.floor(Math.random() * quotes[timeOfDay].length)];
+        greetingEl.innerHTML = `${greetingText}<br><span style="font-size: 14px; font-weight: 400; color: #b3b3b3; display: block; margin-top: 4px;">${randomQuote}</span>`;
+
+        // Listen for library loaded event from MusicPlayer
+        document.addEventListener('libraryLoaded', (e) => {
+            const library = e.detail;
+            renderSpotifyUI(library);
+        });
+
+        function renderSpotifyUI(library) {
+            // Render folders in sidebar
+            const folders = [...new Set(library.map(track => track.folder))].sort();
+            const folderList = document.getElementById('folder-list');
+            folderList.innerHTML = folders.map(folder => {
+                const escapedFolder = folder.replace(/'/g, "\\'");
+                return `
+                <div class="playlist-item" onclick="filterByFolder('${escapedFolder}'); document.getElementById('sidebar').classList.remove('active')">
+                    📁 ${folder}
+                </div>
+                `;
+            }).join('');
+
+            // Render all songs
+            renderSongs(library);
+        }
+
+        function renderSongs(songs) {
+            const grid = document.getElementById('song-grid');
+            const fullLibrary = window.musicLibrary;
+
+            grid.innerHTML = songs.map((track, index) => {
+                // Find the correct global index from full library
+                const globalIndex = fullLibrary.findIndex(t =>
+                    t.title === track.title && t.artist === track.artist && t.file === track.file
+                );
+
+                return `
+                <div class="song-card" onclick="playTrackByIndex(${globalIndex})" style="animation-delay: ${index * 0.05}s">
+                    <div class="album-art">
+                        ${track.folder === 'Ishaan' ? '🎭' : track.folder === 'Pokémon' ? '⚡' : track.folder === 'Suka suka' ? '💫' : '🎵'}
+                    </div>
+                    <div class="song-info">
+                        <div class="song-title">${track.title}</div>
+                        <div class="song-artist">${track.artist}</div>
+                    </div>
+                    <button class="play-button" onclick="event.stopPropagation(); playTrackByIndex(${globalIndex})">
+                        <i data-lucide="play" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                    `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        window.filterByFolder = function (folder) {
+            const filtered = window.musicLibrary.filter(t => t.folder === folder);
+            document.getElementById('section-title').textContent = folder;
+            renderSongs(filtered);
+        };
+
+        window.filterByFavorites = function () {
+            const favorites = window.musicPlayer.state.favorites;
+            document.getElementById('section-title').textContent = 'Favorites';
+            if (favorites.length === 0) {
+                document.getElementById('song-grid').innerHTML = '<div style="color: #b3b3b3; grid-column: 1/-1; text-align: center; padding: 40px;">No favorites yet. Click the heart icon to add songs!</div>';
+            } else {
+                renderSongs(favorites);
+            }
+        };
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (!query) {
+                renderSongs(window.musicLibrary);
+                document.getElementById('section-title').textContent = 'All Songs';
+                return;
+            }
+
+            const filtered = window.musicLibrary.filter(track =>
+                track.title.toLowerCase().includes(query) ||
+                track.artist.toLowerCase().includes(query) ||
+                track.folder.toLowerCase().includes(query)
+            );
+            document.getElementById('section-title').textContent = `Search Results(${filtered.length})`;
+            renderSongs(filtered);
+        });
+    </script>
+</body>
+
+</html>

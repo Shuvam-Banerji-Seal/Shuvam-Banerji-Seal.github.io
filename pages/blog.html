@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description"
+        content="Blog by Shuvam Banerji Seal on Computational Chemistry, Programming, Anime, and other thoughts.">
+    <title>Blog - Shuvam Banerji Seal</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
+    <!-- Enhanced CSS System -->
+    <!-- Overrides - Must be last -->
+    <style>
+        /* Blog specific styles */
+        .blog-post-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.2);
+            /* Cyan shadow */
+        }
+    </style>
+  <link rel="stylesheet" crossorigin href="/assets/chemistry-theme-CzZmGv-e.css">
+  <link rel="stylesheet" crossorigin href="/assets/overrides-tn0RQdqM.css">
+</head>
+
+<body class="">
+
+    <div id="navbar-container"></div>
+    <script src="../assets/js/navbar.js?v=1.0"></script>
+
+    <main class="container section" style="padding-top: 8rem;">
+        <header class="text-center mb-16 animate-fade-in-up">
+            <h1 class="page-title">
+                <i data-lucide="notebook-pen" class="mr-3"></i> My Blog
+            </h1>
+            <p class="page-subtitle">Thoughts on Chemistry, Code, Anime, and Life.</p>
+        </header>
+
+        <!-- Dynamic Blog Content -->
+        <div id="blog-content" class="min-h-[50vh]">
+            <!-- Content will be loaded here by blog-loader.js -->
+        </div>
+
+    </main>
+
+    <!-- Markdown & Math Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- Blog Loader -->
+    <script src="../assets/js/blog-loader.js"></script>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="GitHub Profile">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
+                    class="social-link" aria-label="LinkedIn Profile">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </a>
+            </div>
+            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
+            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i
+                    data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i
+                    data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
+            <div class="mt-4">
+                <button data-theme-toggle class="theme-toggle-btn">
+                    <i data-lucide="moon" class="w-4 h-4 mr-2"></i> Toggle Theme
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Original functionality -->
+    <script src="../assets/js/main.js"></script>
+    <!-- Enhanced features -->
+    <script src="../assets/js/enhanced.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+
+</html>

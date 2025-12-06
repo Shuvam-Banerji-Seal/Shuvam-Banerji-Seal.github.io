@@ -1,0 +1,475 @@
+.
+├── 003 - Perman Theme Song Intro Hindi [HQ].opus
+├── 004 - The Adventures of Tenali Raman  theme song intro Hindi [ HD ].opus
+├── 006 - Pingu 1986 theme song intro English [ HD ].opus
+├── 007 - Kim Possible  theme song intro Hindi [HD].opus
+├── 008 - Bob the Builder theme Hindi HD.opus
+├── 009 - The Powerpuff Girls [ Fighting Crime ]  ending theme song [ HQ ]  Rare video.opus
+├── 01 - Beyblade V theme song in Hindi ｜ Hungama Dub ｜ Generation 01 ｜ Season 01 ｜ by PokéViwer.opus
+├── 01 - Dragon Ball - Opening (Makafushigi Adventure) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 01 - Pokemon： The First Movie #1 - ＂Pokemon Theme (Movie Version)＂ by Billy Crawford.opus
+├── 01 - Pokémon： Indigo League Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 010 - Courage The Cowardly Dog  Theme Intro Hindi HD.opus
+├── 011 - Kiteretsu Daihyakka Theme Song Intro Hindi [HQ].opus
+├── 012 - Spiderman Animated Series 1994  theme song Hindi [ HD ].opus
+├── 013 - Ed, Edd n Eddy theme song intro Hindi [ HD ].opus
+├── 014 - Baby Looney Tunes intro Hindi HD.opus
+├── 015 - Timon and Pumbaa [ Hakuna Matata ]  theme song intro Hindi [ HD ].opus
+├── 016 - Johnny Bravo 1995  theme song intro Hindi [ HD ].opus
+├── 017 - American Dragon： Jake Long  theme song Hindi [HD].opus
+├── 018 - Timon and Pumba song [ The Lion Sleeps Tonight ] Hindi HD.opus
+├── 019 - Little Einsteins 2005 Theme Hindi HD.opus
+├── 02 - Beyblade V - Force theme song in Hindi ｜ Hungama Dub ｜ Generation 01 ｜ Season 02 ｜ by Poké CD.opus
+├── 02 - Dragon Ball - Ending (Romatikku Ageru Yo) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 02 - Pokémon The First Movie - Don't Say That You Love Me.opus
+├── 02 - Pokémon： Indigo League Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 020 - Hagemaru theme song intro hindi [ HD ].opus
+├── 021 - Oswald  theme song intro hindi [HD].opus
+├── 022 - Supa Strikas theme song Hindi  [ HD ].opus
+├── 023 - The Jetsons 1962 Theme HD.opus
+├── 024 - Atashinchi theme title song hindi HD.opus
+├── 025 - Kochikame Theme Song Intro Hindi [HQ].opus
+├── 026 - Dragon Tales 1999 Theme Hindi HD.opus
+├── 028 - Aladdin 1994 [ Arabian Nights ]  theme song intro Hindi [ HD ].opus
+├── 029 - Galli Galli Sim Sim 2006 Theme Hindi HD.opus
+├── 03 - Beyblade Grevolution theme song in Hindi ｜ Hungama Dub ｜ Generation 01 ｜ Season 03 ｜ by Poké CD.opus
+├── 03 - Dragon Ball GT - Opening v1 (DAN DAN Kokoro Hikaret...) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 03 - It Was You - Ashley Ballard - Pokemon The First Movie HD.opus
+├── 03 - Pokémon： Orange Island Adventures Theme Song (V1) (हिंदी⧸Hindi, V1, LQ).opus
+├── 030 - Adventures Of The Gummi Bears  theme song intro Hindi [ HD ].opus
+├── 031 - Codename： Kids Next Door  theme song intro Hindi [HD].opus
+├── 032 - Hero - Bhakti Hi Shakti Hai  theme song intro Hindi [ HD ].opus
+├── 033 - Wizards of Waverly Place  theme song intro Hindi [ HD ].opus
+├── 034 - Garfield and Friends All Theme Intro HD.opus
+├── 035 - Spidey And His Amazing Friends 1981 Theme Hindi HD.opus
+├── 036 - Jumanji Animated series  theme song intro Hindi [HD].opus
+├── 037 - Power Rangers S.P.D. 2005 Theme Hindi HD.opus
+├── 038 - Timon and Pumbaa song [ Yummy Yummy ] Hindi HD.opus
+├── 039 - Tom and Jerry Kids theme song Hindi HD.opus
+├── 04 - Beyblade： Metal Fusion Theme Song in Hindi ｜ Hungama Dub ｜ Generation 02 ｜ Season 01 ｜ by Poké CD.opus
+├── 04 - Christina Aguilera - We're A Miracle [Pokémon： The First Movie Soundtrack] ｜ Original Version.opus
+├── 04 - Dragon Ball GT - Ending 1 (Hitori Ja Nai) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 04 - perman theme song in hindi.opus
+├── 04 - Pokémon： Orange Island Adventures Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 040 - Inazuma Eleven theme song intro Hindi [ HD ].opus
+├── 041 - Dexter's Laboratory 1995 theme HD.opus
+├── 042 - Popeye The Sailor Man Theme HD.opus
+├── 043 - Ultimate Muscle  theme song intro English [HD].opus
+├── 044 - Ducktails 1988 Theme Hindi HD.opus
+├── 045 - Noddy 2002 Theme Hindi HD.opus
+├── 046 - Digimon Frontier theme hindi HD.opus
+├── 047 - The New Adventures of Winnie The Pooh Theme Hindi HD.opus
+├── 048 - What's New, Scooby-Doo？ theme intro Hindi HD.opus
+├── 049 - The Powerpuff Girls 1998 Theme Hindi HD.opus
+├── 05 - Beyblade： Metal Fury Theme Song in Hindi ｜ Hungama Dub ｜ Generation 02 ｜ Season 02 ｜ by Poké CD.opus
+├── 05 - Dragon Ball GT - Opening v2 (DAN DAN Kokoro Hikaret...) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 05 - Hagemaru theme song in Hindi...opus
+├── 05 - Pokémon The First Movie - Soda Pop.opus
+├── 05 - Pokémon： The Johto Journeys Theme Song (V1) (हिंदी⧸Hindi, V1, LQ).opus
+├── 05 - ｜ Apne Dil mein Dekho to tumko bhi hamesha dikhai degi ｜ @ Doremon New theme song in Hindi ｜.opus
+├── 050 - Beyblade Theme [ Chalte Chalte aage badte jaye ] Intro Hindi HD.opus
+├── 051 - Johnny Test 2005 Theme Hindi HD.opus
+├── 052 - 101 Dalmatians theme hindi HD.opus
+├── 053 - Beyblade V Force Theme Hindi HD.opus
+├── 054 - The Jungle Book (1989 TV series) Theme Hindi HD.opus
+├── 055 - Mighty Cat Masked Niyander 2000 Hindi Theme HD.opus
+├── 056 - Power Rangers Ninja Storm 2003 Theme Hindi HD.opus
+├── 057 - The New Scooby and Scrappy-Doo Show 1985 Theme Hindi HD.opus
+├── 058 - Batman Beyond theme Intro HD.opus
+├── 059 - Darkwing Duck theme Intro English HD.opus
+├── 06 - Beyblade： Metal Masters Theme Song in Hindi ｜ Hungama Dub ｜ Generation 02 ｜ Season 02 ｜ by Poké CD.opus
+├── 06 - Dragon Ball GT - Ending 2 (Don't you see!) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 06 - Perman Opening Song in Hindi ｜ Perman Title Song in Hindi.opus
+├── 06 - Pokémon The First Movie - Somewhere, Someday.opus
+├── 06 - Pokémon： The Johto Journeys Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 060 - Captain Planet and the Planeteers  theme song intro English [ HD ].opus
+├── 061 - Scooby-Doo Where Are You! 1969 Theme Hindi HD.opus
+├── 062 - He-Man & Masters Of The Universe 1983 Theme Hindi HD.opus
+├── 063 - Samurai Jack 2001 Theme Hindi HD.opus
+├── 064 - Goof Troop 1992 Theme HD.opus
+├── 065 - Clifford the Big Red Dog Hindi theme HD.opus
+├── 066 - Phineas and Ferb 2007 Theme Hindi HD.opus
+├── 067 - Jackie Chan Adventures 2000 Theme HD.opus
+├── 068 - Thomas & Friends 1984 Theme HD.opus
+├── 069 - The Road Runner Show Theme Hindi HD.opus
+├── 07 - Beyblade： Burst Theme Song in Hindi ｜ Hungama Dub ｜ Generation 03 ｜ Season 01 ｜ by Poké CD.opus
+├── 07 - Bob the Builder Theme Song in Hindi ｜ HD.opus
+├── 07 - Dragon Ball GT - Ending 3 (Blue Velvet) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 07 - Perman Ending Theme Song in Hindi.opus
+├── 07 - Pokémon The First Movie - Get Happy.opus
+├── 07 - Pokémon： Johto League Champions Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 070 - Inspector Gadget 1982 Theme HD.opus
+├── 071 - Batman The Animated Series theme Intro HD.opus
+├── 072 - Bakugan Battle Brawlers theme Hindi HD.opus
+├── 073 - Ultimate Muscles (Kinnikuman) alternative opening HD.opus
+├── 074 - Recess 1997 Theme HD.opus
+├── 075 - TaleSpin 1990 Theme Hindi HD.opus
+├── 076 - The Suite Life of Zack & Cody 2005 Theme Hindi HD.opus
+├── 077 - Animaniacs 1993 theme song HD.opus
+├── 078 - X-Men： The Animated Series intro (1992).opus
+├── 079 - Teen Titans 2003 Theme Hindi HD.opus
+├── 08 - 07. Pokemon The First Movie： (Hey You) Free Up Your Mind.opus
+├── 08 - Beyblade： Burst Evaluation Theme Song in Hindi ｜ Hungama Dub ｜ Generation 03 ｜Season 02 ｜ by Poké CD.opus
+├── 08 - Dragon Ball GT - Ending 4 (Sabitsuita Machine Gun d...) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 08 - ninja hattori title song in hindi.opus
+├── 08 - Pokémon： Johto League Champions Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 080 - The Little Mermaid 1989 Theme HD.opus
+├── 081 - Lilo & Stitch 2002 Theme HD.opus
+├── 082 - The Flintstones 1960 Theme.opus
+├── 083 - Superman： The Animated Series 1996 Theme HD.opus
+├── 084 - SWAT Kats： The Radical Squadron Theme HD.opus
+├── 085 - Xiaolin Showdown theme intro HD.opus
+├── 086 - The Addams Family 1992 Theme.opus
+├── 087 - Tiny Toon Adventures Theme Intro HD.opus
+├── 088 - Camp Lakebottom hindi theme.opus
+├── 089 - YU GI OH opening theme Hindi HD.opus
+├── 09 - Beyblade： Burst Turbo Theme Song in Hindi ｜ Hungama Dub ｜ Generation 03 ｜ Season 03 ｜ by Poké CD.opus
+├── 09 - Dragon Ball Z - Opening 1 v1 (Cha-La Head-Cha-La) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 09 - Phineas and Ferb - Theme Song in Hindi [HQ].opus
+├── 09 - Pokémon The First Movie - Fly With Me.opus
+├── 09 - Pokémon： Master Quest Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 090 - ThunderCats 1985 Theme HD.opus
+├── 092 - Doraemon theme song [ Zindagi sawar du ] unseen video Hindi HD.opus
+├── 093 - Shinchan [ Jab Dekho Tab Shaitani ] theme song Hindi HD.opus
+├── 094 - Centurions Theme Intro English HD.opus
+├── 095 - Ben 10 original theme intro Hindi [HD].opus
+├── 096 - SpongeBob SquarePants 1999 Theme Hindi HD.opus
+├── 097 - Oggy and the Cockroaches theme opening song HD.opus
+├── 098 - Digimon Butterfly original opening theme song HD.opus
+├── 10 - Beyblade： Burst Rise Theme Song in Hindi ｜ Hungama Dub ｜ Generation 03 ｜ Season 04 ｜ by Poké CD.opus
+├── 10 - Dragon Ball Z - Ending 1 (Dete Koi Tobikiri ZENKAI...) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 10 - Pokémon The First Movie - Lullaby.opus
+├── 10 - Pokémon： Master Quest Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 100 - Tarzan Opening (1999) - Two Worlds One Family 𝐇𝐈𝐍𝐃𝐈 Version HD.opus
+├── 101 - Are You Afraid Of The Dark Opening Intro Theme HD.opus
+├── 102 - Aaron Stone Opening Title Intro Theme HD.opus
+├── 104 - Shaka Laka Boom Boom Opening Theme Song HD.opus
+├── 105 - Son Pari Title Theme Songs Complilation Hindi HD #sonpari.opus
+├── 106 - Karishma Ka Karishma Title Theme Song HD.opus
+├── 107 - Shararat Title Theme Song HD.opus
+├── 108 - Ssshhhh Koi Hai Title Theme Opening Song HD.opus
+├── 109 - Vicky aur Vetal Intro Theme Opening Song HD.opus
+├── 11 - Beyblade： Burst Surge Theme Song in Hindi ｜ Hungama Dub ｜ Generation 03 ｜ Season 05 ｜ by Poké CD.opus
+├── 11 - Dragon Ball Z - Opening 1 v2 (Cha-La Head-Cha-La) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 11 - Pokémon： Advanced Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 11 - Shinchan - Ending Song.opus
+├── 11 - Vitamin C - Vacation (HQ).opus
+├── 110 - The Suite Life of Karan and Kabir Opening Title Theme Song  HD.opus
+├── 111 - Kya Mast Hai Life Title Song HD.opus
+├── 112 - Best of luck Nikki Title Theme Song HD.opus
+├── 113 - Agadam Bagdam Tigdam Title Song HD.opus
+├── 114 - Akkad Bakkad Bambe Bo Title Theme HD.opus
+├── 115 - Hatim Star Plus Title Song HD.opus
+├── 116 - KochiKame (Tokyo Beat Cops) Alternative Unseen Theme Intro Hindi [HD].opus
+├── 117 - KochiKame (Tokyo Beat Cops) Ending Theme Song Hindi.opus
+├── 118 - Cambala Investigation Agency C.I.A Theme Song in Hindi HD.opus
+├── 119 - That's So Raven Season 1 Hindi Theme Song.opus
+├── 12 - Beyblade： Burst QuadDrive Theme Song in Hindi ｜ Hungama Dub ｜ Generation 03 ｜ Season 06 ｜ by Poké CD.opus
+├── 12 - Dragon Ball Z - Opening 2 (We Gotta Power) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 12 - Pokémon The First Movie - Makin' My Way (Any Way That I Can).opus
+├── 12 - Pokémon： Advanced Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 12 - The Powerpuff Girls Theme Song Hindi ｜ HD.opus
+├── 120 - Dragon Ball Z Hindi Opening Theme Song HD.opus
+├── 121 - Looney tunes Golden Collection Theme Song Compilation Hindi HD.opus
+├── 122 - Handy Manny Theme Song HD.opus
+├── 123 - Dora The Explorer Hindi Theme Song HQ.opus
+├── 125 - Kiteretsu Unseen Intro Theme Song Hindi 4K.opus
+├── 126 - Kiteretsu Unseen Outro Theme Song Hindi 4K.opus
+├── 13 - Beyblade Burst All Theme Songs in Hindi ｜ Link in the description ｜ by PokéViwer.opus
+├── 13 - Dragon Ball Z - Ending 2 (Boku-tachi wa Tenshi datta) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 13 - Mickey click here- https：⧸⧸youtube.com⧸shorts⧸d-NzKHXyV_s？feature=share.opus
+├── 13 - Pokémon The First Movie - Catch Me If You Can.opus
+├── 13 - Pokémon： Advanced Challenge Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 14 - BEYBLADE BURST QuadStrike Opening Theme Hindi - by PokéViwer.opus
+├── 14 - Dragon Ball Kai - Opening 1 v1 (Dragon Soul) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 14 - Hagemaru theme song in Hindi...opus
+├── 14 - Jake and The Never Land Pirates ｜ Title Song ｜ Hindi ｜ हिंदी ｜ Disney Junior India.opus
+├── 14 - Pokémon The First Movie - Have Some - Fun With The Funk.opus
+├── 14 - Pokémon： Advanced Challenge Theme Song (V1) (हिंदी⧸Hindi, V2, LQ).opus
+├── 15 - Beyblade X Theme Song (Hindi) ｜ Hindi Opening Song - PokéViwer.opus
+├── 15 - Dragon Ball Kai - Ending 1 (Yeah! Break! Care! Break!) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 15 - Galli Galli Sim Sim 2006 Theme Hindi HD.opus
+├── 15 - Pokémon The First Movie - If Only Could Bring You Back.opus
+├── 15 - Pokémon： Advanced Battle Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 16 - BLESSID UNION OF SOULS - BROTHER MY BROTHER Lyric Video.opus
+├── 16 - Dragon Ball Kai - Opening 1 v2 (Dragon Soul) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 16 - Pokémon： Advanced Battle Theme Song (V1) (हिंदी⧸Hindi, V2, LQ).opus
+├── 17 - Dragon Ball Kai - Ending 2 (Kokoro no Hane) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 17 - Pokemon 2000 - The Power of One - Soundtrack.opus
+├── 17 - Pokémon： Battle Frontier Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 18 - 02. Pokemon The Movie 2000： Dreams.opus
+├── 18 - Bernerd the bear(full soundtrack).opus
+├── 18 - Courage the Cowardly Dog ｜ Opening Theme Song ｜ Hindi Version HD.opus
+├── 18 - Dragon Ball Kai - Opening 1 v3 (Dragon Soul) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 18 - Pokémon： Battle Frontier Theme Song (V1) (हिंदी⧸Hindi, V2, LQ).opus
+├── 19 - 03. Pokemon The Movie 2000： They Don't Understand.opus
+├── 19 - Ben 10 Hindi Opening ｜ Ben 10 Hindi Theme Song ｜ Ben 10 Hindi Title Song ｜ Ben 10 Hindi.opus
+├── 19 - Dragon Ball Kai - Opening 2 (Kuu-Zen-Zetsu-Go) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 19 - Pokémon： Diamond & Pearl Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 19 - Tom and Jerry tales theme song.opus
+├── 20 - 04. Pokemon The Movie 2000： Wonderland.opus
+├── 20 - Ben 10 alien force theme song.opus
+├── 20 - Dragon Ball Kai - Ending 3 (Haikei, Tsuratsusutora) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 20 - Hero   Bhakti hi Shakti Hai Hindi Opening.opus
+├── 20 - Pokémon： Diamond & Pearl Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 21 - 05. Pokemon The Movie 2000： With All Your Heart.opus
+├── 21 - Dragon Ball Kai - Ending 4 (Junjou) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 21 - Pokémon： DP Battle Dimension Theme Song (V1) (हिंदी⧸Hindi, V1, NTSC).opus
+├── 22 - 06. Pokemon The Movie 2000： The Extra Mile.opus
+├── 22 - Best of luck Nikki title song in hindi hd.opus
+├── 22 - Dragon Ball Kai - Ending 5 (Oh Yeah!!!!!!!) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 22 - Monster Kid Theme Song In HINDI.opus
+├── 22 - Pokémon： DP Battle Dimension Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 23 - 07. Pokemon The Movie 2000： Flying Without Wing.opus
+├── 23 - Dragon Ball Kai - Ending 6 (GALAXY) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 23 - GreenGoldKids - Chhota Bheem Title Song.opus
+├── 23 - Phineas And Ferb Opening Hindi (हिन्दी).opus
+├── 23 - Pokémon： DP Galactic Battles Theme Song (V1) (हिंदी⧸Hindi, V1, NTSC).opus
+├── 24 - Baby Looney Tunes Hindi Opening Intro.opus
+├── 24 - Dragon Ball Kai - Ending 7 (Don't Let Me Down) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 24 - KICK BUTTOWSKI SUBURBAN DAREDEVIL OPENING THEME.opus
+├── 24 - Pokemon World - Youngstown⧸Nobody's Angel - Pokemon The Movie 2000 (Direct Soundtrack Rip).opus
+├── 24 - Pokémon： DP Galactic Battles Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 25 - 09. Pokemon The Movie 2000： Blah, Blah, Blah.opus
+├── 25 - Dragon Ball Super - Opening 1 v1 (Chouzetsu☆Dynamic!) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 25 - Pokémon： DP Sinnoh League Victors Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 25 - Scooby-Doo Opening Theme Song HINDI.opus
+├── 25 - Ultra B song in Hindi Saavin and UB song subscribe.opus
+├── 26 - 10. Pokemon The Movie 2000： Polkamon.opus
+├── 26 - Atashinchi Hindi Opening Song ｜ Atashinchi Hindi Intro ｜ Atashinchi Hindi ｜ Atashinchi Hey Hello.opus
+├── 26 - Courage The Cowardly Dog - Hindi OP + ED.opus
+├── 26 - Dragon Ball Super - Ending 1 (Hello Hello Hello) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 26 - Pokémon： DP Sinnoh League Victors Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 27 - 11. Pokemon The Movie 2000： The Chosen One.opus
+├── 27 - Atashinchi Hindi Ending ｜ Atashinchi Hindi Intro ｜ Atashinchi Hindi ｜ Atashinchi Ending Credit.opus
+├── 27 - Dragon Ball Super - Ending 2 (Starring Star) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 27 - Kid VS. Kat Theme Song.opus
+├── 27 - Pokémon： Black & White Theme Song (V1) (हिंदी⧸Hindi, V1).opus
+├── 28 - 12. Pokemon The Movie 2000： One Heart.opus
+├── 28 - Dragon Ball Super - Opening 1 v2 (Chouzetsu☆Dynamic!) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 28 - Dragon Tales Intro Hindi ｜ Dragon Tales Hindi Opening ｜ Dragon Tales Theme Song Hindi ｜ Dragon Tales.opus
+├── 28 - Pokémon： Black & White Theme Song (V1) (हिंदी⧸Hindi, V2).opus
+├── 29 - Aasman Ko Chukar- 1 [Full Song] Return Of Hanuman.opus
+├── 29 - Denisse Lara - One (Pokémon 2000 Soundtrack).opus
+├── 29 - Dragon Ball Super - Ending 3 (Usubeni) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 29 - Pokémon： BW Rival Destinies Theme Song (V1) (हिंदी⧸Hindi).opus
+├── 29 - Richie Rich Title Song in Hindi.opus
+├── 30 - 14. Pokemon The Movie 2000： Comin To The Rescue.opus
+├── 30 - Dragon Ball Super - Opening 1 v3 (Chouzetsu☆Dynamic!) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 30 - Mr. Bean Animated Cartoon Intro Opening Theme HD.opus
+├── 30 - Pokémon： BW Adventures In Unova Theme Song (V1) (हिंदी⧸Hindi).opus
+├── 30 - Popeye The Sailor Man Intro Theme Song.opus
+├── 31 - Dragon Ball Super - Ending 4 (Forever Dreaming) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 31 - Pink Panther Theme Song.opus
+├── 31 - Pokemon 3 - Johto Movie Version.opus
+├── 31 - Pokémon The Series： XY Theme Song (V1) (हिंदी⧸Hindi).opus
+├── 32 - Dragon Ball Super - Opening 1 v4 (Chouzetsu☆Dynamic!) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 32 - Oggy and the Cockroaches - ALL OPENINGS 🎬 1998 - 2018.opus
+├── 32 - Pokemon 3 - To Know the Unknown Innosence.opus
+├── 32 - Pokémon The Series： XY Kalos Quest Theme Song (V1) (हिंदी⧸Hindi).opus
+├── 33 - Dragon Ball Super - Ending 5 (Yoka-Yoka Dance) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 33 - Mr.Bean The animated series theme song.opus
+├── 33 - Pokemon 3 - Pikachu (I Choose You).opus
+├── 33 - Pokemon opening song in hindi lyrics.opus
+├── 33 - Pokémon The Series： XYZ Theme Song (V1) (हिंदी⧸Hindi).opus
+├── 34 - Dragon Ball Super - Ending 6 (Chaohan MUSIC) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 34 - Pokemon 3 - All We Wanno Do.opus
+├── 34 - Pokémon The Series： Sun & Moon Theme Song (V1) (हिंदी⧸Hindi, NTSC).opus
+├── 34 - Power Rangers Mystic Force Hindi Opening ｜ Power Rangers Hindi.opus
+├── 35 - Beyblade g revolution song in hindi.opus
+├── 35 - Dragon Ball Super - Ending 7 v1 (Aku no Tenshi to S...) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 35 - Pokemon 3 - He Drives Me Crazy.opus
+├── 35 - Power Rangers S.P.D. Opening Hindi (हिन्दी).opus
+├── 36 - Dragon Ball Super - Opening 2 (Genkai Toppa × Survivor) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 36 - Pokemon 3 - You and Me and Pokemon.opus
+├── 37 - Dragon Ball Super - Ending 7 v2 (Aku no Tenshi to S...) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 37 - naruto hindi opening.opus
+├── 37 - Pokemon 3 - Song of Jigglypuff.opus
+├── 37 - Title song ＂the suite life karan & kabir＂.opus
+├── 38 - Dragon Ball Super - Ending 8 (Boogie Back) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 38 - Lucky Man (old) Theme songs Hindi.opus
+├── 38 - Zig & Sharko - Opening Credits - Season 1 (HD).opus
+├── 39 - Dragon Ball Super - Ending 9 (Haruka) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 40 - Dragon Ball Super - Ending 10 (70cm Shiho no Madobe) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 40 - Pokemon 3 - Johto TV Version.opus
+├── 40 - Ultraman Mebius Hindi ｜ Ultraman Mebius Hindi Intro ｜ Ultraman Mebius Hindi Opening.opus
+├── 41 - Dragon Ball Super - Ending 11 (LAGRIMA) ｜ 4K 60FPS Creditless ｜ Outdated ｜ Subtitles.opus
+├── 41 - Exclusive-Power Rangers S.P.D opening theme in hindi HQ.opus
+├── 41 - Pokemon 3 - Biggest Part of My Life.opus
+├── 41 - Spongebob Squarepants Theme Song - Hindi.opus
+├── 42 - Exclusive-Power Rangers Jungle Fury-theme in hindi-HQ.opus
+├── 42 - Pokemon 4ever   Born to Be a Winner   Soundtrack.opus
+├── 42 - Super Dragon Ball Heroes： Universe Mission!! - ALL Openings (01 - 12) ｜ 4K ⧸ UHD Creditless ｜ CC.opus
+├── 43 - Dragon Ball Daima - Opening 【Jaka☆Jaan】 4K ⧸ UHD Creditless ｜ CC.opus
+├── 43 - Exclusive-power rangers ninja storm opening theme in hindi HQ.opus
+├── 43 - Pokemon-Cele-B-R-A-T-E.opus
+├── 43 - shaka laka boom boom Title song - Shakalaka Boom Boom.opus
+├── 44 - Dragon Ball Daima - Ending (NAKAMA) ｜ 4K UHD Creditless ｜ Subtitles.opus
+├── 44 - Exclusive 480p-Power Rangers Mystic Force-opening theme in hindi good quality and hq video.opus
+├── 44 - Pokemon Heroes - I Believe - Soundtrack.opus
+├── 44 - Shararat title song star utsav ｜90s Special｜.opus
+├── 45 - Agadam bagdam tigdam title song theme nostalgia agdam bagdam tigd.opus
+├── 45 - Pokémon Movie05 Song - SECRET GARDEN.opus
+├── 45 - Power Ranger Super Samurai theme song in hindi.mp4.opus
+├── 46 - MAD  Pogo Intro and Outro Compilation.opus
+├── 46 - Pokemon： Make A Wish.opus
+├── 47 - Old Doraemon Episode Ending Song (Hindi).opus
+├── 47 - Pokemon： Destiny Deoxys - ＂This Side of Paradise＂ by Bree Sharp.opus
+├── 47 - We bare bears｜ 😃😃😃｜ panda song｜ in hindi.opus
+├── 48 - Art Attack intro hindi ⧸Disney Channel⧸Cartoon Worlds.opus
+├── 48 - We Will Meet Again【Pokémon： Lucario and the Mystery of Mew】8th Movie OST【ＨＱ】.opus
+├── 49 - Johnny Test Hindi Opening ｜ Johnny Test Hindi Intro ｜Johnny Test Hindi.opus
+├── 49 - Paper Plane Launcher FAQ Pogo.opus
+├── 49 - Pokémon Ranger and the Temple of the Sea ~ Together We'll Make a Promise.opus
+├── 50 - I'll Always Remember You ~ from Pokémon： The Rise of Darkrai.opus
+├── 50 - Perman Ending Theme Song in Hindi.opus
+├── 51 - Pokemon-Living in the Shadow.opus
+├── 51 - Thomas And Friends Hindi ｜ Thomas And Friends Hindi Intro ｜ Thomas And Friends Hindi Opening.opus
+├── 51 - Title track - The New Adventur of Hanuman.opus
+├── 52 - Pokemon- This Is A Beautiful World (Giratina & The Sky Warrior： Ending Song) ： Aaron Brotherthon.opus
+├── 52 - Takeshi's Castle - Challenge's Theme.opus
+├── 53 - Pokemon-If We Only Learn.opus
+├── 53 - Popeye The Sailor Man Intro Theme Song.opus
+├── 53 - Teletubbies Intro and Theme Song Videos For Kids.opus
+├── 54 - Cellphone controlled robot! FAQ Pogo.opus
+├── 54 - Handy Manny - Title Song Hindi.opus
+├── 54 - Pokémon - I believe in you [DVD QUALITY] Master of illusions Zoroark.opus
+├── 55 - Follow Your Star ~ Ideal Mix [DVD QUALITY] Pokémon the Movie White - ending.opus
+├── 55 - SpongeBob SquarePants intro song ｜ Hindi Dubbed.opus
+├── 55 - Takeshi's Castle - Challenge's Theme.opus
+├── 56 - Follow Your Star ~ Truth Mix [DVD QUALITY] Pokémon the Movie Black - ending.opus
+├── 56 - Mighty Cat Masked Niyander Hindi Opening ｜ Mighty Cat Masked Niyander Hindi Intro.opus
+├── 57 - Art Attack Intro.opus
+├── 57 - Mighty Cat Masked Niyander Ending Full Song In Hindi.opus
+├── 57 - Pokémon It's all inside of you full englisch song.opus
+├── 58 - Hero   Bhakti hi Shakti Hai Hindi Opening.opus
+├── 58 - Pokémon Genesect and the Legend Awakened - Ending Version HD (We're Coming Home).opus
+├── 59 - Pokémon Diancie and the Cocoon of Destruction Movie Opening Theme XY English HQ.opus
+├── 60 - Pokémon Diancie and the Cocoon of Destruction- Open My Eyes.opus
+├── 60 - Samsher Sikander Chuddie Buddie hindi song ｜ HD.opus
+├── 61 - Chuck Jones Tom and Jerry Introduction.opus
+├── 61 - Pokémon - Hoopa and Clash of Ages English Ending Theme ＂Every Side of Me＂.opus
+├── 62 - Pokémon Volcanion and the Mechanical Marvel - Full English Opening ＂Stand Tall＂ HD STEREO.opus
+├── 62 - Tom And Jerry Kids Opening Hindi (हिन्दी).opus
+├── 63 - Dragon Tales Intro Hindi ｜ Dragon Tales Hindi Opening ｜ Dragon Tales Theme Song Hindi ｜ Dragon Tales.opus
+├── 63 - Pokémon Volcanion and the Mechanical Marvel ENDING SONG - Soul-Heart.opus
+├── 64 - Noddy Theme Song with Lyrics.opus
+├── 66 - Baby Looney Tunes Hindi Opening Intro.opus
+├── 66 - Pokémon The Power Of Us Ending Song English.opus
+├── 67 - Pokémon Theme (Mewtwo Mix) - Mewtwo Strikes Back EVOLUTION Dub Opening.opus
+├── 67 - Road Runner Hindi Opening ｜ Road Runner Show Hindi ｜ Looney Tunes Hindi.opus
+├── 68 - Keep Evolving - Mewtwo Strikes Back EVOLUTION Dub Ending.opus
+├── 68 - Thomas And Friends Hindi ｜ Thomas And Friends Hindi Intro ｜ Thomas And Friends Hindi Opening.opus
+├── 69 - [LYRICS] Pokémon KOKO： The Movie Official  ENGLISH Theme Song ｜ Beverly, Hiroyuki Sawano.opus
+├── 69 - Richie Rich Title Song in Hindi.opus
+├── 71 - Obocchama kun ｜｜ THEME SONG.opus
+├── 73 - Ultimate Muscle Intro HD.opus
+├── 74 - Johnny Bravo Opening⧸Intro in Hindi.opus
+├── 75 - The Powerpuff Girls Theme Song Hindi ｜ HD.opus
+├── 76 - Ed edd n Eddy theme song in Hindi.opus
+├── 77 - Slugterra theme song 3.opus
+├── 78 - Super strikas theme song in hindi.opus
+├── 79 - Ghosts at School Hindi Opening ｜ Ghost Stories Anim Hindi Intro.opus
+├── 81 - The New Adventures Of Peter Pan - theme song (Urdu) ｜ پیٹر پین کے نئے ایڈوینچرس - اردو میں.opus
+├── 82 - Tensai Bakabon Hindi ｜ Bakabon Ke Papa Hindi ｜ Tensai Bakabon Hindi Episode's ｜.opus
+├── 84 - Ninja Boy Rantaro Old Theme Song (720p_HD) _(HINDI) ｜｜Apka Perman ROBOT.opus
+├── 87 - SpongeBob Squarepants - Intro - Hindi [HQ].opus
+├── 88 - KUNG FU MASTERS OF ZODIAC OPENING THEME IN HINDI.opus
+├── 89 - Art Attack song in Hindi.opus
+├── 90 - Adventure Time- Intro (Hindi).opus
+├── 91 - THE PINK PANTHER OPENING THEME.opus
+├── current_state.txt
+├── Music
+│   ├── Alex Groot, Kurt and Crissy
+│   │   ├── 22_taylor_swift_alex_goot_sam_tsui_chrissy_king_the_kid_cover_-7443934852967229262.mp3
+│   │   └── Heart Attack - Demi Lovato (Sam Tsui & Chrissy Costanza of ATC).mp3
+│   ├── Doraemon
+│   │   └── Hindi
+│   ├── Hanna Montanna
+│   │   └── Wherever I Go Miley Cyrus & Emily Osment+Lyrics.mp3
+│   ├── Ishaan
+│   │   ├── Aaj to Tera Birthday Hai.mp3
+│   │   ├── awwa awwa Ishaan LOVELY SONG.mp3
+│   │   ├── Baage Shyla.mp3
+│   │   ├── BODMAS.mp3
+│   │   ├── Chor ho tum (1).mp3
+│   │   ├── Chor Ho Tum.mp3
+│   │   ├── Dil ka hai jo haal.mp3
+│   │   ├── Disney Ishaan all songs.mp3
+│   │   ├── Disney Ishaan songs part - 2.....mp3
+│   │   ├── Ishaan - Jeetenge Aaaj Bhi.mp3
+│   │   ├── ishaan i am the one.m4v.mp3
+│   │   ├── ishaan is just so impossible.m4v.mp3
+│   │   ├── ishaan mere liye sab hai possible (1).mp3
+│   │   ├── ishaan mere liye sab hai possible.mp3
+│   │   ├── ishaan munmun ka sapna.mp3
+│   │   ├── Ishaan Sapno Ko Awaaz De.mp3
+│   │   ├── Jake and the Neverland Song Chalo chalein yo ho rendered by Sagar Sawarkar.mp3
+│   │   ├── Jo Pyaar Ho Gaya (Acoustic) - Ishaan - FULL SONG..mp3
+│   │   ├── Khwaab Ye Kal Ke.mp3
+│   │   ├── Owa Owa.mp3
+│   │   ├── Pyaari Yaari Dosti Hai.mp3
+│   │   ├── Rajiv Sundaresan, Paroma Dasgupta, Kaizad Gherda - Dhinchak (From IshaanSoundtrack Version).mp3
+│   │   ├── Sagar Sawarkar - A Friend in Neverland Hindi Version Song.mp3
+│   │   ├── Sagar Sawarkar - I cant fly Hindi Version (Na Ud Sakoon).mp3
+│   │   ├── Sagar Sawarkar - Summer Song - Phineas and Ferb Movie.mp3
+│   │   └── Say cheese.mp3
+│   ├── Mai kuraki
+│   │   └── Mai Kuraki 倉木麻衣 -  _Try Again.m4a
+│   ├── Pokemon
+│   │   ├── All
+│   │   │   ├── All Pokémon Theme Songs (Seasons 1-24) Extended in English.mp3
+│   │   │   └── POKÉMON-All Theme Songs In Hindi With Lyrics I Creatorz 007.mp3
+│   │   ├── English
+│   │   │   └── Movies
+│   │   │       ├── Pokemon - We Will Be Heroes (Original Music Video).mp3
+│   │   │       ├── Pokemon Black & White_ Movie 14 - Opening Theme (w_ lyrics and download).mp3
+│   │   │       ├── Pokémon Genesect and the Legend Awakened - Opening Full Version HD UK Vers (It_s Always you and me).mp3
+│   │   │       └── Pokémon_ The Movie XYZ - Opening (English).mp3
+│   │   ├── Hindi
+│   │   │   ├── Movies
+│   │   │   │   ├── Hum Banenge Heroes (From _Pokémon_ The Rise of Darkrai__Hindi Soundtrack).mp3
+│   │   │   │   ├── Pokémon_ Lucario and the Mystery of Mew Opening Song in Hindi (Cartoon Network India) _ Good Audio.mp3
+│   │   │   │   └── Pokémon_ The Rise of Darkrai Opening In Hindi On Cartoon Network HD+ TV Ripped.mp3
+│   │   │   └── Series
+│   │   │       ├── CN
+│   │   │       │   ├── Pokémon Black and White Song Video Opening theme [CN India] HINDI.mp3
+│   │   │       │   ├── Pokémon Opening Black & White Song in Hindi (Cartoon Network India).mp3
+│   │   │       │   ├── Pokémon Opening Diamond and Pearl Song in Hindi (Cartoon Network India).mp3
+│   │   │       │   ├── Pokémon Opening Johto Song in Hindi (Cartoon Network India)(1).mp3
+│   │   │       │   └── Pokémon Opening Johto Song in Hindi (Cartoon Network India).mp3
+│   │   │       └── Others
+│   │   │           ├── Pokemon Season 13 - Sinnoh League Victors Opening Song in Hindi Lyrical Video [Sing-Along]!.mp3
+│   │   │           ├── Pokemon season 14 black and white theme song in hindi ( Marvel hq dub).mp3
+│   │   │           ├── Pokémon Season 7 Opening Song in Hindi (High Quality Sound).mp3
+│   │   │           └── Pokémon Season 7 Opening Song in Hindi.mp3
+│   │   ├── Movies
+│   │   │   ├── Follow Your Star ~ Truth Mix [DVD QUALITY] Pokémon the Movie Black - ending.opus
+│   │   │   ├── Pokemon - I Believe in You (Lyrics).opus
+│   │   │   ├── Pokémon - I believe in you [DVD QUALITY] Master of illusions Zoroark.opus
+│   │   │   ├── Pokémon - It_s all Inside of You [DVD QUALITY] Kyurem Vs. the Sword of Justice.opus
+│   │   │   ├── To Know the Unknown.opus
+│   │   │   └── x2mate.com - Keep Evolving - Mewtwo Strikes Back EVOLUTION Dub Ending (320 kbps).mp3
+│   │   └── Tamil and Telugu
+│   │       ├── Pokemon all season songs in Telugu.mp3
+│   │       └── Pokemon Sinnoh League Vectors [Season 13] Opening Title Song in Tamil.mp3
+│   ├── See and feel
+│   │   ├── Anime
+│   │   │   ├── LOVE TWICE - (Main Tumko Chahun) UNOFFICIAL AMV Your Name and The Garden of Words.mp3
+│   │   │   ├── NIYANDAR ENDING THEME [REMIX] - See & Feel.mp3
+│   │   │   └── Ude Yeh Toh Aasman Me Ude🐦 - Perman Ending Song in Hindi _ S&F REMIX _ Stereo Version.mp3
+│   │   ├── Bollywood
+│   │   │   ├── Dil Ibadat unplugged cover Female Version Tripti Garg Funn4 U.mp3
+│   │   │   ├── Full Video Aao Milo Chalen Jab We Met Shahid Kapoor, Kareena Kapoor Shaan, Ustad Sultan K.mp3
+│   │   │   ├── LOVE TWICE - (Main Tumko Chahun) UNOFFICIAL AMV Your Name and The Garden of Words.mp3
+│   │   │   ├── Saanson Ke (Cover) Lo-Fi_See&Feel.mp3
+│   │   │   ├── Teri Meri Prem Kahani🥀 - Lofi Flip _ Re_Mix _ Love Story 2021 _ AMV _ See & Feel.mp3
+│   │   │   └── TUM MILE (LoFi Remix) 💌🌊 _ Clean Audio _ See & Feel.mp3
+│   │   └── Rage
+│   │       └── Your Lie In April - Tum Se by RAGE _ Prod. @Matthew May _ Anime Song [YLIA AMV].mp3
+│   └── Suka suka
+│       ├── Suka Suka - Best Vocal Sountracks - [ 終末なにしてますか 忙しいですか 救ってもらっていいですか ].mp3
+│       ├── 「Scarborough Fair」史卡博羅市集－山田タマル (中英字幕).opus
+│       └── 山田タマル Always in my heart full.opus
+└── my_pictures
+    └── sbs_001.webp
