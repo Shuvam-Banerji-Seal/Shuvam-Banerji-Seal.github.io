@@ -94,6 +94,11 @@
                     <i data-lucide="heart" class="w-5 h-5"></i>
                     <span>Favorites</span>
                 </li>
+                <li class="sidebar-nav-item"
+                    onclick="openProfileModal(); document.getElementById('sidebar').classList.remove('active')">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                    <span>My Playlists</span>
+                </li>
             </ul>
 
             <div class="sidebar-playlists">
@@ -416,7 +421,7 @@
 
     <!-- Scripts -->
     <script src="/assets/js/navbar.js?v=1.0"></script>
-    <script src="/assets/js/music-player-enhanced.js?v=3.6"></script>
+    <script src="/assets/js/music-player-enhanced.js?v=3.7"></script>
     <script>
         // Initialize Lucide icons
         lucide.createIcons();

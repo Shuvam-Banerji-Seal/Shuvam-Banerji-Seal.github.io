@@ -791,23 +791,33 @@ body {
     .play-pause-btn svg {
         color: #000000 !important;
         stroke: #000000 !important;
-        width: 24px;
-        height: 24px;
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px;
+        min-height: 28px;
     }
 
-    /* Fix for Lucide icons - don't fill the entire SVG */
+    /* Fix for Lucide icons - ensure proper visibility */
     .play-pause-btn svg {
         fill: none !important;
+        stroke-width: 2.5 !important;
     }
 
-    /* Only fill rect elements in pause icon */
+    /* Fill rect elements in pause icon */
     .play-pause-btn svg rect {
         fill: #000000 !important;
+        stroke: none !important;
     }
 
     /* Fill polygon for play icon */
     .play-pause-btn svg polygon {
         fill: #000000 !important;
+    }
+
+    /* Fill path elements (Lucide uses paths) */
+    .play-pause-btn svg path {
+        stroke: #000000 !important;
+        stroke-width: 2.5 !important;
     }
 
     .volume-controls {
