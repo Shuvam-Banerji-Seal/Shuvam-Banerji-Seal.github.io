@@ -87,14 +87,23 @@ class MusicPlayer {
             // EQ State - 10 band equalizer
             this.eqBands = [31, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
             this.filters = [];
-            this.state.eqValues = JSON.parse(localStorage.getItem('music_eq_values')) || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+            // Load EQ values from localStorage with migration from 7-band
+            let storedValues = JSON.parse(localStorage.getItem('music_eq_values'));
+            if (!storedValues || !Array.isArray(storedValues) || storedValues.length !== 10) {
+                // Clear old/invalid values and reset to 10-band flat
+                storedValues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                localStorage.setItem('music_eq_values', JSON.stringify(storedValues));
+                this.log('EQ values reset to 10-band flat (migration or invalid data)');
+            }
+            this.state.eqValues = storedValues;
 
             // Create Filters
             this.eqBands.forEach((freq, index) => {
                 const filter = this.audioCtx.createBiquadFilter();
                 filter.type = index === 0 ? 'lowshelf' : (index === this.eqBands.length - 1 ? 'highshelf' : 'peaking');
                 filter.frequency.value = freq;
-                filter.gain.value = this.state.eqValues[index];
+                filter.gain.value = this.state.eqValues[index] || 0;
                 filter.Q.value = 1;
                 this.filters.push(filter);
             });
@@ -112,8 +121,11 @@ class MusicPlayer {
                     });
                     currentNode.connect(this.analyser);
                     this.analyser.connect(this.audioCtx.destination);
+                    this.log('Audio chain connected: Source -> 10 Filters -> Analyser -> Destination');
                 }
             }
+
+            this.log(`AudioContext initialized: ${this.audioCtx.state}, filters: ${this.filters.length}`);
         } catch (e) {
             this.error('Failed to initialize AudioContext', e);
         }
