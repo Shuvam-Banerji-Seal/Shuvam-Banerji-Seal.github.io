@@ -184,14 +184,16 @@ class MusicPlayer {
     async loadLibrary() {
         try {
             this.log('Loading music library...');
-            // Add cache buster to prevent caching of the JSON file
+            // Add cache buster and no-store to completely bypass CDN cache
+            const cacheBuster = `?v=${Date.now()}&r=${Math.random().toString(36).substr(2, 9)}`;
+            const fetchOptions = { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } };
             let response;
             try {
-                response = await fetch(`../music-library.json?v=${new Date().getTime()}`);
+                response = await fetch(`../music-library.json${cacheBuster}`, fetchOptions);
                 if (!response.ok) throw new Error('Relative path failed');
             } catch (e) {
                 console.log('Retrying with root path...');
-                response = await fetch(`/music-library.json?v=${new Date().getTime()}`);
+                response = await fetch(`/music-library.json${cacheBuster}`, fetchOptions);
             }
 
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
