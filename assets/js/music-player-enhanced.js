@@ -180,25 +180,62 @@ class MusicPlayer {
 
     /**
      * Load the music library from the manifest
+     * 
+     * ROLLBACK: To revert to CDN-only loading, set USE_RAW_GITHUB_FALLBACK to false
      */
     async loadLibrary() {
+        // === ROLLBACK CONFIG ===
+        // Set to false to disable raw GitHub fallback and use only CDN
+        const USE_RAW_GITHUB_FALLBACK = true;
+        const RAW_GITHUB_URL = 'https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/gh-pages/music-library.json';
+        const EXPECTED_MIN_TRACKS = 100; // If CDN returns fewer, it's likely stale
+        // === END ROLLBACK CONFIG ===
+
         try {
             this.log('Loading music library...');
-            // Add cache buster and no-store to completely bypass CDN cache
             const cacheBuster = `?v=${Date.now()}&r=${Math.random().toString(36).substr(2, 9)}`;
             const fetchOptions = { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } };
-            let response;
+
+            let data = null;
+
+            // Try CDN first (faster when working)
             try {
-                response = await fetch(`../music-library.json${cacheBuster}`, fetchOptions);
-                if (!response.ok) throw new Error('Relative path failed');
+                let response = await fetch(`../music-library.json${cacheBuster}`, fetchOptions);
+                if (!response.ok) {
+                    response = await fetch(`/music-library.json${cacheBuster}`, fetchOptions);
+                }
+                if (response.ok) {
+                    data = await response.json();
+                    this.log(`CDN returned: ${data.length} tracks`);
+
+                    // Check if CDN data looks stale
+                    if (USE_RAW_GITHUB_FALLBACK && data.length < EXPECTED_MIN_TRACKS) {
+                        this.log(`CDN returned only ${data.length} tracks (expected ${EXPECTED_MIN_TRACKS}+). Trying raw GitHub...`);
+                        data = null; // Force fallback
+                    }
+                }
             } catch (e) {
-                console.log('Retrying with root path...');
-                response = await fetch(`/music-library.json${cacheBuster}`, fetchOptions);
+                this.log('CDN fetch failed, trying raw GitHub...');
             }
 
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            // Fallback to raw GitHub if CDN failed or returned stale data
+            if (!data && USE_RAW_GITHUB_FALLBACK) {
+                try {
+                    this.log('Fetching from raw GitHub...');
+                    const response = await fetch(`${RAW_GITHUB_URL}${cacheBuster}`, fetchOptions);
+                    if (response.ok) {
+                        data = await response.json();
+                        this.log(`Raw GitHub returned: ${data.length} tracks`);
+                    }
+                } catch (e) {
+                    this.error('Raw GitHub fetch also failed', e);
+                }
+            }
 
-            const data = await response.json();
+            if (!data || data.length === 0) {
+                throw new Error('Failed to load music library from any source');
+            }
+
             this.state.playlist = data;
             this.log(`Library loaded: ${data.length} tracks`);
 
