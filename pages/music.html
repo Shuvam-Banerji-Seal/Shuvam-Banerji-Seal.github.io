@@ -141,7 +141,8 @@
 
         <div class="player-controls">
             <div class="control-buttons">
-                <button class="control-btn" onclick="toggleShuffle()" id="shuffle-btn" title="Shuffle">
+                <button class="control-btn" onclick="toggleShuffle()" id="shuffle-btn" title="Shuffle"
+                    data-tooltip="Shuffle: Off">
                     <i data-lucide="shuffle" class="w-5 h-5"></i>
                 </button>
                 <button class="control-btn" onclick="previousTrack()" title="Previous">
@@ -154,7 +155,8 @@
                 <button class="control-btn" onclick="nextTrack()" title="Next">
                     <i data-lucide="skip-forward" class="w-5 h-5"></i>
                 </button>
-                <button class="control-btn" onclick="toggleRepeat()" id="repeat-btn" title="Repeat Off">
+                <button class="control-btn" onclick="toggleRepeat()" id="repeat-btn" title="Repeat Off"
+                    data-tooltip="Repeat: Off">
                     <i data-lucide="repeat" class="w-5 h-5"></i>
                 </button>
                 <!-- Mobile Only Equalizer Button -->
@@ -192,7 +194,7 @@
     <!-- Advanced Equalizer Modal -->
     <div id="eq-modal" class="eq-modal glassmorphic">
         <div class="eq-header">
-            <h3>Equalizer</h3>
+            <h3>🎚️ Advanced Equalizer</h3>
             <button class="close-btn" onclick="closeEqModal()">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
@@ -213,65 +215,100 @@
                 <option value="custom">Custom</option>
             </select>
             <button class="btn-reset" onclick="resetEq()">Reset</button>
+            <button class="btn-save" onclick="saveCustomPreset()" title="Save current settings">💾 Save</button>
         </div>
 
         <div class="eq-sliders">
-            <!-- 7 Bands: 60, 150, 400, 1k, 2.4k, 6k, 15k -->
+            <!-- 10 Bands: 31, 63, 125, 250, 500, 1k, 2k, 4k, 8k, 16k Hz -->
             <div class="eq-band">
+                <span class="db-value" id="db-0">0dB</span>
                 <div class="slider-wrapper">
-                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="60"
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="31"
                         oninput="updateEqBand(0, this.value)">
                     <div class="slider-track"></div>
                 </div>
-                <span class="band-label">60Hz</span>
+                <span class="band-label">31Hz</span>
             </div>
             <div class="eq-band">
+                <span class="db-value" id="db-1">0dB</span>
                 <div class="slider-wrapper">
-                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="150"
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="63"
                         oninput="updateEqBand(1, this.value)">
                     <div class="slider-track"></div>
                 </div>
-                <span class="band-label">150Hz</span>
+                <span class="band-label">63Hz</span>
             </div>
             <div class="eq-band">
+                <span class="db-value" id="db-2">0dB</span>
                 <div class="slider-wrapper">
-                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="400"
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="125"
                         oninput="updateEqBand(2, this.value)">
                     <div class="slider-track"></div>
                 </div>
-                <span class="band-label">400Hz</span>
+                <span class="band-label">125Hz</span>
             </div>
             <div class="eq-band">
+                <span class="db-value" id="db-3">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="250"
+                        oninput="updateEqBand(3, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">250Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-4">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="500"
+                        oninput="updateEqBand(4, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">500Hz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-5">0dB</span>
                 <div class="slider-wrapper">
                     <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="1000"
-                        oninput="updateEqBand(3, this.value)">
+                        oninput="updateEqBand(5, this.value)">
                     <div class="slider-track"></div>
                 </div>
                 <span class="band-label">1kHz</span>
             </div>
             <div class="eq-band">
+                <span class="db-value" id="db-6">0dB</span>
                 <div class="slider-wrapper">
-                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="2400"
-                        oninput="updateEqBand(4, this.value)">
-                    <div class="slider-track"></div>
-                </div>
-                <span class="band-label">2.4kHz</span>
-            </div>
-            <div class="eq-band">
-                <div class="slider-wrapper">
-                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="6000"
-                        oninput="updateEqBand(5, this.value)">
-                    <div class="slider-track"></div>
-                </div>
-                <span class="band-label">6kHz</span>
-            </div>
-            <div class="eq-band">
-                <div class="slider-wrapper">
-                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="15000"
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="2000"
                         oninput="updateEqBand(6, this.value)">
                     <div class="slider-track"></div>
                 </div>
-                <span class="band-label">15kHz</span>
+                <span class="band-label">2kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-7">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="4000"
+                        oninput="updateEqBand(7, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">4kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-8">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="8000"
+                        oninput="updateEqBand(8, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">8kHz</span>
+            </div>
+            <div class="eq-band">
+                <span class="db-value" id="db-9">0dB</span>
+                <div class="slider-wrapper">
+                    <input type="range" min="-12" max="12" value="0" orient="vertical" data-band="16000"
+                        oninput="updateEqBand(9, this.value)">
+                    <div class="slider-track"></div>
+                </div>
+                <span class="band-label">16kHz</span>
             </div>
         </div>
     </div>
@@ -317,9 +354,60 @@
             <i data-lucide="folder" class="w-5 h-5"></i>
             <span>Library</span>
         </div>
-        <div class="mobile-nav-item">
+        <div class="mobile-nav-item" onclick="openProfileModal()">
             <i data-lucide="user" class="w-5 h-5"></i>
             <span>Profile</span>
+        </div>
+    </div>
+
+    <!-- Profile Modal with Playlists -->
+    <div id="profile-modal" class="profile-modal glassmorphic">
+        <div class="profile-header">
+            <h3>👤 My Profile</h3>
+            <button class="close-btn" onclick="closeProfileModal()">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div class="profile-section">
+            <h4>🎵 My Playlists</h4>
+            <div class="create-playlist-container">
+                <input type="text" id="new-playlist-name" placeholder="New playlist name..." maxlength="50">
+                <button class="btn-create-playlist" onclick="createPlaylist()">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Create
+                </button>
+            </div>
+            <div id="user-playlists" class="user-playlists">
+                <!-- Playlists will be populated by JavaScript -->
+                <div class="empty-playlists">No playlists yet. Create one above!</div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h4>⏱️ Listening Stats</h4>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-tracks-played">0</span>
+                    <span class="stat-label">Tracks Played</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stat-total-time">0m</span>
+                    <span class="stat-label">Total Time</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add to Playlist Modal -->
+    <div id="add-to-playlist-modal" class="add-playlist-modal glassmorphic">
+        <div class="add-playlist-header">
+            <h4>Add to Playlist</h4>
+            <button class="close-btn" onclick="closeAddToPlaylistModal()">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <div id="playlist-select-list" class="playlist-select-list">
+            <!-- Will be populated with available playlists -->
         </div>
     </div>
 
@@ -328,7 +416,7 @@
 
     <!-- Scripts -->
     <script src="/assets/js/navbar.js?v=1.0"></script>
-    <script src="/assets/js/music-player-enhanced.js?v=3.4"></script>
+    <script src="/assets/js/music-player-enhanced.js?v=3.5"></script>
     <script>
         // Initialize Lucide icons
         lucide.createIcons();

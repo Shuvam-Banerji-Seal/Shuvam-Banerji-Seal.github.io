@@ -84,10 +84,10 @@ class MusicPlayer {
             this.analyser = this.audioCtx.createAnalyser();
             this.analyser.fftSize = 256;
 
-            // EQ State
-            this.eqBands = [60, 150, 400, 1000, 2400, 6000, 15000];
+            // EQ State - 10 band equalizer
+            this.eqBands = [31, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
             this.filters = [];
-            this.state.eqValues = JSON.parse(localStorage.getItem('music_eq_values')) || [0, 0, 0, 0, 0, 0, 0];
+            this.state.eqValues = JSON.parse(localStorage.getItem('music_eq_values')) || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
             // Create Filters
             this.eqBands.forEach((freq, index) => {
@@ -104,7 +104,7 @@ class MusicPlayer {
                 if (!this.source) {
                     this.source = this.audioCtx.createMediaElementSource(this.audio);
 
-                    // Chain: Source -> Filter 0 -> ... -> Filter 6 -> Analyser -> Destination
+                    // Chain: Source -> Filters -> Analyser -> Destination
                     let currentNode = this.source;
                     this.filters.forEach(filter => {
                         currentNode.connect(filter);
@@ -126,21 +126,29 @@ class MusicPlayer {
         this.filters[bandIndex].gain.value = val;
         this.state.eqValues[bandIndex] = val;
 
+        // Update dB display
+        const dbDisplay = document.getElementById(`db-${bandIndex}`);
+        if (dbDisplay) {
+            dbDisplay.textContent = `${val > 0 ? '+' : ''}${val}dB`;
+            dbDisplay.className = 'db-value ' + (val > 0 ? 'positive' : (val < 0 ? 'negative' : ''));
+        }
+
         // Save to local storage
         localStorage.setItem('music_eq_values', JSON.stringify(this.state.eqValues));
     }
 
     applyPreset(presetName) {
+        // 10-band presets: 31Hz, 63Hz, 125Hz, 250Hz, 500Hz, 1kHz, 2kHz, 4kHz, 8kHz, 16kHz
         const presets = {
-            'flat': [0, 0, 0, 0, 0, 0, 0],
-            'bass-boost': [8, 6, 3, 0, 0, 0, 0],
-            'bass-reduce': [-6, -4, -2, 0, 0, 0, 0],
-            'treble-boost': [0, 0, 0, 0, 3, 6, 8],
-            'rock': [5, 3, -2, -4, 0, 4, 6],
-            'pop': [3, 1, 0, -2, -4, 2, 4],
-            'jazz': [4, 2, -2, -2, 0, 2, 5],
-            'classical': [5, 3, -2, -2, -2, 2, 4],
-            'electronic': [7, 5, 1, -2, 2, 5, 6],
+            'flat': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            'bass-boost': [8, 7, 6, 4, 2, 0, 0, 0, 0, 0],
+            'bass-reduce': [-6, -5, -4, -3, -1, 0, 0, 0, 0, 0],
+            'treble-boost': [0, 0, 0, 0, 0, 0, 2, 4, 6, 8],
+            'rock': [5, 4, 3, -2, -3, 0, 2, 4, 5, 6],
+            'pop': [2, 3, 4, 2, 0, -2, -1, 2, 3, 4],
+            'jazz': [4, 3, 2, -2, -2, 0, 2, 3, 4, 5],
+            'classical': [5, 4, 2, -2, -2, -2, 0, 2, 3, 5],
+            'electronic': [8, 7, 5, 2, -1, -2, 2, 4, 6, 7],
             'custom': this.state.eqValues
         };
 
@@ -154,6 +162,22 @@ class MusicPlayer {
         });
 
         this.log(`Applied EQ preset: ${presetName}`);
+    }
+
+    saveCustomPreset() {
+        localStorage.setItem('music_eq_custom', JSON.stringify(this.state.eqValues));
+        this.log('Custom preset saved');
+        // Show feedback
+        const btn = document.querySelector('.btn-save');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✓ Saved!';
+            btn.style.background = '#10b981';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 1500);
+        }
     }
 
     resetEq() {
@@ -368,14 +392,31 @@ class MusicPlayer {
         this.state.shuffle = !this.state.shuffle;
         this.updateControlsUI();
         this.log(`Shuffle: ${this.state.shuffle}`);
+
+        // Update tooltip and trigger pulse animation
+        const btn = document.getElementById('shuffle-btn');
+        if (btn) {
+            btn.setAttribute('data-tooltip', `Shuffle: ${this.state.shuffle ? 'On' : 'Off'}`);
+            btn.classList.add('pulse');
+            setTimeout(() => btn.classList.remove('pulse'), 400);
+        }
     }
 
     toggleRepeat() {
         const modes = ['off', 'one', 'all', 'folder'];
+        const modeLabels = { off: 'Off', one: 'One', all: 'All', folder: 'Folder' };
         const idx = modes.indexOf(this.state.repeatMode);
         this.state.repeatMode = modes[(idx + 1) % modes.length];
         this.updateControlsUI();
         this.log(`Repeat mode: ${this.state.repeatMode}`);
+
+        // Update tooltip and trigger pulse animation
+        const btn = document.getElementById('repeat-btn');
+        if (btn) {
+            btn.setAttribute('data-tooltip', `Repeat: ${modeLabels[this.state.repeatMode]}`);
+            btn.classList.add('pulse');
+            setTimeout(() => btn.classList.remove('pulse'), 400);
+        }
     }
 
     handleTrackEnd() {
@@ -567,14 +608,23 @@ window.applyEqPreset = (preset) => {
 window.resetEq = () => {
     window.musicPlayer.resetEq();
 };
+window.saveCustomPreset = () => {
+    window.musicPlayer.saveCustomPreset();
+};
 window.openEqModal = () => {
     document.getElementById('eq-modal').style.display = 'block';
-    // Sync sliders with current state
+    // Sync sliders and dB displays with current state
     const values = window.musicPlayer.state.eqValues;
     const bands = window.musicPlayer.eqBands;
     values.forEach((val, index) => {
         const slider = document.querySelector(`input[data-band="${bands[index]}"]`);
         if (slider) slider.value = val;
+        // Update dB display
+        const dbDisplay = document.getElementById(`db-${index}`);
+        if (dbDisplay) {
+            dbDisplay.textContent = `${val > 0 ? '+' : ''}${val}dB`;
+            dbDisplay.className = 'db-value ' + (val > 0 ? 'positive' : (val < 0 ? 'negative' : ''));
+        }
     });
 };
 window.closeEqModal = () => {
@@ -643,3 +693,237 @@ document.addEventListener('DOMContentLoaded', () => {
 
     drawVisualizer();
 });
+
+// ============================================
+// PERSONAL PLAYLISTS (localStorage)
+// ============================================
+
+const PlaylistManager = {
+    STORAGE_KEY: 'music_user_playlists',
+    STATS_KEY: 'music_listening_stats',
+
+    // Get all playlists from localStorage
+    getPlaylists() {
+        return JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || [];
+    },
+
+    // Save playlists to localStorage
+    savePlaylists(playlists) {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(playlists));
+        this.renderPlaylists();
+    },
+
+    // Create a new playlist
+    create(name) {
+        if (!name || name.trim() === '') return null;
+        const playlists = this.getPlaylists();
+        const newPlaylist = {
+            id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+            name: name.trim(),
+            created: Date.now(),
+            tracks: []
+        };
+        playlists.push(newPlaylist);
+        this.savePlaylists(playlists);
+        return newPlaylist;
+    },
+
+    // Delete a playlist
+    delete(playlistId) {
+        let playlists = this.getPlaylists();
+        playlists = playlists.filter(p => p.id !== playlistId);
+        this.savePlaylists(playlists);
+    },
+
+    // Add a track to a playlist
+    addTrack(playlistId, track) {
+        const playlists = this.getPlaylists();
+        const playlist = playlists.find(p => p.id === playlistId);
+        if (playlist) {
+            // Check if track already exists
+            const exists = playlist.tracks.some(t =>
+                t.file === track.file && t.folder === track.folder
+            );
+            if (!exists) {
+                playlist.tracks.push({
+                    title: track.title,
+                    artist: track.artist || 'Unknown Artist',
+                    folder: track.folder,
+                    file: track.file,
+                    cdnUrl: track.cdnUrl
+                });
+                this.savePlaylists(playlists);
+                return true;
+            }
+        }
+        return false;
+    },
+
+    // Remove a track from a playlist
+    removeTrack(playlistId, trackIndex) {
+        const playlists = this.getPlaylists();
+        const playlist = playlists.find(p => p.id === playlistId);
+        if (playlist && playlist.tracks[trackIndex]) {
+            playlist.tracks.splice(trackIndex, 1);
+            this.savePlaylists(playlists);
+        }
+    },
+
+    // Play a playlist
+    play(playlistId) {
+        const playlists = this.getPlaylists();
+        const playlist = playlists.find(p => p.id === playlistId);
+        if (playlist && playlist.tracks.length > 0) {
+            // Set the playlist tracks as the current playlist
+            window.musicPlayer.state.playlist = playlist.tracks.map((track, idx) => ({
+                ...track,
+                $index: idx
+            }));
+            window.musicPlayer.playTrack(0);
+            closeProfileModal();
+        }
+    },
+
+    // Render playlists in the UI
+    renderPlaylists() {
+        const container = document.getElementById('user-playlists');
+        if (!container) return;
+
+        const playlists = this.getPlaylists();
+
+        if (playlists.length === 0) {
+            container.innerHTML = '<div class="empty-playlists">No playlists yet. Create one above!</div>';
+            return;
+        }
+
+        container.innerHTML = playlists.map(playlist => `
+            <div class="playlist-item" onclick="PlaylistManager.play('${playlist.id}')">
+                <div class="playlist-item-info">
+                    <div class="playlist-item-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                    <div class="playlist-item-details">
+                        <span class="playlist-item-name">${playlist.name}</span>
+                        <span class="playlist-item-count">${playlist.tracks.length} tracks</span>
+                    </div>
+                </div>
+                <div class="playlist-item-actions">
+                    <button class="playlist-action-btn delete" onclick="event.stopPropagation(); PlaylistManager.delete('${playlist.id}')" title="Delete Playlist">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    },
+
+    // Get and update listening stats
+    getStats() {
+        return JSON.parse(localStorage.getItem(this.STATS_KEY)) || { tracksPlayed: 0, totalSeconds: 0 };
+    },
+
+    incrementTrackPlayed() {
+        const stats = this.getStats();
+        stats.tracksPlayed++;
+        localStorage.setItem(this.STATS_KEY, JSON.stringify(stats));
+    },
+
+    addListeningTime(seconds) {
+        const stats = this.getStats();
+        stats.totalSeconds += seconds;
+        localStorage.setItem(this.STATS_KEY, JSON.stringify(stats));
+    },
+
+    renderStats() {
+        const stats = this.getStats();
+        const tracksEl = document.getElementById('stat-tracks-played');
+        const timeEl = document.getElementById('stat-total-time');
+
+        if (tracksEl) tracksEl.textContent = stats.tracksPlayed;
+        if (timeEl) {
+            const mins = Math.floor(stats.totalSeconds / 60);
+            const hours = Math.floor(mins / 60);
+            if (hours > 0) {
+                timeEl.textContent = `${hours}h ${mins % 60}m`;
+            } else {
+                timeEl.textContent = `${mins}m`;
+            }
+        }
+    }
+};
+
+// Global functions for playlist management
+window.openProfileModal = () => {
+    document.getElementById('profile-modal').style.display = 'block';
+    PlaylistManager.renderPlaylists();
+    PlaylistManager.renderStats();
+    lucide.createIcons();
+};
+
+window.closeProfileModal = () => {
+    document.getElementById('profile-modal').style.display = 'none';
+};
+
+window.createPlaylist = () => {
+    const input = document.getElementById('new-playlist-name');
+    const name = input.value.trim();
+    if (name) {
+        PlaylistManager.create(name);
+        input.value = '';
+        lucide.createIcons();
+    }
+};
+
+// Track when song plays to update stats
+const originalPlayTrack = window.musicPlayer?.playTrack?.bind(window.musicPlayer);
+if (originalPlayTrack) {
+    window.musicPlayer.playTrack = function (index) {
+        PlaylistManager.incrementTrackPlayed();
+        return originalPlayTrack(index);
+    };
+}
+
+// Make PlaylistManager globally accessible
+window.PlaylistManager = PlaylistManager;
+
+// Add to Playlist Modal functions
+window.currentTrackToAdd = null;
+
+window.showAddToPlaylistModal = (trackIndex) => {
+    const track = window.musicPlayer?.state?.playlist?.[trackIndex];
+    if (!track) return;
+
+    window.currentTrackToAdd = track;
+    const modal = document.getElementById('add-to-playlist-modal');
+    const list = document.getElementById('playlist-select-list');
+
+    const playlists = PlaylistManager.getPlaylists();
+    if (playlists.length === 0) {
+        list.innerHTML = '<div class="empty-playlists">No playlists. Create one first!</div>';
+    } else {
+        list.innerHTML = playlists.map(p => `
+            <div class="playlist-select-item" onclick="addCurrentTrackToPlaylist('${p.id}')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                <span>${p.name} (${p.tracks.length} tracks)</span>
+            </div>
+        `).join('');
+    }
+
+    modal.style.display = 'block';
+};
+
+window.closeAddToPlaylistModal = () => {
+    document.getElementById('add-to-playlist-modal').style.display = 'none';
+    window.currentTrackToAdd = null;
+};
+
+window.addCurrentTrackToPlaylist = (playlistId) => {
+    if (window.currentTrackToAdd) {
+        const added = PlaylistManager.addTrack(playlistId, window.currentTrackToAdd);
+        if (added) {
+            alert('Track added to playlist!');
+        } else {
+            alert('Track already in playlist.');
+        }
+    }
+    closeAddToPlaylistModal();
+};
