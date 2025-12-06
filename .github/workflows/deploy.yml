@@ -25,41 +25,9 @@ jobs:
         with:
           fetch-depth: 0
           submodules: 'recursive'
-          lfs: true
+          lfs: false # Disable LFS to avoid quota limits
 
-      - name: Pull LFS files from submodule
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "📥 Setting up LFS for submodule..."
-          cd assets_for_my_website
-          
-          # Configure git to use the GitHub token for LFS
-          git config --local lfs.url "https://github.com/Shuvam-Banerji-Seal/assets_for_my_website.git/info/lfs"
-          git config --local lfs.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n x-access-token:${GITHUB_TOKEN} | base64)"
-          
-          # Configure LFS URL for the submodule
-          SUBMODULE_URL=$(git remote get-url origin)
-          echo "Submodule remote URL: $SUBMODULE_URL"
-          
-          # Install and pull LFS files
-          git lfs install --force
-          git lfs fetch --all
-          git lfs checkout
-          
-          echo "✅ LFS files fetched successfully"
-          echo "📁 Verifying a sample MP3 file:"
-          file "Music/Ishaan/BODMAS.mp3"
-          echo "📊 File size check:"
-          ls -lh "Music/Ishaan/BODMAS.mp3"
-          
-          # Verify it's not an LFS pointer
-          if head -c 50 "Music/Ishaan/BODMAS.mp3" | grep -q "version https://git-lfs"; then
-            echo "❌ ERROR: File is still an LFS pointer!"
-            exit 1
-          else
-            echo "✅ File is actual audio data"
-          fi
+
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
