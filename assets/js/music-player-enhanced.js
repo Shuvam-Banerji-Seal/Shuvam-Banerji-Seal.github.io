@@ -181,54 +181,56 @@ class MusicPlayer {
     /**
      * Load the music library from the manifest
      * 
-     * ROLLBACK: To revert to CDN-only loading, set USE_RAW_GITHUB_FALLBACK to false
+     * ROLLBACK: To revert to CDN-only loading, set USE_JSDELIVR_FALLBACK to false
      */
     async loadLibrary() {
         // === ROLLBACK CONFIG ===
-        // Set to false to disable raw GitHub fallback and use only CDN
-        const USE_RAW_GITHUB_FALLBACK = true;
-        const RAW_GITHUB_URL = 'https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/gh-pages/music-library.json';
+        // Set to false to disable jsDelivr fallback and use only GitHub Pages CDN
+        const USE_JSDELIVR_FALLBACK = true;
+        // jsDelivr CDN mirrors GitHub repos with proper CORS support
+        const JSDELIVR_URL = 'https://cdn.jsdelivr.net/gh/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io@gh-pages/music-library.json';
         const EXPECTED_MIN_TRACKS = 100; // If CDN returns fewer, it's likely stale
         // === END ROLLBACK CONFIG ===
 
         try {
             this.log('Loading music library...');
-            const cacheBuster = `?v=${Date.now()}&r=${Math.random().toString(36).substr(2, 9)}`;
-            const fetchOptions = { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } };
+            const cacheBuster = `?v=${Date.now()}`;
 
             let data = null;
 
-            // Try CDN first (faster when working)
+            // Try GitHub Pages CDN first (faster when working)
             try {
+                const fetchOptions = { cache: 'no-store' };
                 let response = await fetch(`../music-library.json${cacheBuster}`, fetchOptions);
                 if (!response.ok) {
                     response = await fetch(`/music-library.json${cacheBuster}`, fetchOptions);
                 }
                 if (response.ok) {
                     data = await response.json();
-                    this.log(`CDN returned: ${data.length} tracks`);
+                    this.log(`GitHub Pages CDN returned: ${data.length} tracks`);
 
                     // Check if CDN data looks stale
-                    if (USE_RAW_GITHUB_FALLBACK && data.length < EXPECTED_MIN_TRACKS) {
-                        this.log(`CDN returned only ${data.length} tracks (expected ${EXPECTED_MIN_TRACKS}+). Trying raw GitHub...`);
+                    if (USE_JSDELIVR_FALLBACK && data.length < EXPECTED_MIN_TRACKS) {
+                        this.log(`CDN returned only ${data.length} tracks (expected ${EXPECTED_MIN_TRACKS}+). Trying jsDelivr...`);
                         data = null; // Force fallback
                     }
                 }
             } catch (e) {
-                this.log('CDN fetch failed, trying raw GitHub...');
+                this.log('GitHub Pages CDN fetch failed, trying jsDelivr...');
             }
 
-            // Fallback to raw GitHub if CDN failed or returned stale data
-            if (!data && USE_RAW_GITHUB_FALLBACK) {
+            // Fallback to jsDelivr CDN if GitHub Pages failed or returned stale data
+            if (!data && USE_JSDELIVR_FALLBACK) {
                 try {
-                    this.log('Fetching from raw GitHub...');
-                    const response = await fetch(`${RAW_GITHUB_URL}${cacheBuster}`, fetchOptions);
+                    this.log('Fetching from jsDelivr CDN...');
+                    // jsDelivr has proper CORS, use simple fetch without custom headers
+                    const response = await fetch(`${JSDELIVR_URL}${cacheBuster}`);
                     if (response.ok) {
                         data = await response.json();
-                        this.log(`Raw GitHub returned: ${data.length} tracks`);
+                        this.log(`jsDelivr CDN returned: ${data.length} tracks`);
                     }
                 } catch (e) {
-                    this.error('Raw GitHub fetch also failed', e);
+                    this.error('jsDelivr fetch also failed', e);
                 }
             }
 
