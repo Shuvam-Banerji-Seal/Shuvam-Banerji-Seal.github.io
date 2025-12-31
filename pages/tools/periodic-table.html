@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive periodic table of elements with detailed information">
+    <title>Periodic Table - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container wide">
+            <div class="tool-header">
+                <h1><i data-lucide="grid-3x3"></i> Interactive Periodic Table</h1>
+                <p>Explore elements with detailed properties and information</p>
+            </div>
+
+            <div class="tool-card">
+                <div class="legend">
+                    <span class="legend-item alkali">Alkali Metal</span>
+                    <span class="legend-item alkaline">Alkaline Earth</span>
+                    <span class="legend-item transition">Transition Metal</span>
+                    <span class="legend-item post-transition">Post-Transition</span>
+                    <span class="legend-item metalloid">Metalloid</span>
+                    <span class="legend-item nonmetal">Nonmetal</span>
+                    <span class="legend-item halogen">Halogen</span>
+                    <span class="legend-item noble">Noble Gas</span>
+                    <span class="legend-item lanthanide">Lanthanide</span>
+                    <span class="legend-item actinide">Actinide</span>
+                </div>
+                
+                <div class="periodic-table" id="periodic-table"></div>
+            </div>
+
+            <div class="tool-card" id="element-details" style="display: none;">
+                <div class="element-detail-header">
+                    <div class="element-symbol-large" id="detail-symbol">-</div>
+                    <div class="element-info-main">
+                        <h2 id="detail-name">-</h2>
+                        <p id="detail-number">-</p>
+                    </div>
+                </div>
+                <div class="element-properties">
+                    <div class="prop-item"><strong>Atomic Mass:</strong> <span id="detail-mass">-</span></div>
+                    <div class="prop-item"><strong>Category:</strong> <span id="detail-category">-</span></div>
+                    <div class="prop-item"><strong>Electron Config:</strong> <span id="detail-config">-</span></div>
+                    <div class="prop-item"><strong>Electronegativity:</strong> <span id="detail-en">-</span></div>
+                    <div class="prop-item"><strong>Melting Point:</strong> <span id="detail-mp">-</span></div>
+                    <div class="prop-item"><strong>Boiling Point:</strong> <span id="detail-bp">-</span></div>
+                    <div class="prop-item"><strong>Density:</strong> <span id="detail-density">-</span></div>
+                    <div class="prop-item"><strong>Discovery:</strong> <span id="detail-discovery">-</span></div>
+                </div>
+                <p id="detail-summary" class="element-summary">-</p>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .tool-container.wide { max-width: 1400px; }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+        .legend-item {
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: white;
+        }
+        .legend-item.alkali { background: #ff6b6b; }
+        .legend-item.alkaline { background: #ffa94d; }
+        .legend-item.transition { background: #ffd43b; }
+        .legend-item.post-transition { background: #69db7c; }
+        .legend-item.metalloid { background: #38d9a9; }
+        .legend-item.nonmetal { background: #4dabf7; }
+        .legend-item.halogen { background: #748ffc; }
+        .legend-item.noble { background: #da77f2; }
+        .legend-item.lanthanide { background: #f783ac; }
+        .legend-item.actinide { background: #e599f7; }
+
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 3px;
+            overflow-x: auto;
+            padding: 1rem 0;
+        }
+        .element {
+            aspect-ratio: 1;
+            min-width: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            color: white;
+            font-weight: 500;
+        }
+        .element:hover {
+            transform: scale(1.15);
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .element .number {
+            font-size: 0.55rem;
+            opacity: 0.8;
+            position: absolute;
+            top: 2px;
+            left: 4px;
+        }
+        .element .symbol {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .element .name {
+            font-size: 0.45rem;
+            opacity: 0.9;
+            text-align: center;
+            line-height: 1.1;
+        }
+        .element.empty { background: transparent; pointer-events: none; }
+        .element.alkali-metal { background: #ff6b6b; }
+        .element.alkaline-earth { background: #ffa94d; }
+        .element.transition-metal { background: #ffd43b; color: #333; }
+        .element.post-transition { background: #69db7c; color: #333; }
+        .element.metalloid { background: #38d9a9; color: #333; }
+        .element.nonmetal { background: #4dabf7; }
+        .element.halogen { background: #748ffc; }
+        .element.noble-gas { background: #da77f2; }
+        .element.lanthanide { background: #f783ac; }
+        .element.actinide { background: #e599f7; }
+        .element.unknown { background: #868e96; }
+
+        .element-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .element-symbol-large {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
+            color: white;
+        }
+        .element-info-main h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .element-info-main p {
+            margin: 0.25rem 0 0;
+            color: var(--text-secondary);
+        }
+        .element-properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .prop-item {
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .prop-item strong { color: var(--text-secondary); font-weight: 500; }
+        .element-summary {
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 900px) {
+            .element { min-width: 35px; }
+            .element .symbol { font-size: 0.8rem; }
+            .element .name { display: none; }
+        }
+    </style>
+
+    <script>
+        const elements = [
+            {z:1,symbol:"H",name:"Hydrogen",mass:1.008,category:"nonmetal",config:"1s¹",en:2.20,mp:-259.16,bp:-252.87,density:0.00008988,year:1766,summary:"Hydrogen is the lightest and most abundant element in the universe, making up about 75% of all normal matter."},
+            {z:2,symbol:"He",name:"Helium",mass:4.0026,category:"noble-gas",config:"1s²",en:null,mp:-272.20,bp:-268.93,density:0.0001785,year:1868,summary:"Helium is a colorless, odorless, tasteless, non-toxic, inert gas that heads the noble gas group."},
+            {z:3,symbol:"Li",name:"Lithium",mass:6.94,category:"alkali-metal",config:"[He] 2s¹",en:0.98,mp:180.50,bp:1342,density:0.534,year:1817,summary:"Lithium is a soft, silvery-white alkali metal. It has the lowest density of all metals."},
+            {z:4,symbol:"Be",name:"Beryllium",mass:9.0122,category:"alkaline-earth",config:"[He] 2s²",en:1.57,mp:1287,bp:2469,density:1.85,year:1798,summary:"Beryllium is a hard, grayish metal naturally found in mineral rocks, coal, soil, and volcanic dust."},
+            {z:5,symbol:"B",name:"Boron",mass:10.81,category:"metalloid",config:"[He] 2s² 2p¹",en:2.04,mp:2077,bp:4000,density:2.34,year:1808,summary:"Boron is a metalloid element that is essential to plant growth."},
+            {z:6,symbol:"C",name:"Carbon",mass:12.011,category:"nonmetal",config:"[He] 2s² 2p²",en:2.55,mp:3550,bp:3825,density:2.267,year:-3750,summary:"Carbon is the basis of all known life, forming the backbone of complex molecules like DNA and proteins."},
+            {z:7,symbol:"N",name:"Nitrogen",mass:14.007,category:"nonmetal",config:"[He] 2s² 2p³",en:3.04,mp:-210.00,bp:-195.79,density:0.0012506,year:1772,summary:"Nitrogen makes up about 78% of Earth's atmosphere and is essential for all living organisms."},
+            {z:8,symbol:"O",name:"Oxygen",mass:15.999,category:"nonmetal",config:"[He] 2s² 2p⁴",en:3.44,mp:-218.79,bp:-182.95,density:0.001429,year:1774,summary:"Oxygen is essential for respiration and makes up about 21% of Earth's atmosphere."},
+            {z:9,symbol:"F",name:"Fluorine",mass:18.998,category:"halogen",config:"[He] 2s² 2p⁵",en:3.98,mp:-219.67,bp:-188.12,density:0.001696,year:1886,summary:"Fluorine is the most electronegative and reactive of all elements."},
+            {z:10,symbol:"Ne",name:"Neon",mass:20.180,category:"noble-gas",config:"[He] 2s² 2p⁶",en:null,mp:-248.59,bp:-246.08,density:0.0008999,year:1898,summary:"Neon is a colorless, odorless noble gas known for its distinctive reddish-orange glow in discharge tubes."},
+            {z:11,symbol:"Na",name:"Sodium",mass:22.990,category:"alkali-metal",config:"[Ne] 3s¹",en:0.93,mp:97.79,bp:882.94,density:0.971,year:1807,summary:"Sodium is a soft, silvery-white, highly reactive alkali metal essential for animal life."},
+            {z:12,symbol:"Mg",name:"Magnesium",mass:24.305,category:"alkaline-earth",config:"[Ne] 3s²",en:1.31,mp:650,bp:1090,density:1.738,year:1755,summary:"Magnesium is the ninth most abundant element in the universe and eighth in Earth's crust."},
+            {z:13,symbol:"Al",name:"Aluminum",mass:26.982,category:"post-transition",config:"[Ne] 3s² 3p¹",en:1.61,mp:660.32,bp:2519,density:2.698,year:1825,summary:"Aluminum is the most abundant metal in Earth's crust, known for its low density and corrosion resistance."},
+            {z:14,symbol:"Si",name:"Silicon",mass:28.085,category:"metalloid",config:"[Ne] 3s² 3p²",en:1.90,mp:1414,bp:3265,density:2.3296,year:1824,summary:"Silicon is the second most abundant element in Earth's crust and the basis of semiconductor technology."},
+            {z:15,symbol:"P",name:"Phosphorus",mass:30.974,category:"nonmetal",config:"[Ne] 3s² 3p³",en:2.19,mp:44.15,bp:280.5,density:1.82,year:1669,summary:"Phosphorus is essential for life, being a component of DNA, RNA, and ATP."},
+            {z:16,symbol:"S",name:"Sulfur",mass:32.06,category:"nonmetal",config:"[Ne] 3s² 3p⁴",en:2.58,mp:115.21,bp:444.72,density:2.067,year:-500,summary:"Sulfur is a yellow, odorless solid that has been known since ancient times."},
+            {z:17,symbol:"Cl",name:"Chlorine",mass:35.45,category:"halogen",config:"[Ne] 3s² 3p⁵",en:3.16,mp:-101.5,bp:-34.04,density:0.003214,year:1774,summary:"Chlorine is a yellow-green gas with a pungent, irritating odor, widely used for water purification."},
+            {z:18,symbol:"Ar",name:"Argon",mass:39.948,category:"noble-gas",config:"[Ne] 3s² 3p⁶",en:null,mp:-189.34,bp:-185.85,density:0.0017837,year:1894,summary:"Argon is the third most abundant gas in Earth's atmosphere, making up about 1%."},
+            {z:19,symbol:"K",name:"Potassium",mass:39.098,category:"alkali-metal",config:"[Ar] 4s¹",en:0.82,mp:63.5,bp:759,density:0.862,year:1807,summary:"Potassium is a soft, silvery-white alkali metal that oxidizes rapidly in air and reacts vigorously with water."},
+            {z:20,symbol:"Ca",name:"Calcium",mass:40.078,category:"alkaline-earth",config:"[Ar] 4s²",en:1.00,mp:842,bp:1484,density:1.54,year:1808,summary:"Calcium is essential for living organisms, particularly for cell physiology and bones."},
+            {z:21,symbol:"Sc",name:"Scandium",mass:44.956,category:"transition-metal",config:"[Ar] 3d¹ 4s²",en:1.36,mp:1541,bp:2836,density:2.989,year:1879,summary:"Scandium is a silvery-white metallic transition metal."},
+            {z:22,symbol:"Ti",name:"Titanium",mass:47.867,category:"transition-metal",config:"[Ar] 3d² 4s²",en:1.54,mp:1668,bp:3287,density:4.54,year:1791,summary:"Titanium is known for its high strength-to-weight ratio and corrosion resistance."},
+            {z:23,symbol:"V",name:"Vanadium",mass:50.942,category:"transition-metal",config:"[Ar] 3d³ 4s²",en:1.63,mp:1910,bp:3407,density:6.11,year:1801,summary:"Vanadium is a hard, silvery-gray transition metal found in various minerals."},
+            {z:24,symbol:"Cr",name:"Chromium",mass:51.996,category:"transition-metal",config:"[Ar] 3d⁵ 4s¹",en:1.66,mp:1907,bp:2671,density:7.15,year:1797,summary:"Chromium is a lustrous, hard metal that takes a high polish and has a high melting point."},
+            {z:25,symbol:"Mn",name:"Manganese",mass:54.938,category:"transition-metal",config:"[Ar] 3d⁵ 4s²",en:1.55,mp:1246,bp:2061,density:7.44,year:1774,summary:"Manganese is a hard, brittle, silvery metal often found in combination with iron."},
+            {z:26,symbol:"Fe",name:"Iron",mass:55.845,category:"transition-metal",config:"[Ar] 3d⁶ 4s²",en:1.83,mp:1538,bp:2861,density:7.874,year:-5000,summary:"Iron is the most common element on Earth by mass and the most widely used metal."},
+            {z:27,symbol:"Co",name:"Cobalt",mass:58.933,category:"transition-metal",config:"[Ar] 3d⁷ 4s²",en:1.88,mp:1495,bp:2927,density:8.86,year:1735,summary:"Cobalt is used in the production of high-performance alloys and as a blue pigment."},
+            {z:28,symbol:"Ni",name:"Nickel",mass:58.693,category:"transition-metal",config:"[Ar] 3d⁸ 4s²",en:1.91,mp:1455,bp:2913,density:8.912,year:1751,summary:"Nickel is a silvery-white lustrous metal with a slight golden tinge."},
+            {z:29,symbol:"Cu",name:"Copper",mass:63.546,category:"transition-metal",config:"[Ar] 3d¹⁰ 4s¹",en:1.90,mp:1084.62,bp:2560,density:8.96,year:-9000,summary:"Copper has been used by humans for at least 10,000 years, excellent for electrical conduction."},
+            {z:30,symbol:"Zn",name:"Zinc",mass:65.38,category:"transition-metal",config:"[Ar] 3d¹⁰ 4s²",en:1.65,mp:419.53,bp:907,density:7.134,year:1500,summary:"Zinc is an essential trace element for humans, animals, plants, and microorganisms."},
+            {z:31,symbol:"Ga",name:"Gallium",mass:69.723,category:"post-transition",config:"[Ar] 3d¹⁰ 4s² 4p¹",en:1.81,mp:29.76,bp:2204,density:5.907,year:1875,summary:"Gallium melts just above room temperature and is used in semiconductors."},
+            {z:32,symbol:"Ge",name:"Germanium",mass:72.630,category:"metalloid",config:"[Ar] 3d¹⁰ 4s² 4p²",en:2.01,mp:938.25,bp:2833,density:5.323,year:1886,summary:"Germanium is a lustrous, hard-brittle, grayish-white metalloid in the carbon group."},
+            {z:33,symbol:"As",name:"Arsenic",mass:74.922,category:"metalloid",config:"[Ar] 3d¹⁰ 4s² 4p³",en:2.18,mp:817,bp:614,density:5.776,year:815,summary:"Arsenic occurs in many minerals and has been known since ancient times."},
+            {z:34,symbol:"Se",name:"Selenium",mass:78.971,category:"nonmetal",config:"[Ar] 3d¹⁰ 4s² 4p⁴",en:2.55,mp:221,bp:685,density:4.809,year:1817,summary:"Selenium is an essential micronutrient for animals but toxic in large amounts."},
+            {z:35,symbol:"Br",name:"Bromine",mass:79.904,category:"halogen",config:"[Ar] 3d¹⁰ 4s² 4p⁵",en:2.96,mp:-7.2,bp:58.8,density:3.122,year:1826,summary:"Bromine is the only non-metallic element that is liquid at room temperature."},
+            {z:36,symbol:"Kr",name:"Krypton",mass:83.798,category:"noble-gas",config:"[Ar] 3d¹⁰ 4s² 4p⁶",en:null,mp:-157.36,bp:-153.22,density:0.003733,year:1898,summary:"Krypton is used in certain photographic flash lamps and high-performance light bulbs."},
+            {z:37,symbol:"Rb",name:"Rubidium",mass:85.468,category:"alkali-metal",config:"[Kr] 5s¹",en:0.82,mp:39.31,bp:688,density:1.532,year:1861,summary:"Rubidium is a soft, silvery-white metallic element of the alkali metal group."},
+            {z:38,symbol:"Sr",name:"Strontium",mass:87.62,category:"alkaline-earth",config:"[Kr] 5s²",en:0.95,mp:777,bp:1382,density:2.64,year:1790,summary:"Strontium is named after Strontian, a village in Scotland where it was discovered."},
+            {z:39,symbol:"Y",name:"Yttrium",mass:88.906,category:"transition-metal",config:"[Kr] 4d¹ 5s²",en:1.22,mp:1526,bp:3345,density:4.469,year:1794,summary:"Yttrium is a silvery-metallic transition metal used in making phosphors for displays."},
+            {z:40,symbol:"Zr",name:"Zirconium",mass:91.224,category:"transition-metal",config:"[Kr] 4d² 5s²",en:1.33,mp:1855,bp:4409,density:6.506,year:1789,summary:"Zirconium is primarily used in nuclear reactors due to its low neutron capture."},
+            {z:41,symbol:"Nb",name:"Niobium",mass:92.906,category:"transition-metal",config:"[Kr] 4d⁴ 5s¹",en:1.6,mp:2477,bp:4744,density:8.57,year:1801,summary:"Niobium is a soft, grey, ductile transition metal often found with tantalum."},
+            {z:42,symbol:"Mo",name:"Molybdenum",mass:95.95,category:"transition-metal",config:"[Kr] 4d⁵ 5s¹",en:2.16,mp:2623,bp:4639,density:10.22,year:1781,summary:"Molybdenum is essential for the growth and development of most organisms."},
+            {z:43,symbol:"Tc",name:"Technetium",mass:98,category:"transition-metal",config:"[Kr] 4d⁵ 5s²",en:1.9,mp:2157,bp:4265,density:11.5,year:1937,summary:"Technetium was the first artificially produced element and is radioactive."},
+            {z:44,symbol:"Ru",name:"Ruthenium",mass:101.07,category:"transition-metal",config:"[Kr] 4d⁷ 5s¹",en:2.2,mp:2334,bp:4150,density:12.37,year:1844,summary:"Ruthenium is a rare transition metal belonging to the platinum group."},
+            {z:45,symbol:"Rh",name:"Rhodium",mass:102.91,category:"transition-metal",config:"[Kr] 4d⁸ 5s¹",en:2.28,mp:1964,bp:3695,density:12.41,year:1803,summary:"Rhodium is the rarest and most valuable precious metal, used in catalytic converters."},
+            {z:46,symbol:"Pd",name:"Palladium",mass:106.42,category:"transition-metal",config:"[Kr] 4d¹⁰",en:2.20,mp:1554.9,bp:2963,density:12.02,year:1803,summary:"Palladium is used in catalytic converters and electronics."},
+            {z:47,symbol:"Ag",name:"Silver",mass:107.87,category:"transition-metal",config:"[Kr] 4d¹⁰ 5s¹",en:1.93,mp:961.78,bp:2162,density:10.501,year:-5000,summary:"Silver has the highest electrical and thermal conductivity of any element."},
+            {z:48,symbol:"Cd",name:"Cadmium",mass:112.41,category:"transition-metal",config:"[Kr] 4d¹⁰ 5s²",en:1.69,mp:321.07,bp:767,density:8.69,year:1817,summary:"Cadmium is a soft, bluish-white metal that is chemically similar to zinc."},
+            {z:49,symbol:"In",name:"Indium",mass:114.82,category:"post-transition",config:"[Kr] 4d¹⁰ 5s² 5p¹",en:1.78,mp:156.60,bp:2072,density:7.31,year:1863,summary:"Indium is a soft, malleable metal used in touchscreens and solar cells."},
+            {z:50,symbol:"Sn",name:"Tin",mass:118.71,category:"post-transition",config:"[Kr] 4d¹⁰ 5s² 5p²",en:1.96,mp:231.93,bp:2602,density:7.287,year:-3500,summary:"Tin has been used since ancient times in bronze alloys."},
+            {z:51,symbol:"Sb",name:"Antimony",mass:121.76,category:"metalloid",config:"[Kr] 4d¹⁰ 5s² 5p³",en:2.05,mp:630.63,bp:1587,density:6.685,year:-3000,summary:"Antimony compounds have been used for at least 5,000 years."},
+            {z:52,symbol:"Te",name:"Tellurium",mass:127.60,category:"metalloid",config:"[Kr] 4d¹⁰ 5s² 5p⁴",en:2.1,mp:449.51,bp:988,density:6.232,year:1783,summary:"Tellurium is a brittle, mildly toxic metalloid used in solar panels."},
+            {z:53,symbol:"I",name:"Iodine",mass:126.90,category:"halogen",config:"[Kr] 4d¹⁰ 5s² 5p⁵",en:2.66,mp:113.7,bp:184.3,density:4.93,year:1811,summary:"Iodine is essential for human nutrition, required for thyroid hormone synthesis."},
+            {z:54,symbol:"Xe",name:"Xenon",mass:131.29,category:"noble-gas",config:"[Kr] 4d¹⁰ 5s² 5p⁶",en:null,mp:-111.8,bp:-108.1,density:0.005887,year:1898,summary:"Xenon is used in flash lamps, arc lamps, and as a general anesthetic."},
+            {z:55,symbol:"Cs",name:"Cesium",mass:132.91,category:"alkali-metal",config:"[Xe] 6s¹",en:0.79,mp:28.44,bp:671,density:1.873,year:1860,summary:"Cesium is used in atomic clocks, the most accurate time measurement devices."},
+            {z:56,symbol:"Ba",name:"Barium",mass:137.33,category:"alkaline-earth",config:"[Xe] 6s²",en:0.89,mp:727,bp:1870,density:3.594,year:1808,summary:"Barium is a soft, silvery alkaline earth metal never found in nature as a free element."},
+            {z:57,symbol:"La",name:"Lanthanum",mass:138.91,category:"lanthanide",config:"[Xe] 5d¹ 6s²",en:1.10,mp:920,bp:3464,density:6.145,year:1839,summary:"Lanthanum is a soft, ductile, silvery-white metal that tarnishes rapidly."},
+            {z:58,symbol:"Ce",name:"Cerium",mass:140.12,category:"lanthanide",config:"[Xe] 4f¹ 5d¹ 6s²",en:1.12,mp:795,bp:3443,density:6.77,year:1803,summary:"Cerium is the most abundant of the rare earth elements."},
+            {z:59,symbol:"Pr",name:"Praseodymium",mass:140.91,category:"lanthanide",config:"[Xe] 4f³ 6s²",en:1.13,mp:931,bp:3520,density:6.773,year:1885,summary:"Praseodymium is a soft, silvery, malleable rare earth metal."},
+            {z:60,symbol:"Nd",name:"Neodymium",mass:144.24,category:"lanthanide",config:"[Xe] 4f⁴ 6s²",en:1.14,mp:1021,bp:3074,density:7.007,year:1885,summary:"Neodymium is used to make the strongest permanent magnets."},
+            {z:61,symbol:"Pm",name:"Promethium",mass:145,category:"lanthanide",config:"[Xe] 4f⁵ 6s²",en:1.13,mp:1042,bp:3000,density:7.26,year:1945,summary:"Promethium is a radioactive rare earth metal, the only lanthanide with no stable isotopes."},
+            {z:62,symbol:"Sm",name:"Samarium",mass:150.36,category:"lanthanide",config:"[Xe] 4f⁶ 6s²",en:1.17,mp:1072,bp:1794,density:7.52,year:1879,summary:"Samarium is used in samarium-cobalt magnets and nuclear reactor control rods."},
+            {z:63,symbol:"Eu",name:"Europium",mass:151.96,category:"lanthanide",config:"[Xe] 4f⁷ 6s²",en:1.2,mp:822,bp:1529,density:5.243,year:1901,summary:"Europium is the most reactive rare earth element, used in phosphors for displays."},
+            {z:64,symbol:"Gd",name:"Gadolinium",mass:157.25,category:"lanthanide",config:"[Xe] 4f⁷ 5d¹ 6s²",en:1.20,mp:1313,bp:3273,density:7.895,year:1880,summary:"Gadolinium is used as a contrast agent in MRI scans."},
+            {z:65,symbol:"Tb",name:"Terbium",mass:158.93,category:"lanthanide",config:"[Xe] 4f⁹ 6s²",en:1.2,mp:1356,bp:3230,density:8.229,year:1843,summary:"Terbium is used in green phosphors in fluorescent lamps and TV screens."},
+            {z:66,symbol:"Dy",name:"Dysprosium",mass:162.50,category:"lanthanide",config:"[Xe] 4f¹⁰ 6s²",en:1.22,mp:1412,bp:2567,density:8.55,year:1886,summary:"Dysprosium is used in neodymium magnets to improve high-temperature performance."},
+            {z:67,symbol:"Ho",name:"Holmium",mass:164.93,category:"lanthanide",config:"[Xe] 4f¹¹ 6s²",en:1.23,mp:1474,bp:2700,density:8.795,year:1878,summary:"Holmium has the highest magnetic moment of any naturally occurring element."},
+            {z:68,symbol:"Er",name:"Erbium",mass:167.26,category:"lanthanide",config:"[Xe] 4f¹² 6s²",en:1.24,mp:1529,bp:2868,density:9.066,year:1843,summary:"Erbium is used in fiber optic telecommunications as an amplifying medium."},
+            {z:69,symbol:"Tm",name:"Thulium",mass:168.93,category:"lanthanide",config:"[Xe] 4f¹³ 6s²",en:1.25,mp:1545,bp:1950,density:9.321,year:1879,summary:"Thulium is the second-least abundant of the lanthanides."},
+            {z:70,symbol:"Yb",name:"Ytterbium",mass:173.05,category:"lanthanide",config:"[Xe] 4f¹⁴ 6s²",en:1.1,mp:824,bp:1196,density:6.965,year:1878,summary:"Ytterbium is a soft, malleable, and ductile rare earth element."},
+            {z:71,symbol:"Lu",name:"Lutetium",mass:174.97,category:"lanthanide",config:"[Xe] 4f¹⁴ 5d¹ 6s²",en:1.27,mp:1663,bp:3402,density:9.84,year:1907,summary:"Lutetium is the hardest and densest of the lanthanide series."},
+            {z:72,symbol:"Hf",name:"Hafnium",mass:178.49,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d² 6s²",en:1.3,mp:2233,bp:4603,density:13.31,year:1923,summary:"Hafnium is used in nuclear control rods due to its neutron absorption."},
+            {z:73,symbol:"Ta",name:"Tantalum",mass:180.95,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d³ 6s²",en:1.5,mp:3017,bp:5458,density:16.654,year:1802,summary:"Tantalum is highly corrosion-resistant and used in electronic capacitors."},
+            {z:74,symbol:"W",name:"Tungsten",mass:183.84,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d⁴ 6s²",en:2.36,mp:3422,bp:5555,density:19.25,year:1783,summary:"Tungsten has the highest melting point of all elements."},
+            {z:75,symbol:"Re",name:"Rhenium",mass:186.21,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d⁵ 6s²",en:1.9,mp:3186,bp:5596,density:21.02,year:1925,summary:"Rhenium is one of the rarest elements in Earth's crust."},
+            {z:76,symbol:"Os",name:"Osmium",mass:190.23,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d⁶ 6s²",en:2.2,mp:3033,bp:5012,density:22.587,year:1803,summary:"Osmium is the densest naturally occurring element."},
+            {z:77,symbol:"Ir",name:"Iridium",mass:192.22,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d⁷ 6s²",en:2.20,mp:2446,bp:4428,density:22.42,year:1803,summary:"Iridium is the most corrosion-resistant metal known."},
+            {z:78,symbol:"Pt",name:"Platinum",mass:195.08,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d⁹ 6s¹",en:2.28,mp:1768.3,bp:3825,density:21.46,year:1735,summary:"Platinum is a dense, malleable, ductile precious metal used in catalytic converters."},
+            {z:79,symbol:"Au",name:"Gold",mass:196.97,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d¹⁰ 6s¹",en:2.54,mp:1064.18,bp:2856,density:19.282,year:-6000,summary:"Gold has been valued for its beauty since ancient times and is used in jewelry and electronics."},
+            {z:80,symbol:"Hg",name:"Mercury",mass:200.59,category:"transition-metal",config:"[Xe] 4f¹⁴ 5d¹⁰ 6s²",en:2.00,mp:-38.83,bp:356.73,density:13.5336,year:-1500,summary:"Mercury is the only metallic element that is liquid at standard conditions."},
+            {z:81,symbol:"Tl",name:"Thallium",mass:204.38,category:"post-transition",config:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹",en:1.62,mp:304,bp:1473,density:11.85,year:1861,summary:"Thallium is a soft gray metal that resembles tin but discolors when exposed to air."},
+            {z:82,symbol:"Pb",name:"Lead",mass:207.2,category:"post-transition",config:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²",en:2.33,mp:327.46,bp:1749,density:11.342,year:-7000,summary:"Lead has been used since ancient times for pipes, paint, and batteries."},
+            {z:83,symbol:"Bi",name:"Bismuth",mass:208.98,category:"post-transition",config:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³",en:2.02,mp:271.40,bp:1564,density:9.807,year:1753,summary:"Bismuth is the most naturally diamagnetic element and has low toxicity."},
+            {z:84,symbol:"Po",name:"Polonium",mass:209,category:"metalloid",config:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴",en:2.0,mp:254,bp:962,density:9.32,year:1898,summary:"Polonium was discovered by Marie Curie and is highly radioactive."},
+            {z:85,symbol:"At",name:"Astatine",mass:210,category:"halogen",config:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵",en:2.2,mp:302,bp:350,density:7,year:1940,summary:"Astatine is the rarest naturally occurring element on Earth."},
+            {z:86,symbol:"Rn",name:"Radon",mass:222,category:"noble-gas",config:"[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶",en:null,mp:-71,bp:-61.7,density:0.00973,year:1900,summary:"Radon is a radioactive, colorless, odorless noble gas formed from radium decay."},
+            {z:87,symbol:"Fr",name:"Francium",mass:223,category:"alkali-metal",config:"[Rn] 7s¹",en:0.7,mp:27,bp:677,density:1.87,year:1939,summary:"Francium is the second-rarest naturally occurring element after astatine."},
+            {z:88,symbol:"Ra",name:"Radium",mass:226,category:"alkaline-earth",config:"[Rn] 7s²",en:0.9,mp:696,bp:1500,density:5.5,year:1898,summary:"Radium was discovered by Marie and Pierre Curie in uranium ore."},
+            {z:89,symbol:"Ac",name:"Actinium",mass:227,category:"actinide",config:"[Rn] 6d¹ 7s²",en:1.1,mp:1050,bp:3200,density:10.07,year:1899,summary:"Actinium glows in the dark due to its intense radioactivity."},
+            {z:90,symbol:"Th",name:"Thorium",mass:232.04,category:"actinide",config:"[Rn] 6d² 7s²",en:1.3,mp:1750,bp:4820,density:11.72,year:1829,summary:"Thorium is a potential nuclear fuel that is more abundant than uranium."},
+            {z:91,symbol:"Pa",name:"Protactinium",mass:231.04,category:"actinide",config:"[Rn] 5f² 6d¹ 7s²",en:1.5,mp:1572,bp:4000,density:15.37,year:1913,summary:"Protactinium is a dense, silvery-gray actinide metal."},
+            {z:92,symbol:"U",name:"Uranium",mass:238.03,category:"actinide",config:"[Rn] 5f³ 6d¹ 7s²",en:1.38,mp:1135,bp:4131,density:18.95,year:1789,summary:"Uranium is the fuel for nuclear reactors and atomic weapons."},
+            {z:93,symbol:"Np",name:"Neptunium",mass:237,category:"actinide",config:"[Rn] 5f⁴ 6d¹ 7s²",en:1.36,mp:644,bp:4000,density:20.45,year:1940,summary:"Neptunium was the first transuranic element to be synthesized."},
+            {z:94,symbol:"Pu",name:"Plutonium",mass:244,category:"actinide",config:"[Rn] 5f⁶ 7s²",en:1.28,mp:640,bp:3228,density:19.84,year:1940,summary:"Plutonium is used in nuclear weapons and as fuel for spacecraft."},
+            {z:95,symbol:"Am",name:"Americium",mass:243,category:"actinide",config:"[Rn] 5f⁷ 7s²",en:1.3,mp:1176,bp:2011,density:13.69,year:1944,summary:"Americium is used in smoke detectors and industrial gauges."},
+            {z:96,symbol:"Cm",name:"Curium",mass:247,category:"actinide",config:"[Rn] 5f⁷ 6d¹ 7s²",en:1.3,mp:1345,bp:3110,density:13.51,year:1944,summary:"Curium was named after Marie and Pierre Curie."},
+            {z:97,symbol:"Bk",name:"Berkelium",mass:247,category:"actinide",config:"[Rn] 5f⁹ 7s²",en:1.3,mp:986,bp:2627,density:14.79,year:1949,summary:"Berkelium was named after Berkeley, California."},
+            {z:98,symbol:"Cf",name:"Californium",mass:251,category:"actinide",config:"[Rn] 5f¹⁰ 7s²",en:1.3,mp:900,bp:1470,density:15.1,year:1950,summary:"Californium is a strong neutron emitter used in detecting gold and silver."},
+            {z:99,symbol:"Es",name:"Einsteinium",mass:252,category:"actinide",config:"[Rn] 5f¹¹ 7s²",en:1.3,mp:860,bp:996,density:8.84,year:1952,summary:"Einsteinium was discovered in debris from the first hydrogen bomb test."},
+            {z:100,symbol:"Fm",name:"Fermium",mass:257,category:"actinide",config:"[Rn] 5f¹² 7s²",en:1.3,mp:1527,bp:null,density:null,year:1952,summary:"Fermium was named after nuclear physicist Enrico Fermi."},
+            {z:101,symbol:"Md",name:"Mendelevium",mass:258,category:"actinide",config:"[Rn] 5f¹³ 7s²",en:1.3,mp:827,bp:null,density:null,year:1955,summary:"Mendelevium was named after Dmitri Mendeleev."},
+            {z:102,symbol:"No",name:"Nobelium",mass:259,category:"actinide",config:"[Rn] 5f¹⁴ 7s²",en:1.3,mp:827,bp:null,density:null,year:1958,summary:"Nobelium was named after Alfred Nobel."},
+            {z:103,symbol:"Lr",name:"Lawrencium",mass:266,category:"actinide",config:"[Rn] 5f¹⁴ 7s² 7p¹",en:1.3,mp:1627,bp:null,density:null,year:1961,summary:"Lawrencium was named after Ernest Lawrence."},
+            {z:104,symbol:"Rf",name:"Rutherfordium",mass:267,category:"transition-metal",config:"[Rn] 5f¹⁴ 6d² 7s²",en:null,mp:null,bp:null,density:null,year:1969,summary:"Rutherfordium was named after Ernest Rutherford."},
+            {z:105,symbol:"Db",name:"Dubnium",mass:268,category:"transition-metal",config:"[Rn] 5f¹⁴ 6d³ 7s²",en:null,mp:null,bp:null,density:null,year:1970,summary:"Dubnium was named after Dubna, Russia."},
+            {z:106,symbol:"Sg",name:"Seaborgium",mass:269,category:"transition-metal",config:"[Rn] 5f¹⁴ 6d⁴ 7s²",en:null,mp:null,bp:null,density:null,year:1974,summary:"Seaborgium was named after Glenn T. Seaborg."},
+            {z:107,symbol:"Bh",name:"Bohrium",mass:270,category:"transition-metal",config:"[Rn] 5f¹⁴ 6d⁵ 7s²",en:null,mp:null,bp:null,density:null,year:1981,summary:"Bohrium was named after Niels Bohr."},
+            {z:108,symbol:"Hs",name:"Hassium",mass:269,category:"transition-metal",config:"[Rn] 5f¹⁴ 6d⁶ 7s²",en:null,mp:null,bp:null,density:null,year:1984,summary:"Hassium was named after Hesse, Germany."},
+            {z:109,symbol:"Mt",name:"Meitnerium",mass:278,category:"unknown",config:"[Rn] 5f¹⁴ 6d⁷ 7s²",en:null,mp:null,bp:null,density:null,year:1982,summary:"Meitnerium was named after Lise Meitner."},
+            {z:110,symbol:"Ds",name:"Darmstadtium",mass:281,category:"unknown",config:"[Rn] 5f¹⁴ 6d⁸ 7s²",en:null,mp:null,bp:null,density:null,year:1994,summary:"Darmstadtium was named after Darmstadt, Germany."},
+            {z:111,symbol:"Rg",name:"Roentgenium",mass:282,category:"unknown",config:"[Rn] 5f¹⁴ 6d⁹ 7s²",en:null,mp:null,bp:null,density:null,year:1994,summary:"Roentgenium was named after Wilhelm Röntgen."},
+            {z:112,symbol:"Cn",name:"Copernicium",mass:285,category:"transition-metal",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s²",en:null,mp:null,bp:null,density:null,year:1996,summary:"Copernicium was named after Nicolaus Copernicus."},
+            {z:113,symbol:"Nh",name:"Nihonium",mass:286,category:"unknown",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹",en:null,mp:null,bp:null,density:null,year:2004,summary:"Nihonium means 'Japan' in Japanese."},
+            {z:114,symbol:"Fl",name:"Flerovium",mass:289,category:"unknown",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²",en:null,mp:null,bp:null,density:null,year:1999,summary:"Flerovium was named after Georgy Flyorov."},
+            {z:115,symbol:"Mc",name:"Moscovium",mass:290,category:"unknown",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³",en:null,mp:null,bp:null,density:null,year:2003,summary:"Moscovium was named after Moscow."},
+            {z:116,symbol:"Lv",name:"Livermorium",mass:293,category:"unknown",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴",en:null,mp:null,bp:null,density:null,year:2000,summary:"Livermorium was named after Lawrence Livermore National Laboratory."},
+            {z:117,symbol:"Ts",name:"Tennessine",mass:294,category:"unknown",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵",en:null,mp:null,bp:null,density:null,year:2010,summary:"Tennessine was named after Tennessee."},
+            {z:118,symbol:"Og",name:"Oganesson",mass:294,category:"unknown",config:"[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶",en:null,mp:null,bp:null,density:null,year:2002,summary:"Oganesson was named after Yuri Oganessian."}
+        ];
+
+        // Grid positions for periodic table layout
+        const layout = [
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2],
+            [3,4,0,0,0,0,0,0,0,0,0,0,5,6,7,8,9,10],
+            [11,12,0,0,0,0,0,0,0,0,0,0,13,14,15,16,17,18],
+            [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],
+            [37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54],
+            [55,56,-1,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86],
+            [87,88,-2,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118],
+            [],
+            [0,0,-1,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71],
+            [0,0,-2,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103]
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderTable();
+        });
+
+        function renderTable() {
+            const table = document.getElementById('periodic-table');
+            
+            layout.forEach((row, rowIndex) => {
+                row.forEach((z, colIndex) => {
+                    const cell = document.createElement('div');
+                    cell.className = 'element';
+                    
+                    if (z === 0) {
+                        cell.classList.add('empty');
+                    } else if (z === -1) {
+                        cell.classList.add('empty');
+                        cell.innerHTML = '<span style="font-size:0.6rem;color:var(--text-secondary)">57-71</span>';
+                        cell.style.pointerEvents = 'auto';
+                    } else if (z === -2) {
+                        cell.classList.add('empty');
+                        cell.innerHTML = '<span style="font-size:0.6rem;color:var(--text-secondary)">89-103</span>';
+                        cell.style.pointerEvents = 'auto';
+                    } else {
+                        const el = elements.find(e => e.z === z);
+                        if (el) {
+                            cell.classList.add(el.category);
+                            cell.innerHTML = `
+                                <span class="number">${el.z}</span>
+                                <span class="symbol">${el.symbol}</span>
+                                <span class="name">${el.name}</span>
+                            `;
+                            cell.onclick = () => showDetails(el);
+                        }
+                    }
+                    
+                    table.appendChild(cell);
+                });
+            });
+        }
+
+        function showDetails(el) {
+            document.getElementById('detail-symbol').textContent = el.symbol;
+            document.getElementById('detail-symbol').className = 'element-symbol-large';
+            document.getElementById('detail-name').textContent = el.name;
+            document.getElementById('detail-number').textContent = `Atomic Number: ${el.z}`;
+            document.getElementById('detail-mass').textContent = el.mass + ' u';
+            document.getElementById('detail-category').textContent = el.category.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            document.getElementById('detail-config').textContent = el.config;
+            document.getElementById('detail-en').textContent = el.en ?? 'N/A';
+            document.getElementById('detail-mp').textContent = el.mp ? el.mp + ' °C' : 'N/A';
+            document.getElementById('detail-bp').textContent = el.bp ? el.bp + ' °C' : 'N/A';
+            document.getElementById('detail-density').textContent = el.density ? el.density + ' g/cm³' : 'N/A';
+            document.getElementById('detail-discovery').textContent = el.year < 0 ? Math.abs(el.year) + ' BCE' : el.year;
+            document.getElementById('detail-summary').textContent = el.summary;
+            document.getElementById('element-details').style.display = 'block';
+            document.getElementById('element-details').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

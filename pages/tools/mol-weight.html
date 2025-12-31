@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate molecular weight from chemical formula">
+    <title>Molecular Weight Calculator - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i data-lucide="scale"></i> Molecular Weight Calculator</h1>
+                <p>Calculate molecular weight from chemical formulas</p>
+            </div>
+
+            <div class="tool-card">
+                <div class="form-group">
+                    <label>Chemical Formula</label>
+                    <input type="text" id="formula-input" placeholder="e.g., H2O, C6H12O6, Ca(OH)2, Fe2(SO4)3">
+                </div>
+                <button class="tool-btn tool-btn-primary" onclick="calculate()">
+                    <i data-lucide="calculator"></i> Calculate
+                </button>
+
+                <div class="quick-formulas">
+                    <span>Quick examples:</span>
+                    <button onclick="setFormula('H2O')">H₂O</button>
+                    <button onclick="setFormula('NaCl')">NaCl</button>
+                    <button onclick="setFormula('C6H12O6')">C₆H₁₂O₆</button>
+                    <button onclick="setFormula('H2SO4')">H₂SO₄</button>
+                    <button onclick="setFormula('CaCO3')">CaCO₃</button>
+                    <button onclick="setFormula('C2H5OH')">C₂H₅OH</button>
+                    <button onclick="setFormula('Ca(OH)2')">Ca(OH)₂</button>
+                    <button onclick="setFormula('Fe2(SO4)3')">Fe₂(SO₄)₃</button>
+                </div>
+            </div>
+
+            <div class="tool-card" id="result-card" style="display: none;">
+                <div class="result-header">
+                    <h2 id="result-formula">-</h2>
+                    <div class="result-mw">
+                        <span class="mw-value" id="result-mw">-</span>
+                        <span class="mw-unit">g/mol</span>
+                    </div>
+                </div>
+
+                <div class="composition-section">
+                    <h3><i data-lucide="pie-chart"></i> Elemental Composition</h3>
+                    <div class="composition-table" id="composition-table"></div>
+                    <div class="composition-chart" id="composition-chart"></div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <h3><i data-lucide="info"></i> Usage Guide</h3>
+                <div class="guide-content">
+                    <p><strong>Basic elements:</strong> Use standard symbols (H, O, C, N, Fe, Ca, etc.)</p>
+                    <p><strong>Subscripts:</strong> Write numbers after elements (H2O, CO2)</p>
+                    <p><strong>Parentheses:</strong> Group atoms with parentheses: Ca(OH)2, Al2(SO4)3</p>
+                    <p><strong>Hydrates:</strong> Use dot notation: CuSO4.5H2O</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .quick-formulas {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .quick-formulas span {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .quick-formulas button {
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+        .quick-formulas button:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .result-header h2 {
+            margin: 0;
+            font-size: 2rem;
+            font-family: 'Courier New', monospace;
+        }
+        .result-mw {
+            text-align: right;
+        }
+        .mw-value {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .mw-unit {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .composition-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .composition-table {
+            margin-bottom: 1.5rem;
+        }
+        .comp-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px 80px;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+        }
+        .comp-row:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+        .comp-row.header {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .comp-symbol {
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+        .composition-chart {
+            display: flex;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+        }
+        .chart-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: flex-grow 0.5s ease;
+            min-width: fit-content;
+            padding: 0 0.5rem;
+        }
+        .guide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .guide-content p { margin: 0; }
+        .guide-content strong { color: var(--text-primary); }
+        @media (max-width: 600px) {
+            .result-header { flex-direction: column; gap: 1rem; text-align: center; }
+            .result-mw { text-align: center; }
+            .comp-row { grid-template-columns: 60px 1fr 80px; }
+            .comp-row > *:nth-child(2) { display: none; }
+        }
+    </style>
+
+    <script>
+        const atomicWeights = {
+            H: 1.008, He: 4.003, Li: 6.941, Be: 9.012, B: 10.81, C: 12.011, N: 14.007, O: 15.999,
+            F: 18.998, Ne: 20.180, Na: 22.990, Mg: 24.305, Al: 26.982, Si: 28.086, P: 30.974,
+            S: 32.06, Cl: 35.45, Ar: 39.948, K: 39.098, Ca: 40.078, Sc: 44.956, Ti: 47.867,
+            V: 50.942, Cr: 51.996, Mn: 54.938, Fe: 55.845, Co: 58.933, Ni: 58.693, Cu: 63.546,
+            Zn: 65.38, Ga: 69.723, Ge: 72.63, As: 74.922, Se: 78.971, Br: 79.904, Kr: 83.798,
+            Rb: 85.468, Sr: 87.62, Y: 88.906, Zr: 91.224, Nb: 92.906, Mo: 95.95, Tc: 98,
+            Ru: 101.07, Rh: 102.91, Pd: 106.42, Ag: 107.87, Cd: 112.41, In: 114.82, Sn: 118.71,
+            Sb: 121.76, Te: 127.60, I: 126.90, Xe: 131.29, Cs: 132.91, Ba: 137.33, La: 138.91,
+            Ce: 140.12, Pr: 140.91, Nd: 144.24, Pm: 145, Sm: 150.36, Eu: 151.96, Gd: 157.25,
+            Tb: 158.93, Dy: 162.50, Ho: 164.93, Er: 167.26, Tm: 168.93, Yb: 173.05, Lu: 174.97,
+            Hf: 178.49, Ta: 180.95, W: 183.84, Re: 186.21, Os: 190.23, Ir: 192.22, Pt: 195.08,
+            Au: 196.97, Hg: 200.59, Tl: 204.38, Pb: 207.2, Bi: 208.98, Po: 209, At: 210, Rn: 222,
+            Fr: 223, Ra: 226, Ac: 227, Th: 232.04, Pa: 231.04, U: 238.03, Np: 237, Pu: 244,
+            Am: 243, Cm: 247, Bk: 247, Cf: 251, Es: 252, Fm: 257, Md: 258, No: 259, Lr: 266
+        };
+
+        const elementColors = {
+            H: '#4dabf7', C: '#868e96', N: '#748ffc', O: '#ff6b6b', S: '#ffd43b',
+            P: '#ffa94d', Cl: '#38d9a9', Br: '#f783ac', I: '#da77f2', F: '#69db7c',
+            Na: '#be4bdb', K: '#be4bdb', Ca: '#38d9a9', Mg: '#38d9a9', Fe: '#ffa94d',
+            default: '#6c757d'
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            document.getElementById('formula-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') calculate();
+            });
+        });
+
+        function setFormula(formula) {
+            document.getElementById('formula-input').value = formula;
+            calculate();
+        }
+
+        function calculate() {
+            const formula = document.getElementById('formula-input').value.trim();
+            if (!formula) return;
+            
+            try {
+                const composition = parseFormula(formula);
+                displayResults(formula, composition);
+            } catch (error) {
+                alert('Invalid formula: ' + error.message);
+            }
+        }
+
+        function parseFormula(formula) {
+            // Handle hydrates (e.g., CuSO4.5H2O)
+            const parts = formula.split('.');
+            let totalComposition = {};
+            
+            parts.forEach((part, index) => {
+                let multiplier = 1;
+                if (index > 0) {
+                    const match = part.match(/^(\d+)(.+)$/);
+                    if (match) {
+                        multiplier = parseInt(match[1]);
+                        part = match[2];
+                    }
+                }
+                
+                const partComposition = parseGroup(part, 1);
+                for (const [element, count] of Object.entries(partComposition)) {
+                    totalComposition[element] = (totalComposition[element] || 0) + count * multiplier;
+                }
+            });
+            
+            return totalComposition;
+        }
+
+        function parseGroup(group, multiplier) {
+            const composition = {};
+            let i = 0;
+            
+            while (i < group.length) {
+                if (group[i] === '(' || group[i] === '[') {
+                    // Find matching closing bracket
+                    let depth = 1;
+                    let j = i + 1;
+                    while (j < group.length && depth > 0) {
+                        if (group[j] === '(' || group[j] === '[') depth++;
+                        if (group[j] === ')' || group[j] === ']') depth--;
+                        j++;
+                    }
+                    
+                    const innerGroup = group.slice(i + 1, j - 1);
+                    
+                    // Get subscript after closing bracket
+                    let subscript = '';
+                    while (j < group.length && /\d/.test(group[j])) {
+                        subscript += group[j];
+                        j++;
+                    }
+                    subscript = subscript ? parseInt(subscript) : 1;
+                    
+                    const innerComposition = parseGroup(innerGroup, 1);
+                    for (const [element, count] of Object.entries(innerComposition)) {
+                        composition[element] = (composition[element] || 0) + count * subscript * multiplier;
+                    }
+                    
+                    i = j;
+                } else if (/[A-Z]/.test(group[i])) {
+                    // Element symbol
+                    let element = group[i];
+                    let j = i + 1;
+                    
+                    // Check for lowercase letters (two-letter elements)
+                    while (j < group.length && /[a-z]/.test(group[j])) {
+                        element += group[j];
+                        j++;
+                    }
+                    
+                    // Get subscript
+                    let subscript = '';
+                    while (j < group.length && /\d/.test(group[j])) {
+                        subscript += group[j];
+                        j++;
+                    }
+                    subscript = subscript ? parseInt(subscript) : 1;
+                    
+                    if (!atomicWeights[element]) {
+                        throw new Error(`Unknown element: ${element}`);
+                    }
+                    
+                    composition[element] = (composition[element] || 0) + subscript * multiplier;
+                    i = j;
+                } else {
+                    i++;
+                }
+            }
+            
+            return composition;
+        }
+
+        function displayResults(formula, composition) {
+            let totalMW = 0;
+            const elements = [];
+            
+            for (const [element, count] of Object.entries(composition)) {
+                const weight = atomicWeights[element] * count;
+                totalMW += weight;
+                elements.push({ symbol: element, count, weight });
+            }
+            
+            // Calculate percentages
+            elements.forEach(el => {
+                el.percent = (el.weight / totalMW) * 100;
+            });
+            
+            // Sort by percentage (descending)
+            elements.sort((a, b) => b.percent - a.percent);
+            
+            // Display formatted formula
+            let formattedFormula = formula.replace(/(\d+)/g, '<sub>$1</sub>');
+            document.getElementById('result-formula').innerHTML = formattedFormula;
+            document.getElementById('result-mw').textContent = totalMW.toFixed(4);
+            
+            // Display composition table
+            let tableHTML = `
+                <div class="comp-row header">
+                    <span>Element</span>
+                    <span>Atomic Weight</span>
+                    <span>Count</span>
+                    <span>Mass %</span>
+                </div>
+            `;
+            
+            elements.forEach(el => {
+                tableHTML += `
+                    <div class="comp-row">
+                        <span class="comp-symbol">${el.symbol}</span>
+                        <span>${atomicWeights[el.symbol].toFixed(3)}</span>
+                        <span>${el.count}</span>
+                        <span>${el.percent.toFixed(2)}%</span>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('composition-table').innerHTML = tableHTML;
+            
+            // Display composition chart
+            let chartHTML = '';
+            elements.forEach(el => {
+                const color = elementColors[el.symbol] || elementColors.default;
+                if (el.percent >= 3) {
+                    chartHTML += `<div class="chart-segment" style="flex-grow: ${el.percent}; background: ${color}">${el.symbol}</div>`;
+                } else if (el.percent >= 1) {
+                    chartHTML += `<div class="chart-segment" style="flex-grow: ${el.percent}; background: ${color}"></div>`;
+                }
+            });
+            
+            document.getElementById('composition-chart').innerHTML = chartHTML;
+            document.getElementById('result-card').style.display = 'block';
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

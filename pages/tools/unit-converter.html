@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scientific unit converter for chemistry and physics calculations">
+    <title>Unit Converter - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i data-lucide="repeat"></i> Scientific Unit Converter</h1>
+                <p>Convert between common scientific units</p>
+            </div>
+
+            <div class="tool-card">
+                <div class="tabs" id="category-tabs">
+                    <button class="tab active" data-category="length">Length</button>
+                    <button class="tab" data-category="mass">Mass</button>
+                    <button class="tab" data-category="temperature">Temperature</button>
+                    <button class="tab" data-category="pressure">Pressure</button>
+                    <button class="tab" data-category="energy">Energy</button>
+                    <button class="tab" data-category="volume">Volume</button>
+                    <button class="tab" data-category="concentration">Concentration</button>
+                    <button class="tab" data-category="time">Time</button>
+                </div>
+
+                <div class="converter-grid">
+                    <div class="input-section">
+                        <div class="form-group">
+                            <label>From</label>
+                            <select id="from-unit"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Value</label>
+                            <input type="number" id="from-value" placeholder="Enter value" step="any">
+                        </div>
+                    </div>
+
+                    <div class="swap-section">
+                        <button class="swap-btn" onclick="swapUnits()">
+                            <i data-lucide="arrow-left-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="input-section">
+                        <div class="form-group">
+                            <label>To</label>
+                            <select id="to-unit"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Result</label>
+                            <input type="text" id="to-value" readonly placeholder="Result">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="formula-display" id="formula-display"></div>
+            </div>
+
+            <div class="tool-card">
+                <h3><i data-lucide="calculator"></i> Quick Conversions</h3>
+                <div class="quick-conversions" id="quick-conversions"></div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1.5rem;
+            align-items: end;
+            margin-top: 1.5rem;
+        }
+        .input-section { display: flex; flex-direction: column; gap: 1rem; }
+        .swap-section { display: flex; align-items: center; padding-bottom: 0.5rem; }
+        .swap-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .swap-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+            transform: rotate(180deg);
+        }
+        .formula-display {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            color: var(--accent-color);
+            font-size: 0.95rem;
+        }
+        .quick-conversions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .quick-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .quick-item .from { color: var(--text-secondary); }
+        .quick-item .equals { color: var(--accent-color); margin: 0 0.5rem; }
+        .quick-item .to { font-weight: 600; }
+        @media (max-width: 768px) {
+            .converter-grid {
+                grid-template-columns: 1fr;
+            }
+            .swap-section { justify-content: center; }
+            .swap-btn { transform: rotate(90deg); }
+            .swap-btn:hover { transform: rotate(270deg); }
+        }
+    </style>
+
+    <script>
+        const unitData = {
+            length: {
+                units: ['m', 'km', 'cm', 'mm', 'μm', 'nm', 'pm', 'Å', 'in', 'ft', 'yd', 'mi'],
+                names: ['Meters', 'Kilometers', 'Centimeters', 'Millimeters', 'Micrometers', 'Nanometers', 'Picometers', 'Angstroms', 'Inches', 'Feet', 'Yards', 'Miles'],
+                toBase: [1, 1000, 0.01, 0.001, 1e-6, 1e-9, 1e-12, 1e-10, 0.0254, 0.3048, 0.9144, 1609.344],
+                baseUnit: 'm'
+            },
+            mass: {
+                units: ['kg', 'g', 'mg', 'μg', 'ng', 'lb', 'oz', 'ton', 'amu'],
+                names: ['Kilograms', 'Grams', 'Milligrams', 'Micrograms', 'Nanograms', 'Pounds', 'Ounces', 'Metric Tons', 'Atomic Mass Units'],
+                toBase: [1, 0.001, 1e-6, 1e-9, 1e-12, 0.453592, 0.0283495, 1000, 1.66054e-27],
+                baseUnit: 'kg'
+            },
+            temperature: {
+                units: ['°C', '°F', 'K', '°R'],
+                names: ['Celsius', 'Fahrenheit', 'Kelvin', 'Rankine'],
+                baseUnit: '°C',
+                custom: true
+            },
+            pressure: {
+                units: ['Pa', 'kPa', 'MPa', 'bar', 'atm', 'mmHg', 'torr', 'psi'],
+                names: ['Pascals', 'Kilopascals', 'Megapascals', 'Bar', 'Atmospheres', 'mmHg', 'Torr', 'PSI'],
+                toBase: [1, 1000, 1e6, 100000, 101325, 133.322, 133.322, 6894.76],
+                baseUnit: 'Pa'
+            },
+            energy: {
+                units: ['J', 'kJ', 'MJ', 'cal', 'kcal', 'eV', 'keV', 'MeV', 'kWh', 'BTU'],
+                names: ['Joules', 'Kilojoules', 'Megajoules', 'Calories', 'Kilocalories', 'Electron Volts', 'Kiloelectron Volts', 'Megaelectron Volts', 'Kilowatt Hours', 'BTU'],
+                toBase: [1, 1000, 1e6, 4.184, 4184, 1.602e-19, 1.602e-16, 1.602e-13, 3.6e6, 1055.06],
+                baseUnit: 'J'
+            },
+            volume: {
+                units: ['L', 'mL', 'μL', 'cm³', 'm³', 'gal', 'qt', 'pt', 'fl oz'],
+                names: ['Liters', 'Milliliters', 'Microliters', 'Cubic Centimeters', 'Cubic Meters', 'Gallons', 'Quarts', 'Pints', 'Fluid Ounces'],
+                toBase: [1, 0.001, 1e-6, 0.001, 1000, 3.78541, 0.946353, 0.473176, 0.0295735],
+                baseUnit: 'L'
+            },
+            concentration: {
+                units: ['M', 'mM', 'μM', 'nM', 'pM', '%w/v', 'ppm', 'ppb'],
+                names: ['Molar', 'Millimolar', 'Micromolar', 'Nanomolar', 'Picomolar', '% w/v', 'Parts per Million', 'Parts per Billion'],
+                toBase: [1, 0.001, 1e-6, 1e-9, 1e-12, 10, 1e-6, 1e-9],
+                baseUnit: 'M',
+                note: 'Note: % w/v and ppm/ppb conversions assume water-like density'
+            },
+            time: {
+                units: ['s', 'ms', 'μs', 'ns', 'ps', 'min', 'h', 'day', 'week', 'year'],
+                names: ['Seconds', 'Milliseconds', 'Microseconds', 'Nanoseconds', 'Picoseconds', 'Minutes', 'Hours', 'Days', 'Weeks', 'Years'],
+                toBase: [1, 0.001, 1e-6, 1e-9, 1e-12, 60, 3600, 86400, 604800, 31536000],
+                baseUnit: 's'
+            }
+        };
+
+        let currentCategory = 'length';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            setupTabs();
+            loadCategory('length');
+            
+            document.getElementById('from-value').addEventListener('input', convert);
+            document.getElementById('from-unit').addEventListener('change', convert);
+            document.getElementById('to-unit').addEventListener('change', convert);
+        });
+
+        function setupTabs() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    loadCategory(tab.dataset.category);
+                });
+            });
+        }
+
+        function loadCategory(category) {
+            currentCategory = category;
+            const data = unitData[category];
+            const fromSelect = document.getElementById('from-unit');
+            const toSelect = document.getElementById('to-unit');
+            
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+            
+            data.units.forEach((unit, i) => {
+                fromSelect.innerHTML += `<option value="${unit}">${data.names[i]} (${unit})</option>`;
+                toSelect.innerHTML += `<option value="${unit}">${data.names[i]} (${unit})</option>`;
+            });
+            
+            if (data.units.length > 1) toSelect.selectedIndex = 1;
+            
+            document.getElementById('from-value').value = '';
+            document.getElementById('to-value').value = '';
+            document.getElementById('formula-display').textContent = '';
+            
+            updateQuickConversions();
+            lucide.createIcons();
+        }
+
+        function convert() {
+            const value = parseFloat(document.getElementById('from-value').value);
+            const fromUnit = document.getElementById('from-unit').value;
+            const toUnit = document.getElementById('to-unit').value;
+            
+            if (isNaN(value)) {
+                document.getElementById('to-value').value = '';
+                document.getElementById('formula-display').textContent = '';
+                return;
+            }
+            
+            let result;
+            if (currentCategory === 'temperature') {
+                result = convertTemperature(value, fromUnit, toUnit);
+            } else {
+                const data = unitData[currentCategory];
+                const fromIndex = data.units.indexOf(fromUnit);
+                const toIndex = data.units.indexOf(toUnit);
+                const baseValue = value * data.toBase[fromIndex];
+                result = baseValue / data.toBase[toIndex];
+            }
+            
+            document.getElementById('to-value').value = formatNumber(result);
+            updateFormula(value, fromUnit, result, toUnit);
+        }
+
+        function convertTemperature(value, from, to) {
+            // Convert to Celsius first
+            let celsius;
+            switch (from) {
+                case '°C': celsius = value; break;
+                case '°F': celsius = (value - 32) * 5/9; break;
+                case 'K': celsius = value - 273.15; break;
+                case '°R': celsius = (value - 491.67) * 5/9; break;
+            }
+            
+            // Convert from Celsius to target
+            switch (to) {
+                case '°C': return celsius;
+                case '°F': return celsius * 9/5 + 32;
+                case 'K': return celsius + 273.15;
+                case '°R': return (celsius + 273.15) * 9/5;
+            }
+        }
+
+        function formatNumber(num) {
+            if (Math.abs(num) < 0.0001 || Math.abs(num) >= 1e10) {
+                return num.toExponential(6);
+            }
+            return parseFloat(num.toPrecision(10)).toString();
+        }
+
+        function updateFormula(fromVal, fromUnit, toVal, toUnit) {
+            const formula = `${fromVal} ${fromUnit} = ${formatNumber(toVal)} ${toUnit}`;
+            document.getElementById('formula-display').textContent = formula;
+        }
+
+        function swapUnits() {
+            const fromSelect = document.getElementById('from-unit');
+            const toSelect = document.getElementById('to-unit');
+            const temp = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = temp;
+            convert();
+        }
+
+        function updateQuickConversions() {
+            const container = document.getElementById('quick-conversions');
+            const data = unitData[currentCategory];
+            const quickItems = [];
+            
+            // Generate some useful quick conversions
+            const examples = {
+                length: [[1, 'm', 'ft'], [1, 'km', 'mi'], [1, 'nm', 'Å'], [1, 'in', 'cm']],
+                mass: [[1, 'kg', 'lb'], [1, 'g', 'oz'], [1, 'amu', 'kg'], [1, 'ton', 'kg']],
+                temperature: [[0, '°C', '°F'], [100, '°C', '°F'], [25, '°C', 'K'], [0, 'K', '°C']],
+                pressure: [[1, 'atm', 'Pa'], [1, 'bar', 'atm'], [760, 'mmHg', 'atm'], [1, 'psi', 'kPa']],
+                energy: [[1, 'kcal', 'kJ'], [1, 'eV', 'J'], [1, 'kWh', 'J'], [1, 'BTU', 'J']],
+                volume: [[1, 'L', 'mL'], [1, 'gal', 'L'], [1, 'm³', 'L'], [1, 'fl oz', 'mL']],
+                concentration: [[1, 'M', 'mM'], [1, 'ppm', 'μM'], [1, '%w/v', 'M'], [1, 'nM', 'pM']],
+                time: [[1, 'h', 'min'], [1, 'day', 'h'], [1, 'year', 'day'], [1, 's', 'ms']]
+            };
+            
+            container.innerHTML = '';
+            
+            examples[currentCategory].forEach(([val, from, to]) => {
+                let result;
+                if (currentCategory === 'temperature') {
+                    result = convertTemperature(val, from, to);
+                } else {
+                    const fromIndex = data.units.indexOf(from);
+                    const toIndex = data.units.indexOf(to);
+                    const baseValue = val * data.toBase[fromIndex];
+                    result = baseValue / data.toBase[toIndex];
+                }
+                
+                container.innerHTML += `
+                    <div class="quick-item">
+                        <span class="from">${val} ${from}</span>
+                        <span class="equals">=</span>
+                        <span class="to">${formatNumber(result)} ${to}</span>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>

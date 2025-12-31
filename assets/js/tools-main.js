@@ -1,7 +1,30 @@
 // Tools Main JavaScript
 
-// Tool Modal Management
+// Tool Navigation - Redirects to individual tool pages
 function openTool(toolId) {
+    // Map tool IDs to their page URLs
+    const toolPages = {
+        'llm-chat': 'tools/llm-chat.html',
+        'paper-finder': 'tools/paper-finder.html',
+        'pdf-to-jpg': 'tools/pdf-to-jpg.html',
+        'pdf-reducer': 'tools/pdf-reducer.html',
+        'molecule-viz': 'tools/molecule-viz.html',
+        'games': 'tools/games.html',
+        'unit-converter': 'tools/unit-converter.html',
+        'mol-weight': 'tools/mol-weight.html',
+        'periodic-table': 'tools/periodic-table.html',
+        'equation-balancer': 'tools/equation-balancer.html',
+        'ph-calculator': 'tools/ph-calculator.html'
+    };
+
+    const page = toolPages[toolId];
+    if (page) {
+        window.location.href = page;
+    }
+}
+
+// Legacy modal system - kept for backwards compatibility but not used
+function openToolModal(toolId) {
     const modal = document.createElement('div');
     modal.className = 'tool-modal';
     modal.id = `modal-${toolId}`;

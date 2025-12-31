@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chat with AI models using your own API keys - OpenAI, Groq, Anthropic, Google Gemini">
+    <title>LLM Chat - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i data-lucide="message-circle"></i> LLM Chat</h1>
+                <p>Chat with AI models using your own API keys</p>
+            </div>
+
+            <div class="tool-main" style="display: grid; grid-template-columns: 300px 1fr; gap: 2rem;">
+                <!-- Sidebar Config -->
+                <div class="tool-card config-sidebar">
+                    <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i data-lucide="settings"></i> Configuration
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="provider">AI Provider</label>
+                        <select id="provider">
+                            <option value="openai">OpenAI</option>
+                            <option value="groq">Groq</option>
+                            <option value="anthropic">Anthropic</option>
+                            <option value="gemini">Google Gemini</option>
+                            <option value="openrouter">OpenRouter</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <select id="model"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="api-key">API Key</label>
+                        <input type="password" id="api-key" placeholder="Enter your API key">
+                        <small>🔒 Stored locally, never sent to our servers</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="system-prompt">System Prompt</label>
+                        <textarea id="system-prompt" rows="4" placeholder="You are a helpful assistant..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temperature">Temperature: <span id="temp-value">0.7</span></label>
+                        <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7">
+                    </div>
+
+                    <button class="tool-btn tool-btn-secondary" onclick="clearChat()" style="width: 100%;">
+                        <i data-lucide="trash-2"></i> Clear Chat
+                    </button>
+                </div>
+
+                <!-- Chat Area -->
+                <div class="tool-card chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="empty-chat">
+                            <i data-lucide="message-square-plus" style="width: 64px; height: 64px; opacity: 0.3;"></i>
+                            <p style="margin-top: 1rem; color: var(--text-secondary);">Start a conversation with AI</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <textarea id="chat-input" class="chat-input" placeholder="Type your message..." rows="1"></textarea>
+                        <button class="tool-btn tool-btn-primary" onclick="sendMessage()" id="send-btn">
+                            <i data-lucide="send"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .config-sidebar {
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        .empty-chat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 300px;
+        }
+        .chat-messages {
+            min-height: 400px;
+            max-height: 60vh;
+        }
+        .chat-message pre {
+            background: var(--code-bg, #1e1e1e);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+        }
+        .chat-message code {
+            font-family: 'Source Code Pro', monospace;
+        }
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 1rem;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        @media (max-width: 900px) {
+            .tool-main {
+                grid-template-columns: 1fr !important;
+            }
+            .config-sidebar {
+                position: static;
+            }
+        }
+    </style>
+
+    <script>
+        // Provider configurations
+        const providers = {
+            openai: {
+                name: 'OpenAI',
+                baseUrl: 'https://api.openai.com/v1/chat/completions',
+                models: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
+                keyPrefix: 'sk-'
+            },
+            groq: {
+                name: 'Groq',
+                baseUrl: 'https://api.groq.com/openai/v1/chat/completions',
+                models: ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768', 'gemma2-9b-it'],
+                keyPrefix: 'gsk_'
+            },
+            anthropic: {
+                name: 'Anthropic',
+                baseUrl: 'https://api.anthropic.com/v1/messages',
+                models: ['claude-3-5-sonnet-20241022', 'claude-3-5-haiku-20241022', 'claude-3-opus-20240229'],
+                keyPrefix: 'sk-ant-'
+            },
+            gemini: {
+                name: 'Google Gemini',
+                baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+                models: ['gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-1.0-pro'],
+                keyPrefix: 'AI'
+            },
+            openrouter: {
+                name: 'OpenRouter',
+                baseUrl: 'https://openrouter.ai/api/v1/chat/completions',
+                models: ['anthropic/claude-3.5-sonnet', 'openai/gpt-4o', 'google/gemini-pro-1.5', 'meta-llama/llama-3.1-405b-instruct'],
+                keyPrefix: 'sk-or-'
+            }
+        };
+
+        let chatHistory = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadSettings();
+            updateModels();
+            
+            // Event listeners
+            document.getElementById('provider').addEventListener('change', () => {
+                updateModels();
+                saveSettings();
+            });
+            document.getElementById('model').addEventListener('change', saveSettings);
+            document.getElementById('api-key').addEventListener('change', saveSettings);
+            document.getElementById('system-prompt').addEventListener('change', saveSettings);
+            document.getElementById('temperature').addEventListener('input', (e) => {
+                document.getElementById('temp-value').textContent = e.target.value;
+                saveSettings();
+            });
+            
+            // Enter to send
+            document.getElementById('chat-input').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Auto-resize textarea
+            document.getElementById('chat-input').addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+            });
+        });
+
+        function updateModels() {
+            const provider = document.getElementById('provider').value;
+            const modelSelect = document.getElementById('model');
+            const models = providers[provider].models;
+            
+            modelSelect.innerHTML = models.map(m => `<option value="${m}">${m}</option>`).join('');
+        }
+
+        function saveSettings() {
+            const settings = {
+                provider: document.getElementById('provider').value,
+                model: document.getElementById('model').value,
+                apiKey: document.getElementById('api-key').value,
+                systemPrompt: document.getElementById('system-prompt').value,
+                temperature: document.getElementById('temperature').value
+            };
+            localStorage.setItem('llm-chat-settings', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('llm-chat-settings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                document.getElementById('provider').value = settings.provider || 'openai';
+                updateModels();
+                document.getElementById('model').value = settings.model || providers[settings.provider].models[0];
+                document.getElementById('api-key').value = settings.apiKey || '';
+                document.getElementById('system-prompt').value = settings.systemPrompt || '';
+                document.getElementById('temperature').value = settings.temperature || 0.7;
+                document.getElementById('temp-value').textContent = settings.temperature || 0.7;
+            }
+        }
+
+        function addMessage(role, content) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const emptyChat = messagesDiv.querySelector('.empty-chat');
+            if (emptyChat) emptyChat.remove();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${role}`;
+            
+            if (role === 'assistant') {
+                messageDiv.innerHTML = marked.parse(content);
+            } else {
+                messageDiv.textContent = content;
+            }
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            chatHistory.push({ role, content });
+        }
+
+        function showTyping() {
+            const messagesDiv = document.getElementById('chat-messages');
+            const typing = document.createElement('div');
+            typing.className = 'chat-message assistant typing-indicator';
+            typing.id = 'typing';
+            typing.innerHTML = '<span></span><span></span><span></span>';
+            messagesDiv.appendChild(typing);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typing');
+            if (typing) typing.remove();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            const apiKey = document.getElementById('api-key').value;
+            if (!apiKey) {
+                alert('Please enter your API key');
+                return;
+            }
+            
+            addMessage('user', message);
+            input.value = '';
+            input.style.height = 'auto';
+            
+            showTyping();
+            document.getElementById('send-btn').disabled = true;
+            
+            try {
+                const response = await callAPI(message);
+                hideTyping();
+                addMessage('assistant', response);
+            } catch (error) {
+                hideTyping();
+                addMessage('assistant', `❌ Error: ${error.message}`);
+            }
+            
+            document.getElementById('send-btn').disabled = false;
+        }
+
+        async function callAPI(message) {
+            const provider = document.getElementById('provider').value;
+            const model = document.getElementById('model').value;
+            const apiKey = document.getElementById('api-key').value;
+            const systemPrompt = document.getElementById('system-prompt').value;
+            const temperature = parseFloat(document.getElementById('temperature').value);
+            
+            const config = providers[provider];
+            
+            // Build messages array
+            const messages = [];
+            if (systemPrompt) {
+                messages.push({ role: 'system', content: systemPrompt });
+            }
+            chatHistory.forEach(msg => {
+                messages.push({ role: msg.role, content: msg.content });
+            });
+            messages.push({ role: 'user', content: message });
+            
+            // Provider-specific API calls
+            if (provider === 'anthropic') {
+                const response = await fetch(config.baseUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': apiKey,
+                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-direct-browser-access': 'true'
+                    },
+                    body: JSON.stringify({
+                        model,
+                        max_tokens: 4096,
+                        system: systemPrompt || undefined,
+                        messages: messages.filter(m => m.role !== 'system').map(m => ({
+                            role: m.role === 'assistant' ? 'assistant' : 'user',
+                            content: m.content
+                        })),
+                        temperature
+                    })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error?.message || 'API request failed');
+                }
+                
+                const data = await response.json();
+                return data.content[0].text;
+                
+            } else if (provider === 'gemini') {
+                const url = config.baseUrl.replace('{model}', model) + `?key=${apiKey}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: messages.map(m => ({
+                            role: m.role === 'assistant' ? 'model' : 'user',
+                            parts: [{ text: m.content }]
+                        })),
+                        generationConfig: { temperature }
+                    })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error?.message || 'API request failed');
+                }
+                
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+                
+            } else {
+                // OpenAI-compatible APIs (OpenAI, Groq, OpenRouter)
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                };
+                
+                if (provider === 'openrouter') {
+                    headers['HTTP-Referer'] = window.location.href;
+                }
+                
+                const response = await fetch(config.baseUrl, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({
+                        model,
+                        messages,
+                        temperature
+                    })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error?.message || 'API request failed');
+                }
+                
+                const data = await response.json();
+                return data.choices[0].message.content;
+            }
+        }
+
+        function clearChat() {
+            chatHistory = [];
+            document.getElementById('chat-messages').innerHTML = `
+                <div class="empty-chat">
+                    <i data-lucide="message-square-plus" style="width: 64px; height: 64px; opacity: 0.3;"></i>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">Start a conversation with AI</p>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

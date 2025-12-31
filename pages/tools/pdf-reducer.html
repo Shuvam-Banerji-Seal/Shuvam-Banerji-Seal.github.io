@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compress PDF files to reduce their size while maintaining quality">
+    <title>PDF Compressor - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i data-lucide="minimize-2"></i> PDF Compressor</h1>
+                <p>Reduce PDF file size while maintaining quality</p>
+            </div>
+
+            <div class="tool-card">
+                <div class="file-upload" id="drop-zone">
+                    <i data-lucide="upload-cloud"></i>
+                    <p>Drag & drop your PDF here or click to browse</p>
+                    <button class="tool-btn tool-btn-primary">Select PDF File</button>
+                    <input type="file" id="file-input" accept=".pdf,application/pdf">
+                </div>
+
+                <div id="file-info" style="display: none; margin-top: 1.5rem;">
+                    <div class="alert alert-info">
+                        <i data-lucide="file-text"></i>
+                        <div>
+                            <strong id="file-name">document.pdf</strong>
+                            <br><span id="original-size" style="font-size: 0.9rem;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 1.5rem;">
+                    <label>Compression Level</label>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 0.5rem;">
+                        <label class="compression-option">
+                            <input type="radio" name="compression" value="low" checked>
+                            <div class="option-card">
+                                <i data-lucide="zap"></i>
+                                <strong>Low</strong>
+                                <small>Best quality, larger file</small>
+                            </div>
+                        </label>
+                        <label class="compression-option">
+                            <input type="radio" name="compression" value="medium">
+                            <div class="option-card">
+                                <i data-lucide="activity"></i>
+                                <strong>Medium</strong>
+                                <small>Balanced quality/size</small>
+                            </div>
+                        </label>
+                        <label class="compression-option">
+                            <input type="radio" name="compression" value="high">
+                            <div class="option-card">
+                                <i data-lucide="minimize"></i>
+                                <strong>High</strong>
+                                <small>Smallest file size</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="btn-group" style="margin-top: 1.5rem;">
+                    <button class="tool-btn tool-btn-primary" id="compress-btn" onclick="compressPDF()" disabled>
+                        <i data-lucide="minimize-2"></i> Compress PDF
+                    </button>
+                </div>
+
+                <div class="progress-bar" id="progress-bar" style="display: none;">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                </div>
+                <p id="progress-text" style="text-align: center; margin-top: 0.5rem; display: none;"></p>
+            </div>
+
+            <div class="tool-card" id="result-container" style="display: none;">
+                <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="check-circle"></i> Compression Complete
+                </h3>
+                <div class="result-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Original Size</span>
+                        <span class="stat-value" id="stat-original">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Compressed Size</span>
+                        <span class="stat-value" id="stat-compressed">-</span>
+                    </div>
+                    <div class="stat-item highlight">
+                        <span class="stat-label">Reduction</span>
+                        <span class="stat-value" id="stat-reduction">-</span>
+                    </div>
+                </div>
+                <button class="tool-btn tool-btn-primary" id="download-btn" style="margin-top: 1.5rem; width: 100%;">
+                    <i data-lucide="download"></i> Download Compressed PDF
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .compression-option input { display: none; }
+        .compression-option .option-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .compression-option .option-card svg {
+            width: 32px;
+            height: 32px;
+            color: var(--text-secondary);
+        }
+        .compression-option .option-card small {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .compression-option input:checked + .option-card {
+            border-color: var(--accent-color);
+            background: rgba(6, 182, 212, 0.1);
+        }
+        .compression-option input:checked + .option-card svg {
+            color: var(--accent-color);
+        }
+        .compression-option:hover .option-card {
+            border-color: var(--accent-color);
+        }
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+        }
+        .stat-item.highlight {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
+        }
+        .stat-label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .stat-item.highlight .stat-value {
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @media (max-width: 768px) {
+            .result-stats { grid-template-columns: 1fr; }
+        }
+    </style>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
+        let originalFile = null;
+        let compressedBlob = null;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            
+            dropZone.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files[0]) loadFile(e.target.files[0]);
+            });
+            
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file?.type === 'application/pdf') loadFile(file);
+            });
+        });
+
+        function loadFile(file) {
+            originalFile = file;
+            document.getElementById('file-info').style.display = 'block';
+            document.getElementById('file-name').textContent = file.name;
+            document.getElementById('original-size').textContent = `Original: ${formatSize(file.size)}`;
+            document.getElementById('compress-btn').disabled = false;
+            document.getElementById('result-container').style.display = 'none';
+            lucide.createIcons();
+        }
+
+        async function compressPDF() {
+            if (!originalFile) return;
+            
+            const compression = document.querySelector('input[name="compression"]:checked').value;
+            const qualityMap = { low: 0.9, medium: 0.7, high: 0.5 };
+            const scaleMap = { low: 1.5, medium: 1.2, high: 1 };
+            const quality = qualityMap[compression];
+            const scale = scaleMap[compression];
+            
+            document.getElementById('progress-bar').style.display = 'block';
+            document.getElementById('progress-text').style.display = 'block';
+            document.getElementById('compress-btn').disabled = true;
+            
+            try {
+                const arrayBuffer = await originalFile.arrayBuffer();
+                const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                const totalPages = pdfDoc.numPages;
+                
+                const { jsPDF } = window.jspdf;
+                
+                // Get first page to determine dimensions
+                const firstPage = await pdfDoc.getPage(1);
+                const viewport = firstPage.getViewport({ scale: 1 });
+                const orientation = viewport.width > viewport.height ? 'l' : 'p';
+                
+                const pdf = new jsPDF({
+                    orientation,
+                    unit: 'pt',
+                    format: [viewport.width, viewport.height]
+                });
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    updateProgress(i, totalPages);
+                    
+                    const page = await pdfDoc.getPage(i);
+                    const pageViewport = page.getViewport({ scale });
+                    
+                    const canvas = document.createElement('canvas');
+                    canvas.width = pageViewport.width;
+                    canvas.height = pageViewport.height;
+                    
+                    await page.render({
+                        canvasContext: canvas.getContext('2d'),
+                        viewport: pageViewport
+                    }).promise;
+                    
+                    const imgData = canvas.toDataURL('image/jpeg', quality);
+                    
+                    if (i > 1) {
+                        const pv = page.getViewport({ scale: 1 });
+                        pdf.addPage([pv.width, pv.height], pv.width > pv.height ? 'l' : 'p');
+                    }
+                    
+                    const pv = page.getViewport({ scale: 1 });
+                    pdf.addImage(imgData, 'JPEG', 0, 0, pv.width, pv.height);
+                }
+                
+                compressedBlob = pdf.output('blob');
+                
+                showResult();
+            } catch (error) {
+                alert('Error compressing PDF: ' + error.message);
+            }
+            
+            document.getElementById('progress-bar').style.display = 'none';
+            document.getElementById('progress-text').style.display = 'none';
+            document.getElementById('compress-btn').disabled = false;
+        }
+
+        function showResult() {
+            const original = originalFile.size;
+            const compressed = compressedBlob.size;
+            const reduction = ((1 - compressed / original) * 100).toFixed(1);
+            
+            document.getElementById('stat-original').textContent = formatSize(original);
+            document.getElementById('stat-compressed').textContent = formatSize(compressed);
+            document.getElementById('stat-reduction').textContent = reduction + '%';
+            
+            document.getElementById('result-container').style.display = 'block';
+            
+            document.getElementById('download-btn').onclick = () => {
+                const link = document.createElement('a');
+                link.download = originalFile.name.replace('.pdf', '_compressed.pdf');
+                link.href = URL.createObjectURL(compressedBlob);
+                link.click();
+            };
+            
+            lucide.createIcons();
+        }
+
+        function updateProgress(current, total) {
+            const percent = (current / total) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = `Processing page ${current} of ${total}...`;
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+    </script>
+</body>
+</html>

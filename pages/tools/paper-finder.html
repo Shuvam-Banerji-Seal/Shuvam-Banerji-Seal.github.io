@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search and discover research papers from Semantic Scholar and arXiv">
+    <title>Research Paper Finder - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i data-lucide="search"></i> Research Paper Finder</h1>
+                <p>Search and discover academic papers from Semantic Scholar and arXiv</p>
+            </div>
+
+            <div class="tool-card">
+                <div class="search-section">
+                    <div class="form-row" style="align-items: flex-end;">
+                        <div class="form-group" style="flex: 2;">
+                            <label for="search-query">Search Query</label>
+                            <input type="text" id="search-query" placeholder="e.g., machine learning, quantum chemistry, neural networks...">
+                        </div>
+                        <div class="form-group">
+                            <label for="source">Source</label>
+                            <select id="source">
+                                <option value="semantic">Semantic Scholar</option>
+                                <option value="arxiv">arXiv</option>
+                                <option value="both">Both</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="year-from">Year From</label>
+                            <input type="number" id="year-from" placeholder="2020" min="1900" max="2026">
+                        </div>
+                        <div class="form-group">
+                            <label for="year-to">Year To</label>
+                            <input type="number" id="year-to" placeholder="2026" min="1900" max="2026">
+                        </div>
+                        <button class="tool-btn tool-btn-primary" onclick="searchPapers()" id="search-btn">
+                            <i data-lucide="search"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card" id="results-container" style="display: none;">
+                <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 id="results-count">Results</h3>
+                    <div class="sort-options">
+                        <select id="sort-by" onchange="sortResults()">
+                            <option value="relevance">Sort by Relevance</option>
+                            <option value="year-desc">Year (Newest)</option>
+                            <option value="year-asc">Year (Oldest)</option>
+                            <option value="citations">Citations</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="results-list"></div>
+                <div id="loading" class="loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <span style="margin-left: 1rem;">Searching papers...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .paper-card {
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+        }
+        .paper-card:hover {
+            border-color: var(--accent-color);
+            transform: translateX(4px);
+        }
+        .paper-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+        .paper-title:hover {
+            text-decoration: underline;
+        }
+        .paper-authors {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        .paper-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .paper-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--text-secondary);
+        }
+        .paper-meta svg {
+            width: 16px;
+            height: 16px;
+        }
+        .paper-abstract {
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .paper-abstract.collapsed {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .paper-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .paper-actions a, .paper-actions button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .paper-actions a {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .paper-actions a:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        .source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .source-badge.semantic {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+        }
+        .source-badge.arxiv {
+            background: rgba(178, 34, 34, 0.15);
+            color: #b22222;
+        }
+        .toggle-abstract {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <script>
+        let allResults = [];
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            // Enter to search
+            document.getElementById('search-query').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') searchPapers();
+            });
+        });
+
+        async function searchPapers() {
+            const query = document.getElementById('search-query').value.trim();
+            if (!query) {
+                alert('Please enter a search query');
+                return;
+            }
+            
+            const source = document.getElementById('source').value;
+            const yearFrom = document.getElementById('year-from').value;
+            const yearTo = document.getElementById('year-to').value;
+            
+            document.getElementById('results-container').style.display = 'block';
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('results-list').innerHTML = '';
+            document.getElementById('search-btn').disabled = true;
+            
+            allResults = [];
+            
+            try {
+                if (source === 'semantic' || source === 'both') {
+                    const semanticResults = await searchSemanticScholar(query, yearFrom, yearTo);
+                    allResults = [...allResults, ...semanticResults];
+                }
+                
+                if (source === 'arxiv' || source === 'both') {
+                    const arxivResults = await searchArxiv(query, yearFrom, yearTo);
+                    allResults = [...allResults, ...arxivResults];
+                }
+                
+                displayResults();
+            } catch (error) {
+                document.getElementById('results-list').innerHTML = `
+                    <div class="alert alert-error">
+                        <i data-lucide="alert-circle"></i>
+                        Error searching papers: ${error.message}
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+            
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('search-btn').disabled = false;
+        }
+
+        async function searchSemanticScholar(query, yearFrom, yearTo) {
+            let url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=20&fields=title,authors,year,abstract,citationCount,url,openAccessPdf,externalIds`;
+            
+            if (yearFrom && yearTo) {
+                url += `&year=${yearFrom}-${yearTo}`;
+            } else if (yearFrom) {
+                url += `&year=${yearFrom}-`;
+            } else if (yearTo) {
+                url += `&year=-${yearTo}`;
+            }
+            
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Semantic Scholar API error');
+            
+            const data = await response.json();
+            
+            return (data.data || []).map(paper => ({
+                title: paper.title,
+                authors: paper.authors?.map(a => a.name).join(', ') || 'Unknown',
+                year: paper.year,
+                abstract: paper.abstract || 'No abstract available',
+                citations: paper.citationCount || 0,
+                url: paper.url,
+                pdfUrl: paper.openAccessPdf?.url,
+                doi: paper.externalIds?.DOI,
+                source: 'semantic'
+            }));
+        }
+
+        async function searchArxiv(query, yearFrom, yearTo) {
+            const url = `https://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(query)}&start=0&max_results=20&sortBy=relevance`;
+            
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('arXiv API error');
+            
+            const text = await response.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(text, 'text/xml');
+            
+            const entries = xml.querySelectorAll('entry');
+            const results = [];
+            
+            entries.forEach(entry => {
+                const published = entry.querySelector('published')?.textContent;
+                const year = published ? new Date(published).getFullYear() : null;
+                
+                // Filter by year if specified
+                if (yearFrom && year < parseInt(yearFrom)) return;
+                if (yearTo && year > parseInt(yearTo)) return;
+                
+                const pdfLink = entry.querySelector('link[title="pdf"]')?.getAttribute('href');
+                const absLink = entry.querySelector('id')?.textContent;
+                
+                results.push({
+                    title: entry.querySelector('title')?.textContent?.replace(/\n/g, ' ').trim(),
+                    authors: Array.from(entry.querySelectorAll('author name')).map(n => n.textContent).join(', '),
+                    year: year,
+                    abstract: entry.querySelector('summary')?.textContent?.trim() || 'No abstract available',
+                    citations: null,
+                    url: absLink,
+                    pdfUrl: pdfLink,
+                    doi: null,
+                    source: 'arxiv'
+                });
+            });
+            
+            return results;
+        }
+
+        function displayResults() {
+            const sortBy = document.getElementById('sort-by').value;
+            sortResults();
+        }
+
+        function sortResults() {
+            const sortBy = document.getElementById('sort-by').value;
+            let sorted = [...allResults];
+            
+            switch (sortBy) {
+                case 'year-desc':
+                    sorted.sort((a, b) => (b.year || 0) - (a.year || 0));
+                    break;
+                case 'year-asc':
+                    sorted.sort((a, b) => (a.year || 0) - (b.year || 0));
+                    break;
+                case 'citations':
+                    sorted.sort((a, b) => (b.citations || 0) - (a.citations || 0));
+                    break;
+            }
+            
+            document.getElementById('results-count').textContent = `Found ${sorted.length} papers`;
+            
+            const html = sorted.map((paper, idx) => `
+                <div class="paper-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                        <a href="${paper.url}" target="_blank" class="paper-title">${paper.title}</a>
+                        <span class="source-badge ${paper.source}">${paper.source === 'semantic' ? 'Semantic Scholar' : 'arXiv'}</span>
+                    </div>
+                    <div class="paper-authors">${paper.authors}</div>
+                    <div class="paper-meta">
+                        ${paper.year ? `<span><i data-lucide="calendar"></i> ${paper.year}</span>` : ''}
+                        ${paper.citations !== null ? `<span><i data-lucide="quote"></i> ${paper.citations} citations</span>` : ''}
+                        ${paper.doi ? `<span><i data-lucide="link"></i> DOI: ${paper.doi}</span>` : ''}
+                    </div>
+                    <div class="paper-abstract collapsed" id="abstract-${idx}">${paper.abstract}</div>
+                    <button class="toggle-abstract" onclick="toggleAbstract(${idx})">Show more</button>
+                    <div class="paper-actions">
+                        <a href="${paper.url}" target="_blank"><i data-lucide="external-link"></i> View</a>
+                        ${paper.pdfUrl ? `<a href="${paper.pdfUrl}" target="_blank"><i data-lucide="file-text"></i> PDF</a>` : ''}
+                        ${paper.doi ? `<a href="https://doi.org/${paper.doi}" target="_blank"><i data-lucide="link"></i> DOI</a>` : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('results-list').innerHTML = html || '<p style="text-align: center; color: var(--text-secondary);">No papers found</p>';
+            lucide.createIcons();
+        }
+
+        function toggleAbstract(idx) {
+            const abstract = document.getElementById(`abstract-${idx}`);
+            const btn = abstract.nextElementSibling;
+            
+            if (abstract.classList.contains('collapsed')) {
+                abstract.classList.remove('collapsed');
+                btn.textContent = 'Show less';
+            } else {
+                abstract.classList.add('collapsed');
+                btn.textContent = 'Show more';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert PDF documents to JPG images directly in your browser">
+    <title>PDF to JPG Converter - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container">
+            <div class="tool-header">
+                <h1><i data-lucide="image"></i> PDF to JPG Converter</h1>
+                <p>Convert PDF documents to high-quality JPG images in your browser</p>
+            </div>
+
+            <div class="tool-card">
+                <div class="file-upload" id="drop-zone">
+                    <i data-lucide="upload-cloud"></i>
+                    <p>Drag & drop your PDF here or click to browse</p>
+                    <button class="tool-btn tool-btn-primary">Select PDF File</button>
+                    <input type="file" id="file-input" accept=".pdf,application/pdf">
+                </div>
+
+                <div id="file-info" style="display: none; margin-top: 1.5rem;">
+                    <div class="alert alert-info">
+                        <i data-lucide="file-text"></i>
+                        <span id="file-name">document.pdf</span>
+                        <span style="margin-left: auto;" id="page-count"></span>
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-top: 1.5rem;">
+                    <div class="form-group">
+                        <label for="quality">Image Quality</label>
+                        <select id="quality">
+                            <option value="1">Low (72 DPI) - Small files</option>
+                            <option value="1.5">Medium (108 DPI)</option>
+                            <option value="2" selected>High (144 DPI) - Recommended</option>
+                            <option value="3">Very High (216 DPI)</option>
+                            <option value="4">Maximum (288 DPI) - Large files</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="format">Output Format</label>
+                        <select id="format">
+                            <option value="jpeg" selected>JPEG</option>
+                            <option value="png">PNG (Lossless)</option>
+                            <option value="webp">WebP (Modern)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="jpeg-quality">JPEG Quality: <span id="jpeg-quality-value">90</span>%</label>
+                        <input type="range" id="jpeg-quality" min="50" max="100" value="90">
+                    </div>
+                </div>
+
+                <div class="btn-group" style="margin-top: 1.5rem;">
+                    <button class="tool-btn tool-btn-primary" id="convert-btn" onclick="convertPDF()" disabled>
+                        <i data-lucide="image"></i> Convert to Images
+                    </button>
+                    <button class="tool-btn tool-btn-secondary" id="download-all-btn" onclick="downloadAll()" disabled>
+                        <i data-lucide="download"></i> Download All (ZIP)
+                    </button>
+                    <button class="tool-btn tool-btn-danger" id="clear-btn" onclick="clearAll()" style="display: none;">
+                        <i data-lucide="trash-2"></i> Clear
+                    </button>
+                </div>
+
+                <div class="progress-bar" id="progress-bar" style="display: none;">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                </div>
+                <p id="progress-text" style="text-align: center; margin-top: 0.5rem; display: none;"></p>
+            </div>
+
+            <div class="tool-card" id="preview-container" style="display: none;">
+                <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="images"></i> Converted Images
+                </h3>
+                <div class="preview-grid" id="preview-grid"></div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .preview-item {
+            position: relative;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .preview-item:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .preview-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            background: #f0f0f0;
+        }
+        body[data-theme='dark'] .preview-item img {
+            background: #1a1a2e;
+        }
+        .preview-item .info {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .preview-item .page-num {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .preview-item .size {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .preview-item .download-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .preview-item:hover .download-btn {
+            opacity: 1;
+        }
+        .preview-item .download-btn:hover {
+            background: var(--accent-color);
+        }
+    </style>
+
+    <script>
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
+        let pdfDoc = null;
+        let convertedImages = [];
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            
+            // Click to upload
+            dropZone.addEventListener('click', () => fileInput.click());
+            
+            // File input change
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files[0]) loadPDF(e.target.files[0]);
+            });
+            
+            // Drag and drop
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type === 'application/pdf') {
+                    loadPDF(file);
+                } else {
+                    alert('Please drop a PDF file');
+                }
+            });
+            
+            // JPEG quality slider
+            document.getElementById('jpeg-quality').addEventListener('input', (e) => {
+                document.getElementById('jpeg-quality-value').textContent = e.target.value;
+            });
+        });
+
+        async function loadPDF(file) {
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                
+                document.getElementById('file-info').style.display = 'block';
+                document.getElementById('file-name').textContent = file.name;
+                document.getElementById('page-count').textContent = `${pdfDoc.numPages} page${pdfDoc.numPages > 1 ? 's' : ''}`;
+                document.getElementById('convert-btn').disabled = false;
+                document.getElementById('clear-btn').style.display = 'inline-flex';
+                
+                lucide.createIcons();
+            } catch (error) {
+                alert('Error loading PDF: ' + error.message);
+            }
+        }
+
+        async function convertPDF() {
+            if (!pdfDoc) return;
+            
+            const scale = parseFloat(document.getElementById('quality').value);
+            const format = document.getElementById('format').value;
+            const jpegQuality = parseInt(document.getElementById('jpeg-quality').value) / 100;
+            
+            convertedImages = [];
+            document.getElementById('preview-container').style.display = 'block';
+            document.getElementById('preview-grid').innerHTML = '';
+            document.getElementById('progress-bar').style.display = 'block';
+            document.getElementById('progress-text').style.display = 'block';
+            document.getElementById('convert-btn').disabled = true;
+            
+            const totalPages = pdfDoc.numPages;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                updateProgress(i, totalPages);
+                
+                const page = await pdfDoc.getPage(i);
+                const viewport = page.getViewport({ scale });
+                
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                
+                await page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise;
+                
+                let mimeType, extension;
+                switch (format) {
+                    case 'png':
+                        mimeType = 'image/png';
+                        extension = 'png';
+                        break;
+                    case 'webp':
+                        mimeType = 'image/webp';
+                        extension = 'webp';
+                        break;
+                    default:
+                        mimeType = 'image/jpeg';
+                        extension = 'jpg';
+                }
+                
+                const quality = format === 'png' ? 1 : jpegQuality;
+                const dataUrl = canvas.toDataURL(mimeType, quality);
+                
+                // Calculate size
+                const base64Length = dataUrl.split(',')[1].length;
+                const sizeInBytes = (base64Length * 3) / 4;
+                const sizeStr = formatFileSize(sizeInBytes);
+                
+                convertedImages.push({
+                    dataUrl,
+                    extension,
+                    pageNum: i,
+                    size: sizeStr
+                });
+                
+                addPreview(dataUrl, i, sizeStr, extension);
+            }
+            
+            document.getElementById('progress-bar').style.display = 'none';
+            document.getElementById('progress-text').style.display = 'none';
+            document.getElementById('convert-btn').disabled = false;
+            document.getElementById('download-all-btn').disabled = false;
+        }
+
+        function updateProgress(current, total) {
+            const percent = (current / total) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = `Converting page ${current} of ${total}...`;
+        }
+
+        function addPreview(dataUrl, pageNum, size, extension) {
+            const grid = document.getElementById('preview-grid');
+            const item = document.createElement('div');
+            item.className = 'preview-item';
+            item.innerHTML = `
+                <img src="${dataUrl}" alt="Page ${pageNum}">
+                <button class="download-btn" onclick="downloadImage(${pageNum - 1})">
+                    <i data-lucide="download"></i>
+                </button>
+                <div class="info">
+                    <span class="page-num">Page ${pageNum}</span>
+                    <span class="size">${size}</span>
+                </div>
+            `;
+            grid.appendChild(item);
+            lucide.createIcons();
+        }
+
+        function downloadImage(index) {
+            const img = convertedImages[index];
+            const link = document.createElement('a');
+            link.download = `page_${img.pageNum}.${img.extension}`;
+            link.href = img.dataUrl;
+            link.click();
+        }
+
+        async function downloadAll() {
+            if (convertedImages.length === 0) return;
+            
+            const zip = new JSZip();
+            
+            convertedImages.forEach((img, index) => {
+                const base64Data = img.dataUrl.split(',')[1];
+                zip.file(`page_${img.pageNum}.${img.extension}`, base64Data, { base64: true });
+            });
+            
+            const content = await zip.generateAsync({ type: 'blob' });
+            const link = document.createElement('a');
+            link.download = 'pdf_images.zip';
+            link.href = URL.createObjectURL(content);
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        function clearAll() {
+            pdfDoc = null;
+            convertedImages = [];
+            document.getElementById('file-input').value = '';
+            document.getElementById('file-info').style.display = 'none';
+            document.getElementById('preview-container').style.display = 'none';
+            document.getElementById('preview-grid').innerHTML = '';
+            document.getElementById('convert-btn').disabled = true;
+            document.getElementById('download-all-btn').disabled = true;
+            document.getElementById('clear-btn').style.display = 'none';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+    </script>
+</body>
+</html>
