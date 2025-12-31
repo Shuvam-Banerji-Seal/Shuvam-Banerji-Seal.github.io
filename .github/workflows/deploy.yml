@@ -37,9 +37,9 @@ jobs:
       - name: Install Dependencies
         run: |
           if [ -f package-lock.json ]; then
-            npm ci --legacy-peer-deps
+            npm ci
           else
-            npm install --legacy-peer-deps
+            npm install
           fi
 
       - name: Generate Manifests
@@ -58,6 +58,9 @@ jobs:
         run: |
           echo "📦 Copying assets_for_my_website to dist..."
           cp -r assets_for_my_website ./dist/
+          # Remove .gitattributes to prevent LFS issues on gh-pages
+          rm -f ./dist/assets_for_my_website/.gitattributes
+          rm -f ./dist/assets_for_my_website/.git
           echo "✅ Assets copied successfully"
           echo "📁 Checking dist contents:"
           ls -la ./dist/assets_for_my_website/Music/ | head -10
@@ -82,6 +85,7 @@ jobs:
           commit_message: 'Deploy: ${{ github.event.head_commit.message }}'
           force_orphan: true
           enable_jekyll: false
+          exclude_assets: '.gitattributes,.git'
 
       - name: Upload Artifact for Pages (Backup Method)
         uses: actions/upload-pages-artifact@v3
