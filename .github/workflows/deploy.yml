@@ -55,12 +55,17 @@ jobs:
 
       - name: Copy Assets to Dist
         run: |
-          echo "📦 Copying assets_for_my_website to dist..."
+          echo "📦 Copying static assets to dist..."
+          # Copy the main assets folder (JS, CSS, etc.)
+          cp -r assets ./dist/
+          # Copy assets_for_my_website (music, etc.)
           cp -r assets_for_my_website ./dist/
           # Remove git-related files to prevent issues
           rm -rf ./dist/assets_for_my_website/.git
           rm -f ./dist/assets_for_my_website/.gitattributes
           echo "✅ Assets copied successfully"
+          echo "📁 Checking dist/assets contents:"
+          ls -la ./dist/assets/js/ | head -10
 
       - name: Add CNAME for custom domain (if configured)
         run: |
