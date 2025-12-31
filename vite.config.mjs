@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  plugins: [react()],
   root: '.',
   base: '/',
   publicDir: 'public',
@@ -16,6 +18,7 @@ export default defineConfig({
         blog: resolve(__dirname, 'pages/blog.html'),
         music: resolve(__dirname, 'pages/music.html'),
         'github-projects': resolve(__dirname, 'pages/github-projects.html'),
+        'mermaid-tool': resolve(__dirname, 'pages/mermaid-tool.html'),
       },
     },
     minify: 'esbuild',
@@ -35,6 +38,7 @@ export default defineConfig({
   preview: {
     port: 8080,
     host: true,
+    open: 'pages/mermaid-tool.html',
   },
   resolve: {
     preserveSymlinks: true,

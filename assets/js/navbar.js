@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { name: 'Notes', href: isHome ? 'pages/notes.html' : 'notes.html' },
         { name: 'Thermo', href: isHome ? 'pages/thermodynamics.html' : 'thermodynamics.html' },
         { name: 'Music', href: isHome ? 'pages/music.html' : 'music.html' },
+        { name: 'Mermaid', href: isHome ? 'pages/mermaid-tool.html' : 'mermaid-tool.html' },
         { name: 'Tools', href: isHome ? 'pages/tools.html' : 'tools.html' },
     ];
 
