@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional web-based audio studio with recorder, editor, tuner, and effects">
+    <title>Audio Studio - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+    <link rel="stylesheet" href="../../assets/css/audio-studio.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page audio-studio">
+        <div class="tool-container wide">
+            <div class="tool-header">
+                <h1><i data-lucide="mic"></i> Audio Studio</h1>
+                <p>Professional audio recording, editing, and processing tools</p>
+            </div>
+
+            <!-- Main Studio Layout -->
+            <div class="studio-layout">
+                <!-- Left Sidebar - Tools Panel -->
+                <aside class="tools-panel">
+                    <div class="panel-section">
+                        <h3><i data-lucide="sliders"></i> Input Source</h3>
+                        <div class="source-tabs">
+                            <button class="source-tab active" data-source="record">
+                                <i data-lucide="mic"></i> Record
+                            </button>
+                            <button class="source-tab" data-source="upload">
+                                <i data-lucide="upload"></i> Upload
+                            </button>
+                        </div>
+                        <div id="record-panel" class="source-panel active">
+                            <select id="audio-input-select" class="input-select">
+                                <option value="">Select Microphone...</option>
+                            </select>
+                            <div class="input-meter">
+                                <div class="meter-bar" id="input-meter"></div>
+                            </div>
+                            <div class="record-controls">
+                                <button class="record-btn" id="record-btn">
+                                    <i data-lucide="circle"></i>
+                                </button>
+                                <span class="record-time" id="record-time">00:00:00</span>
+                            </div>
+                        </div>
+                        <div id="upload-panel" class="source-panel">
+                            <div class="upload-zone" id="upload-zone">
+                                <i data-lucide="upload-cloud"></i>
+                                <p>Drop audio file or click to browse</p>
+                                <span class="supported-formats">MP3, WAV, OGG, M4A, FLAC</span>
+                                <input type="file" id="audio-file-input" accept="audio/*" hidden>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <h3><i data-lucide="activity"></i> Tuner</h3>
+                        <div class="tuner-display">
+                            <div class="tuner-note" id="tuner-note">--</div>
+                            <div class="tuner-frequency" id="tuner-freq">-- Hz</div>
+                            <div class="tuner-meter">
+                                <div class="tuner-needle" id="tuner-needle"></div>
+                                <div class="tuner-center"></div>
+                            </div>
+                            <div class="tuner-labels">
+                                <span>♭</span>
+                                <span>In Tune</span>
+                                <span>♯</span>
+                            </div>
+                        </div>
+                        <button class="tool-btn tool-btn-secondary" id="tuner-toggle">
+                            <i data-lucide="radio"></i> Start Tuner
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- Main Content - Waveform & Editor -->
+                <main class="editor-main">
+                    <!-- Transport Controls -->
+                    <div class="transport-bar">
+                        <div class="transport-left">
+                            <button class="transport-btn" id="skip-start-btn" title="Skip to Start">
+                                <i data-lucide="skip-back"></i>
+                            </button>
+                            <button class="transport-btn" id="play-btn" title="Play/Pause">
+                                <i data-lucide="play"></i>
+                            </button>
+                            <button class="transport-btn" id="stop-btn" title="Stop">
+                                <i data-lucide="square"></i>
+                            </button>
+                            <button class="transport-btn" id="skip-end-btn" title="Skip to End">
+                                <i data-lucide="skip-forward"></i>
+                            </button>
+                            <button class="transport-btn" id="loop-btn" title="Loop">
+                                <i data-lucide="repeat"></i>
+                            </button>
+                        </div>
+                        <div class="transport-center">
+                            <span class="time-display" id="current-time">00:00.000</span>
+                            <span class="time-separator">/</span>
+                            <span class="time-display" id="total-time">00:00.000</span>
+                        </div>
+                        <div class="transport-right">
+                            <button class="transport-btn" id="zoom-out-btn" title="Zoom Out">
+                                <i data-lucide="zoom-out"></i>
+                            </button>
+                            <input type="range" id="zoom-slider" min="1" max="100" value="10" class="zoom-slider">
+                            <button class="transport-btn" id="zoom-in-btn" title="Zoom In">
+                                <i data-lucide="zoom-in"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Waveform Display -->
+                    <div class="waveform-container">
+                        <div class="waveform-wrapper" id="waveform-wrapper">
+                            <canvas id="waveform-canvas"></canvas>
+                            <div class="playhead" id="playhead"></div>
+                            <div class="selection-overlay" id="selection-overlay"></div>
+                            <div class="time-ruler" id="time-ruler"></div>
+                        </div>
+                        <div class="waveform-placeholder" id="waveform-placeholder">
+                            <i data-lucide="audio-waveform"></i>
+                            <p>Record or upload audio to begin editing</p>
+                        </div>
+                    </div>
+
+                    <!-- Selection Info -->
+                    <div class="selection-info" id="selection-info" style="display: none;">
+                        <span><i data-lucide="scissors"></i> Selection:</span>
+                        <span id="selection-start">0:00.000</span>
+                        <span>to</span>
+                        <span id="selection-end">0:00.000</span>
+                        <span>(<span id="selection-duration">0.000</span>s)</span>
+                    </div>
+
+                    <!-- Edit Toolbar -->
+                    <div class="edit-toolbar">
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" id="cut-btn" title="Cut (Ctrl+X)">
+                                <i data-lucide="scissors"></i>
+                            </button>
+                            <button class="toolbar-btn" id="copy-btn" title="Copy (Ctrl+C)">
+                                <i data-lucide="copy"></i>
+                            </button>
+                            <button class="toolbar-btn" id="paste-btn" title="Paste (Ctrl+V)">
+                                <i data-lucide="clipboard"></i>
+                            </button>
+                            <button class="toolbar-btn" id="delete-btn" title="Delete Selection">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                        <div class="toolbar-separator"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" id="undo-btn" title="Undo (Ctrl+Z)">
+                                <i data-lucide="undo-2"></i>
+                            </button>
+                            <button class="toolbar-btn" id="redo-btn" title="Redo (Ctrl+Y)">
+                                <i data-lucide="redo-2"></i>
+                            </button>
+                        </div>
+                        <div class="toolbar-separator"></div>
+                        <div class="toolbar-group">
+                            <button class="toolbar-btn" id="select-all-btn" title="Select All">
+                                <i data-lucide="square-dashed-mouse-pointer"></i>
+                            </button>
+                            <button class="toolbar-btn" id="trim-btn" title="Trim to Selection">
+                                <i data-lucide="crop"></i>
+                            </button>
+                            <button class="toolbar-btn" id="split-btn" title="Split at Playhead">
+                                <i data-lucide="split"></i>
+                            </button>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Right Sidebar - Effects Panel -->
+                <aside class="effects-panel">
+                    <div class="panel-section">
+                        <h3><i data-lucide="volume-2"></i> Master Volume</h3>
+                        <div class="master-volume">
+                            <input type="range" id="master-volume" min="0" max="150" value="100" class="vertical-slider">
+                            <div class="volume-display">
+                                <span id="volume-value">100</span>%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-section effects-list">
+                        <h3><i data-lucide="sparkles"></i> Effects</h3>
+                        
+                        <!-- Noise Reduction -->
+                        <div class="effect-card" data-effect="noise-reduction">
+                            <div class="effect-header">
+                                <label class="effect-toggle">
+                                    <input type="checkbox" id="noise-reduction-enabled">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="effect-name">Noise Reduction</span>
+                                <button class="effect-expand"><i data-lucide="chevron-down"></i></button>
+                            </div>
+                            <div class="effect-controls">
+                                <div class="control-row">
+                                    <label>Threshold</label>
+                                    <input type="range" id="noise-threshold" min="0" max="100" value="50">
+                                    <span class="control-value" id="noise-threshold-val">50%</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Reduction</label>
+                                    <input type="range" id="noise-reduction" min="0" max="100" value="70">
+                                    <span class="control-value" id="noise-reduction-val">70%</span>
+                                </div>
+                                <button class="tool-btn tool-btn-sm" id="noise-profile-btn">
+                                    <i data-lucide="scan"></i> Capture Noise Profile
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Equalizer -->
+                        <div class="effect-card" data-effect="equalizer">
+                            <div class="effect-header">
+                                <label class="effect-toggle">
+                                    <input type="checkbox" id="eq-enabled">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="effect-name">Equalizer</span>
+                                <button class="effect-expand"><i data-lucide="chevron-down"></i></button>
+                            </div>
+                            <div class="effect-controls">
+                                <div class="eq-sliders">
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-60" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>60</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-170" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>170</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-310" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>310</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-600" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>600</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-1k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>1K</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-3k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>3K</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-6k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>6K</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-12k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>12K</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-14k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>14K</span>
+                                    </div>
+                                    <div class="eq-band">
+                                        <input type="range" id="eq-16k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <span>16K</span>
+                                    </div>
+                                </div>
+                                <div class="eq-presets">
+                                    <select id="eq-preset">
+                                        <option value="flat">Flat</option>
+                                        <option value="bass-boost">Bass Boost</option>
+                                        <option value="treble-boost">Treble Boost</option>
+                                        <option value="vocal">Vocal</option>
+                                        <option value="podcast">Podcast</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Compressor -->
+                        <div class="effect-card" data-effect="compressor">
+                            <div class="effect-header">
+                                <label class="effect-toggle">
+                                    <input type="checkbox" id="compressor-enabled">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="effect-name">Compressor</span>
+                                <button class="effect-expand"><i data-lucide="chevron-down"></i></button>
+                            </div>
+                            <div class="effect-controls">
+                                <div class="control-row">
+                                    <label>Threshold</label>
+                                    <input type="range" id="comp-threshold" min="-60" max="0" value="-24">
+                                    <span class="control-value" id="comp-threshold-val">-24 dB</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Ratio</label>
+                                    <input type="range" id="comp-ratio" min="1" max="20" value="4">
+                                    <span class="control-value" id="comp-ratio-val">4:1</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Attack</label>
+                                    <input type="range" id="comp-attack" min="0" max="100" value="10">
+                                    <span class="control-value" id="comp-attack-val">10 ms</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Release</label>
+                                    <input type="range" id="comp-release" min="50" max="1000" value="250">
+                                    <span class="control-value" id="comp-release-val">250 ms</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Makeup Gain</label>
+                                    <input type="range" id="comp-gain" min="0" max="24" value="0">
+                                    <span class="control-value" id="comp-gain-val">0 dB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reverb -->
+                        <div class="effect-card" data-effect="reverb">
+                            <div class="effect-header">
+                                <label class="effect-toggle">
+                                    <input type="checkbox" id="reverb-enabled">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="effect-name">Reverb</span>
+                                <button class="effect-expand"><i data-lucide="chevron-down"></i></button>
+                            </div>
+                            <div class="effect-controls">
+                                <div class="control-row">
+                                    <label>Room Size</label>
+                                    <input type="range" id="reverb-size" min="0" max="100" value="50">
+                                    <span class="control-value" id="reverb-size-val">50%</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Damping</label>
+                                    <input type="range" id="reverb-damping" min="0" max="100" value="50">
+                                    <span class="control-value" id="reverb-damping-val">50%</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Wet/Dry</label>
+                                    <input type="range" id="reverb-mix" min="0" max="100" value="30">
+                                    <span class="control-value" id="reverb-mix-val">30%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pitch Shift -->
+                        <div class="effect-card" data-effect="pitch">
+                            <div class="effect-header">
+                                <label class="effect-toggle">
+                                    <input type="checkbox" id="pitch-enabled">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="effect-name">Pitch Shift</span>
+                                <button class="effect-expand"><i data-lucide="chevron-down"></i></button>
+                            </div>
+                            <div class="effect-controls">
+                                <div class="control-row">
+                                    <label>Semitones</label>
+                                    <input type="range" id="pitch-semitones" min="-12" max="12" value="0">
+                                    <span class="control-value" id="pitch-semitones-val">0</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Cents</label>
+                                    <input type="range" id="pitch-cents" min="-50" max="50" value="0">
+                                    <span class="control-value" id="pitch-cents-val">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delay -->
+                        <div class="effect-card" data-effect="delay">
+                            <div class="effect-header">
+                                <label class="effect-toggle">
+                                    <input type="checkbox" id="delay-enabled">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="effect-name">Delay</span>
+                                <button class="effect-expand"><i data-lucide="chevron-down"></i></button>
+                            </div>
+                            <div class="effect-controls">
+                                <div class="control-row">
+                                    <label>Time</label>
+                                    <input type="range" id="delay-time" min="0" max="1000" value="250">
+                                    <span class="control-value" id="delay-time-val">250 ms</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Feedback</label>
+                                    <input type="range" id="delay-feedback" min="0" max="90" value="30">
+                                    <span class="control-value" id="delay-feedback-val">30%</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Mix</label>
+                                    <input type="range" id="delay-mix" min="0" max="100" value="25">
+                                    <span class="control-value" id="delay-mix-val">25%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Normalize -->
+                        <div class="effect-card" data-effect="normalize">
+                            <div class="effect-header">
+                                <label class="effect-toggle">
+                                    <input type="checkbox" id="normalize-enabled">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="effect-name">Normalize</span>
+                                <button class="effect-expand"><i data-lucide="chevron-down"></i></button>
+                            </div>
+                            <div class="effect-controls">
+                                <div class="control-row">
+                                    <label>Peak Level</label>
+                                    <input type="range" id="normalize-level" min="-12" max="0" value="-1">
+                                    <span class="control-value" id="normalize-level-val">-1 dB</span>
+                                </div>
+                                <button class="tool-btn tool-btn-sm tool-btn-primary" id="apply-normalize">
+                                    <i data-lucide="check"></i> Apply Normalize
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Fade -->
+                        <div class="effect-card" data-effect="fade">
+                            <div class="effect-header">
+                                <span class="effect-name" style="margin-left: 0;">Fade In/Out</span>
+                                <button class="effect-expand"><i data-lucide="chevron-down"></i></button>
+                            </div>
+                            <div class="effect-controls">
+                                <div class="fade-buttons">
+                                    <button class="tool-btn tool-btn-sm" id="fade-in-btn">
+                                        <i data-lucide="trending-up"></i> Fade In
+                                    </button>
+                                    <button class="tool-btn tool-btn-sm" id="fade-out-btn">
+                                        <i data-lucide="trending-down"></i> Fade Out
+                                    </button>
+                                </div>
+                                <div class="control-row">
+                                    <label>Duration</label>
+                                    <input type="range" id="fade-duration" min="100" max="5000" value="1000">
+                                    <span class="control-value" id="fade-duration-val">1.0s</span>
+                                </div>
+                                <div class="control-row">
+                                    <label>Curve</label>
+                                    <select id="fade-curve">
+                                        <option value="linear">Linear</option>
+                                        <option value="exponential">Exponential</option>
+                                        <option value="logarithmic">Logarithmic</option>
+                                        <option value="scurve">S-Curve</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export Section -->
+                    <div class="panel-section export-section">
+                        <h3><i data-lucide="download"></i> Export</h3>
+                        <div class="export-options">
+                            <div class="form-group">
+                                <label>Format</label>
+                                <select id="export-format">
+                                    <option value="wav">WAV (Uncompressed)</option>
+                                    <option value="mp3">MP3</option>
+                                    <option value="ogg">OGG Vorbis</option>
+                                    <option value="webm">WebM</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="mp3-quality-group" style="display: none;">
+                                <label>MP3 Quality</label>
+                                <select id="mp3-quality">
+                                    <option value="128">128 kbps</option>
+                                    <option value="192">192 kbps</option>
+                                    <option value="256">256 kbps</option>
+                                    <option value="320" selected>320 kbps</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Sample Rate</label>
+                                <select id="sample-rate">
+                                    <option value="44100" selected>44.1 kHz</option>
+                                    <option value="48000">48 kHz</option>
+                                    <option value="96000">96 kHz</option>
+                                </select>
+                            </div>
+                            <button class="tool-btn tool-btn-primary export-btn" id="export-btn">
+                                <i data-lucide="download"></i> Export Audio
+                            </button>
+                            <button class="tool-btn tool-btn-secondary" id="export-selection-btn">
+                                <i data-lucide="scissors"></i> Export Selection
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Processing Modal -->
+    <div class="modal" id="processing-modal">
+        <div class="modal-content">
+            <div class="modal-icon"><i data-lucide="loader-2" class="spin"></i></div>
+            <h3 id="processing-title">Processing Audio...</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="processing-progress"></div>
+            </div>
+            <p id="processing-status">Applying effects...</p>
+        </div>
+    </div>
+
+    <script src="../../assets/js/audio-studio.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

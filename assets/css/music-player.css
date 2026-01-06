@@ -7,8 +7,8 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #000000;
-    color: #ffffff;
+    background: #000000 !important;
+    color: #ffffff !important;
     overflow: hidden;
 }
 
@@ -133,6 +133,7 @@ body {
 .greeting {
     font-size: 32px;
     font-weight: 900;
+    color: #ffffff !important;
 }
 
 .search-bar {
@@ -169,7 +170,9 @@ body {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 16px;
-    color: #ffffff;
+    color: #ffffff !important;
+    background: transparent !important;
+    -webkit-text-fill-color: initial !important;
 }
 
 .song-grid {
