@@ -66,7 +66,7 @@ Integrated professional diagram editor allowing users to create, preview, and ex
 
 ### Access
 - Live URL: `https://shuvam-banerji-seal.github.io/pages/mermaid-tool.html`
-- Navbar: Click the "Mermaid" link.
+- Navbar: Click "Apps" -> "Mermaid Editor".
 
 ### Supported Diagrams
 Flowcharts, Sequence Diagrams, Class Diagrams, State Diagrams, ER Diagrams, Gantt Charts, Pie Charts, Git Graphs, Mindmaps, Timelines, and more.
@@ -85,7 +85,7 @@ A professional web-based audio recording and editing suite.
 
 ### Access
 - Live URL: `https://shuvam-banerji-seal.github.io/pages/tools/audio-studio.html`
-- Navbar: Click "Tools" -> "Audio Studio".
+- Navbar: Click "Apps" -> "Audio Studio".
 
 ### Key Capabilities
 - **Recording**: Multi-source input (Microphone, System Audio).
