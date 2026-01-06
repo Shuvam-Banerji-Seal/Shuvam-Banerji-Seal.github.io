@@ -1,18 +1,22 @@
-const fs = require('fs');
-const path = require('path');
-const assert = require('assert');
+import { existsSync, readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import assert from 'assert';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 console.log('Running Blog System Tests...');
 
 // Test 1: Verify Manifest Generation Logic
 console.log('Test 1: Verifying Manifest Generator...');
 try {
-    const manifestPath = path.join(__dirname, '../assets/blog-manifest.json');
-    if (!fs.existsSync(manifestPath)) {
+    const manifestPath = join(__dirname, '../assets/blog-manifest.json');
+    if (!existsSync(manifestPath)) {
         throw new Error('Manifest file does not exist');
     }
 
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+    const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
     assert(Array.isArray(manifest), 'Manifest should be an array');
     assert(manifest.length > 0, 'Manifest should not be empty');
 
@@ -31,8 +35,8 @@ try {
 // Test 2: Verify Markdown Frontmatter Parsing
 console.log('Test 2: Verifying Sample Post Frontmatter...');
 try {
-    const postPath = path.join(__dirname, '../assets/posts/welcome.md');
-    const content = fs.readFileSync(postPath, 'utf-8');
+    const postPath = join(__dirname, '../assets/posts/welcome.md');
+    const content = readFileSync(postPath, 'utf-8');
 
     const match = content.match(/^---\n([\s\S]*?)\n---/);
     assert(match, 'Post should have frontmatter');

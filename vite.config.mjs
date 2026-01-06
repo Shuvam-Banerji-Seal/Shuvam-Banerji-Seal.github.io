@@ -17,10 +17,13 @@ export default defineConfig({
         gallery: resolve(__dirname, 'pages/gallery.html'),
         blog: resolve(__dirname, 'pages/blog.html'),
         music: resolve(__dirname, 'pages/music.html'),
+        tools: resolve(__dirname, 'pages/tools.html'),
         'github-projects': resolve(__dirname, 'pages/github-projects.html'),
         'mermaid-tool': resolve(__dirname, 'pages/mermaid-tool.html'),
+        'audio-studio': resolve(__dirname, 'pages/tools/audio-studio.html'),
       },
     },
+
     minify: 'esbuild',
     sourcemap: false,
     assetsInlineLimit: 4096,

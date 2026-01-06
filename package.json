@@ -1,19 +1,21 @@
 {
   "name": "shuvam-portfolio",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Professional portfolio website for Shuvam Banerji Seal",
   "main": "index.html",
+  "type": "module",
   "scripts": {
     "setup:local": "rm -rf public/assets_for_my_website && cp -r assets_for_my_website public/",
     "dev": "vite --host",
     "build": "npm test && npm run generate:music && vite build",
     "test": "node tests/basic-tests.js",
+    "test:build": "npm run build && node tests/build-verification.js",
     "generate:music": "node scripts/generate-music-manifest.js",
     "preview": "vite preview",
     "serve": "python3 -m http.server 8080",
     "lint:css": "stylelint \"**/*.css\" --fix",
-    "format": "prettier --write \"**/*.{html,css,js,json,md}\"",
-    "clean": "rm -rf dist"
+    "format": "prettier --write \"**/*.{html,css,js,jsx,json,md}\"",
+    "clean": "rm -rf dist node_modules/.vite"
   },
   "repository": {
     "type": "git",
@@ -33,19 +35,19 @@
   "homepage": "https://shuvam-banerji-seal.github.io",
   "devDependencies": {
     "@monaco-editor/react": "^4.7.0",
-    "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.16",
-    "axe-core": "^4.8.0",
-    "cssnano": "^6.0.1",
-    "lighthouse": "^11.0.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "autoprefixer": "^10.4.20",
+    "axe-core": "^4.10.0",
+    "cssnano": "^7.1.0",
+    "lighthouse": "^13.0.0",
     "mermaid": "^11.4.0",
-    "monaco-editor": "^0.52.0",
-    "postcss": "^8.4.32",
-    "prettier": "^3.1.0",
-    "stylelint": "^16.0.0",
-    "stylelint-config-standard": "^36.0.0",
+    "monaco-editor": "^0.55.0",
+    "postcss": "^8.5.0",
+    "prettier": "^3.5.0",
+    "stylelint": "^16.20.0",
+    "stylelint-config-standard": "^39.0.0",
     "terser": "^5.44.0",
-    "vite": "^5.0.0"
+    "vite": "^6.3.0"
   },
   "browserslist": [
     "last 2 versions",
@@ -53,16 +55,16 @@
     "not dead"
   ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "dependencies": {
-    "@types/three": "^0.180.0",
+    "@types/three": "^0.182.0",
     "animejs": "^4.2.2",
     "gsap": "^3.13.0",
     "html2canvas": "^1.4.1",
-    "jspdf": "^3.0.3",
+    "jspdf": "^4.0.0",
     "pdfjs-dist": "^5.4.296",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }

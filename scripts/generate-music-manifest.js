@@ -5,11 +5,15 @@
  * Scans the assets_for_my_website/Music directory and creates a JSON manifest
  */
 
-const fs = require('fs');
-const path = require('path');
+import { existsSync, readdirSync, mkdirSync, writeFileSync } from 'fs';
+import { join, dirname, extname, basename, relative } from 'path';
+import { fileURLToPath } from 'url';
 
-const MUSIC_DIR = path.join(__dirname, '../assets_for_my_website/Music');
-const OUTPUT_FILE = path.join(__dirname, '../public/music-library.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const MUSIC_DIR = join(__dirname, '../assets_for_my_website/Music');
+const OUTPUT_FILE = join(__dirname, '../public/music-library.json');
 // GitHub LFS media URL base (serves actual files, not pointer files)
 const GITHUB_MEDIA_BASE = 'https://media.githubusercontent.com/media/Shuvam-Banerji-Seal/assets_for_my_website/main';
 
@@ -17,11 +21,11 @@ function scanMusicDirectory(dir, baseFolder = '') {
     const tracks = [];
 
     try {
-        const items = fs.readdirSync(dir, { withFileTypes: true });
+        const items = readdirSync(dir, { withFileTypes: true });
 
         for (const item of items) {
-            const fullPath = path.join(dir, item.name);
-            const relativePath = path.relative(path.join(__dirname, '../assets_for_my_website'), fullPath);
+            const fullPath = join(dir, item.name);
+            const relativePath = relative(join(__dirname, '../assets_for_my_website'), fullPath);
 
             if (item.isDirectory()) {
                 // Recursively scan subdirectories
@@ -29,11 +33,11 @@ function scanMusicDirectory(dir, baseFolder = '') {
                 tracks.push(...scanMusicDirectory(fullPath, folderName));
             } else if (item.isFile()) {
                 // Check if it's a music file
-                const ext = path.extname(item.name).toLowerCase();
+                const ext = extname(item.name).toLowerCase();
                 if (['.mp3', '.opus', '.m4a', '.ogg', '.wav'].includes(ext)) {
                     // Extract metadata from filename and path
-                    const folder = baseFolder || path.basename(dir);
-                    const title = path.basename(item.name, ext);
+                    const folder = baseFolder || basename(dir);
+                    const title = basename(item.name, ext);
 
                     // URL-encode the path for GitHub media URL
                     const encodedPath = relativePath.replace(/\\/g, '/').split('/').map(segment => encodeURIComponent(segment)).join('/');
@@ -81,7 +85,7 @@ function main() {
     console.log('Scanning music directory...');
     console.log('Music directory:', MUSIC_DIR);
 
-    if (!fs.existsSync(MUSIC_DIR)) {
+    if (!existsSync(MUSIC_DIR)) {
         console.error('Music directory not found! Make sure the submodule is initialized.');
         console.error('Run: git submodule update --init --recursive');
         process.exit(1);
@@ -92,13 +96,13 @@ function main() {
     console.log(`Found ${tracks.length} music files`);
 
     // Ensure public directory exists
-    const publicDir = path.dirname(OUTPUT_FILE);
-    if (!fs.existsSync(publicDir)) {
-        fs.mkdirSync(publicDir, { recursive: true });
+    const publicDir = dirname(OUTPUT_FILE);
+    if (!existsSync(publicDir)) {
+        mkdirSync(publicDir, { recursive: true });
     }
 
     // Write the manifest
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(tracks, null, 2));
+    writeFileSync(OUTPUT_FILE, JSON.stringify(tracks, null, 2));
 
     console.log(`Music library manifest created: ${OUTPUT_FILE}`);
     console.log(`Total tracks: ${tracks.length}`);

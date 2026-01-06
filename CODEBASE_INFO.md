@@ -79,7 +79,24 @@ Flowcharts, Sequence Diagrams, Class Diagrams, State Diagrams, ER Diagrams, Gant
 
 ---
 
-## 5. Music Library Management
+## 5. Audio Studio
+
+A professional web-based audio recording and editing suite.
+
+### Access
+- Live URL: `https://shuvam-banerji-seal.github.io/pages/tools/audio-studio.html`
+- Navbar: Click "Tools" -> "Audio Studio".
+
+### Key Capabilities
+- **Recording**: Multi-source input (Microphone, System Audio).
+- **Editing**: Waveform visualization, Cut/Copy/Paste, Trim, Split.
+- **Effects**: Equalizer (10-band), Compressor, Reverb, Delay, Pitch Shift, Noise Reduction.
+- **Tools**: Integrated Instrument Tuner.
+- **Export**: WAV, MP3, OGG, WebM with quality controls.
+
+---
+
+## 6. Music Library Management
 
 The music library is managed via a Git submodule (`assets_for_my_website`).
 
@@ -91,7 +108,7 @@ The music library is managed via a Git submodule (`assets_for_my_website`).
 
 ---
 
-## 6. Deployment & Development
+## 7. Deployment & Development
 
 ### Local Setup
 ```bash
@@ -114,7 +131,7 @@ Automated via GitHub Actions. Every push to the `main` branch triggers:
 
 ---
 
-## 7. Security & Best Practices
+## 8. Security & Best Practices
 
 - **Privacy**: All processing is client-side. No data is sent to external servers (except API calls).
 - **Sanitization**: Inputs are validated and sanitized to prevent XSS.
@@ -123,7 +140,7 @@ Automated via GitHub Actions. Every push to the `main` branch triggers:
 
 ---
 
-## 8. Author Contact
+## 9. Author Contact
 
 **Shuvam Banerji Seal**
 - Email: [sbs22ms076@iiserkol.ac.in](mailto:sbs22ms076@iiserkol.ac.in)

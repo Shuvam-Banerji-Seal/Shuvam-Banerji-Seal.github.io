@@ -1,20 +1,24 @@
-const fs = require('fs');
-const path = require('path');
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
+import { join, extname, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const POSTS_DIR = path.join(__dirname, '../public/posts');
-const OUTPUT_FILE = path.join(__dirname, '../public/blog-manifest.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const POSTS_DIR = join(__dirname, '../public/posts');
+const OUTPUT_FILE = join(__dirname, '../public/blog-manifest.json');
 
 // Ensure posts directory exists
-if (!fs.existsSync(POSTS_DIR)) {
+if (!existsSync(POSTS_DIR)) {
     console.error(`Posts directory not found: ${POSTS_DIR}`);
     process.exit(1);
 }
 
 const posts = [];
 
-fs.readdirSync(POSTS_DIR).forEach(file => {
-    if (path.extname(file) === '.md') {
-        const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
+readdirSync(POSTS_DIR).forEach(file => {
+    if (extname(file) === '.md') {
+        const content = readFileSync(join(POSTS_DIR, file), 'utf-8');
         const metadata = parseFrontMatter(content);
 
         if (metadata) {
@@ -29,7 +33,7 @@ fs.readdirSync(POSTS_DIR).forEach(file => {
 // Sort by date descending
 posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-fs.writeFileSync(OUTPUT_FILE, JSON.stringify(posts, null, 2));
+writeFileSync(OUTPUT_FILE, JSON.stringify(posts, null, 2));
 console.log(`Generated blog manifest with ${posts.length} posts.`);
 
 function parseFrontMatter(content) {
