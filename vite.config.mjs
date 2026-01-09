@@ -13,6 +13,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        // Primary Pages
         resume: resolve(__dirname, 'pages/resume.html'),
         gallery: resolve(__dirname, 'pages/gallery.html'),
         blog: resolve(__dirname, 'pages/blog.html'),
@@ -20,7 +21,23 @@ export default defineConfig({
         tools: resolve(__dirname, 'pages/tools.html'),
         'github-projects': resolve(__dirname, 'pages/github-projects.html'),
         'mermaid-tool': resolve(__dirname, 'pages/mermaid-tool.html'),
+        notes: resolve(__dirname, 'pages/notes.html'),
+        reader: resolve(__dirname, 'pages/reader.html'),
+        thermodynamics: resolve(__dirname, 'pages/thermodynamics.html'),
+
+        // Tool Pages
         'audio-studio': resolve(__dirname, 'pages/tools/audio-studio.html'),
+        'equation-balancer': resolve(__dirname, 'pages/tools/equation-balancer.html'),
+        games: resolve(__dirname, 'pages/tools/games.html'),
+        'llm-chat': resolve(__dirname, 'pages/tools/llm-chat.html'),
+        'mol-weight': resolve(__dirname, 'pages/tools/mol-weight.html'),
+        'molecule-viz': resolve(__dirname, 'pages/tools/molecule-viz.html'),
+        'paper-finder': resolve(__dirname, 'pages/tools/paper-finder.html'),
+        'pdf-reducer': resolve(__dirname, 'pages/tools/pdf-reducer.html'),
+        'pdf-to-jpg': resolve(__dirname, 'pages/tools/pdf-to-jpg.html'),
+        'periodic-table': resolve(__dirname, 'pages/tools/periodic-table.html'),
+        'ph-calculator': resolve(__dirname, 'pages/tools/ph-calculator.html'),
+        'unit-converter': resolve(__dirname, 'pages/tools/unit-converter.html'),
       },
     },
 
