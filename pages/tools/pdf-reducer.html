@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +14,16 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container">
@@ -111,7 +118,10 @@
     </main>
 
     <style>
-        .compression-option input { display: none; }
+        .compression-option input {
+            display: none;
+        }
+
         .compression-option .option-card {
             display: flex;
             flex-direction: column;
@@ -124,77 +134,91 @@
             transition: all 0.3s ease;
             text-align: center;
         }
+
         .compression-option .option-card svg {
             width: 32px;
             height: 32px;
             color: var(--text-secondary);
         }
+
         .compression-option .option-card small {
             color: var(--text-secondary);
             font-size: 0.85rem;
         }
-        .compression-option input:checked + .option-card {
+
+        .compression-option input:checked+.option-card {
             border-color: var(--accent-color);
             background: rgba(6, 182, 212, 0.1);
         }
-        .compression-option input:checked + .option-card svg {
+
+        .compression-option input:checked+.option-card svg {
             color: var(--accent-color);
         }
+
         .compression-option:hover .option-card {
             border-color: var(--accent-color);
         }
+
         .result-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
         }
+
         .stat-item {
             text-align: center;
             padding: 1.5rem;
             background: var(--bg-secondary);
             border-radius: 12px;
         }
+
         .stat-item.highlight {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
         }
+
         .stat-label {
             display: block;
             font-size: 0.9rem;
             color: var(--text-secondary);
             margin-bottom: 0.5rem;
         }
+
         .stat-value {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-primary);
         }
+
         .stat-item.highlight .stat-value {
             background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         @media (max-width: 768px) {
-            .result-stats { grid-template-columns: 1fr; }
+            .result-stats {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        
+
         let originalFile = null;
         let compressedBlob = null;
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            
+
             const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('file-input');
-            
+
             dropZone.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', (e) => {
                 if (e.target.files[0]) loadFile(e.target.files[0]);
             });
-            
+
             dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
             dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
             dropZone.addEventListener('drop', (e) => {
@@ -217,68 +241,68 @@
 
         async function compressPDF() {
             if (!originalFile) return;
-            
+
             const compression = document.querySelector('input[name="compression"]:checked').value;
             const qualityMap = { low: 0.9, medium: 0.7, high: 0.5 };
             const scaleMap = { low: 1.5, medium: 1.2, high: 1 };
             const quality = qualityMap[compression];
             const scale = scaleMap[compression];
-            
+
             document.getElementById('progress-bar').style.display = 'block';
             document.getElementById('progress-text').style.display = 'block';
             document.getElementById('compress-btn').disabled = true;
-            
+
             try {
                 const arrayBuffer = await originalFile.arrayBuffer();
                 const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
                 const totalPages = pdfDoc.numPages;
-                
+
                 const { jsPDF } = window.jspdf;
-                
+
                 // Get first page to determine dimensions
                 const firstPage = await pdfDoc.getPage(1);
                 const viewport = firstPage.getViewport({ scale: 1 });
                 const orientation = viewport.width > viewport.height ? 'l' : 'p';
-                
+
                 const pdf = new jsPDF({
                     orientation,
                     unit: 'pt',
                     format: [viewport.width, viewport.height]
                 });
-                
+
                 for (let i = 1; i <= totalPages; i++) {
                     updateProgress(i, totalPages);
-                    
+
                     const page = await pdfDoc.getPage(i);
                     const pageViewport = page.getViewport({ scale });
-                    
+
                     const canvas = document.createElement('canvas');
                     canvas.width = pageViewport.width;
                     canvas.height = pageViewport.height;
-                    
+
                     await page.render({
                         canvasContext: canvas.getContext('2d'),
                         viewport: pageViewport
                     }).promise;
-                    
+
                     const imgData = canvas.toDataURL('image/jpeg', quality);
-                    
+
                     if (i > 1) {
                         const pv = page.getViewport({ scale: 1 });
                         pdf.addPage([pv.width, pv.height], pv.width > pv.height ? 'l' : 'p');
                     }
-                    
+
                     const pv = page.getViewport({ scale: 1 });
                     pdf.addImage(imgData, 'JPEG', 0, 0, pv.width, pv.height);
                 }
-                
+
                 compressedBlob = pdf.output('blob');
-                
+
                 showResult();
             } catch (error) {
                 alert('Error compressing PDF: ' + error.message);
             }
-            
+
             document.getElementById('progress-bar').style.display = 'none';
             document.getElementById('progress-text').style.display = 'none';
             document.getElementById('compress-btn').disabled = false;
@@ -288,20 +312,20 @@
             const original = originalFile.size;
             const compressed = compressedBlob.size;
             const reduction = ((1 - compressed / original) * 100).toFixed(1);
-            
+
             document.getElementById('stat-original').textContent = formatSize(original);
             document.getElementById('stat-compressed').textContent = formatSize(compressed);
             document.getElementById('stat-reduction').textContent = reduction + '%';
-            
+
             document.getElementById('result-container').style.display = 'block';
-            
+
             document.getElementById('download-btn').onclick = () => {
                 const link = document.createElement('a');
                 link.download = originalFile.name.replace('.pdf', '_compressed.pdf');
                 link.href = URL.createObjectURL(compressedBlob);
                 link.click();
             };
-            
+
             lucide.createIcons();
         }
 
@@ -318,4 +342,5 @@
         }
     </script>
 </body>
+
 </html>

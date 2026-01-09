@@ -25,6 +25,11 @@
     <link rel="stylesheet" href="assets/css/chemistry-theme.css">
     <!-- Overrides - Must be last -->
     <link rel="stylesheet" href="assets/css/overrides.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
 
 <body class="">
@@ -38,7 +43,7 @@
     </div>
 
     <div id="navbar-container"></div>
-    <script src="assets/js/navbar.js?v=1.0"></script>
+    <script type="module" src="assets/js/navbar.js"></script>
 
     <!-- Molecule Canvas Background -->
     <canvas id="molecules-canvas"
@@ -297,27 +302,35 @@
 
     <!-- Mobile Menu Fix - Load First -->
     <!-- Molecule Background - Load after Three.js -->
-    <script src="assets/js/molecule-background.js"></script>
+    <script type="module" src="assets/js/molecule-background.js"></script>
     <!-- Benzene Loading Animation -->
-    <script src="assets/js/benzene-loader.js"></script>
+    <script type="module" src="assets/js/benzene-loader.js"></script>
     <!-- Original functionality -->
-    <script src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
     <!-- Enhanced features -->
-    <script src="assets/js/enhanced.js"></script>
+    <script type="module" src="assets/js/enhanced.js"></script>
     <!-- Anime.js Animations -->
-    <script src="assets/js/anime-animations.js"></script>
+    <script type="module" src="assets/js/anime-animations.js"></script>
     <!-- Enhanced Particle System -->
-    <script src="assets/js/enhanced-particles.js"></script>
+    <script type="module" src="assets/js/enhanced-particles.js"></script>
     <!-- DNA Helix Animation -->
-    <script src="assets/js/dna-helix.js"></script>
+    <script type="module" src="assets/js/dna-helix.js"></script>
     <script>
         // Initialize Lucide icons
-        lucide.createIcons();
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
-        // Store original script for compatibility
-        window.originalScript = function () {
-            // Original script functionality will be preserved
-        };
+        // Fallback for loading screen in case of script failures or network issues
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen && loadingScreen.style.display !== 'none') {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }, 6000); // 6 second safety timeout
     </script>
 </body>
 

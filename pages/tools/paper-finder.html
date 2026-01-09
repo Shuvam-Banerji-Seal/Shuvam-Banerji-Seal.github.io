@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +13,16 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container">
@@ -29,7 +36,8 @@
                     <div class="form-row" style="align-items: flex-end;">
                         <div class="form-group" style="flex: 2;">
                             <label for="search-query">Search Query</label>
-                            <input type="text" id="search-query" placeholder="e.g., machine learning, quantum chemistry, neural networks...">
+                            <input type="text" id="search-query"
+                                placeholder="e.g., machine learning, quantum chemistry, neural networks...">
                         </div>
                         <div class="form-group">
                             <label for="source">Source</label>
@@ -55,7 +63,8 @@
             </div>
 
             <div class="tool-card" id="results-container" style="display: none;">
-                <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div class="results-header"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <h3 id="results-count">Results</h3>
                     <div class="sort-options">
                         <select id="sort-by" onchange="sortResults()">
@@ -84,10 +93,12 @@
             transition: all 0.3s ease;
             background: var(--bg-secondary);
         }
+
         .paper-card:hover {
             border-color: var(--accent-color);
             transform: translateX(4px);
         }
+
         .paper-title {
             font-size: 1.2rem;
             font-weight: 600;
@@ -95,14 +106,17 @@
             margin-bottom: 0.5rem;
             cursor: pointer;
         }
+
         .paper-title:hover {
             text-decoration: underline;
         }
+
         .paper-authors {
             color: var(--text-secondary);
             font-size: 0.95rem;
             margin-bottom: 0.5rem;
         }
+
         .paper-meta {
             display: flex;
             gap: 1rem;
@@ -110,33 +124,40 @@
             margin-bottom: 1rem;
             font-size: 0.9rem;
         }
+
         .paper-meta span {
             display: flex;
             align-items: center;
             gap: 0.25rem;
             color: var(--text-secondary);
         }
+
         .paper-meta svg {
             width: 16px;
             height: 16px;
         }
+
         .paper-abstract {
             color: var(--text-primary);
             line-height: 1.6;
             margin-bottom: 1rem;
         }
+
         .paper-abstract.collapsed {
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
         .paper-actions {
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
         }
-        .paper-actions a, .paper-actions button {
+
+        .paper-actions a,
+        .paper-actions button {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
@@ -146,15 +167,18 @@
             text-decoration: none;
             transition: all 0.2s ease;
         }
+
         .paper-actions a {
             background: var(--card-bg);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
         }
+
         .paper-actions a:hover {
             border-color: var(--accent-color);
             color: var(--accent-color);
         }
+
         .source-badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -162,14 +186,17 @@
             font-size: 0.8rem;
             font-weight: 600;
         }
+
         .source-badge.semantic {
             background: rgba(255, 107, 107, 0.15);
             color: #ff6b6b;
         }
+
         .source-badge.arxiv {
             background: rgba(178, 34, 34, 0.15);
             color: #b22222;
         }
+
         .toggle-abstract {
             background: none;
             border: none;
@@ -178,6 +205,7 @@
             font-size: 0.9rem;
             padding: 0;
         }
+
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
@@ -187,10 +215,10 @@
 
     <script>
         let allResults = [];
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            
+
             // Enter to search
             document.getElementById('search-query').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') searchPapers();
@@ -203,29 +231,29 @@
                 alert('Please enter a search query');
                 return;
             }
-            
+
             const source = document.getElementById('source').value;
             const yearFrom = document.getElementById('year-from').value;
             const yearTo = document.getElementById('year-to').value;
-            
+
             document.getElementById('results-container').style.display = 'block';
             document.getElementById('loading').style.display = 'flex';
             document.getElementById('results-list').innerHTML = '';
             document.getElementById('search-btn').disabled = true;
-            
+
             allResults = [];
-            
+
             try {
                 if (source === 'semantic' || source === 'both') {
                     const semanticResults = await searchSemanticScholar(query, yearFrom, yearTo);
                     allResults = [...allResults, ...semanticResults];
                 }
-                
+
                 if (source === 'arxiv' || source === 'both') {
                     const arxivResults = await searchArxiv(query, yearFrom, yearTo);
                     allResults = [...allResults, ...arxivResults];
                 }
-                
+
                 displayResults();
             } catch (error) {
                 document.getElementById('results-list').innerHTML = `
@@ -236,14 +264,14 @@
                 `;
                 lucide.createIcons();
             }
-            
+
             document.getElementById('loading').style.display = 'none';
             document.getElementById('search-btn').disabled = false;
         }
 
         async function searchSemanticScholar(query, yearFrom, yearTo) {
             let url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(query)}&limit=20&fields=title,authors,year,abstract,citationCount,url,openAccessPdf,externalIds`;
-            
+
             if (yearFrom && yearTo) {
                 url += `&year=${yearFrom}-${yearTo}`;
             } else if (yearFrom) {
@@ -251,12 +279,12 @@
             } else if (yearTo) {
                 url += `&year=-${yearTo}`;
             }
-            
+
             const response = await fetch(url);
             if (!response.ok) throw new Error('Semantic Scholar API error');
-            
+
             const data = await response.json();
-            
+
             return (data.data || []).map(paper => ({
                 title: paper.title,
                 authors: paper.authors?.map(a => a.name).join(', ') || 'Unknown',
@@ -272,28 +300,28 @@
 
         async function searchArxiv(query, yearFrom, yearTo) {
             const url = `https://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(query)}&start=0&max_results=20&sortBy=relevance`;
-            
+
             const response = await fetch(url);
             if (!response.ok) throw new Error('arXiv API error');
-            
+
             const text = await response.text();
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, 'text/xml');
-            
+
             const entries = xml.querySelectorAll('entry');
             const results = [];
-            
+
             entries.forEach(entry => {
                 const published = entry.querySelector('published')?.textContent;
                 const year = published ? new Date(published).getFullYear() : null;
-                
+
                 // Filter by year if specified
                 if (yearFrom && year < parseInt(yearFrom)) return;
                 if (yearTo && year > parseInt(yearTo)) return;
-                
+
                 const pdfLink = entry.querySelector('link[title="pdf"]')?.getAttribute('href');
                 const absLink = entry.querySelector('id')?.textContent;
-                
+
                 results.push({
                     title: entry.querySelector('title')?.textContent?.replace(/\n/g, ' ').trim(),
                     authors: Array.from(entry.querySelectorAll('author name')).map(n => n.textContent).join(', '),
@@ -306,7 +334,7 @@
                     source: 'arxiv'
                 });
             });
-            
+
             return results;
         }
 
@@ -318,7 +346,7 @@
         function sortResults() {
             const sortBy = document.getElementById('sort-by').value;
             let sorted = [...allResults];
-            
+
             switch (sortBy) {
                 case 'year-desc':
                     sorted.sort((a, b) => (b.year || 0) - (a.year || 0));
@@ -330,9 +358,9 @@
                     sorted.sort((a, b) => (b.citations || 0) - (a.citations || 0));
                     break;
             }
-            
+
             document.getElementById('results-count').textContent = `Found ${sorted.length} papers`;
-            
+
             const html = sorted.map((paper, idx) => `
                 <div class="paper-card">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
@@ -354,7 +382,7 @@
                     </div>
                 </div>
             `).join('');
-            
+
             document.getElementById('results-list').innerHTML = html || '<p style="text-align: center; color: var(--text-secondary);">No papers found</p>';
             lucide.createIcons();
         }
@@ -362,7 +390,7 @@
         function toggleAbstract(idx) {
             const abstract = document.getElementById(`abstract-${idx}`);
             const btn = abstract.nextElementSibling;
-            
+
             if (abstract.classList.contains('collapsed')) {
                 abstract.classList.remove('collapsed');
                 btn.textContent = 'Show less';
@@ -373,4 +401,5 @@
         }
     </script>
 </body>
+
 </html>

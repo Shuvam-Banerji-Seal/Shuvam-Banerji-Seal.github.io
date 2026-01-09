@@ -1,40 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    
+
     <!-- SEO Meta Tags -->
     <title>SBS's Mermaid Editor - Free Online Diagram Tool | Visual Flowchart Builder</title>
-    <meta name="description" content="SBS's Mermaid Editor - A powerful free online diagram tool with visual drag-and-drop builder, VS Code-style editor, multiple themes, and export to PNG/SVG. Create flowcharts, sequence diagrams, class diagrams, and more.">
-    <meta name="keywords" content="mermaid editor, flowchart maker, diagram tool, sequence diagram, class diagram, visual flowchart builder, online diagram editor, free diagram tool, mermaid.js, UML diagrams">
+    <meta name="description"
+        content="SBS's Mermaid Editor - A powerful free online diagram tool with visual drag-and-drop builder, VS Code-style editor, multiple themes, and export to PNG/SVG. Create flowcharts, sequence diagrams, class diagrams, and more.">
+    <meta name="keywords"
+        content="mermaid editor, flowchart maker, diagram tool, sequence diagram, class diagram, visual flowchart builder, online diagram editor, free diagram tool, mermaid.js, UML diagrams">
     <meta name="author" content="Shuvam Banerji Seal">
     <meta name="robots" content="index, follow">
-    
+
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="SBS's Mermaid Editor - Free Online Diagram Tool">
-    <meta property="og:description" content="Create beautiful diagrams with our VS Code-style editor and visual drag-and-drop builder. Export to PNG, SVG, or code.">
+    <meta property="og:description"
+        content="Create beautiful diagrams with our VS Code-style editor and visual drag-and-drop builder. Export to PNG, SVG, or code.">
     <meta property="og:image" content="/assets/images/mermaid-editor-preview.png">
     <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/mermaid-tool.html">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="SBS's Mermaid Editor">
     <meta name="twitter:description" content="Free online diagram tool with visual builder and code editor">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/mermaid-tool.html">
-    
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230e639c'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>SBS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230e639c'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>SBS</text></svg>">
-    
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230e639c'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>SBS</text></svg>">
+    <link rel="apple-touch-icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230e639c'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>SBS</text></svg>">
+
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
     {
@@ -64,27 +77,30 @@
         ]
     }
     </script>
-    
+
     <style>
         /* Reset and Base */
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        html, body {
+
+        html,
+        body {
             height: 100%;
             width: 100%;
             overflow: hidden;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
-        
+
         #root {
             height: 100%;
             width: 100%;
         }
-        
+
         /* Loading screen */
         .initial-loader {
             position: fixed;
@@ -98,7 +114,7 @@
             font-family: 'Inter', sans-serif;
             z-index: 9999;
         }
-        
+
         .loader-spinner {
             width: 48px;
             height: 48px;
@@ -108,17 +124,20 @@
             animation: spin 0.8s linear infinite;
             margin-bottom: 16px;
         }
-        
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
-        
+
         .loader-text {
             font-size: 14px;
             opacity: 0.8;
         }
     </style>
 </head>
+
 <body>
     <div id="root">
         <!-- Initial loading screen (replaced by React) -->
@@ -129,4 +148,5 @@
     </div>
     <script type="module" src="../src/mermaid-tool/main.jsx"></script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,9 +14,15 @@
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
     <link rel="stylesheet" href="../../assets/css/audio-studio.css">
 </head>
+
+<!-- Cache Control -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page audio-studio">
         <div class="tool-container wide">
@@ -188,7 +195,8 @@
                     <div class="panel-section">
                         <h3><i data-lucide="volume-2"></i> Master Volume</h3>
                         <div class="master-volume">
-                            <input type="range" id="master-volume" min="0" max="150" value="100" class="vertical-slider">
+                            <input type="range" id="master-volume" min="0" max="150" value="100"
+                                class="vertical-slider">
                             <div class="volume-display">
                                 <span id="volume-value">100</span>%
                             </div>
@@ -197,7 +205,7 @@
 
                     <div class="panel-section effects-list">
                         <h3><i data-lucide="sparkles"></i> Effects</h3>
-                        
+
                         <!-- Noise Reduction -->
                         <div class="effect-card" data-effect="noise-reduction">
                             <div class="effect-header">
@@ -238,43 +246,53 @@
                             <div class="effect-controls">
                                 <div class="eq-sliders">
                                     <div class="eq-band">
-                                        <input type="range" id="eq-60" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-60" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>60</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-170" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-170" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>170</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-310" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-310" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>310</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-600" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-600" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>600</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-1k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-1k" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>1K</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-3k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-3k" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>3K</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-6k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-6k" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>6K</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-12k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-12k" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>12K</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-14k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-14k" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>14K</span>
                                     </div>
                                     <div class="eq-band">
-                                        <input type="range" id="eq-16k" min="-12" max="12" value="0" class="eq-slider" orient="vertical">
+                                        <input type="range" id="eq-16k" min="-12" max="12" value="0" class="eq-slider"
+                                            orient="vertical">
                                         <span>16K</span>
                                     </div>
                                 </div>
@@ -521,11 +539,12 @@
         </div>
     </div>
 
-    <script src="../../assets/js/audio-studio.js"></script>
+    <script type="module" src="../../assets/js/audio-studio.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
         });
     </script>
 </body>
+
 </html>

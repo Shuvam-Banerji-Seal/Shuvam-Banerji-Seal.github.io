@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +12,16 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container">
@@ -79,21 +86,36 @@
             <div class="tool-card">
                 <h3><i data-lucide="beaker"></i> Common Substances pH</h3>
                 <div class="substances-grid">
-                    <div class="substance" onclick="setpH(0)"><span class="ph-dot" style="background: #ff0000"></span>Battery acid (0)</div>
-                    <div class="substance" onclick="setpH(1)"><span class="ph-dot" style="background: #ff3300"></span>Stomach acid (1)</div>
-                    <div class="substance" onclick="setpH(2.4)"><span class="ph-dot" style="background: #ff6600"></span>Lemon juice (2.4)</div>
-                    <div class="substance" onclick="setpH(2.9)"><span class="ph-dot" style="background: #ff8800"></span>Vinegar (2.9)</div>
-                    <div class="substance" onclick="setpH(4)"><span class="ph-dot" style="background: #ffaa00"></span>Tomato juice (4)</div>
-                    <div class="substance" onclick="setpH(5.5)"><span class="ph-dot" style="background: #ffcc00"></span>Coffee (5.5)</div>
-                    <div class="substance" onclick="setpH(6.5)"><span class="ph-dot" style="background: #ccff00"></span>Milk (6.5)</div>
-                    <div class="substance" onclick="setpH(7)"><span class="ph-dot" style="background: #00ff00"></span>Pure water (7)</div>
-                    <div class="substance" onclick="setpH(7.4)"><span class="ph-dot" style="background: #00ff66"></span>Blood (7.4)</div>
-                    <div class="substance" onclick="setpH(8.3)"><span class="ph-dot" style="background: #00ffcc"></span>Sea water (8.3)</div>
-                    <div class="substance" onclick="setpH(9)"><span class="ph-dot" style="background: #00ccff"></span>Baking soda (9)</div>
-                    <div class="substance" onclick="setpH(10)"><span class="ph-dot" style="background: #0088ff"></span>Milk of magnesia (10)</div>
-                    <div class="substance" onclick="setpH(11)"><span class="ph-dot" style="background: #0044ff"></span>Ammonia (11)</div>
-                    <div class="substance" onclick="setpH(12.5)"><span class="ph-dot" style="background: #4400ff"></span>Bleach (12.5)</div>
-                    <div class="substance" onclick="setpH(14)"><span class="ph-dot" style="background: #8800ff"></span>Drain cleaner (14)</div>
+                    <div class="substance" onclick="setpH(0)"><span class="ph-dot"
+                            style="background: #ff0000"></span>Battery acid (0)</div>
+                    <div class="substance" onclick="setpH(1)"><span class="ph-dot"
+                            style="background: #ff3300"></span>Stomach acid (1)</div>
+                    <div class="substance" onclick="setpH(2.4)"><span class="ph-dot"
+                            style="background: #ff6600"></span>Lemon juice (2.4)</div>
+                    <div class="substance" onclick="setpH(2.9)"><span class="ph-dot"
+                            style="background: #ff8800"></span>Vinegar (2.9)</div>
+                    <div class="substance" onclick="setpH(4)"><span class="ph-dot"
+                            style="background: #ffaa00"></span>Tomato juice (4)</div>
+                    <div class="substance" onclick="setpH(5.5)"><span class="ph-dot"
+                            style="background: #ffcc00"></span>Coffee (5.5)</div>
+                    <div class="substance" onclick="setpH(6.5)"><span class="ph-dot"
+                            style="background: #ccff00"></span>Milk (6.5)</div>
+                    <div class="substance" onclick="setpH(7)"><span class="ph-dot"
+                            style="background: #00ff00"></span>Pure water (7)</div>
+                    <div class="substance" onclick="setpH(7.4)"><span class="ph-dot"
+                            style="background: #00ff66"></span>Blood (7.4)</div>
+                    <div class="substance" onclick="setpH(8.3)"><span class="ph-dot"
+                            style="background: #00ffcc"></span>Sea water (8.3)</div>
+                    <div class="substance" onclick="setpH(9)"><span class="ph-dot"
+                            style="background: #00ccff"></span>Baking soda (9)</div>
+                    <div class="substance" onclick="setpH(10)"><span class="ph-dot"
+                            style="background: #0088ff"></span>Milk of magnesia (10)</div>
+                    <div class="substance" onclick="setpH(11)"><span class="ph-dot"
+                            style="background: #0044ff"></span>Ammonia (11)</div>
+                    <div class="substance" onclick="setpH(12.5)"><span class="ph-dot"
+                            style="background: #4400ff"></span>Bleach (12.5)</div>
+                    <div class="substance" onclick="setpH(14)"><span class="ph-dot"
+                            style="background: #8800ff"></span>Drain cleaner (14)</div>
                 </div>
             </div>
 
@@ -123,18 +145,21 @@
         .input-area {
             margin-top: 1.5rem;
         }
+
         .ph-scale {
             margin-top: 2rem;
         }
+
         .scale-bar {
             height: 30px;
             border-radius: 15px;
-            background: linear-gradient(to right, 
-                #ff0000 0%, #ff8800 21%, #ffff00 35%, 
-                #00ff00 50%, #00ffff 65%, #0000ff 79%, #8800ff 100%);
+            background: linear-gradient(to right,
+                    #ff0000 0%, #ff8800 21%, #ffff00 35%,
+                    #00ff00 50%, #00ffff 65%, #0000ff 79%, #8800ff 100%);
             position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
+
         .scale-indicator {
             position: absolute;
             width: 4px;
@@ -146,8 +171,9 @@
             left: 50%;
             transform: translateX(-50%);
             transition: left 0.5s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
+
         .scale-labels {
             display: flex;
             justify-content: space-between;
@@ -155,29 +181,34 @@
             color: var(--text-secondary);
             font-size: 0.85rem;
         }
+
         .results-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
             margin-top: 1rem;
         }
+
         .result-item {
             text-align: center;
             padding: 1.5rem;
             background: var(--bg-secondary);
             border-radius: 12px;
         }
+
         .result-label {
             display: block;
             color: var(--text-secondary);
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
+
         .result-value {
             font-size: 1.5rem;
             font-weight: 700;
             font-family: 'Courier New', monospace;
         }
+
         .solution-type {
             text-align: center;
             margin-top: 1.5rem;
@@ -185,24 +216,29 @@
             border-radius: 8px;
             font-weight: 600;
         }
+
         .solution-type.acidic {
             background: rgba(255, 107, 107, 0.2);
             color: #ff6b6b;
         }
+
         .solution-type.neutral {
             background: rgba(56, 217, 169, 0.2);
             color: #38d9a9;
         }
+
         .solution-type.basic {
             background: rgba(116, 143, 252, 0.2);
             color: #748ffc;
         }
+
         .substances-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 0.75rem;
             margin-top: 1rem;
         }
+
         .substance {
             display: flex;
             align-items: center;
@@ -214,42 +250,51 @@
             font-size: 0.9rem;
             transition: all 0.3s ease;
         }
+
         .substance:hover {
             background: var(--bg-tertiary);
             transform: translateX(4px);
         }
+
         .ph-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
             flex-shrink: 0;
         }
+
         .formulas {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-top: 1rem;
         }
+
         .formula-item {
             text-align: center;
             padding: 1.5rem;
             background: var(--bg-secondary);
             border-radius: 12px;
         }
+
         .formula {
             display: block;
             font-family: 'Courier New', monospace;
             font-size: 1.1rem;
             color: var(--accent-color);
         }
+
         .formula-item small {
             display: block;
             margin-top: 0.5rem;
             color: var(--text-secondary);
             font-size: 0.8rem;
         }
+
         @media (max-width: 600px) {
-            .results-grid { grid-template-columns: 1fr; }
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 
@@ -258,7 +303,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            
+
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', () => {
                     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -365,10 +410,13 @@
         }
 
         function formatSuperscript(n) {
-            const superscripts = {'0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', 
-                                  '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻'};
+            const superscripts = {
+                '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+                '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻'
+            };
             return String(n).split('').map(c => superscripts[c] || c).join('');
         }
     </script>
 </body>
+
 </html>

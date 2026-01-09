@@ -23,6 +23,11 @@
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
     <!-- Overrides - Must be last -->
     <link rel="stylesheet" href="../assets/css/overrides.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <style>
         /* Gallery specific styles */
         .gallery-item {
@@ -117,7 +122,7 @@
 <body class="">
 
     <div id="navbar-container"></div>
-    <script src="../assets/js/navbar.js?v=1.0"></script>
+    <script type="module" src="../assets/js/navbar.js"></script>
 
     <main class="container section">
         <header class="text-center mb-16 animate-fade-in-up">
@@ -240,9 +245,9 @@
     </footer>
 
     <!-- Original functionality -->
-    <script src="../assets/js/main.js"></script>
+    <script type="module" src="../assets/js/main.js"></script>
     <!-- Enhanced features -->
-    <script src="../assets/js/enhanced.js"></script>
+    <script type="module" src="../assets/js/enhanced.js"></script>
     <script>
         // Simple Lightbox Functionality
         const lightbox = document.getElementById('lightbox');

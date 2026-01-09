@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +12,16 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container">
@@ -50,7 +57,7 @@
                     <div class="game-info">
                         <span id="game-title">Element Quiz</span>
                         <span class="game-stats">
-                            Score: <span id="score">0</span> | 
+                            Score: <span id="score">0</span> |
                             Question: <span id="question-num">1</span>/10
                         </span>
                     </div>
@@ -99,6 +106,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
         }
+
         .game-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -110,11 +118,13 @@
             position: relative;
             overflow: hidden;
         }
+
         .game-card:hover {
             transform: translateY(-5px);
             border-color: var(--accent-color);
             box-shadow: 0 10px 40px rgba(6, 182, 212, 0.2);
         }
+
         .game-icon {
             width: 80px;
             height: 80px;
@@ -125,20 +135,24 @@
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.2));
             border-radius: 20px;
         }
+
         .game-icon svg {
             width: 40px;
             height: 40px;
             color: var(--accent-color);
         }
+
         .game-card h3 {
             margin: 0 0 0.5rem;
             font-size: 1.3rem;
         }
+
         .game-card p {
             margin: 0;
             color: var(--text-secondary);
             font-size: 0.95rem;
         }
+
         .game-badge {
             position: absolute;
             top: 1rem;
@@ -150,7 +164,12 @@
             font-size: 0.75rem;
             font-weight: 600;
         }
-        .game-container { padding: 0; overflow: hidden; }
+
+        .game-container {
+            padding: 0;
+            overflow: hidden;
+        }
+
         .game-header {
             display: flex;
             justify-content: space-between;
@@ -159,22 +178,44 @@
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
         }
-        .game-info { display: flex; flex-direction: column; gap: 0.25rem; }
-        #game-title { font-weight: 600; font-size: 1.1rem; }
-        .game-stats { color: var(--text-secondary); font-size: 0.9rem; }
-        .game-content { padding: 2rem; min-height: 300px; }
-        .game-progress { padding: 0 1.5rem 1.5rem; }
-        
+
+        .game-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        #game-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .game-stats {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .game-content {
+            padding: 2rem;
+            min-height: 300px;
+        }
+
+        .game-progress {
+            padding: 0 1.5rem 1.5rem;
+        }
+
         .question-text {
             font-size: 1.5rem;
             text-align: center;
             margin-bottom: 2rem;
             font-weight: 600;
         }
+
         .question-text .highlight {
             color: var(--accent-color);
             font-size: 2rem;
         }
+
         .options-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -182,6 +223,7 @@
             max-width: 600px;
             margin: 0 auto;
         }
+
         .option-btn {
             padding: 1.25rem;
             background: var(--bg-secondary);
@@ -192,29 +234,54 @@
             transition: all 0.3s ease;
             color: var(--text-primary);
         }
-        .option-btn:hover { border-color: var(--accent-color); }
+
+        .option-btn:hover {
+            border-color: var(--accent-color);
+        }
+
         .option-btn.correct {
             background: rgba(56, 217, 169, 0.2);
             border-color: #38d9a9;
             color: #38d9a9;
         }
+
         .option-btn.incorrect {
             background: rgba(255, 107, 107, 0.2);
             border-color: #ff6b6b;
             color: #ff6b6b;
         }
-        .option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
 
-        .results-content { text-align: center; padding: 2rem; }
-        .results-icon { font-size: 4rem; margin-bottom: 1rem; }
-        .results-content h2 { margin: 0 0 1.5rem; font-size: 2rem; }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .results-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-content h2 {
+            margin: 0 0 1.5rem;
+            font-size: 2rem;
+        }
+
         .final-score {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
             margin-bottom: 1.5rem;
         }
-        .score-label { color: var(--text-secondary); }
+
+        .score-label {
+            color: var(--text-secondary);
+        }
+
         .score-value {
             font-size: 3rem;
             font-weight: 700;
@@ -222,71 +289,83 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .results-content p { color: var(--text-secondary); margin-bottom: 2rem; }
+
+        .results-content p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
 
         @media (max-width: 600px) {
-            .options-grid { grid-template-columns: 1fr; }
-            .question-text { font-size: 1.2rem; }
-            .question-text .highlight { font-size: 1.5rem; }
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .question-text {
+                font-size: 1.2rem;
+            }
+
+            .question-text .highlight {
+                font-size: 1.5rem;
+            }
         }
     </style>
 
     <script>
         // Element data
         const elements = [
-            {symbol: 'H', name: 'Hydrogen', number: 1},
-            {symbol: 'He', name: 'Helium', number: 2},
-            {symbol: 'Li', name: 'Lithium', number: 3},
-            {symbol: 'Be', name: 'Beryllium', number: 4},
-            {symbol: 'B', name: 'Boron', number: 5},
-            {symbol: 'C', name: 'Carbon', number: 6},
-            {symbol: 'N', name: 'Nitrogen', number: 7},
-            {symbol: 'O', name: 'Oxygen', number: 8},
-            {symbol: 'F', name: 'Fluorine', number: 9},
-            {symbol: 'Ne', name: 'Neon', number: 10},
-            {symbol: 'Na', name: 'Sodium', number: 11},
-            {symbol: 'Mg', name: 'Magnesium', number: 12},
-            {symbol: 'Al', name: 'Aluminum', number: 13},
-            {symbol: 'Si', name: 'Silicon', number: 14},
-            {symbol: 'P', name: 'Phosphorus', number: 15},
-            {symbol: 'S', name: 'Sulfur', number: 16},
-            {symbol: 'Cl', name: 'Chlorine', number: 17},
-            {symbol: 'Ar', name: 'Argon', number: 18},
-            {symbol: 'K', name: 'Potassium', number: 19},
-            {symbol: 'Ca', name: 'Calcium', number: 20},
-            {symbol: 'Fe', name: 'Iron', number: 26},
-            {symbol: 'Cu', name: 'Copper', number: 29},
-            {symbol: 'Zn', name: 'Zinc', number: 30},
-            {symbol: 'Ag', name: 'Silver', number: 47},
-            {symbol: 'Au', name: 'Gold', number: 79},
-            {symbol: 'Pb', name: 'Lead', number: 82},
-            {symbol: 'U', name: 'Uranium', number: 92}
+            { symbol: 'H', name: 'Hydrogen', number: 1 },
+            { symbol: 'He', name: 'Helium', number: 2 },
+            { symbol: 'Li', name: 'Lithium', number: 3 },
+            { symbol: 'Be', name: 'Beryllium', number: 4 },
+            { symbol: 'B', name: 'Boron', number: 5 },
+            { symbol: 'C', name: 'Carbon', number: 6 },
+            { symbol: 'N', name: 'Nitrogen', number: 7 },
+            { symbol: 'O', name: 'Oxygen', number: 8 },
+            { symbol: 'F', name: 'Fluorine', number: 9 },
+            { symbol: 'Ne', name: 'Neon', number: 10 },
+            { symbol: 'Na', name: 'Sodium', number: 11 },
+            { symbol: 'Mg', name: 'Magnesium', number: 12 },
+            { symbol: 'Al', name: 'Aluminum', number: 13 },
+            { symbol: 'Si', name: 'Silicon', number: 14 },
+            { symbol: 'P', name: 'Phosphorus', number: 15 },
+            { symbol: 'S', name: 'Sulfur', number: 16 },
+            { symbol: 'Cl', name: 'Chlorine', number: 17 },
+            { symbol: 'Ar', name: 'Argon', number: 18 },
+            { symbol: 'K', name: 'Potassium', number: 19 },
+            { symbol: 'Ca', name: 'Calcium', number: 20 },
+            { symbol: 'Fe', name: 'Iron', number: 26 },
+            { symbol: 'Cu', name: 'Copper', number: 29 },
+            { symbol: 'Zn', name: 'Zinc', number: 30 },
+            { symbol: 'Ag', name: 'Silver', number: 47 },
+            { symbol: 'Au', name: 'Gold', number: 79 },
+            { symbol: 'Pb', name: 'Lead', number: 82 },
+            { symbol: 'U', name: 'Uranium', number: 92 }
         ];
 
         const compounds = [
-            {formula: 'H₂O', name: 'Water'},
-            {formula: 'NaCl', name: 'Sodium Chloride'},
-            {formula: 'CO₂', name: 'Carbon Dioxide'},
-            {formula: 'H₂SO₄', name: 'Sulfuric Acid'},
-            {formula: 'NaOH', name: 'Sodium Hydroxide'},
-            {formula: 'HCl', name: 'Hydrochloric Acid'},
-            {formula: 'NH₃', name: 'Ammonia'},
-            {formula: 'CH₄', name: 'Methane'},
-            {formula: 'C₆H₁₂O₆', name: 'Glucose'},
-            {formula: 'CaCO₃', name: 'Calcium Carbonate'},
-            {formula: 'C₂H₅OH', name: 'Ethanol'},
-            {formula: 'HNO₃', name: 'Nitric Acid'},
-            {formula: 'H₃PO₄', name: 'Phosphoric Acid'},
-            {formula: 'KMnO₄', name: 'Potassium Permanganate'},
-            {formula: 'Na₂CO₃', name: 'Sodium Carbonate'}
+            { formula: 'H₂O', name: 'Water' },
+            { formula: 'NaCl', name: 'Sodium Chloride' },
+            { formula: 'CO₂', name: 'Carbon Dioxide' },
+            { formula: 'H₂SO₄', name: 'Sulfuric Acid' },
+            { formula: 'NaOH', name: 'Sodium Hydroxide' },
+            { formula: 'HCl', name: 'Hydrochloric Acid' },
+            { formula: 'NH₃', name: 'Ammonia' },
+            { formula: 'CH₄', name: 'Methane' },
+            { formula: 'C₆H₁₂O₆', name: 'Glucose' },
+            { formula: 'CaCO₃', name: 'Calcium Carbonate' },
+            { formula: 'C₂H₅OH', name: 'Ethanol' },
+            { formula: 'HNO₃', name: 'Nitric Acid' },
+            { formula: 'H₃PO₄', name: 'Phosphoric Acid' },
+            { formula: 'KMnO₄', name: 'Potassium Permanganate' },
+            { formula: 'Na₂CO₃', name: 'Sodium Carbonate' }
         ];
 
         const balanceQuestions = [
-            {unbalanced: 'H₂ + O₂ → H₂O', answers: ['2', '1', '2'], display: '_H₂ + _O₂ → _H₂O'},
-            {unbalanced: 'Fe + O₂ → Fe₂O₃', answers: ['4', '3', '2'], display: '_Fe + _O₂ → _Fe₂O₃'},
-            {unbalanced: 'N₂ + H₂ → NH₃', answers: ['1', '3', '2'], display: '_N₂ + _H₂ → _NH₃'},
-            {unbalanced: 'CH₄ + O₂ → CO₂ + H₂O', answers: ['1', '2', '1', '2'], display: '_CH₄ + _O₂ → _CO₂ + _H₂O'},
-            {unbalanced: 'Na + Cl₂ → NaCl', answers: ['2', '1', '2'], display: '_Na + _Cl₂ → _NaCl'}
+            { unbalanced: 'H₂ + O₂ → H₂O', answers: ['2', '1', '2'], display: '_H₂ + _O₂ → _H₂O' },
+            { unbalanced: 'Fe + O₂ → Fe₂O₃', answers: ['4', '3', '2'], display: '_Fe + _O₂ → _Fe₂O₃' },
+            { unbalanced: 'N₂ + H₂ → NH₃', answers: ['1', '3', '2'], display: '_N₂ + _H₂ → _NH₃' },
+            { unbalanced: 'CH₄ + O₂ → CO₂ + H₂O', answers: ['1', '2', '1', '2'], display: '_CH₄ + _O₂ → _CO₂ + _H₂O' },
+            { unbalanced: 'Na + Cl₂ → NaCl', answers: ['2', '1', '2'], display: '_Na + _Cl₂ → _NaCl' }
         ];
 
         let currentGame = null;
@@ -304,18 +383,18 @@
             score = 0;
             questionNum = 0;
             questions = generateQuestions(type);
-            
+
             document.querySelector('.games-grid').style.display = 'none';
             document.getElementById('results-container').style.display = 'none';
             document.getElementById('game-container').style.display = 'block';
-            
+
             const titles = {
                 'elements': 'Element Quiz',
                 'formulas': 'Formula Master',
                 'balance': 'Balance Blitz'
             };
             document.getElementById('game-title').textContent = titles[type];
-            
+
             nextQuestion();
             lucide.createIcons();
         }
@@ -332,9 +411,9 @@
                         .sort(() => Math.random() - 0.5)
                         .slice(0, 3)
                         .map(e => e.name);
-                    
+
                     qs.push({
-                        question: questionType === 'symbol' 
+                        question: questionType === 'symbol'
                             ? `What element has the symbol <span class="highlight">${el.symbol}</span>?`
                             : `What element has atomic number <span class="highlight">${el.number}</span>?`,
                         correct: el.name,
@@ -346,14 +425,14 @@
                 for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
                     const comp = shuffled[i];
                     const questionType = Math.random() > 0.5 ? 'formula' : 'name';
-                    
+
                     if (questionType === 'formula') {
                         const wrongAnswers = compounds
                             .filter(c => c.formula !== comp.formula)
                             .sort(() => Math.random() - 0.5)
                             .slice(0, 3)
                             .map(c => c.name);
-                        
+
                         qs.push({
                             question: `What is the name of <span class="highlight">${comp.formula}</span>?`,
                             correct: comp.name,
@@ -365,7 +444,7 @@
                             .sort(() => Math.random() - 0.5)
                             .slice(0, 3)
                             .map(c => c.formula);
-                        
+
                         qs.push({
                             question: `What is the formula for <span class="highlight">${comp.name}</span>?`,
                             correct: comp.formula,
@@ -379,7 +458,7 @@
                     const bq = shuffled[i % shuffled.length];
                     const correctAnswer = bq.answers.join(', ');
                     const wrongAnswers = generateWrongCoefficients(bq.answers.length);
-                    
+
                     qs.push({
                         question: `Balance: <span class="highlight">${bq.display}</span>`,
                         correct: correctAnswer,
@@ -407,20 +486,20 @@
                 showResults();
                 return;
             }
-            
+
             const q = questions[questionNum];
             document.getElementById('question-num').textContent = questionNum + 1;
             document.getElementById('game-progress').style.width = ((questionNum + 1) / totalQuestions * 100) + '%';
-            
+
             let html = `
                 <div class="question-text">${q.question}</div>
                 <div class="options-grid">
             `;
-            
+
             q.options.forEach((opt, idx) => {
                 html += `<button class="option-btn" onclick="checkAnswer(${idx})">${opt}</button>`;
             });
-            
+
             html += '</div>';
             document.getElementById('game-content').innerHTML = html;
         }
@@ -430,7 +509,7 @@
             const buttons = document.querySelectorAll('.option-btn');
             const selected = q.options[idx];
             const correct = q.correct;
-            
+
             buttons.forEach((btn, i) => {
                 btn.disabled = true;
                 if (q.options[i] === correct) {
@@ -439,12 +518,12 @@
                     btn.classList.add('incorrect');
                 }
             });
-            
+
             if (selected === correct) {
                 score++;
                 document.getElementById('score').textContent = score;
             }
-            
+
             questionNum++;
             setTimeout(nextQuestion, 1200);
         }
@@ -452,12 +531,12 @@
         function showResults() {
             document.getElementById('game-container').style.display = 'none';
             document.getElementById('results-container').style.display = 'block';
-            
+
             document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
-            
+
             const percentage = (score / totalQuestions) * 100;
             let icon, title, message;
-            
+
             if (percentage >= 90) {
                 icon = '🏆';
                 title = 'Outstanding!';
@@ -475,11 +554,11 @@
                 title = 'Keep Learning!';
                 message = 'Review and try again - you\'ve got this!';
             }
-            
+
             document.getElementById('results-icon').textContent = icon;
             document.getElementById('results-title').textContent = title;
             document.getElementById('results-message').textContent = message;
-            
+
             lucide.createIcons();
         }
 
@@ -500,4 +579,5 @@
         }
     </script>
 </body>
+
 </html>

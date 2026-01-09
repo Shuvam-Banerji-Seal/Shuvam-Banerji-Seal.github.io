@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +15,16 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container">
@@ -100,6 +107,7 @@
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1.5rem;
         }
+
         .preview-item {
             position: relative;
             background: var(--bg-secondary);
@@ -108,34 +116,41 @@
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
+
         .preview-item:hover {
             border-color: var(--accent-color);
             transform: translateY(-4px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
+
         .preview-item img {
             width: 100%;
             height: 250px;
             object-fit: contain;
             background: #f0f0f0;
         }
+
         body[data-theme='dark'] .preview-item img {
             background: #1a1a2e;
         }
+
         .preview-item .info {
             padding: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .preview-item .page-num {
             font-weight: 600;
             color: var(--text-primary);
         }
+
         .preview-item .size {
             font-size: 0.85rem;
             color: var(--text-secondary);
         }
+
         .preview-item .download-btn {
             position: absolute;
             top: 0.75rem;
@@ -153,9 +168,11 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .preview-item:hover .download-btn {
             opacity: 1;
         }
+
         .preview-item .download-btn:hover {
             background: var(--accent-color);
         }
@@ -164,34 +181,34 @@
     <script>
         // Configure PDF.js worker
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        
+
         let pdfDoc = null;
         let convertedImages = [];
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            
+
             const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('file-input');
-            
+
             // Click to upload
             dropZone.addEventListener('click', () => fileInput.click());
-            
+
             // File input change
             fileInput.addEventListener('change', (e) => {
                 if (e.target.files[0]) loadPDF(e.target.files[0]);
             });
-            
+
             // Drag and drop
             dropZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
                 dropZone.classList.add('dragover');
             });
-            
+
             dropZone.addEventListener('dragleave', () => {
                 dropZone.classList.remove('dragover');
             });
-            
+
             dropZone.addEventListener('drop', (e) => {
                 e.preventDefault();
                 dropZone.classList.remove('dragover');
@@ -202,7 +219,7 @@
                     alert('Please drop a PDF file');
                 }
             });
-            
+
             // JPEG quality slider
             document.getElementById('jpeg-quality').addEventListener('input', (e) => {
                 document.getElementById('jpeg-quality-value').textContent = e.target.value;
@@ -213,13 +230,13 @@
             try {
                 const arrayBuffer = await file.arrayBuffer();
                 pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                
+
                 document.getElementById('file-info').style.display = 'block';
                 document.getElementById('file-name').textContent = file.name;
                 document.getElementById('page-count').textContent = `${pdfDoc.numPages} page${pdfDoc.numPages > 1 ? 's' : ''}`;
                 document.getElementById('convert-btn').disabled = false;
                 document.getElementById('clear-btn').style.display = 'inline-flex';
-                
+
                 lucide.createIcons();
             } catch (error) {
                 alert('Error loading PDF: ' + error.message);
@@ -228,36 +245,36 @@
 
         async function convertPDF() {
             if (!pdfDoc) return;
-            
+
             const scale = parseFloat(document.getElementById('quality').value);
             const format = document.getElementById('format').value;
             const jpegQuality = parseInt(document.getElementById('jpeg-quality').value) / 100;
-            
+
             convertedImages = [];
             document.getElementById('preview-container').style.display = 'block';
             document.getElementById('preview-grid').innerHTML = '';
             document.getElementById('progress-bar').style.display = 'block';
             document.getElementById('progress-text').style.display = 'block';
             document.getElementById('convert-btn').disabled = true;
-            
+
             const totalPages = pdfDoc.numPages;
-            
+
             for (let i = 1; i <= totalPages; i++) {
                 updateProgress(i, totalPages);
-                
+
                 const page = await pdfDoc.getPage(i);
                 const viewport = page.getViewport({ scale });
-                
+
                 const canvas = document.createElement('canvas');
                 const context = canvas.getContext('2d');
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
-                
+
                 await page.render({
                     canvasContext: context,
                     viewport: viewport
                 }).promise;
-                
+
                 let mimeType, extension;
                 switch (format) {
                     case 'png':
@@ -272,25 +289,25 @@
                         mimeType = 'image/jpeg';
                         extension = 'jpg';
                 }
-                
+
                 const quality = format === 'png' ? 1 : jpegQuality;
                 const dataUrl = canvas.toDataURL(mimeType, quality);
-                
+
                 // Calculate size
                 const base64Length = dataUrl.split(',')[1].length;
                 const sizeInBytes = (base64Length * 3) / 4;
                 const sizeStr = formatFileSize(sizeInBytes);
-                
+
                 convertedImages.push({
                     dataUrl,
                     extension,
                     pageNum: i,
                     size: sizeStr
                 });
-                
+
                 addPreview(dataUrl, i, sizeStr, extension);
             }
-            
+
             document.getElementById('progress-bar').style.display = 'none';
             document.getElementById('progress-text').style.display = 'none';
             document.getElementById('convert-btn').disabled = false;
@@ -331,14 +348,14 @@
 
         async function downloadAll() {
             if (convertedImages.length === 0) return;
-            
+
             const zip = new JSZip();
-            
+
             convertedImages.forEach((img, index) => {
                 const base64Data = img.dataUrl.split(',')[1];
                 zip.file(`page_${img.pageNum}.${img.extension}`, base64Data, { base64: true });
             });
-            
+
             const content = await zip.generateAsync({ type: 'blob' });
             const link = document.createElement('a');
             link.download = 'pdf_images.zip';
@@ -366,4 +383,5 @@
         }
     </script>
 </body>
+
 </html>

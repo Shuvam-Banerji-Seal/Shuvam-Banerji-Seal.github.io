@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +12,16 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container">
@@ -83,8 +90,19 @@
             align-items: end;
             margin-top: 1.5rem;
         }
-        .input-section { display: flex; flex-direction: column; gap: 1rem; }
-        .swap-section { display: flex; align-items: center; padding-bottom: 0.5rem; }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .swap-section {
+            display: flex;
+            align-items: center;
+            padding-bottom: 0.5rem;
+        }
+
         .swap-btn {
             width: 50px;
             height: 50px;
@@ -98,12 +116,14 @@
             justify-content: center;
             transition: all 0.3s ease;
         }
+
         .swap-btn:hover {
             background: var(--accent-color);
             border-color: var(--accent-color);
             color: white;
             transform: rotate(180deg);
         }
+
         .formula-display {
             margin-top: 1.5rem;
             padding: 1rem;
@@ -114,12 +134,14 @@
             color: var(--accent-color);
             font-size: 0.95rem;
         }
+
         .quick-conversions {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1rem;
             margin-top: 1rem;
         }
+
         .quick-item {
             display: flex;
             justify-content: space-between;
@@ -129,16 +151,36 @@
             border-radius: 8px;
             font-size: 0.9rem;
         }
-        .quick-item .from { color: var(--text-secondary); }
-        .quick-item .equals { color: var(--accent-color); margin: 0 0.5rem; }
-        .quick-item .to { font-weight: 600; }
+
+        .quick-item .from {
+            color: var(--text-secondary);
+        }
+
+        .quick-item .equals {
+            color: var(--accent-color);
+            margin: 0 0.5rem;
+        }
+
+        .quick-item .to {
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
             .converter-grid {
                 grid-template-columns: 1fr;
             }
-            .swap-section { justify-content: center; }
-            .swap-btn { transform: rotate(90deg); }
-            .swap-btn:hover { transform: rotate(270deg); }
+
+            .swap-section {
+                justify-content: center;
+            }
+
+            .swap-btn {
+                transform: rotate(90deg);
+            }
+
+            .swap-btn:hover {
+                transform: rotate(270deg);
+            }
         }
     </style>
 
@@ -201,7 +243,7 @@
             lucide.createIcons();
             setupTabs();
             loadCategory('length');
-            
+
             document.getElementById('from-value').addEventListener('input', convert);
             document.getElementById('from-unit').addEventListener('change', convert);
             document.getElementById('to-unit').addEventListener('change', convert);
@@ -222,21 +264,21 @@
             const data = unitData[category];
             const fromSelect = document.getElementById('from-unit');
             const toSelect = document.getElementById('to-unit');
-            
+
             fromSelect.innerHTML = '';
             toSelect.innerHTML = '';
-            
+
             data.units.forEach((unit, i) => {
                 fromSelect.innerHTML += `<option value="${unit}">${data.names[i]} (${unit})</option>`;
                 toSelect.innerHTML += `<option value="${unit}">${data.names[i]} (${unit})</option>`;
             });
-            
+
             if (data.units.length > 1) toSelect.selectedIndex = 1;
-            
+
             document.getElementById('from-value').value = '';
             document.getElementById('to-value').value = '';
             document.getElementById('formula-display').textContent = '';
-            
+
             updateQuickConversions();
             lucide.createIcons();
         }
@@ -245,13 +287,13 @@
             const value = parseFloat(document.getElementById('from-value').value);
             const fromUnit = document.getElementById('from-unit').value;
             const toUnit = document.getElementById('to-unit').value;
-            
+
             if (isNaN(value)) {
                 document.getElementById('to-value').value = '';
                 document.getElementById('formula-display').textContent = '';
                 return;
             }
-            
+
             let result;
             if (currentCategory === 'temperature') {
                 result = convertTemperature(value, fromUnit, toUnit);
@@ -262,7 +304,7 @@
                 const baseValue = value * data.toBase[fromIndex];
                 result = baseValue / data.toBase[toIndex];
             }
-            
+
             document.getElementById('to-value').value = formatNumber(result);
             updateFormula(value, fromUnit, result, toUnit);
         }
@@ -272,17 +314,17 @@
             let celsius;
             switch (from) {
                 case '°C': celsius = value; break;
-                case '°F': celsius = (value - 32) * 5/9; break;
+                case '°F': celsius = (value - 32) * 5 / 9; break;
                 case 'K': celsius = value - 273.15; break;
-                case '°R': celsius = (value - 491.67) * 5/9; break;
+                case '°R': celsius = (value - 491.67) * 5 / 9; break;
             }
-            
+
             // Convert from Celsius to target
             switch (to) {
                 case '°C': return celsius;
-                case '°F': return celsius * 9/5 + 32;
+                case '°F': return celsius * 9 / 5 + 32;
                 case 'K': return celsius + 273.15;
-                case '°R': return (celsius + 273.15) * 9/5;
+                case '°R': return (celsius + 273.15) * 9 / 5;
             }
         }
 
@@ -311,7 +353,7 @@
             const container = document.getElementById('quick-conversions');
             const data = unitData[currentCategory];
             const quickItems = [];
-            
+
             // Generate some useful quick conversions
             const examples = {
                 length: [[1, 'm', 'ft'], [1, 'km', 'mi'], [1, 'nm', 'Å'], [1, 'in', 'cm']],
@@ -323,9 +365,9 @@
                 concentration: [[1, 'M', 'mM'], [1, 'ppm', 'μM'], [1, '%w/v', 'M'], [1, 'nM', 'pM']],
                 time: [[1, 'h', 'min'], [1, 'day', 'h'], [1, 'year', 'day'], [1, 's', 'ms']]
             };
-            
+
             container.innerHTML = '';
-            
+
             examples[currentCategory].forEach(([val, from, to]) => {
                 let result;
                 if (currentCategory === 'temperature') {
@@ -336,7 +378,7 @@
                     const baseValue = val * data.toBase[fromIndex];
                     result = baseValue / data.toBase[toIndex];
                 }
-                
+
                 container.innerHTML += `
                     <div class="quick-item">
                         <span class="from">${val} ${from}</span>
@@ -348,4 +390,5 @@
         }
     </script>
 </body>
+
 </html>

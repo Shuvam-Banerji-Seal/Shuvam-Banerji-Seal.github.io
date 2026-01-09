@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Chat with AI models using your own API keys - OpenAI, Groq, Anthropic, Google Gemini">
+    <meta name="description"
+        content="Chat with AI models using your own API keys - OpenAI, Groq, Anthropic, Google Gemini">
     <title>LLM Chat - SBS Tools</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container">
@@ -31,7 +41,7 @@
                     <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i data-lucide="settings"></i> Configuration
                     </h3>
-                    
+
                     <div class="form-group">
                         <label for="provider">AI Provider</label>
                         <select id="provider">
@@ -78,7 +88,8 @@
                         </div>
                     </div>
                     <div class="chat-input-container">
-                        <textarea id="chat-input" class="chat-input" placeholder="Type your message..." rows="1"></textarea>
+                        <textarea id="chat-input" class="chat-input" placeholder="Type your message..."
+                            rows="1"></textarea>
                         <button class="tool-btn tool-btn-primary" onclick="sendMessage()" id="send-btn">
                             <i data-lucide="send"></i>
                         </button>
@@ -94,6 +105,7 @@
             position: sticky;
             top: 100px;
         }
+
         .empty-chat {
             display: flex;
             flex-direction: column;
@@ -102,10 +114,12 @@
             height: 100%;
             min-height: 300px;
         }
+
         .chat-messages {
             min-height: 400px;
             max-height: 60vh;
         }
+
         .chat-message pre {
             background: var(--code-bg, #1e1e1e);
             padding: 1rem;
@@ -113,14 +127,17 @@
             overflow-x: auto;
             margin: 0.5rem 0;
         }
+
         .chat-message code {
             font-family: 'Source Code Pro', monospace;
         }
+
         .typing-indicator {
             display: flex;
             gap: 4px;
             padding: 1rem;
         }
+
         .typing-indicator span {
             width: 8px;
             height: 8px;
@@ -128,16 +145,33 @@
             border-radius: 50%;
             animation: bounce 1.4s infinite ease-in-out both;
         }
-        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: -0.32s;
         }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
         @media (max-width: 900px) {
             .tool-main {
                 grid-template-columns: 1fr !important;
             }
+
             .config-sidebar {
                 position: static;
             }
@@ -186,7 +220,7 @@
             lucide.createIcons();
             loadSettings();
             updateModels();
-            
+
             // Event listeners
             document.getElementById('provider').addEventListener('change', () => {
                 updateModels();
@@ -199,7 +233,7 @@
                 document.getElementById('temp-value').textContent = e.target.value;
                 saveSettings();
             });
-            
+
             // Enter to send
             document.getElementById('chat-input').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -207,9 +241,9 @@
                     sendMessage();
                 }
             });
-            
+
             // Auto-resize textarea
-            document.getElementById('chat-input').addEventListener('input', function() {
+            document.getElementById('chat-input').addEventListener('input', function () {
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 150) + 'px';
             });
@@ -219,7 +253,7 @@
             const provider = document.getElementById('provider').value;
             const modelSelect = document.getElementById('model');
             const models = providers[provider].models;
-            
+
             modelSelect.innerHTML = models.map(m => `<option value="${m}">${m}</option>`).join('');
         }
 
@@ -252,19 +286,19 @@
             const messagesDiv = document.getElementById('chat-messages');
             const emptyChat = messagesDiv.querySelector('.empty-chat');
             if (emptyChat) emptyChat.remove();
-            
+
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-message ${role}`;
-            
+
             if (role === 'assistant') {
                 messageDiv.innerHTML = marked.parse(content);
             } else {
                 messageDiv.textContent = content;
             }
-            
+
             messagesDiv.appendChild(messageDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            
+
             chatHistory.push({ role, content });
         }
 
@@ -287,20 +321,20 @@
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
             if (!message) return;
-            
+
             const apiKey = document.getElementById('api-key').value;
             if (!apiKey) {
                 alert('Please enter your API key');
                 return;
             }
-            
+
             addMessage('user', message);
             input.value = '';
             input.style.height = 'auto';
-            
+
             showTyping();
             document.getElementById('send-btn').disabled = true;
-            
+
             try {
                 const response = await callAPI(message);
                 hideTyping();
@@ -309,7 +343,7 @@
                 hideTyping();
                 addMessage('assistant', `❌ Error: ${error.message}`);
             }
-            
+
             document.getElementById('send-btn').disabled = false;
         }
 
@@ -319,9 +353,9 @@
             const apiKey = document.getElementById('api-key').value;
             const systemPrompt = document.getElementById('system-prompt').value;
             const temperature = parseFloat(document.getElementById('temperature').value);
-            
+
             const config = providers[provider];
-            
+
             // Build messages array
             const messages = [];
             if (systemPrompt) {
@@ -331,7 +365,7 @@
                 messages.push({ role: msg.role, content: msg.content });
             });
             messages.push({ role: 'user', content: message });
-            
+
             // Provider-specific API calls
             if (provider === 'anthropic') {
                 const response = await fetch(config.baseUrl, {
@@ -353,15 +387,15 @@
                         temperature
                     })
                 });
-                
+
                 if (!response.ok) {
                     const error = await response.json();
                     throw new Error(error.error?.message || 'API request failed');
                 }
-                
+
                 const data = await response.json();
                 return data.content[0].text;
-                
+
             } else if (provider === 'gemini') {
                 const url = config.baseUrl.replace('{model}', model) + `?key=${apiKey}`;
                 const response = await fetch(url, {
@@ -375,26 +409,26 @@
                         generationConfig: { temperature }
                     })
                 });
-                
+
                 if (!response.ok) {
                     const error = await response.json();
                     throw new Error(error.error?.message || 'API request failed');
                 }
-                
+
                 const data = await response.json();
                 return data.candidates[0].content.parts[0].text;
-                
+
             } else {
                 // OpenAI-compatible APIs (OpenAI, Groq, OpenRouter)
                 const headers = {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${apiKey}`
                 };
-                
+
                 if (provider === 'openrouter') {
                     headers['HTTP-Referer'] = window.location.href;
                 }
-                
+
                 const response = await fetch(config.baseUrl, {
                     method: 'POST',
                     headers,
@@ -404,12 +438,12 @@
                         temperature
                     })
                 });
-                
+
                 if (!response.ok) {
                     const error = await response.json();
                     throw new Error(error.error?.message || 'API request failed');
                 }
-                
+
                 const data = await response.json();
                 return data.choices[0].message.content;
             }
@@ -427,4 +461,5 @@
         }
     </script>
 </body>
+
 </html>

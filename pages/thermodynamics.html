@@ -19,6 +19,11 @@
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
     <!-- Overrides - Must be last -->
     <link rel="stylesheet" href="../assets/css/overrides.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <style>
         .thermo-container {
             max-width: 1200px;
@@ -128,7 +133,7 @@
 
 <body>
     <div id="navbar-container"></div>
-    <script src="../assets/js/navbar.js?v=1.0"></script>
+    <script type="module" src="../assets/js/navbar.js"></script>
 
     <div id="mobile-menu-backdrop"></div>
 
@@ -309,8 +314,8 @@
         </div>
     </footer>
 
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/enhanced.js"></script>
+    <script type="module" src="../assets/js/main.js"></script>
+    <script type="module" src="../assets/js/enhanced.js"></script>
     <script>
         lucide.createIcons();
         document.getElementById('current-year').textContent = new Date().getFullYear();

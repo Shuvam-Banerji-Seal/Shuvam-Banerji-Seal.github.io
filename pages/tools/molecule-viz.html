@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +13,16 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container wide">
@@ -112,14 +119,25 @@
     </main>
 
     <style>
-        .tool-container.wide { max-width: 1400px; }
+        .tool-container.wide {
+            max-width: 1400px;
+        }
+
         .molecule-layout {
             display: grid;
             grid-template-columns: 320px 1fr;
             gap: 1.5rem;
         }
-        .sidebar-card { height: fit-content; }
-        .viewer-card { padding: 0; overflow: hidden; }
+
+        .sidebar-card {
+            height: fit-content;
+        }
+
+        .viewer-card {
+            padding: 0;
+            overflow: hidden;
+        }
+
         #viewer-3d {
             width: 100%;
             height: 600px;
@@ -127,11 +145,13 @@
             background: #1a1a2e;
             border-radius: 16px;
         }
+
         .molecule-info {
             padding: 1rem 1.5rem;
             background: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
         }
+
         .molecule-info h4 {
             margin: 0 0 0.5rem 0;
             font-size: 1.1rem;
@@ -139,6 +159,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .info-grid {
             display: flex;
             flex-wrap: wrap;
@@ -146,11 +167,13 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
         }
+
         .molecule-quick-list {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
         }
+
         .molecule-quick-list button {
             padding: 0.4rem 0.8rem;
             background: var(--bg-secondary);
@@ -161,33 +184,39 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         .molecule-quick-list button:hover {
             background: var(--accent-color);
             border-color: var(--accent-color);
             color: white;
         }
+
         .divider {
             height: 1px;
             background: var(--border-color);
             margin: 1.5rem 0;
         }
+
         @media (max-width: 1024px) {
             .molecule-layout {
                 grid-template-columns: 1fr;
             }
-            #viewer-3d { height: 400px; }
+
+            #viewer-3d {
+                height: 400px;
+            }
         }
     </style>
 
     <script>
         let viewer;
         let currentModel;
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             initViewer();
             loadMolecule('caffeine');
-            
+
             document.getElementById('molecule-input').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') searchMolecule();
             });
@@ -210,7 +239,7 @@
         async function loadMolecule(nameOrCid) {
             try {
                 viewer.clear();
-                
+
                 // Try to get CID from name
                 let cid = nameOrCid;
                 if (isNaN(parseInt(nameOrCid))) {
@@ -220,11 +249,11 @@
                     const searchData = await searchResp.json();
                     cid = searchData.IdentifierList.CID[0];
                 }
-                
+
                 // Get 3D structure
                 const sdfUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/SDF?record_type=3d`;
                 const sdfResp = await fetch(sdfUrl);
-                
+
                 let sdfData;
                 if (sdfResp.ok) {
                     sdfData = await sdfResp.text();
@@ -235,12 +264,12 @@
                     if (!sdf2dResp.ok) throw new Error('Could not fetch structure');
                     sdfData = await sdf2dResp.text();
                 }
-                
+
                 currentModel = viewer.addModel(sdfData, 'sdf');
                 updateStyle();
                 viewer.zoomTo();
                 viewer.render();
-                
+
                 // Get compound info
                 const infoUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/property/MolecularFormula,MolecularWeight,IUPACName/JSON`;
                 const infoResp = await fetch(infoUrl);
@@ -260,12 +289,12 @@
 
         function updateStyle() {
             if (!currentModel) return;
-            
+
             const style = document.getElementById('style-select').value;
             const colorScheme = document.getElementById('color-select').value;
-            
+
             viewer.setStyle({}, {});
-            
+
             const styleObj = {};
             if (colorScheme === 'element') {
                 styleObj.colorscheme = 'Jmol';
@@ -276,7 +305,7 @@
             } else if (colorScheme === 'ss') {
                 styleObj.colorscheme = 'ssJmol';
             }
-            
+
             switch (style) {
                 case 'stick':
                     viewer.setStyle({}, { stick: { ...styleObj, radius: 0.15 } });
@@ -294,7 +323,7 @@
                     viewer.setStyle({}, { cross: { ...styleObj, linewidth: 2 } });
                     break;
             }
-            
+
             viewer.render();
         }
 
@@ -310,4 +339,5 @@
         }
     </script>
 </body>
+
 </html>

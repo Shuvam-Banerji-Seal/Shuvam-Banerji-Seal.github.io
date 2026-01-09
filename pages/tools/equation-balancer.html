@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +12,16 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
+
 <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
         <div class="tool-container">
@@ -47,7 +54,7 @@
             <div class="tool-card" id="result-card" style="display: none;">
                 <h3><i data-lucide="check-circle"></i> Balanced Equation</h3>
                 <div class="balanced-equation" id="balanced-equation"></div>
-                
+
                 <div class="verification">
                     <h4><i data-lucide="list-checks"></i> Element Verification</h4>
                     <div class="verification-table" id="verification-table"></div>
@@ -74,6 +81,7 @@
             color: var(--text-secondary);
             font-size: 0.85rem;
         }
+
         .examples {
             display: flex;
             flex-wrap: wrap;
@@ -83,10 +91,12 @@
             padding-top: 1.5rem;
             border-top: 1px solid var(--border-color);
         }
+
         .examples span {
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
+
         .examples button {
             padding: 0.4rem 0.8rem;
             background: var(--bg-secondary);
@@ -97,11 +107,13 @@
             transition: all 0.3s ease;
             font-size: 0.85rem;
         }
+
         .examples button:hover {
             background: var(--accent-color);
             border-color: var(--accent-color);
             color: white;
         }
+
         .balanced-equation {
             font-size: 1.5rem;
             text-align: center;
@@ -111,23 +123,28 @@
             margin: 1.5rem 0;
             font-family: 'Courier New', monospace;
         }
+
         .balanced-equation .coefficient {
             color: var(--accent-color);
             font-weight: 700;
         }
+
         .balanced-equation .arrow {
             margin: 0 1rem;
             color: var(--text-secondary);
         }
+
         .balanced-equation .plus {
             margin: 0 0.5rem;
             color: var(--text-secondary);
         }
+
         .verification {
             margin-top: 1.5rem;
             padding-top: 1.5rem;
             border-top: 1px solid var(--border-color);
         }
+
         .verification h4 {
             display: flex;
             align-items: center;
@@ -135,11 +152,13 @@
             margin-bottom: 1rem;
             color: var(--text-primary);
         }
+
         .verification-table {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 0.75rem;
         }
+
         .verify-item {
             display: flex;
             justify-content: space-between;
@@ -148,27 +167,48 @@
             background: var(--bg-secondary);
             border-radius: 8px;
         }
+
         .verify-item.balanced {
             border-left: 3px solid #38d9a9;
         }
-        .verify-element { font-weight: 600; font-family: 'Courier New', monospace; }
-        .verify-count { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .verify-element {
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .verify-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
         .guide-content {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
             color: var(--text-secondary);
         }
-        .guide-content p { margin: 0; }
-        .guide-content strong { color: var(--text-primary); }
+
+        .guide-content p {
+            margin: 0;
+        }
+
+        .guide-content strong {
+            color: var(--text-primary);
+        }
+
         .guide-content code {
             background: var(--bg-secondary);
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
         }
+
         @media (max-width: 600px) {
-            .balanced-equation { font-size: 1.1rem; padding: 1rem; }
+            .balanced-equation {
+                font-size: 1.1rem;
+                padding: 1rem;
+            }
         }
     </style>
 
@@ -224,7 +264,7 @@
 
                 // Solve using null space approach (find integer solutions)
                 const coefficients = solveMatrix(matrix, numCompounds);
-                
+
                 if (!coefficients) {
                     throw new Error('Could not balance equation');
                 }
@@ -287,7 +327,7 @@
         function solveMatrix(matrix, numVars) {
             // Try small integer coefficients using brute force for small equations
             const maxCoef = 20;
-            
+
             function checkSolution(coeffs) {
                 for (const row of matrix) {
                     let sum = 0;
@@ -334,7 +374,7 @@
             const m = matrix.map(row => [...row, 0]);
             const rows = m.length;
             const cols = m[0].length;
-            
+
             // Forward elimination
             let pivot = 0;
             for (let col = 0; col < cols - 1 && pivot < rows; col++) {
@@ -345,11 +385,11 @@
                         maxRow = row;
                     }
                 }
-                
+
                 if (Math.abs(m[maxRow][col]) < 1e-10) continue;
-                
+
                 [m[pivot], m[maxRow]] = [m[maxRow], m[pivot]];
-                
+
                 for (let row = 0; row < rows; row++) {
                     if (row !== pivot && Math.abs(m[row][col]) > 1e-10) {
                         const factor = m[row][col] / m[pivot][col];
@@ -363,12 +403,12 @@
 
             // Find free variables and create solution
             const solution = new Array(numVars).fill(1);
-            
+
             // Scale to integers
             for (let i = 0; i < 1000; i++) {
                 solution[numVars - 1] = i + 1;
                 const test = [...solution];
-                
+
                 // Back substitute
                 for (let row = Math.min(pivot - 1, rows - 1); row >= 0; row--) {
                     let pivotCol = -1;
@@ -379,14 +419,14 @@
                         }
                     }
                     if (pivotCol === -1) continue;
-                    
+
                     let sum = 0;
                     for (let col = pivotCol + 1; col < numVars; col++) {
                         sum += m[row][col] * test[col];
                     }
                     test[pivotCol] = -sum / m[row][pivotCol];
                 }
-                
+
                 // Check if all positive integers
                 const rounded = test.map(x => Math.round(x * 1000) / 1000);
                 if (rounded.every(x => x > 0 && Math.abs(x - Math.round(x)) < 0.01)) {
@@ -398,7 +438,7 @@
                     return intSolution.map(x => x / g);
                 }
             }
-            
+
             return null;
         }
 
@@ -413,10 +453,10 @@
 
         function displayResult(reactants, products, coefficients, elements) {
             const numReactants = reactants.length;
-            
+
             // Build balanced equation HTML
             let html = '';
-            
+
             // Reactants
             reactants.forEach((compound, idx) => {
                 if (idx > 0) html += '<span class="plus">+</span>';
@@ -426,9 +466,9 @@
                 }
                 html += formatCompound(compound);
             });
-            
+
             html += '<span class="arrow">→</span>';
-            
+
             // Products
             products.forEach((compound, idx) => {
                 if (idx > 0) html += '<span class="plus">+</span>';
@@ -438,25 +478,25 @@
                 }
                 html += formatCompound(compound);
             });
-            
+
             document.getElementById('balanced-equation').innerHTML = html;
-            
+
             // Verification table
             let verifyHTML = '';
             elements.forEach(element => {
                 let leftCount = 0;
                 let rightCount = 0;
-                
+
                 reactants.forEach((compound, idx) => {
                     const composition = parseCompound(compound);
                     leftCount += (composition[element] || 0) * coefficients[idx];
                 });
-                
+
                 products.forEach((compound, idx) => {
                     const composition = parseCompound(compound);
                     rightCount += (composition[element] || 0) * coefficients[numReactants + idx];
                 });
-                
+
                 verifyHTML += `
                     <div class="verify-item balanced">
                         <span class="verify-element">${element}</span>
@@ -464,7 +504,7 @@
                     </div>
                 `;
             });
-            
+
             document.getElementById('verification-table').innerHTML = verifyHTML;
             document.getElementById('result-card').style.display = 'block';
             lucide.createIcons();
@@ -475,4 +515,5 @@
         }
     </script>
 </body>
+
 </html>
