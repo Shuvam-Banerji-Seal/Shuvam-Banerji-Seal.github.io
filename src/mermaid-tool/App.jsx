@@ -36,7 +36,7 @@ const EXAMPLE_DIAGRAMS = {
     style A fill:#0e639c,stroke:#0e639c,color:#fff
     style C fill:#388a34,stroke:#388a34,color:#fff
     style F fill:#7b1fa2,stroke:#7b1fa2,color:#fff`,
-    
+
     sequence: `sequenceDiagram
     participant Alice
     participant Bob
@@ -50,7 +50,7 @@ const EXAMPLE_DIAGRAMS = {
     John-->>Alice: Great!
     John->>Bob: How about you?
     Bob-->>John: Jolly good!`,
-    
+
     class: `classDiagram
     Animal <|-- Duck
     Animal <|-- Fish
@@ -72,7 +72,7 @@ const EXAMPLE_DIAGRAMS = {
         +bool is_wild
         +run()
     }`,
-    
+
     state: `stateDiagram-v2
     [*] --> Still
     Still --> [*]
@@ -80,7 +80,7 @@ const EXAMPLE_DIAGRAMS = {
     Moving --> Still
     Moving --> Crash
     Crash --> [*]`,
-    
+
     er: `erDiagram
     CUSTOMER ||--o{ ORDER : places
     ORDER ||--|{ LINE-ITEM : contains
@@ -94,7 +94,7 @@ const EXAMPLE_DIAGRAMS = {
         int orderNumber
         string deliveryAddress
     }`,
-    
+
     gantt: `gantt
     title A Gantt Diagram
     dateFormat YYYY-MM-DD
@@ -104,14 +104,14 @@ const EXAMPLE_DIAGRAMS = {
     section Another
         Task in Another :2024-01-12, 12d
         another task    :24d`,
-    
+
     pie: `pie showData
     title Key elements in Product X
     "Calcium" : 42.96
     "Potassium" : 50.05
     "Magnesium" : 10.01
     "Iron" :  5`,
-    
+
     git: `gitGraph
     commit
     commit
@@ -123,7 +123,7 @@ const EXAMPLE_DIAGRAMS = {
     merge develop
     commit
     commit`,
-    
+
     mindmap: `mindmap
     root((SBS's Mermaid))
         Features
@@ -172,8 +172,52 @@ function App() {
     const [error, setError] = useState(null);
     const [diagramType, setDiagramType] = useState('flowchart');
     const [notification, setNotification] = useState(null);
+    const [history, setHistory] = useState([DEFAULT_CODE]);
+    const [historyIndex, setHistoryIndex] = useState(0);
     const containerRef = useRef(null);
     const isDragging = useRef(false);
+
+    // Initial load handling
+    useEffect(() => {
+        const saved = localStorage.getItem('sbs-mermaid-code');
+        if (saved) {
+            setHistory([saved]);
+            setHistoryIndex(0);
+        }
+    }, []);
+
+    // Handle code change with history
+    const handleCodeChange = (newCode) => {
+        if (newCode === code) return;
+
+        const newHistory = history.slice(0, historyIndex + 1);
+        newHistory.push(newCode);
+
+        // Limit history size to 50
+        if (newHistory.length > 50) {
+            newHistory.shift();
+        }
+
+        setHistory(newHistory);
+        setHistoryIndex(newHistory.length - 1);
+        setCode(newCode);
+    };
+
+    const undo = () => {
+        if (historyIndex > 0) {
+            const newIndex = historyIndex - 1;
+            setHistoryIndex(newIndex);
+            setCode(history[newIndex]);
+        }
+    };
+
+    const redo = () => {
+        if (historyIndex < history.length - 1) {
+            const newIndex = historyIndex + 1;
+            setHistoryIndex(newIndex);
+            setCode(history[newIndex]);
+        }
+    };
 
     // Handle responsive
     useEffect(() => {
@@ -211,12 +255,12 @@ function App() {
 
     const handleMouseMove = useCallback((e) => {
         if (!isDragging.current || !containerRef.current) return;
-        
+
         const container = containerRef.current;
         const rect = container.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const percentage = (x / rect.width) * 100;
-        
+
         setSplitRatio(Math.min(Math.max(percentage, 20), 80));
     }, []);
 
@@ -269,6 +313,16 @@ function App() {
                 e.preventDefault();
                 handleExport('png');
             }
+            // Ctrl/Cmd + Z - Undo
+            if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+                e.preventDefault();
+                undo();
+            }
+            // Ctrl/Cmd + Shift + Z or Ctrl/Cmd + Y - Redo
+            if ((e.ctrlKey || e.metaKey) && ((e.shiftKey && e.key === 'Z') || e.key === 'y')) {
+                e.preventDefault();
+                redo();
+            }
             // Escape - Close sidebar
             if (e.key === 'Escape') {
                 setSidebarOpen(false);
@@ -320,17 +374,17 @@ function App() {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const img = new Image();
-        
+
         const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
         const url = URL.createObjectURL(svgBlob);
-        
+
         img.onload = () => {
             canvas.width = img.width * scale;
             canvas.height = img.height * scale;
             ctx.fillStyle = theme === 'dark' ? '#1e1e1e' : '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            
+
             canvas.toBlob((blob) => {
                 downloadBlob(blob, `sbs-mermaid-${Date.now()}.png`);
                 URL.revokeObjectURL(url);
@@ -369,7 +423,7 @@ function App() {
 
     return (
         <div className={`app ${theme}`}>
-            <Header 
+            <Header
                 theme={theme}
                 setTheme={setTheme}
                 diagramTheme={diagramTheme}
@@ -381,35 +435,35 @@ function App() {
                 onCopy={copyCode}
                 isMobile={isMobile}
             />
-            
+
             <div className="main-container">
-                <Sidebar 
+                <Sidebar
                     isOpen={sidebarOpen}
                     onClose={() => setSidebarOpen(false)}
                     onLoadExample={loadExample}
                     currentType={diagramType}
                 />
-                
+
                 <div className="workspace" ref={containerRef}>
                     {isMobile ? (
                         <>
                             <div className="mobile-tabs">
-                                <button 
+                                <button
                                     className={`tab ${activeTab === 'editor' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('editor')}
                                 >
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                                     </svg>
                                     {mode === 'code' ? 'Code' : 'Builder'}
                                 </button>
-                                <button 
+                                <button
                                     className={`tab ${activeTab === 'preview' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('preview')}
                                 >
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
-                                        <circle cx="12" cy="12" r="3"/>
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
                                     </svg>
                                     Preview
                                 </button>
@@ -417,19 +471,19 @@ function App() {
                             <div className="mobile-content">
                                 {activeTab === 'editor' ? (
                                     mode === 'code' ? (
-                                        <CodeEditor 
+                                        <CodeEditor
                                             code={code}
-                                            onChange={setCode}
+                                            onChange={handleCodeChange}
                                             theme={theme}
                                         />
                                     ) : (
-                                        <VisualBuilder 
+                                        <VisualBuilder
                                             onGenerateCode={handleVisualBuilderCode}
                                             theme={theme}
                                         />
                                     )
                                 ) : (
-                                    <Preview 
+                                    <Preview
                                         code={code}
                                         theme={theme}
                                         diagramTheme={diagramTheme}
@@ -446,18 +500,18 @@ function App() {
                                         {mode === 'code' ? (
                                             <>
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                    <polyline points="16,18 22,12 16,6"/>
-                                                    <polyline points="8,6 2,12 8,18"/>
+                                                    <polyline points="16,18 22,12 16,6" />
+                                                    <polyline points="8,6 2,12 8,18" />
                                                 </svg>
                                                 <span>diagram.mmd</span>
                                             </>
                                         ) : (
                                             <>
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                    <rect x="3" y="3" width="7" height="7"/>
-                                                    <rect x="14" y="3" width="7" height="7"/>
-                                                    <rect x="14" y="14" width="7" height="7"/>
-                                                    <rect x="3" y="14" width="7" height="7"/>
+                                                    <rect x="3" y="3" width="7" height="7" />
+                                                    <rect x="14" y="3" width="7" height="7" />
+                                                    <rect x="14" y="14" width="7" height="7" />
+                                                    <rect x="3" y="14" width="7" height="7" />
                                                 </svg>
                                                 <span>Visual Builder</span>
                                             </>
@@ -467,41 +521,41 @@ function App() {
                                         {mode === 'code' && (
                                             <button onClick={copyCode} title="Copy code (Ctrl+C)">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-                                                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                                                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                                                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
                                                 </svg>
                                             </button>
                                         )}
                                     </div>
                                 </div>
                                 {mode === 'code' ? (
-                                    <CodeEditor 
+                                    <CodeEditor
                                         code={code}
-                                        onChange={setCode}
+                                        onChange={handleCodeChange}
                                         theme={theme}
                                     />
                                 ) : (
-                                    <VisualBuilder 
+                                    <VisualBuilder
                                         onGenerateCode={handleVisualBuilderCode}
                                         theme={theme}
                                     />
                                 )}
                             </div>
-                            
-                            <div 
+
+                            <div
                                 className="resize-handle"
                                 onMouseDown={handleMouseDown}
                                 title="Drag to resize panels"
                             >
                                 <div className="handle-bar"></div>
                             </div>
-                            
+
                             <div className="preview-panel" style={{ width: `${100 - splitRatio}%` }}>
                                 <div className="panel-header">
                                     <div className="panel-title">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
-                                            <circle cx="12" cy="12" r="3"/>
+                                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                            <circle cx="12" cy="12" r="3" />
                                         </svg>
                                         <span>Preview</span>
                                         {diagramTheme !== 'default' && (
@@ -509,7 +563,7 @@ function App() {
                                         )}
                                     </div>
                                 </div>
-                                <Preview 
+                                <Preview
                                     code={code}
                                     theme={theme}
                                     diagramTheme={diagramTheme}
@@ -520,8 +574,8 @@ function App() {
                     )}
                 </div>
             </div>
-            
-            <StatusBar 
+
+            <StatusBar
                 error={error}
                 charCount={code.length}
                 lineCount={code.split('\n').length}
@@ -533,14 +587,14 @@ function App() {
                 <div className={`notification ${notification.type}`}>
                     {notification.type === 'success' ? (
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                            <polyline points="22,4 12,14.01 9,11.01"/>
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22,4 12,14.01 9,11.01" />
                         </svg>
                     ) : (
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="8" x2="12" y2="12"/>
-                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
                         </svg>
                     )}
                     <span>{notification.message}</span>

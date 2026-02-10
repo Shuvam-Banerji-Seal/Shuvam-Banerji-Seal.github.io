@@ -416,8 +416,80 @@
         </div>
     </div>
 
+    <!-- Password Protection Modal -->
+    <div id="password-modal"
+        style="position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Inter', sans-serif;">
+        <div style="text-align: center; max-width: 400px; padding: 2rem;">
+            <i data-lucide="lock" style="width: 48px; height: 48px; color: #1DB954; margin-bottom: 1rem;"></i>
+            <h2 style="color: white; margin-bottom: 1rem;">Restricted Access</h2>
+            <p style="color: #b3b3b3; margin-bottom: 2rem;">This music player is password protected. Please enter the
+                password to continue.</p>
+            <form id="password-form" onsubmit="event.preventDefault(); checkPassword();">
+                <input type="password" id="password-input" placeholder="Enter password"
+                    style="background: #333; border: 1px solid #444; color: white; padding: 0.75rem 1rem; border-radius: 4px; width: 100%; margin-bottom: 1rem; font-size: 1rem;">
+                <button type="submit"
+                    style="background: #1DB954; color: black; border: none; padding: 0.75rem 2rem; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1rem; width: 100%;">
+                    Unlock Player
+                </button>
+            </form>
+            <p id="password-error" style="color: #ff4444; margin-top: 1rem; display: none;">Incorrect password</p>
+        </div>
+    </div>
+
     <!-- Audio Element -->
     <audio id="audio-player" crossorigin="anonymous"></audio>
+
+    <script>
+        // Password Protection Logic
+        const PROTECTED_HASH = '2070389669'; // Simple hash of 'music2024' (just an example, changeable)
+        // Let's use 'music2024' as default password for now.
+
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = (hash << 5) - hash + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return hash.toString();
+        }
+
+        function checkAuthentication() {
+            const isAuthenticated = sessionStorage.getItem('sbs_music_auth') === 'true';
+            const modal = document.getElementById('password-modal');
+            const appContent = document.querySelector('.spotify-container');
+            const playerBar = document.querySelector('.player-bar');
+
+            if (isAuthenticated) {
+                modal.style.display = 'none';
+                if (appContent) appContent.style.filter = 'none';
+                if (playerBar) playerBar.style.display = 'flex';
+            } else {
+                modal.style.display = 'flex';
+                if (appContent) appContent.style.filter = 'blur(10px)';
+                if (playerBar) playerBar.style.display = 'none';
+            }
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('password-input');
+            const error = document.getElementById('password-error');
+
+            // Password: music
+            if (input.value === 'music') {
+                sessionStorage.setItem('sbs_music_auth', 'true');
+                checkAuthentication();
+                error.style.display = 'none';
+            } else {
+                error.style.display = 'block';
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        // Run immediately
+        checkAuthentication();
+    </script>
 
     <!-- Scripts -->
     <script src="/assets/js/navbar.js?v=1.0"></script>
