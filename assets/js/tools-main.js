@@ -1716,3 +1716,30 @@ if (document.readyState === 'loading') {
 } else {
     loadExternalLibraries();
 }
+
+// Expose functions to global scope for HTML onclick attributes
+window.openTool = openTool;
+window.openToolModal = openToolModal;
+window.closeModal = closeModal;
+window.updateModelOptions = updateModelOptions;
+window.sendChatMessage = sendChatMessage;
+window.searchPapers = searchPapers;
+window.convertPDFToJPG = convertPDFToJPG;
+window.downloadImage = downloadImage;
+window.downloadAllAsZip = downloadAllAsZip;
+window.reducePDFSize = reducePDFSize;
+window.downloadCompressedPDF = downloadCompressedPDF;
+window.changeMolecule = changeMolecule;
+window.rotateMolecule = rotateMolecule;
+window.startGame = startGame;
+window.updateUnitOptions = updateUnitOptions;
+window.convertUnits = convertUnits;
+window.calculateMolWeight = calculateMolWeight;
+window.balanceEquation = balanceEquation;
+// Note: checkAnswer, checkBalance, flipCard are attached to window inside their respective start functions.
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    loadExternalLibraries();
+    lucide.createIcons();
+});

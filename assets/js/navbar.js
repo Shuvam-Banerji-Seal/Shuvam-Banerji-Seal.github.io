@@ -3,9 +3,10 @@
  * Modern responsive navigation with organized menu structure
  */
 
-document.addEventListener('DOMContentLoaded', function () {
+function initNavbar() {
     const navbarContainer = document.getElementById('navbar-container');
     if (!navbarContainer) return;
+
 
     // Determine current page and path depth
     const currentPath = window.location.pathname;
@@ -160,7 +161,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize all navbar functionality
     initDropdowns();
     initMobileMenuLogic();
-});
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavbar);
+} else {
+    initNavbar();
+}
+
 
 function initDropdowns() {
     const dropdowns = document.querySelectorAll('.nav-dropdown');
