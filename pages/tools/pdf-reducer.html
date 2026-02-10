@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Compress PDF files to reduce their size while maintaining quality">
-    <title>PDF Compressor - SBS Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Professional PDF toolkit: compress, merge, split, and optimize PDFs">
+    <title>PDF Toolkit Pro - SBS Tools</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
@@ -15,10 +15,432 @@
     <link rel="stylesheet" href="../../assets/css/mobile.css">
     <link rel="stylesheet" href="../../assets/css/tool-page.css">
 
-    <!-- Cache Control -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+
+    <style>
+        .pdf-toolkit {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        /* Mode Tabs */
+        .mode-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--card-bg);
+            padding: 0.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .mode-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-tab:hover {
+            background: var(--bg-secondary);
+        }
+
+        .mode-tab.active {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .mode-tab svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .mode-tabs {
+                flex-wrap: wrap;
+            }
+
+            .mode-tab {
+                flex-basis: calc(50% - 0.25rem);
+            }
+        }
+
+        /* Mode Panels */
+        .mode-panel {
+            display: none;
+        }
+
+        .mode-panel.active {
+            display: block;
+        }
+
+        /* Toolkit Card */
+        .toolkit-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .toolkit-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .toolkit-card h3 svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-color);
+        }
+
+        /* Compression Levels */
+        .compression-levels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 500px) {
+            .compression-levels {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .compression-level {
+            cursor: pointer;
+        }
+
+        .compression-level input {
+            display: none;
+        }
+
+        .compression-level .level-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.25rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .compression-level:hover .level-card {
+            border-color: var(--accent-color);
+        }
+
+        .compression-level input:checked+.level-card {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        .level-card .icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .level-card svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-secondary);
+        }
+
+        .compression-level input:checked+.level-card svg {
+            color: var(--accent-color);
+        }
+
+        .level-card .name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .level-card .desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Results Card */
+        .results-card {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .results-card.visible {
+            display: block;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 500px) {
+            .results-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+
+        .stat-box .label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-box .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-box.highlight .value {
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* File Grid */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-card {
+            position: relative;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: grab;
+            transition: all 0.2s;
+        }
+
+        .file-card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .file-card.dragging {
+            opacity: 0.5;
+        }
+
+        .file-card .order {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-card .remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .file-card:hover .remove {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-card .remove:hover {
+            color: #ef4444;
+        }
+
+        .file-card .icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 0.5rem;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .file-card .name {
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-card .pages {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        /* Page Preview Grid */
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-card {
+            position: relative;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .page-card.selected {
+            border-color: var(--accent-color);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .page-card .checkbox {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .page-card:hover .checkbox,
+        .page-card.selected .checkbox {
+            opacity: 1;
+        }
+
+        .page-card.selected .checkbox {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .page-card img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: contain;
+            background: #f5f5f5;
+        }
+
+        body[data-theme="dark"] .page-card img {
+            background: #1a1a2e;
+        }
+
+        .page-card .page-num {
+            padding: 0.35rem;
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Progress */
+        .progress-container {
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-accent));
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* Merge hint */
+        .merge-hint {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .merge-hint svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent-color);
+        }
+    </style>
 </head>
 
 <body>
@@ -26,302 +448,332 @@
     <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
-        <div class="tool-container">
+        <div class="tool-container wide">
             <div class="tool-header">
-                <h1><i data-lucide="minimize-2"></i> PDF Compressor</h1>
-                <p>Reduce PDF file size while maintaining quality</p>
+                <h1><i data-lucide="file-cog"></i> PDF Toolkit Pro</h1>
+                <p>Compress, merge, split, and optimize your PDFs</p>
             </div>
 
-            <div class="tool-card">
-                <div class="file-upload" id="drop-zone">
-                    <i data-lucide="upload-cloud"></i>
-                    <p>Drag & drop your PDF here or click to browse</p>
-                    <button class="tool-btn tool-btn-primary">Select PDF File</button>
-                    <input type="file" id="file-input" accept=".pdf,application/pdf">
+            <div class="pdf-toolkit">
+                <!-- Mode Tabs -->
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="compress">
+                        <i data-lucide="minimize-2"></i> Compress
+                    </button>
+                    <button class="mode-tab" data-mode="merge">
+                        <i data-lucide="combine"></i> Merge
+                    </button>
+                    <button class="mode-tab" data-mode="split">
+                        <i data-lucide="split"></i> Split
+                    </button>
                 </div>
 
-                <div id="file-info" style="display: none; margin-top: 1.5rem;">
-                    <div class="alert alert-info">
-                        <i data-lucide="file-text"></i>
-                        <div>
-                            <strong id="file-name">document.pdf</strong>
-                            <br><span id="original-size" style="font-size: 0.9rem;"></span>
+                <!-- Compress Panel -->
+                <div class="mode-panel active" id="compress-panel">
+                    <div class="toolkit-card">
+                        <h3><i data-lucide="upload-cloud"></i> Upload PDF</h3>
+                        <div class="file-upload" id="compress-drop">
+                            <i data-lucide="file-up"></i>
+                            <p>Drag & drop PDF here</p>
+                            <button class="tool-btn tool-btn-primary">Select File</button>
+                            <input type="file" id="compress-input" accept=".pdf" hidden>
+                        </div>
+
+                        <div id="compress-file-info" style="display: none; margin-top: 1rem;">
+                            <div class="file-card"
+                                style="display: inline-flex; flex-direction: row; gap: 1rem; padding: 0.75rem 1rem; width: auto;">
+                                <div class="icon" style="margin: 0; width: 36px; height: 36px;"><i
+                                        data-lucide="file-text"></i></div>
+                                <div style="text-align: left;">
+                                    <div class="name" id="compress-filename" style="font-size: 0.9rem;"></div>
+                                    <div class="pages" id="compress-filesize"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toolkit-card">
+                        <h3><i data-lucide="sliders"></i> Compression Level</h3>
+                        <div class="compression-levels">
+                            <label class="compression-level">
+                                <input type="radio" name="compress-level" value="low" checked>
+                                <div class="level-card">
+                                    <div class="icon"><i data-lucide="sparkles"></i></div>
+                                    <span class="name">Low</span>
+                                    <span class="desc">Best quality</span>
+                                </div>
+                            </label>
+                            <label class="compression-level">
+                                <input type="radio" name="compress-level" value="medium">
+                                <div class="level-card">
+                                    <div class="icon"><i data-lucide="gauge"></i></div>
+                                    <span class="name">Medium</span>
+                                    <span class="desc">Balanced</span>
+                                </div>
+                            </label>
+                            <label class="compression-level">
+                                <input type="radio" name="compress-level" value="high">
+                                <div class="level-card">
+                                    <div class="icon"><i data-lucide="minimize"></i></div>
+                                    <span class="name">High</span>
+                                    <span class="desc">Smallest size</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <button class="tool-btn tool-btn-primary" id="compress-btn" style="width: 100%;" disabled>
+                            <i data-lucide="zap"></i> Compress PDF
+                        </button>
+
+                        <div class="progress-container" id="compress-progress" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="compress-progress-fill"></div>
+                            </div>
+                            <p class="progress-text" id="compress-progress-text">Compressing...</p>
+                        </div>
+                    </div>
+
+                    <div class="results-card" id="compress-results">
+                        <h3 style="margin-bottom: 1rem;"><i data-lucide="check-circle"
+                                style="color: var(--accent-color);"></i> Compression Complete</h3>
+                        <div class="results-stats">
+                            <div class="stat-box">
+                                <div class="label">Original</div>
+                                <div class="value" id="result-original">-</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="label">Compressed</div>
+                                <div class="value" id="result-compressed">-</div>
+                            </div>
+                            <div class="stat-box highlight">
+                                <div class="label">Saved</div>
+                                <div class="value" id="result-saved">-</div>
+                            </div>
+                        </div>
+                        <button class="tool-btn tool-btn-primary" id="download-compressed-btn" style="width: 100%;">
+                            <i data-lucide="download"></i> Download Compressed PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Merge Panel -->
+                <div class="mode-panel" id="merge-panel">
+                    <div class="toolkit-card">
+                        <h3><i data-lucide="files"></i> Select PDFs to Merge</h3>
+                        <div class="merge-hint">
+                            <i data-lucide="grip-vertical"></i>
+                            <span>Drag files to reorder them</span>
+                        </div>
+                        <div class="file-upload" id="merge-drop">
+                            <i data-lucide="folder-plus"></i>
+                            <p>Drag & drop multiple PDFs</p>
+                            <button class="tool-btn tool-btn-primary">Add Files</button>
+                            <input type="file" id="merge-input" accept=".pdf" multiple hidden>
+                        </div>
+
+                        <div class="file-grid" id="merge-files"></div>
+
+                        <button class="tool-btn tool-btn-primary" id="merge-btn" style="width: 100%;" disabled>
+                            <i data-lucide="combine"></i> Merge PDFs
+                        </button>
+
+                        <div class="progress-container" id="merge-progress" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="merge-progress-fill"></div>
+                            </div>
+                            <p class="progress-text" id="merge-progress-text">Merging...</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-top: 1.5rem;">
-                    <label>Compression Level</label>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 0.5rem;">
-                        <label class="compression-option">
-                            <input type="radio" name="compression" value="low" checked>
-                            <div class="option-card">
-                                <i data-lucide="zap"></i>
-                                <strong>Low</strong>
-                                <small>Best quality, larger file</small>
-                            </div>
-                        </label>
-                        <label class="compression-option">
-                            <input type="radio" name="compression" value="medium">
-                            <div class="option-card">
-                                <i data-lucide="activity"></i>
-                                <strong>Medium</strong>
-                                <small>Balanced quality/size</small>
-                            </div>
-                        </label>
-                        <label class="compression-option">
-                            <input type="radio" name="compression" value="high">
-                            <div class="option-card">
-                                <i data-lucide="minimize"></i>
-                                <strong>High</strong>
-                                <small>Smallest file size</small>
-                            </div>
-                        </label>
+                <!-- Split Panel -->
+                <div class="mode-panel" id="split-panel">
+                    <div class="toolkit-card">
+                        <h3><i data-lucide="upload-cloud"></i> Upload PDF to Split</h3>
+                        <div class="file-upload" id="split-drop">
+                            <i data-lucide="file-up"></i>
+                            <p>Drag & drop PDF here</p>
+                            <button class="tool-btn tool-btn-primary">Select File</button>
+                            <input type="file" id="split-input" accept=".pdf" hidden>
+                        </div>
                     </div>
-                </div>
 
-                <div class="btn-group" style="margin-top: 1.5rem;">
-                    <button class="tool-btn tool-btn-primary" id="compress-btn" onclick="compressPDF()" disabled>
-                        <i data-lucide="minimize-2"></i> Compress PDF
-                    </button>
-                </div>
+                    <div class="toolkit-card" id="split-preview-card" style="display: none;">
+                        <h3><i data-lucide="layers"></i> Select Pages to Extract</h3>
+                        <div class="page-grid" id="split-pages"></div>
 
-                <div class="progress-bar" id="progress-bar" style="display: none;">
-                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
-                </div>
-                <p id="progress-text" style="text-align: center; margin-top: 0.5rem; display: none;"></p>
-            </div>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <button class="tool-btn tool-btn-secondary" onclick="selectAllSplitPages()">Select
+                                All</button>
+                            <button class="tool-btn tool-btn-secondary" onclick="deselectAllSplitPages()">Deselect
+                                All</button>
+                        </div>
 
-            <div class="tool-card" id="result-container" style="display: none;">
-                <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                    <i data-lucide="check-circle"></i> Compression Complete
-                </h3>
-                <div class="result-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Original Size</span>
-                        <span class="stat-value" id="stat-original">-</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Compressed Size</span>
-                        <span class="stat-value" id="stat-compressed">-</span>
-                    </div>
-                    <div class="stat-item highlight">
-                        <span class="stat-label">Reduction</span>
-                        <span class="stat-value" id="stat-reduction">-</span>
+                        <button class="tool-btn tool-btn-primary" id="split-btn" style="width: 100%;">
+                            <i data-lucide="scissors"></i> Extract Selected Pages
+                        </button>
                     </div>
                 </div>
-                <button class="tool-btn tool-btn-primary" id="download-btn" style="margin-top: 1.5rem; width: 100%;">
-                    <i data-lucide="download"></i> Download Compressed PDF
-                </button>
             </div>
         </div>
     </main>
 
-    <style>
-        .compression-option input {
-            display: none;
-        }
-
-        .compression-option .option-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1.5rem;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .compression-option .option-card svg {
-            width: 32px;
-            height: 32px;
-            color: var(--text-secondary);
-        }
-
-        .compression-option .option-card small {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .compression-option input:checked+.option-card {
-            border-color: var(--accent-color);
-            background: rgba(6, 182, 212, 0.1);
-        }
-
-        .compression-option input:checked+.option-card svg {
-            color: var(--accent-color);
-        }
-
-        .compression-option:hover .option-card {
-            border-color: var(--accent-color);
-        }
-
-        .result-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-        }
-
-        .stat-item.highlight {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
-        }
-
-        .stat-label {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .stat-item.highlight .stat-value {
-            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        @media (max-width: 768px) {
-            .result-stats {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        let originalFile = null;
+        // State
+        let compressPdf = null;
         let compressedBlob = null;
+        let mergeFiles = [];
+        let splitPdf = null;
+        let splitSelectedPages = new Set();
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-
-            const dropZone = document.getElementById('drop-zone');
-            const fileInput = document.getElementById('file-input');
-
-            dropZone.addEventListener('click', () => fileInput.click());
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files[0]) loadFile(e.target.files[0]);
-            });
-
-            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropZone.classList.remove('dragover');
-                const file = e.dataTransfer.files[0];
-                if (file?.type === 'application/pdf') loadFile(file);
-            });
+            bindEvents();
         });
 
-        function loadFile(file) {
-            originalFile = file;
-            document.getElementById('file-info').style.display = 'block';
-            document.getElementById('file-name').textContent = file.name;
-            document.getElementById('original-size').textContent = `Original: ${formatSize(file.size)}`;
-            document.getElementById('compress-btn').disabled = false;
-            document.getElementById('result-container').style.display = 'none';
-            lucide.createIcons();
+        function bindEvents() {
+            // Mode tabs
+            document.querySelectorAll('.mode-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.mode}-panel`).classList.add('active');
+                });
+            });
+
+            // Compress
+            setupFileUpload('compress-drop', 'compress-input', loadCompressPdf, false);
+            document.getElementById('compress-btn').addEventListener('click', compressPdfFile);
+
+            // Merge
+            setupFileUpload('merge-drop', 'merge-input', addMergeFiles, true);
+            document.getElementById('merge-btn').addEventListener('click', mergePdfs);
+
+            // Split
+            setupFileUpload('split-drop', 'split-input', loadSplitPdf, false);
+            document.getElementById('split-btn')?.addEventListener('click', splitPdfFile);
         }
 
-        async function compressPDF() {
-            if (!originalFile) return;
+        function setupFileUpload(dropId, inputId, handler, multiple) {
+            const drop = document.getElementById(dropId);
+            const input = document.getElementById(inputId);
 
-            const compression = document.querySelector('input[name="compression"]:checked').value;
-            const qualityMap = { low: 0.9, medium: 0.7, high: 0.5 };
-            const scaleMap = { low: 1.5, medium: 1.2, high: 1 };
-            const quality = qualityMap[compression];
-            const scale = scaleMap[compression];
+            drop.addEventListener('click', () => input.click());
+            input.addEventListener('change', e => handler(e.target.files));
 
-            document.getElementById('progress-bar').style.display = 'block';
-            document.getElementById('progress-text').style.display = 'block';
+            drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('dragover'); });
+            drop.addEventListener('dragleave', () => drop.classList.remove('dragover'));
+            drop.addEventListener('drop', e => {
+                e.preventDefault();
+                drop.classList.remove('dragover');
+                handler(e.dataTransfer.files);
+            });
+        }
+
+        // COMPRESS
+        async function loadCompressPdf(files) {
+            if (!files[0]) return;
+            const file = files[0];
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                compressPdf = { file, pdf: await pdfjsLib.getDocument({ data: arrayBuffer }).promise };
+
+                document.getElementById('compress-file-info').style.display = 'block';
+                document.getElementById('compress-filename').textContent = file.name;
+                document.getElementById('compress-filesize').textContent = formatSize(file.size);
+                document.getElementById('compress-btn').disabled = false;
+                document.getElementById('compress-results').classList.remove('visible');
+                lucide.createIcons();
+            } catch (error) {
+                alert('Error loading PDF: ' + error.message);
+            }
+        }
+
+        async function compressPdfFile() {
+            if (!compressPdf) return;
+
+            const level = document.querySelector('input[name="compress-level"]:checked').value;
+            const settings = {
+                low: { scale: 1.5, quality: 0.9 },
+                medium: { scale: 1.2, quality: 0.7 },
+                high: { scale: 1, quality: 0.5 }
+            }[level];
+
+            const progressContainer = document.getElementById('compress-progress');
+            const progressFill = document.getElementById('compress-progress-fill');
+            const progressText = document.getElementById('compress-progress-text');
+
+            progressContainer.style.display = 'block';
             document.getElementById('compress-btn').disabled = true;
 
             try {
-                const arrayBuffer = await originalFile.arrayBuffer();
-                const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                const totalPages = pdfDoc.numPages;
-
                 const { jsPDF } = window.jspdf;
+                const pdf = compressPdf.pdf;
 
-                // Get first page to determine dimensions
-                const firstPage = await pdfDoc.getPage(1);
+                const firstPage = await pdf.getPage(1);
                 const viewport = firstPage.getViewport({ scale: 1 });
                 const orientation = viewport.width > viewport.height ? 'l' : 'p';
 
-                const pdf = new jsPDF({
+                const newPdf = new jsPDF({
                     orientation,
                     unit: 'pt',
                     format: [viewport.width, viewport.height]
                 });
 
-                for (let i = 1; i <= totalPages; i++) {
-                    updateProgress(i, totalPages);
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const percent = Math.round((i / pdf.numPages) * 100);
+                    progressFill.style.width = percent + '%';
+                    progressText.textContent = `Processing page ${i} of ${pdf.numPages}...`;
 
-                    const page = await pdfDoc.getPage(i);
-                    const pageViewport = page.getViewport({ scale });
+                    const page = await pdf.getPage(i);
+                    const pv = page.getViewport({ scale: settings.scale });
 
                     const canvas = document.createElement('canvas');
-                    canvas.width = pageViewport.width;
-                    canvas.height = pageViewport.height;
+                    canvas.width = pv.width;
+                    canvas.height = pv.height;
 
-                    await page.render({
-                        canvasContext: canvas.getContext('2d'),
-                        viewport: pageViewport
-                    }).promise;
+                    await page.render({ canvasContext: canvas.getContext('2d'), viewport: pv }).promise;
 
-                    const imgData = canvas.toDataURL('image/jpeg', quality);
+                    const imgData = canvas.toDataURL('image/jpeg', settings.quality);
 
                     if (i > 1) {
-                        const pv = page.getViewport({ scale: 1 });
-                        pdf.addPage([pv.width, pv.height], pv.width > pv.height ? 'l' : 'p');
+                        const origVp = page.getViewport({ scale: 1 });
+                        newPdf.addPage([origVp.width, origVp.height], origVp.width > origVp.height ? 'l' : 'p');
                     }
 
-                    const pv = page.getViewport({ scale: 1 });
-                    pdf.addImage(imgData, 'JPEG', 0, 0, pv.width, pv.height);
+                    const origVp = page.getViewport({ scale: 1 });
+                    newPdf.addImage(imgData, 'JPEG', 0, 0, origVp.width, origVp.height);
                 }
 
-                compressedBlob = pdf.output('blob');
+                compressedBlob = newPdf.output('blob');
+                showCompressResults();
 
-                showResult();
             } catch (error) {
-                alert('Error compressing PDF: ' + error.message);
+                alert('Compression failed: ' + error.message);
             }
 
-            document.getElementById('progress-bar').style.display = 'none';
-            document.getElementById('progress-text').style.display = 'none';
+            progressContainer.style.display = 'none';
             document.getElementById('compress-btn').disabled = false;
         }
 
-        function showResult() {
-            const original = originalFile.size;
+        function showCompressResults() {
+            const original = compressPdf.file.size;
             const compressed = compressedBlob.size;
-            const reduction = ((1 - compressed / original) * 100).toFixed(1);
+            const saved = ((1 - compressed / original) * 100).toFixed(1);
 
-            document.getElementById('stat-original').textContent = formatSize(original);
-            document.getElementById('stat-compressed').textContent = formatSize(compressed);
-            document.getElementById('stat-reduction').textContent = reduction + '%';
+            document.getElementById('result-original').textContent = formatSize(original);
+            document.getElementById('result-compressed').textContent = formatSize(compressed);
+            document.getElementById('result-saved').textContent = saved + '%';
 
-            document.getElementById('result-container').style.display = 'block';
+            document.getElementById('compress-results').classList.add('visible');
 
-            document.getElementById('download-btn').onclick = () => {
+            document.getElementById('download-compressed-btn').onclick = () => {
                 const link = document.createElement('a');
-                link.download = originalFile.name.replace('.pdf', '_compressed.pdf');
+                link.download = compressPdf.file.name.replace('.pdf', '_compressed.pdf');
                 link.href = URL.createObjectURL(compressedBlob);
                 link.click();
             };
@@ -329,10 +781,232 @@
             lucide.createIcons();
         }
 
-        function updateProgress(current, total) {
-            const percent = (current / total) * 100;
-            document.getElementById('progress-fill').style.width = percent + '%';
-            document.getElementById('progress-text').textContent = `Processing page ${current} of ${total}...`;
+        // MERGE
+        async function addMergeFiles(files) {
+            for (const file of files) {
+                if (file.type === 'application/pdf') {
+                    try {
+                        const arrayBuffer = await file.arrayBuffer();
+                        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                        mergeFiles.push({ file, pdf, name: file.name, pages: pdf.numPages });
+                    } catch (e) {
+                        console.error('Error loading', file.name);
+                    }
+                }
+            }
+            renderMergeFiles();
+            document.getElementById('merge-btn').disabled = mergeFiles.length < 2;
+        }
+
+        function renderMergeFiles() {
+            const grid = document.getElementById('merge-files');
+            grid.innerHTML = mergeFiles.map((f, i) => `
+                <div class="file-card" draggable="true" data-index="${i}">
+                    <span class="order">${i + 1}</span>
+                    <button class="remove" onclick="removeMergeFile(${i})"><i data-lucide="x"></i></button>
+                    <div class="icon"><i data-lucide="file-text"></i></div>
+                    <div class="name">${f.name}</div>
+                    <div class="pages">${f.pages} pages</div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+
+            // Drag and drop reorder
+            grid.querySelectorAll('.file-card').forEach(card => {
+                card.addEventListener('dragstart', e => {
+                    e.dataTransfer.setData('text/plain', card.dataset.index);
+                    card.classList.add('dragging');
+                });
+                card.addEventListener('dragend', () => card.classList.remove('dragging'));
+                card.addEventListener('dragover', e => e.preventDefault());
+                card.addEventListener('drop', e => {
+                    e.preventDefault();
+                    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                    const toIndex = parseInt(card.dataset.index);
+                    if (fromIndex !== toIndex) {
+                        const item = mergeFiles.splice(fromIndex, 1)[0];
+                        mergeFiles.splice(toIndex, 0, item);
+                        renderMergeFiles();
+                    }
+                });
+            });
+        }
+
+        function removeMergeFile(index) {
+            mergeFiles.splice(index, 1);
+            renderMergeFiles();
+            document.getElementById('merge-btn').disabled = mergeFiles.length < 2;
+        }
+
+        async function mergePdfs() {
+            if (mergeFiles.length < 2) return;
+
+            const progress = document.getElementById('merge-progress');
+            const fill = document.getElementById('merge-progress-fill');
+            const text = document.getElementById('merge-progress-text');
+
+            progress.style.display = 'block';
+            document.getElementById('merge-btn').disabled = true;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                let newPdf = null;
+                let totalPages = mergeFiles.reduce((sum, f) => sum + f.pages, 0);
+                let currentPage = 0;
+
+                for (const pdfData of mergeFiles) {
+                    for (let i = 1; i <= pdfData.pages; i++) {
+                        currentPage++;
+                        fill.style.width = ((currentPage / totalPages) * 100) + '%';
+                        text.textContent = `Processing page ${currentPage} of ${totalPages}...`;
+
+                        const page = await pdfData.pdf.getPage(i);
+                        const viewport = page.getViewport({ scale: 1.5 });
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+                        await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+                        const origVp = page.getViewport({ scale: 1 });
+                        const orientation = origVp.width > origVp.height ? 'l' : 'p';
+
+                        if (!newPdf) {
+                            newPdf = new jsPDF({ orientation, unit: 'pt', format: [origVp.width, origVp.height] });
+                        } else {
+                            newPdf.addPage([origVp.width, origVp.height], orientation);
+                        }
+
+                        const imgData = canvas.toDataURL('image/jpeg', 0.85);
+                        newPdf.addImage(imgData, 'JPEG', 0, 0, origVp.width, origVp.height);
+                    }
+                }
+
+                const blob = newPdf.output('blob');
+                const link = document.createElement('a');
+                link.download = 'merged.pdf';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+
+            } catch (error) {
+                alert('Merge failed: ' + error.message);
+            }
+
+            progress.style.display = 'none';
+            document.getElementById('merge-btn').disabled = false;
+        }
+
+        // SPLIT
+        async function loadSplitPdf(files) {
+            if (!files[0]) return;
+
+            try {
+                const arrayBuffer = await files[0].arrayBuffer();
+                splitPdf = {
+                    file: files[0],
+                    pdf: await pdfjsLib.getDocument({ data: arrayBuffer }).promise
+                };
+
+                document.getElementById('split-preview-card').style.display = 'block';
+                await renderSplitPages();
+
+            } catch (error) {
+                alert('Error loading PDF: ' + error.message);
+            }
+        }
+
+        async function renderSplitPages() {
+            const grid = document.getElementById('split-pages');
+            grid.innerHTML = '';
+            splitSelectedPages.clear();
+
+            for (let i = 1; i <= splitPdf.pdf.numPages; i++) {
+                const page = await splitPdf.pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 0.3 });
+
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+                const card = document.createElement('div');
+                card.className = 'page-card';
+                card.dataset.page = i;
+                card.innerHTML = `
+                    <div class="checkbox"><i data-lucide="check"></i></div>
+                    <img src="${canvas.toDataURL('image/jpeg', 0.6)}">
+                    <div class="page-num">Page ${i}</div>
+                `;
+
+                card.addEventListener('click', () => {
+                    if (splitSelectedPages.has(i)) {
+                        splitSelectedPages.delete(i);
+                        card.classList.remove('selected');
+                    } else {
+                        splitSelectedPages.add(i);
+                        card.classList.add('selected');
+                    }
+                });
+
+                grid.appendChild(card);
+            }
+
+            lucide.createIcons();
+        }
+
+        function selectAllSplitPages() {
+            document.querySelectorAll('#split-pages .page-card').forEach(card => {
+                const page = parseInt(card.dataset.page);
+                splitSelectedPages.add(page);
+                card.classList.add('selected');
+            });
+        }
+
+        function deselectAllSplitPages() {
+            splitSelectedPages.clear();
+            document.querySelectorAll('#split-pages .page-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+        }
+
+        async function splitPdfFile() {
+            if (splitSelectedPages.size === 0) {
+                alert('Please select at least one page');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            let newPdf = null;
+            const pages = Array.from(splitSelectedPages).sort((a, b) => a - b);
+
+            for (const pageNum of pages) {
+                const page = await splitPdf.pdf.getPage(pageNum);
+                const viewport = page.getViewport({ scale: 1.5 });
+
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+                const origVp = page.getViewport({ scale: 1 });
+                const orientation = origVp.width > origVp.height ? 'l' : 'p';
+
+                if (!newPdf) {
+                    newPdf = new jsPDF({ orientation, unit: 'pt', format: [origVp.width, origVp.height] });
+                } else {
+                    newPdf.addPage([origVp.width, origVp.height], orientation);
+                }
+
+                const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                newPdf.addImage(imgData, 'JPEG', 0, 0, origVp.width, origVp.height);
+            }
+
+            const blob = newPdf.output('blob');
+            const link = document.createElement('a');
+            link.download = splitPdf.file.name.replace('.pdf', '_extracted.pdf');
+            link.href = URL.createObjectURL(blob);
+            link.click();
         }
 
         function formatSize(bytes) {
