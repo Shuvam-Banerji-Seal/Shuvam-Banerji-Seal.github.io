@@ -471,6 +471,9 @@ footer p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font
     .btn { font-size: 0.88rem; padding: 0.65rem 1.25rem; }
     .meta-row { font-size: 0.72rem; }
     .viewer-info { gap: 0.75rem; font-size: 0.64rem; flex-direction: column; gap: 0.4rem; }
+    .skills-2col-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+    .hero-actions { width: 100%; }
+    .hero-actions .btn { width: 100%; justify-content: center; text-align: center; }
 }
 
 /* --- LIGHT THEME OVERRIDES (creamy coffee) --- */
@@ -652,7 +655,7 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
             </div>
             <div class="card fade-in fade-in-delay-2">
                 <div class="section-file-label">skills.json</div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem;">
+                <div class="skills-2col-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem;">
                     <div>
                         <p style="font-family:var(--font-mono);font-size:.78rem;color:var(--accent-cyan);margin-bottom:.75rem;">// Computational</p>
                         <div class="skills-matrix">
