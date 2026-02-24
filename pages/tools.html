@@ -1,262 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description"
-        content="Chemistry Tools & Utilities - LLM Chat, PDF Tools, Games, and Research Paper Finder">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Chemistry Tools & Utilities - LLM Chat, PDF Tools, Games, and Research utilities by Shuvam Banerji Seal">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <title>Tools - Shuvam Banerji Seal</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Tools &middot; Shuvam Banerji Seal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
-        rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
+    <link rel="stylesheet" href="../assets/css/mobile.css">
     <link rel="stylesheet" href="../assets/css/theme.css">
     <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/animations.css">
-    <link rel="stylesheet" href="../assets/css/mobile.css">
-    <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
-    <!-- Overrides - Must be last -->
-    <link rel="stylesheet" href="../assets/css/overrides.css">
-    <link rel="stylesheet" href="../assets/css/tools.css">
-
-    <!-- Cache Control -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
+    <style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body { font-family: var(--font-body,'Inter',sans-serif); background: var(--bg-deep); color: var(--text-primary); line-height: 1.7; overflow-x: hidden; }
+body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px); pointer-events: none; z-index: 9999; }
+html:not([data-theme="dark"]) body::before { opacity: 0.4; }
+.page-grid-bg { position: fixed; inset: 0; background-image: linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px); background-size: 60px 60px; z-index: 0; pointer-events: none; }
+html:not([data-theme="dark"]) .page-grid-bg { background-image: linear-gradient(rgba(139,101,68,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(139,101,68,0.035) 1px,transparent 1px); }
+main { position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+.header-terminal { background: rgba(10,16,32,0.94); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 0 20px rgba(0,212,255,0.12),var(--shadow-card); margin-bottom: 3rem; }
+html:not([data-theme="dark"]) .header-terminal { background: rgba(245,235,215,0.96); border-color: rgba(139,101,68,0.35); }
+.header-titlebar { background: #0d1526; padding: 0.55rem 1.1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,212,255,0.1); font-family: var(--font-mono); font-size: 0.73rem; }
+html:not([data-theme="dark"]) .header-titlebar { background: #e8d5b0; border-bottom-color: rgba(139,101,68,0.25); }
+.titlebar-dots { display: flex; gap: 0.4rem; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.titlebar-path { color: var(--accent-cyan); font-family: var(--font-mono); display: flex; gap: 0.35rem; }
+.path-host { color: var(--accent-green); }
+html:not([data-theme="dark"]) .titlebar-path { color: #8b4513; }
+html:not([data-theme="dark"]) .path-host { color: #3d6b2e; }
+.titlebar-right { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.73rem; }
+.header-body { padding: 2rem 2.5rem; }
+.tools-page-title { font-size: 2rem; font-weight: 800; background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.4rem; font-family: var(--font-mono); }
+.tools-page-sub { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem; }
+.tools-stats { display: flex; gap: 2rem; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.8rem; }
+.stat-key { color: var(--accent-cyan); }
+.stat-val { color: var(--text-secondary); }
+html:not([data-theme="dark"]) .stat-key { color: #8b4513; }
+.tools-section { margin-bottom: 3rem; }
+.section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-family: var(--font-mono); }
+.section-icon { font-size: 1.1rem; }
+.section-label { font-size: 0.8rem; color: var(--text-muted); border-left: 2px solid var(--accent-cyan); padding-left: 0.75rem; }
+.section-title { font-size: 1.05rem; font-weight: 700; color: var(--accent-cyan); }
+html:not([data-theme="dark"]) .section-label { border-color: #8b4513; }
+html:not([data-theme="dark"]) .section-title { color: #8b4513; }
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 1.4rem; }
+.tool-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: transform 0.25s,box-shadow 0.25s,border-color 0.25s; display: flex; flex-direction: column; }
+html:not([data-theme="dark"]) .tool-card { background: rgba(255,255,255,0.7); border-color: rgba(139,101,68,0.2); }
+.tool-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,212,255,0.12); border-color: var(--accent-cyan); }
+html:not([data-theme="dark"]) .tool-card:hover { box-shadow: 0 12px 40px rgba(201,124,58,0.15); border-color: #8b4513; }
+.tool-card.featured { border-color: rgba(0,212,255,0.35); background: rgba(0,212,255,0.04); }
+html:not([data-theme="dark"]) .tool-card.featured { border-color: rgba(139,101,68,0.45); background: rgba(139,101,68,0.06); }
+.tool-titlebar { background: #0d1526; padding: 0.42rem 0.9rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,212,255,0.1); font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); }
+html:not([data-theme="dark"]) .tool-titlebar { background: #e8d5b0; border-bottom-color: rgba(139,101,68,0.2); }
+.tool-dots { display: flex; gap: 5px; }
+.tdot { width: 9px; height: 9px; border-radius: 50%; }
+.tdot-r{background:#ff5f57}.tdot-y{background:#febc2e}.tdot-g{background:#28c840}
+.tool-label { color: var(--accent-cyan); font-family: var(--font-mono); }
+.tool-featured-badge { background: rgba(0,212,255,0.15); color: var(--accent-cyan); padding: 0.1rem 0.5rem; border-radius: 10px; font-size: 0.65rem; border: 1px solid rgba(0,212,255,0.3); }
+html:not([data-theme="dark"]) .tool-label { color: #8b4513; }
+html:not([data-theme="dark"]) .tool-featured-badge { background: rgba(139,101,68,0.12); color: #8b4513; border-color: rgba(139,101,68,0.3); }
+.tool-body { padding: 1.3rem 1.4rem; flex: 1; display: flex; flex-direction: column; }
+.tool-icon-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; }
+.tool-emoji { font-size: 1.75rem; line-height: 1; }
+.tool-name { font-weight: 700; font-size: 1rem; color: var(--text-primary); }
+.tool-desc { font-size: 0.858rem; color: var(--text-secondary); line-height: 1.65; flex: 1; margin-bottom: 1.1rem; }
+.tool-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.06); }
+html:not([data-theme="dark"]) .tool-footer { border-color: rgba(139,101,68,0.15); }
+.tool-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.tool-tag { padding: 0.15rem 0.5rem; border-radius: 20px; background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.15); color: var(--text-muted); font-family: var(--font-mono); font-size: 0.67rem; }
+html:not([data-theme="dark"]) .tool-tag { background: rgba(139,101,68,0.06); border-color: rgba(139,101,68,0.2); }
+.tool-launch { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.35rem 0.85rem; border-radius: 7px; background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; white-space: nowrap; }
+.tool-launch:hover { background: var(--accent-cyan); color: #0a1020; }
+html:not([data-theme="dark"]) .tool-launch { border-color: #8b4513; color: #8b4513; }
+html:not([data-theme="dark"]) .tool-launch:hover { background: #8b4513; color: #fff; }
+footer { position: relative; z-index: 1; background: var(--bg-dark); border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; font-family: var(--font-mono); font-size: .78rem; color: var(--text-muted); }
+.footer-social { display: flex; justify-content: center; gap: 1.25rem; margin-bottom: 1rem; }
+.social-link { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border); color: var(--text-secondary); transition: all .2s; text-decoration: none; }
+.social-link:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+html:not([data-theme="dark"]) .social-link:hover { border-color: #8b4513; color: #8b4513; }
+@media(max-width:640px){.tools-grid{grid-template-columns:1fr}.tools-stats{gap:1rem}.header-body{padding:1.5rem 1.25rem}}
+    </style>
 </head>
-
 <body>
-    <div id="navbar-container"></div>
-    <script type="module" src="../assets/js/navbar.js"></script>
-
-    <!-- Molecule Canvas Background -->
-    <canvas id="molecules-canvas"></canvas>
-
-    <main class="container tools-container">
-        <header class="tools-header">
-            <h1 class="page-title">
-                <i data-lucide="wrench" class="inline-block"></i>
-                Chemistry Tools & Utilities
-            </h1>
-            <p class="page-subtitle">Browser-based tools for research, productivity, and fun</p>
-        </header>
-
-        <!-- Tools Grid -->
+<div class="page-grid-bg"></div>
+<div id="navbar-container"></div>
+<main>
+    <div class="header-terminal">
+        <div class="header-titlebar">
+            <div class="titlebar-dots"><span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span></div>
+            <div class="titlebar-path"><span class="path-host">shuvam@archbox</span><span>&#9656;</span><span>~/portfolio/tools</span></div>
+            <div class="titlebar-right">tools.sh</div>
+        </div>
+        <div class="header-body">
+            <div class="tools-page-title">// tools</div>
+            <div class="tools-page-sub">Browser-based utilities for research, chemistry, productivity, and fun. No install needed.</div>
+            <div class="tools-stats">
+                <span><span class="stat-key">count:</span>&nbsp;<span class="stat-val">12 tools</span></span>
+                <span><span class="stat-key">stack:</span>&nbsp;<span class="stat-val">HTML &middot; JS &middot; WebAssembly</span></span>
+                <span><span class="stat-key">status:</span>&nbsp;<span class="stat-val" style="color:var(--accent-green)">&#9679; all operational</span></span>
+            </div>
+        </div>
+    </div>
+    <div class="tools-section">
+        <div class="section-header">
+            <span class="section-icon">&#x1F916;</span>
+            <div>
+                <div class="section-label">category_01</div>
+                <div class="section-title">AI &amp; Research</div>
+            </div>
+        </div>
         <div class="tools-grid">
-            <!-- LLM Chat Tool -->
-            <div class="tool-card glassmorphic" data-tool="llm-chat">
-                <div class="tool-header">
-                    <i data-lucide="message-circle" class="tool-icon"></i>
-                    <h3>Chat with LLMs</h3>
+            <div class="tool-card featured" data-tool="llm-chat">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">llm-chat.sh</span><span class="tool-featured-badge">featured</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F4AC;</span><span class="tool-name">Chat with LLMs</span></div>
+                    <div class="tool-desc">Chat with OpenAI, Groq, Anthropic, and OpenRouter models using your own API keys. Full conversation history and model switching.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">AI</span><span class="tool-tag">chat</span><span class="tool-tag">API</span></div><button class="tool-launch" onclick="openTool('llm-chat')">launch &rarr;</button></div>
                 </div>
-                <p class="tool-description">Chat with various AI models using your own API keys (OpenAI, Groq,
-                    Anthropic, OpenRouter)</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('llm-chat')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
             </div>
-
-            <!-- Research Paper Finder -->
-            <div class="tool-card glassmorphic" data-tool="paper-finder">
-                <div class="tool-header">
-                    <i data-lucide="search" class="tool-icon"></i>
-                    <h3>Research Paper Finder</h3>
+            <div class="tool-card" data-tool="paper-finder">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">paper-finder.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F50D;</span><span class="tool-name">Research Paper Finder</span></div>
+                    <div class="tool-desc">Search and discover research papers via Semantic Scholar and arXiv APIs. Filter by field, year, and citation count.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">research</span><span class="tool-tag">arXiv</span></div><button class="tool-launch" onclick="openTool('paper-finder')">launch &rarr;</button></div>
                 </div>
-                <p class="tool-description">Search and discover research papers using Semantic Scholar and arXiv APIs
-                </p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('paper-finder')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
             </div>
-
-            <!-- PDF to Image Pro -->
-            <div class="tool-card glassmorphic" data-tool="pdf-to-jpg">
-                <div class="tool-header">
-                    <i data-lucide="image" class="tool-icon"></i>
-                    <h3>PDF to Image Pro</h3>
+            <div class="tool-card featured" data-tool="mermaid-editor">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">mermaid.sh</span><span class="tool-featured-badge">featured</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F4CA;</span><span class="tool-name">Mermaid Diagram Editor</span></div>
+                    <div class="tool-desc">Full-featured diagram editor with live preview, VS Code-style editing, syntax highlighting, and multi-format SVG/PNG export.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">diagrams</span><span class="tool-tag">SVG</span></div><button class="tool-launch" onclick="openTool('mermaid-editor')">launch &rarr;</button></div>
                 </div>
-                <p class="tool-description">Convert PDFs to images with batch processing, page selection, and multiple
-                    formats (JPG, PNG, WebP)</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('pdf-to-jpg')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- PDF Toolkit Pro -->
-            <div class="tool-card glassmorphic featured" data-tool="pdf-reducer">
-                <div class="tool-header">
-                    <i data-lucide="file-cog" class="tool-icon"></i>
-                    <h3>PDF Toolkit Pro</h3>
-                </div>
-                <p class="tool-description">Compress, merge, split, and optimize PDFs with visual previews and drag-drop
-                    reordering</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('pdf-reducer')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- Molecular Visualizer -->
-            <div class="tool-card glassmorphic" data-tool="molecule-viz">
-                <div class="tool-header">
-                    <i data-lucide="atom" class="tool-icon"></i>
-                    <h3>Molecule Visualizer</h3>
-                </div>
-                <p class="tool-description">Interactive 3D visualization of chemical molecules and structures</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('molecule-viz')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- Chemistry Games -->
-            <div class="tool-card glassmorphic" data-tool="games">
-                <div class="tool-header">
-                    <i data-lucide="gamepad-2" class="tool-icon"></i>
-                    <h3>Chemistry Games</h3>
-                </div>
-                <p class="tool-description">Fun chemistry-themed browser games and quizzes</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('games')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- Unit Converter -->
-            <div class="tool-card glassmorphic" data-tool="unit-converter">
-                <div class="tool-header">
-                    <i data-lucide="ruler" class="tool-icon"></i>
-                    <h3>Unit Converter</h3>
-                </div>
-                <p class="tool-description">Convert between various scientific units (length, mass, temperature, energy,
-                    etc.)</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('unit-converter')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- Molecular Weight Calculator -->
-            <div class="tool-card glassmorphic" data-tool="mol-weight">
-                <div class="tool-header">
-                    <i data-lucide="calculator" class="tool-icon"></i>
-                    <h3>Molecular Weight Calculator</h3>
-                </div>
-                <p class="tool-description">Calculate molecular weight from chemical formulas</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('mol-weight')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- Interactive Periodic Table -->
-            <div class="tool-card glassmorphic" data-tool="periodic-table">
-                <div class="tool-header">
-                    <i data-lucide="table-2" class="tool-icon"></i>
-                    <h3>Interactive Periodic Table</h3>
-                </div>
-                <p class="tool-description">Explore elements with detailed information, properties, and electron
-                    configurations</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('periodic-table')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- Equation Balancer -->
-            <div class="tool-card glassmorphic" data-tool="equation-balancer">
-                <div class="tool-header">
-                    <i data-lucide="scale" class="tool-icon"></i>
-                    <h3>Equation Balancer</h3>
-                </div>
-                <p class="tool-description">Balance chemical equations automatically with step-by-step explanations</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('equation-balancer')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- pH Calculator -->
-            <div class="tool-card glassmorphic" data-tool="ph-calculator">
-                <div class="tool-header">
-                    <i data-lucide="droplet" class="tool-icon"></i>
-                    <h3>pH Calculator</h3>
-                </div>
-                <p class="tool-description">Calculate pH, pOH, and concentrations for acids and bases</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('ph-calculator')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- Mermaid Diagram Editor -->
-            <div class="tool-card glassmorphic featured" data-tool="mermaid-editor">
-                <div class="tool-header">
-                    <i data-lucide="git-branch" class="tool-icon"></i>
-                    <h3>Mermaid Diagram Editor</h3>
-                </div>
-                <p class="tool-description">Professional diagram editor with live preview, VS Code-style editing, and
-                    multi-format export</p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('mermaid-editor')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
-            </div>
-
-            <!-- Audio Studio -->
-            <div class="tool-card glassmorphic" data-tool="audio-studio">
-                <div class="tool-header">
-                    <i data-lucide="mic" class="tool-icon"></i>
-                    <h3>Audio Studio</h3>
-                </div>
-                <p class="tool-description">Professional audio recording, editing, and processing with effects and tuner
-                </p>
-                <button class="btn btn-primary tool-btn" onclick="openTool('audio-studio')">
-                    Launch Tool <i data-lucide="arrow-right" class="ml-2"></i>
-                </button>
             </div>
         </div>
-    </main>
-
-    <!-- Tool Modals Container -->
-    <div id="tool-modals"></div>
-
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="GitHub Profile">
-                    <i data-lucide="github" class="w-5 h-5"></i>
-                </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="LinkedIn Profile">
-                    <i data-lucide="linkedin" class="w-5 h-5"></i>
-                </a>
-                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="ORCID Profile">
-                    <i data-lucide="award" class="w-5 h-5"></i>
-                </a>
-                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
-                </a>
+    </div>
+    <div class="tools-section">
+        <div class="section-header">
+            <span class="section-icon">&#x1F4C4;</span>
+            <div>
+                <div class="section-label">category_02</div>
+                <div class="section-title">PDF &amp; Media</div>
             </div>
-            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i
-                    data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i
-                    data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
         </div>
-    </footer>
-
-    <script type="module" src="../assets/js/main.js"></script>
-    <script type="module" src="../assets/js/enhanced.js"></script>
-    <script type="module" src="../assets/js/tools-main.js"></script>
-    <script type="module" src="../assets/js/molecule-background.js"></script>
-    <script>
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-    </script>
+        <div class="tools-grid">
+            <div class="tool-card" data-tool="pdf-to-jpg">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">pdf-to-img.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F5BC;&#xFE0F;</span><span class="tool-name">PDF to Image Pro</span></div>
+                    <div class="tool-desc">Convert PDFs to images with batch processing, page selection, and export as JPG, PNG, or WebP formats.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">PDF</span><span class="tool-tag">images</span></div><button class="tool-launch" onclick="openTool('pdf-to-jpg')">launch &rarr;</button></div>
+                </div>
+            </div>
+            <div class="tool-card featured" data-tool="pdf-reducer">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">pdf-toolkit.sh</span><span class="tool-featured-badge">featured</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F5DC;&#xFE0F;</span><span class="tool-name">PDF Toolkit Pro</span></div>
+                    <div class="tool-desc">Compress, merge, split, and optimize PDFs with visual previews and drag-drop reordering of pages.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">PDF</span><span class="tool-tag">compress</span><span class="tool-tag">merge</span></div><button class="tool-launch" onclick="openTool('pdf-reducer')">launch &rarr;</button></div>
+                </div>
+            </div>
+             <div class="tool-card" data-tool="audio-studio">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">audio-studio.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F3A4;</span><span class="tool-name">Audio Studio</span></div>
+                    <div class="tool-desc">Browser-based audio recording, editing, and processing with effects, filters, and a guitar tuner.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">audio</span><span class="tool-tag">recording</span></div><button class="tool-launch" onclick="openTool('audio-studio')">launch &rarr;</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tools-section">
+        <div class="section-header">
+            <span class="section-icon">&#x2697;&#xFE0F;</span>
+            <div>
+                <div class="section-label">category_03</div>
+                <div class="section-title">Chemistry</div>
+            </div>
+        </div>
+        <div class="tools-grid">
+            <div class="tool-card" data-tool="molecule-viz">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">mol-viz.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x269B;&#xFE0F;</span><span class="tool-name">Molecule Visualizer</span></div>
+                    <div class="tool-desc">Interactive 3D visualization of chemical molecules from PDB and SDF files using WebGL.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">3D</span><span class="tool-tag">PDB</span><span class="tool-tag">WebGL</span></div><button class="tool-launch" onclick="openTool('molecule-viz')">launch &rarr;</button></div>
+                </div>
+            </div>
+            <div class="tool-card" data-tool="periodic-table">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">periodic-table.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F52C;</span><span class="tool-name">Interactive Periodic Table</span></div>
+                    <div class="tool-desc">Explore elements with detailed properties, electron configurations, isotopes, and spectral data.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">elements</span><span class="tool-tag">chemistry</span></div><button class="tool-launch" onclick="openTool('periodic-table')">launch &rarr;</button></div>
+                </div>
+            </div>
+            <div class="tool-card" data-tool="equation-balancer">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">eq-balancer.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x2696;&#xFE0F;</span><span class="tool-name">Equation Balancer</span></div>
+                    <div class="tool-desc">Balance chemical equations automatically with step-by-step matrix algebra explanations and stoichiometry.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">equations</span><span class="tool-tag">balancing</span></div><button class="tool-launch" onclick="openTool('equation-balancer')">launch &rarr;</button></div>
+                </div>
+            </div>
+            <div class="tool-card" data-tool="ph-calculator">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">ph-calc.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F9EA;</span><span class="tool-name">pH Calculator</span></div>
+                    <div class="tool-desc">Calculate pH, pOH, and concentrations for strong/weak acids and bases, including buffer solutions.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">pH</span><span class="tool-tag">acids</span><span class="tool-tag">bases</span></div><button class="tool-launch" onclick="openTool('ph-calculator')">launch &rarr;</button></div>
+                </div>
+            </div>
+            <div class="tool-card" data-tool="mol-weight">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">mol-weight.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x2696;&#xFE0F;</span><span class="tool-name">Molecular Weight Calc</span></div>
+                    <div class="tool-desc">Calculate molecular weight from chemical formulas with per-element breakdown and molar mass reference.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">molar mass</span><span class="tool-tag">formula</span></div><button class="tool-launch" onclick="openTool('mol-weight')">launch &rarr;</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tools-section">
+        <div class="section-header">
+            <span class="section-icon">&#x1F3AE;</span>
+            <div>
+                <div class="section-label">category_04</div>
+                <div class="section-title">Games &amp; Misc</div>
+            </div>
+        </div>
+        <div class="tools-grid">
+            <div class="tool-card" data-tool="games">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">games.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F3AE;</span><span class="tool-name">Chemistry Games</span></div>
+                    <div class="tool-desc">Fun chemistry-themed browser games, element quizzes, and reaction simulators to learn while playing.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">games</span><span class="tool-tag">quiz</span></div><button class="tool-launch" onclick="openTool('games')">launch &rarr;</button></div>
+                </div>
+            </div>
+            <div class="tool-card" data-tool="unit-converter">
+                <div class="tool-titlebar"><div class="tool-dots"><span class="tdot tdot-r"></span><span class="tdot tdot-y"></span><span class="tdot tdot-g"></span></div><span class="tool-label">unit-conv.sh</span></div>
+                <div class="tool-body">
+                    <div class="tool-icon-row"><span class="tool-emoji">&#x1F4D0;</span><span class="tool-name">Unit Converter</span></div>
+                    <div class="tool-desc">Convert between scientific units: length, mass, temperature, energy, pressure, and more with high precision.</div>
+                    <div class="tool-footer"><div class="tool-tags"><span class="tool-tag">units</span><span class="tool-tag">SI</span><span class="tool-tag">imperial</span></div><button class="tool-launch" onclick="openTool('unit-converter')">launch &rarr;</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div id="tool-modals"></div>
+<footer>
+    <div class="footer-social">
+        <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener" class="social-link" aria-label="GitHub"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+        <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+    </div>
+    <p>&copy; <span id="footer-year"></span> Shuvam Banerji Seal &middot; All Rights Reserved.</p>
+    <p style="margin-top:.5rem;"><button data-theme-toggle style="background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:.35rem .9rem;font-family:var(--font-mono);font-size:.75rem;cursor:pointer;transition:all .2s;">&#x25D1; toggle theme</button></p>
+</footer>
+<script type="module" src="../assets/js/navbar.js"></script>
+<script type="module" src="../assets/js/main.js"></script>
+<script type="module" src="../assets/js/tools-main.js"></script>
+<script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
 </body>
-
 </html>

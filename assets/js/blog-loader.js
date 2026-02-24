@@ -9,11 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Active tag filter state
+let activeTag = 'all';
+let allPosts = [];
+
 async function loadBlogList() {
     const container = document.getElementById('blog-content');
     if (!container) return;
-
-    container.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Loading posts...</div>';
 
     try {
         let response;
@@ -21,59 +23,113 @@ async function loadBlogList() {
             response = await fetch('../blog-manifest.json?v=' + Date.now());
             if (!response.ok) throw new Error('Relative path failed');
         } catch (e) {
-            console.log('Retrying with root path...');
             response = await fetch('/blog-manifest.json?v=' + Date.now());
         }
 
-        if (!response.ok) throw new Error(`Failed to load blog manifest: ${response.status} ${response.statusText}`);
+        if (!response.ok) throw new Error(`Failed to load blog manifest: ${response.status}`);
 
         const posts = await response.json();
+        allPosts = posts;
+
+        // Update stat count
+        const statEl = document.getElementById('stat-count');
+        if (statEl) statEl.textContent = posts.length + ' post' + (posts.length !== 1 ? 's' : '');
 
         if (posts.length === 0) {
-            container.innerHTML = '<p class="text-center text-gray-500">No posts found.</p>';
+            container.innerHTML = '<div class="blog-empty">// no posts found</div>';
             return;
         }
 
-        let html = '<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">';
+        // Build tag list
+        const allTags = ['all', ...new Set(posts.flatMap(p => p.tags || []))];
+        const tagContainer = document.getElementById('tag-filters');
+        if (tagContainer) {
+            tagContainer.innerHTML = allTags.map(tag =>
+                `<button class="tag-filter-btn${tag === 'all' ? ' active' : ''}" data-tag="${tag}">${tag}</button>`
+            ).join('');
+            tagContainer.querySelectorAll('.tag-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activeTag = btn.dataset.tag;
+                    tagContainer.querySelectorAll('.tag-filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderCards(allPosts);
+                });
+            });
+        }
 
-        posts.forEach(post => {
-            html += `
-                <article class="card glassmorphic blog-post-card animate-on-scroll">
-                    <header>
-                        <div class="mb-2">
-                            ${post.tags.map(tag => `<span class="tech-tag">${tag}</span>`).join('')}
-                        </div>
-                        <h2 class="blog-title">
-                            <a href="?post=${post.filename}">${post.title}</a>
-                        </h2>
-                        <p class="blog-meta">Published on: ${new Date(post.date).toLocaleDateString()}</p>
-                    </header>
-                    <p class="blog-excerpt">
-                        ${post.description || 'Click to read more...'}
-                    </p>
-                    <a href="?post=${post.filename}" class="read-more-link">Read More <i data-lucide="arrow-right" class="inline-block w-4 h-4 ml-1"></i></a>
-                </article>
-            `;
-        });
+        // Show filter bar
+        const filterBar = document.getElementById('filter-bar');
+        if (filterBar) filterBar.style.display = 'flex';
 
-        html += '</div>';
-        container.innerHTML = html;
+        // Search input
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', () => renderCards(allPosts));
+        }
 
-        // Re-initialize icons and animations
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-        observeScrollAnimations();
+        renderCards(posts);
 
     } catch (error) {
         console.error('Error loading blog list:', error);
-        container.innerHTML = `<p class="text-center text-red-500">Error loading posts. Please try again later.</p>`;
+        container.innerHTML = `<div class="blog-empty">// error loading posts<br><span style="color:var(--text-muted);font-size:.8rem">${error.message}</span></div>`;
     }
+}
+
+function renderCards(posts) {
+    const container = document.getElementById('blog-content');
+    if (!container) return;
+
+    const searchVal = (document.getElementById('search-input')?.value || '').toLowerCase();
+
+    const filtered = posts.filter(post => {
+        const matchTag = activeTag === 'all' || (post.tags || []).map(t => t.toLowerCase()).includes(activeTag.toLowerCase());
+        const matchSearch = !searchVal ||
+            post.title.toLowerCase().includes(searchVal) ||
+            (post.description || '').toLowerCase().includes(searchVal) ||
+            (post.tags || []).some(t => t.toLowerCase().includes(searchVal));
+        return matchTag && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="blog-empty">// no matching posts</div>';
+        return;
+    }
+
+    let html = '<div class="blog-grid">';
+    filtered.forEach(post => {
+        const dateStr = post.date ? new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+        const tags = (post.tags || []).map(t => `<span class="card-tag">${t}</span>`).join('');
+        const filename = post.filename || '';
+        html += `
+            <article class="blog-card">
+                <div class="card-titlebar">
+                    <div class="card-dots">
+                        <span class="cdot cdot-r"></span>
+                        <span class="cdot cdot-y"></span>
+                        <span class="cdot cdot-g"></span>
+                    </div>
+                    <span class="card-file">${filename.replace('.md', '')}.md</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">${tags}</div>
+                    <a href="?post=${filename}" class="card-title">${post.title}</a>
+                    <div class="card-excerpt">${post.description || 'Click to read more...'}</div>
+                    <div class="card-footer">
+                        <span class="card-date">${dateStr}</span>
+                        <a href="?post=${filename}" class="card-read">read <span class="card-read-arrow">&rarr;</span></a>
+                    </div>
+                </div>
+            </article>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
 }
 
 async function loadBlogPost(filename) {
     const container = document.getElementById('blog-content');
     if (!container) return;
 
-    container.innerHTML = '<div class="text-center"><span class="loading-spinner"></span> Loading post...</div>';
+    container.innerHTML = '<div class="blog-loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span><span style="margin-left:.5rem;">loading post&hellip;</span></div>';
 
     try {
         let response;
@@ -94,7 +150,6 @@ async function loadBlogPost(filename) {
         let metadata = {};
 
         if (parts.length >= 3) {
-            // Has frontmatter
             const frontMatter = parts[1];
             content = parts.slice(2).join('---');
             metadata = parseFrontMatter(frontMatter);
@@ -115,60 +170,56 @@ async function loadBlogPost(filename) {
         let htmlContent = marked.parse(content);
 
         // Render Math (KaTeX)
-        // Replace $$...$$ block math
         htmlContent = htmlContent.replace(/\$\$([\s\S]+?)\$\$/g, (match, equation) => {
-            try {
-                return katex.renderToString(equation, { displayMode: true });
-            } catch (e) {
-                return match;
-            }
+            try { return katex.renderToString(equation, { displayMode: true }); } catch (e) { return match; }
         });
-
-        // Replace $...$ inline math
         htmlContent = htmlContent.replace(/\$([^$]+?)\$/g, (match, equation) => {
-            try {
-                return katex.renderToString(equation, { displayMode: false });
-            } catch (e) {
-                return match;
-            }
+            try { return katex.renderToString(equation, { displayMode: false }); } catch (e) { return match; }
         });
 
-        // Build Page
+        const title = metadata.title || 'Untitled Post';
+        const tags = (metadata.tags || []).map(t => `<span class="post-tag">${t}</span>`).join('');
+        const dateStr = metadata.date ? new Date(metadata.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+        const wordCount = content.trim().split(/\s+/).length;
+        const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
         const pageHtml = `
-            <div class="max-w-4xl mx-auto">
-                <a href="blog.html" class="btn btn-secondary mb-8 inline-flex items-center">
-                    <i data-lucide="arrow-left" class="mr-2"></i> Back to Blog
-                </a>
-                
-                <article class="glassmorphic p-8 rounded-xl">
-                    <header class="mb-8 text-center">
-                        <div class="mb-4">
-                            ${(metadata.tags || []).map(tag => `<span class="tech-tag mr-2">${tag}</span>`).join('')}
+            <a href="blog.html" class="post-back-link">&larr; back to blog</a>
+            <div class="post-container">
+                <div class="post-terminal">
+                    <div class="post-titlebar">
+                        <div class="titlebar-dots" style="display:flex;gap:5px;">
+                            <span style="width:11px;height:11px;border-radius:50%;background:#ff5f57;display:inline-block;"></span>
+                            <span style="width:11px;height:11px;border-radius:50%;background:#febc2e;display:inline-block;"></span>
+                            <span style="width:11px;height:11px;border-radius:50%;background:#28c840;display:inline-block;"></span>
                         </div>
-                        <h1 class="text-4xl font-bold mb-4 gradient-text">${metadata.title || 'Untitled Post'}</h1>
-                        <p class="text-gray-500 dark:text-gray-400">
-                            Published on: ${metadata.date ? new Date(metadata.date).toLocaleDateString() : 'Unknown Date'}
-                        </p>
-                    </header>
-                    
-                    <div class="prose dark:prose-invert max-w-none">
-                        ${htmlContent}
+                        <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);">${filename}</span>
+                        <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);">${readTime} min read</span>
                     </div>
-                </article>
-            </div>
-        `;
+                    <div class="post-header">
+                        <div class="post-tags">${tags}</div>
+                        <h1 class="post-title">${title}</h1>
+                        <div class="post-meta">
+                            <span>${dateStr}</span>
+                            <span>&bull; ~${readTime} min read</span>
+                            <span>&bull; ${wordCount} words</span>
+                        </div>
+                    </div>
+                    <div class="post-body">
+                        <div class="prose">${htmlContent}</div>
+                    </div>
+                </div>
+            </div>`;
 
         container.innerHTML = pageHtml;
-
-        // Re-initialize icons
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-
-        // Scroll to top
         window.scrollTo(0, 0);
+
+        // Re-run highlight.js on newly inserted code blocks
+        document.querySelectorAll('.prose pre code').forEach(block => hljs.highlightElement(block));
 
     } catch (error) {
         console.error('Error loading blog post:', error);
-        container.innerHTML = `<p class="text-center text-red-500">Error loading post. Please try again later.</p>`;
+        container.innerHTML = `<div class="blog-empty">// error loading post<br><span style="font-size:.8rem;color:var(--text-muted)">${error.message}</span></div>`;
     }
 }
 
@@ -179,22 +230,10 @@ function parseFrontMatter(frontMatter) {
         if (key && valueParts.length > 0) {
             let value = valueParts.join(':').trim();
             if (value.startsWith('[') && value.endsWith(']')) {
-                value = value.slice(1, -1).split(',').map(s => s.trim());
+                value = value.slice(1, -1).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
             }
             metadata[key.trim()] = value;
         }
     });
     return metadata;
-}
-
-function observeScrollAnimations() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.animate-on-scroll').forEach((el) => observer.observe(el));
 }

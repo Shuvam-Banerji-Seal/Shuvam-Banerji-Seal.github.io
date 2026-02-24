@@ -213,6 +213,16 @@ body::before {
 }
 @keyframes blink-cursor { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
+/* Interactive terminal input */
+.term-input-row { display: flex; align-items: center; }
+.term-input {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--text-primary); font-family: var(--font-mono);
+    font-size: 0.85rem; caret-color: var(--accent-green);
+}
+.term-input::selection { background: rgba(0,212,255,0.25); }
+html:not([data-theme="dark"]) .term-input { color: #2c1a0e; caret-color: #3d6b2e; }
+
 /* Protein panel */
 .protein-panel {
     position: relative; z-index: 1;
@@ -561,7 +571,7 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
             <span style="color:#475569">[INFO] </span><span style="color:#94a3b8">Loading DFT, RAG, ML modules...</span>
         </div>
         <div class="loading-line" style="animation-delay:1.2s">
-            <span style="color:#475569">[INFO] </span><span style="color:#94a3b8">Fetching protein 1UBQ from RCSB PDB...</span>
+            <span style="color:#475569">[INFO] </span><span style="color:#94a3b8">Loading ATP molecule from local PDB...</span>
         </div>
         <div class="loading-line" style="animation-delay:1.6s">
             <span style="color:#00ff88">[OK] </span><span style="color:#94a3b8">All systems nominal. Launching portfolio.</span>
@@ -598,16 +608,15 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
     <div class="protein-panel fade-in fade-in-delay-2">
         <div class="viewer-window">
             <div class="viewer-titlebar">
-                <span class="viewer-label">PYMOL-WEB // 1UBQ &mdash; HUMAN UBIQUITIN</span>
+                <span class="viewer-label">OPENMOL // ATP &mdash; ADENOSINE TRIPHOSPHATE</span>
                 <span class="viewer-label" style="color:var(--accent-green);font-size:.65rem;">&#9679; LIVE</span>
             </div>
             <canvas id="protein-canvas"></canvas>
             <div class="viewer-info">
-                <div class="info-item"><span>PDB</span>&nbsp;1UBQ</div>
-                <div class="info-item"><span>CHAIN</span>&nbsp;A</div>
-                <div class="info-item"><span>RES</span>&nbsp;76</div>
-                <div class="info-item"><span>ATOMS</span>&nbsp;660</div>
-                <div class="info-item"><span>RES.</span>&nbsp;1.80&#8491;</div>
+                <div class="info-item"><span>PDB</span>&nbsp;ATP</div>
+                <div class="info-item"><span>ATOMS</span>&nbsp;44</div>
+                <div class="info-item"><span>FORMULA</span>&nbsp;C₁₀H₁₆N₅O₁₃P₃</div>
+                <div class="info-item" id="atp-hover-info"><span>DRAG</span>&nbsp;to rotate</div>
             </div>
         </div>
         <div class="hero-actions">
@@ -636,7 +645,6 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
                 <div><span class="log-key">RESEARCHER: </span><span class="log-val">Shuvam Banerji Seal</span></div>
                 <div><span class="log-key">INSTITUTION:</span><span class="log-val"> IISER Kolkata, West Bengal, India</span></div>
                 <div><span class="log-key">PROGRAM:    </span><span class="log-val">BS-MS (Chemistry + CS Minor)</span></div>
-                <div><span class="log-key">CGPA:       </span><span class="log-val">8.2 / 10.0</span></div>
                 <div><span class="log-comment">// Research Focus: Computational Chemistry x Artificial Intelligence</span></div>
             </div>
             <div class="log-block fade-in fade-in-delay-1">
@@ -717,15 +725,17 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
 
         <!-- Profile card -->
         <div class="profile-card fade-in fade-in-delay-2">
-            <img src="assets_for_my_website/my_pictures/sbs_001.webp"
-                 alt="Shuvam Banerji Seal" class="profile-img"
-                 onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/main/assets_for_my_website/my_pictures/sbs_001.webp';">
+            <picture>
+                <source srcset="assets_for_my_website/my_pictures/sbs_001.webp" type="image/webp">
+                <img src="assets_for_my_website/my_pictures/sbs_001.jpg"
+                     alt="Shuvam Banerji Seal" class="profile-img"
+                     onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/main/assets_for_my_website/my_pictures/sbs_001.jpg';">
+            </picture>
             <div class="profile-meta">
                 <div class="meta-row"><span class="meta-key">NAME</span><span>Shuvam B. Seal</span></div>
                 <div class="meta-row"><span class="meta-key">ROLE</span><span>BS-MS Student</span></div>
                 <div class="meta-row"><span class="meta-key">INST</span><span>IISER Kolkata</span></div>
                 <div class="meta-row"><span class="meta-key">SPEC</span><span>Chem + CS</span></div>
-                <div class="meta-row"><span class="meta-key">CGPA</span><span>8.2 / 10</span></div>
                 <div class="meta-row"><span class="meta-key">STATUS</span><span style="color:var(--accent-green);">&#9679; Active</span></div>
             </div>
         </div>
@@ -910,60 +920,230 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
     });
 })();
 
-/* ----- Terminal typewriter ----- */
+/* ----- Terminal typewriter + interactive shell ----- */
 (function () {
     const termBody = document.getElementById('term-body');
     if (!termBody) return;
+
+    // ── Command registry ────────────────────────────────────────────────────
+    const COMMANDS = {
+        help: () => [
+            '<span style="color:#00d4ff;font-weight:600">Available commands:</span>',
+            '  <span style="color:#00ff88">whoami</span>       — display current user',
+            '  <span style="color:#00ff88">cat role.txt</span> — show current role',
+            '  <span style="color:#00ff88">ls research/</span> — list research areas',
+            '  <span style="color:#00ff88">ls projects/</span> — list featured projects',
+            '  <span style="color:#00ff88">cat about.txt</span>— brief biography',
+            '  <span style="color:#00ff88">cat skills.md</span>— technical skills',
+            '  <span style="color:#00ff88">cat contacts.txt</span>— contact info',
+            '  <span style="color:#00ff88">git log</span>      — recent activity',
+            '  <span style="color:#00ff88">pwd</span>          — print working directory',
+            '  <span style="color:#00ff88">date</span>         — current date/time',
+            '  <span style="color:#00ff88">uname -a</span>    — system info',
+            '  <span style="color:#00ff88">python3 demo.py</span>— run a quick demo',
+            '  <span style="color:#00ff88">./run-research.sh</span>— show research pipeline',
+            '  <span style="color:#00ff88">clear</span>        — clear terminal',
+            '  <span style="color:#00ff88">exit</span>         — close terminal',
+        ],
+        whoami: () => ['Shuvam Banerji Seal'],
+        pwd: () => ['/home/shuvam/portfolio'],
+        date: () => [new Date().toString()],
+        'uname -a': () => ['ArchBox GNU/Linux x86_64 6.6.68-LTS — shuvam@archbox'],
+        'cat role.txt': () => [
+            '<span style="color:#00ff88">&gt;</span> Computational Chemist &amp; AI Researcher',
+            '<span style="color:#00ff88">&gt;</span> BS-MS Student, IISER Kolkata (2022–2027)',
+            '<span style="color:#00ff88">&gt;</span> Chemistry Major · Computer Science Minor',
+        ],
+        'ls research/': () => [
+            '<span style="color:#00d4ff">DFT-Catalysis/</span>   <span style="color:#00d4ff">RAG-Systems/</span>   <span style="color:#00d4ff">TREC-NLP/</span>   <span style="color:#00d4ff">Mol-Dynamics/</span>',
+            '<span style="color:#00d4ff">Protein-Struct/</span>  <span style="color:#00d4ff">LLM-Inference/</span> <span style="color:#00d4ff">IR-Research/</span>',
+        ],
+        'ls projects/': () => [
+            '<span style="color:#a78bfa">hybrid-rag/</span>         — RAG pipeline for IISER-K intranet',
+            '<span style="color:#a78bfa">trec-retrieval/</span>     — TREC 2024 NLP retrieval system',
+            '<span style="color:#a78bfa">dft-catalyst/</span>       — DFT modelling of transition states',
+            '<span style="color:#a78bfa">mol-dynamics-sim/</span>   — GROMACS protein folding study',
+            '<span style="color:#a78bfa">sbs-portfolio/</span>      — this website :)',
+        ],
+        'cat about.txt': () => [
+            'I\'m Shuvam — a BS-MS student at IISER Kolkata pursuing',
+            'Chemistry with a Computer Science minor. My research',
+            'focuses on computational chemistry, information retrieval',
+            'systems, and AI-driven solutions for scientific challenges.',
+            '',
+            'I\'ve developed advanced RAG architectures for verifiable',
+            'answer synthesis, engineered retrieval models for TREC,',
+            'and conducted DFT computational modeling of catalysts.',
+        ],
+        'cat skills.md': () => [
+            '<span style="color:#00d4ff"># Computational</span>: DFT/B3LYP · Gaussian 16 · ORCA · VASP · PyMOL',
+            '<span style="color:#a78bfa"># AI/ML</span>: RAG Systems · FAISS · Transformers · LLMs · BM25',
+            '<span style="color:#00ff88"># Programming</span>: Python · Java · C/C++ · JavaScript · Three.js',
+            '<span style="color:#f59e0b"># Tools</span>: Git · Docker · Streamlit · Lucene · SQLite',
+        ],
+        'cat contacts.txt': () => [
+            '<span style="color:#00d4ff">email</span>: sbs22ms076@iiserkol.ac.in',
+            '<span style="color:#a78bfa">github</span>: github.com/Shuvam-Banerji-Seal',
+            '<span style="color:#00ff88">linkedin</span>: linkedin.com/in/mastersbs',
+            '<span style="color:#f59e0b">orcid</span>: orcid.org/0009-0000-0714-569X',
+        ],
+        'git log': () => [
+            '<span style="color:#f59e0b">commit a8f3c2d</span> (HEAD -&gt; main)  Add ATP 3D viewer',
+            'Author: Shuvam Banerji Seal &lt;sbs22ms076@iiserkol.ac.in&gt;',
+            'Date:   ' + new Date().toDateString(),
+            '',
+            '<span style="color:#f59e0b">commit 34ff07b</span>  fix: resolve npm ci lockfile drift',
+            '<span style="color:#f59e0b">commit 91ed23a</span>  feat: resume page redesign (molecular terminal)',
+            '<span style="color:#f59e0b">commit 5b2918e</span>  feat: unified theme system + FOUC fix',
+        ],
+        'python3 demo.py': () => [
+            'Python 3.12.3 | IISER-K Research Environment',
+            '&gt;&gt;&gt; <span style="color:#00d4ff">import rag_pipeline as rag</span>',
+            '&gt;&gt;&gt; <span style="color:#00d4ff">docs = rag.retrieve("DFT catalyst", top_k=5)</span>',
+            '<span style="color:#00ff88">Retrieving...</span> BM25 + dense vectors',
+            '<span style="color:#00ff88">Found 5 relevant documents. Generating answer...</span>',
+            '&gt;&gt;&gt; <span style="color:#00d4ff">print(docs[0].score)</span>',
+            '0.9421',
+            '&gt;&gt;&gt; <span style="color:#94a3b8"># Try: cat projects/ for more</span>',
+        ],
+        './run-research.sh': () => [
+            '<span style="color:#00ff88">[INIT]</span>   Loading molecular environment...',
+            '<span style="color:#00ff88">[LOAD]</span>   ATP.pdb → 44 atoms parsed ✓',
+            '<span style="color:#00ff88">[LOAD]</span>   RAG index: 12,847 documents ✓',
+            '<span style="color:#00ff88">[RUN]</span>    DFT geometry optimisation (B3LYP/6-31G*)...',
+            '<span style="color:#f59e0b">[WAIT]</span>   Gaussian 16 running... converged in 42 cycles',
+            '<span style="color:#00ff88">[DONE]</span>   ΔG‡ = 18.4 kcal/mol (transition state)',
+            '<span style="color:#00ff88">[DONE]</span>   Research pipeline complete.',
+        ],
+        exit: () => {
+            const tw = document.getElementById('hero-terminal');
+            if (tw) { tw.style.transition='opacity 0.5s'; tw.style.opacity='0'; setTimeout(()=>tw.style.display='none',500); }
+            return ['Goodbye!'];
+        },
+        clear: () => { termBody.innerHTML=''; return []; },
+    };
+
+    // ── Intro typewriter sequence ────────────────────────────────────────────
     const lines = [
-        { type: 'cmd',    text: 'whoami' },
-        { type: 'out',    text: 'Shuvam Banerji Seal', cls: 'title-line' },
-        { type: 'cmd',    text: 'cat role.txt' },
-        { type: 'out',    text: '> Computational Chemist & AI Researcher', cls: 'highlight' },
-        { type: 'out',    text: '> BS-MS Student, IISER Kolkata (2022-2027)' },
-        { type: 'cmd',    text: 'ls research/' },
-        { type: 'out',    text: 'DFT-Catalysis/   RAG-Systems/   TREC-NLP/   Mol-Dynamics/' },
-        { type: 'cmd',    text: 'cat interests.md' },
-        { type: 'out',    text: '> Hybrid RAG for Scientific QA' },
-        { type: 'out',    text: '> DFT Modelling of Catalysts' },
-        { type: 'out',    text: '> Protein Structure & Molecular Dynamics' },
-        { type: 'prompt', text: '' },
+        { type: 'cmd', text: 'whoami' },
+        { type: 'out', text: 'Shuvam Banerji Seal', cls: 'title-line' },
+        { type: 'cmd', text: 'cat role.txt' },
+        { type: 'out', text: '> Computational Chemist & AI Researcher', cls: 'highlight' },
+        { type: 'out', text: '> BS-MS Student, IISER Kolkata (2022-2027)' },
+        { type: 'cmd', text: 'ls research/' },
+        { type: 'out', text: 'DFT-Catalysis/   RAG-Systems/   TREC-NLP/   Mol-Dynamics/' },
+        { type: 'cmd', text: 'cat interests.md' },
+        { type: 'out', text: '> Hybrid RAG for Scientific QA' },
+        { type: 'out', text: '> DFT Modelling of Catalysts' },
+        { type: 'out', text: '> Protein Structure & Molecular Dynamics' },
+        { type: 'hint', text: '# Type "help" for available commands' },
     ];
+
     let li = 0, ci = 0, el = null;
     const CD = 26, LD = 110;
+
     function mkLine(l) {
         if (l.type === 'cmd') {
             const d = document.createElement('div');
             d.innerHTML = '<span class="term-prompt">[shuvam@archbox ~/portfolio]$ </span>';
             const s = document.createElement('span'); s.className = 'term-cmd';
             d.appendChild(s); termBody.appendChild(d); return s;
-        } else if (l.type === 'out') {
+        } else if (l.type === 'hint') {
             const d = document.createElement('div');
-            d.className = 'term-output' + (l.cls ? ' ' + l.cls : '');
+            d.className = 'term-output'; d.style.color='var(--text-muted)';
+            d.style.fontSize='0.78rem'; d.style.marginTop='0.5rem';
             termBody.appendChild(d); return d;
         } else {
             const d = document.createElement('div');
-            d.innerHTML = '<span class="term-prompt">[shuvam@archbox ~/portfolio]$ </span><span class="term-cursor"></span>';
-            termBody.appendChild(d); return null;
+            d.className = 'term-output' + (l.cls ? ' ' + l.cls : '');
+            termBody.appendChild(d); return d;
         }
     }
+
     function type() {
-        if (li >= lines.length) return;
+        if (li >= lines.length) { spawnInput(); return; }
         const l = lines[li];
-        if (l.type === 'prompt') { mkLine(l); return; }
         if (!el) { el = mkLine(l); ci = 0; }
         if (ci < l.text.length) {
             el.textContent += l.text[ci++];
             termBody.scrollTop = termBody.scrollHeight;
-            setTimeout(type, l.type === 'out' ? CD / 2 : CD);
-        } else {
-            el = null; li++;
-            setTimeout(type, LD);
-        }
+            setTimeout(type, l.type === 'out' || l.type === 'hint' ? CD / 2 : CD);
+        } else { el = null; li++; setTimeout(type, LD); }
     }
+
+    // ── Interactive input ────────────────────────────────────────────────────
+    function spawnInput() {
+        const row = document.createElement('div');
+        row.className = 'term-input-row';
+        row.innerHTML = '<span class="term-prompt">[shuvam@archbox ~/portfolio]$ </span>';
+        const inp = document.createElement('input');
+        inp.type = 'text'; inp.className = 'term-input'; inp.autocomplete = 'off';
+        inp.spellcheck = false; inp.setAttribute('aria-label', 'Terminal command');
+        row.appendChild(inp); termBody.appendChild(row);
+        inp.focus();
+        termBody.addEventListener('click', () => inp.focus());
+
+        // history
+        let history = [], hIdx = -1;
+
+        inp.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                const cmd = inp.value.trim();
+                inp.value = '';
+                // echo command
+                const echo = document.createElement('div');
+                echo.innerHTML = `<span class="term-prompt">[shuvam@archbox ~/portfolio]$ </span><span class="term-cmd">${cmd.replace(/</g,'&lt;')}</span>`;
+                termBody.insertBefore(echo, row);
+                if (cmd) { history.unshift(cmd); hIdx = -1; }
+
+                if (cmd === 'clear') {
+                    termBody.innerHTML = ''; spawnInput(); return;
+                }
+                const fn = COMMANDS[cmd];
+                if (fn) {
+                    const out = fn();
+                    out.forEach(line => {
+                        const d = document.createElement('div');
+                        d.className = 'term-output';
+                        d.innerHTML = line;
+                        termBody.insertBefore(d, row);
+                    });
+                } else if (cmd !== '') {
+                    const d = document.createElement('div');
+                    d.className = 'term-output';
+                    d.style.color = '#ff4757';
+                    d.textContent = `bash: ${cmd}: command not found (try 'help')`;
+                    termBody.insertBefore(d, row);
+                }
+                termBody.scrollTop = termBody.scrollHeight;
+
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (hIdx < history.length - 1) { hIdx++; inp.value = history[hIdx]; }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (hIdx > 0) { hIdx--; inp.value = history[hIdx]; }
+                else { hIdx = -1; inp.value = ''; }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                const partial = inp.value.trim();
+                const match = Object.keys(COMMANDS).filter(k => k.startsWith(partial));
+                if (match.length === 1) inp.value = match[0];
+                else if (match.length > 1) {
+                    const d = document.createElement('div');
+                    d.className = 'term-output'; d.style.color='var(--text-muted)';
+                    d.textContent = match.join('   ');
+                    termBody.insertBefore(d, row);
+                    termBody.scrollTop = termBody.scrollHeight;
+                }
+            }
+        });
+    }
+
     setTimeout(type, 2200);
 })();
 
-/* ----- Three.js Protein Viewer (1UBQ Ubiquitin) ----- */
+/* ----- Three.js ATP Ball-and-Stick Viewer ----- */
 (function () {
     const canvas = document.getElementById('protein-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
@@ -973,110 +1153,192 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
     renderer.setClearColor(0x060c1e, 1);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x060c1e, 0.012);
+    scene.fog = new THREE.FogExp2(0x060c1e, 0.018);
 
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 500);
-    camera.position.set(0, 0, 75);
+    camera.position.set(0, 0, 40);
 
     // Lights
-    scene.add(new THREE.AmbientLight(0x112244, 1.8));
-    const dl1 = new THREE.DirectionalLight(0x00d4ff, 3.5); dl1.position.set(5, 10, 8); scene.add(dl1);
-    const dl2 = new THREE.DirectionalLight(0x7c3aed, 2.5); dl2.position.set(-8, -5, 5); scene.add(dl2);
-    const pl = new THREE.PointLight(0x00ff88, 2, 120); pl.position.set(0, 10, 0); scene.add(pl);
+    scene.add(new THREE.AmbientLight(0x223355, 2.2));
+    const dl1 = new THREE.DirectionalLight(0xffffff, 3.0); dl1.position.set(10, 15, 10); scene.add(dl1);
+    const dl2 = new THREE.DirectionalLight(0x7c3aed, 2.0); dl2.position.set(-8, -8, 5); scene.add(dl2);
+    const pl = new THREE.PointLight(0x00d4ff, 2.5, 100); pl.position.set(0, 10, 10); scene.add(pl);
 
-    // 1UBQ alpha-carbon coordinates (76 residues, angstroms, from RCSB PDB)
-    const raw = [
-        [1.885,4.304,8.898],[3.914,3.580,6.112],[4.212,6.706,4.465],[4.747,9.650,6.187],
-        [8.447,9.683,6.726],[9.862,11.067,3.686],[9.826,14.610,4.761],[13.143,14.609,4.302],
-        [14.617,17.701,5.859],[14.376,17.740,9.601],[17.867,18.803,10.506],[19.244,22.008,9.597],
-        [22.777,22.274,10.433],[23.604,25.892,9.823],[27.203,25.697,10.571],[28.193,28.974,8.880],
-        [31.654,28.120,8.094],[32.773,28.861,4.555],[36.336,28.556,5.312],[37.840,31.870,4.197],
-        [36.993,31.895,0.605],[38.637,34.857,-0.930],[42.283,34.248,-1.109],[43.297,37.633,-1.956],
-        [42.280,40.584,0.110],[44.800,43.289,-0.536],[47.696,41.068,0.743],[50.660,41.854,-0.845],
-        [53.498,40.119,1.003],[56.413,41.858,1.861],[55.736,45.492,2.397],[58.617,47.576,3.649],
-        [55.806,50.008,4.255],[55.810,52.571,1.380],[52.540,53.932,0.399],[52.272,56.869,-2.216],
-        [49.003,57.892,-3.430],[47.893,61.415,-2.543],[44.482,60.752,-1.354],[43.021,64.157,-0.423],
-        [39.473,64.067,0.541],[37.970,67.375,1.539],[34.519,67.094,2.819],[33.052,70.421,3.856],
-        [29.680,70.019,5.078],[28.237,73.392,5.773],[24.883,73.033,7.128],[23.435,76.401,7.787],
-        [20.077,76.147,9.041],[18.640,79.494,9.556],[15.268,79.307,10.704],[13.820,82.629,11.042],
-        [10.508,82.265,12.258],[9.142,85.549,12.537],[5.842,85.059,13.748],[4.597,88.220,14.194],
-        [1.318,87.717,15.395],[0.154,90.748,16.111],[-3.133,90.092,17.263],[-4.157,92.964,18.223],
-        [-7.426,92.201,19.381],[-8.261,94.882,20.646],[-11.498,94.006,21.820],[-12.135,96.460,23.295],
-        [-15.326,95.379,24.488],[-15.748,97.586,26.109],[-18.903,96.353,27.366],[-19.111,98.295,29.187],
-        [-22.187,96.869,30.539],[-22.170,98.547,32.501],[-25.113,97.017,33.975],[-24.814,98.407,36.054],
-        [-27.599,96.679,37.638],[-27.014,97.782,39.755],[-29.636,95.923,41.374],[-28.624,96.751,43.622]
+    // CPK element colours
+    const EL_COLOR = { P:'#FF8C00', O:'#FF3333', N:'#4488FF', C:'#00D4FF', H:'#CCCCCC', S:'#FFFF00' };
+    // vdW-inspired radii for balls (scaled down for display)
+    const EL_RADIUS = { P:0.8, O:0.55, N:0.58, C:0.55, H:0.35, S:0.7 };
+
+    // ATP atoms (44 HETATM from ATP.pdb)
+    const atoms = [
+        {name:"PA",el:"P",x:5.562,y:20.965,z:11.527},
+        {name:"PB",el:"P",x:3.828,y:23.334,z:11.082},
+        {name:"PG",el:"P",x:0.942,y:23.641,z:11.956},
+        {name:"C5*",el:"C",x:4.892,y:19.279,z:9.602},
+        {name:"O5*",el:"O",x:5.945,y:19.986,z:10.293},
+        {name:"C4*",el:"C",x:5.249,y:17.800,z:9.447},
+        {name:"O4*",el:"O",x:6.419,y:17.604,z:8.615},
+        {name:"C3*",el:"C",x:5.505,y:17.072,z:10.772},
+        {name:"O3*",el:"O",x:5.039,y:15.707,z:10.788},
+        {name:"C2*",el:"C",x:7.022,y:17.119,z:10.877},
+        {name:"O2*",el:"O",x:7.520,y:16.069,z:11.726},
+        {name:"C1*",el:"C",x:7.440,y:16.999,z:9.417},
+        {name:"N1",el:"N",x:12.416,y:16.845,z:8.061},
+        {name:"O1A",el:"O",x:6.859,y:21.523,z:12.024},
+        {name:"O1B",el:"O",x:4.221,y:23.589,z:12.489},
+        {name:"O1G",el:"O",x:0.128,y:22.494,z:12.468},
+        {name:"C2",el:"C",x:11.528,y:15.839,z:8.106},
+        {name:"O2A",el:"O",x:4.642,y:20.301,z:12.470},
+        {name:"O2B",el:"O",x:4.030,y:24.384,z:10.053},
+        {name:"O2G",el:"O",x:0.294,y:24.710,z:11.096},
+        {name:"N3",el:"N",x:10.268,y:16.049,z:8.468},
+        {name:"O3A",el:"O",x:4.750,y:22.102,z:10.688},
+        {name:"O3B",el:"O",x:2.266,y:22.960,z:11.124},
+        {name:"O3G",el:"O",x:1.474,y:24.522,z:13.215},
+        {name:"C4",el:"C",x:9.871,y:17.284,z:8.794},
+        {name:"C5",el:"C",x:10.762,y:18.341,z:8.753},
+        {name:"C6",el:"C",x:12.074,y:18.102,z:8.373},
+        {name:"N6",el:"N",x:12.978,y:19.070,z:8.320},
+        {name:"N7",el:"N",x:10.089,y:19.427,z:9.115},
+        {name:"C8",el:"C",x:8.832,y:19.082,z:9.389},
+        {name:"N9",el:"N",x:8.695,y:17.771,z:9.196},
+        {name:"H01",el:"H",x:8.045,y:19.761,z:9.717},
+        {name:"H02",el:"H",x:4.751,y:19.720,z:8.615},
+        {name:"H03",el:"H",x:4.362,y:17.373,z:8.979},
+        {name:"H04",el:"H",x:4.970,y:17.537,z:11.600},
+        {name:"H05",el:"H",x:4.937,y:15.414,z:11.696},
+        {name:"H06",el:"H",x:7.425,y:18.017,z:11.345},
+        {name:"H07",el:"H",x:7.710,y:15.291,z:11.196},
+        {name:"H08",el:"H",x:7.589,y:15.950,z:9.160},
+        {name:"H09",el:"H",x:-0.014,y:22.598,z:13.412},
+        {name:"H10",el:"H",x:11.847,y:14.831,z:7.840},
+        {name:"H11",el:"H",x:12.719,y:20.017,z:8.558},
+        {name:"H12",el:"H",x:13.926,y:18.861,z:8.042},
+        {name:"H13",el:"H",x:3.974,y:19.360,z:10.184}
     ];
 
-    // Center and scale to fit view (sc=0.42 keeps protein compact in ~±18 unit range)
-    const cx = raw.reduce((s,c) => s+c[0], 0) / raw.length;
-    const cy = raw.reduce((s,c) => s+c[1], 0) / raw.length;
-    const cz = raw.reduce((s,c) => s+c[2], 0) / raw.length;
-    const sc = 0.42;
-    const pts = raw.map(c => new THREE.Vector3((c[0]-cx)*sc, (c[1]-cy)*sc, (c[2]-cz)*sc));
+    // Center the molecule
+    const cx = atoms.reduce((s,a)=>s+a.x,0)/atoms.length;
+    const cy = atoms.reduce((s,a)=>s+a.y,0)/atoms.length;
+    const cz = atoms.reduce((s,a)=>s+a.z,0)/atoms.length;
+    const sc = 1.4; // scale Å to scene units
+    const pts = atoms.map(a => new THREE.Vector3((a.x-cx)*sc, (a.y-cy)*sc, (a.z-cz)*sc));
 
-    // ─── Backbone tube (cartoon ribbon style) ───────────────────────────────
-    const curve = new THREE.CatmullRomCurve3(pts);
-    const tGeo = new THREE.TubeGeometry(curve, 500, 0.45, 14, false);
-    const cols = [];
-    const posA = tGeo.attributes.position;
-    const cA = new THREE.Color(0x00d4ff), cB = new THREE.Color(0x7c3aed);
-    for (let i = 0; i < posA.count; i++) {
-        const c = new THREE.Color().lerpColors(cA, cB, i / posA.count);
-        cols.push(c.r, c.g, c.b);
-    }
-    tGeo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
-    scene.add(new THREE.Mesh(tGeo,
-        new THREE.MeshPhongMaterial({ vertexColors: true, shininess: 140,
-            specular: new THREE.Color(0xaaddff) })));
-
-    // ─── CA atom spheres  (small — for "ball" accent, not a second structure) ─
-    const sGeo = new THREE.SphereGeometry(0.3, 10, 7);
-    pts.forEach((p, i) => {
-        const col = new THREE.Color().lerpColors(
-            new THREE.Color(0x00ff88), new THREE.Color(0x00d4ff), i / pts.length);
-        const m = new THREE.Mesh(sGeo,
-            new THREE.MeshPhongMaterial({ color: col, emissive: col,
-                emissiveIntensity: 0.4, shininess: 200 }));
-        m.position.copy(p); scene.add(m);
+    // Atom spheres — no shared geometry so each can have its own colour
+    const atomMeshes = [];
+    atoms.forEach((a,i) => {
+        const el = a.el.charAt(0);
+        const col = EL_COLOR[el] || '#888888';
+        const r   = (EL_RADIUS[el] || 0.5) * (el === 'H' ? 0.7 : 1.0);
+        const geo = new THREE.SphereGeometry(r, 14, 10);
+        const mat = new THREE.MeshPhongMaterial({
+            color: col, emissive: col, emissiveIntensity: 0.15,
+            shininess: 200, specular: 0xffffff
+        });
+        const m = new THREE.Mesh(geo, mat);
+        m.position.copy(pts[i]);
+        m.userData = {name: a.name, el: a.el, idx: i};
+        scene.add(m);
+        atomMeshes.push(m);
     });
 
-    // ─── Starfield ──────────────────────────────────────────────────────────
+    // Sticks between bonded atoms (distance threshold)
+    function bondThreshold(el1, el2) {
+        if (el1==='H'||el2==='H') return 1.4;
+        return 2.05;
+    }
+    const bondGroup = new THREE.Group();
+    scene.add(bondGroup);
+    for (let i = 0; i < atoms.length; i++) {
+        const el1 = atoms[i].el.charAt(0);
+        for (let j = i+1; j < atoms.length; j++) {
+            const el2 = atoms[j].el.charAt(0);
+            const d = pts[i].distanceTo(pts[j]);
+            if (d > bondThreshold(el1, el2)) continue;
+            // Build cylinder from midpoint, half to each atom
+            const mid = pts[i].clone().lerp(pts[j], 0.5);
+            const dir = pts[j].clone().sub(pts[i]);
+            const len = dir.length();
+            // Two half-cylinders for CPK colour split
+            [[pts[i], 0, atoms[i].el, 0.5], [pts[j], 0.5, atoms[j].el, 1.0]].forEach(([origin, from, el, to]) => {
+                const halfStart = pts[i].clone().lerp(pts[j], from);
+                const halfEnd   = pts[i].clone().lerp(pts[j], to);
+                const halfLen   = halfStart.distanceTo(halfEnd);
+                const halfMid   = halfStart.clone().lerp(halfEnd, 0.5);
+                const cGeo = new THREE.CylinderGeometry(0.18, 0.18, halfLen, 8);
+                const col = EL_COLOR[el.charAt(0)] || '#888888';
+                const cMat = new THREE.MeshPhongMaterial({color: col, shininess: 80});
+                const cm = new THREE.Mesh(cGeo, cMat);
+                cm.position.copy(halfMid);
+                const axis = new THREE.Vector3(0,1,0);
+                const halfDir = halfEnd.clone().sub(halfStart).normalize();
+                cm.quaternion.setFromUnitVectors(axis, halfDir);
+                bondGroup.add(cm);
+            });
+        }
+    }
+
+    // Starfield
     const sg = new THREE.BufferGeometry();
     const sp = [];
-    for (let i = 0; i < 900; i++)
-        sp.push((Math.random()-.5)*280, (Math.random()-.5)*280, (Math.random()-.5)*280);
-    sg.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3));
-    scene.add(new THREE.Points(sg,
-        new THREE.PointsMaterial({ color: 0x2a3a5a, size: 0.35,
-            transparent: true, opacity: 0.8 })));
+    for (let i=0;i<700;i++) sp.push((Math.random()-.5)*180,(Math.random()-.5)*180,(Math.random()-.5)*180);
+    sg.setAttribute('position', new THREE.Float32BufferAttribute(sp,3));
+    scene.add(new THREE.Points(sg, new THREE.PointsMaterial({color:0x2a3a5a,size:0.28,transparent:true,opacity:0.7})));
 
     // Resize
     function resize() {
-        const w = canvas.clientWidth, h = canvas.clientHeight;
-        renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
+        const w=canvas.clientWidth, h=canvas.clientHeight;
+        renderer.setSize(w,h,false); camera.aspect=w/h; camera.updateProjectionMatrix();
     }
     resize(); window.addEventListener('resize', resize);
 
-    // Mouse/touch drag
-    let drag = false, lx = 0, ly = 0, tx = 0, ty = 0;
-    canvas.addEventListener('mousedown', e => { drag = true; lx = e.clientX; ly = e.clientY; });
-    canvas.addEventListener('touchstart', e => { drag = true; lx = e.touches[0].clientX; ly = e.touches[0].clientY; });
-    window.addEventListener('mouseup', () => { drag = false; });
-    window.addEventListener('touchend', () => { drag = false; });
-    window.addEventListener('mousemove', e => { if (!drag) return; tx += (e.clientX-lx)*.01; ty += (e.clientY-ly)*.01; lx = e.clientX; ly = e.clientY; });
-    window.addEventListener('touchmove', e => { if (!drag) return; tx += (e.touches[0].clientX-lx)*.01; ty += (e.touches[0].clientY-ly)*.01; lx = e.touches[0].clientX; ly = e.touches[0].clientY; });
+    // Mouse/touch drag + scroll zoom
+    let drag=false, lx=0, ly=0, tx=0, ty=0;
+    canvas.addEventListener('mousedown', e=>{drag=true;lx=e.clientX;ly=e.clientY;});
+    canvas.addEventListener('touchstart', e=>{drag=true;lx=e.touches[0].clientX;ly=e.touches[0].clientY;},{passive:true});
+    window.addEventListener('mouseup', ()=>{drag=false;});
+    window.addEventListener('touchend', ()=>{drag=false;});
+    window.addEventListener('mousemove', e=>{if(!drag)return; tx+=(e.clientX-lx)*.012; ty+=(e.clientY-ly)*.012; lx=e.clientX; ly=e.clientY;});
+    window.addEventListener('touchmove', e=>{if(!drag)return; tx+=(e.touches[0].clientX-lx)*.012; ty+=(e.touches[0].clientY-ly)*.012; lx=e.touches[0].clientX; ly=e.touches[0].clientY;},{passive:true});
+    canvas.addEventListener('wheel', e=>{e.preventDefault(); camera.position.z=Math.max(10,Math.min(80,camera.position.z+e.deltaY*0.04));},{passive:false});
+
+    // Hover info
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const hoverEl = document.getElementById('atp-hover-info');
+    canvas.addEventListener('mousemove', e=>{
+        if(drag) return;
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = ((e.clientX-rect.left)/rect.width)*2-1;
+        mouse.y = -((e.clientY-rect.top)/rect.height)*2+1;
+        raycaster.setFromCamera(mouse, camera);
+        const hits = raycaster.intersectObjects(atomMeshes);
+        if(hits.length>0 && hoverEl){
+            const {name,el} = hits[0].object.userData;
+            hoverEl.innerHTML = `<span>${name}</span>&nbsp;(${el})`;
+        } else if(hoverEl){
+            hoverEl.innerHTML = `<span>DRAG</span>&nbsp;to rotate`;
+        }
+    });
 
     // Animate
-    let rx = 0, ry = 0, time = 0;
+    let rx=0, ry=0, time=0, pivotGroup;
+    // Put everything under a pivot group for clean rotation
+    pivotGroup = new THREE.Group();
+    scene.remove(bondGroup);
+    atomMeshes.forEach(m => scene.remove(m));
+    scene.children.filter(c=>c.isGroup||c.isMesh).forEach(c=>{ if(c!==pivotGroup) pivotGroup.add(c); });
+    pivotGroup.add(bondGroup);
+    atomMeshes.forEach(m=>pivotGroup.add(m));
+    scene.add(pivotGroup);
+
     function animate() {
         requestAnimationFrame(animate);
-        time += .005; tx += .004;
-        rx += (ty - rx) * .05; ry += (tx - ry) * .05;
-        scene.children.forEach(c => {
-            if (c.isMesh || c.isPoints) { c.rotation.x = rx; c.rotation.y = ry; }
-        });
-        pl.position.x = Math.sin(time*.5) * 20;
-        pl.position.z = Math.cos(time*.3) * 20;
+        time+=.004; tx+=.003;
+        rx+=(ty-rx)*.06; ry+=(tx-ry)*.06;
+        pivotGroup.rotation.x=rx; pivotGroup.rotation.y=ry;
+        pl.position.x=Math.sin(time*.7)*15;
+        pl.position.z=Math.cos(time*.5)*15+15;
         renderer.render(scene, camera);
     }
     animate();
