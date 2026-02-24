@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Early theme injection to prevent FOUC -->
+    <script>(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="google-site-verification" content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g" />
     <meta name="description" content="Shuvam Banerji Seal - Computational Chemist and AI Researcher at IISER Kolkata. DFT, RAG systems, molecular dynamics.">
@@ -17,13 +19,19 @@
 
     <link rel="stylesheet" href="assets/css/mobile-fixes.css">
     <link rel="stylesheet" href="assets/css/mobile.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 
     <style>
 /* ================================================================
-   MOLECULAR TERMINAL PORTFOLIO - Design System
+   MOLECULAR TERMINAL PORTFOLIO - Page-specific styles
+   Global theme variables are in assets/css/theme.css
    ================================================================ */
-:root {
+
+/* Dark theme: molecular terminal overrides for this page */
+html[data-theme="dark"],
+[data-theme="dark"] {
     --bg-deep:       #060b18;
     --bg-dark:       #0a1020;
     --bg-card:       #111827;
@@ -41,6 +49,21 @@
     --font-body:     'Inter',sans-serif;
     --glow-cyan:     0 0 20px rgba(0,212,255,0.35);
     --shadow-card:   0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* Light (creamy coffee) — page-specific vars */
+:root,
+html:not([data-theme="dark"]) {
+    --bg-dark:        #f2e6d0;
+    --accent-cyan:    #c97c3a;
+    --accent-green:   #5a8a4a;
+    --accent-purple:  #7c3aed;
+    --grad-primary:   linear-gradient(135deg,#c97c3a,#7c3aed);
+    --grad-green:     linear-gradient(135deg,#5a8a4a,#c97c3a);
+    --font-mono:      'JetBrains Mono','Source Code Pro',monospace;
+    --font-body:      'Inter',sans-serif;
+    --glow-cyan:      0 0 20px rgba(201,124,58,0.25);
+    --shadow-card:    0 8px 32px rgba(44,26,14,0.12);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -986,8 +1009,37 @@ footer p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font
 
 /* ----- Misc ----- */
 document.getElementById('year').textContent = new Date().getFullYear();
-document.body.setAttribute('data-theme', 'dark');
-localStorage.setItem('theme', 'dark');
+
+// Apply theme: respect saved preference, default to 'dark' for this terminal page
+(function() {
+    var saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+    document.body.setAttribute('data-theme', saved);
+
+    // Wire theme toggle after navbar is injected
+    document.addEventListener('navbarLoaded', function() {
+        var btns = document.querySelectorAll('[data-theme-toggle]');
+        btns.forEach(function(btn) {
+            var icon = btn.querySelector('i');
+            if (icon) {
+                var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+                icon.setAttribute('data-lucide', cur === 'dark' ? 'sun' : 'moon');
+            }
+            btn.addEventListener('click', function() {
+                var current = document.documentElement.getAttribute('data-theme') || 'dark';
+                var next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                document.body.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                var i2 = btn.querySelector('i');
+                if (i2) { i2.setAttribute('data-lucide', next === 'dark' ? 'sun' : 'moon'); }
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            });
+        });
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+})();
+
 if (typeof lucide !== 'undefined') lucide.createIcons();
 </script>
 </body>

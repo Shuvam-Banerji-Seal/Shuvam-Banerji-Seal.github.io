@@ -1,0 +1,366 @@
+/* ================================================================
+   UNIFIED THEME SYSTEM
+   Light:  Creamy Coffee  — warm parchment tones
+   Dark:   Molecular Terminal — deep navy + cyan glows
+   ================================================================
+   Usage:
+     • Apply [data-theme="dark"] on <html> for dark mode
+     • Default (no attribute or [data-theme="light"]) = creamy coffee
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   LIGHT THEME — CREAMY COFFEE
+   ---------------------------------------------------------------- */
+:root,
+html:not([data-theme="dark"]) {
+    /* Backgrounds */
+    --bg-deep:        #faf3e8;
+    --bg-primary:     #faf3e8;
+    --bg-dark:        #f2e6d0;
+    --bg-secondary:   #f2e6d0;
+    --bg-card:        rgba(255, 248, 235, 0.98);
+    --bg-elevated:    #ede0c8;
+
+    /* Borders */
+    --border:         rgba(139, 101, 68, 0.2);
+    --border-glow:    rgba(201, 124, 58, 0.45);
+
+    /* Text */
+    --text-primary:   #2c1a0e;
+    --text-secondary: #6b4226;
+    --text-muted:     #9c7a5a;
+
+    /* Accents */
+    --accent-cyan:    #c97c3a;   /* amber serves as primary accent in light mode */
+    --accent:         #c97c3a;
+    --accent-green:   #5a8a4a;
+    --accent-purple:  #7c3aed;
+    --accent-2:       #7c3aed;
+
+    /* Gradients */
+    --grad-primary:   linear-gradient(135deg, #c97c3a, #7c3aed);
+    --grad-green:     linear-gradient(135deg, #5a8a4a, #c97c3a);
+
+    /* Glows & Shadows */
+    --glow-cyan:      0 0 20px rgba(201, 124, 58, 0.25);
+    --shadow-card:    0 8px 32px rgba(44, 26, 14, 0.12);
+
+    /* Navbar */
+    --nav-bg:         rgba(250, 243, 232, 0.92);
+    --nav-border:     rgba(139, 101, 68, 0.15);
+    --nav-text:       #2c1a0e;
+    --nav-text-hover: #c97c3a;
+    --nav-shadow:     0 4px 30px rgba(139, 101, 68, 0.1);
+
+    /* Glassmorphic */
+    --glass-bg:       rgba(254, 248, 243, 0.72);
+    --glass-border:   rgba(205, 180, 150, 0.3);
+    --glass-shadow:   rgba(139, 101, 68, 0.1);
+
+    /* Body */
+    --body-bg:        linear-gradient(135deg, #fef5e7 0%, #fdf8f3 50%, #fef5e7 100%);
+    --body-color:     #2c1a0e;
+
+    /* Inputs / Code */
+    --input-bg:       rgba(255, 248, 235, 0.9);
+    --code-bg:        rgba(237, 224, 200, 0.6);
+    --canvas-bg:      #f5edd8;
+
+    /* Buttons */
+    --btn-primary-bg: #c97c3a;
+    --btn-primary-text: #ffffff;
+    --btn-primary-hover: #b86c2a;
+
+    /* Font stacks */
+    --font-mono:      'JetBrains Mono', 'Source Code Pro', monospace;
+    --font-body:      'Inter', sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   DARK THEME — MOLECULAR TERMINAL
+   ---------------------------------------------------------------- */
+html[data-theme="dark"],
+[data-theme="dark"] {
+    /* Backgrounds */
+    --bg-deep:        #060b18;
+    --bg-primary:     #060b18;
+    --bg-dark:        #0a1020;
+    --bg-secondary:   #0a1020;
+    --bg-card:        #111827;
+    --bg-elevated:    #182032;
+
+    /* Borders */
+    --border:         rgba(0, 212, 255, 0.15);
+    --border-glow:    rgba(0, 212, 255, 0.4);
+
+    /* Text */
+    --text-primary:   #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted:     #475569;
+
+    /* Accents */
+    --accent-cyan:    #00d4ff;
+    --accent:         #00d4ff;
+    --accent-green:   #00ff88;
+    --accent-purple:  #7c3aed;
+    --accent-2:       #7c3aed;
+
+    /* Gradients */
+    --grad-primary:   linear-gradient(135deg, #00d4ff, #7c3aed);
+    --grad-green:     linear-gradient(135deg, #00ff88, #00d4ff);
+
+    /* Glows & Shadows */
+    --glow-cyan:      0 0 20px rgba(0, 212, 255, 0.35);
+    --shadow-card:    0 8px 32px rgba(0, 0, 0, 0.4);
+
+    /* Navbar */
+    --nav-bg:         rgba(6, 11, 24, 0.92);
+    --nav-border:     rgba(0, 212, 255, 0.12);
+    --nav-text:       #e2e8f0;
+    --nav-text-hover: #00d4ff;
+    --nav-shadow:     0 4px 30px rgba(0, 0, 0, 0.3);
+
+    /* Glassmorphic */
+    --glass-bg:       linear-gradient(180deg, rgba(31, 41, 55, 0.92), rgba(31, 41, 55, 0.78));
+    --glass-border:   rgba(255, 255, 255, 0.06);
+    --glass-shadow:   rgba(2, 6, 23, 0.08);
+
+    /* Body */
+    --body-bg:        #060b18;
+    --body-color:     #e2e8f0;
+
+    /* Inputs / Code */
+    --input-bg:       rgba(17, 24, 39, 0.9);
+    --code-bg:        rgba(6, 11, 24, 0.8);
+    --canvas-bg:      #0a1020;
+
+    /* Buttons */
+    --btn-primary-bg:   #00d4ff;
+    --btn-primary-text: #060b18;
+    --btn-primary-hover: #00b8e0;
+
+    /* Font stacks (same) */
+    --font-mono:      'JetBrains Mono', 'Source Code Pro', monospace;
+    --font-body:      'Inter', sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   GLOBAL BASE — theme-aware body & html
+   ---------------------------------------------------------------- */
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--body-bg);
+    color: var(--text-primary);
+    transition: background 0.35s ease, color 0.35s ease;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* ----------------------------------------------------------------
+   GLASSMORPHIC COMPONENT
+   ---------------------------------------------------------------- */
+.glassmorphic {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 30px var(--glass-shadow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* ----------------------------------------------------------------
+   NAVBAR THEMING
+   ---------------------------------------------------------------- */
+#navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    transition: all 0.3s ease-in-out;
+}
+
+#navbar .glassmorphic {
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--nav-border);
+    box-shadow: var(--nav-shadow);
+}
+
+#navbar.scrolled .glassmorphic {
+    background: var(--nav-bg);
+    box-shadow: 0 8px 32px var(--glass-shadow);
+}
+
+.nav-logo {
+    color: var(--nav-text);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav-link {
+    color: var(--nav-text);
+    transition: color 0.25s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--nav-text-hover);
+}
+
+.dropdown-toggle {
+    color: var(--nav-text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    transition: color 0.25s ease;
+}
+
+.dropdown-toggle:hover,
+.dropdown-toggle.active {
+    color: var(--nav-text-hover);
+}
+
+/* Dropdown panel */
+.dropdown-menu {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+}
+
+.dropdown-item {
+    color: var(--text-secondary);
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.dropdown-item:hover {
+    color: var(--accent);
+    background: var(--bg-elevated);
+}
+
+/* Theme toggle button */
+.theme-toggle-btn {
+    color: var(--nav-text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: color 0.25s ease, background 0.25s ease;
+}
+
+.theme-toggle-btn:hover {
+    color: var(--nav-text-hover);
+    background: rgba(128, 128, 128, 0.15);
+}
+
+/* ----------------------------------------------------------------
+   MOBILE MENU THEMING
+   ---------------------------------------------------------------- */
+#mobile-menu {
+    background: var(--bg-card);
+    border-left: 1px solid var(--border);
+}
+
+.mobile-menu-header {
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+.mobile-menu-link {
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+}
+
+.mobile-menu-link:hover {
+    color: var(--accent);
+    background: var(--bg-elevated);
+}
+
+.mobile-accordion-toggle {
+    color: var(--text-primary);
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+}
+
+.mobile-accordion-toggle:hover {
+    color: var(--accent);
+}
+
+/* ----------------------------------------------------------------
+   BUTTON — btn-primary
+   ---------------------------------------------------------------- */
+.btn-primary,
+.nav-contact-btn {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text) !important;
+    border: none;
+    padding: 0.45rem 1.1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background 0.25s ease, transform 0.15s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-primary:hover,
+.nav-contact-btn:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-1px);
+}
+
+/* ----------------------------------------------------------------
+   TECH TAG
+   ---------------------------------------------------------------- */
+.tech-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    background: var(--bg-elevated);
+    color: var(--accent);
+    border: 1px solid var(--border);
+}
+
+/* ----------------------------------------------------------------
+   SECTION TITLE
+   ---------------------------------------------------------------- */
+.section-title {
+    position: relative;
+    padding-bottom: 1rem;
+    font-size: 2.25rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 9999px;
+}
+
+html[data-theme="dark"] .section-title,
+[data-theme="dark"] .section-title {
+    background-image: var(--grad-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+html[data-theme="dark"] .section-title::after,
+[data-theme="dark"] .section-title::after {
+    background: var(--grad-primary);
+}

@@ -159,7 +159,46 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize all navbar functionality
     initDropdowns();
     initMobileMenuLogic();
+    initThemeToggle();
 });
+
+function initThemeToggle() {
+    // Apply saved theme if not already set by main.js / enhanced.js
+    var currentTheme = document.documentElement.getAttribute('data-theme');
+    if (!currentTheme) {
+        currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        document.body.setAttribute('data-theme', currentTheme);
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        document.body.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        document.querySelectorAll('[data-theme-toggle]').forEach(function(btn) {
+            var icon = btn.querySelector('i');
+            if (icon) {
+                icon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        });
+    }
+
+    // Update icons to reflect current theme
+    applyTheme(currentTheme);
+
+    // Wire click handlers on all toggle buttons
+    document.querySelectorAll('[data-theme-toggle]').forEach(function(btn) {
+        // Remove any existing listener by cloning (safe for navbar-injected btn)
+        var newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        newBtn.addEventListener('click', function() {
+            var next = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark'
+                ? 'light' : 'dark';
+            applyTheme(next);
+        });
+    });
+}
 
 function initDropdowns() {
     const dropdowns = document.querySelectorAll('.nav-dropdown');

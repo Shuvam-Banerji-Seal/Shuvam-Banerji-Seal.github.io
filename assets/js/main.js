@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Function to apply the saved theme or system preference
     function applyTheme(theme) {
+        // Set on <html> for CSS variable cascade AND on <body> for legacy selectors
+        document.documentElement.setAttribute('data-theme', theme);
         document.body.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
         updateToggleIcons(theme);
@@ -37,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to toggle the theme
     function toggleTheme() {
-        const currentTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        const currentTheme = (document.documentElement.getAttribute('data-theme') || document.body.getAttribute('data-theme')) === 'dark' ? 'light' : 'dark';
         applyTheme(currentTheme);
     }
 

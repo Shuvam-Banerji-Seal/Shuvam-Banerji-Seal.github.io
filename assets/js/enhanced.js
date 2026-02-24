@@ -374,6 +374,8 @@ class ThemeController {
     }
 
     applyTheme(theme) {
+        // Set on <html> for CSS variable cascade AND on <body> for legacy selectors
+        document.documentElement.setAttribute('data-theme', theme);
         document.body.setAttribute('data-theme', theme);
         this.currentTheme = theme;
         localStorage.setItem('theme', theme);
