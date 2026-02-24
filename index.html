@@ -323,7 +323,8 @@ section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
     border: 1px solid var(--border);
     border-radius: 16px; overflow: hidden;
 }
-.profile-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+.profile-card picture { display: block; line-height: 0; }
+.profile-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: center top; display: block; }
 .profile-meta { padding: 1.5rem; font-family: var(--font-mono); font-size: 0.78rem; }
 .meta-row {
     display: flex; justify-content: space-between;
@@ -726,10 +727,10 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
         <!-- Profile card -->
         <div class="profile-card fade-in fade-in-delay-2">
             <picture>
-                <source srcset="assets_for_my_website/my_pictures/sbs_001.webp" type="image/webp">
-                <img src="assets_for_my_website/my_pictures/sbs_001.jpg"
+                <source srcset="assets/img/sbs_001.webp" type="image/webp">
+                <img src="assets/img/sbs_001.jpg"
                      alt="Shuvam Banerji Seal" class="profile-img"
-                     onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/main/assets_for_my_website/my_pictures/sbs_001.jpg';">
+                     onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/main/assets/img/sbs_001.jpg';">
             </picture>
             <div class="profile-meta">
                 <div class="meta-row"><span class="meta-key">NAME</span><span>Shuvam B. Seal</span></div>
@@ -1254,7 +1255,7 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
         for (let j = i+1; j < atoms.length; j++) {
             const el2 = atoms[j].el.charAt(0);
             const d = pts[i].distanceTo(pts[j]);
-            if (d > bondThreshold(el1, el2)) continue;
+            if (d / sc > bondThreshold(el1, el2)) continue;
             // Build cylinder from midpoint, half to each atom
             const mid = pts[i].clone().lerp(pts[j], 0.5);
             const dir = pts[j].clone().sub(pts[i]);

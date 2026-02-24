@@ -14,7 +14,9 @@ function openTool(toolId) {
         'mol-weight': 'tools/mol-weight.html',
         'periodic-table': 'tools/periodic-table.html',
         'equation-balancer': 'tools/equation-balancer.html',
-        'ph-calculator': 'tools/ph-calculator.html'
+        'ph-calculator': 'tools/ph-calculator.html',
+        'mermaid-editor': 'mermaid-tool.html',
+        'audio-studio': 'tools/audio-studio.html'
     };
 
     const page = toolPages[toolId];
