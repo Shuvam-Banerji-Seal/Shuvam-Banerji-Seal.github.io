@@ -648,54 +648,7 @@ body[data-theme='dark'] #menu-btn:hover {
     }
 }
 
-.mobile-menu-link {
-    display: block;
-    padding: 1rem 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    text-align: center;
-    transition: color 0.3s ease;
-    color: #2d1810; /* Warm dark brown for light mode */
-}
-.mobile-menu-link:hover {
-    color: #06b6d4;
-}
-body[data-theme='dark'] .mobile-menu-link {
-    color: #f3f4f6; /* Light gray for dark mode */
-}
-body[data-theme='dark'] .mobile-menu-link:hover {
-    color: #22d3ee;
-}
-
-#close-menu-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #2d1810; /* Warm dark brown for light mode */
-    transition: color 0.3s ease;
-    border-radius: 0.375rem;
-}
-
-#close-menu-btn:hover {
-    color: #06b6d4;
-    background-color: rgba(6, 182, 212, 0.1);
-}
-
-body[data-theme='dark'] #close-menu-btn {
-    color: #f3f4f6; /* Light gray for dark mode */
-}
-
-body[data-theme='dark'] #close-menu-btn:hover {
-    color: #22d3ee;
-    background-color: rgba(34, 211, 238, 0.1);
-}
+/* mobile-menu-link: primary definition is above (flex layout with CSS vars) */
 
 
 /* Footer */
@@ -1494,21 +1447,7 @@ body.dark .btn-secondary:hover {
     background-color: #1e293b; /* dark:hover:bg-slate-800 */
 }
 
-/* Mobile Menu - Styles moved to mobile-fixes.css */
-body.dark #mobile-menu {
-    background: linear-gradient(180deg, rgba(17, 24, 39, 0.98), rgba(31, 41, 55, 0.96));
-}
-
-.mobile-menu-link {
-    display: block;
-    padding: 0.75rem 1rem;
-    font-size: 1.125rem;
-    text-align: center;
-    transition: color 0.3s ease;
-}
-.mobile-menu-link:hover {
-    color: #22d3ee;
-}
+/* Mobile Menu - Layout defined above with CSS vars */
 
 /* Footer */
 footer {
@@ -1633,25 +1572,7 @@ body.dark .music-item:hover {
 
 
 /* Custom Components */
-.glassmorphic {
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-body.dark .glassmorphic {
-    background: linear-gradient(180deg, rgba(31, 41, 55, 0.92), rgba(31, 41, 55, 0.78));
-    border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-#navbar.scrolled .glassmorphic {
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-}
-
-body.dark #navbar.scrolled .glassmorphic {
-    background: linear-gradient(180deg, rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.85));
-    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.10);
-}
+/* glassmorphic & #navbar.scrolled: primary definitions use CSS vars (above) */
 
 .tech-tag {
     display: inline-block;
@@ -1742,61 +1663,7 @@ nav, header, main, footer {
 }
 
 
-/* Components */
-    /* Glassmorphism Effect */
-    .glassmorphic {
-        background-color: rgba(255, 255, 255, 0.6); /* bg-white with opacity */
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px); /* Safari */
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Tech Tags Styling */
-    .tech-tag {
-        display: inline-block;
-        background-color: #cffafe;
-        color: #0e7490;
-        font-size: 0.75rem;
-        font-weight: 500;
-        padding: 0.125rem 0.625rem;
-        border-radius: 9999px;
-        border: 1px solid #a5f3fc;
-    }
-
-    /* Section Title Styling */
-    .section-title {
-        position: relative;
-        padding-bottom: 1rem; /* Space for the underline */
-    }
-    .section-title::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px; /* Width of the underline */
-        height: 3px; /* Thickness of the underline */
-        background-color: #06b6d4;
-        border-radius: 9999px;
-    }
-
-    /* Scroll Animation Base Class */
-    .animate-on-scroll {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    .animate-on-scroll.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    /* Navbar scrolled state */
-    #navbar.scrolled .glassmorphic {
-         background: rgba(255, 255, 255, 0.8); /* Lighter bg-white with more opacity */
-         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    }
+/* Components: duplicate block removed — glassmorphic, tech-tag, section-title, navbar-scrolled all use CSS vars defined above */
 
 /* Dark Theme Overrides */
 /* Applying a 'dark' class to body will switch to dark theme */
@@ -1943,17 +1810,7 @@ nav, header, main, footer {
     z-index: 1;
 }
 
-/* Mobile Menu Link Styling */
-.mobile-menu-link {
-    display: block;
-    padding: 0.5rem 1rem;
-    font-size: 1.125rem;
-    transition: color 0.3s ease;
-}
-
-.mobile-menu-link:hover {
-    color: #22d3ee;
-}
+/* Mobile Menu Link Styling: primary flex-based definition with CSS vars is above */
 
 /* Responsive adjustments if needed */
 @media (max-width: 768px) {

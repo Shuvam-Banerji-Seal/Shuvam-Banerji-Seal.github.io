@@ -1,759 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description"
-        content="Resume of Shuvam Banerji Seal - BS-MS Student (Chemistry Major, Computer Science Minor) at IISER Kolkata.">
-    <title>Resume - Shuvam Banerji Seal</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="Resume of Shuvam Banerji Seal - BS-MS Student (Chemistry Major, Computer Science Minor) at IISER Kolkata.">
+    <title>Resume &middot; Shuvam Banerji Seal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
-        rel="stylesheet">
-    <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
-    <!-- Enhanced CSS System -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
+    <link rel="stylesheet" href="../assets/css/mobile.css">
     <link rel="stylesheet" href="../assets/css/theme.css">
     <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/animations.css">
-    <link rel="stylesheet" href="../assets/css/mobile.css">
-    <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
-    <!-- Overrides - Must be last -->
-    <link rel="stylesheet" href="../assets/css/overrides.css">
-    <link rel="stylesheet" href="../assets/css/resume-enhancements.css">
-
-    <!-- Cache Control -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
     <style>
-        /* Additional styles specific to resume page if needed */
-        .timeline {
-            position: relative;
-            padding-left: 40px;
-            /* Space for icons and line */
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 10px;
-            top: 5px;
-            bottom: 5px;
-            width: 2px;
-            background-color: var(--cyan-700, #0e7490);
-            /* Tailwind cyan-700 */
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2rem;
-            /* Space between items */
-        }
-
-        .timeline-icon {
-            position: absolute;
-            left: -5px;
-            /* Adjust to center on the line */
-            top: 5px;
-            /* Align with text */
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--cyan-500, #06b6d4);
-            /* Tailwind cyan-500 */
-            color: var(--gray-900, #111827);
-            /* Tailwind gray-900 */
-        }
-
-        .timeline-icon i {
-            width: 12px;
-            height: 12px;
-        }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body { font-family: var(--font-body, 'Inter', sans-serif); background: var(--bg-deep); color: var(--text-primary); line-height: 1.7; overflow-x: hidden; }
+body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px); pointer-events: none; z-index: 9999; }
+html:not([data-theme="dark"]) body::before { opacity: 0.4; }
+.page-grid-bg { position: fixed; inset: 0; background-image: linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px); background-size: 60px 60px; z-index: 0; pointer-events: none; }
+html:not([data-theme="dark"]) .page-grid-bg { background-image: linear-gradient(rgba(139,101,68,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(139,101,68,0.035) 1px, transparent 1px); }
+main { position: relative; z-index: 1; max-width: 1240px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+.cv-grid { display: grid; grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr); gap: 2.5rem; align-items: start; }
+.cv-header { margin-bottom: 3rem; }
+.header-terminal { background: rgba(10,16,32,0.94); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: var(--glow-cyan, 0 0 20px rgba(0,212,255,0.2)), var(--shadow-card); }
+html:not([data-theme="dark"]) .header-terminal { background: rgba(245,235,215,0.96); border-color: rgba(139,101,68,0.35); box-shadow: 0 0 20px rgba(201,124,58,0.12), 0 8px 32px rgba(44,26,14,0.1); }
+.header-titlebar { background: #0d1526; padding: 0.55rem 1.1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,212,255,0.1); font-family: var(--font-mono, 'JetBrains Mono', monospace); font-size: 0.73rem; }
+html:not([data-theme="dark"]) .header-titlebar { background: #e8d5b0; border-bottom-color: rgba(139,101,68,0.25); }
+.titlebar-dots { display: flex; gap: 0.4rem; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+.titlebar-path { color: var(--accent-cyan); display: flex; gap: 0.35rem; }
+.path-host { color: var(--accent-green); }
+html:not([data-theme="dark"]) .titlebar-path { color: #8b4513; }
+html:not([data-theme="dark"]) .path-host { color: #3d6b2e; }
+.titlebar-right { color: var(--text-muted); }
+.header-body { padding: 1.75rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; font-family: var(--font-mono, 'JetBrains Mono', monospace); font-size: 0.85rem; line-height: 1.9; }
+html:not([data-theme="dark"]) .header-body { color: #2c1a0e; }
+.json-brace { color: var(--text-muted); }
+.json-key { color: var(--accent-cyan); }
+html:not([data-theme="dark"]) .json-key { color: #8b4513; }
+.json-str { color: var(--accent-green); }
+html:not([data-theme="dark"]) .json-str { color: #3d6b2e; }
+.json-num { color: #f59e0b; }
+html:not([data-theme="dark"]) .json-num { color: #c97c3a; }
+.cv-name { font-size: 1.7rem; font-weight: 700; line-height: 1.2; background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.25rem; }
+.cv-role { color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.88rem; margin-bottom: 0.15rem; }
+.cv-affil { color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 1rem; }
+html:not([data-theme="dark"]) .cv-affil { color: #8b4513; }
+.cv-contacts { display: flex; flex-direction: column; gap: 0.4rem; }
+.cv-contact-link { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); text-decoration: none; padding: 0.25rem 0.6rem; border-radius: 5px; border: 1px solid transparent; transition: all 0.2s ease; }
+.cv-contact-link:hover { color: var(--accent-cyan); border-color: var(--border); background: rgba(0,212,255,0.05); }
+html:not([data-theme="dark"]) .cv-contact-link:hover { color: #8b4513; border-color: rgba(139,101,68,0.3); background: rgba(201,124,58,0.07); }
+.lc { font-size: 0.9em; opacity: 0.6; }
+.header-prompt { color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem; padding: 0 2rem 1rem; }
+html:not([data-theme="dark"]) .header-prompt { color: #8b4513; }
+.cursor { display: inline-block; width: 9px; height: 1em; background: var(--accent-green); vertical-align: text-bottom; animation: blink-c 1s step-end infinite; }
+@keyframes blink-c { 0%,100%{ opacity:1; } 50%{ opacity:0; } }
+.dl-btn-row { display: flex; gap: 0.75rem; padding: 0 2rem 1.5rem; flex-wrap: wrap; }
+.btn-dl { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.4rem; border-radius: 8px; font-family: var(--font-mono); font-size: 0.82rem; font-weight: 600; text-decoration: none; cursor: pointer; border: none; transition: all 0.3s ease; }
+.btn-dl-primary { background: var(--grad-primary); color: #fff; }
+.btn-dl-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.35); }
+.btn-dl-outline { background: transparent; color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+.btn-dl-outline:hover { background: rgba(0,212,255,0.08); transform: translateY(-2px); }
+html:not([data-theme="dark"]) .btn-dl-outline { color: #8b4513; border-color: #c97c3a; }
+html:not([data-theme="dark"]) .btn-dl-outline:hover { background: rgba(201,124,58,0.08); }
+.sec-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.15em; color: var(--accent-green); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem; }
+.sec-label::before { content: '//'; color: var(--text-muted); }
+html:not([data-theme="dark"]) .sec-label { color: #3d6b2e; }
+.sec-title { font-size: 1.5rem; font-weight: 700; background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.25; margin-bottom: 0.6rem; }
+.sec-divider { width: 50px; height: 3px; background: var(--grad-primary); border-radius: 2px; margin-bottom: 1.5rem; }
+.sec-header { margin-bottom: 1.5rem; }
+.cv-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; margin-bottom: 1rem; }
+.cv-card:last-child { margin-bottom: 0; }
+.cv-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad-primary); transform: scaleX(0); transition: transform 0.3s; }
+.cv-card:hover { border-color: var(--border-glow, rgba(0,212,255,0.35)); box-shadow: var(--glow-cyan); transform: translateY(-2px); }
+.cv-card:hover::before { transform: scaleX(1); }
+.item-type { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--accent-green); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+.item-type::before { content: '\25B6'; font-size: 0.6em; }
+html:not([data-theme="dark"]) .item-type { color: #3d6b2e; }
+.item-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.4; }
+.item-meta { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--font-mono); font-size: 0.73rem; color: var(--accent-cyan); background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.15); border-radius: 4px; padding: 0.2rem 0.55rem; margin-bottom: 0.75rem; }
+html:not([data-theme="dark"]) .item-meta { color: #8b4513; background: rgba(201,124,58,0.08); border-color: rgba(201,124,68,0.2); }
+.item-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
+.item-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.75rem; }
+.tag { padding: 0.2rem 0.55rem; border-radius: 4px; font-family: var(--font-mono); font-size: 0.68rem; background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.25); }
+html:not([data-theme="dark"]) .tag { background: rgba(124,58,237,0.08); color: #6d28d9; border-color: rgba(124,58,237,0.2); }
+.cv-section { margin-bottom: 3rem; }
+.edu-timeline { position: relative; padding-left: 2rem; }
+.edu-timeline::before { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--grad-primary); opacity: 0.4; border-radius: 2px; }
+.edu-node { position: relative; margin-bottom: 1.25rem; }
+.edu-dot { position: absolute; left: -2rem; top: 0.85rem; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-cyan); border: 2px solid var(--bg-deep); box-shadow: 0 0 8px rgba(0,212,255,0.5); z-index: 1; }
+html:not([data-theme="dark"]) .edu-dot { background: #c97c3a; box-shadow: 0 0 8px rgba(201,124,58,0.4); }
+.edu-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; transition: border-color 0.3s; }
+.edu-card:hover { border-color: var(--border-glow, rgba(0,212,255,0.3)); }
+.edu-degree { font-size: 0.92rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem; }
+.edu-inst { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); }
+html:not([data-theme="dark"]) .edu-inst { color: #8b4513; }
+.edu-meta { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; }
+.skill-cat-name { font-family: var(--font-mono); font-size: 0.73rem; letter-spacing: 0.08em; color: var(--accent-cyan); margin-bottom: 0.5rem; }
+html:not([data-theme="dark"]) .skill-cat-name { color: #8b4513; }
+.skill-bar-row { margin-bottom: 0.65rem; }
+.skill-bar-label { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.73rem; color: var(--text-secondary); margin-bottom: 0.3rem; }
+.skill-bar-track { height: 4px; background: rgba(0,212,255,0.12); border-radius: 2px; overflow: hidden; }
+html:not([data-theme="dark"]) .skill-bar-track { background: rgba(201,124,58,0.12); }
+.skill-bar-fill { height: 100%; border-radius: 2px; background: var(--grad-primary); width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+.skill-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.skill-chip { padding: 0.25rem 0.6rem; border-radius: 5px; font-family: var(--font-mono); font-size: 0.7rem; background: rgba(0,212,255,0.07); color: var(--accent-cyan); border: 1px solid rgba(0,212,255,0.18); transition: all 0.2s; }
+.skill-chip:hover { background: rgba(0,212,255,0.14); box-shadow: 0 0 8px rgba(0,212,255,0.2); }
+html:not([data-theme="dark"]) .skill-chip { background: rgba(201,124,58,0.08); color: #8b4513; border-color: rgba(201,124,58,0.22); }
+html:not([data-theme="dark"]) .skill-chip:hover { background: rgba(201,124,58,0.15); }
+.award-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.75rem; }
+.award-cat { font-family: var(--font-mono); font-size: 0.73rem; color: var(--accent-green); letter-spacing: 0.08em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+html:not([data-theme="dark"]) .award-cat { color: #3d6b2e; }
+.award-list { list-style: none; }
+.award-list li { font-size: 0.85rem; color: var(--text-secondary); padding: 0.2rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 0.5rem; }
+.award-list li:last-child { border: none; }
+.award-list li::before { content: '\203A'; color: var(--accent-cyan); flex-shrink: 0; }
+html:not([data-theme="dark"]) .award-list li::before { color: #c97c3a; }
+.award-strong { color: var(--text-primary); font-weight: 600; }
+.lang-list { list-style: none; }
+.lang-item { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+.lang-item:last-child { border: none; }
+.lang-name { color: var(--text-primary); font-weight: 500; }
+.lang-level { color: var(--accent-cyan); font-size: 0.73rem; }
+html:not([data-theme="dark"]) .lang-level { color: #c97c3a; }
+.pdf-frame { width: 100%; height: 500px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); }
+footer { background: var(--bg-deep); border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; margin-top: 4rem; position: relative; z-index: 1; }
+.footer-social { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.25rem; }
+.social-link { width: 42px; height: 42px; border-radius: 9px; background: var(--bg-card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); text-decoration: none; transition: all 0.3s; }
+.social-link:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: var(--glow-cyan); }
+html:not([data-theme="dark"]) .social-link:hover { border-color: #c97c3a; color: #8b4513; }
+footer p { font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 0.4rem; }
+@media (max-width: 960px) { .cv-grid { grid-template-columns: 1fr; } .header-body { grid-template-columns: 1fr; gap: 1rem; } main { padding: 5rem 1.5rem 3rem; } }
+@media (max-width: 600px) { main { padding: 4.5rem 1rem 2rem; } .header-body { padding: 1.25rem; font-size: 0.78rem; } .dl-btn-row { padding: 0 1.25rem 1.25rem; } .cv-name { font-size: 1.35rem; } .sec-title { font-size: 1.25rem; } .cv-card { padding: 1.1rem; } .edu-timeline { padding-left: 1.5rem; } .pdf-frame { height: 320px; } }
+::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg-dark); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     </style>
 </head>
-
-<body class="">
-
-    <!-- Particle Background -->
-    <div class="particles-container" id="particles-bg"></div>
-
-    <div id="navbar-container"></div>
-    <script type="module" src="../assets/js/navbar.js"></script>
-
-    <main class="container section">
-        <header class="text-center mb-16 animate-fade-in-up" data-animate="fade-in">
-            <div class="relative">
-                <h1 class="resume-title gradient-text float-animation" data-speed="80">Shuvam Banerji Seal</h1>
-                <div
-                    class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full opacity-20 animate-pulse">
+<body>
+<div class="page-grid-bg"></div>
+<div id="navbar-container"></div>
+<script type="module" src="../assets/js/navbar.js"></script>
+<main>
+    <div class="cv-header">
+        <div class="header-terminal">
+            <div class="header-titlebar">
+                <div class="titlebar-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+                <div class="titlebar-path"><span class="path-host">shuvam@iiser-k</span><span>:</span><span>~/cv/shuvam-banerji-seal</span></div>
+                <div class="titlebar-right">resume.md</div>
+            </div>
+            <div class="header-body">
+                <div>
+                    <div><span class="json-brace">$</span> <span style="color:var(--accent-cyan)">cat</span> identity.json</div>
+                    <div><span class="json-brace">{</span></div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"name"</span>: <span class="json-str">"Shuvam Banerji Seal"</span>,</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"role"</span>: <span class="json-str">"BS-MS | Chemistry + CS Minor"</span>,</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"affil"</span>: <span class="json-str">"IISER Kolkata"</span>,</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"cgpa"</span>: <span class="json-num">8.2</span>,</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"grad"</span>: <span class="json-str">"2027 (expected)"</span>,</div>
+                    <div>&nbsp;&nbsp;<span class="json-key">"orcid"</span>: <span class="json-str">"0009-0000-0714-569X"</span></div>
+                    <div><span class="json-brace">}</span></div>
                 </div>
-                <div class="absolute -bottom-2 -left-2 w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full opacity-30 animate-bounce"
-                    style="animation-delay: 1s;"></div>
+                <div>
+                    <div class="cv-name">Shuvam Banerji Seal</div>
+                    <div class="cv-role">BS-MS &middot; Chemistry Major &middot; CS Minor</div>
+                    <div class="cv-affil">Indian Institute of Science Education and Research &mdash; Kolkata</div>
+                    <div class="cv-contacts">
+                        <a href="mailto:sbs22ms076@iiserkol.ac.in" class="cv-contact-link"><span class="lc">&#x2709;</span> sbs22ms076@iiserkol.ac.in</a>
+                        <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener" class="cv-contact-link"><span class="lc">&#x2318;</span> github.com/Shuvam-Banerji-Seal</a>
+                        <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener" class="cv-contact-link"><span class="lc">&#x2B21;</span> linkedin.com/in/mastersbs</a>
+                        <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener" class="cv-contact-link"><span class="lc">&#x25CB;</span> orcid.org/0009-0000-0714-569X</a>
+                    </div>
+                </div>
             </div>
-            <p class="resume-subtitle animate-slide-left" data-animate="slide-left" data-delay="1000">BS-MS Student
-                (Chemistry Major, Computer Science Minor)</p>
-            <p class="resume-affiliation animate-slide-right" data-animate="slide-right" data-delay="1200">Indian
-                Institute of Science Education and Research - Kolkata</p>
-            <div class="contact-links stagger-children">
-                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="contact-link modern-badge interactive-card">
-                    <i data-lucide="mail" class="w-4 h-4"></i>
-                    <span>sbs22ms076@iiserkol.ac.in</span>
-                </a>
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
-                    class="contact-link modern-badge interactive-card">
-                    <i data-lucide="github" class="w-4 h-4"></i>
-                    <span>GitHub</span>
-                </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
-                    class="contact-link modern-badge interactive-card">
-                    <i data-lucide="linkedin" class="w-4 h-4"></i>
-                    <span>LinkedIn</span>
-                </a>
-                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer"
-                    class="contact-link modern-badge interactive-card">
-                    <i data-lucide="award" class="w-4 h-4"></i>
-                    <span>ORCID</span>
-                </a>
+            <div class="header-prompt">
+                <span style="color:var(--accent-green)">shuvam@iiser-k</span>
+                <span style="color:var(--text-muted)">:~/cv$</span>&nbsp;./generate-resume.sh --format=web<span class="cursor"></span>
             </div>
-        </header>
-
-        <div class="grid md:grid-cols-3 gap-12">
-
-            <div class="md:col-span-2 space-y-12">
-
-                <section class="animate-on-scroll" data-animate="fade-in" data-delay="1600">
-                    <h2 class="section-subtitle-left gradient-text animate-slide-left" data-animate="slide-left"
-                        data-delay="1700">
-                        <i data-lucide="microscope" class="inline-block mr-2 w-6 h-6"></i>
-                        Research Experience
-                    </h2>
-                    <div class="space-y-6 stagger-children">
-                        <div class="resume-card interactive-card animate-scale-in" data-animate="scale-up"
-                            data-delay="1800">
-                            <div class="p-6">
-                                <h3 class="item-title gradient-text">
-                                    <i data-lucide="brain" class="inline-block mr-2 w-5 h-5"></i>
-                                    A Hybrid RAG Architecture for Verifiable Answer Synthesis with Automated Source
-                                    Citation
-                                </h3>
-                                <p class="item-meta modern-badge">
-                                    <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                    Under Dr. Dwaipayan Roy, Dept. of Computation and Data-Science, IISER-Kolkata | July
-                                    2025
-                                </p>
-                                <p class="item-description">Developed comprehensive RAG pipeline for IISER-K intranet
-                                    with automated data acquisition via Selenium, OCR processing with PyMuPDF and
-                                    EasyOCR, text extraction, context-aware chunking with metadata enrichment,
-                                    high-dimensional embeddings using Qwen3-4B model stored in FAISS, hybrid search
-                                    combining dense vector retrieval with BM25, query refinement with hypothetical
-                                    answers, and verifiable inline citations in Streamlit application.</p>
-                            </div>
-                        </div>
-                        <div class="resume-card interactive-card">
-                            <div class="p-6">
-                                <h3 class="item-title">
-                                    <i data-lucide="search" class="inline-block mr-2 w-5 h-5"></i>
-                                    Developing an Advanced Retrieval Model for TREC-Tip of Tongue Queries
-                                </h3>
-                                <p class="item-meta modern-badge">
-                                    <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                    Guided by Dr. Dwaipayan Roy, Dept. of Computation and Data-Science, IISER-Kolkata |
-                                    2024 (TREC 2024 Proceedings)
-                                </p>
-                                <p class="item-description">Engineered multi-layer BM-25 filtering system with dynamic
-                                    search-domain contraction based on extracted keywords, transformer-based query
-                                    expansion, semantic matching using Local LLMs through multi-shot and
-                                    chain-of-thought prompting, achieving results on par with specifically-modified DPR
-                                    models.</p>
-                            </div>
-                        </div>
-                        <div class="resume-card interactive-card">
-                            <div class="p-6">
-                                <h3 class="item-title">
-                                    <i data-lucide="flask-conical" class="inline-block mr-2 w-5 h-5"></i>
-                                    Computational Modeling of [VO(SALIEP)(DTP)] as Water Reducing Catalyst
-                                </h3>
-                                <p class="item-meta modern-badge">
-                                    <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                    Guided by Dr. Soumyajit Roy, Dept. of Chemical Sciences, IISER-Kolkata | 2024-25 (to
-                                    be submitted)
-                                </p>
-                                <p class="item-description">Implemented DFT methods (B3LYP) for MO energy calculations
-                                    and electronic structure analysis using Gaussian, conducted mechanistic studies
-                                    using transition state theory and reaction pathway analysis for catalyst performance
-                                    prediction.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left gradient-text animate-slide-left">
-                        <i data-lucide="book-open" class="inline-block mr-2 w-6 h-6"></i>
-                        Publications
-                    </h2>
-                    <div class="space-y-6 stagger-children">
-                        <div class="resume-card interactive-card">
-                            <div class="p-6">
-                                <h3 class="item-title">
-                                    <i data-lucide="file-text" class="inline-block mr-2 w-5 h-5"></i>
-                                    Hierarchical Opinion Classification with Large Language Models
-                                </h3>
-                                <p class="item-meta modern-badge">
-                                    <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                    2025 (Submitted to FIRE 2025) | Independent Research with Co-authors: Alok Mishra
-                                    and Utkarsha Ghosh
-                                </p>
-                                <p class="item-description">Proposed parameter-efficient fine-tuning approach for
-                                    hierarchical opinion classification using Gemma-1B model, employing lightweight
-                                    two-layer classification head, selective transformer block updates, 8-class flat
-                                    reformulation with class-weighted loss to enhance minority-class performance and
-                                    structural sentiment understanding.</p>
-                            </div>
-                        </div>
-                        <div class="resume-card interactive-card">
-                            <div class="p-6">
-                                <h3 class="item-title">
-                                    <i data-lucide="award" class="inline-block mr-2 w-5 h-5"></i>
-                                    IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items
-                                </h3>
-                                <p class="item-meta modern-badge">
-                                    <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                    2024 (TREC 2024 Proceedings) | Co-authors: Subinay Adhikary, Soumyadeep Sar, and Dr.
-                                    Dwaipayan Roy
-                                </p>
-                                <p class="item-description">Explored approaches for known-item retrieval in TREC 2024
-                                    Tip-of-the-Tongue track, implemented four-step query reformulation with two-layer
-                                    retrieval using BM25 and Large Language Models, achieving best performance with
-                                    systematic query reformulation and enhanced NDCG metrics.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="projects" class="animate-on-scroll scroll-mt-20" data-animate="fade-in">
-                    <h2 class="section-subtitle-left gradient-text animate-slide-left">
-                        <i data-lucide="code" class="inline-block mr-2 w-6 h-6"></i>
-                        Projects
-                    </h2>
-                    <div class="space-y-6 stagger-children">
-                        <div class="resume-card interactive-card">
-                            <div class="p-6">
-                                <h3 class="item-title">
-                                    <i data-lucide="sprout" class="inline-block mr-2 w-5 h-5"></i>
-                                    IndicAgri: AI Platform for Indian Agriculture
-                                </h3>
-                                <p class="item-meta modern-badge">
-                                    <i data-lucide="trophy" class="w-4 h-4 mr-1"></i>
-                                    Capital One Launchpad Hackathon 2025 | Aug 2025
-                                </p>
-                                <p class="item-description">Developed multi-modal (text, voice) RAG chatbot for 20+
-                                    Indian languages delivering scientifically cited, hyper-localized outputs by
-                                    integrating real-time data with OpenSource LLMs (Gemma, DeepSeek), engineered
-                                    agentic data pipeline for autonomous 15k+ document dataset curation.</p>
-                            </div>
-                        </div>
-                        <div class="resume-card interactive-card">
-                            <div class="p-6">
-                                <h3 class="item-title">
-                                    <i data-lucide="message-circle" class="inline-block mr-2 w-5 h-5"></i>
-                                    Automated WhatsApp Bulk Message Sender with Google Sheets Integration
-                                </h3>
-                                <p class="item-meta modern-badge">
-                                    <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                    Independent Project | 2025
-                                </p>
-                                <p class="item-description">Developed automated messaging bot using Python and Selenium
-                                    for bulk WhatsApp messaging with CSV and Google Sheets API integration, robust error
-                                    handling for network issues, Unicode/emoji compatibility, and session persistence.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="resume-card interactive-card">
-                            <div class="p-6">
-                                <h3 class="item-title">
-                                    <i data-lucide="ticket" class="inline-block mr-2 w-5 h-5"></i>
-                                    Automated Event Coupon Management System with QR Verification
-                                </h3>
-                                <p class="item-meta modern-badge">
-                                    <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                    Independent Project | 2025
-                                </p>
-                                <p class="item-description">Built Flask-based event management system with Google OAuth
-                                    2.0 authentication for secure bulk email distribution and unique QR code coupon
-                                    generation with real-time mobile verification, encryption, and automated thank-you
-                                    emails.</p>
-                            </div>
-                        </div>
-                        <div class="card glassmorphic">
-                            <h3 class="item-title">RAG Application for CCA-2015 Legal Document Retrieval</h3>
-                            <p class="item-meta">Independent Project | Feb 2025</p>
-                            <p class="item-description">Created robust RAG stack using Selenium for web scraping,
-                                Mistral-OCR for JSON document base building, ChromaDB for vector storage, Nomic
-                                embeddings, and LLaMA-3.2:1B for retrieval in Streamlit interface.</p>
-                        </div>
-                        <div class="card glassmorphic">
-                            <h3 class="item-title">GTK4 Full-Stack Application in C</h3>
-                            <p class="item-meta">Supervised by Dr. Kripabandhu Ghosh, IISER-Kolkata | 2024</p>
-                            <p class="item-description">Developed complete GUI application using GTK4 and Glade with
-                                SQLite3 database management and optimized BM25-based retrieval for NLP chatbot
-                                functionality.</p>
-                        </div>
-                        <div class="card glassmorphic">
-                            <h3 class="item-title">Wi-Fi Channel Optimizer for Network Performance</h3>
-                            <p class="item-meta">Independent Project | 2024</p>
-                            <p class="item-description">Engineered Bash automation script for Wi-Fi channel optimization
-                                through automated network scanning, speed testing, and channel selection using
-                                speedtest-cli and nmcli.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left">GitHub Repositories</h2>
-                    <div class="grid md:grid-cols-2 gap-8" data-github-repos="Shuvam-Banerji-Seal" data-per-page="8">
-                    </div>
-                </section>
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left gradient-text animate-slide-left">
-                        <i data-lucide="graduation-cap" class="inline-block mr-2 w-6 h-6"></i>
-                        Education
-                    </h2>
-                    <div class="modern-timeline">
-                        <div class="timeline-node">
-                            <div class="timeline-dot"><i data-lucide="graduation-cap"></i></div>
-                            <div class="resume-card interactive-card">
-                                <div class="p-6">
-                                    <h3 class="item-title gradient-text">BS-MS, Chemistry Major, Computer Science Minor
-                                    </h3>
-                                    <p class="item-meta modern-badge">
-                                        <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
-                                        Indian Institute of Science Education and Research (IISER) - Kolkata
-                                    </p>
-                                    <p class="item-date modern-badge">
-                                        <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                        CGPA: 8.2 | Expected Graduation: 2027
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-node">
-                            <div class="timeline-dot"><i data-lucide="school"></i></div>
-                            <div class="resume-card interactive-card">
-                                <div class="p-6">
-                                    <h3 class="item-title">B.Sc Honours in Physics</h3>
-                                    <p class="item-meta modern-badge">
-                                        <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
-                                        Calcutta University
-                                    </p>
-                                    <p class="item-date modern-badge">
-                                        <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                        CGPA: 8.308 | 2021-2022
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-node">
-                            <div class="timeline-dot"><i data-lucide="school"></i></div>
-                            <div class="resume-card interactive-card">
-                                <div class="p-6">
-                                    <h3 class="item-title">Higher Secondary Education (WBCHSE)</h3>
-                                    <p class="item-meta modern-badge">
-                                        <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
-                                        Jodhpur Park Boys' High School
-                                    </p>
-                                    <p class="item-date modern-badge">
-                                        <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                        Percentage: 83% | 2019-2021
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-node">
-                            <div class="timeline-dot"><i data-lucide="school"></i></div>
-                            <div class="resume-card interactive-card">
-                                <div class="p-6">
-                                    <h3 class="item-title">Secondary Level Schooling (WBBSE)</h3>
-                                    <p class="item-meta modern-badge">
-                                        <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
-                                        The New Horizon High School
-                                    </p>
-                                    <p class="item-date modern-badge">
-                                        <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                        Percentage: 83.75% | 2009-2019
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left">Achievements & Honors</h2>
-                    <div class="space-y-4">
-                        <div class="card glassmorphic">
-                            <h4 class="font-semibold text-cyan-400">🏆 Hackathons</h4>
-                            <ul class="awards-list">
-                                <li><strong>Capital One Launchpad</strong> - Top 14 Team among 5000+ Teams (2025)</li>
-                                <li><strong>StatusCode1 (GIAN Track)</strong> - 1st Rank (2024)</li>
-                                <li><strong>StatusCode0 (MATLAB Track)</strong> - 1st Rank (2023)</li>
-                            </ul>
-                        </div>
-                        <div class="card glassmorphic">
-                            <h4 class="font-semibold text-cyan-400">🥇 National Level Basic Sciences Competitions</h4>
-                            <ul class="awards-list">
-                                <li><strong>ChemEnigma</strong> - 1st Rank (2025)</li>
-                                <li><strong>All Bengal Chemistry Quiz</strong> - 2nd Runners Up (2025)</li>
-                                <li><strong>Mimansa</strong> - Zonal Topper (2024)</li>
-                                <li><strong>NAEST</strong> - Zonal Runners Up (2023)</li>
-                            </ul>
-                        </div>
-                        <div class="card glassmorphic">
-                            <h4 class="font-semibold text-cyan-400">🎓 Scholarships & Honors</h4>
-                            <ul class="awards-list">
-                                <li><strong>Reliance Foundation Undergraduate Scholar</strong> (2023)</li>
-                                <li><strong>Best Young Scientist Speaker on Nanotechnology</strong> (2019)</li>
-                            </ul>
-                        </div>
-                        <div class="card glassmorphic">
-                            <h4 class="font-semibold text-cyan-400">✅ Competitive Examinations</h4>
-                            <ul class="awards-list">
-                                <li><strong>JEE Mains and Advanced</strong> - Qualified (2022)</li>
-                                <li><strong>IAT (IISER Aptitude Test)</strong> - Qualified (2022)</li>
-                                <li><strong>WBJEE</strong> - Qualified (2022)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-
-            </div>
-
-            <div class="space-y-12">
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left gradient-text animate-slide-left">
-                        <i data-lucide="cpu" class="inline-block mr-2 w-6 h-6"></i>
-                        Technical Expertise
-                    </h2>
-                    <div class="resume-card space-y-6">
-                        <div class="p-6">
-                            <!-- Key Skills with Progress Bars -->
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-semibold text-cyan-400">Python</span>
-                                        <span class="text-sm text-gray-600">95%</span>
-                                    </div>
-                                    <div class="skill-progress">
-                                        <div class="skill-progress-bar" style="--progress-width: 95%;"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-semibold text-cyan-400">Machine Learning & AI</span>
-                                        <span class="text-sm text-gray-600">90%</span>
-                                    </div>
-                                    <div class="skill-progress">
-                                        <div class="skill-progress-bar" style="--progress-width: 90%;"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-semibold text-cyan-400">Information Retrieval</span>
-                                        <span class="text-sm text-gray-600">88%</span>
-                                    </div>
-                                    <div class="skill-progress">
-                                        <div class="skill-progress-bar" style="--progress-width: 88%;"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-semibold text-cyan-400">Computational Chemistry</span>
-                                        <span class="text-sm text-gray-600">85%</span>
-                                    </div>
-                                    <div class="skill-progress">
-                                        <div class="skill-progress-bar" style="--progress-width: 85%;"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="font-semibold text-cyan-400">C/C++ Programming</span>
-                                        <span class="text-sm text-gray-600">82%</span>
-                                    </div>
-                                    <div class="skill-progress">
-                                        <div class="skill-progress-bar" style="--progress-width: 82%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Skill Categories -->
-                            <div class="grid md:grid-cols-2 gap-6 mt-8">
-                                <div>
-                                    <h4 class="skills-category mb-3">
-                                        <i data-lucide="database" class="inline-block mr-2 w-4 h-4"></i>
-                                        Research Computing:
-                                    </h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="modern-badge">Algorithm Development</span>
-                                        <span class="modern-badge">Information Retrieval</span>
-                                        <span class="modern-badge">Bio-Informatics</span>
-                                        <span class="modern-badge">Molecular Dynamics</span>
-                                        <span class="modern-badge">DFT Computations</span>
-                                        <span class="modern-badge">Reciprocal Rank Fusion</span>
-                                        <span class="modern-badge">Information Theory</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="skills-category mb-3">
-                                        <i data-lucide="code" class="inline-block mr-2 w-4 h-4"></i>
-                                        Programming Languages:
-                                    </h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="modern-badge">Python</span>
-                                        <span class="modern-badge">C/C++</span>
-                                        <span class="modern-badge">Java</span>
-                                        <span class="modern-badge">Rust</span>
-                                        <span class="modern-badge">QBASIC</span>
-                                        <span class="modern-badge">GWBASIC</span>
-                                        <span class="modern-badge">Fortran</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="skills-category mb-3">
-                                        <i data-lucide="calculator" class="inline-block mr-2 w-4 h-4"></i>
-                                        Python Libraries - Core & Scientific:
-                                    </h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="modern-badge">NumPy</span>
-                                        <span class="modern-badge">Pandas</span>
-                                        <span class="modern-badge">SciPy</span>
-                                        <span class="modern-badge">Matplotlib</span>
-                                        <span class="modern-badge">Plotly</span>
-                                        <span class="modern-badge">Scikit-learn</span>
-                                        <span class="modern-badge">OpenCV</span>
-                                        <span class="modern-badge">PyTorch</span>
-                                        <span class="modern-badge">TensorFlow</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="skills-category mb-3">
-                                        <i data-lucide="brain" class="inline-block mr-2 w-4 h-4"></i>
-                                        Python Libraries - NLP & ML:
-                                    </h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="modern-badge">HuggingFace Transformers</span>
-                                        <span class="tech-tag">LangChain</span>
-                                        <span class="tech-tag">NLTK</span>
-                                        <span class="tech-tag">SpaCy</span>
-                                        <span class="tech-tag">FAISS</span>
-                                        <span class="tech-tag">ChromaDB</span>
-                                        <span class="tech-tag">Selenium</span>
-                                        <span class="tech-tag">BeautifulSoup</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="skills-category">Large Language Models & Embeddings:</h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="tech-tag">Qwen2-4B</span>
-                                        <span class="tech-tag">Qwen3-4B</span>
-                                        <span class="tech-tag">Gemma (1B, 27B)</span>
-                                        <span class="tech-tag">DeepSeek</span>
-                                        <span class="tech-tag">LLaMA-3.2:1B</span>
-                                        <span class="tech-tag">Nomic Embeddings</span>
-                                        <span class="tech-tag">Mistral-OCR</span>
-                                        <span class="tech-tag">Indic-Conformer</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="skills-category">Scientific Software:</h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="tech-tag">LAMMPS</span>
-                                        <span class="tech-tag">VMD</span>
-                                        <span class="tech-tag">Gaussian</span>
-                                        <span class="tech-tag">Origin Pro</span>
-                                        <span class="tech-tag">Scilab</span>
-                                        <span class="tech-tag">PyMol</span>
-                                        <span class="tech-tag">ChimeraX</span>
-                                        <span class="tech-tag">PyDock</span>
-                                        <span class="tech-tag">AutoDock Vina</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="skills-category">Development Stack:</h4>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="tech-tag">Full-Stack (HTML/CSS/JS)</span>
-                                        <span class="tech-tag">Django</span>
-                                        <span class="tech-tag">GTK4 in C</span>
-                                        <span class="tech-tag">QT in C++</span>
-                                        <span class="tech-tag">Databases (MongoDB, MySQL, SQLite3, ChromaDB)</span>
-                                        <span class="tech-tag">Git</span>
-                                        <span class="tech-tag">Docker</span>
-                                        <span class="tech-tag">CMake</span>
-                                        <span class="tech-tag">LaTeX</span>
-                                    </div>
-                                </div>
-                            </div>
-                </section>
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left">Professional Experience & Leadership</h2>
-                    <div class="card glassmorphic space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-cyan-400">💼 Professional Experience</h4>
-                            <div class="space-y-3">
-                                <p><strong class="activity-title">Web Development for Anicon 3.0:</strong> Developed and
-                                    led web development for Anicon 3.0 event (2024-2025) at Inquivesta XI, IISER
-                                    Kolkata.</p>
-                                <p><strong class="activity-title">Web Development for Material Science
-                                        Laboratory:</strong> Developed and designed researcher lab info page for Dr.
-                                    Soumyajit Roy's homepage (2025) at EFAML, IISER Kolkata.</p>
-                                <p><strong class="activity-title">Private Educator & Technical Trainer:</strong>
-                                    Advanced Computing & Basic Sciences Instruction (2018-Present), mentored 50+
-                                    students for board and competitive examinations.</p>
-                                <p><strong class="activity-title">Technical Consultant:</strong> High-performance
-                                    computing solutions, system optimization, and custom build projects (2021-Present).
-                                </p>
-                                <p><strong class="activity-title">Published Author:</strong> Creative anthology work
-                                    "MindScapes" focusing on metaphorical themes (2020).</p>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-cyan-400">🎯 Leadership & Community Impact</h4>
-                            <div class="space-y-3">
-                                <p><strong class="activity-title">Event Management:</strong> Organized Anicon 3.0 (500+
-                                    participants), Supra-Molecular Discussions 2024, GIAN Courses on Soft-Oxometalates
-                                    and X-Ray Crystallography.</p>
-                                <p><strong class="activity-title">Social Impact:</strong> COVID-19 relief coordinator,
-                                    Educational mentor for Ek-Pehal program.</p>
-                                <p><strong class="activity-title">Additional Activities:</strong> District Level Debate
-                                    and Quiz finalist, Shotokan Karate practitioner, 4th Year Art and Painting Student
-                                    with major works in Stroke art and Portraits.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left">Languages</h2>
-                    <div class="card glassmorphic space-y-2">
-                        <p><strong>English:</strong> Fluent</p>
-                        <p><strong>Bengali:</strong> Native</p>
-                        <p><strong>Hindi:</strong> Proficient</p>
-                    </div>
-                </section>
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left">Download Resume</h2>
-                    <div class="card glassmorphic">
-                        <a href="https://github.com/Shuvam-Banerji-Seal/My-CV/raw/main/Shuvam_Banerji_Seal__CV.pdf"
-                            download class="btn btn-secondary">
-                            Download PDF <i data-lucide="file-text" class="inline-block ml-1 w-5 h-5"></i>
-                        </a>
-                    </div>
-                </section>
-
-                <section class="animate-on-scroll" data-animate="fade-in">
-                    <h2 class="section-subtitle-left">View Resume</h2>
-                    <div class="card glassmorphic">
-                        <iframe src="https://github.com/Shuvam-Banerji-Seal/My-CV/raw/main/Shuvam_Banerji_Seal__CV.pdf"
-                            title="Resume PDF" class="resume-iframe"></iframe>
-                    </div>
-                </section>
-
-            </div>
-
-        </div>
-
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="GitHub Profile">
-                    <i data-lucide="github" class="w-5 h-5"></i>
-                </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="LinkedIn Profile">
-                    <i data-lucide="linkedin" class="w-5 h-5"></i>
-                </a>
-                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="ORCID Profile">
-                    <i data-lucide="award" class="w-5 h-5"></i>
-                </a>
-                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
-                </a>
-            </div>
-            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i
-                    data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i
-                    data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
-            <div class="mt-4">
-                <button data-theme-toggle class="theme-toggle-btn">
-                    <i data-lucide="moon" class="w-4 h-4 mr-2"></i> Toggle Theme
-                </button>
+            <div class="dl-btn-row">
+                <a href="https://github.com/Shuvam-Banerji-Seal/My-CV/raw/main/Shuvam_Banerji_Seal__CV.pdf" download class="btn-dl btn-dl-primary">&#x2B07; Download PDF</a>
+                <a href="https://github.com/Shuvam-Banerji-Seal/My-CV" target="_blank" rel="noopener" class="btn-dl btn-dl-outline">&#x2318; View on GitHub</a>
             </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- Mobile menu fix (load first) -->
-    <!-- Original functionality -->
-    <script type="module" src="../assets/js/main.js"></script>
-    <!-- Enhanced features -->
-    <script type="module" src="../assets/js/enhanced.js"></script>
+    <div class="cv-grid">
+        <div>
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">RESEARCH.EXPERIENCE</div><div class="sec-title">Research Experience</div><div class="sec-divider"></div></div>
+                <div class="cv-card">
+                    <div class="item-type">Ongoing &middot; RAG Systems</div>
+                    <div class="item-title">A Hybrid RAG Architecture for Verifiable Answer Synthesis with Automated Source Citation</div>
+                    <div class="item-meta">&#9632; Dr. Dwaipayan Roy &middot; CDS, IISER Kolkata &middot; July 2025</div>
+                    <p class="item-desc">Comprehensive RAG pipeline for IISER-K intranet: automated data acquisition via Selenium, OCR with PyMuPDF/EasyOCR, context-aware chunking, Qwen3-4B embeddings in FAISS, hybrid BM25+dense retrieval, hypothetical-answer query refinement, and verifiable inline citations in Streamlit.</p>
+                    <div class="item-tags"><span class="tag">RAG</span><span class="tag">FAISS</span><span class="tag">Qwen3-4B</span><span class="tag">BM25</span><span class="tag">Selenium</span><span class="tag">Streamlit</span></div>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Published &middot; Information Retrieval</div>
+                    <div class="item-title">Developing an Advanced Retrieval Model for TREC-Tip of Tongue Queries</div>
+                    <div class="item-meta">&#9632; Dr. Dwaipayan Roy &middot; IISER Kolkata &middot; TREC 2024 Proceedings</div>
+                    <p class="item-desc">Multi-layer BM-25 filtering with dynamic search-domain contraction, transformer query expansion, semantic matching via Local LLMs with multi-shot chain-of-thought prompting &mdash; matching DPR-class performance.</p>
+                    <div class="item-tags"><span class="tag">BM25</span><span class="tag">Query Expansion</span><span class="tag">Chain-of-Thought</span><span class="tag">DPR</span></div>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Computational Chemistry &middot; DFT</div>
+                    <div class="item-title">Computational Modeling of [VO(SALIEP)(DTP)] as Water Reducing Catalyst</div>
+                    <div class="item-meta">&#9632; Dr. Soumyajit Roy &middot; IISER Kolkata &middot; 2024&ndash;25 (to be submitted)</div>
+                    <p class="item-desc">DFT methods (B3LYP) for MO energy calculations and electronic structure analysis in Gaussian; mechanistic studies via transition state theory and reaction pathway analysis for catalyst performance prediction.</p>
+                    <div class="item-tags"><span class="tag">DFT</span><span class="tag">Gaussian</span><span class="tag">B3LYP</span><span class="tag">Transition State</span></div>
+                </div>
+            </div>
 
-    <!-- Particle Background Script -->
-    <script>
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles-bg');
-            const particleCount = 50;
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">PUBLICATIONS.BIB</div><div class="sec-title">Publications</div><div class="sec-divider"></div></div>
+                <div class="cv-card">
+                    <div class="item-type">Submitted &middot; NLP / LLM</div>
+                    <div class="item-title">Hierarchical Opinion Classification with Large Language Models</div>
+                    <div class="item-meta">&#9632; FIRE 2025 (submitted) &middot; w/ Alok Mishra &amp; Utkarsha Ghosh</div>
+                    <p class="item-desc">Parameter-efficient fine-tuning of Gemma-1B for hierarchical opinion classification: lightweight two-layer head, selective transformer block updates, 8-class reformulation with class-weighted loss for minority-class performance.</p>
+                    <div class="item-tags"><span class="tag">Gemma-1B</span><span class="tag">PEFT</span><span class="tag">Opinion Mining</span></div>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Proceedings &middot; Information Retrieval</div>
+                    <div class="item-title">IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items</div>
+                    <div class="item-meta">&#9632; TREC 2024 &middot; w/ Subinay Adhikary, Soumyadeep Sar, Dr. Dwaipayan Roy</div>
+                    <p class="item-desc">Four-step query reformulation + two-layer retrieval (BM25 + LLM), achieving best NDCG metrics for the TREC 2024 Tip-of-the-Tongue track.</p>
+                    <div class="item-tags"><span class="tag">BM25</span><span class="tag">NDCG</span><span class="tag">TREC 2024</span></div>
+                </div>
+            </div>
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">PROJECTS.LOG</div><div class="sec-title">Projects</div><div class="sec-divider"></div></div>
+                <div class="cv-card">
+                    <div class="item-type">Hackathon &middot; Capital One Launchpad 2025</div>
+                    <div class="item-title">IndicAgri &mdash; AI Platform for Indian Agriculture</div>
+                    <div class="item-meta">&#9632; Top 14 / 5000+ Teams &middot; Aug 2025</div>
+                    <p class="item-desc">Multi-modal (text+voice) RAG chatbot for 20+ Indian languages with Gemma/DeepSeek LLMs; agentic pipeline for 15k+ document curation.</p>
+                    <div class="item-tags"><span class="tag">RAG</span><span class="tag">Gemma</span><span class="tag">DeepSeek</span><span class="tag">Indic NLP</span></div>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Independent &middot; Automation</div>
+                    <div class="item-title">Automated WhatsApp Bulk Messenger with Google Sheets Integration</div>
+                    <div class="item-meta">&#9632; 2025</div>
+                    <p class="item-desc">Python + Selenium bulk messaging with CSV/Google Sheets API, Unicode, session persistence, and error handling.</p>
+                    <div class="item-tags"><span class="tag">Python</span><span class="tag">Selenium</span><span class="tag">Google Sheets API</span></div>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Independent &middot; Event Tech</div>
+                    <div class="item-title">Automated Event Coupon Management System with QR Verification</div>
+                    <div class="item-meta">&#9632; 2025</div>
+                    <p class="item-desc">Flask + Google OAuth 2.0, bulk email, unique QR codes, real-time mobile verification, and automated thank-you emails.</p>
+                    <div class="item-tags"><span class="tag">Flask</span><span class="tag">QR Codes</span><span class="tag">Google OAuth</span></div>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Independent &middot; Legal Tech</div>
+                    <div class="item-title">RAG Application for CCA-2015 Legal Document Retrieval</div>
+                    <div class="item-meta">&#9632; Feb 2025</div>
+                    <p class="item-desc">Selenium scraping &rarr; Mistral-OCR JSON base &rarr; ChromaDB &rarr; Nomic embeddings &rarr; LLaMA-3.2:1B in Streamlit.</p>
+                    <div class="item-tags"><span class="tag">ChromaDB</span><span class="tag">LLaMA</span><span class="tag">Nomic</span></div>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Academic &middot; Systems Programming</div>
+                    <div class="item-title">GTK4 Full-Stack Application in C</div>
+                    <div class="item-meta">&#9632; Supervised by Dr. Kripabandhu Ghosh &middot; 2024</div>
+                    <p class="item-desc">Complete GUI with GTK4 / Glade, SQLite3 backend, and BM25-based NLP chatbot retrieval.</p>
+                    <div class="item-tags"><span class="tag">C</span><span class="tag">GTK4</span><span class="tag">SQLite3</span><span class="tag">BM25</span></div>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Independent &middot; Networking</div>
+                    <div class="item-title">Wi-Fi Channel Optimizer</div>
+                    <div class="item-meta">&#9632; 2024</div>
+                    <p class="item-desc">Bash automation for channel selection via network scanning + speed testing (speedtest-cli + nmcli).</p>
+                    <div class="item-tags"><span class="tag">Bash</span><span class="tag">nmcli</span><span class="tag">Network</span></div>
+                </div>
+            </div>
 
-                // Random position
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">PROFESSIONAL.MD</div><div class="sec-title">Professional &amp; Leadership</div><div class="sec-divider"></div></div>
+                <div class="cv-card">
+                    <div class="item-type">Web Development &middot; Inquivesta XI</div>
+                    <div class="item-title">Anicon 3.0 Web Lead &mdash; IISER Kolkata</div>
+                    <div class="item-meta">&#9632; 2024&ndash;2025</div>
+                    <p class="item-desc">Developed and led web development for Anicon 3.0 at Inquivesta XI, IISER Kolkata.</p>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Research Outreach</div>
+                    <div class="item-title">EFAML Lab Website &mdash; Dr. Soumyajit Roy</div>
+                    <div class="item-meta">&#9632; 2025</div>
+                    <p class="item-desc">Designed the EFAML (Materials Science) lab page for Dr. Soumyajit Roy at IISER Kolkata.</p>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Education &middot; Mentorship</div>
+                    <div class="item-title">Private Educator &amp; Technical Trainer</div>
+                    <div class="item-meta">&#9632; 2018&ndash;Present &middot; 50+ students mentored</div>
+                    <p class="item-desc">Advanced Computing &amp; Basic Sciences instruction for board and competitive examinations.</p>
+                </div>
+                <div class="cv-card">
+                    <div class="item-type">Community &middot; Leadership</div>
+                    <div class="item-title">Event Organization &amp; Social Impact</div>
+                    <div class="item-meta">&#9632; 2022&ndash;2025</div>
+                    <p class="item-desc">Organized Anicon 3.0 (500+ participants), GIAN Courses on Soft-Oxometalates and X-Ray Crystallography, Supra-Molecular Discussions 2024. COVID-19 relief coordinator; Ek-Pehal educational mentor. District Debate &amp; Quiz finalist; Shotokan Karate; Art &amp; Painting (stroke art &amp; portraits).</p>
+                </div>
+            </div>
+        </div>
 
-                // Random animation delay
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        <div>
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">EDUCATION.TIMELINE</div><div class="sec-title">Education</div><div class="sec-divider"></div></div>
+                <div class="edu-timeline">
+                    <div class="edu-node"><div class="edu-dot"></div><div class="edu-card"><div class="edu-degree">BS-MS &middot; Chemistry Major &middot; CS Minor</div><div class="edu-inst">IISER Kolkata</div><div class="edu-meta">CGPA: 8.2 &middot; Expected 2027</div></div></div>
+                    <div class="edu-node"><div class="edu-dot"></div><div class="edu-card"><div class="edu-degree">B.Sc Honours in Physics</div><div class="edu-inst">Calcutta University</div><div class="edu-meta">CGPA: 8.308 &middot; 2021&ndash;2022</div></div></div>
+                    <div class="edu-node"><div class="edu-dot"></div><div class="edu-card"><div class="edu-degree">Higher Secondary (WBCHSE)</div><div class="edu-inst">Jodhpur Park Boys' High School</div><div class="edu-meta">83% &middot; 2019&ndash;2021</div></div></div>
+                    <div class="edu-node"><div class="edu-dot"></div><div class="edu-card"><div class="edu-degree">Secondary (WBBSE)</div><div class="edu-inst">The New Horizon High School</div><div class="edu-meta">83.75% &middot; 2009&ndash;2019</div></div></div>
+                </div>
+            </div>
 
-                particlesContainer.appendChild(particle);
-            }
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">SKILLS.PY</div><div class="sec-title">Technical Expertise</div><div class="sec-divider"></div></div>
+                <div class="cv-card" style="margin-bottom:1.25rem;">
+                    <div class="skill-cat-name">// core proficiency</div>
+                    <div class="skill-bar-row"><div class="skill-bar-label"><span>Python</span><span>95%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div></div>
+                    <div class="skill-bar-row"><div class="skill-bar-label"><span>Machine Learning &amp; AI</span><span>90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="90"></div></div></div>
+                    <div class="skill-bar-row"><div class="skill-bar-label"><span>Information Retrieval</span><span>88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div></div>
+                    <div class="skill-bar-row"><div class="skill-bar-label"><span>Computational Chemistry</span><span>85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div></div>
+                    <div class="skill-bar-row"><div class="skill-bar-label"><span>C / C++</span><span>82%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="82"></div></div></div>
+                </div>
+                <div class="cv-card">
+                    <div class="skill-cat-name" style="margin-bottom:0.5rem;">// programming languages</div>
+                    <div class="skill-chips" style="margin-bottom:1rem;"><span class="skill-chip">Python</span><span class="skill-chip">C / C++</span><span class="skill-chip">Java</span><span class="skill-chip">Rust</span><span class="skill-chip">Fortran</span><span class="skill-chip">QBASIC</span></div>
+                    <div class="skill-cat-name" style="margin-bottom:0.5rem;">// scientific computing</div>
+                    <div class="skill-chips" style="margin-bottom:1rem;"><span class="skill-chip">NumPy</span><span class="skill-chip">Pandas</span><span class="skill-chip">SciPy</span><span class="skill-chip">PyTorch</span><span class="skill-chip">TensorFlow</span><span class="skill-chip">Scikit-learn</span><span class="skill-chip">Matplotlib</span><span class="skill-chip">OpenCV</span></div>
+                    <div class="skill-cat-name" style="margin-bottom:0.5rem;">// nlp &amp; rag</div>
+                    <div class="skill-chips" style="margin-bottom:1rem;"><span class="skill-chip">HuggingFace</span><span class="skill-chip">LangChain</span><span class="skill-chip">FAISS</span><span class="skill-chip">ChromaDB</span><span class="skill-chip">BM25</span><span class="skill-chip">SpaCy</span><span class="skill-chip">Selenium</span></div>
+                    <div class="skill-cat-name" style="margin-bottom:0.5rem;">// llms &amp; embeddings</div>
+                    <div class="skill-chips" style="margin-bottom:1rem;"><span class="skill-chip">Qwen3-4B</span><span class="skill-chip">Gemma</span><span class="skill-chip">DeepSeek</span><span class="skill-chip">LLaMA-3.2</span><span class="skill-chip">Nomic Embed</span><span class="skill-chip">Mistral-OCR</span></div>
+                    <div class="skill-cat-name" style="margin-bottom:0.5rem;">// scientific software</div>
+                    <div class="skill-chips" style="margin-bottom:1rem;"><span class="skill-chip">LAMMPS</span><span class="skill-chip">VMD</span><span class="skill-chip">Gaussian</span><span class="skill-chip">PyMOL</span><span class="skill-chip">ChimeraX</span><span class="skill-chip">AutoDock Vina</span></div>
+                    <div class="skill-cat-name" style="margin-bottom:0.5rem;">// dev &amp; tools</div>
+                    <div class="skill-chips"><span class="skill-chip">Django</span><span class="skill-chip">Flask</span><span class="skill-chip">GTK4</span><span class="skill-chip">Qt</span><span class="skill-chip">MongoDB</span><span class="skill-chip">SQLite3</span><span class="skill-chip">Git</span><span class="skill-chip">Docker</span><span class="skill-chip">LaTeX</span></div>
+                </div>
+            </div>
+
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">AWARDS.JSON</div><div class="sec-title">Achievements &amp; Honors</div><div class="sec-divider"></div></div>
+                <div class="award-block"><div class="award-cat">&#9733; Hackathons</div><ul class="award-list"><li><span class="award-strong">Capital One Launchpad</span> &mdash; Top 14 / 5000+ Teams (2025)</li><li><span class="award-strong">StatusCode1 GIAN</span> &mdash; 1st Rank (2024)</li><li><span class="award-strong">StatusCode0 MATLAB</span> &mdash; 1st Rank (2023)</li></ul></div>
+                <div class="award-block"><div class="award-cat">&#9733; National Competitions</div><ul class="award-list"><li><span class="award-strong">ChemEnigma</span> &mdash; 1st Rank (2025)</li><li><span class="award-strong">All Bengal Chemistry Quiz</span> &mdash; 2nd Runners Up (2025)</li><li><span class="award-strong">Mimansa</span> &mdash; Zonal Topper (2024)</li><li><span class="award-strong">NAEST</span> &mdash; Zonal Runners Up (2023)</li></ul></div>
+                <div class="award-block"><div class="award-cat">&#9733; Scholarships</div><ul class="award-list"><li><span class="award-strong">Reliance Foundation Undergrad Scholar</span> (2023)</li><li><span class="award-strong">Best Young Scientist Speaker &mdash; Nanotechnology</span> (2019)</li></ul></div>
+                <div class="award-block"><div class="award-cat">&#9733; Competitive Exams</div><ul class="award-list"><li>JEE Mains &amp; Advanced &mdash; Qualified (2022)</li><li>IAT (IISER Aptitude Test) &mdash; Qualified (2022)</li><li>WBJEE &mdash; Qualified (2022)</li></ul></div>
+            </div>
+
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">LANGUAGES.CONF</div><div class="sec-title">Languages</div><div class="sec-divider"></div></div>
+                <div class="cv-card"><ul class="lang-list"><li class="lang-item"><span class="lang-name">English</span><span class="lang-level">Fluent</span></li><li class="lang-item"><span class="lang-name">Bengali</span><span class="lang-level">Native</span></li><li class="lang-item"><span class="lang-name">Hindi</span><span class="lang-level">Proficient</span></li></ul></div>
+            </div>
+
+            <div class="cv-section">
+                <div class="sec-header"><div class="sec-label">CV.PDF</div><div class="sec-title">Full CV (PDF)</div><div class="sec-divider"></div></div>
+                <iframe src="https://github.com/Shuvam-Banerji-Seal/My-CV/raw/main/Shuvam_Banerji_Seal__CV.pdf" title="Resume PDF" class="pdf-frame"></iframe>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-social">
+        <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener" class="social-link" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+        <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener" class="social-link" aria-label="ORCID"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></a>
+        <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+    </div>
+    <p>&copy; <span id="footer-year"></span> Shuvam Banerji Seal &middot; All Rights Reserved.</p>
+    <p style="margin-top:0.5rem;"><button data-theme-toggle style="background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:0.35rem 0.9rem;font-family:var(--font-mono);font-size:0.75rem;cursor:pointer;transition:all 0.2s;">&#x25D1; toggle theme</button></p>
+</footer>
+
+<script type="module" src="../assets/js/navbar.js"></script>
+<script type="module" src="../assets/js/main.js"></script>
+<script type="module" src="../assets/js/enhanced.js"></script>
+<script>
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+(function(){
+    var fills = document.querySelectorAll('.skill-bar-fill');
+    var io = new IntersectionObserver(function(entries) {
+        if (entries.some(function(e){ return e.isIntersecting; })) {
+            fills.forEach(function(el) { el.style.width = (el.getAttribute('data-width') || '0') + '%'; });
+            io.disconnect();
         }
-
-        // Initialize particles when page loads
-        document.addEventListener('DOMContentLoaded', function () {
-            createParticles();
-        });
-
-        // Reinitialize on theme change
-        document.addEventListener('themeChanged', function () {
-            const particlesContainer = document.getElementById('particles-bg');
-            particlesContainer.innerHTML = '';
-            createParticles();
-        });
-    </script>
-
-    <script>
-        lucide.createIcons();
-    </script>
-
+    }, { threshold: 0.15 });
+    var track = document.querySelector('.skill-bar-track');
+    if (track) io.observe(track.closest('.cv-card'));
+})();
+(function(){
+    var cards = document.querySelectorAll('.cv-card, .edu-card, .award-block');
+    cards.forEach(function(c) { c.style.opacity='0'; c.style.transform='translateY(20px)'; c.style.transition='opacity 0.5s ease, transform 0.5s ease'; });
+    var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='none'; io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    cards.forEach(function(c) { io.observe(c); });
+})();
+</script>
 </body>
-
 </html>
