@@ -213,12 +213,25 @@ body::before {
 }
 @keyframes blink-cursor { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
-/* Interactive terminal input */
-.term-input-row { display: flex; align-items: center; }
+/* Interactive terminal input — fully seamless */
+.term-input-row { display: flex; align-items: center; gap: 0; }
 .term-input {
-    flex: 1; background: transparent; border: none; outline: none;
+    flex: 1 1 auto; min-width: 0; width: 100%;
+    background: transparent; border: none; outline: none;
+    -webkit-appearance: none; appearance: none;
+    box-shadow: none; -webkit-box-shadow: none;
+    border-radius: 0; padding: 0; margin: 0;
     color: var(--text-primary); font-family: var(--font-mono);
-    font-size: 0.85rem; caret-color: var(--accent-green);
+    font-size: 0.85rem; line-height: inherit;
+    caret-color: var(--accent-green);
+}
+.term-input:focus { outline: none; box-shadow: none; -webkit-box-shadow: none; }
+.term-input:-webkit-autofill,
+.term-input:-webkit-autofill:hover,
+.term-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-primary);
+    -webkit-box-shadow: 0 0 0 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 .term-input::selection { background: rgba(0,212,255,0.25); }
 html:not([data-theme="dark"]) .term-input { color: #2c1a0e; caret-color: #3d6b2e; }
@@ -727,10 +740,10 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
         <!-- Profile card -->
         <div class="profile-card fade-in fade-in-delay-2">
             <picture>
-                <source srcset="assets/img/sbs_001.webp" type="image/webp">
-                <img src="assets/img/sbs_001.jpg"
+                <source srcset="assets/img/sbs_002.webp" type="image/webp">
+                <img src="assets/img/sbs_002.jpg"
                      alt="Shuvam Banerji Seal" class="profile-img"
-                     onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/main/assets/img/sbs_001.jpg';">
+                     onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/main/assets/img/sbs_002.jpg';">
             </picture>
             <div class="profile-meta">
                 <div class="meta-row"><span class="meta-key">NAME</span><span>Shuvam B. Seal</span></div>
@@ -1078,8 +1091,10 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
         row.className = 'term-input-row';
         row.innerHTML = '<span class="term-prompt">[shuvam@archbox ~/portfolio]$ </span>';
         const inp = document.createElement('input');
-        inp.type = 'text'; inp.className = 'term-input'; inp.autocomplete = 'off';
+        inp.type = 'text'; inp.className = 'term-input'; inp.autocomplete = 'new-password';
         inp.spellcheck = false; inp.setAttribute('aria-label', 'Terminal command');
+        inp.setAttribute('data-lpignore', 'true'); inp.setAttribute('data-form-type', 'other');
+        inp.setAttribute('autocorrect', 'off'); inp.setAttribute('autocapitalize', 'off');
         row.appendChild(inp); termBody.appendChild(row);
         inp.focus();
         termBody.addEventListener('click', () => inp.focus());
@@ -1151,7 +1166,6 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x060c1e, 1);
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x060c1e, 0.018);
@@ -1159,8 +1173,8 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 500);
     camera.position.set(0, 0, 40);
 
-    // Lights
-    scene.add(new THREE.AmbientLight(0x223355, 2.2));
+    // Lights — stored for theme updates
+    const ambLight = new THREE.AmbientLight(0x223355, 2.2); scene.add(ambLight);
     const dl1 = new THREE.DirectionalLight(0xffffff, 3.0); dl1.position.set(10, 15, 10); scene.add(dl1);
     const dl2 = new THREE.DirectionalLight(0x7c3aed, 2.0); dl2.position.set(-8, -8, 5); scene.add(dl2);
     const pl = new THREE.PointLight(0x00d4ff, 2.5, 100); pl.position.set(0, 10, 10); scene.add(pl);
@@ -1284,7 +1298,8 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
     const sp = [];
     for (let i=0;i<700;i++) sp.push((Math.random()-.5)*180,(Math.random()-.5)*180,(Math.random()-.5)*180);
     sg.setAttribute('position', new THREE.Float32BufferAttribute(sp,3));
-    scene.add(new THREE.Points(sg, new THREE.PointsMaterial({color:0x2a3a5a,size:0.28,transparent:true,opacity:0.7})));
+    const starMat = new THREE.PointsMaterial({color:0x2a3a5a,size:0.28,transparent:true,opacity:0.7});
+    scene.add(new THREE.Points(sg, starMat));
 
     // Resize
     function resize() {
@@ -1332,6 +1347,23 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
     pivotGroup.add(bondGroup);
     atomMeshes.forEach(m=>pivotGroup.add(m));
     scene.add(pivotGroup);
+
+    // Theme-aware colors
+    function applyMolTheme() {
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        const bg = isDark ? 0x060c1e : 0xede8de;
+        renderer.setClearColor(bg, 1);
+        scene.fog.color.setHex(bg);
+        ambLight.color.setHex(isDark ? 0x223355 : 0xd4c4a0);
+        ambLight.intensity = isDark ? 2.2 : 1.8;
+        dl2.color.setHex(isDark ? 0x7c3aed : 0xc97c3a);
+        pl.color.setHex(isDark ? 0x00d4ff : 0xff8c00);
+        starMat.color.setHex(isDark ? 0x2a3a5a : 0xb8a898);
+    }
+    applyMolTheme();
+    new MutationObserver(applyMolTheme).observe(
+        document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }
+    );
 
     function animate() {
         requestAnimationFrame(animate);
