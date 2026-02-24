@@ -49,6 +49,7 @@ html[data-theme="dark"],
     --font-body:     'Inter',sans-serif;
     --glow-cyan:     0 0 20px rgba(0,212,255,0.35);
     --shadow-card:   0 8px 32px rgba(0,0,0,0.4);
+    --input-bg:      rgba(10,16,32,0.8);
 }
 
 /* Light (creamy coffee) — page-specific vars */
@@ -64,6 +65,7 @@ html:not([data-theme="dark"]) {
     --font-body:      'Inter',sans-serif;
     --glow-cyan:      0 0 20px rgba(201,124,58,0.25);
     --shadow-card:    0 8px 32px rgba(44,26,14,0.12);
+    --input-bg:       rgba(255,248,236,0.9);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -143,6 +145,9 @@ body::before {
     gap: 3rem;
     position: relative;
     overflow: hidden;
+    /* Override main.css centering */
+    text-align: left;
+    justify-content: stretch;
 }
 .hero::after {
     content: ''; position: absolute; inset: 0;
@@ -381,7 +386,7 @@ section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
 .form-field input,
 .form-field textarea {
     width: 100%; padding: 0.875rem 1rem;
-    background: rgba(10,16,32,0.8);
+    background: var(--input-bg, rgba(10,16,32,0.8));
     border: 1px solid var(--border); border-radius: 8px;
     color: var(--text-primary); font-family: var(--font-mono);
     font-size: 0.85rem; transition: all 0.3s ease;
@@ -435,10 +440,105 @@ footer p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font
     .contact-layout { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-    .hero { padding: 4rem 1rem 2rem; }
+    .hero { padding: 4rem 1rem 2rem; gap: 2rem; }
     .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
     .section-title { font-size: 1.8rem; }
+    .term-body { min-height: 260px; font-size: 0.8rem; }
+    .term-titlebar { padding: 0.4rem 0.75rem; }
+    .hero-actions { flex-direction: column; }
+    .hero-actions .btn { width: 100%; justify-content: center; }
+    section { padding: 3.5rem 1rem; }
+    .section-header { margin-bottom: 2rem; }
+    .about-layout { gap: 1.5rem; }
+    .log-block { padding: 1rem; font-size: 0.78rem; }
+    .contact-layout { gap: 1.5rem; }
+    .gjf-block { padding: 1rem; font-size: 0.78rem; }
+    footer { padding: 2rem 1rem; }
+    .footer-social { gap: 1rem; }
 }
+@media (max-width: 480px) {
+    .hero { padding: 3.5rem 0.75rem 1.5rem; gap: 1.5rem; }
+    .section-title { font-size: 1.5rem; }
+    .section-file-label { font-size: 0.7rem; }
+    .term-body { min-height: 200px; font-size: 0.75rem; line-height: 1.65; }
+    .term-title { display: none; }
+    .card { padding: 1.25rem; }
+    .project-card { padding: 1.25rem; }
+    .skills-matrix { gap: 0.35rem; }
+    .skill-tag { font-size: 0.72rem; padding: 0.3rem 0.65rem; }
+    .loading-terminal { font-size: 0.78rem; }
+    .loading-bar-wrap { margin-top: 1rem; }
+    .btn { font-size: 0.88rem; padding: 0.65rem 1.25rem; }
+    .meta-row { font-size: 0.72rem; }
+    .viewer-info { gap: 0.75rem; font-size: 0.64rem; flex-direction: column; gap: 0.4rem; }
+}
+
+/* --- LIGHT THEME OVERRIDES (creamy coffee) --- */
+html:not([data-theme="dark"]) body::before { opacity: 0.015; }
+html:not([data-theme="dark"]) .hero-grid-bg {
+    background-image:
+        linear-gradient(rgba(139,101,68,0.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(139,101,68,0.04) 1px,transparent 1px);
+}
+html:not([data-theme="dark"]) .terminal-window {
+    background: rgba(245, 235, 215, 0.97);
+    border-color: rgba(139,101,68,0.35);
+    box-shadow: 0 0 20px rgba(201,124,58,0.15), 0 8px 32px rgba(44,26,14,0.1);
+}
+html:not([data-theme="dark"]) .term-titlebar {
+    background: #e8d5b0;
+    border-bottom-color: rgba(139,101,68,0.25);
+}
+html:not([data-theme="dark"]) .term-body {
+    background: rgba(250, 243, 228, 0.99);
+}
+html:not([data-theme="dark"]) .term-badge.shell {
+    background: rgba(201,124,58,0.15);
+    color: #8b4513;
+}
+html:not([data-theme="dark"]) .term-badge.branch {
+    background: rgba(90,138,74,0.15);
+    color: #3d6b2e;
+}
+/* Protein viewer stays dark — it's a "screen" display */
+html:not([data-theme="dark"]) .hero::after {
+    background:
+        radial-gradient(ellipse 60% 40% at 20% 50%,rgba(201,124,58,0.07) 0%,transparent 70%),
+        radial-gradient(ellipse 50% 60% at 80% 40%,rgba(124,58,237,0.05) 0%,transparent 70%);
+}
+/* Cards, log blocks, contact block — light mode */
+html:not([data-theme="dark"]) .card,
+html:not([data-theme="dark"]) .project-card { background: var(--bg-card); border-color: var(--border); }
+html:not([data-theme="dark"]) .log-block {
+    background: rgba(235,220,195,0.85);
+    border-left-color: #c97c3a;
+}
+html:not([data-theme="dark"]) .gjf-block {
+    background: rgba(240,228,208,0.9);
+    border-color: rgba(139,101,68,0.25);
+}
+/* Terminal text colours in light mode */
+html:not([data-theme="dark"]) .term-prompt { color: #8b4513; }
+html:not([data-theme="dark"]) .term-cmd { color: #2c1a0e; }
+html:not([data-theme="dark"]) .term-output { color: #5c4a32; }
+html:not([data-theme="dark"]) .term-output.highlight { color: #3d6b2e; }
+html:not([data-theme="dark"]) .term-output.title-line {
+    background: var(--grad-primary);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+/* Skill tags light mode */
+html:not([data-theme="dark"]) .skill-tag {
+    background: rgba(201,124,58,0.12);
+    color: #8b4513;
+    border-color: rgba(201,124,58,0.3);
+}
+html:not([data-theme="dark"]) .tech-tag {
+    background: rgba(124,58,237,0.1);
+    color: #6d28d9;
+    border-color: rgba(124,58,237,0.25);
+}
+/* Section headers light mode */
+html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
     </style>
 </head>
 <body>
@@ -867,19 +967,19 @@ footer p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x050a16, 1);
+    renderer.setClearColor(0x060c1e, 1);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050a16, 0.016);
+    scene.fog = new THREE.FogExp2(0x060c1e, 0.012);
 
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
-    camera.position.set(0, 0, 60);
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 500);
+    camera.position.set(0, 0, 75);
 
     // Lights
-    scene.add(new THREE.AmbientLight(0x112244, 1.5));
-    const dl1 = new THREE.DirectionalLight(0x00d4ff, 3); dl1.position.set(5, 10, 8); scene.add(dl1);
-    const dl2 = new THREE.DirectionalLight(0x7c3aed, 2); dl2.position.set(-8, -5, 5); scene.add(dl2);
-    const pl = new THREE.PointLight(0x00ff88, 1.5, 100); pl.position.set(0, 10, 0); scene.add(pl);
+    scene.add(new THREE.AmbientLight(0x112244, 1.8));
+    const dl1 = new THREE.DirectionalLight(0x00d4ff, 3.5); dl1.position.set(5, 10, 8); scene.add(dl1);
+    const dl2 = new THREE.DirectionalLight(0x7c3aed, 2.5); dl2.position.set(-8, -5, 5); scene.add(dl2);
+    const pl = new THREE.PointLight(0x00ff88, 2, 120); pl.position.set(0, 10, 0); scene.add(pl);
 
     // 1UBQ alpha-carbon coordinates (76 residues, angstroms, from RCSB PDB)
     const raw = [
@@ -904,15 +1004,16 @@ footer p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font
         [-27.599,96.679,37.638],[-27.014,97.782,39.755],[-29.636,95.923,41.374],[-28.624,96.751,43.622]
     ];
 
+    // Center and scale to fit view (sc=0.42 keeps protein compact in ~±18 unit range)
     const cx = raw.reduce((s,c) => s+c[0], 0) / raw.length;
     const cy = raw.reduce((s,c) => s+c[1], 0) / raw.length;
     const cz = raw.reduce((s,c) => s+c[2], 0) / raw.length;
-    const sc = 0.65;
+    const sc = 0.42;
     const pts = raw.map(c => new THREE.Vector3((c[0]-cx)*sc, (c[1]-cy)*sc, (c[2]-cz)*sc));
 
-    // Backbone tube (CatmullRom spline with vertex colours)
+    // ─── Backbone tube (cartoon ribbon style) ───────────────────────────────
     const curve = new THREE.CatmullRomCurve3(pts);
-    const tGeo = new THREE.TubeGeometry(curve, 400, 0.4, 12, false);
+    const tGeo = new THREE.TubeGeometry(curve, 500, 0.45, 14, false);
     const cols = [];
     const posA = tGeo.attributes.position;
     const cA = new THREE.Color(0x00d4ff), cB = new THREE.Color(0x7c3aed);
@@ -921,34 +1022,30 @@ footer p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font
         cols.push(c.r, c.g, c.b);
     }
     tGeo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
-    scene.add(new THREE.Mesh(tGeo, new THREE.MeshPhongMaterial({ vertexColors: true, shininess: 120, specular: new THREE.Color(0x88ddff) })));
+    scene.add(new THREE.Mesh(tGeo,
+        new THREE.MeshPhongMaterial({ vertexColors: true, shininess: 140,
+            specular: new THREE.Color(0xaaddff) })));
 
-    // CA atom spheres
-    const sGeo = new THREE.SphereGeometry(0.55, 12, 8);
+    // ─── CA atom spheres  (small — for "ball" accent, not a second structure) ─
+    const sGeo = new THREE.SphereGeometry(0.3, 10, 7);
     pts.forEach((p, i) => {
-        const col = new THREE.Color().lerpColors(new THREE.Color(0x00ff88), new THREE.Color(0x00d4ff), i / pts.length);
-        const m = new THREE.Mesh(sGeo, new THREE.MeshPhongMaterial({ color: col, emissive: col, emissiveIntensity: 0.25 }));
+        const col = new THREE.Color().lerpColors(
+            new THREE.Color(0x00ff88), new THREE.Color(0x00d4ff), i / pts.length);
+        const m = new THREE.Mesh(sGeo,
+            new THREE.MeshPhongMaterial({ color: col, emissive: col,
+                emissiveIntensity: 0.4, shininess: 200 }));
         m.position.copy(p); scene.add(m);
     });
 
-    // Bond cylinders
-    const bMat = new THREE.MeshPhongMaterial({ color: 0x224455, shininess: 60 });
-    for (let i = 0; i < pts.length - 1; i++) {
-        const a = pts[i], b = pts[i+1];
-        const dir = b.clone().sub(a), len = dir.length();
-        const cyl = new THREE.CylinderGeometry(0.12, 0.12, len, 8);
-        const mesh = new THREE.Mesh(cyl, bMat);
-        mesh.position.copy(a.clone().add(b).multiplyScalar(0.5));
-        mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir.normalize());
-        scene.add(mesh);
-    }
-
-    // Starfield
+    // ─── Starfield ──────────────────────────────────────────────────────────
     const sg = new THREE.BufferGeometry();
     const sp = [];
-    for (let i = 0; i < 800; i++) sp.push((Math.random()-.5)*300, (Math.random()-.5)*300, (Math.random()-.5)*300);
+    for (let i = 0; i < 900; i++)
+        sp.push((Math.random()-.5)*280, (Math.random()-.5)*280, (Math.random()-.5)*280);
     sg.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3));
-    scene.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: 0x334466, size: 0.4, transparent: true, opacity: 0.7 })));
+    scene.add(new THREE.Points(sg,
+        new THREE.PointsMaterial({ color: 0x2a3a5a, size: 0.35,
+            transparent: true, opacity: 0.8 })));
 
     // Resize
     function resize() {
