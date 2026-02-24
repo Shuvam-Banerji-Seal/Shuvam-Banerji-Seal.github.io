@@ -3,10 +3,9 @@
  * Modern responsive navigation with organized menu structure
  */
 
-function initNavbar() {
+document.addEventListener('DOMContentLoaded', function () {
     const navbarContainer = document.getElementById('navbar-container');
     if (!navbarContainer) return;
-
 
     // Determine current page and path depth
     const currentPath = window.location.pathname;
@@ -19,8 +18,8 @@ function initNavbar() {
         { name: 'About', href: isHome ? '#about' : pathDepth + 'index.html#about', type: 'link' },
         { name: 'Resume', href: isHome ? 'pages/resume.html' : (isToolsPage ? '../resume.html' : 'resume.html'), type: 'link' },
         { name: 'Projects', href: isHome ? '#projects' : pathDepth + 'index.html#projects', type: 'link' },
-        {
-            name: 'Resources',
+        { 
+            name: 'Resources', 
             type: 'dropdown',
             items: [
                 { name: 'GitHub Projects', href: isHome ? 'pages/github-projects.html' : (isToolsPage ? '../github-projects.html' : 'github-projects.html'), icon: 'github' },
@@ -29,19 +28,18 @@ function initNavbar() {
                 { name: 'Notes', href: isHome ? 'pages/notes.html' : (isToolsPage ? '../notes.html' : 'notes.html'), icon: 'file-text' },
             ]
         },
-        {
-            name: 'Apps',
+        { 
+            name: 'Apps', 
             type: 'dropdown',
             items: [
                 { name: 'E-Reader', href: isHome ? 'pages/reader.html' : (isToolsPage ? '../reader.html' : 'reader.html'), icon: 'book' },
                 { name: 'Music Player', href: isHome ? 'pages/music.html' : (isToolsPage ? '../music.html' : 'music.html'), icon: 'music' },
                 { name: 'Mermaid Editor', href: isHome ? 'pages/mermaid-tool.html' : (isToolsPage ? '../mermaid-tool.html' : 'mermaid-tool.html'), icon: 'git-branch' },
-                { name: 'Audio Studio', href: isHome ? 'pages/tools/audio-studio.html' : (isToolsPage ? 'audio-studio.html' : 'tools/audio-studio.html'), icon: 'mic' },
                 { name: 'Thermodynamics', href: isHome ? 'pages/thermodynamics.html' : (isToolsPage ? '../thermodynamics.html' : 'thermodynamics.html'), icon: 'thermometer' },
             ]
         },
-        {
-            name: 'Tools',
+        { 
+            name: 'Tools', 
             type: 'dropdown',
             items: [
                 { name: 'All Tools', href: isHome ? 'pages/tools.html' : (isToolsPage ? '../tools.html' : 'tools.html'), icon: 'wrench', divider: true },
@@ -70,8 +68,8 @@ function initNavbar() {
             </a>
             <div class="nav-links">
                 ${navStructure.map(item => {
-        if (item.type === 'dropdown') {
-            return `
+                    if (item.type === 'dropdown') {
+                        return `
                         <div class="nav-dropdown">
                             <button class="nav-link dropdown-toggle">
                                 ${item.name}
@@ -87,10 +85,10 @@ function initNavbar() {
                             </div>
                         </div>
                         `;
-        } else {
-            return `<a href="${item.href}" class="nav-link ${isActive(item.href) ? 'active' : ''}">${item.name}</a>`;
-        }
-    }).join('')}
+                    } else {
+                        return `<a href="${item.href}" class="nav-link ${isActive(item.href) ? 'active' : ''}">${item.name}</a>`;
+                    }
+                }).join('')}
                 <a href="${isHome ? '#contact' : pathDepth + 'index.html#contact'}" class="btn btn-primary nav-contact-btn">Contact</a>
             </div>
             <div class="nav-actions">
@@ -118,8 +116,8 @@ function initNavbar() {
         </div>
         <div class="mobile-menu-content">
             ${navStructure.map(item => {
-        if (item.type === 'dropdown') {
-            return `
+                if (item.type === 'dropdown') {
+                    return `
                     <div class="mobile-accordion">
                         <button class="mobile-accordion-toggle">
                             <span>${item.name}</span>
@@ -135,10 +133,10 @@ function initNavbar() {
                         </div>
                     </div>
                     `;
-        } else {
-            return `<a href="${item.href}" class="mobile-menu-link">${item.name}</a>`;
-        }
-    }).join('')}
+                } else {
+                    return `<a href="${item.href}" class="mobile-menu-link">${item.name}</a>`;
+                }
+            }).join('')}
             <a href="${isHome ? '#contact' : pathDepth + 'index.html#contact'}" class="btn btn-primary mobile-menu-link">Contact</a>
         </div>
     </div>
@@ -161,51 +159,43 @@ function initNavbar() {
     // Initialize all navbar functionality
     initDropdowns();
     initMobileMenuLogic();
-}
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNavbar);
-} else {
-    initNavbar();
-}
-
+});
 
 function initDropdowns() {
     const dropdowns = document.querySelectorAll('.nav-dropdown');
-
+    
     dropdowns.forEach(dropdown => {
         const toggle = dropdown.querySelector('.dropdown-toggle');
         const menu = dropdown.querySelector('.dropdown-menu');
-
+        
         // Desktop hover behavior
         dropdown.addEventListener('mouseenter', () => {
             menu.classList.add('show');
             toggle.classList.add('active');
         });
-
+        
         dropdown.addEventListener('mouseleave', () => {
             menu.classList.remove('show');
             toggle.classList.remove('active');
         });
-
+        
         // Click behavior for touch devices
         toggle.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             const isOpen = menu.classList.contains('show');
-
+            
             // Close all other dropdowns
             document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
             document.querySelectorAll('.dropdown-toggle').forEach(t => t.classList.remove('active'));
-
+            
             if (!isOpen) {
                 menu.classList.add('show');
                 toggle.classList.add('active');
             }
         });
     });
-
+    
     // Close dropdowns when clicking outside
     document.addEventListener('click', () => {
         document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
@@ -261,16 +251,16 @@ function initMobileMenuLogic() {
         toggle.addEventListener('click', () => {
             const accordion = toggle.closest('.mobile-accordion');
             const content = accordion.querySelector('.mobile-accordion-content');
-
+            
             // Toggle current accordion
             const isOpen = accordion.classList.contains('open');
-
+            
             // Close all accordions
             document.querySelectorAll('.mobile-accordion').forEach(acc => {
                 acc.classList.remove('open');
                 acc.querySelector('.mobile-accordion-content').style.maxHeight = null;
             });
-
+            
             // Open clicked accordion if it was closed
             if (!isOpen) {
                 accordion.classList.add('open');

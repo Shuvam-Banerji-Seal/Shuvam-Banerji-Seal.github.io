@@ -1,338 +1,994 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="google-site-verification" content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g" />
-    <meta name="description"
-        content="Shuvam Banerji Seal's Portfolio - Computational Chemist & Otaku. Showcasing research, skills, and projects with dynamic animations and design.">
+    <meta name="description" content="Shuvam Banerji Seal - Computational Chemist and AI Researcher at IISER Kolkata. DFT, RAG systems, molecular dynamics.">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <title>Shuvam Banerji Seal - Portfolio</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Shuvam Banerji Seal | Computational Chemist &amp; AI Researcher</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <!-- Enhanced CSS System -->
+
     <link rel="stylesheet" href="assets/css/mobile-fixes.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/animations.css">
     <link rel="stylesheet" href="assets/css/mobile.css">
-    <link rel="stylesheet" href="assets/css/chemistry-theme.css">
-    <!-- Overrides - Must be last -->
-    <link rel="stylesheet" href="assets/css/overrides.css">
-
-    <!-- Cache Control -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
+
+    <style>
+/* ================================================================
+   MOLECULAR TERMINAL PORTFOLIO - Design System
+   ================================================================ */
+:root {
+    --bg-deep:       #060b18;
+    --bg-dark:       #0a1020;
+    --bg-card:       #111827;
+    --border:        rgba(0,212,255,0.15);
+    --border-glow:   rgba(0,212,255,0.4);
+    --text-primary:  #e2e8f0;
+    --text-secondary:#94a3b8;
+    --text-muted:    #475569;
+    --accent-cyan:   #00d4ff;
+    --accent-green:  #00ff88;
+    --accent-purple: #7c3aed;
+    --grad-primary:  linear-gradient(135deg,#00d4ff,#7c3aed);
+    --grad-green:    linear-gradient(135deg,#00ff88,#00d4ff);
+    --font-mono:     'JetBrains Mono','Source Code Pro',monospace;
+    --font-body:     'Inter',sans-serif;
+    --glow-cyan:     0 0 20px rgba(0,212,255,0.35);
+    --shadow-card:   0 8px 32px rgba(0,0,0,0.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+    font-family: var(--font-body);
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+/* CRT scanline overlay */
+body::before {
+    content: '';
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,transparent,transparent 2px,
+        rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* --- Loading Screen --- */
+#loading-screen {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--bg-deep);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 9998;
+    transition: opacity 0.6s ease;
+}
+#loading-screen.hidden { opacity: 0; pointer-events: none; }
+.loading-terminal {
+    font-family: var(--font-mono);
+    color: var(--accent-green);
+    font-size: 0.9rem; text-align: left;
+    width: min(500px,90vw);
+}
+.loading-line {
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+    padding: 2px 0;
+}
+.loading-prompt { color: var(--accent-cyan); }
+@keyframes fadeIn { to { opacity: 1; } }
+.loading-bar-wrap {
+    width: min(500px,90vw); height: 2px;
+    background: rgba(0,212,255,0.2);
+    border-radius: 2px; margin-top: 1.5rem; overflow: hidden;
+}
+.loading-bar {
+    height: 100%; background: var(--grad-primary);
+    width: 0%; transition: width 2s ease;
+}
+
+/* --- Grid background --- */
+.hero-grid-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0; pointer-events: none;
+}
+
+/* --- Hero --- */
+.hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 6rem 4rem 4rem;
+    gap: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+.hero::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse 60% 40% at 20% 50%,rgba(0,212,255,0.08) 0%,transparent 70%),
+        radial-gradient(ellipse 50% 60% at 80% 40%,rgba(124,58,237,0.07) 0%,transparent 70%);
+    pointer-events: none;
+}
+
+/* Terminal window */
+.terminal-window {
+    background: rgba(10,16,32,0.95);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--glow-cyan), var(--shadow-card);
+    overflow: hidden;
+    position: relative; z-index: 1;
+}
+.term-titlebar {
+    background: #0d1526;
+    padding: 0.5rem 1rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(0,212,255,0.12);
+    font-family: var(--font-mono); font-size: 0.75rem;
+}
+.term-path {
+    color: var(--accent-cyan);
+    display: flex; align-items: center; gap: 0.4rem;
+}
+.term-path .path-host { color: var(--accent-green); }
+.term-path .path-sep  { color: var(--text-muted); }
+.term-path .path-dir  { color: var(--text-primary); }
+.term-badges { display: flex; gap: 0.5rem; align-items: center; }
+.term-badge {
+    padding: 0.15rem 0.5rem; border-radius: 3px;
+    font-size: 0.68rem; letter-spacing: 0.05em;
+}
+.term-badge.shell { background: rgba(0,212,255,0.12); color: var(--accent-cyan); }
+.term-badge.branch { background: rgba(0,255,136,0.12); color: var(--accent-green); }
+.term-title {
+    font-family: var(--font-mono); font-size: 0.8rem;
+    color: var(--text-secondary); margin-left: 0.5rem;
+}
+.term-body {
+    padding: 1.5rem; font-family: var(--font-mono);
+    font-size: 0.85rem; line-height: 1.8;
+    min-height: 380px; overflow-y: auto;
+}
+.term-prompt { color: var(--accent-cyan); }
+.term-cmd { color: var(--text-primary); }
+.term-output { color: var(--text-secondary); padding-left: 0.5rem; }
+.term-output.highlight { color: var(--accent-green); }
+.term-output.title-line {
+    font-size: 1.15rem; font-weight: 700;
+    background: var(--grad-primary);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.term-cursor {
+    display: inline-block; width: 10px; height: 1.1em;
+    background: var(--accent-green); vertical-align: text-bottom;
+    animation: blink-cursor 1s step-end infinite;
+}
+@keyframes blink-cursor { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Protein panel */
+.protein-panel {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; gap: 1rem;
+}
+.viewer-window {
+    background: rgba(5,10,22,0.95);
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow-card);
+}
+.viewer-titlebar {
+    background: #0f1a30; padding: 0.6rem 1rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(0,212,255,0.1);
+}
+.viewer-label {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--accent-cyan); letter-spacing: 0.1em;
+}
+#protein-canvas { width: 100%; height: 360px; display: block; cursor: grab; }
+#protein-canvas:active { cursor: grabbing; }
+.viewer-info {
+    background: rgba(5,10,22,0.9); padding: 0.6rem 1rem;
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(0,212,255,0.05);
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+}
+.info-item span:first-child { color: var(--accent-cyan); }
+.hero-actions { display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; }
+
+/* --- general layout --- */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+/* --- section headers --- */
+.section-header { margin-bottom: 3rem; }
+.section-file-label {
+    font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--accent-green); letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+}
+.section-file-label::before { content: '//'; color: var(--text-muted); }
+.section-title {
+    font-size: 2.5rem; font-weight: 700;
+    background: var(--grad-primary);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; line-height: 1.2;
+}
+.section-divider {
+    width: 60px; height: 3px;
+    background: var(--grad-primary); border-radius: 2px; margin-top: 1rem;
+}
+
+/* --- cards --- */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+}
+.card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--grad-primary);
+    transform: scaleX(0); transition: transform 0.3s ease;
+}
+.card:hover { border-color: var(--border-glow); box-shadow: var(--glow-cyan); }
+.card:hover::before { transform: scaleX(1); }
+.card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.card-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+
+/* --- about --- */
+.about-layout { display: grid; grid-template-columns: 1fr 350px; gap: 3rem; align-items: start; }
+.log-block {
+    font-family: var(--font-mono); font-size: 0.82rem;
+    padding: 1.5rem; background: rgba(10,16,32,0.8);
+    border-radius: 10px; border-left: 3px solid var(--accent-cyan);
+    margin-bottom: 1.5rem; line-height: 1.9;
+}
+.log-key { color: var(--accent-cyan); }
+.log-val { color: var(--text-primary); }
+.log-comment { color: var(--text-muted); }
+.skills-matrix { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.skill-tag {
+    padding: 0.4rem 0.875rem; border-radius: 6px;
+    font-family: var(--font-mono); font-size: 0.78rem;
+    background: rgba(0,212,255,0.1); color: var(--accent-cyan);
+    border: 1px solid rgba(0,212,255,0.2);
+    transition: all 0.2s ease;
+}
+.skill-tag:hover { background: rgba(0,212,255,0.2); box-shadow: var(--glow-cyan); }
+.profile-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+}
+.profile-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+.profile-meta { padding: 1.5rem; font-family: var(--font-mono); font-size: 0.78rem; }
+.meta-row {
+    display: flex; justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-secondary);
+}
+.meta-row:last-child { border: none; }
+.meta-key { color: var(--accent-cyan); }
+
+/* --- projects --- */
+.project-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.75rem;
+    transition: all 0.3s ease;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+}
+.project-card::after {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    background: radial-gradient(circle at top left,rgba(0,212,255,0.07) 0%,transparent 70%);
+    transition: opacity 0.3s ease;
+}
+.project-card:hover { border-color: var(--border-glow); transform: translateY(-4px); }
+.project-card:hover::after { opacity: 1; }
+.project-type {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--accent-green); letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+}
+.project-type::before { content: '\25B6'; }
+.project-title {
+    font-size: 1.2rem; font-weight: 700; color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+}
+.project-desc {
+    color: var(--text-secondary); font-size: 0.9rem;
+    flex: 1; margin-bottom: 1.25rem; line-height: 1.65;
+}
+.tech-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+.tech-tag {
+    padding: 0.25rem 0.6rem;
+    background: rgba(124,58,237,0.2); color: #a78bfa;
+    border: 1px solid rgba(124,58,237,0.3); border-radius: 4px;
+    font-family: var(--font-mono); font-size: 0.72rem;
+}
+.project-status {
+    font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--text-muted); margin-top: auto;
+}
+.project-status::before { content: '# '; color: var(--accent-green); }
+
+/* --- contact --- */
+.contact-layout { display: grid; grid-template-columns: 1fr 400px; gap: 3rem; align-items: start; }
+.gjf-block {
+    background: var(--bg-deep); border: 1px solid var(--border);
+    border-radius: 12px; padding: 2rem;
+    font-family: var(--font-mono); font-size: 0.82rem; line-height: 2;
+}
+.gjf-comment { color: var(--text-muted); }
+.gjf-keyword { color: var(--accent-cyan); }
+.gjf-value { color: var(--accent-green); }
+.contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+.form-field label {
+    display: block; font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--accent-cyan); margin-bottom: 0.5rem; letter-spacing: 0.05em;
+}
+.form-field input,
+.form-field textarea {
+    width: 100%; padding: 0.875rem 1rem;
+    background: rgba(10,16,32,0.8);
+    border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text-primary); font-family: var(--font-mono);
+    font-size: 0.85rem; transition: all 0.3s ease;
+}
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: none; border-color: var(--accent-cyan); box-shadow: var(--glow-cyan);
+}
+.form-field textarea { resize: vertical; min-height: 120px; }
+
+/* --- buttons --- */
+.btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.75rem; border-radius: 8px;
+    font-weight: 600; font-size: 0.95rem;
+    cursor: pointer; transition: all 0.3s ease;
+    text-decoration: none; border: none;
+}
+.btn-primary { background: var(--grad-primary); color: #fff; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,255,0.4); }
+.btn-outline { background: transparent; color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+.btn-outline:hover { background: rgba(0,212,255,0.1); }
+
+/* --- footer --- */
+footer {
+    background: var(--bg-deep); border-top: 1px solid var(--border);
+    padding: 3rem 2rem; text-align: center;
+}
+.footer-social { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+.social-link {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary); text-decoration: none; transition: all 0.3s ease;
+}
+.social-link:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: var(--glow-cyan); }
+footer p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+/* --- scroll animations --- */
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible { opacity: 1; transform: none; }
+.fade-in-delay-1 { transition-delay: 0.1s; }
+.fade-in-delay-2 { transition-delay: 0.2s; }
+.fade-in-delay-3 { transition-delay: 0.3s; }
+
+/* --- responsive --- */
+@media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; padding: 5rem 2rem 3rem; }
+    .protein-panel { display: none; }
+    .about-layout { grid-template-columns: 1fr; }
+    .contact-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .hero { padding: 4rem 1rem 2rem; }
+    .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.8rem; }
+}
+    </style>
 </head>
+<body>
 
-<body class="">
+<div class="hero-grid-bg"></div>
 
-    <div id="loading-screen">
-        <div class="loading-content">
-            <div id="benzene-loader-canvas" style="width: 400px; height: 400px; max-width: 90vw; margin: 0 auto;"></div>
-            <p class="loading-text" style="margin-top: 2rem; font-size: 1.2rem; font-weight: 500;">Constructing
-                Molecular Portfolio...</p>
+<!-- Loading Screen -->
+<div id="loading-screen">
+    <div class="loading-terminal">
+        <div class="loading-line" style="animation-delay:0s">
+            <span class="loading-prompt">shuvam@iiserk:~$ </span>source portfolio.sh
+        </div>
+        <div class="loading-line" style="animation-delay:.4s">
+            <span style="color:#475569">[INFO] </span><span style="color:#94a3b8">Initializing molecular environment...</span>
+        </div>
+        <div class="loading-line" style="animation-delay:.8s">
+            <span style="color:#475569">[INFO] </span><span style="color:#94a3b8">Loading DFT, RAG, ML modules...</span>
+        </div>
+        <div class="loading-line" style="animation-delay:1.2s">
+            <span style="color:#475569">[INFO] </span><span style="color:#94a3b8">Fetching protein 1UBQ from RCSB PDB...</span>
+        </div>
+        <div class="loading-line" style="animation-delay:1.6s">
+            <span style="color:#00ff88">[OK] </span><span style="color:#94a3b8">All systems nominal. Launching portfolio.</span>
         </div>
     </div>
+    <div class="loading-bar-wrap">
+        <div class="loading-bar" id="loading-bar"></div>
+    </div>
+</div>
 
-    <div id="navbar-container"></div>
-    <script type="module" src="assets/js/navbar.js"></script>
+<!-- Navbar -->
+<div id="navbar-container"></div>
+<script type="module" src="assets/js/navbar.js"></script>
 
-    <!-- Molecule Canvas Background -->
-    <canvas id="molecules-canvas"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(3px); opacity: 0.4;"></canvas>
+<!-- ========== HERO ========== -->
+<section class="hero">
+    <!-- Terminal window -->
+    <div class="terminal-window fade-in" id="hero-terminal">
+        <div class="term-titlebar">
+            <div class="term-path">
+                <span class="path-host">shuvam@archbox</span>
+                <span class="path-sep">&#9656;</span>
+                <span class="path-dir">~/portfolio</span>
+            </div>
+            <div class="term-badges">
+                <span class="term-badge branch">⎇ main</span>
+                <span class="term-badge shell">zsh</span>
+            </div>
+        </div>
+        <div class="term-body" id="term-body"></div>
+    </div>
 
-    <!-- Hero Section -->
-    <header class="hero parallax-element">
-        <div class="animate-fade-in-up" data-animate="fade-in">
-            <h1 class="typewriter" data-speed="100">
-                Shuvam Banerji Seal
-            </h1>
-            <p class="subtitle" data-animate="slide-left" data-delay="500">
-                BS-MS Student in Chemistry & Computer Science
-            </p>
-            <p class="description">
-                Passionate about computational chemistry, information retrieval systems, and AI-driven research.
-                Currently pursuing BS-MS at IISER Kolkata with expertise in RAG architectures, molecular modeling, and
-                full-stack development.
-            </p>
-            <a href="#about" class="btn btn-primary magnetic pulse-on-hover" data-animate="slide-left" data-delay="800">
-                Discover More <i data-lucide="arrow-down" class="inline-block ml-1 w-5 h-5"></i>
+    <!-- Protein viewer -->
+    <div class="protein-panel fade-in fade-in-delay-2">
+        <div class="viewer-window">
+            <div class="viewer-titlebar">
+                <span class="viewer-label">PYMOL-WEB // 1UBQ &mdash; HUMAN UBIQUITIN</span>
+                <span class="viewer-label" style="color:var(--accent-green);font-size:.65rem;">&#9679; LIVE</span>
+            </div>
+            <canvas id="protein-canvas"></canvas>
+            <div class="viewer-info">
+                <div class="info-item"><span>PDB</span>&nbsp;1UBQ</div>
+                <div class="info-item"><span>CHAIN</span>&nbsp;A</div>
+                <div class="info-item"><span>RES</span>&nbsp;76</div>
+                <div class="info-item"><span>ATOMS</span>&nbsp;660</div>
+                <div class="info-item"><span>RES.</span>&nbsp;1.80&#8491;</div>
+            </div>
+        </div>
+        <div class="hero-actions">
+            <a href="#about" class="btn btn-primary">
+                <i data-lucide="flask-conical" style="width:18px;height:18px;"></i>
+                Explore Research
             </a>
-            <a href="pages/resume.html" class="btn btn-secondary magnetic pulse-on-hover" data-animate="slide-right"
-                data-delay="1000">
-                View Resume <i data-lucide="file-text" class="inline-block ml-1 w-5 h-5"></i>
+            <a href="pages/resume.html" class="btn btn-outline">
+                <i data-lucide="file-text" style="width:18px;height:18px;"></i>
+                View Resume
             </a>
         </div>
-    </header>
-    <a href="EFAML_WEB/index.html"></a>
-    <main class="container">
+    </div>
+</section>
 
-        <section id="about" class="section" data-animate="fade-in" data-delay="200">
-            <h2 class="section-title" data-animate="slide-right" data-delay="300">
-                <i data-lucide="user-round" class="mr-3"></i> About Me
-            </h2>
-            <div class="grid grid-cols-2 items-center glassmorphic card animate-on-scroll advanced-hover float-on-hover"
-                data-animate="scale-up" data-delay="400">
-                <div class="space-y-4">
-                    <p>Hello! I'm Shuvam, a BS-MS student at IISER Kolkata pursuing Chemistry with a Computer Science
-                        minor (CGPA: 8.2). My research focuses on computational chemistry, information retrieval
-                        systems, and AI-driven solutions for scientific challenges.</p>
-                    <p>I've developed advanced RAG architectures for verifiable answer synthesis, engineered retrieval
-                        models for TREC competitions, and conducted DFT computational modeling of catalysts. My work
-                        spans from molecular dynamics simulations to full-stack application development using
-                        technologies like Python, Java, C, and modern web frameworks.</p>
-                    <p>I'm passionate about interdisciplinary research that bridges computational methods with
-                        scientific discovery. My achievements include winning hackathons, publishing in TREC
-                        proceedings, and contributing to open-source projects in areas ranging from bioinformatics to
-                        GUI development.</p>
-                    <div class="flex space-x-4 mt-6">
-                        <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
-                            class="social-link magnetic pulse-on-hover" aria-label="GitHub Profile"
-                            data-animate="rotate-in" data-delay="1200">
-                            <i data-lucide="github" class="w-6 h-6"></i>
-                        </a>
-                        <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
-                            class="social-link magnetic pulse-on-hover" aria-label="LinkedIn Profile"
-                            data-animate="rotate-in" data-delay="1400">
-                            <i data-lucide="linkedin" class="w-6 h-6"></i>
-                        </a>
-                        <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer"
-                            class="social-link magnetic pulse-on-hover" aria-label="ORCID Profile"
-                            data-animate="rotate-in" data-delay="1600">
-                            <i data-lucide="award" class="w-6 h-6"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="relative h-64 md:h-80 rounded-lg overflow-hidden shadow-lg group">
-                    <img src="assets_for_my_website/my_pictures/sbs_001.webp" alt="Shuvam Banerji Seal"
-                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/assets_for_my_website/main/my_pictures/sbs_001.webp';">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <p class="font-semibold">BS-MS Student & Researcher</p>
-                    </div>
-                </div>
+<!-- ========== ABOUT ========== -->
+<section id="about" style="padding-top:4rem;">
+    <div class="section-header fade-in">
+        <div class="section-file-label">ABOUT.log</div>
+        <h2 class="section-title">About Me</h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="about-layout">
+        <div>
+            <div class="log-block fade-in">
+                <div><span class="log-key">RESEARCHER: </span><span class="log-val">Shuvam Banerji Seal</span></div>
+                <div><span class="log-key">INSTITUTION:</span><span class="log-val"> IISER Kolkata, West Bengal, India</span></div>
+                <div><span class="log-key">PROGRAM:    </span><span class="log-val">BS-MS (Chemistry + CS Minor)</span></div>
+                <div><span class="log-key">CGPA:       </span><span class="log-val">8.2 / 10.0</span></div>
+                <div><span class="log-comment">// Research Focus: Computational Chemistry x Artificial Intelligence</span></div>
             </div>
-        </section>
-
-        <section id="projects" class="section" data-animate="fade-in" data-delay="600">
-            <h2 class="section-title" data-animate="slide-left" data-delay="700">
-                <i data-lucide="lightbulb" class="mr-3"></i> Featured Projects
-            </h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover"
-                    data-animate="scale-up" data-delay="800">
-                    <div>
-                        <h3 class="project-title"><i data-lucide="database" class="mr-2 w-5 h-5"></i>Hybrid RAG
-                            Architecture</h3>
-                        <p class="project-description">Developed a comprehensive RAG pipeline for IISER-K intranet with
-                            automated data acquisition, OCR processing, and hybrid search combining dense vector
-                            retrieval with BM25 keyword search.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">RAG</span>
-                            <span class="tech-tag">FAISS</span>
-                            <span class="tech-tag">Qwen3-4B</span>
-                            <span class="tech-tag">Streamlit</span>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <span class="project-status">Status: Completed (2025)</span>
-                    </div>
-                </div>
-
-                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover"
-                    data-animate="scale-up" data-delay="1000">
-                    <div>
-                        <h3 class="project-title"><i data-lucide="search" class="mr-2 w-5 h-5"></i>TREC Retrieval Model
-                        </h3>
-                        <p class="project-description">Engineered multi-layer BM-25 filtering system with dynamic
-                            search-domain contraction and transformer-based query expansion using Local LLMs for TREC
-                            2024 Tip-of-Tongue track.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="tech-tag">Java</span>
-                            <span class="tech-tag">Lucene</span>
-                            <span class="tech-tag">LLMs</span>
-                            <span class="tech-tag">NLP</span>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <span class="project-status">Status: Published (2024)</span>
-                    </div>
-                </div>
-
-                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover"
-                    data-animate="scale-up" data-delay="1200">
-                    <div>
-                        <h3 class="project-title"><i data-lucide="flask-conical" class="mr-2 w-5 h-5"></i>Catalyst
-                            Computational Modeling</h3>
-                        <p class="project-description">Implemented DFT methods (B3LYP) for MO energy calculations and
-                            electronic structure analysis of [VO(SALIEP)(DTP)] as water-reducing catalyst using Gaussian
-                            and transition state theory.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="tech-tag">DFT</span>
-                            <span class="tech-tag">Gaussian</span>
-                            <span class="tech-tag">Chemistry</span>
-                            <span class="tech-tag">Catalysis</span>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <span class="project-status">Status: To Be Submitted (2024-25)</span>
-                    </div>
-                </div>
-
-                <div class="card glassmorphic animate-on-scroll advanced-hover magnetic pulse-on-hover"
-                    data-animate="scale-up" data-delay="1400">
-                    <div>
-                        <h3 class="project-title"><i data-lucide="app-window" class="mr-2 w-5 h-5"></i>GTK4 Full-Stack
-                            Application</h3>
-                        <p class="project-description">Developed a complete GUI application in C using GTK4 and Glade,
-                            with SQLite3 database management and optimized BM25-based retrieval for NLP chatbot
-                            functionality.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="tech-tag">C</span>
-                            <span class="tech-tag">GTK4</span>
-                            <span class="tech-tag">SQLite3</span>
-                            <span class="tech-tag">NLP</span>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <span class="project-status">Status: Completed (2024)</span>
-                    </div>
-                </div>
-            </div>
-            <div id="github" class="mt-16 scroll-mt-20">
-                <div class="glassmorphic card text-center p-8 advanced-hover" data-animate="fade-in" data-delay="1600">
-                    <i data-lucide="github" class="w-16 h-16 mx-auto mb-4 text-gray-600"></i>
-                    <h3 class="text-2xl font-semibold mb-4">Explore My GitHub</h3>
-                    <p class="text-gray-600 mb-6">Discover my open source contributions, research code, and development
-                        projects with beautiful visualizations and detailed insights.</p>
-                    <a href="pages/github-projects.html" class="btn btn-primary magnetic pulse-on-hover">
-                        <i data-lucide="external-link" class="w-5 h-5 mr-2"></i>
-                        View GitHub Projects
-                    </a>
-                </div>
-            </div>
-            <div class="text-center mt-12">
-                <a href="pages/resume.html#projects" class="btn btn-secondary">
-                    See All Projects <i data-lucide="arrow-right" class="inline-block ml-1 w-4 h-4"></i>
-                </a>
-            </div>
-        </section>
-
-        <section id="contact" class="section" data-animate="fade-in" data-delay="1400">
-            <h2 class="section-title" data-animate="slide-right" data-delay="1500">
-                <i data-lucide="mail" class="mr-3"></i> Get In Touch
-            </h2>
-            <div class="glassmorphic card max-w-3xl mx-auto animate-on-scroll advanced-hover" data-animate="scale-up"
-                data-delay="1600">
-                <p class="text-center mb-8">
-                    Interested in collaborating, have a question, or just want to connect? Feel free to reach out!
+            <div class="log-block fade-in fade-in-delay-1">
+                <div class="log-comment">/* BIOGRAPHY */</div>
+                <p style="color:var(--text-secondary);font-family:var(--font-body);font-size:.9rem;line-height:1.8;margin-top:.5rem;">
+                    I&apos;m Shuvam &mdash; a BS-MS student at IISER Kolkata pursuing Chemistry with a Computer Science minor.
+                    My research focuses on computational chemistry, information retrieval systems, and AI-driven solutions
+                    for scientific challenges. I&apos;ve developed advanced RAG architectures for verifiable answer synthesis,
+                    engineered retrieval models for TREC competitions, and conducted DFT computational modeling of catalysts.
                 </p>
-                <form id="contact-form" action="https://formspree.io/f/manepvkq" method="POST"
-                    class="contact-form space-y-6">
-                    <div class="form-group grid md:grid-cols-2 gap-6">
-                        <div class="form-field">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" id="name" name="name" required class="form-input"
-                                placeholder="Your full name">
-                        </div>
-                        <div class="form-field">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" id="email" name="email" required class="form-input"
-                                placeholder="your@email.com">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject" class="form-label">Subject</label>
-                        <input type="text" id="subject" name="subject" required class="form-input"
-                            placeholder="What's this about?">
-                    </div>
-                    <div class="form-group">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea id="message" name="message" rows="5" required class="form-input resize-none"
-                            placeholder="Tell me more about your project or inquiry..."></textarea>
-                    </div>
-                    <div class="form-group text-center">
-                        <button type="submit" class="btn btn-primary w-full md:w-auto">
-                            Send Message <i data-lucide="send" class="inline-block ml-2 w-5 h-5"></i>
-                        </button>
-                    </div>
-                    <p id="form-status" class="text-center text-sm mt-4"></p>
-                    <p class="text-xs text-center text-gray-500 mt-4">This form uses Formspree for email delivery.</p>
-                </form>
+                <p style="color:var(--text-secondary);font-family:var(--font-body);font-size:.9rem;line-height:1.8;margin-top:.75rem;">
+                    My work spans molecular dynamics simulations to full-stack application development using Python, Java, C,
+                    and modern web frameworks. I&apos;m passionate about interdisciplinary research that bridges computational
+                    methods with scientific discovery.
+                </p>
             </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="GitHub Profile">
-                    <i data-lucide="github" class="w-5 h-5"></i>
+            <div class="card fade-in fade-in-delay-2">
+                <div class="section-file-label">skills.json</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem;">
+                    <div>
+                        <p style="font-family:var(--font-mono);font-size:.78rem;color:var(--accent-cyan);margin-bottom:.75rem;">// Computational</p>
+                        <div class="skills-matrix">
+                            <span class="skill-tag">DFT/B3LYP</span>
+                            <span class="skill-tag">Gaussian 16</span>
+                            <span class="skill-tag">ORCA</span>
+                            <span class="skill-tag">Mol. Dynamics</span>
+                            <span class="skill-tag">PyMOL</span>
+                            <span class="skill-tag">VASP</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="font-family:var(--font-mono);font-size:.78rem;color:var(--accent-green);margin-bottom:.75rem;">// Programming</p>
+                        <div class="skills-matrix">
+                            <span class="skill-tag" style="background:rgba(0,255,136,.1);color:var(--accent-green);border-color:rgba(0,255,136,.2);">Python</span>
+                            <span class="skill-tag" style="background:rgba(0,255,136,.1);color:var(--accent-green);border-color:rgba(0,255,136,.2);">Java</span>
+                            <span class="skill-tag" style="background:rgba(0,255,136,.1);color:var(--accent-green);border-color:rgba(0,255,136,.2);">C/C++</span>
+                            <span class="skill-tag" style="background:rgba(0,255,136,.1);color:var(--accent-green);border-color:rgba(0,255,136,.2);">JavaScript</span>
+                            <span class="skill-tag" style="background:rgba(0,255,136,.1);color:var(--accent-green);border-color:rgba(0,255,136,.2);">Three.js</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="font-family:var(--font-mono);font-size:.78rem;color:#a78bfa;margin-bottom:.75rem;">// AI / ML</p>
+                        <div class="skills-matrix">
+                            <span class="skill-tag" style="background:rgba(124,58,237,.1);color:#a78bfa;border-color:rgba(124,58,237,.2);">RAG Systems</span>
+                            <span class="skill-tag" style="background:rgba(124,58,237,.1);color:#a78bfa;border-color:rgba(124,58,237,.2);">FAISS</span>
+                            <span class="skill-tag" style="background:rgba(124,58,237,.1);color:#a78bfa;border-color:rgba(124,58,237,.2);">Transformers</span>
+                            <span class="skill-tag" style="background:rgba(124,58,237,.1);color:#a78bfa;border-color:rgba(124,58,237,.2);">LLMs</span>
+                            <span class="skill-tag" style="background:rgba(124,58,237,.1);color:#a78bfa;border-color:rgba(124,58,237,.2);">BM25</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p style="font-family:var(--font-mono);font-size:.78rem;color:#f59e0b;margin-bottom:.75rem;">// Tools</p>
+                        <div class="skills-matrix">
+                            <span class="skill-tag" style="background:rgba(245,158,11,.1);color:#f59e0b;border-color:rgba(245,158,11,.2);">Git</span>
+                            <span class="skill-tag" style="background:rgba(245,158,11,.1);color:#f59e0b;border-color:rgba(245,158,11,.2);">Docker</span>
+                            <span class="skill-tag" style="background:rgba(245,158,11,.1);color:#f59e0b;border-color:rgba(245,158,11,.2);">Streamlit</span>
+                            <span class="skill-tag" style="background:rgba(245,158,11,.1);color:#f59e0b;border-color:rgba(245,158,11,.2);">Lucene</span>
+                            <span class="skill-tag" style="background:rgba(245,158,11,.1);color:#f59e0b;border-color:rgba(245,158,11,.2);">SQLite</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;" class="fade-in fade-in-delay-3">
+                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener" class="btn btn-outline">
+                    <i data-lucide="github" style="width:18px;height:18px;"></i> GitHub
                 </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="LinkedIn Profile">
-                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener" class="btn btn-outline">
+                    <i data-lucide="linkedin" style="width:18px;height:18px;"></i> LinkedIn
                 </a>
-                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="ORCID Profile">
-                    <i data-lucide="award" class="w-5 h-5"></i>
+                <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener" class="btn btn-outline">
+                    <i data-lucide="award" style="width:18px;height:18px;"></i> ORCID
                 </a>
-                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
+                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="btn btn-outline">
+                    <i data-lucide="mail" style="width:18px;height:18px;"></i> Email
                 </a>
             </div>
-            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i
-                    data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i
-                    data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
         </div>
-    </footer>
 
-    <!-- Mobile Menu Fix - Load First -->
-    <!-- Molecule Background - Load after Three.js -->
-    <script type="module" src="assets/js/molecule-background.js"></script>
-    <!-- Benzene Loading Animation -->
-    <script type="module" src="assets/js/benzene-loader.js"></script>
-    <!-- Original functionality -->
-    <script type="module" src="assets/js/main.js"></script>
-    <!-- Enhanced features -->
-    <script type="module" src="assets/js/enhanced.js"></script>
-    <!-- Anime.js Animations -->
-    <script type="module" src="assets/js/anime-animations.js"></script>
-    <!-- Enhanced Particle System -->
-    <script type="module" src="assets/js/enhanced-particles.js"></script>
-    <!-- DNA Helix Animation -->
-    <script type="module" src="assets/js/dna-helix.js"></script>
-    <script>
-        // Initialize Lucide icons
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
+        <!-- Profile card -->
+        <div class="profile-card fade-in fade-in-delay-2">
+            <img src="assets_for_my_website/my_pictures/sbs_001.webp"
+                 alt="Shuvam Banerji Seal" class="profile-img"
+                 onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/main/assets_for_my_website/my_pictures/sbs_001.webp';">
+            <div class="profile-meta">
+                <div class="meta-row"><span class="meta-key">NAME</span><span>Shuvam B. Seal</span></div>
+                <div class="meta-row"><span class="meta-key">ROLE</span><span>BS-MS Student</span></div>
+                <div class="meta-row"><span class="meta-key">INST</span><span>IISER Kolkata</span></div>
+                <div class="meta-row"><span class="meta-key">SPEC</span><span>Chem + CS</span></div>
+                <div class="meta-row"><span class="meta-key">CGPA</span><span>8.2 / 10</span></div>
+                <div class="meta-row"><span class="meta-key">STATUS</span><span style="color:var(--accent-green);">&#9679; Active</span></div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        // Fallback for loading screen in case of script failures or network issues
+<!-- ========== PROJECTS ========== -->
+<div style="background:var(--bg-dark);padding:5rem 0;">
+<section id="projects" style="padding-top:0;padding-bottom:0;">
+    <div class="section-header fade-in">
+        <div class="section-file-label">PROJECTS.sdf</div>
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="card-grid-3 fade-in">
+        <div class="project-card">
+            <div class="project-type">RAG / Information Retrieval</div>
+            <h3 class="project-title">
+                <i data-lucide="database" style="width:20px;height:20px;color:var(--accent-cyan);"></i>
+                Hybrid RAG Architecture
+            </h3>
+            <p class="project-desc">Comprehensive RAG pipeline for IISER-K intranet with automated data acquisition, OCR processing, and hybrid search combining dense vector retrieval with BM25 for verifiable answer synthesis.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">Python</span><span class="tech-tag">FAISS</span>
+                <span class="tech-tag">Qwen3-4B</span><span class="tech-tag">Streamlit</span>
+            </div>
+            <div class="project-status">Status: Completed (2025)</div>
+        </div>
+        <div class="project-card">
+            <div class="project-type">NLP / Search</div>
+            <h3 class="project-title">
+                <i data-lucide="search" style="width:20px;height:20px;color:var(--accent-cyan);"></i>
+                TREC Retrieval Model
+            </h3>
+            <p class="project-desc">Multi-layer BM-25 filtering with dynamic search-domain contraction and transformer-based query expansion using Local LLMs for TREC 2024 Tip-of-Tongue track. Published in TREC proceedings.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">Java</span><span class="tech-tag">Lucene</span>
+                <span class="tech-tag">LLMs</span><span class="tech-tag">NLP</span>
+            </div>
+            <div class="project-status">Status: Published (2024)</div>
+        </div>
+        <div class="project-card">
+            <div class="project-type">Computational Chemistry</div>
+            <h3 class="project-title">
+                <i data-lucide="atom" style="width:20px;height:20px;color:var(--accent-cyan);"></i>
+                DFT Catalyst Modeling
+            </h3>
+            <p class="project-desc">DFT methods (B3LYP) for MO energy calculations and electronic structure analysis of [VO(SALIEP)(DTP)] as water-reducing catalyst using Gaussian&nbsp;16 and transition state theory.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">DFT</span><span class="tech-tag">Gaussian 16</span>
+                <span class="tech-tag">B3LYP</span><span class="tech-tag">Catalysis</span>
+            </div>
+            <div class="project-status">Status: To Be Submitted (2025)</div>
+        </div>
+        <div class="project-card">
+            <div class="project-type">Systems / GUI</div>
+            <h3 class="project-title">
+                <i data-lucide="app-window" style="width:20px;height:20px;color:var(--accent-cyan);"></i>
+                GTK4 NLP Application
+            </h3>
+            <p class="project-desc">Complete GUI application in C using GTK4 and Glade, with SQLite3 database management and optimized BM25-based retrieval for NLP chatbot functionality on desktop Linux.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">C</span><span class="tech-tag">GTK4</span>
+                <span class="tech-tag">SQLite3</span><span class="tech-tag">BM25</span>
+            </div>
+            <div class="project-status">Status: Completed (2024)</div>
+        </div>
+        <div class="project-card">
+            <div class="project-type">Bioinformatics</div>
+            <h3 class="project-title">
+                <i data-lucide="dna" style="width:20px;height:20px;color:var(--accent-cyan);"></i>
+                Protein Structure Analysis
+            </h3>
+            <p class="project-desc">Computational analysis of protein-ligand interactions and conformational dynamics using molecular dynamics simulations, with visualization pipelines built on PyMOL and custom Python tooling.</p>
+            <div class="tech-tags">
+                <span class="tech-tag">Python</span><span class="tech-tag">PyMOL</span>
+                <span class="tech-tag">MDAnalysis</span><span class="tech-tag">GROMACS</span>
+            </div>
+            <div class="project-status">Status: Ongoing</div>
+        </div>
+        <div class="project-card" style="border-style:dashed;">
+            <div class="project-type" style="color:var(--text-muted);">GitHub</div>
+            <h3 class="project-title" style="color:var(--text-secondary);">
+                <i data-lucide="github" style="width:20px;height:20px;"></i>
+                More on GitHub
+            </h3>
+            <p class="project-desc" style="color:var(--text-muted);">Explore more projects including open-source chemistry tools, web applications, and research code repositories.</p>
+            <a href="pages/github-projects.html" class="btn btn-outline" style="margin-top:auto;align-self:flex-start;">
+                <i data-lucide="external-link" style="width:16px;height:16px;"></i> View All
+            </a>
+        </div>
+    </div>
+</section>
+</div>
+
+<!-- ========== CONTACT ========== -->
+<section id="contact">
+    <div class="section-header fade-in">
+        <div class="section-file-label">CONTACT.gjf</div>
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="section-divider"></div>
+    </div>
+    <div class="contact-layout">
+        <div>
+            <div class="gjf-block fade-in" style="margin-bottom:2rem;">
+                <div class="gjf-comment">%chk=contact_request.chk</div>
+                <div class="gjf-comment">%mem=4GB</div>
+                <div class="gjf-comment">%nprocshared=8</div>
+                <div><span class="gjf-keyword">#p</span> B3LYP/6-311G(d,p) Opt Freq</div>
+                <br>
+                <div class="gjf-comment">-- Shuvam Banerji Seal - Contact Information --</div>
+                <br>
+                <div><span class="gjf-keyword">Email:    </span><span class="gjf-value">sbs22ms076@iiserkol.ac.in</span></div>
+                <div><span class="gjf-keyword">Location: </span><span class="gjf-value">IISER Kolkata, West Bengal, India</span></div>
+                <div><span class="gjf-keyword">GitHub:   </span><span class="gjf-value">Shuvam-Banerji-Seal</span></div>
+                <div><span class="gjf-keyword">LinkedIn: </span><span class="gjf-value">mastersbs</span></div>
+                <br>
+                <div class="gjf-comment">-- Open to: research collaborations, internships,</div>
+                <div class="gjf-comment">   scientific computing discussions --</div>
+            </div>
+        </div>
+        <div class="card fade-in fade-in-delay-1">
+            <div class="section-file-label" style="margin-bottom:1.5rem;">Submit Request</div>
+            <form id="contact-form" action="https://formspree.io/f/manepvkq" method="POST" class="contact-form">
+                <div class="form-field">
+                    <label>$ name =</label>
+                    <input type="text" name="name" required placeholder="Your full name">
+                </div>
+                <div class="form-field">
+                    <label>$ email =</label>
+                    <input type="email" name="email" required placeholder="your@email.com">
+                </div>
+                <div class="form-field">
+                    <label>$ subject =</label>
+                    <input type="text" name="subject" required placeholder="Subject of inquiry">
+                </div>
+                <div class="form-field">
+                    <label>$ message =</label>
+                    <textarea name="message" required placeholder="# Your message..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i data-lucide="send" style="width:18px;height:18px;"></i>
+                    Execute Contact
+                </button>
+                <p id="form-status" style="font-family:var(--font-mono);font-size:.82rem;color:var(--accent-green);text-align:center;margin-top:.5rem;"></p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+    <div class="footer-social">
+        <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" class="social-link" aria-label="GitHub">
+            <i data-lucide="github" style="width:20px;height:20px;"></i>
+        </a>
+        <a href="https://linkedin.com/in/mastersbs" target="_blank" class="social-link" aria-label="LinkedIn">
+            <i data-lucide="linkedin" style="width:20px;height:20px;"></i>
+        </a>
+        <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" class="social-link" aria-label="ORCID">
+            <i data-lucide="award" style="width:20px;height:20px;"></i>
+        </a>
+        <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
+            <i data-lucide="mail" style="width:20px;height:20px;"></i>
+        </a>
+    </div>
+    <p>&copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with Chemistry &amp; Code</p>
+    <p style="margin-top:.5rem;font-size:.75rem;">IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS Portfolio v3.0</p>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+/* ----- Loading screen ----- */
+(function () {
+    const bar = document.getElementById('loading-bar');
+    if (bar) setTimeout(() => { bar.style.width = '100%'; }, 100);
+    window.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
-            const loadingScreen = document.getElementById('loading-screen');
-            if (loadingScreen && loadingScreen.style.display !== 'none') {
-                loadingScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                }, 500);
-            }
-        }, 6000); // 6 second safety timeout
-    </script>
-</body>
+            const ls = document.getElementById('loading-screen');
+            if (ls) { ls.classList.add('hidden'); setTimeout(() => { ls.style.display = 'none'; }, 700); }
+        }, 2000);
+    });
+})();
 
+/* ----- Terminal typewriter ----- */
+(function () {
+    const termBody = document.getElementById('term-body');
+    if (!termBody) return;
+    const lines = [
+        { type: 'cmd',    text: 'whoami' },
+        { type: 'out',    text: 'Shuvam Banerji Seal', cls: 'title-line' },
+        { type: 'cmd',    text: 'cat role.txt' },
+        { type: 'out',    text: '> Computational Chemist & AI Researcher', cls: 'highlight' },
+        { type: 'out',    text: '> BS-MS Student, IISER Kolkata (2022-2027)' },
+        { type: 'cmd',    text: 'ls research/' },
+        { type: 'out',    text: 'DFT-Catalysis/   RAG-Systems/   TREC-NLP/   Mol-Dynamics/' },
+        { type: 'cmd',    text: 'cat interests.md' },
+        { type: 'out',    text: '> Hybrid RAG for Scientific QA' },
+        { type: 'out',    text: '> DFT Modelling of Catalysts' },
+        { type: 'out',    text: '> Protein Structure & Molecular Dynamics' },
+        { type: 'prompt', text: '' },
+    ];
+    let li = 0, ci = 0, el = null;
+    const CD = 26, LD = 110;
+    function mkLine(l) {
+        if (l.type === 'cmd') {
+            const d = document.createElement('div');
+            d.innerHTML = '<span class="term-prompt">[shuvam@archbox ~/portfolio]$ </span>';
+            const s = document.createElement('span'); s.className = 'term-cmd';
+            d.appendChild(s); termBody.appendChild(d); return s;
+        } else if (l.type === 'out') {
+            const d = document.createElement('div');
+            d.className = 'term-output' + (l.cls ? ' ' + l.cls : '');
+            termBody.appendChild(d); return d;
+        } else {
+            const d = document.createElement('div');
+            d.innerHTML = '<span class="term-prompt">[shuvam@archbox ~/portfolio]$ </span><span class="term-cursor"></span>';
+            termBody.appendChild(d); return null;
+        }
+    }
+    function type() {
+        if (li >= lines.length) return;
+        const l = lines[li];
+        if (l.type === 'prompt') { mkLine(l); return; }
+        if (!el) { el = mkLine(l); ci = 0; }
+        if (ci < l.text.length) {
+            el.textContent += l.text[ci++];
+            termBody.scrollTop = termBody.scrollHeight;
+            setTimeout(type, l.type === 'out' ? CD / 2 : CD);
+        } else {
+            el = null; li++;
+            setTimeout(type, LD);
+        }
+    }
+    setTimeout(type, 2200);
+})();
+
+/* ----- Three.js Protein Viewer (1UBQ Ubiquitin) ----- */
+(function () {
+    const canvas = document.getElementById('protein-canvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x050a16, 1);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x050a16, 0.016);
+
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
+    camera.position.set(0, 0, 60);
+
+    // Lights
+    scene.add(new THREE.AmbientLight(0x112244, 1.5));
+    const dl1 = new THREE.DirectionalLight(0x00d4ff, 3); dl1.position.set(5, 10, 8); scene.add(dl1);
+    const dl2 = new THREE.DirectionalLight(0x7c3aed, 2); dl2.position.set(-8, -5, 5); scene.add(dl2);
+    const pl = new THREE.PointLight(0x00ff88, 1.5, 100); pl.position.set(0, 10, 0); scene.add(pl);
+
+    // 1UBQ alpha-carbon coordinates (76 residues, angstroms, from RCSB PDB)
+    const raw = [
+        [1.885,4.304,8.898],[3.914,3.580,6.112],[4.212,6.706,4.465],[4.747,9.650,6.187],
+        [8.447,9.683,6.726],[9.862,11.067,3.686],[9.826,14.610,4.761],[13.143,14.609,4.302],
+        [14.617,17.701,5.859],[14.376,17.740,9.601],[17.867,18.803,10.506],[19.244,22.008,9.597],
+        [22.777,22.274,10.433],[23.604,25.892,9.823],[27.203,25.697,10.571],[28.193,28.974,8.880],
+        [31.654,28.120,8.094],[32.773,28.861,4.555],[36.336,28.556,5.312],[37.840,31.870,4.197],
+        [36.993,31.895,0.605],[38.637,34.857,-0.930],[42.283,34.248,-1.109],[43.297,37.633,-1.956],
+        [42.280,40.584,0.110],[44.800,43.289,-0.536],[47.696,41.068,0.743],[50.660,41.854,-0.845],
+        [53.498,40.119,1.003],[56.413,41.858,1.861],[55.736,45.492,2.397],[58.617,47.576,3.649],
+        [55.806,50.008,4.255],[55.810,52.571,1.380],[52.540,53.932,0.399],[52.272,56.869,-2.216],
+        [49.003,57.892,-3.430],[47.893,61.415,-2.543],[44.482,60.752,-1.354],[43.021,64.157,-0.423],
+        [39.473,64.067,0.541],[37.970,67.375,1.539],[34.519,67.094,2.819],[33.052,70.421,3.856],
+        [29.680,70.019,5.078],[28.237,73.392,5.773],[24.883,73.033,7.128],[23.435,76.401,7.787],
+        [20.077,76.147,9.041],[18.640,79.494,9.556],[15.268,79.307,10.704],[13.820,82.629,11.042],
+        [10.508,82.265,12.258],[9.142,85.549,12.537],[5.842,85.059,13.748],[4.597,88.220,14.194],
+        [1.318,87.717,15.395],[0.154,90.748,16.111],[-3.133,90.092,17.263],[-4.157,92.964,18.223],
+        [-7.426,92.201,19.381],[-8.261,94.882,20.646],[-11.498,94.006,21.820],[-12.135,96.460,23.295],
+        [-15.326,95.379,24.488],[-15.748,97.586,26.109],[-18.903,96.353,27.366],[-19.111,98.295,29.187],
+        [-22.187,96.869,30.539],[-22.170,98.547,32.501],[-25.113,97.017,33.975],[-24.814,98.407,36.054],
+        [-27.599,96.679,37.638],[-27.014,97.782,39.755],[-29.636,95.923,41.374],[-28.624,96.751,43.622]
+    ];
+
+    const cx = raw.reduce((s,c) => s+c[0], 0) / raw.length;
+    const cy = raw.reduce((s,c) => s+c[1], 0) / raw.length;
+    const cz = raw.reduce((s,c) => s+c[2], 0) / raw.length;
+    const sc = 0.65;
+    const pts = raw.map(c => new THREE.Vector3((c[0]-cx)*sc, (c[1]-cy)*sc, (c[2]-cz)*sc));
+
+    // Backbone tube (CatmullRom spline with vertex colours)
+    const curve = new THREE.CatmullRomCurve3(pts);
+    const tGeo = new THREE.TubeGeometry(curve, 400, 0.4, 12, false);
+    const cols = [];
+    const posA = tGeo.attributes.position;
+    const cA = new THREE.Color(0x00d4ff), cB = new THREE.Color(0x7c3aed);
+    for (let i = 0; i < posA.count; i++) {
+        const c = new THREE.Color().lerpColors(cA, cB, i / posA.count);
+        cols.push(c.r, c.g, c.b);
+    }
+    tGeo.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+    scene.add(new THREE.Mesh(tGeo, new THREE.MeshPhongMaterial({ vertexColors: true, shininess: 120, specular: new THREE.Color(0x88ddff) })));
+
+    // CA atom spheres
+    const sGeo = new THREE.SphereGeometry(0.55, 12, 8);
+    pts.forEach((p, i) => {
+        const col = new THREE.Color().lerpColors(new THREE.Color(0x00ff88), new THREE.Color(0x00d4ff), i / pts.length);
+        const m = new THREE.Mesh(sGeo, new THREE.MeshPhongMaterial({ color: col, emissive: col, emissiveIntensity: 0.25 }));
+        m.position.copy(p); scene.add(m);
+    });
+
+    // Bond cylinders
+    const bMat = new THREE.MeshPhongMaterial({ color: 0x224455, shininess: 60 });
+    for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i], b = pts[i+1];
+        const dir = b.clone().sub(a), len = dir.length();
+        const cyl = new THREE.CylinderGeometry(0.12, 0.12, len, 8);
+        const mesh = new THREE.Mesh(cyl, bMat);
+        mesh.position.copy(a.clone().add(b).multiplyScalar(0.5));
+        mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir.normalize());
+        scene.add(mesh);
+    }
+
+    // Starfield
+    const sg = new THREE.BufferGeometry();
+    const sp = [];
+    for (let i = 0; i < 800; i++) sp.push((Math.random()-.5)*300, (Math.random()-.5)*300, (Math.random()-.5)*300);
+    sg.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3));
+    scene.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: 0x334466, size: 0.4, transparent: true, opacity: 0.7 })));
+
+    // Resize
+    function resize() {
+        const w = canvas.clientWidth, h = canvas.clientHeight;
+        renderer.setSize(w, h, false); camera.aspect = w/h; camera.updateProjectionMatrix();
+    }
+    resize(); window.addEventListener('resize', resize);
+
+    // Mouse/touch drag
+    let drag = false, lx = 0, ly = 0, tx = 0, ty = 0;
+    canvas.addEventListener('mousedown', e => { drag = true; lx = e.clientX; ly = e.clientY; });
+    canvas.addEventListener('touchstart', e => { drag = true; lx = e.touches[0].clientX; ly = e.touches[0].clientY; });
+    window.addEventListener('mouseup', () => { drag = false; });
+    window.addEventListener('touchend', () => { drag = false; });
+    window.addEventListener('mousemove', e => { if (!drag) return; tx += (e.clientX-lx)*.01; ty += (e.clientY-ly)*.01; lx = e.clientX; ly = e.clientY; });
+    window.addEventListener('touchmove', e => { if (!drag) return; tx += (e.touches[0].clientX-lx)*.01; ty += (e.touches[0].clientY-ly)*.01; lx = e.touches[0].clientX; ly = e.touches[0].clientY; });
+
+    // Animate
+    let rx = 0, ry = 0, time = 0;
+    function animate() {
+        requestAnimationFrame(animate);
+        time += .005; tx += .004;
+        rx += (ty - rx) * .05; ry += (tx - ry) * .05;
+        scene.children.forEach(c => {
+            if (c.isMesh || c.isPoints) { c.rotation.x = rx; c.rotation.y = ry; }
+        });
+        pl.position.x = Math.sin(time*.5) * 20;
+        pl.position.z = Math.cos(time*.3) * 20;
+        renderer.render(scene, camera);
+    }
+    animate();
+})();
+
+/* ----- Scroll animations ----- */
+(function () {
+    const els = document.querySelectorAll('.fade-in');
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    els.forEach(el => io.observe(el));
+})();
+
+/* ----- Contact form ----- */
+(function () {
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+    if (!form) return;
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        try {
+            const res = await fetch(e.target.action, { method: 'POST', body: new FormData(e.target), headers: { 'Accept': 'application/json' } });
+            if (res.ok) { status.textContent = '[OK] Message sent!'; form.reset(); }
+            else { status.textContent = '[ERR] Failed. Please email directly.'; status.style.color = '#ff4757'; }
+        } catch { status.textContent = '[ERR] Network error.'; status.style.color = '#ff4757'; }
+        setTimeout(() => { status.textContent = ''; status.style.color = ''; }, 6000);
+    });
+})();
+
+/* ----- Misc ----- */
+document.getElementById('year').textContent = new Date().getFullYear();
+document.body.setAttribute('data-theme', 'dark');
+localStorage.setItem('theme', 'dark');
+if (typeof lucide !== 'undefined') lucide.createIcons();
+</script>
+</body>
 </html>

@@ -1,6 +1,41 @@
 /* Shared Tool Page Styles */
 
-/* Tool Page Layout */
+/* ===== CSS VARIABLES ===== */
+:root {
+    --bg-primary: #f8f3ee;
+    --bg-secondary: #f0ebe4;
+    --card-bg: rgba(254, 248, 243, 0.98);
+    --border-color: rgba(139, 101, 68, 0.3);
+    --text-primary: #2d1810;
+    --text-secondary: #6d4c41;
+    --hover-bg: rgba(205, 180, 150, 0.2);
+    --accent-color: #06b6d4;
+    --secondary-accent: #3b82f6;
+    --accent-color-alpha: rgba(6, 182, 212, 0.1);
+    --input-bg: #ffffff;
+    --code-bg: #1e1e2e;
+    --chat-bg: #fef5e7;
+    --canvas-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --card-bg: rgba(31, 41, 55, 0.95);
+    --border-color: rgba(255, 255, 255, 0.12);
+    --text-primary: #f3f4f6;
+    --text-secondary: #94a3b8;
+    --hover-bg: rgba(255, 255, 255, 0.05);
+    --accent-color: #22d3ee;
+    --secondary-accent: #60a5fa;
+    --accent-color-alpha: rgba(34, 211, 238, 0.15);
+    --input-bg: #1e293b;
+    --code-bg: #0d1117;
+    --chat-bg: #1e293b;
+    --canvas-bg: #0f172a;
+}
+
+/* ===== TOOL PAGE LAYOUT ===== */
 .tool-page {
     min-height: 100vh;
     padding-top: 80px;
