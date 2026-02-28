@@ -355,7 +355,7 @@ function App() {
             await navigator.clipboard.writeText(code);
             showNotification('Code copied to clipboard!');
         } catch (err) {
-            console.error('Failed to copy', err);
+            
             showNotification('Failed to copy code', 'error');
         }
     };

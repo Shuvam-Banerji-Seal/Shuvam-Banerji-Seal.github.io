@@ -202,7 +202,7 @@
         async function searchPapers() {
             const query = document.getElementById('search-query').value.trim();
             if (!query) {
-                alert('Please enter a search query');
+                showNotification('Please enter a search query');
                 return;
             }
             

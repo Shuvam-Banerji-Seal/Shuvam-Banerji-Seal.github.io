@@ -241,7 +241,7 @@
                 const composition = parseFormula(formula);
                 displayResults(formula, composition);
             } catch (error) {
-                alert('Invalid formula: ' + error.message);
+                showNotification('Invalid formula: ' + error.message);
             }
         }
 

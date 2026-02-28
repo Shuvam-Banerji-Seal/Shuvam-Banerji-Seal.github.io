@@ -560,7 +560,7 @@ html[data-theme="dark"] .img-card img { background: #0d1526; }
             };
             document.getElementById('cmp-result').style.display = 'block';
             lucide.createIcons();
-        } catch(err) { alert('Compression error: ' + err.message); }
+        } catch(err) { showNotification('Compression error: ' + err.message); }
 
         hideProgress(progWrap);
         document.getElementById('cmp-run-btn').disabled = false;
@@ -716,7 +716,7 @@ html[data-theme="dark"] .img-card img { background: #0d1526; }
             };
             document.getElementById('mrg-result').style.display = 'block';
             lucide.createIcons();
-        } catch(err) { alert('Merge error: ' + err.message); }
+        } catch(err) { showNotification('Merge error: ' + err.message); }
 
         hideProgress(progWrap);
         document.getElementById('mrg-run-btn').disabled = false;
@@ -818,7 +818,7 @@ html[data-theme="dark"] .img-card img { background: #0d1526; }
 
             document.getElementById('spl-result').style.display = 'block';
             lucide.createIcons();
-        } catch(err) { alert('Split error: ' + err.message); }
+        } catch(err) { showNotification('Split error: ' + err.message); }
 
         hideProgress(progWrap);
         document.getElementById('spl-run-btn').disabled = false;

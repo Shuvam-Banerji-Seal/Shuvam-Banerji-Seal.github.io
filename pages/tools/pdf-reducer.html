@@ -278,7 +278,7 @@
                 
                 showResult();
             } catch (error) {
-                alert('Error compressing PDF: ' + error.message);
+                showNotification('Error compressing PDF: ' + error.message);
             }
             
             document.getElementById('progress-bar').style.display = 'none';

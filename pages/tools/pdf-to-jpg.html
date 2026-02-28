@@ -201,7 +201,7 @@
                 if (file && file.type === 'application/pdf') {
                     loadPDF(file);
                 } else {
-                    alert('Please drop a PDF file');
+                    showNotification('Please drop a PDF file');
                 }
             });
             
@@ -224,7 +224,7 @@
                 
                 lucide.createIcons();
             } catch (error) {
-                alert('Error loading PDF: ' + error.message);
+                showNotification('Error loading PDF: ' + error.message);
             }
         }
 
