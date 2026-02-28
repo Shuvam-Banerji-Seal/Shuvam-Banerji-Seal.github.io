@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Unified PDF Studio — Compress, Convert to images, Merge and Split PDFs in your browser">
+    <title>PDF Studio - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+    <style>
+/* ── PDF Studio layout ── */
+.studio-shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+@media (max-width: 840px) {
+    .studio-shell { grid-template-columns: 1fr; }
+}
+.mode-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    position: sticky; top: 100px;
+}
+.mode-panel h3 {
+    padding: 1.1rem 1.25rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono, monospace);
+}
+.mode-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1.25rem;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-align: left;
+    transition: all 0.2s;
+}
+.mode-btn:last-child { border-bottom: none; }
+.mode-btn:hover { background: rgba(0,0,0,0.04); color: var(--text-primary); }
+.mode-btn.active {
+    background: var(--accent-cyan, #c97c3a);
+    color: #fff;
+}
+.mode-btn i { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* ── Content area ── */
+.studio-content { display: flex; flex-direction: column; gap: 1.5rem; }
+.mode-pane { display: none; }
+.mode-pane.active { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* ── Upload zone ── */
+.upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    color: var(--text-secondary);
+}
+.upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--accent-cyan, #c97c3a);
+    background: rgba(201,124,58,0.04);
+    color: var(--text-primary);
+}
+.upload-zone i { width: 40px; height: 40px; display: block; margin: 0 auto 0.75rem; }
+.upload-zone p { font-size: 0.95rem; margin-bottom: 0.4rem; }
+.upload-zone small { font-size: 0.78rem; color: var(--text-muted); }
+
+/* ── File list (merge/split) ── */
+.file-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.88rem;
+}
+.file-item .fname { flex: 1; font-weight: 500; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file-item .fsize { color: var(--text-muted); font-size: 0.78rem; white-space: nowrap; }
+.file-item .rm-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--text-muted); padding: 0.25rem;
+    transition: color 0.2s; flex-shrink: 0;
+}
+.file-item .rm-btn:hover { color: #ff4757; }
+
+/* ── Options row ── */
+.opts-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+.opts-row .form-group { flex: 1; min-width: 140px; }
+
+/* ── Progress bar ── */
+.prog-wrap { display: none; }
+.prog-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+.prog-fill { height: 100%; background: var(--accent-cyan, #c97c3a); transition: width 0.3s; width: 0%; }
+.prog-text { font-size: 0.82rem; color: var(--text-muted); }
+
+/* ── Result stats ── */
+.result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+@media (max-width: 600px) { .result-stats { grid-template-columns: 1fr; } }
+.stat-block { text-align: center; padding: 1.25rem; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border); }
+.stat-label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+.stat-value { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); }
+.stat-block.highlight .stat-value {
+    background: var(--grad-primary, linear-gradient(135deg,#c97c3a,#7c3aed));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── Image preview grid ── */
+.img-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+.img-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+}
+.img-card:hover { transform: translateY(-3px); border-color: var(--accent-cyan, #c97c3a); }
+.img-card img { width: 100%; height: 200px; object-fit: contain; background: #f5f0e8; display: block; }
+html[data-theme="dark"] .img-card img { background: #0d1526; }
+.img-card-footer { padding: 0.6rem 0.75rem; display: flex; align-items: center; justify-content: space-between; }
+.img-card-footer span { font-size: 0.78rem; color: var(--text-muted); }
+
+/* ── Range selector (split) ── */
+.split-controls { display: flex; flex-direction: column; gap: 0.75rem; }
+.split-row { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+.split-row label { font-size: 0.88rem; color: var(--text-secondary); white-space: nowrap; }
+.split-row input[type="number"] { width: 80px; }
+
+/* ── Compression option cards ── */
+.comp-opts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+@media (max-width: 560px) { .comp-opts { grid-template-columns: 1fr; } }
+.comp-opt label { display: block; cursor: pointer; }
+.comp-opt input { display: none; }
+.comp-card {
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    padding: 1.2rem; border: 2px solid var(--border); border-radius: 12px;
+    transition: all 0.2s; text-align: center;
+}
+.comp-card i { width: 28px; height: 28px; color: var(--text-muted); }
+.comp-card strong { font-size: 0.9rem; color: var(--text-primary); }
+.comp-card small { font-size: 0.78rem; color: var(--text-muted); }
+.comp-opt input:checked + .comp-card {
+    border-color: var(--accent-cyan, #c97c3a);
+    background: rgba(201,124,58,0.07);
+}
+.comp-opt input:checked + .comp-card i { color: var(--accent-cyan, #c97c3a); }
+.comp-opt:hover .comp-card { border-color: var(--accent-cyan, #c97c3a); }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container wide" style="max-width:1100px;">
+            <div class="tool-header">
+                <h1><i data-lucide="file-cog"></i> PDF Studio</h1>
+                <p>Compress · Convert to Images · Merge · Split — all in one place, locally in your browser</p>
+            </div>
+
+            <div class="studio-shell">
+                <!-- ── Mode sidebar ── -->
+                <aside class="mode-panel">
+                    <h3>// PDF TOOLS</h3>
+                    <button class="mode-btn active" data-mode="compress">
+                        <i data-lucide="minimize-2"></i> Compress
+                    </button>
+                    <button class="mode-btn" data-mode="tojpg">
+                        <i data-lucide="image"></i> To Images
+                    </button>
+                    <button class="mode-btn" data-mode="merge">
+                        <i data-lucide="git-merge"></i> Merge PDFs
+                    </button>
+                    <button class="mode-btn" data-mode="split">
+                        <i data-lucide="scissors"></i> Split PDF
+                    </button>
+                </aside>
+
+                <!-- ── Content area ── -->
+                <section class="studio-content">
+
+                    <!-- ════════════════════ COMPRESS ════════════════════ -->
+                    <div class="mode-pane active" id="pane-compress">
+                        <div class="tool-card">
+                            <div class="upload-zone" id="cmp-drop">
+                                <i data-lucide="upload-cloud"></i>
+                                <p>Drag &amp; drop a PDF or click to browse</p>
+                                <small>One PDF at a time</small>
+                                <input type="file" id="cmp-input" accept=".pdf,application/pdf" hidden>
+                            </div>
+                            <div id="cmp-info" style="display:none; margin-top:1.25rem;">
+                                <div class="alert alert-info">
+                                    <i data-lucide="file-text"></i>
+                                    <div>
+                                        <strong id="cmp-fname">file.pdf</strong><br>
+                                        <span id="cmp-fsize" style="font-size:.85rem;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top:1.5rem;">
+                                <label style="font-weight:600;margin-bottom:.75rem;display:block;">Compression Level</label>
+                                <div class="comp-opts">
+                                    <div class="comp-opt">
+                                        <label><input type="radio" name="cmp-level" value="low" checked>
+                                        <div class="comp-card"><i data-lucide="zap"></i><strong>Low</strong><small>Best quality</small></div></label>
+                                    </div>
+                                    <div class="comp-opt">
+                                        <label><input type="radio" name="cmp-level" value="medium">
+                                        <div class="comp-card"><i data-lucide="activity"></i><strong>Medium</strong><small>Balanced</small></div></label>
+                                    </div>
+                                    <div class="comp-opt">
+                                        <label><input type="radio" name="cmp-level" value="high">
+                                        <div class="comp-card"><i data-lucide="minimize"></i><strong>High</strong><small>Smallest file</small></div></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group" style="margin-top:1.5rem;">
+                                <button class="tool-btn tool-btn-primary" id="cmp-run-btn" disabled onclick="runCompress()">
+                                    <i data-lucide="minimize-2"></i> Compress
+                                </button>
+                            </div>
+                            <div class="prog-wrap" id="cmp-prog">
+                                <div class="prog-bar"><div class="prog-fill" id="cmp-fill"></div></div>
+                                <div class="prog-text" id="cmp-prog-text">Processing...</div>
+                            </div>
+                        </div>
+                        <div class="tool-card" id="cmp-result" style="display:none;">
+                            <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;">
+                                <i data-lucide="check-circle"></i> Compression Complete
+                            </h3>
+                            <div class="result-stats">
+                                <div class="stat-block"><span class="stat-label">Original</span><span class="stat-value" id="cmp-orig">–</span></div>
+                                <div class="stat-block"><span class="stat-label">Compressed</span><span class="stat-value" id="cmp-new">–</span></div>
+                                <div class="stat-block highlight"><span class="stat-label">Reduction</span><span class="stat-value" id="cmp-pct">–</span></div>
+                            </div>
+                            <button class="tool-btn tool-btn-primary" id="cmp-dl" style="width:100%;">
+                                <i data-lucide="download"></i> Download Compressed PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ════════════════════ TO IMAGES ════════════════════ -->
+                    <div class="mode-pane" id="pane-tojpg">
+                        <div class="tool-card">
+                            <div class="upload-zone" id="img-drop">
+                                <i data-lucide="upload-cloud"></i>
+                                <p>Drag &amp; drop a PDF or click to browse</p>
+                                <small>Each page will become an image</small>
+                                <input type="file" id="img-input" accept=".pdf,application/pdf" hidden>
+                            </div>
+                            <div id="img-info" style="display:none; margin-top:1.25rem;">
+                                <div class="alert alert-info">
+                                    <i data-lucide="file-text"></i>
+                                    <span id="img-fname">file.pdf</span>
+                                    <span style="margin-left:auto;" id="img-pagecount"></span>
+                                </div>
+                            </div>
+                            <div class="opts-row" style="margin-top:1.5rem;">
+                                <div class="form-group">
+                                    <label>Scale / DPI</label>
+                                    <select id="img-scale">
+                                        <option value="1">Low (72 dpi)</option>
+                                        <option value="1.5">Medium (108 dpi)</option>
+                                        <option value="2" selected>High (144 dpi)</option>
+                                        <option value="3">Very High (216 dpi)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Format</label>
+                                    <select id="img-fmt">
+                                        <option value="jpeg">JPEG</option>
+                                        <option value="png">PNG (lossless)</option>
+                                        <option value="webp">WebP</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>JPEG Quality: <span id="img-q-val">90</span>%</label>
+                                    <input type="range" id="img-quality" min="50" max="100" value="90">
+                                </div>
+                            </div>
+                            <div class="btn-group" style="margin-top:1.5rem;">
+                                <button class="tool-btn tool-btn-primary" id="img-run-btn" disabled onclick="runToImages()">
+                                    <i data-lucide="image"></i> Convert to Images
+                                </button>
+                                <button class="tool-btn tool-btn-secondary" id="img-dl-all-btn" disabled onclick="downloadAllImages()">
+                                    <i data-lucide="download"></i> Download All (ZIP)
+                                </button>
+                            </div>
+                            <div class="prog-wrap" id="img-prog">
+                                <div class="prog-bar"><div class="prog-fill" id="img-fill"></div></div>
+                                <div class="prog-text" id="img-prog-text">Processing...</div>
+                            </div>
+                        </div>
+                        <div class="tool-card" id="img-result" style="display:none;">
+                            <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;">
+                                <i data-lucide="images"></i> Converted Pages
+                            </h3>
+                            <div class="img-grid" id="img-grid"></div>
+                        </div>
+                    </div>
+
+                    <!-- ════════════════════ MERGE ════════════════════ -->
+                    <div class="mode-pane" id="pane-merge">
+                        <div class="tool-card">
+                            <div class="upload-zone" id="mrg-drop">
+                                <i data-lucide="upload-cloud"></i>
+                                <p>Drag &amp; drop PDFs here or click to browse</p>
+                                <small>Select multiple PDFs — order matters</small>
+                                <input type="file" id="mrg-input" accept=".pdf,application/pdf" hidden multiple>
+                            </div>
+                            <div id="mrg-list" class="file-list" style="margin-top:1.25rem;"></div>
+                            <div class="btn-group" style="margin-top:1.5rem;">
+                                <button class="tool-btn tool-btn-primary" id="mrg-run-btn" disabled onclick="runMerge()">
+                                    <i data-lucide="git-merge"></i> Merge PDFs
+                                </button>
+                                <button class="tool-btn tool-btn-secondary" onclick="clearMerge()">
+                                    <i data-lucide="trash-2"></i> Clear All
+                                </button>
+                            </div>
+                            <div class="prog-wrap" id="mrg-prog">
+                                <div class="prog-bar"><div class="prog-fill" id="mrg-fill"></div></div>
+                                <div class="prog-text" id="mrg-prog-text">Merging...</div>
+                            </div>
+                        </div>
+                        <div class="tool-card" id="mrg-result" style="display:none;">
+                            <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;">
+                                <i data-lucide="check-circle"></i> Merge Complete
+                            </h3>
+                            <div class="result-stats" style="grid-template-columns:1fr 1fr;">
+                                <div class="stat-block"><span class="stat-label">Files Merged</span><span class="stat-value" id="mrg-count">–</span></div>
+                                <div class="stat-block highlight"><span class="stat-label">Total Pages</span><span class="stat-value" id="mrg-pages">–</span></div>
+                            </div>
+                            <button class="tool-btn tool-btn-primary" id="mrg-dl" style="width:100%;margin-top:1rem;">
+                                <i data-lucide="download"></i> Download Merged PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ════════════════════ SPLIT ════════════════════ -->
+                    <div class="mode-pane" id="pane-split">
+                        <div class="tool-card">
+                            <div class="upload-zone" id="spl-drop">
+                                <i data-lucide="upload-cloud"></i>
+                                <p>Drag &amp; drop a PDF or click to browse</p>
+                                <small>Extract pages or split into individual pages</small>
+                                <input type="file" id="spl-input" accept=".pdf,application/pdf" hidden>
+                            </div>
+                            <div id="spl-info" style="display:none; margin-top:1.25rem;">
+                                <div class="alert alert-info">
+                                    <i data-lucide="file-text"></i>
+                                    <div>
+                                        <strong id="spl-fname">file.pdf</strong><br>
+                                        <span id="spl-pages" style="font-size:.85rem;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="split-controls" style="margin-top:1.5rem;" id="spl-controls">
+                                <div class="form-group">
+                                    <label>Split Mode</label>
+                                    <select id="spl-mode" onchange="updateSplitMode()">
+                                        <option value="range">Extract Page Range</option>
+                                        <option value="all">Split into Individual Pages</option>
+                                        <option value="every">Split Every N Pages</option>
+                                    </select>
+                                </div>
+                                <div id="spl-range-opts">
+                                    <div class="split-row">
+                                        <label>From page:</label>
+                                        <input type="number" id="spl-from" min="1" value="1" class="form-control">
+                                        <label>To page:</label>
+                                        <input type="number" id="spl-to" min="1" value="1" class="form-control">
+                                    </div>
+                                </div>
+                                <div id="spl-every-opts" style="display:none;">
+                                    <div class="split-row">
+                                        <label>Split every:</label>
+                                        <input type="number" id="spl-every-n" min="1" value="1" class="form-control" style="width:80px;">
+                                        <label>pages</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group" style="margin-top:1.5rem;">
+                                <button class="tool-btn tool-btn-primary" id="spl-run-btn" disabled onclick="runSplit()">
+                                    <i data-lucide="scissors"></i> Split PDF
+                                </button>
+                            </div>
+                            <div class="prog-wrap" id="spl-prog">
+                                <div class="prog-bar"><div class="prog-fill" id="spl-fill"></div></div>
+                                <div class="prog-text" id="spl-prog-text">Splitting...</div>
+                            </div>
+                        </div>
+                        <div class="tool-card" id="spl-result" style="display:none;">
+                            <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;">
+                                <i data-lucide="check-circle"></i> Split Complete
+                            </h3>
+                            <div id="spl-dl-list" class="file-list"></div>
+                        </div>
+                    </div>
+
+                </section>
+            </div><!-- studio-shell -->
+        </div>
+    </main>
+
+    <script>
+    'use strict';
+    // ── Setup ──────────────────────────────────────────────────────────────────
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    // Shared utils
+    function fmtSize(b) {
+        if (b < 1024) return b + ' B';
+        if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+        return (b / 1048576).toFixed(2) + ' MB';
+    }
+    function setProgress(fillEl, textEl, wrapEl, pct, msg) {
+        wrapEl.style.display = 'block';
+        fillEl.style.width = pct + '%';
+        textEl.textContent = msg;
+    }
+    function hideProgress(wrapEl) { wrapEl.style.display = 'none'; }
+
+    function setupDropZone(dropEl, inputEl, multi, onFiles) {
+        dropEl.addEventListener('click', () => inputEl.click());
+        inputEl.addEventListener('change', e => { if (e.target.files.length) onFiles(e.target.files); });
+        dropEl.addEventListener('dragover', e => { e.preventDefault(); dropEl.classList.add('dragover'); });
+        dropEl.addEventListener('dragleave', () => dropEl.classList.remove('dragover'));
+        dropEl.addEventListener('drop', e => {
+            e.preventDefault(); dropEl.classList.remove('dragover');
+            const fs = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf' || f.name.endsWith('.pdf'));
+            if (fs.length) onFiles(multi ? fs : [fs[0]]);
+        });
+    }
+
+    // ── Mode switching ─────────────────────────────────────────────────────────
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.mode-pane').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('pane-' + btn.dataset.mode).classList.add('active');
+        });
+    });
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // ── COMPRESS ──────────────────────────────────────────────────────────────
+    let cmpFile = null, cmpBlob = null;
+    const cmpDrop = document.getElementById('cmp-drop');
+    const cmpInput = document.getElementById('cmp-input');
+    setupDropZone(cmpDrop, cmpInput, false, files => loadCmpFile(files[0]));
+
+    function loadCmpFile(file) {
+        cmpFile = file;
+        cmpBlob = null;
+        document.getElementById('cmp-fname').textContent = file.name;
+        document.getElementById('cmp-fsize').textContent = 'Size: ' + fmtSize(file.size);
+        document.getElementById('cmp-info').style.display = 'block';
+        document.getElementById('cmp-run-btn').disabled = false;
+        document.getElementById('cmp-result').style.display = 'none';
+        lucide.createIcons();
+    }
+
+    async function runCompress() {
+        if (!cmpFile) return;
+        const level = document.querySelector('input[name="cmp-level"]:checked').value;
+        const qMap = { low: 0.92, medium: 0.72, high: 0.52 };
+        const sMap = { low: 1.5, medium: 1.2, high: 1.0 };
+        const quality = qMap[level], scale = sMap[level];
+
+        const progWrap = document.getElementById('cmp-prog');
+        const progFill = document.getElementById('cmp-fill');
+        const progText = document.getElementById('cmp-prog-text');
+        document.getElementById('cmp-run-btn').disabled = true;
+        document.getElementById('cmp-result').style.display = 'none';
+
+        try {
+            const ab = await cmpFile.arrayBuffer();
+            const pdfDoc = await pdfjsLib.getDocument({ data: ab }).promise;
+            const total = pdfDoc.numPages;
+            const firstPage = await pdfDoc.getPage(1);
+            const vp0 = firstPage.getViewport({ scale: 1 });
+            const ori = vp0.width > vp0.height ? 'l' : 'p';
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: ori, unit: 'pt', format: [vp0.width, vp0.height] });
+
+            for (let i = 1; i <= total; i++) {
+                setProgress(progFill, progText, progWrap, (i / total) * 100, `Page ${i} / ${total}…`);
+                const page = await pdfDoc.getPage(i);
+                const vpR = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                canvas.width = vpR.width; canvas.height = vpR.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport: vpR }).promise;
+                const imgData = canvas.toDataURL('image/jpeg', quality);
+                const vp1 = page.getViewport({ scale: 1 });
+                if (i > 1) pdf.addPage([vp1.width, vp1.height], vp1.width > vp1.height ? 'l' : 'p');
+                pdf.addImage(imgData, 'JPEG', 0, 0, vp1.width, vp1.height);
+            }
+
+            cmpBlob = pdf.output('blob');
+            const orig = cmpFile.size, comp = cmpBlob.size;
+            const pct = ((1 - comp / orig) * 100).toFixed(1);
+            document.getElementById('cmp-orig').textContent = fmtSize(orig);
+            document.getElementById('cmp-new').textContent = fmtSize(comp);
+            document.getElementById('cmp-pct').textContent = pct + '%';
+            document.getElementById('cmp-dl').onclick = () => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(cmpBlob);
+                a.download = cmpFile.name.replace('.pdf', '_compressed.pdf');
+                a.click();
+            };
+            document.getElementById('cmp-result').style.display = 'block';
+            lucide.createIcons();
+        } catch(err) { alert('Compression error: ' + err.message); }
+
+        hideProgress(progWrap);
+        document.getElementById('cmp-run-btn').disabled = false;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // ── TO IMAGES ─────────────────────────────────────────────────────────────
+    let imgPdf = null, convertedImgs = [];
+    const imgDrop = document.getElementById('img-drop');
+    const imgInput = document.getElementById('img-input');
+    setupDropZone(imgDrop, imgInput, false, files => loadImgFile(files[0]));
+    document.getElementById('img-quality').addEventListener('input', e => {
+        document.getElementById('img-q-val').textContent = e.target.value;
+    });
+
+    async function loadImgFile(file) {
+        const ab = await file.arrayBuffer();
+        imgPdf = await pdfjsLib.getDocument({ data: ab }).promise;
+        document.getElementById('img-fname').textContent = file.name;
+        document.getElementById('img-pagecount').textContent = imgPdf.numPages + ' pages';
+        document.getElementById('img-info').style.display = 'block';
+        document.getElementById('img-run-btn').disabled = false;
+        document.getElementById('img-result').style.display = 'none';
+        document.getElementById('img-grid').innerHTML = '';
+        convertedImgs = [];
+        lucide.createIcons();
+    }
+
+    async function runToImages() {
+        if (!imgPdf) return;
+        const scale = parseFloat(document.getElementById('img-scale').value);
+        const fmt = document.getElementById('img-fmt').value;
+        const q = parseInt(document.getElementById('img-quality').value) / 100;
+        const total = imgPdf.numPages;
+        const progWrap = document.getElementById('img-prog');
+        const progFill = document.getElementById('img-fill');
+        const progText = document.getElementById('img-prog-text');
+        const grid = document.getElementById('img-grid');
+        grid.innerHTML = ''; convertedImgs = [];
+        document.getElementById('img-run-btn').disabled = true;
+        document.getElementById('img-result').style.display = 'none';
+
+        for (let i = 1; i <= total; i++) {
+            setProgress(progFill, progText, progWrap, (i / total) * 100, `Rendering page ${i} / ${total}…`);
+            const page = await imgPdf.getPage(i);
+            const vp = page.getViewport({ scale });
+            const canvas = document.createElement('canvas');
+            canvas.width = vp.width; canvas.height = vp.height;
+            await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+            const mimeType = fmt === 'jpeg' ? 'image/jpeg' : fmt === 'png' ? 'image/png' : 'image/webp';
+            const dataUrl = canvas.toDataURL(mimeType, fmt === 'jpeg' ? q : undefined);
+            convertedImgs.push({ dataUrl, page: i, ext: fmt === 'jpeg' ? 'jpg' : fmt });
+
+            const card = document.createElement('div');
+            card.className = 'img-card';
+            const idx = convertedImgs.length - 1;
+            card.innerHTML = `<img src="${dataUrl}" loading="lazy">
+                <div class="img-card-footer">
+                    <span>Page ${i}</span>
+                    <button class="tool-btn tool-btn-secondary" style="padding:.25rem .75rem;font-size:.78rem;" onclick="dlImg(${idx})">
+                        <i data-lucide="download"></i>
+                    </button>
+                </div>`;
+            grid.appendChild(card);
+        }
+
+        document.getElementById('img-result').style.display = 'block';
+        document.getElementById('img-dl-all-btn').disabled = false;
+        hideProgress(progWrap);
+        document.getElementById('img-run-btn').disabled = false;
+        lucide.createIcons();
+    }
+
+    function dlImg(idx) {
+        const { dataUrl, page, ext } = convertedImgs[idx];
+        const a = document.createElement('a');
+        a.href = dataUrl; a.download = `page_${page}.${ext}`; a.click();
+    }
+
+    async function downloadAllImages() {
+        if (!convertedImgs.length) return;
+        const zip = new JSZip();
+        convertedImgs.forEach(({ dataUrl, page, ext }) => {
+            const base64 = dataUrl.split(',')[1];
+            zip.file(`page_${page}.${ext}`, base64, { base64: true });
+        });
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = 'pdf_pages.zip'; a.click();
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // ── MERGE ─────────────────────────────────────────────────────────────────
+    let mergeFiles = [];
+    const mrgDrop = document.getElementById('mrg-drop');
+    const mrgInput = document.getElementById('mrg-input');
+    setupDropZone(mrgDrop, mrgInput, true, files => addMergeFiles(files));
+
+    function addMergeFiles(files) {
+        Array.from(files).forEach(f => mergeFiles.push(f));
+        renderMergeList();
+    }
+
+    function renderMergeList() {
+        const list = document.getElementById('mrg-list');
+        list.innerHTML = '';
+        mergeFiles.forEach((f, i) => {
+            const item = document.createElement('div');
+            item.className = 'file-item';
+            item.innerHTML = `<i data-lucide="file-text" style="width:16px;height:16px;flex-shrink:0;"></i>
+                <span class="fname">${f.name}</span>
+                <span class="fsize">${fmtSize(f.size)}</span>
+                <button class="rm-btn"><i data-lucide="x" style="width:14px;height:14px;"></i></button>`;
+            item.querySelector('.rm-btn').onclick = () => { mergeFiles.splice(i, 1); renderMergeList(); };
+            list.appendChild(item);
+        });
+        document.getElementById('mrg-run-btn').disabled = mergeFiles.length < 2;
+        document.getElementById('mrg-result').style.display = 'none';
+        lucide.createIcons();
+    }
+
+    function clearMerge() { mergeFiles = []; renderMergeList(); }
+
+    async function runMerge() {
+        if (mergeFiles.length < 2) return;
+        const progWrap = document.getElementById('mrg-prog');
+        const progFill = document.getElementById('mrg-fill');
+        const progText = document.getElementById('mrg-prog-text');
+        document.getElementById('mrg-run-btn').disabled = true;
+
+        try {
+            const { PDFDocument } = PDFLib;
+            const merged = await PDFDocument.create();
+            let totalPages = 0;
+
+            for (let i = 0; i < mergeFiles.length; i++) {
+                setProgress(progFill, progText, progWrap,
+                    ((i + 1) / mergeFiles.length) * 100,
+                    `Merging file ${i + 1} / ${mergeFiles.length}…`);
+                const ab = await mergeFiles[i].arrayBuffer();
+                const src = await PDFDocument.load(ab);
+                const pages = await merged.copyPages(src, src.getPageIndices());
+                pages.forEach(p => { merged.addPage(p); totalPages++; });
+            }
+
+            const bytes = await merged.save();
+            const blob = new Blob([bytes], { type: 'application/pdf' });
+            document.getElementById('mrg-count').textContent = mergeFiles.length;
+            document.getElementById('mrg-pages').textContent = totalPages;
+            document.getElementById('mrg-dl').onclick = () => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob); a.download = 'merged.pdf'; a.click();
+            };
+            document.getElementById('mrg-result').style.display = 'block';
+            lucide.createIcons();
+        } catch(err) { alert('Merge error: ' + err.message); }
+
+        hideProgress(progWrap);
+        document.getElementById('mrg-run-btn').disabled = false;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // ── SPLIT ─────────────────────────────────────────────────────────────────
+    let splFile = null, splPdfDoc = null;
+    const splDrop = document.getElementById('spl-drop');
+    const splInput = document.getElementById('spl-input');
+    setupDropZone(splDrop, splInput, false, files => loadSplFile(files[0]));
+
+    async function loadSplFile(file) {
+        splFile = file;
+        const ab = await file.arrayBuffer();
+        const { PDFDocument } = PDFLib;
+        splPdfDoc = await PDFDocument.load(ab);
+        const n = splPdfDoc.getPageCount();
+        document.getElementById('spl-fname').textContent = file.name;
+        document.getElementById('spl-pages').textContent = n + ' pages';
+        document.getElementById('spl-info').style.display = 'block';
+        document.getElementById('spl-from').max = n;
+        document.getElementById('spl-to').max = n;
+        document.getElementById('spl-to').value = n;
+        document.getElementById('spl-run-btn').disabled = false;
+        document.getElementById('spl-result').style.display = 'none';
+        lucide.createIcons();
+    }
+
+    function updateSplitMode() {
+        const m = document.getElementById('spl-mode').value;
+        document.getElementById('spl-range-opts').style.display = m === 'range' ? '' : 'none';
+        document.getElementById('spl-every-opts').style.display = m === 'every' ? '' : 'none';
+    }
+
+    async function runSplit() {
+        if (!splPdfDoc) return;
+        const { PDFDocument } = PDFLib;
+        const mode = document.getElementById('spl-mode').value;
+        const total = splPdfDoc.getPageCount();
+        const progWrap = document.getElementById('spl-prog');
+        const progFill = document.getElementById('spl-fill');
+        const progText = document.getElementById('spl-prog-text');
+        const dlList = document.getElementById('spl-dl-list');
+        dlList.innerHTML = '';
+        document.getElementById('spl-run-btn').disabled = true;
+        document.getElementById('spl-result').style.display = 'none';
+
+        try {
+            const blobs = [];
+
+            if (mode === 'range') {
+                const from = Math.max(1, parseInt(document.getElementById('spl-from').value)) - 1;
+                const to = Math.min(total, parseInt(document.getElementById('spl-to').value)) - 1;
+                setProgress(progFill, progText, progWrap, 50, `Extracting pages ${from + 1}–${to + 1}…`);
+                const newDoc = await PDFDocument.create();
+                const pages = await newDoc.copyPages(splPdfDoc, Array.from({ length: to - from + 1 }, (_, i) => from + i));
+                pages.forEach(p => newDoc.addPage(p));
+                const bytes = await newDoc.save();
+                blobs.push({ blob: new Blob([bytes], { type: 'application/pdf' }), name: `pages_${from + 1}-${to + 1}.pdf` });
+
+            } else if (mode === 'all') {
+                for (let i = 0; i < total; i++) {
+                    setProgress(progFill, progText, progWrap, ((i + 1) / total) * 100, `Splitting page ${i + 1} / ${total}…`);
+                    const newDoc = await PDFDocument.create();
+                    const [page] = await newDoc.copyPages(splPdfDoc, [i]);
+                    newDoc.addPage(page);
+                    const bytes = await newDoc.save();
+                    blobs.push({ blob: new Blob([bytes], { type: 'application/pdf' }), name: `page_${i + 1}.pdf` });
+                }
+
+            } else if (mode === 'every') {
+                const every = Math.max(1, parseInt(document.getElementById('spl-every-n').value));
+                for (let start = 0; start < total; start += every) {
+                    const end = Math.min(start + every - 1, total - 1);
+                    setProgress(progFill, progText, progWrap, ((start + 1) / total) * 100, `Part ${Math.floor(start / every) + 1}…`);
+                    const newDoc = await PDFDocument.create();
+                    const idxs = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+                    const pages = await newDoc.copyPages(splPdfDoc, idxs);
+                    pages.forEach(p => newDoc.addPage(p));
+                    const bytes = await newDoc.save();
+                    blobs.push({ blob: new Blob([bytes], { type: 'application/pdf' }), name: `part_${Math.floor(start / every) + 1}.pdf` });
+                }
+            }
+
+            blobs.forEach(({ blob, name }) => {
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.innerHTML = `<i data-lucide="file-text" style="width:16px;height:16px;"></i>
+                    <span class="fname">${name}</span>
+                    <span class="fsize">${fmtSize(blob.size)}</span>
+                    <button class="tool-btn tool-btn-secondary" style="padding:.25rem .75rem;font-size:.78rem;white-space:nowrap;" onclick="this._dl()">
+                        <i data-lucide="download"></i> Download
+                    </button>`;
+                const btn = item.querySelector('button');
+                btn._dl = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); };
+                dlList.appendChild(item);
+            });
+
+            document.getElementById('spl-result').style.display = 'block';
+            lucide.createIcons();
+        } catch(err) { alert('Split error: ' + err.message); }
+
+        hideProgress(progWrap);
+        document.getElementById('spl-run-btn').disabled = false;
+    }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => { lucide.createIcons(); });
+    </script>
+</body>
+</html>

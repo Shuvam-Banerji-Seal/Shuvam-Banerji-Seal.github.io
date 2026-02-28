@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LLM Studio — Chat with AI models including GLM-5, GPT-4o, Claude, Gemini and more, using your own API keys">
+    <title>LLM Studio - SBS Tools</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/mobile.css">
+    <link rel="stylesheet" href="../../assets/css/tool-page.css">
+    <style>
+        .config-sidebar {
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        .empty-chat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 300px;
+        }
+        .chat-messages {
+            min-height: 400px;
+            max-height: 60vh;
+        }
+        .chat-message pre {
+            background: var(--code-bg, #1e1e1e);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+        }
+        .chat-message code {
+            font-family: 'Source Code Pro', monospace;
+        }
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 1rem;
+        }
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        .preset-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            background: rgba(201,124,58,0.15);
+            color: var(--accent-cyan, #c97c3a);
+            border: 1px solid rgba(201,124,58,0.3);
+            font-weight: 600;
+            margin-top: 0.35rem;
+        }
+        .api-key-wrap { position: relative; }
+        .api-key-wrap input { padding-right: 2.5rem; }
+        .toggle-key-btn {
+            position: absolute; right: 0.5rem; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            color: var(--text-muted); padding: 0.25rem;
+        }
+        @media (max-width: 900px) {
+            .tool-main { grid-template-columns: 1fr !important; }
+            .config-sidebar { position: static; }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+        <div class="tool-container" style="max-width: 1200px;">
+            <div class="tool-header">
+                <h1><i data-lucide="bot"></i> LLM Studio</h1>
+                <p>Chat with AI models — GLM-5, GPT-4o, Claude, Gemini, Groq and more</p>
+            </div>
+
+            <div class="tool-main" style="display: grid; grid-template-columns: 320px 1fr; gap: 2rem;">
+                <!-- ── Sidebar Config ── -->
+                <div class="tool-card config-sidebar">
+                    <h3 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i data-lucide="settings"></i> Configuration
+                    </h3>
+
+                    <div class="form-group">
+                        <label for="provider">AI Provider</label>
+                        <select id="provider" onchange="onProviderChange()">
+                            <option value="modal">Modal — GLM-5 (Free)</option>
+                            <option value="openai">OpenAI</option>
+                            <option value="groq">Groq</option>
+                            <option value="anthropic">Anthropic</option>
+                            <option value="gemini">Google Gemini</option>
+                            <option value="openrouter">OpenRouter</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <select id="model" onchange="saveSettings()"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="api-key">API Key</label>
+                        <div class="api-key-wrap">
+                            <input type="password" id="api-key" placeholder="Enter your API key" oninput="saveSettings()">
+                            <button class="toggle-key-btn" onclick="toggleKeyVis()" title="Show/hide key">
+                                <i data-lucide="eye" id="eye-icon" style="width:16px;height:16px;"></i>
+                            </button>
+                        </div>
+                        <div id="preset-note" style="display:none;">
+                            <span class="preset-badge"><i data-lucide="lock" style="width:12px;height:12px;"></i> Pre-configured, ready to use</span>
+                        </div>
+                        <small id="key-hint">🔒 Stored locally, never sent to our servers</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="system-prompt">System Prompt</label>
+                        <textarea id="system-prompt" rows="4" placeholder="You are a helpful assistant..." oninput="saveSettings()"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temperature">Temperature: <span id="temp-value">0.7</span></label>
+                        <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7" oninput="onTempChange(this)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="max-tokens">Max Tokens</label>
+                        <input type="number" id="max-tokens" value="4096" min="256" max="131072" step="256" oninput="saveSettings()">
+                        <small id="max-tok-hint">Higher = longer responses but slower</small>
+                    </div>
+
+                    <button class="tool-btn tool-btn-secondary" onclick="clearChat()" style="width: 100%;">
+                        <i data-lucide="trash-2"></i> Clear Chat
+                    </button>
+                </div>
+
+                <!-- ── Chat Area ── -->
+                <div class="tool-card chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="empty-chat">
+                            <i data-lucide="message-square-plus" style="width: 64px; height: 64px; opacity: 0.3;"></i>
+                            <p style="margin-top: 1rem; color: var(--text-secondary);">Start a conversation with AI</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">GLM-5 is pre-configured and ready — just type!</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <textarea id="chat-input" class="chat-input" placeholder="Type your message… (Enter to send, Shift+Enter for newline)" rows="1"></textarea>
+                        <button class="tool-btn tool-btn-primary" onclick="sendMessage()" id="send-btn">
+                            <i data-lucide="send"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    'use strict';
+
+    // ── Provider configurations ────────────────────────────────────────────────
+    const MODAL_KEY = 'modalresearch_7vhc_w5LHckOja0MylAME_H8bnYSIS3B9A0qr4RtlMk';
+
+    const providers = {
+        modal: {
+            name: 'Modal — GLM-5',
+            baseUrl: 'https://api.us-west-2.modal.direct/v1/chat/completions',
+            models: ['zai-org/GLM-5-FP8'],
+            presetKey: MODAL_KEY,
+            defaultMaxTokens: 131072,
+            openaiCompat: true
+        },
+        openai: {
+            name: 'OpenAI',
+            baseUrl: 'https://api.openai.com/v1/chat/completions',
+            models: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
+            defaultMaxTokens: 4096,
+            openaiCompat: true
+        },
+        groq: {
+            name: 'Groq',
+            baseUrl: 'https://api.groq.com/openai/v1/chat/completions',
+            models: ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768', 'gemma2-9b-it'],
+            defaultMaxTokens: 8192,
+            openaiCompat: true
+        },
+        anthropic: {
+            name: 'Anthropic',
+            baseUrl: 'https://api.anthropic.com/v1/messages',
+            models: ['claude-opus-4-5', 'claude-sonnet-4-5', 'claude-3-5-sonnet-20241022', 'claude-3-5-haiku-20241022', 'claude-3-opus-20240229'],
+            defaultMaxTokens: 4096,
+            openaiCompat: false
+        },
+        gemini: {
+            name: 'Google Gemini',
+            baseUrl: 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent',
+            models: ['gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-1.0-pro'],
+            defaultMaxTokens: 8192,
+            openaiCompat: false
+        },
+        openrouter: {
+            name: 'OpenRouter',
+            baseUrl: 'https://openrouter.ai/api/v1/chat/completions',
+            models: [
+                'anthropic/claude-3.5-sonnet',
+                'openai/gpt-4o',
+                'google/gemini-pro-1.5',
+                'meta-llama/llama-3.1-405b-instruct',
+                'deepseek/deepseek-r1',
+                'mistralai/mixtral-8x22b-instruct'
+            ],
+            defaultMaxTokens: 4096,
+            openaiCompat: true
+        }
+    };
+
+    let chatHistory = [];
+
+    // ── Helpers ────────────────────────────────────────────────────────────────
+    function currentProvider() { return document.getElementById('provider').value; }
+    function currentConfig() { return providers[currentProvider()]; }
+
+    function onProviderChange() {
+        const p = currentProvider();
+        const cfg = providers[p];
+
+        // Update model list
+        const modelSel = document.getElementById('model');
+        modelSel.innerHTML = cfg.models.map(m => `<option value="${m}">${m}</option>`).join('');
+
+        // Pre-set API key for Modal
+        const keyInput = document.getElementById('api-key');
+        const presetNote = document.getElementById('preset-note');
+        if (cfg.presetKey) {
+            keyInput.value = cfg.presetKey;
+            keyInput.readOnly = true;
+            keyInput.style.opacity = '0.6';
+            presetNote.style.display = 'block';
+            document.getElementById('key-hint').style.display = 'none';
+        } else {
+            keyInput.readOnly = false;
+            keyInput.style.opacity = '';
+            presetNote.style.display = 'none';
+            document.getElementById('key-hint').style.display = '';
+            // Restore any saved key for this provider
+            const saved = getSavedSettings();
+            keyInput.value = (saved && saved.keys && saved.keys[p]) ? saved.keys[p] : '';
+        }
+
+        // Max tokens
+        document.getElementById('max-tokens').value = cfg.defaultMaxTokens;
+
+        saveSettings();
+        lucide.createIcons();
+    }
+
+    function onTempChange(el) {
+        document.getElementById('temp-value').textContent = el.value;
+        saveSettings();
+    }
+
+    function toggleKeyVis() {
+        const input = document.getElementById('api-key');
+        const icon = document.getElementById('eye-icon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.setAttribute('data-lucide', 'eye-off');
+        } else {
+            input.type = 'password';
+            icon.setAttribute('data-lucide', 'eye');
+        }
+        lucide.createIcons();
+    }
+
+    // ── Settings persistence ────────────────────────────────────────────────────
+    function getSavedSettings() {
+        try { return JSON.parse(localStorage.getItem('llm-studio-settings')); } catch { return null; }
+    }
+
+    function saveSettings() {
+        const p = currentProvider();
+        const saved = getSavedSettings() || {};
+        if (!saved.keys) saved.keys = {};
+        const cfg = providers[p];
+        if (!cfg.presetKey) {
+            saved.keys[p] = document.getElementById('api-key').value;
+        }
+        const settings = {
+            ...saved,
+            provider: p,
+            model: document.getElementById('model').value,
+            systemPrompt: document.getElementById('system-prompt').value,
+            temperature: document.getElementById('temperature').value,
+            maxTokens: document.getElementById('max-tokens').value
+        };
+        localStorage.setItem('llm-studio-settings', JSON.stringify(settings));
+    }
+
+    function loadSettings() {
+        const saved = getSavedSettings();
+        const provSel = document.getElementById('provider');
+        if (saved && saved.provider && providers[saved.provider]) {
+            provSel.value = saved.provider;
+        }
+        onProviderChange();
+
+        if (saved) {
+            const p = saved.provider || 'modal';
+            const modelSel = document.getElementById('model');
+            if (saved.model && providers[p] && providers[p].models.includes(saved.model)) {
+                modelSel.value = saved.model;
+            }
+            // Restore API key (non-preset providers)
+            if (saved.keys && saved.keys[p] && !providers[p].presetKey) {
+                document.getElementById('api-key').value = saved.keys[p];
+            }
+            document.getElementById('system-prompt').value = saved.systemPrompt || '';
+            document.getElementById('temperature').value = saved.temperature || 0.7;
+            document.getElementById('temp-value').textContent = saved.temperature || 0.7;
+            document.getElementById('max-tokens').value = saved.maxTokens || providers[p].defaultMaxTokens;
+        }
+    }
+
+    // ── Chat ───────────────────────────────────────────────────────────────────
+    function addMessage(role, content) {
+        const messagesDiv = document.getElementById('chat-messages');
+        const emptyChat = messagesDiv.querySelector('.empty-chat');
+        if (emptyChat) emptyChat.remove();
+
+        const div = document.createElement('div');
+        div.className = `chat-message ${role}`;
+
+        if (role === 'assistant') {
+            div.innerHTML = marked.parse(content);
+        } else {
+            const p = document.createElement('p');
+            p.textContent = content;
+            div.appendChild(p);
+        }
+
+        messagesDiv.appendChild(div);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        chatHistory.push({ role, content });
+    }
+
+    function showTyping() {
+        const messagesDiv = document.getElementById('chat-messages');
+        const typing = document.createElement('div');
+        typing.className = 'chat-message assistant typing-indicator';
+        typing.id = 'typing-indicator';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        messagesDiv.appendChild(typing);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function hideTyping() {
+        const t = document.getElementById('typing-indicator');
+        if (t) t.remove();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const message = input.value.trim();
+        if (!message) return;
+
+        const p = currentProvider();
+        const cfg = providers[p];
+        const apiKey = document.getElementById('api-key').value;
+        if (!apiKey) { alert('Please enter your API key'); return; }
+
+        addMessage('user', message);
+        input.value = '';
+        input.style.height = 'auto';
+        showTyping();
+        document.getElementById('send-btn').disabled = true;
+
+        try {
+            const response = await callAPI(message);
+            hideTyping();
+            addMessage('assistant', response);
+        } catch(error) {
+            hideTyping();
+            addMessage('assistant', `❌ Error: ${error.message}`);
+        }
+
+        document.getElementById('send-btn').disabled = false;
+        input.focus();
+    }
+
+    async function callAPI(userMessage) {
+        const p = currentProvider();
+        const cfg = providers[p];
+        const model = document.getElementById('model').value;
+        const apiKey = document.getElementById('api-key').value;
+        const systemPrompt = document.getElementById('system-prompt').value.trim();
+        const temperature = parseFloat(document.getElementById('temperature').value);
+        const maxTokens = parseInt(document.getElementById('max-tokens').value);
+
+        // Build messages array
+        const messages = [];
+        if (systemPrompt && p !== 'gemini') {
+            messages.push({ role: 'system', content: systemPrompt });
+        }
+        chatHistory.forEach(m => messages.push({ role: m.role, content: m.content }));
+        messages.push({ role: 'user', content: userMessage });
+
+        // ── Anthropic ────────────────────────────────────────────────────────
+        if (p === 'anthropic') {
+            const res = await fetch(cfg.baseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'anthropic-dangerous-direct-browser-access': 'true'
+                },
+                body: JSON.stringify({
+                    model,
+                    max_tokens: maxTokens,
+                    system: systemPrompt || undefined,
+                    messages: messages.filter(m => m.role !== 'system').map(m => ({
+                        role: m.role === 'assistant' ? 'assistant' : 'user',
+                        content: m.content
+                    })),
+                    temperature
+                })
+            });
+            if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `HTTP ${res.status}`); }
+            const data = await res.json();
+            return data.content[0].text;
+        }
+
+        // ── Gemini ──────────────────────────────────────────────────────────
+        if (p === 'gemini') {
+            const url = cfg.baseUrl.replace('{model}', model) + `?key=${apiKey}`;
+            const gemMsgs = messages.filter(m => m.role !== 'system').map(m => ({
+                role: m.role === 'assistant' ? 'model' : 'user',
+                parts: [{ text: m.content }]
+            }));
+            const body = {
+                contents: gemMsgs,
+                generationConfig: { temperature, maxOutputTokens: maxTokens }
+            };
+            if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `HTTP ${res.status}`); }
+            const data = await res.json();
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        // ── OpenAI-compatible (OpenAI, Groq, OpenRouter, Modal GLM) ──────────
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+        };
+        if (p === 'openrouter') {
+            headers['HTTP-Referer'] = window.location.href;
+            headers['X-Title'] = 'LLM Studio';
+        }
+
+        const res = await fetch(cfg.baseUrl, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                model,
+                messages,
+                temperature,
+                max_tokens: maxTokens
+            })
+        });
+
+        if (!res.ok) {
+            let errMsg = `HTTP ${res.status}`;
+            try { const e = await res.json(); errMsg = e.error?.message || errMsg; } catch {}
+            throw new Error(errMsg);
+        }
+        const data = await res.json();
+        return data.choices[0].message.content;
+    }
+
+    function clearChat() {
+        chatHistory = [];
+        document.getElementById('chat-messages').innerHTML = `
+            <div class="empty-chat">
+                <i data-lucide="message-square-plus" style="width: 64px; height: 64px; opacity: 0.3;"></i>
+                <p style="margin-top: 1rem; color: var(--text-secondary);">Start a conversation with AI</p>
+            </div>`;
+        lucide.createIcons();
+    }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+        loadSettings();
+
+        // Enter to send
+        document.getElementById('chat-input').addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        });
+
+        // Auto-resize textarea
+        document.getElementById('chat-input').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 160) + 'px';
+        });
+    });
+    </script>
+</body>
+</html>

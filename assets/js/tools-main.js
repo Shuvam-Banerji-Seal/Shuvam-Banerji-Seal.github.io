@@ -1,13 +1,15 @@
 // Tools Main JavaScript
 
 // Tool Navigation - Redirects to individual tool pages
-function openTool(toolId) {
+window.openTool = function(toolId) {
     // Map tool IDs to their page URLs
     const toolPages = {
         'llm-chat': 'tools/llm-chat.html',
+        'llm-studio': 'tools/llm-studio.html',
         'paper-finder': 'tools/paper-finder.html',
         'pdf-to-jpg': 'tools/pdf-to-jpg.html',
         'pdf-reducer': 'tools/pdf-reducer.html',
+        'pdf-studio': 'tools/pdf-studio.html',
         'molecule-viz': 'tools/molecule-viz.html',
         'games': 'tools/games.html',
         'unit-converter': 'tools/unit-converter.html',
