@@ -224,9 +224,15 @@ p, h1, h2, h3, h4, h5, h6, li, dt, dd {
 
     /* Index page custom grids */
     .about-layout,
-    .contact-layout,
     .cv-grid {
         grid-template-columns: 1fr !important;
+    }
+
+    /* Contact: show form first (form is 2nd in DOM, reversed via flex) */
+    .contact-layout {
+        display: flex !important;
+        flex-direction: column-reverse !important;
+        gap: 1.5rem;
     }
 }
 

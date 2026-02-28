@@ -252,6 +252,22 @@ html:not([data-theme="dark"]) .term-input { color: #2c1a0e; caret-color: #3d6b2e
     display: flex; align-items: center; justify-content: space-between;
     border-bottom: 1px solid rgba(0,212,255,0.1);
 }
+html:not([data-theme="dark"]) .viewer-window {
+    background: rgba(245,235,215,0.96);
+    border-color: rgba(139,101,68,0.3);
+}
+html:not([data-theme="dark"]) .viewer-titlebar {
+    background: #e8d5b0;
+    border-bottom-color: rgba(139,101,68,0.25);
+}
+html:not([data-theme="dark"]) .viewer-info {
+    background: rgba(245,235,215,0.92);
+    border-top-color: rgba(139,101,68,0.1);
+    color: var(--text-secondary);
+}
+html:not([data-theme="dark"]) .terminal-window {
+    background: rgba(245,235,215,0.96);
+}
 .viewer-label {
     font-family: var(--font-mono); font-size: 0.72rem;
     color: var(--accent-cyan); letter-spacing: 0.1em;
@@ -459,7 +475,8 @@ footer p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font
 /* --- responsive --- */
 @media (max-width: 1024px) {
     .hero { grid-template-columns: 1fr; padding: 5rem 2rem 3rem; }
-    .protein-panel { display: none; }
+    .protein-panel { display: flex; flex-direction: column; }
+    #protein-canvas { height: 240px; }
     .about-layout { grid-template-columns: 1fr; }
     .contact-layout { grid-template-columns: 1fr; }
 }

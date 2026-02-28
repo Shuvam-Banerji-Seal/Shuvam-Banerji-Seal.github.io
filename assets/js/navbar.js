@@ -253,12 +253,30 @@ function initMobileMenuLogic() {
         if (mobileMenu) mobileMenu.classList.add('active');
         if (backdrop) backdrop.classList.add('active');
         document.body.style.overflow = 'hidden';
+        // Hamburger → X
+        if (menuBtn) {
+            const icon = menuBtn.querySelector('i');
+            if (icon) {
+                icon.setAttribute('data-lucide', 'x');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+            menuBtn.setAttribute('aria-label', 'Close mobile menu');
+        }
     }
 
     function closeMenu() {
         if (mobileMenu) mobileMenu.classList.remove('active');
         if (backdrop) backdrop.classList.remove('active');
         document.body.style.overflow = '';
+        // X → Hamburger
+        if (menuBtn) {
+            const icon = menuBtn.querySelector('i');
+            if (icon) {
+                icon.setAttribute('data-lucide', 'menu');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+            menuBtn.setAttribute('aria-label', 'Open mobile menu');
+        }
     }
 
     if (menuBtn) {
