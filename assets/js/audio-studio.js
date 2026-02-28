@@ -140,8 +140,14 @@ class AudioStudio {
 
     initializeCanvas() {
         this.canvas = document.getElementById('waveform-canvas');
+        this.liveVisCanvas = document.getElementById('live-visualizer');
+        this.recordVisCanvas = document.getElementById('record-visualizer');
+        
         if (this.canvas) {
             this.ctx = this.canvas.getContext('2d');
+            if (this.liveVisCanvas) this.liveVisCtx = this.liveVisCanvas.getContext('2d');
+            if (this.recordVisCanvas) this.recordVisCtx = this.recordVisCanvas.getContext('2d');
+            
             this.resizeCanvas();
             window.addEventListener('resize', () => this.resizeCanvas());
         }
@@ -151,11 +157,28 @@ class AudioStudio {
         if (!this.canvas) return;
         const container = this.canvas.parentElement;
         const dpr = window.devicePixelRatio || 1;
-        this.canvas.width = container.clientWidth * dpr;
-        this.canvas.height = (container.clientHeight - 25) * dpr;
-        this.canvas.style.width = container.clientWidth + 'px';
-        this.canvas.style.height = (container.clientHeight - 25) + 'px';
+        
+        const cw = container.clientWidth;
+        const ch = container.clientHeight - 25;
+        
+        [this.canvas, this.liveVisCanvas].forEach(c => {
+            if (!c) return;
+            c.width = cw * dpr;
+            c.height = ch * dpr;
+            c.style.width = cw + 'px';
+            c.style.height = ch + 'px';
+        });
+        
+        if (this.recordVisCanvas) {
+            const pCont = this.recordVisCanvas.parentElement;
+            this.recordVisCanvas.width = pCont.clientWidth * dpr;
+            this.recordVisCanvas.height = pCont.clientHeight * dpr;
+        }
+
         this.ctx.scale(dpr, dpr);
+        if (this.liveVisCtx) this.liveVisCtx.scale(dpr, dpr);
+        if (this.recordVisCtx) this.recordVisCtx.scale(dpr, dpr);
+        
         if (this.audioBuffer) this.drawWaveform();
     }
 
@@ -353,12 +376,18 @@ class AudioStudio {
 
             // Create analyser for input metering
             const inputSource = this.audioContext.createMediaStreamSource(stream);
-            const inputAnalyser = this.audioContext.createAnalyser();
-            inputAnalyser.fftSize = 256;
-            inputSource.connect(inputAnalyser);
+            this.inputAnalyser = this.audioContext.createAnalyser();
+            this.inputAnalyser.fftSize = 2048;
+            inputSource.connect(this.inputAnalyser);
 
-            // Start input level monitoring
-            this.monitorInputLevel(inputAnalyser);
+            // Start input level monitoring and live visualizer
+            this.monitorInputLevel(this.inputAnalyser);
+            this.isRecording = true;
+            
+            // Adjust ui for recording visualizer
+            document.getElementById('placeholder-content').style.display = 'none';
+            if (this.recordVisCanvas) this.recordVisCanvas.style.display = 'block';
+            this.startVisualizerLoop('record');
 
             this.mediaRecorder = new MediaRecorder(stream, {
                 mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4'
@@ -395,6 +424,16 @@ class AudioStudio {
         if (this.mediaRecorder && this.isRecording) {
             this.mediaRecorder.stop();
             this.isRecording = false;
+
+            if (this.visRequestId) {
+                cancelAnimationFrame(this.visRequestId);
+            }
+            if (this.recordVisCanvas) {
+                const ctx = this.recordVisCanvas.getContext('2d');
+                ctx.clearRect(0, 0, this.recordVisCanvas.width, this.recordVisCanvas.height);
+                this.recordVisCanvas.style.display = 'none';
+            }
+            document.getElementById('waveform-placeholder').style.display = 'block';
 
             const recordBtn = document.getElementById('record-btn');
             if (recordBtn) recordBtn.classList.remove('recording');
@@ -467,6 +506,75 @@ class AudioStudio {
     showWaveform() {
         document.getElementById('waveform-placeholder')?.classList.add('hidden');
         document.getElementById('waveform-wrapper')?.classList.add('active');
+    }
+
+    drawVisualizers(analyser, canvas, ctx, isFreq) {
+        if (!analyser || !canvas || !ctx) return;
+        
+        const width = canvas.width / (window.devicePixelRatio || 1);
+        const height = canvas.height / (window.devicePixelRatio || 1);
+        
+        ctx.clearRect(0, 0, width, height);
+
+        const bufferLength = analyser.frequencyBinCount;
+        
+        if (isFreq) {
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteFrequencyData(dataArray);
+            
+            const barWidth = (width / bufferLength) * 2.5;
+            let x = 0;
+            
+            for (let i = 0; i < bufferLength; i++) {
+                const barHeight = (dataArray[i] / 255) * height;
+                ctx.fillStyle = `rgba(139, 92, 246, ${Math.max(0.1, dataArray[i] / 255)})`;
+                ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+                x += barWidth + 1;
+            }
+        } else {
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteTimeDomainData(dataArray);
+
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#06b6d4';
+            ctx.beginPath();
+
+            const sliceWidth = width * 1.0 / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = v * height / 2;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+                x += sliceWidth;
+            }
+
+            ctx.lineTo(width, height / 2);
+            ctx.stroke();
+        }
+    }
+
+    startVisualizerLoop(mode) {
+        if (this.visRequestId) cancelAnimationFrame(this.visRequestId);
+        
+        const draw = () => {
+            if (mode === 'record' && this.isRecording && this.inputAnalyser) {
+                this.drawVisualizers(this.inputAnalyser, this.recordVisCanvas, this.recordVisCtx, false);
+                this.visRequestId = requestAnimationFrame(draw);
+            } else if (mode === 'play' && this.isPlaying && this.analyser) {
+                this.drawVisualizers(this.analyser, this.liveVisCanvas, this.liveVisCtx, true);
+                this.visRequestId = requestAnimationFrame(draw);
+            } else {
+                if (this.recordVisCtx && this.recordVisCanvas) {
+                    this.recordVisCtx.clearRect(0, 0, this.recordVisCanvas.width, this.recordVisCanvas.height);
+                }
+                if (this.liveVisCtx && this.liveVisCanvas) {
+                    this.liveVisCtx.clearRect(0, 0, this.liveVisCanvas.width, this.liveVisCanvas.height);
+                }
+            }
+        };
+        draw();
     }
 
     drawWaveform() {
@@ -625,12 +733,22 @@ class AudioStudio {
                 this.pauseTime = 0;
                 this.updatePlayButton();
                 this.updatePlayhead();
+                
+                if (this.visRequestId) cancelAnimationFrame(this.visRequestId);
+                if (this.liveVisCanvas) {
+                    const ctx = this.liveVisCanvas.getContext('2d');
+                    ctx.clearRect(0, 0, this.liveVisCanvas.width, this.liveVisCanvas.height);
+                    this.liveVisCanvas.style.display = 'none';
+                }
             }
         };
 
         this.isPlaying = true;
         this.updatePlayButton();
         this.animatePlayhead();
+        
+        if (this.liveVisCanvas) this.liveVisCanvas.style.display = 'block';
+        this.startVisualizerLoop('play');
     }
 
     pause() {
@@ -641,6 +759,8 @@ class AudioStudio {
         this.sourceNode.disconnect();
         this.isPlaying = false;
         this.updatePlayButton();
+        
+        if (this.visRequestId) cancelAnimationFrame(this.visRequestId);
     }
 
     stop() {
@@ -653,6 +773,13 @@ class AudioStudio {
         this.updatePlayButton();
         this.updatePlayhead();
         this.updateTimeDisplay();
+        
+        if (this.visRequestId) cancelAnimationFrame(this.visRequestId);
+        if (this.liveVisCanvas) {
+            const ctx = this.liveVisCanvas.getContext('2d');
+            ctx.clearRect(0, 0, this.liveVisCanvas.width, this.liveVisCanvas.height);
+            this.liveVisCanvas.style.display = 'none';
+        }
     }
 
     skipToStart() {

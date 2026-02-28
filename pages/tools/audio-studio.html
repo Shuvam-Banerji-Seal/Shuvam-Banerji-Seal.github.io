@@ -126,13 +126,17 @@
                     <div class="waveform-container">
                         <div class="waveform-wrapper" id="waveform-wrapper">
                             <canvas id="waveform-canvas"></canvas>
+                            <canvas id="live-visualizer" style="position: absolute; top: 0; left: 0; pointer-events: none; opacity: 0.6; z-index: 5;"></canvas>
                             <div class="playhead" id="playhead"></div>
                             <div class="selection-overlay" id="selection-overlay"></div>
                             <div class="time-ruler" id="time-ruler"></div>
                         </div>
-                        <div class="waveform-placeholder" id="waveform-placeholder">
-                            <i data-lucide="audio-waveform"></i>
-                            <p>Record or upload audio to begin editing</p>
+                        <div class="waveform-placeholder" id="waveform-placeholder" style="position: relative; width: 100%; height: 100%;">
+                            <canvas id="record-visualizer" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.8;"></canvas>
+                            <div id="placeholder-content" style="position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                                <i data-lucide="audio-waveform"></i>
+                                <p>Record or upload audio to begin editing</p>
+                            </div>
                         </div>
                     </div>
 
