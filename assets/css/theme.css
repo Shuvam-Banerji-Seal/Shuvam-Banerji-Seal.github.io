@@ -230,6 +230,8 @@ body {
     background: var(--bg-card);
     border: 1px solid var(--border);
     box-shadow: var(--shadow-card);
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
 }
 
 .dropdown-item {

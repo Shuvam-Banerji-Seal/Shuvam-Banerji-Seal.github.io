@@ -321,6 +321,8 @@ nav, header, main, footer {
     left: 50%;
     transform: translateX(-50%) translateY(10px);
     min-width: 220px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
     background: var(--bg-card, #fff8eb);
     border: 1px solid var(--border, rgba(139,101,68,0.2));
     border-radius: 12px;
@@ -330,6 +332,23 @@ nav, header, main, footer {
     transition: all 0.3s ease;
     z-index: 1000;
     box-shadow: var(--shadow-card, 0 10px 40px rgba(0, 0, 0, 0.15));
+}
+
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: var(--border, rgba(139,101,68,0.3));
+    border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: var(--accent, #c97c3a);
 }
 
 .dropdown-menu.show {
