@@ -184,7 +184,7 @@
 }
 
 .tool-btn-danger {
-    background: #ff4757;
+    background: var(--danger-color, #ff4757);
     color: white;
 }
 

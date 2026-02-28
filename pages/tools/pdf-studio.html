@@ -617,10 +617,10 @@ html[data-theme="dark"] .img-card img { background: #0d1526; }
             const card = document.createElement('div');
             card.className = 'img-card';
             const idx = convertedImgs.length - 1;
-            card.innerHTML = `<img src="${dataUrl}" loading="lazy">
+            card.innerHTML = `<img src="${dataUrl}" alt="Converted PDF page ${i}" loading="lazy">
                 <div class="img-card-footer">
                     <span>Page ${i}</span>
-                    <button class="tool-btn tool-btn-secondary" style="padding:.25rem .75rem;font-size:.78rem;" onclick="dlImg(${idx})">
+                    <button class="tool-btn tool-btn-secondary" aria-label="Download page ${i}" style="padding:.25rem .75rem;font-size:.78rem;" onclick="dlImg(${idx})">
                         <i data-lucide="download"></i>
                     </button>
                 </div>`;
@@ -673,7 +673,7 @@ html[data-theme="dark"] .img-card img { background: #0d1526; }
             item.innerHTML = `<i data-lucide="file-text" style="width:16px;height:16px;flex-shrink:0;"></i>
                 <span class="fname">${f.name}</span>
                 <span class="fsize">${fmtSize(f.size)}</span>
-                <button class="rm-btn"><i data-lucide="x" style="width:14px;height:14px;"></i></button>`;
+                <button class="rm-btn" aria-label="Remove ${f.name} from merge list"><i data-lucide="x" style="width:14px;height:14px;"></i></button>`;
             item.querySelector('.rm-btn').onclick = () => { mergeFiles.splice(i, 1); renderMergeList(); };
             list.appendChild(item);
         });

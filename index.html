@@ -892,20 +892,20 @@ html:not([data-theme="dark"]) .section-file-label { color: #3d6b2e; }
             <div class="section-file-label" style="margin-bottom:1.5rem;">Submit Request</div>
             <form id="contact-form" action="https://formspree.io/f/manepvkq" method="POST" class="contact-form">
                 <div class="form-field">
-                    <label>$ name =</label>
-                    <input type="text" name="name" required placeholder="Your full name">
+                    <label for="contact_name">$ name =</label>
+                    <input type="text" id="contact_name" name="name" required placeholder="Your full name">
                 </div>
                 <div class="form-field">
-                    <label>$ email =</label>
-                    <input type="email" name="email" required placeholder="your@email.com">
+                    <label for="contact_email">$ email =</label>
+                    <input type="email" id="contact_email" name="email" required placeholder="your@email.com">
                 </div>
                 <div class="form-field">
-                    <label>$ subject =</label>
-                    <input type="text" name="subject" required placeholder="Subject of inquiry">
+                    <label for="contact_subject">$ subject =</label>
+                    <input type="text" id="contact_subject" name="subject" required placeholder="Subject of inquiry">
                 </div>
                 <div class="form-field">
-                    <label>$ message =</label>
-                    <textarea name="message" required placeholder="# Your message..."></textarea>
+                    <label for="contact_message">$ message =</label>
+                    <textarea id="contact_message" name="message" required placeholder="# Your message..."></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">
                     <i data-lucide="send" style="width:18px;height:18px;"></i>

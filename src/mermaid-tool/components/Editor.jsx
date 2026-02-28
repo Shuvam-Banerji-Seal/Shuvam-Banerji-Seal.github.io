@@ -42,7 +42,7 @@ const MermaidEditor = ({ code, onChange, theme, mode }) => {
 
         // Save shortcut (Ctrl+S / Cmd+S) - already persisted via onChange
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-            console.log('Code saved');
+            // Document is auto-saved
         });
     };
 
