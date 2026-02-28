@@ -2,6 +2,7 @@
   "name": "shuvam-portfolio",
   "version": "2.0.0",
   "description": "Professional portfolio website for Shuvam Banerji Seal",
+  "type": "module",
   "main": "index.html",
   "scripts": {
     "setup:local": "rm -rf public/assets_for_my_website && cp -r assets_for_my_website public/",
