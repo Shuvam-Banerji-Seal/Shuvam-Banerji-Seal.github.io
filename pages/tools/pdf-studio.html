@@ -810,9 +810,23 @@
 
     <script>
       "use strict";
+      // Browser compatibility check
+      (function () {
+        if (!window.FileReader || !window.Blob) {
+          document.addEventListener("DOMContentLoaded", function () {
+            var m = document.querySelector("main");
+            if (m)
+              m.innerHTML =
+                '<div style="text-align:center;padding:3rem"><h2>Browser Not Supported</h2><p>Please use a modern browser to use PDF Studio.</p></div>';
+          });
+        }
+      })();
+
       // ── Setup ──────────────────────────────────────────────────────────────────
-      pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      var MAX_PDF_SIZE = 100 * 1024 * 1024; // 100 MB
+      if (typeof pdfjsLib !== "undefined")
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
       // Shared utils
       function fmtSize(b) {
