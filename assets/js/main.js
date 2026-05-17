@@ -13,8 +13,12 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Theme Toggle ---
+    const DARK_THEMES = ["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];
+    function isDarkTheme(theme) { return DARK_THEMES.includes(theme); }
+    function getRandomDarkTheme() { return DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)]; }
+
     const themeToggleButtons = document.querySelectorAll('[data-theme-toggle]');
-    
+
     // Function to apply the saved theme or system preference
     function applyTheme(theme) {
         // Set on <html> for CSS variable cascade AND on <body> for legacy selectors
@@ -29,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggleButtons.forEach(btn => {
             const icon = btn.querySelector('i');
             if (icon) {
-                icon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+                icon.setAttribute('data-lucide', isDarkTheme(theme) ? 'sun' : 'moon');
             }
         });
         if (typeof lucide !== 'undefined') {
@@ -39,14 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to toggle the theme
     function toggleTheme() {
-        const currentTheme = (document.documentElement.getAttribute('data-theme') || document.body.getAttribute('data-theme')) === 'dark' ? 'light' : 'dark';
-        applyTheme(currentTheme);
+        const currentTheme = document.documentElement.getAttribute('data-theme') || document.body.getAttribute('data-theme') || 'light';
+        const nextTheme = isDarkTheme(currentTheme) ? 'light' : getRandomDarkTheme();
+        applyTheme(nextTheme);
     }
 
     // Set initial theme
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    const initialTheme = savedTheme || getRandomDarkTheme();
     applyTheme(initialTheme);
 
     // Add click listeners to all theme toggle buttons

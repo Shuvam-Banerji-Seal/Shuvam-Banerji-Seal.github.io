@@ -5,7 +5,7 @@
     <!-- Early theme injection to prevent FOUC -->
     <script>
       (function () {
-        var t = localStorage.getItem("theme") || "dark";
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -2882,9 +2882,13 @@
       /* ----- Misc ----- */
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      // Apply theme: respect saved preference, default to 'dark' for this terminal page
+      // Apply theme: respect saved preference, default to random dark theme
       (function () {
-        var saved = localStorage.getItem("theme") || "dark";
+        var DARK_THEMES = ["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];
+        function isDark(theme) { return DARK_THEMES.includes(theme); }
+        function getRandomDark() { return DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)]; }
+        var saved = localStorage.getItem("theme");
+        if (!saved) saved = getRandomDark();
         document.documentElement.setAttribute("data-theme", saved);
         document.body.setAttribute("data-theme", saved);
 
@@ -2894,23 +2898,18 @@
           btns.forEach(function (btn) {
             var icon = btn.querySelector("i");
             if (icon) {
-              var cur =
-                document.documentElement.getAttribute("data-theme") || "dark";
-              icon.setAttribute("data-lucide", cur === "dark" ? "sun" : "moon");
+              var cur = document.documentElement.getAttribute("data-theme") || "dark";
+              icon.setAttribute("data-lucide", isDark(cur) ? "sun" : "moon");
             }
             btn.addEventListener("click", function () {
-              var current =
-                document.documentElement.getAttribute("data-theme") || "dark";
-              var next = current === "dark" ? "light" : "dark";
+              var current = document.documentElement.getAttribute("data-theme") || "dark";
+              var next = isDark(current) ? "light" : getRandomDark();
               document.documentElement.setAttribute("data-theme", next);
               document.body.setAttribute("data-theme", next);
               localStorage.setItem("theme", next);
               var i2 = btn.querySelector("i");
               if (i2) {
-                i2.setAttribute(
-                  "data-lucide",
-                  next === "dark" ? "sun" : "moon",
-                );
+                i2.setAttribute("data-lucide", isDark(next) ? "sun" : "moon");
               }
               if (typeof lucide !== "undefined") lucide.createIcons();
             });

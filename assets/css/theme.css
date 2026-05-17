@@ -2,9 +2,22 @@
    UNIFIED THEME SYSTEM
    Light:  Creamy Coffee  — warm parchment tones
    Dark:   Molecular Terminal — deep navy + cyan glows
+   Alt Dark Themes:
+     - Dark Coffee    — warm espresso tones with amber accents
+     - Amber Night    — golden amber on charcoal
+     - Tokyo Night    — neon purple/blue on deep indigo
+     - Absolute Dark  — pure black with minimal accents
+     - Forest Night   — deep green on dark earth
+     - Dracula        — classic purple/pink on dark
    ================================================================
    Usage:
      • Apply [data-theme="dark"] on <html> for dark mode
+     • Apply [data-theme="dark-coffee"] for Dark Coffee theme
+     • Apply [data-theme="amber"] for Amber Night theme
+     • Apply [data-theme="tokyo-night"] for Tokyo Night theme
+     • Apply [data-theme="absolute-dark"] for Absolute Dark theme
+     • Apply [data-theme="forest"] for Forest Night theme
+     • Apply [data-theme="dracula"] for Dracula theme
      • Default (no attribute or [data-theme="light"]) = creamy coffee
    ================================================================ */
 
@@ -216,6 +229,564 @@ html[data-theme="dark"],
   --music-nav-logo: #ffffff;
 
   /* Font stacks (same) */
+  --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   DARK THEME — DARK COFFEE (Warm espresso tones with amber accents)
+   ---------------------------------------------------------------- */
+html[data-theme="dark-coffee"],
+[data-theme="dark-coffee"] {
+  /* Backgrounds */
+  --bg-deep: #1a1208;
+  --bg-primary: #1a1208;
+  --bg-dark: #231a0e;
+  --bg-secondary: #231a0e;
+  --bg-card: #2a1f12;
+  --bg-elevated: #352818;
+
+  /* Borders */
+  --border: rgba(217, 169, 104, 0.2);
+  --border-glow: rgba(217, 169, 104, 0.5);
+
+  /* Text */
+  --text-primary: #f5e6d0;
+  --text-secondary: #c9a87c;
+  --text-muted: #8b6f47;
+
+  /* Accents */
+  --accent-cyan: #d4a853;
+  --accent: #d4a853;
+  --accent-green: #8fbc5a;
+  --accent-purple: #b87d4b;
+  --accent-2: #b87d4b;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #d4a853, #b87d4b);
+  --grad-green: linear-gradient(135deg, #8fbc5a, #d4a853);
+
+  /* Glows & Shadows */
+  --glow-cyan: 0 0 20px rgba(212, 168, 83, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Navbar */
+  --nav-bg: rgba(26, 18, 8, 0.92);
+  --nav-border: rgba(217, 169, 104, 0.15);
+  --nav-text: #f5e6d0;
+  --nav-text-hover: #d4a853;
+  --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+  /* Glassmorphic */
+  --glass-bg: linear-gradient(180deg, rgba(42, 31, 18, 0.92), rgba(42, 31, 18, 0.78));
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Body */
+  --body-bg: #1a1208;
+  --body-color: #f5e6d0;
+
+  /* Inputs / Code */
+  --input-bg: rgba(42, 31, 18, 0.9);
+  --code-bg: rgba(26, 18, 8, 0.8);
+  --canvas-bg: #231a0e;
+
+  /* Buttons */
+  --btn-primary-bg: #d4a853;
+  --btn-primary-text: #1a1208;
+  --btn-primary-hover: #c49843;
+
+  /* Music Player */
+  --music-bg: #1a1208;
+  --music-text: #f5e6d0;
+  --music-text-secondary: #c9a87c;
+  --music-sidebar-bg: #1a1208;
+  --music-sidebar-border: rgba(217, 169, 104, 0.2);
+  --music-hover-bg: #352818;
+  --music-card-bg: #2a1f12;
+  --music-main-gradient: linear-gradient(180deg, rgba(212, 168, 83, 0.3) 0%, #1a1208 350px);
+  --music-search-bg: #352818;
+  --music-album-gradient: linear-gradient(135deg, #d4a853, #b87d4b);
+  --music-accent: #d4a853;
+  --music-accent-hover: #e4b863;
+  --music-player-bg: rgba(42, 31, 18, 0.95);
+  --music-player-bg-hover: rgba(42, 31, 18, 0.98);
+  --music-player-border: rgba(217, 169, 104, 0.2);
+  --music-play-btn-bg: #d4a853;
+  --music-progress-bg: rgba(217, 169, 104, 0.3);
+  --music-volume-bg: rgba(217, 169, 104, 0.3);
+  --music-nav-bg: #1a1208;
+  --music-nav-border: rgba(217, 169, 104, 0.2);
+  --music-nav-text: #c9a87c;
+  --music-nav-text-hover: #d4a853;
+  --music-nav-logo: #f5e6d0;
+
+  /* Font stacks */
+  --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   DARK THEME — AMBER NIGHT (Golden amber on charcoal)
+   ---------------------------------------------------------------- */
+html[data-theme="amber"],
+[data-theme="amber"] {
+  /* Backgrounds */
+  --bg-deep: #121212;
+  --bg-primary: #121212;
+  --bg-dark: #1a1a1a;
+  --bg-secondary: #1a1a1a;
+  --bg-card: #222222;
+  --bg-elevated: #2a2a2a;
+
+  /* Borders */
+  --border: rgba(255, 191, 0, 0.2);
+  --border-glow: rgba(255, 191, 0, 0.5);
+
+  /* Text */
+  --text-primary: #f5f5f5;
+  --text-secondary: #b0b0b0;
+  --text-muted: #666666;
+
+  /* Accents */
+  --accent-cyan: #ffbf00;
+  --accent: #ffbf00;
+  --accent-green: #4caf50;
+  --accent-purple: #ff6b35;
+  --accent-2: #ff6b35;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #ffbf00, #ff6b35);
+  --grad-green: linear-gradient(135deg, #4caf50, #ffbf00);
+
+  /* Glows & Shadows */
+  --glow-cyan: 0 0 20px rgba(255, 191, 0, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+  /* Navbar */
+  --nav-bg: rgba(18, 18, 18, 0.92);
+  --nav-border: rgba(255, 191, 0, 0.15);
+  --nav-text: #f5f5f5;
+  --nav-text-hover: #ffbf00;
+  --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+  /* Glassmorphic */
+  --glass-bg: linear-gradient(180deg, rgba(34, 34, 34, 0.92), rgba(34, 34, 34, 0.78));
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Body */
+  --body-bg: #121212;
+  --body-color: #f5f5f5;
+
+  /* Inputs / Code */
+  --input-bg: rgba(34, 34, 34, 0.9);
+  --code-bg: rgba(18, 18, 18, 0.8);
+  --canvas-bg: #1a1a1a;
+
+  /* Buttons */
+  --btn-primary-bg: #ffbf00;
+  --btn-primary-text: #121212;
+  --btn-primary-hover: #e6ac00;
+
+  /* Music Player */
+  --music-bg: #121212;
+  --music-text: #ffffff;
+  --music-text-secondary: #b3b3b3;
+  --music-sidebar-bg: #121212;
+  --music-sidebar-border: #282828;
+  --music-hover-bg: #282828;
+  --music-card-bg: #181818;
+  --music-main-gradient: linear-gradient(180deg, rgba(255, 191, 0, 0.3) 0%, #121212 350px);
+  --music-search-bg: #282828;
+  --music-album-gradient: linear-gradient(135deg, #ffbf00, #ff6b35);
+  --music-accent: #ffbf00;
+  --music-accent-hover: #ffd740;
+  --music-player-bg: rgba(24, 24, 24, 0.95);
+  --music-player-bg-hover: rgba(24, 24, 24, 0.98);
+  --music-player-border: rgba(255, 255, 255, 0.1);
+  --music-play-btn-bg: #ffbf00;
+  --music-progress-bg: #4d4d4d;
+  --music-volume-bg: #4d4d4d;
+  --music-nav-bg: #121212;
+  --music-nav-border: #282828;
+  --music-nav-text: #b3b3b3;
+  --music-nav-text-hover: #ffffff;
+  --music-nav-logo: #ffbf00;
+
+  /* Font stacks */
+  --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   DARK THEME — TOKYO NIGHT (Neon purple/blue on deep indigo)
+   ---------------------------------------------------------------- */
+html[data-theme="tokyo-night"],
+[data-theme="tokyo-night"] {
+  /* Backgrounds */
+  --bg-deep: #1a1b2e;
+  --bg-primary: #1a1b2e;
+  --bg-dark: #21223a;
+  --bg-secondary: #21223a;
+  --bg-card: #282a48;
+  --bg-elevated: #2f3156;
+
+  /* Borders */
+  --border: rgba(125, 133, 252, 0.2);
+  --border-glow: rgba(125, 133, 252, 0.5);
+
+  /* Text */
+  --text-primary: #c0caf5;
+  --text-secondary: #9aa5ce;
+  --text-muted: #565f89;
+
+  /* Accents */
+  --accent-cyan: #7d85fc;
+  --accent: #7d85fc;
+  --accent-green: #9ece6a;
+  --accent-purple: #bb9af7;
+  --accent-2: #bb9af7;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #7d85fc, #bb9af7);
+  --grad-green: linear-gradient(135deg, #9ece6a, #7d85fc);
+
+  /* Glows & Shadows */
+  --glow-cyan: 0 0 20px rgba(125, 133, 252, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Navbar */
+  --nav-bg: rgba(26, 27, 46, 0.92);
+  --nav-border: rgba(125, 133, 252, 0.15);
+  --nav-text: #c0caf5;
+  --nav-text-hover: #7d85fc;
+  --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+  /* Glassmorphic */
+  --glass-bg: linear-gradient(180deg, rgba(40, 42, 72, 0.92), rgba(40, 42, 72, 0.78));
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Body */
+  --body-bg: #1a1b2e;
+  --body-color: #c0caf5;
+
+  /* Inputs / Code */
+  --input-bg: rgba(40, 42, 72, 0.9);
+  --code-bg: rgba(26, 27, 46, 0.8);
+  --canvas-bg: #21223a;
+
+  /* Buttons */
+  --btn-primary-bg: #7d85fc;
+  --btn-primary-text: #1a1b2e;
+  --btn-primary-hover: #6d75ec;
+
+  /* Music Player */
+  --music-bg: #1a1b2e;
+  --music-text: #c0caf5;
+  --music-text-secondary: #9aa5ce;
+  --music-sidebar-bg: #1a1b2e;
+  --music-sidebar-border: rgba(125, 133, 252, 0.2);
+  --music-hover-bg: #2f3156;
+  --music-card-bg: #282a48;
+  --music-main-gradient: linear-gradient(180deg, rgba(125, 133, 252, 0.3) 0%, #1a1b2e 350px);
+  --music-search-bg: #2f3156;
+  --music-album-gradient: linear-gradient(135deg, #7d85fc, #bb9af7);
+  --music-accent: #7d85fc;
+  --music-accent-hover: #8d95ff;
+  --music-player-bg: rgba(40, 42, 72, 0.95);
+  --music-player-bg-hover: rgba(40, 42, 72, 0.98);
+  --music-player-border: rgba(125, 133, 252, 0.2);
+  --music-play-btn-bg: #7d85fc;
+  --music-progress-bg: rgba(125, 133, 252, 0.3);
+  --music-volume-bg: rgba(125, 133, 252, 0.3);
+  --music-nav-bg: #1a1b2e;
+  --music-nav-border: rgba(125, 133, 252, 0.2);
+  --music-nav-text: #9aa5ce;
+  --music-nav-text-hover: #7d85fc;
+  --music-nav-logo: #c0caf5;
+
+  /* Font stacks */
+  --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   DARK THEME — ABSOLUTE DARK (Pure black with minimal accents)
+   ---------------------------------------------------------------- */
+html[data-theme="absolute-dark"],
+[data-theme="absolute-dark"] {
+  /* Backgrounds */
+  --bg-deep: #000000;
+  --bg-primary: #000000;
+  --bg-dark: #050505;
+  --bg-secondary: #050505;
+  --bg-card: #0a0a0a;
+  --bg-elevated: #111111;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.1);
+  --border-glow: rgba(255, 255, 255, 0.3);
+
+  /* Text */
+  --text-primary: #e0e0e0;
+  --text-secondary: #888888;
+  --text-muted: #444444;
+
+  /* Accents */
+  --accent-cyan: #ffffff;
+  --accent: #ffffff;
+  --accent-green: #888888;
+  --accent-purple: #666666;
+  --accent-2: #666666;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #ffffff, #888888);
+  --grad-green: linear-gradient(135deg, #888888, #ffffff);
+
+  /* Glows & Shadows */
+  --glow-cyan: 0 0 20px rgba(255, 255, 255, 0.15);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
+
+  /* Navbar */
+  --nav-bg: rgba(0, 0, 0, 0.95);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --nav-text: #e0e0e0;
+  --nav-text-hover: #ffffff;
+  --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+
+  /* Glassmorphic */
+  --glass-bg: linear-gradient(180deg, rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.85));
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Body */
+  --body-bg: #000000;
+  --body-color: #e0e0e0;
+
+  /* Inputs / Code */
+  --input-bg: rgba(10, 10, 10, 0.9);
+  --code-bg: rgba(0, 0, 0, 0.8);
+  --canvas-bg: #050505;
+
+  /* Buttons */
+  --btn-primary-bg: #ffffff;
+  --btn-primary-text: #000000;
+  --btn-primary-hover: #e0e0e0;
+
+  /* Music Player */
+  --music-bg: #000000;
+  --music-text: #ffffff;
+  --music-text-secondary: #888888;
+  --music-sidebar-bg: #000000;
+  --music-sidebar-border: #111111;
+  --music-hover-bg: #111111;
+  --music-card-bg: #0a0a0a;
+  --music-main-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, #000000 350px);
+  --music-search-bg: #111111;
+  --music-album-gradient: linear-gradient(135deg, #ffffff, #888888);
+  --music-accent: #ffffff;
+  --music-accent-hover: #e0e0e0;
+  --music-player-bg: rgba(10, 10, 10, 0.95);
+  --music-player-bg-hover: rgba(10, 10, 10, 0.98);
+  --music-player-border: rgba(255, 255, 255, 0.08);
+  --music-play-btn-bg: #ffffff;
+  --music-progress-bg: #222222;
+  --music-volume-bg: #222222;
+  --music-nav-bg: #000000;
+  --music-nav-border: #111111;
+  --music-nav-text: #888888;
+  --music-nav-text-hover: #ffffff;
+  --music-nav-logo: #ffffff;
+
+  /* Font stacks */
+  --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   DARK THEME — FOREST NIGHT (Deep green on dark earth)
+   ---------------------------------------------------------------- */
+html[data-theme="forest"],
+[data-theme="forest"] {
+  /* Backgrounds */
+  --bg-deep: #0a120a;
+  --bg-primary: #0a120a;
+  --bg-dark: #0f1a0f;
+  --bg-secondary: #0f1a0f;
+  --bg-card: #152015;
+  --bg-elevated: #1a2a1a;
+
+  /* Borders */
+  --border: rgba(76, 175, 80, 0.2);
+  --border-glow: rgba(76, 175, 80, 0.5);
+
+  /* Text */
+  --text-primary: #c8e6c9;
+  --text-secondary: #81c784;
+  --text-muted: #4a7a4a;
+
+  /* Accents */
+  --accent-cyan: #66bb6a;
+  --accent: #66bb6a;
+  --accent-green: #a5d6a7;
+  --accent-purple: #81c784;
+  --accent-2: #81c784;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #66bb6a, #a5d6a7);
+  --grad-green: linear-gradient(135deg, #a5d6a7, #66bb6a);
+
+  /* Glows & Shadows */
+  --glow-cyan: 0 0 20px rgba(102, 187, 106, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Navbar */
+  --nav-bg: rgba(10, 18, 10, 0.92);
+  --nav-border: rgba(76, 175, 80, 0.15);
+  --nav-text: #c8e6c9;
+  --nav-text-hover: #66bb6a;
+  --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+  /* Glassmorphic */
+  --glass-bg: linear-gradient(180deg, rgba(21, 32, 21, 0.92), rgba(21, 32, 21, 0.78));
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Body */
+  --body-bg: #0a120a;
+  --body-color: #c8e6c9;
+
+  /* Inputs / Code */
+  --input-bg: rgba(21, 32, 21, 0.9);
+  --code-bg: rgba(10, 18, 10, 0.8);
+  --canvas-bg: #0f1a0f;
+
+  /* Buttons */
+  --btn-primary-bg: #66bb6a;
+  --btn-primary-text: #0a120a;
+  --btn-primary-hover: #56ab5a;
+
+  /* Music Player */
+  --music-bg: #0a120a;
+  --music-text: #c8e6c9;
+  --music-text-secondary: #81c784;
+  --music-sidebar-bg: #0a120a;
+  --music-sidebar-border: rgba(76, 175, 80, 0.2);
+  --music-hover-bg: #1a2a1a;
+  --music-card-bg: #152015;
+  --music-main-gradient: linear-gradient(180deg, rgba(102, 187, 106, 0.3) 0%, #0a120a 350px);
+  --music-search-bg: #1a2a1a;
+  --music-album-gradient: linear-gradient(135deg, #66bb6a, #a5d6a7);
+  --music-accent: #66bb6a;
+  --music-accent-hover: #76cb7a;
+  --music-player-bg: rgba(21, 32, 21, 0.95);
+  --music-player-bg-hover: rgba(21, 32, 21, 0.98);
+  --music-player-border: rgba(76, 175, 80, 0.2);
+  --music-play-btn-bg: #66bb6a;
+  --music-progress-bg: rgba(76, 175, 80, 0.3);
+  --music-volume-bg: rgba(76, 175, 80, 0.3);
+  --music-nav-bg: #0a120a;
+  --music-nav-border: rgba(76, 175, 80, 0.2);
+  --music-nav-text: #81c784;
+  --music-nav-text-hover: #66bb6a;
+  --music-nav-logo: #c8e6c9;
+
+  /* Font stacks */
+  --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   DARK THEME — DRACULA (Classic purple/pink on dark)
+   ---------------------------------------------------------------- */
+html[data-theme="dracula"],
+[data-theme="dracula"] {
+  /* Backgrounds */
+  --bg-deep: #282a36;
+  --bg-primary: #282a36;
+  --bg-dark: #2d2f3d;
+  --bg-secondary: #2d2f3d;
+  --bg-card: #343746;
+  --bg-elevated: #3c3f58;
+
+  /* Borders */
+  --border: rgba(189, 147, 249, 0.2);
+  --border-glow: rgba(189, 147, 249, 0.5);
+
+  /* Text */
+  --text-primary: #f8f8f2;
+  --text-secondary: #bfbfbf;
+  --text-muted: #6272a4;
+
+  /* Accents */
+  --accent-cyan: #bd93f9;
+  --accent: #bd93f9;
+  --accent-green: #50fa7b;
+  --accent-purple: #ff79c6;
+  --accent-2: #ff79c6;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #bd93f9, #ff79c6);
+  --grad-green: linear-gradient(135deg, #50fa7b, #bd93f9);
+
+  /* Glows & Shadows */
+  --glow-cyan: 0 0 20px rgba(189, 147, 249, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Navbar */
+  --nav-bg: rgba(40, 42, 54, 0.92);
+  --nav-border: rgba(189, 147, 249, 0.15);
+  --nav-text: #f8f8f2;
+  --nav-text-hover: #bd93f9;
+  --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+  /* Glassmorphic */
+  --glass-bg: linear-gradient(180deg, rgba(52, 55, 70, 0.92), rgba(52, 55, 70, 0.78));
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Body */
+  --body-bg: #282a36;
+  --body-color: #f8f8f2;
+
+  /* Inputs / Code */
+  --input-bg: rgba(52, 55, 70, 0.9);
+  --code-bg: rgba(40, 42, 54, 0.8);
+  --canvas-bg: #2d2f3d;
+
+  /* Buttons */
+  --btn-primary-bg: #bd93f9;
+  --btn-primary-text: #282a36;
+  --btn-primary-hover: #ad83e9;
+
+  /* Music Player */
+  --music-bg: #282a36;
+  --music-text: #f8f8f2;
+  --music-text-secondary: #bfbfbf;
+  --music-sidebar-bg: #282a36;
+  --music-sidebar-border: rgba(189, 147, 249, 0.2);
+  --music-hover-bg: #3c3f58;
+  --music-card-bg: #343746;
+  --music-main-gradient: linear-gradient(180deg, rgba(189, 147, 249, 0.3) 0%, #282a36 350px);
+  --music-search-bg: #3c3f58;
+  --music-album-gradient: linear-gradient(135deg, #bd93f9, #ff79c6);
+  --music-accent: #bd93f9;
+  --music-accent-hover: #cda3ff;
+  --music-player-bg: rgba(52, 55, 70, 0.95);
+  --music-player-bg-hover: rgba(52, 55, 70, 0.98);
+  --music-player-border: rgba(189, 147, 249, 0.2);
+  --music-play-btn-bg: #bd93f9;
+  --music-progress-bg: rgba(189, 147, 249, 0.3);
+  --music-volume-bg: rgba(189, 147, 249, 0.3);
+  --music-nav-bg: #282a36;
+  --music-nav-border: rgba(189, 147, 249, 0.2);
+  --music-nav-text: #bfbfbf;
+  --music-nav-text-hover: #bd93f9;
+  --music-nav-logo: #f8f8f2;
+
+  /* Font stacks */
   --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
   --font-body: "Inter", sans-serif;
 }

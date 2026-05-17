@@ -319,11 +319,37 @@ document.addEventListener("DOMContentLoaded", function () {
   initThemeToggle();
 });
 
+// All available dark themes
+const DARK_THEMES = [
+  "dark",
+  "dark-coffee",
+  "amber",
+  "tokyo-night",
+  "absolute-dark",
+  "forest",
+  "dracula"
+];
+
+function getRandomDarkTheme() {
+  return DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+}
+
+function isDarkTheme(theme) {
+  return DARK_THEMES.includes(theme);
+}
+
 function initThemeToggle() {
   // Apply saved theme if not already set by main.js / enhanced.js
   var currentTheme = document.documentElement.getAttribute("data-theme");
   if (!currentTheme) {
-    currentTheme = localStorage.getItem("theme") || "dark";
+    // Check if user has a saved preference
+    var savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      currentTheme = savedTheme;
+    } else {
+      // Randomly assign a dark theme on first visit
+      currentTheme = getRandomDarkTheme();
+    }
     document.documentElement.setAttribute("data-theme", currentTheme);
     document.body.setAttribute("data-theme", currentTheme);
   }
@@ -335,7 +361,8 @@ function initThemeToggle() {
     document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
       var icon = btn.querySelector("i");
       if (icon) {
-        icon.setAttribute("data-lucide", theme === "dark" ? "sun" : "moon");
+        // Show sun for dark themes, moon for light
+        icon.setAttribute("data-lucide", isDarkTheme(theme) ? "sun" : "moon");
         if (typeof lucide !== "undefined") lucide.createIcons();
       }
     });
@@ -350,11 +377,15 @@ function initThemeToggle() {
     var newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
     newBtn.addEventListener("click", function () {
-      var next =
-        (document.documentElement.getAttribute("data-theme") || "light") ===
-        "dark"
-          ? "light"
-          : "dark";
+      var current = document.documentElement.getAttribute("data-theme") || "light";
+      var next;
+      if (isDarkTheme(current)) {
+        // If currently dark, switch to light
+        next = "light";
+      } else {
+        // If currently light, switch to a random dark theme
+        next = getRandomDarkTheme();
+      }
       applyTheme(next);
     });
   });
