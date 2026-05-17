@@ -278,6 +278,15 @@
 
       document.addEventListener("DOMContentLoaded", () => {
         if (typeof lucide !== "undefined") lucide.createIcons();
+
+        if (typeof $3Dmol === "undefined") {
+          document.getElementById("viewer-3d").innerHTML =
+            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);padding:2rem;text-align:center;">' +
+            "<div><p style='font-size:1.1rem;margin-bottom:0.5rem;'>3D viewer library failed to load.</p>" +
+            "<p>Refresh the page or check your internet connection.</p></div></div>";
+          return;
+        }
+
         initViewer();
         loadMolecule("caffeine");
 
@@ -290,10 +299,15 @@
 
       function initViewer() {
         const container = document.getElementById("viewer-3d");
-        viewer = $3Dmol.createViewer(container, {
-          backgroundColor: "#1a1a2e",
-          antialias: true,
-        });
+        try {
+          viewer = $3Dmol.createViewer(container, {
+            backgroundColor: "#1a1a2e",
+            antialias: true,
+          });
+        } catch (e) {
+          container.innerHTML =
+            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);">Failed to initialize 3D viewer.</div>';
+        }
       }
 
       async function searchMolecule() {
@@ -303,6 +317,10 @@
       }
 
       async function loadMolecule(nameOrCid) {
+        if (!viewer) {
+          showNotification("3D viewer is not initialized");
+          return;
+        }
         try {
           viewer.clear();
           const input = nameOrCid.toString().trim();
@@ -384,7 +402,7 @@
       }
 
       function updateStyle() {
-        if (!currentModel) return;
+        if (!viewer || !currentModel) return;
 
         const style = document.getElementById("style-select").value;
         const colorScheme = document.getElementById("color-select").value;
@@ -427,11 +445,13 @@
       }
 
       function updateBackground() {
+        if (!viewer) return;
         const bg = document.getElementById("bg-select").value;
         viewer.setBackgroundColor(bg);
       }
 
       function resetView() {
+        if (!viewer) return;
         viewer.zoomTo();
         viewer.spin(false);
         isSpinning = false;
@@ -439,6 +459,7 @@
       }
 
       function updateSpinSpeed() {
+        if (!viewer) return;
         spinSpeed = parseInt(document.getElementById("spin-speed").value);
         if (isSpinning) {
           viewer.spin(spinSpeed > 0, {
@@ -451,6 +472,7 @@
       }
 
       function toggleSpin() {
+        if (!viewer) return;
         isSpinning = !isSpinning;
         if (isSpinning) {
           viewer.spin(true, { x: 0, y: 1, z: 0, speed: spinSpeed * 0.5 });
@@ -462,6 +484,7 @@
       }
 
       function takeScreenshot() {
+        if (!viewer) return;
         const canvas = viewer.canvas;
         const link = document.createElement("a");
         link.download = "molecule-" + Date.now() + ".png";

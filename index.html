@@ -2495,7 +2495,7 @@
       })();
 
       /* ----- Three.js ATP Ball-and-Stick Viewer ----- */
-      (function () {
+      window.addEventListener("DOMContentLoaded", function () {
         const canvas = document.getElementById("protein-canvas");
         if (!canvas || typeof THREE === "undefined") return;
 
@@ -2823,7 +2823,7 @@
           renderer.render(scene, camera);
         }
         animate();
-      })();
+      });
 
       /* ----- Scroll animations ----- */
       (function () {
