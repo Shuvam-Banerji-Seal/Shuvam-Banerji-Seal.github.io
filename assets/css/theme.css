@@ -136,7 +136,13 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="a
    DARK THEME — MOLECULAR TERMINAL
    ---------------------------------------------------------------- */
 html[data-theme="dark"]
-[data-theme="dark"] {
+[data-theme="dark"],
+[data-theme="dark-coffee"],
+[data-theme="amber"],
+[data-theme="tokyo-night"],
+[data-theme="absolute-dark"],
+[data-theme="forest"],
+[data-theme="dracula"] {
 [data-theme="dark-coffee"] {
 [data-theme="amber"] {
 [data-theme="tokyo-night"] {

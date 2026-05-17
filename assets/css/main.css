@@ -24,7 +24,13 @@ body {
 
 /* Dark Theme */
 html[data-theme="dark"] body,
-html[data-theme="dark"] {
+html[data-theme="dark"],
+html[data-theme="dark-coffee"],
+html[data-theme="amber"],
+html[data-theme="tokyo-night"],
+html[data-theme="absolute-dark"],
+html[data-theme="forest"],
+html[data-theme="dracula"] {
 [data-theme="dark-coffee"] {
 [data-theme="amber"] {
 [data-theme="tokyo-night"] {
@@ -1238,7 +1244,13 @@ html[data-theme="dark"] .text-gray-500 {
 }
 
 /* Dark Theme Overrides */
-html[data-theme="dark"] {
+html[data-theme="dark"],
+html[data-theme="dark-coffee"],
+html[data-theme="amber"],
+html[data-theme="tokyo-night"],
+html[data-theme="absolute-dark"],
+html[data-theme="forest"],
+html[data-theme="dracula"] {
 [data-theme="dark-coffee"] {
 [data-theme="amber"] {
 [data-theme="tokyo-night"] {
