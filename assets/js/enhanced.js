@@ -363,8 +363,18 @@ class LazyLoader {
 // Theme Controller with Enhanced Features
 class ThemeController {
     constructor() {
-        this.currentTheme = localStorage.getItem('theme') || 'light';
+        this.DARK_THEMES = ["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];
+        const savedTheme = localStorage.getItem('theme');
+        this.currentTheme = savedTheme || this.getRandomDarkTheme();
         this.init();
+    }
+
+    getRandomDarkTheme() {
+        return this.DARK_THEMES[Math.floor(Math.random() * this.DARK_THEMES.length)];
+    }
+
+    isDarkTheme(theme) {
+        return this.DARK_THEMES.includes(theme);
     }
 
     init() {
@@ -379,13 +389,13 @@ class ThemeController {
         document.body.setAttribute('data-theme', theme);
         this.currentTheme = theme;
         localStorage.setItem('theme', theme);
-        
+
         // Update theme toggle icons
         const themeButtons = document.querySelectorAll('[data-theme-toggle]');
         themeButtons.forEach(btn => {
             const icon = btn.querySelector('i');
             if (icon) {
-                icon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+                icon.setAttribute('data-lucide', this.isDarkTheme(theme) ? 'sun' : 'moon');
             }
         });
 
@@ -402,9 +412,9 @@ class ThemeController {
     }
 
     toggleTheme() {
-        const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+        const newTheme = this.isDarkTheme(this.currentTheme) ? 'light' : this.getRandomDarkTheme();
         this.applyTheme(newTheme);
-        
+
         // Add visual feedback
         const themeButtons = document.querySelectorAll('[data-theme-toggle]');
         themeButtons.forEach(btn => {
@@ -418,14 +428,14 @@ class ThemeController {
     detectSystemTheme() {
         if (window.matchMedia) {
             const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            
+
             if (!localStorage.getItem('theme')) {
-                this.applyTheme(mediaQuery.matches ? 'dark' : 'light');
+                this.applyTheme(mediaQuery.matches ? this.getRandomDarkTheme() : 'light');
             }
-            
+
             mediaQuery.addEventListener('change', (e) => {
                 if (!localStorage.getItem('theme-manual')) {
-                    this.applyTheme(e.matches ? 'dark' : 'light');
+                    this.applyTheme(e.matches ? this.getRandomDarkTheme() : 'light');
                 }
             });
         }
