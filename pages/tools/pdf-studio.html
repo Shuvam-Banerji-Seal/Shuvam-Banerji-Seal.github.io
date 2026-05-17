@@ -1246,20 +1246,30 @@
       setupDropZone(splDrop, splInput, false, (files) => loadSplFile(files[0]));
 
       async function loadSplFile(file) {
-        splFile = file;
-        const ab = await file.arrayBuffer();
-        const { PDFDocument } = PDFLib;
-        splPdfDoc = await PDFDocument.load(ab);
-        const n = splPdfDoc.getPageCount();
-        document.getElementById("spl-fname").textContent = file.name;
-        document.getElementById("spl-pages").textContent = n + " pages";
-        document.getElementById("spl-info").style.display = "block";
-        document.getElementById("spl-from").max = n;
-        document.getElementById("spl-to").max = n;
-        document.getElementById("spl-to").value = n;
-        document.getElementById("spl-run-btn").disabled = false;
-        document.getElementById("spl-result").style.display = "none";
-        if (typeof lucide !== "undefined") lucide.createIcons();
+        if (file.size > MAX_PDF_SIZE) {
+          notify("File too large (" + fmtSize(file.size) + "). Max is " + fmtSize(MAX_PDF_SIZE) + ".", "error");
+          return;
+        }
+        try {
+          if (typeof PDFLib === "undefined")
+            throw new Error("pdf-lib failed to load. Please refresh.");
+          splFile = file;
+          const ab = await file.arrayBuffer();
+          const { PDFDocument } = PDFLib;
+          splPdfDoc = await PDFDocument.load(ab);
+          const n = splPdfDoc.getPageCount();
+          document.getElementById("spl-fname").textContent = file.name;
+          document.getElementById("spl-pages").textContent = n + " pages";
+          document.getElementById("spl-info").style.display = "block";
+          document.getElementById("spl-from").max = n;
+          document.getElementById("spl-to").max = n;
+          document.getElementById("spl-to").value = n;
+          document.getElementById("spl-run-btn").disabled = false;
+          document.getElementById("spl-result").style.display = "none";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (error) {
+          notify("Error loading PDF: " + error.message, "error");
+        }
       }
 
       function updateSplitMode() {
