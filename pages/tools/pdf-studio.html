@@ -1094,6 +1094,9 @@
             mimeType,
             fmt === "jpeg" ? q : undefined,
           );
+          // Free canvas memory
+          canvas.width = 0;
+          canvas.height = 0;
           convertedImgs.push({
             dataUrl,
             page: i,
@@ -1294,6 +1297,8 @@
         document.getElementById("spl-result").style.display = "none";
 
         try {
+          if (typeof PDFLib === "undefined")
+            throw new Error("pdf-lib failed to load. Please refresh.");
           const blobs = [];
 
           if (mode === "range") {
