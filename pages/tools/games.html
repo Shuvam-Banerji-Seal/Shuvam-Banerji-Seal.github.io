@@ -1,505 +1,1138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fun chemistry games to test your knowledge">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Fun chemistry games to test your knowledge"
+    />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/games.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Chemistry Games - SBS Tools" />
+    <meta property="og:description" content="Interactive chemistry games and quizzes for learning." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/games.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Chemistry Games - SBS Tools" />
+    <meta name="twitter:description" content="Interactive chemistry games and quizzes." />
+    <meta name="robots" content="index, follow" />
     <title>Chemistry Games - SBS Tools</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/theme.css">
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/mobile.css">
-    <link rel="stylesheet" href="../../assets/css/tool-page.css">
-</head>
-<body>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+  </head>
+  <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i data-lucide="gamepad-2"></i> Chemistry Games</h1>
-                <p>Test your chemistry knowledge with fun games!</p>
-            </div>
-
-            <div class="games-grid">
-                <div class="game-card" onclick="startGame('elements')">
-                    <div class="game-icon"><i data-lucide="atom"></i></div>
-                    <h3>Element Quiz</h3>
-                    <p>Guess elements from their symbols or atomic numbers</p>
-                    <span class="game-badge">Quick Play</span>
-                </div>
-                <div class="game-card" onclick="startGame('formulas')">
-                    <div class="game-icon"><i data-lucide="flask-conical"></i></div>
-                    <h3>Formula Master</h3>
-                    <p>Match chemical formulas to compound names</p>
-                    <span class="game-badge">Challenge</span>
-                </div>
-                <div class="game-card" onclick="startGame('balance')">
-                    <div class="game-icon"><i data-lucide="scale"></i></div>
-                    <h3>Balance Blitz</h3>
-                    <p>Balance chemical equations against the clock</p>
-                    <span class="game-badge">Timed</span>
-                </div>
-            </div>
-
-            <!-- Game Container -->
-            <div class="tool-card game-container" id="game-container" style="display: none;">
-                <div class="game-header">
-                    <div class="game-info">
-                        <span id="game-title">Element Quiz</span>
-                        <span class="game-stats">
-                            Score: <span id="score">0</span> | 
-                            Question: <span id="question-num">1</span>/10
-                        </span>
-                    </div>
-                    <button class="tool-btn tool-btn-secondary" onclick="endGame()">
-                        <i data-lucide="x"></i> Exit
-                    </button>
-                </div>
-
-                <div class="game-content" id="game-content">
-                    <!-- Game content loaded dynamically -->
-                </div>
-
-                <div class="game-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="game-progress" style="width: 10%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Results -->
-            <div class="tool-card" id="results-container" style="display: none;">
-                <div class="results-content">
-                    <div class="results-icon" id="results-icon">🎉</div>
-                    <h2 id="results-title">Great Job!</h2>
-                    <div class="final-score">
-                        <span class="score-label">Final Score</span>
-                        <span class="score-value" id="final-score">0/10</span>
-                    </div>
-                    <p id="results-message">You're a chemistry expert!</p>
-                    <div class="btn-group">
-                        <button class="tool-btn tool-btn-primary" onclick="playAgain()">
-                            <i data-lucide="rotate-ccw"></i> Play Again
-                        </button>
-                        <button class="tool-btn tool-btn-secondary" onclick="backToGames()">
-                            <i data-lucide="grid"></i> More Games
-                        </button>
-                    </div>
-                </div>
-            </div>
+      <div class="tool-container">
+        <div class="tool-header">
+          <h1><i data-lucide="gamepad-2"></i> Chemistry Games</h1>
+          <p>Test your chemistry knowledge with fun games!</p>
         </div>
+
+        <div class="toolbar-row">
+          <button class="tool-btn tool-btn-secondary" onclick="toggleSound()">
+            <i data-lucide="volume-2" id="sound-icon"></i> Sound
+          </button>
+          <button class="tool-btn tool-btn-secondary" onclick="showInstructions()">
+            <i data-lucide="help-circle"></i> How to Play
+          </button>
+        </div>
+
+        <div class="games-grid" id="games-grid">
+          <div class="game-card" data-game="elements" tabindex="0" role="button" aria-label="Element Quiz game">
+            <div class="game-icon"><i data-lucide="atom"></i></div>
+            <h3>Element Quiz</h3>
+            <p>Guess elements from their symbols or atomic numbers</p>
+            <span class="game-badge">Quick Play</span>
+            <div class="high-score" id="high-elements"></div>
+          </div>
+          <div class="game-card" data-game="formulas" tabindex="0" role="button" aria-label="Formula Master game">
+            <div class="game-icon"><i data-lucide="flask-conical"></i></div>
+            <h3>Formula Master</h3>
+            <p>Match chemical formulas to compound names</p>
+            <span class="game-badge">Challenge</span>
+            <div class="high-score" id="high-formulas"></div>
+          </div>
+          <div class="game-card" data-game="balance" tabindex="0" role="button" aria-label="Balance Blitz game">
+            <div class="game-icon"><i data-lucide="scale"></i></div>
+            <h3>Balance Blitz</h3>
+            <p>Balance chemical equations against the clock</p>
+            <span class="game-badge">Timed</span>
+            <div class="high-score" id="high-balance"></div>
+          </div>
+          <div class="game-card" data-game="periodic" tabindex="0" role="button" aria-label="Periodic Puzzle game">
+            <div class="game-icon"><i data-lucide="grid-3x3"></i></div>
+            <h3>Periodic Puzzle</h3>
+            <p>Place elements in their correct groups and periods</p>
+            <span class="game-badge">Advanced</span>
+            <div class="high-score" id="high-periodic"></div>
+          </div>
+          <div class="game-card" data-game="ions" tabindex="0" role="button" aria-label="Ion Challenger game">
+            <div class="game-icon"><i data-lucide="zap"></i></div>
+            <h3>Ion Challenger</h3>
+            <p>Identify common ions and their charges</p>
+            <span class="game-badge">Expert</span>
+            <div class="high-score" id="high-ions"></div>
+          </div>
+          <div class="game-card" data-game="reactions" tabindex="0" role="button" aria-label="Reaction Types game">
+            <div class="game-icon"><i data-lucide="flame"></i></div>
+            <h3>Reaction Types</h3>
+            <p>Identify synthesis, decomposition, and more</p>
+            <span class="game-badge">Timed</span>
+            <div class="high-score" id="high-reactions"></div>
+          </div>
+        </div>
+
+        <!-- Game Container -->
+        <div
+          class="tool-card game-container"
+          id="game-container"
+          style="display: none"
+        >
+          <div class="game-header">
+            <div class="game-info">
+              <span id="game-title">Element Quiz</span>
+              <span class="game-stats">
+                <span id="game-timer"></span>
+                Score: <span id="score">0</span> | Question:
+                <span id="question-num">1</span>/<span id="total-q">10</span>
+              </span>
+            </div>
+            <div class="game-controls">
+              <button class="icon-btn" onclick="toggleFullscreen()" title="Fullscreen">
+                <i data-lucide="maximize" id="fullscreen-icon"></i>
+              </button>
+              <button class="tool-btn tool-btn-secondary" onclick="endGame()">
+                <i data-lucide="x"></i> Exit
+              </button>
+            </div>
+          </div>
+
+          <div class="game-content" id="game-content">
+            <!-- Game content loaded dynamically -->
+          </div>
+
+          <div class="game-progress">
+            <div class="progress-bar">
+              <div
+                class="progress-fill"
+                id="game-progress"
+                style="width: 10%"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Difficulty Selection Modal -->
+        <div class="modal-overlay" id="difficulty-modal" style="display: none">
+          <div class="modal-content">
+            <h3>Select Difficulty</h3>
+            <div class="difficulty-options">
+              <button class="diff-btn" onclick="selectDifficulty('easy')">
+                <i data-lucide="smile"></i>
+                <span>Easy</span>
+                <small>10 questions, no timer</small>
+              </button>
+              <button class="diff-btn" onclick="selectDifficulty('medium')">
+                <i data-lucide="meh"></i>
+                <span>Medium</span>
+                <small>15 questions, 30s each</small>
+              </button>
+              <button class="diff-btn" onclick="selectDifficulty('hard')">
+                <i data-lucide="frown"></i>
+                <span>Hard</span>
+                <small>20 questions, 15s each</small>
+              </button>
+            </div>
+            <button class="tool-btn tool-btn-secondary" onclick="closeDifficultyModal()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Instructions Modal -->
+        <div class="modal-overlay" id="instructions-modal" style="display: none">
+          <div class="modal-content">
+            <h3><i data-lucide="help-circle"></i> How to Play</h3>
+            <div class="instructions-content">
+              <h4>Element Quiz</h4>
+              <p>Identify elements by their symbol or atomic number. Each correct answer earns points!</p>
+              <h4>Formula Master</h4>
+              <p>Match chemical formulas to compound names or vice versa.</p>
+              <h4>Balance Blitz</h4>
+              <p>Balance chemical equations by selecting the correct coefficients.</p>
+              <h4>Periodic Puzzle</h4>
+              <p>Place elements in their correct positions on the periodic table based on clues.</p>
+              <h4>Ion Challenger</h4>
+              <p>Identify common ions and their charges.</p>
+              <h4>Reaction Types</h4>
+              <p>Identify the type of chemical reaction shown.</p>
+              <hr>
+              <h4>Scoring</h4>
+              <p>Earn more points on harder difficulties! Your high scores are saved locally.</p>
+            </div>
+            <button class="tool-btn tool-btn-primary" onclick="closeInstructions()">Got it!</button>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="tool-card" id="results-container" style="display: none">
+          <div class="results-content">
+            <div class="results-icon" id="results-icon">🎉</div>
+            <h2 id="results-title">Great Job!</h2>
+            <div class="final-score">
+              <span class="score-label">Final Score</span>
+              <span class="score-value" id="final-score">0/10</span>
+            </div>
+            <div class="score-breakdown">
+              <div class="stat-item">
+                <span class="stat-label">Correct</span>
+                <span class="stat-value correct-count" id="correct-count">0</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Streak</span>
+                <span class="stat-value" id="best-streak">0</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Accuracy</span>
+                <span class="stat-value" id="accuracy">0%</span>
+              </div>
+            </div>
+            <p id="results-message">You're a chemistry expert!</p>
+            <div class="new-high-score" id="new-high-score" style="display: none">
+              🎉 New High Score! 🎉
+            </div>
+            <div class="btn-group">
+              <button class="tool-btn tool-btn-primary" onclick="playAgain()">
+                <i data-lucide="rotate-ccw"></i> Play Again
+              </button>
+              <button
+                class="tool-btn tool-btn-secondary"
+                onclick="backToGames()"
+              >
+                <i data-lucide="grid"></i> More Games
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <style>
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+      .toolbar-row {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .game-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .game-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-color);
+        box-shadow: 0 10px 40px rgba(6, 182, 212, 0.2);
+      }
+      .game-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          rgba(6, 182, 212, 0.2),
+          rgba(139, 92, 246, 0.2)
+        );
+        border-radius: 20px;
+      }
+      .game-icon svg {
+        width: 40px;
+        height: 40px;
+        color: var(--accent-color);
+      }
+      .game-card h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.3rem;
+      }
+      .game-card p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+      .game-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.3rem 0.8rem;
+        background: var(--accent-color);
+        color: white;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .high-score {
+        margin-top: 1rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+      .high-score::before {
+        content: "🏆 ";
+      }
+      .game-container {
+        padding: 0;
+        overflow: hidden;
+      }
+      .game-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      .game-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      #game-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+      .game-stats {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+      #game-timer {
+        display: none;
+        color: var(--accent-color);
+        font-weight: 600;
+        margin-right: 0.5rem;
+      }
+      #game-timer.warning {
+        color: #f59e0b;
+      }
+      #game-timer.danger {
+        color: #ef4444;
+        animation: pulse 0.5s infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      .game-controls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      .icon-btn {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.5rem;
+        cursor: pointer;
+        color: var(--text-primary);
+        transition: all 0.2s;
+      }
+      .icon-btn:hover {
+        border-color: var(--accent-color);
+        background: var(--accent-color);
+        color: white;
+      }
+      .icon-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+      .game-content {
+        padding: 2rem;
+        min-height: 300px;
+      }
+      .game-progress {
+        padding: 0 1.5rem 1.5rem;
+      }
+
+      .question-text {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: 600;
+      }
+      .question-text .highlight {
+        color: var(--accent-color);
+        font-size: 2rem;
+      }
+      .options-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .option-btn {
+        padding: 1.25rem;
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        color: var(--text-primary);
+      }
+      .option-btn:hover:not(:disabled) {
+        border-color: var(--accent-color);
+        transform: scale(1.02);
+      }
+      .option-btn.correct {
+        background: rgba(56, 217, 169, 0.2);
+        border-color: #38d9a9;
+        color: #38d9a9;
+      }
+      .option-btn.incorrect {
+        background: rgba(255, 107, 107, 0.2);
+        border-color: #ff6b6b;
+        color: #ff6b6b;
+      }
+      .option-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.8;
+      }
+
+      .results-content {
+        text-align: center;
+        padding: 2rem;
+      }
+      .results-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+      .results-content h2 {
+        margin: 0 0 1.5rem;
+        font-size: 2rem;
+      }
+      .final-score {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .score-label {
+        color: var(--text-secondary);
+      }
+      .score-value {
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(
+          135deg,
+          var(--accent-color),
+          var(--secondary-accent)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .score-breakdown {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+      }
+      .stat-value {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+      .stat-value.correct-count {
+        color: #38d9a9;
+      }
+      .results-content p {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+      }
+      .new-high-score {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #f59e0b;
+        margin-bottom: 1rem;
+        animation: bounce 0.5s infinite alternate;
+      }
+      @keyframes bounce {
+        from { transform: translateY(0); }
+        to { transform: translateY(-5px); }
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 1rem;
+      }
+      .modal-content {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 2rem;
+        max-width: 450px;
+        width: 100%;
+        text-align: center;
+      }
+      .modal-content h3 {
+        margin: 0 0 1.5rem;
+        font-size: 1.5rem;
+      }
+      .difficulty-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .diff-btn {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.2s;
+        color: var(--text-primary);
+      }
+      .diff-btn:hover {
+        border-color: var(--accent-color);
+        transform: translateX(5px);
+      }
+      .diff-btn span {
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+      .diff-btn small {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        font-weight: 400;
+      }
+      .diff-btn svg {
+        width: 24px;
+        height: 24px;
+        color: var(--accent-color);
+      }
+      .instructions-content {
+        text-align: left;
+        max-height: 60vh;
+        overflow-y: auto;
+      }
+      .instructions-content h4 {
+        margin: 1rem 0 0.5rem;
+        color: var(--accent-color);
+      }
+      .instructions-content p {
+        margin: 0 0 0.75rem;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+      .instructions-content hr {
+        border: none;
+        border-top: 1px solid var(--border-color);
+        margin: 1.5rem 0;
+      }
+
+      @media (max-width: 600px) {
+        .options-grid {
+          grid-template-columns: 1fr;
         }
-        .game-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .game-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
-            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.2);
-        }
-        .game-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(139, 92, 246, 0.2));
-            border-radius: 20px;
-        }
-        .game-icon svg {
-            width: 40px;
-            height: 40px;
-            color: var(--accent-color);
-        }
-        .game-card h3 {
-            margin: 0 0 0.5rem;
-            font-size: 1.3rem;
-        }
-        .game-card p {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        .game-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.3rem 0.8rem;
-            background: var(--accent-color);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .game-container { padding: 0; overflow: hidden; }
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-        }
-        .game-info { display: flex; flex-direction: column; gap: 0.25rem; }
-        #game-title { font-weight: 600; font-size: 1.1rem; }
-        .game-stats { color: var(--text-secondary); font-size: 0.9rem; }
-        .game-content { padding: 2rem; min-height: 300px; }
-        .game-progress { padding: 0 1.5rem 1.5rem; }
-        
         .question-text {
-            font-size: 1.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-weight: 600;
+          font-size: 1.2rem;
         }
         .question-text .highlight {
-            color: var(--accent-color);
-            font-size: 2rem;
+          font-size: 1.5rem;
         }
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            max-width: 600px;
-            margin: 0 auto;
+        .game-header {
+          flex-direction: column;
+          align-items: flex-start;
         }
-        .option-btn {
-            padding: 1.25rem;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            color: var(--text-primary);
+        .game-controls {
+          width: 100%;
+          justify-content: space-between;
         }
-        .option-btn:hover { border-color: var(--accent-color); }
-        .option-btn.correct {
-            background: rgba(56, 217, 169, 0.2);
-            border-color: #38d9a9;
-            color: #38d9a9;
+        .score-breakdown {
+          gap: 1rem;
         }
-        .option-btn.incorrect {
-            background: rgba(255, 107, 107, 0.2);
-            border-color: #ff6b6b;
-            color: #ff6b6b;
-        }
-        .option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
-
-        .results-content { text-align: center; padding: 2rem; }
-        .results-icon { font-size: 4rem; margin-bottom: 1rem; }
-        .results-content h2 { margin: 0 0 1.5rem; font-size: 2rem; }
-        .final-score {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .score-label { color: var(--text-secondary); }
-        .score-value {
-            font-size: 3rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .results-content p { color: var(--text-secondary); margin-bottom: 2rem; }
-
-        @media (max-width: 600px) {
-            .options-grid { grid-template-columns: 1fr; }
-            .question-text { font-size: 1.2rem; }
-            .question-text .highlight { font-size: 1.5rem; }
-        }
+      }
     </style>
 
     <script>
-        // Element data
-        const elements = [
-            {symbol: 'H', name: 'Hydrogen', number: 1},
-            {symbol: 'He', name: 'Helium', number: 2},
-            {symbol: 'Li', name: 'Lithium', number: 3},
-            {symbol: 'Be', name: 'Beryllium', number: 4},
-            {symbol: 'B', name: 'Boron', number: 5},
-            {symbol: 'C', name: 'Carbon', number: 6},
-            {symbol: 'N', name: 'Nitrogen', number: 7},
-            {symbol: 'O', name: 'Oxygen', number: 8},
-            {symbol: 'F', name: 'Fluorine', number: 9},
-            {symbol: 'Ne', name: 'Neon', number: 10},
-            {symbol: 'Na', name: 'Sodium', number: 11},
-            {symbol: 'Mg', name: 'Magnesium', number: 12},
-            {symbol: 'Al', name: 'Aluminum', number: 13},
-            {symbol: 'Si', name: 'Silicon', number: 14},
-            {symbol: 'P', name: 'Phosphorus', number: 15},
-            {symbol: 'S', name: 'Sulfur', number: 16},
-            {symbol: 'Cl', name: 'Chlorine', number: 17},
-            {symbol: 'Ar', name: 'Argon', number: 18},
-            {symbol: 'K', name: 'Potassium', number: 19},
-            {symbol: 'Ca', name: 'Calcium', number: 20},
-            {symbol: 'Fe', name: 'Iron', number: 26},
-            {symbol: 'Cu', name: 'Copper', number: 29},
-            {symbol: 'Zn', name: 'Zinc', number: 30},
-            {symbol: 'Ag', name: 'Silver', number: 47},
-            {symbol: 'Au', name: 'Gold', number: 79},
-            {symbol: 'Pb', name: 'Lead', number: 82},
-            {symbol: 'U', name: 'Uranium', number: 92}
-        ];
+      let soundEnabled = localStorage.getItem("gameSound") !== "false";
+      let currentGame = null;
+      let score = 0;
+      let questionNum = 0;
+      let totalQuestions = 10;
+      let questions = [];
+      let difficulty = "easy";
+      let timerInterval = null;
+      let timeLeft = 0;
+      let currentStreak = 0;
+      let bestStreak = 0;
+      let pendingGameType = null;
 
-        const compounds = [
-            {formula: 'H₂O', name: 'Water'},
-            {formula: 'NaCl', name: 'Sodium Chloride'},
-            {formula: 'CO₂', name: 'Carbon Dioxide'},
-            {formula: 'H₂SO₄', name: 'Sulfuric Acid'},
-            {formula: 'NaOH', name: 'Sodium Hydroxide'},
-            {formula: 'HCl', name: 'Hydrochloric Acid'},
-            {formula: 'NH₃', name: 'Ammonia'},
-            {formula: 'CH₄', name: 'Methane'},
-            {formula: 'C₆H₁₂O₆', name: 'Glucose'},
-            {formula: 'CaCO₃', name: 'Calcium Carbonate'},
-            {formula: 'C₂H₅OH', name: 'Ethanol'},
-            {formula: 'HNO₃', name: 'Nitric Acid'},
-            {formula: 'H₃PO₄', name: 'Phosphoric Acid'},
-            {formula: 'KMnO₄', name: 'Potassium Permanganate'},
-            {formula: 'Na₂CO₃', name: 'Sodium Carbonate'}
-        ];
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      
+      function playSound(type) {
+        if (!soundEnabled) return;
+        try {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          if (type === "correct") {
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+          } else if (type === "wrong") {
+            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+          } else if (type === "gameover") {
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(330, audioCtx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.5);
+          }
+        } catch (e) {}
+      }
 
-        const balanceQuestions = [
-            {unbalanced: 'H₂ + O₂ → H₂O', answers: ['2', '1', '2'], display: '_H₂ + _O₂ → _H₂O'},
-            {unbalanced: 'Fe + O₂ → Fe₂O₃', answers: ['4', '3', '2'], display: '_Fe + _O₂ → _Fe₂O₃'},
-            {unbalanced: 'N₂ + H₂ → NH₃', answers: ['1', '3', '2'], display: '_N₂ + _H₂ → _NH₃'},
-            {unbalanced: 'CH₄ + O₂ → CO₂ + H₂O', answers: ['1', '2', '1', '2'], display: '_CH₄ + _O₂ → _CO₂ + _H₂O'},
-            {unbalanced: 'Na + Cl₂ → NaCl', answers: ['2', '1', '2'], display: '_Na + _Cl₂ → _NaCl'}
-        ];
+      function toggleSound() {
+        soundEnabled = !soundEnabled;
+        localStorage.setItem("gameSound", soundEnabled);
+        document.getElementById("sound-icon").setAttribute("data-lucide", soundEnabled ? "volume-2" : "volume-x");
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
 
-        let currentGame = null;
-        let score = 0;
-        let questionNum = 0;
-        let totalQuestions = 10;
-        let questions = [];
+      function updateSoundIcon() {
+        document.getElementById("sound-icon").setAttribute("data-lucide", soundEnabled ? "volume-2" : "volume-x");
+      }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
+      function showInstructions() {
+        document.getElementById("instructions-modal").style.display = "flex";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      function closeInstructions() {
+        document.getElementById("instructions-modal").style.display = "none";
+      }
+
+      function toggleFullscreen() {
+        const container = document.getElementById("game-container");
+        if (!document.fullscreenElement) {
+          container.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen();
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof lucide !== "undefined") lucide.createIcons();
+        updateSoundIcon();
+        loadHighScores();
+        setupGameCards();
+      });
+
+      function setupGameCards() {
+        document.querySelectorAll(".game-card").forEach(card => {
+          const openDifficulty = () => {
+            pendingGameType = card.dataset.game;
+            document.getElementById("difficulty-modal").style.display = "flex";
+            if (typeof lucide !== "undefined") lucide.createIcons();
+          };
+          card.addEventListener("click", openDifficulty);
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openDifficulty();
+            }
+          });
+        });
+      }
+
+      function closeDifficultyModal() {
+        document.getElementById("difficulty-modal").style.display = "none";
+        pendingGameType = null;
+      }
+
+      function selectDifficulty(level) {
+        difficulty = level;
+        closeDifficultyModal();
+        if (pendingGameType) {
+          startGame(pendingGameType);
+        }
+      }
+
+      function loadHighScores() {
+        const games = ["elements", "formulas", "balance", "periodic", "ions", "reactions"];
+        games.forEach(game => {
+          const high = localStorage.getItem(`highScore_${game}`) || 0;
+          const el = document.getElementById(`high-${game}`);
+          if (el && high > 0) el.textContent = `Best: ${high}`;
+        });
+      }
+
+      function saveHighScore(game, finalScore) {
+        const key = `highScore_${game}`;
+        const current = parseInt(localStorage.getItem(key) || "0");
+        if (finalScore > current) {
+          localStorage.setItem(key, finalScore);
+          return true;
+        }
+        return false;
+      }
+
+      const elements = [
+        { symbol: "H", name: "Hydrogen", number: 1 },
+        { symbol: "He", name: "Helium", number: 2 },
+        { symbol: "Li", name: "Lithium", number: 3 },
+        { symbol: "Be", name: "Beryllium", number: 4 },
+        { symbol: "B", name: "Boron", number: 5 },
+        { symbol: "C", name: "Carbon", number: 6 },
+        { symbol: "N", name: "Nitrogen", number: 7 },
+        { symbol: "O", name: "Oxygen", number: 8 },
+        { symbol: "F", name: "Fluorine", number: 9 },
+        { symbol: "Ne", name: "Neon", number: 10 },
+        { symbol: "Na", name: "Sodium", number: 11 },
+        { symbol: "Mg", name: "Magnesium", number: 12 },
+        { symbol: "Al", name: "Aluminum", number: 13 },
+        { symbol: "Si", name: "Silicon", number: 14 },
+        { symbol: "P", name: "Phosphorus", number: 15 },
+        { symbol: "S", name: "Sulfur", number: 16 },
+        { symbol: "Cl", name: "Chlorine", number: 17 },
+        { symbol: "Ar", name: "Argon", number: 18 },
+        { symbol: "K", name: "Potassium", number: 19 },
+        { symbol: "Ca", name: "Calcium", number: 20 },
+        { symbol: "Fe", name: "Iron", number: 26 },
+        { symbol: "Cu", name: "Copper", number: 29 },
+        { symbol: "Zn", name: "Zinc", number: 30 },
+        { symbol: "Ag", name: "Silver", number: 47 },
+        { symbol: "Au", name: "Gold", number: 79 },
+        { symbol: "Pb", name: "Lead", number: 82 },
+        { symbol: "U", name: "Uranium", number: 92 },
+      ];
+
+      const compounds = [
+        { formula: "H₂O", name: "Water" },
+        { formula: "NaCl", name: "Sodium Chloride" },
+        { formula: "CO₂", name: "Carbon Dioxide" },
+        { formula: "H₂SO₄", name: "Sulfuric Acid" },
+        { formula: "NaOH", name: "Sodium Hydroxide" },
+        { formula: "HCl", name: "Hydrochloric Acid" },
+        { formula: "NH₃", name: "Ammonia" },
+        { formula: "CH₄", name: "Methane" },
+        { formula: "C₆H₁₂O₆", name: "Glucose" },
+        { formula: "CaCO₃", name: "Calcium Carbonate" },
+        { formula: "C₂H₅OH", name: "Ethanol" },
+        { formula: "HNO₃", name: "Nitric Acid" },
+        { formula: "H₃PO₄", name: "Phosphoric Acid" },
+        { formula: "KMnO₄", name: "Potassium Permanganate" },
+        { formula: "Na₂CO₃", name: "Sodium Carbonate" },
+      ];
+
+      const balanceQuestions = [
+        { unbalanced: "H₂ + O₂ → H₂O", answers: ["2", "1", "2"], display: "_H₂ + _O₂ → _H₂O" },
+        { unbalanced: "Fe + O₂ → Fe₂O₃", answers: ["4", "3", "2"], display: "_Fe + _O₂ → _Fe₂O₃" },
+        { unbalanced: "N₂ + H₂ → NH₃", answers: ["1", "3", "2"], display: "_N₂ + _H₂ → _NH₃" },
+        { unbalanced: "CH₄ + O₂ → CO₂ + H₂O", answers: ["1", "2", "1", "2"], display: "_CH₄ + _O₂ → _CO₂ + _H₂O" },
+        { unbalanced: "Na + Cl₂ → NaCl", answers: ["2", "1", "2"], display: "_Na + _Cl₂ → _NaCl" },
+        { unbalanced: "Al + O₂ → Al₂O₃", answers: ["4", "3", "2"], display: "_Al + _O₂ → _Al₂O₃" },
+        { unbalanced: "KClO₃ → KCl + O₂", answers: ["2", "2", "3"], display: "_KClO₃ → _KCl + _O₂" },
+      ];
+
+      const periodicClues = [
+        { element: "H", clue: "Atomic number 1, lightest element", position: "1,1" },
+        { element: "He", clue: "Atomic number 2, noble gas", position: "1,18" },
+        { element: "Li", clue: "Atomic number 3, alkali metal", position: "2,1" },
+        { element: "Be", clue: "Atomic number 4, alkaline earth", position: "2,2" },
+        { element: "B", clue: "Atomic number 5, metalloid", position: "2,13" },
+        { element: "C", clue: "Atomic number 6, basis of organic chemistry", position: "2,14" },
+        { element: "N", clue: "Atomic number 7, makes 78% of air", position: "2,15" },
+        { element: "O", clue: "Atomic number 8, essential for life", position: "2,16" },
+        { element: "F", clue: "Atomic number 9, most electronegative", position: "2,17" },
+        { element: "Ne", clue: "Atomic number 10, noble gas", position: "2,18" },
+      ];
+
+      const ions = [
+        { ion: "H⁺", name: "Hydrogen", charge: "+1" },
+        { ion: "Na⁺", name: "Sodium", charge: "+1" },
+        { ion: "K⁺", name: "Potassium", charge: "+1" },
+        { ion: "Ca²⁺", name: "Calcium", charge: "+2" },
+        { ion: "Mg²⁺", name: "Magnesium", charge: "+2" },
+        { ion: "Al³⁺", name: "Aluminum", charge: "+3" },
+        { ion: "Cl⁻", name: "Chloride", charge: "-1" },
+        { ion: "Br⁻", name: "Bromide", charge: "-1" },
+        { ion: "O²⁻", name: "Oxide", charge: "-2" },
+        { ion: "S²⁻", name: "Sulfide", charge: "-2" },
+        { ion: "SO₄²⁻", name: "Sulfate", charge: "-2" },
+        { ion: "NO₃⁻", name: "Nitrate", charge: "-1" },
+        { ion: "CO₃²⁻", name: "Carbonate", charge: "-2" },
+        { ion: "OH⁻", name: "Hydroxide", charge: "-1" },
+        { ion: "NH₄⁺", name: "Ammonium", charge: "+1" },
+      ];
+
+      const reactions = [
+        { equation: "2H₂ + O₂ → 2H₂O", type: "Synthesis", explanation: "Two substances combine to form one" },
+        { equation: "2H₂O → 2H₂ + O₂", type: "Decomposition", explanation: "One substance breaks into two" },
+        { equation: "Zn + 2HCl → ZnCl₂ + H₂", type: "Single Replacement", explanation: "One element replaces another" },
+        { equation: "CH₄ + 2O₂ → CO₂ + 2H₂O", type: "Combustion", explanation: "Rapid reaction with oxygen" },
+        { equation: "Fe + CuSO₄ → FeSO₄ + Cu", type: "Single Replacement", explanation: "More reactive element replaces less" },
+        { equation: "2Na + Cl₂ → 2NaCl", type: "Synthesis", explanation: "Metal + non-metal = salt" },
+        { equation: "CaCO₃ → CaO + CO₂", type: "Decomposition", explanation: "Compound breaks down on heating" },
+        { equation: "AB + CD → AD + CB", type: "Double Replacement", explanation: "Ions switch places" },
+      ];
+
+      const titles = {
+        elements: "Element Quiz",
+        formulas: "Formula Master",
+        balance: "Balance Blitz",
+        periodic: "Periodic Puzzle",
+        ions: "Ion Challenger",
+        reactions: "Reaction Types",
+      };
+
+      const difficultySettings = {
+        easy: { questions: 10, time: 0 },
+        medium: { questions: 15, time: 30 },
+        hard: { questions: 20, time: 15 },
+      };
+
+      function startGame(type) {
+        currentGame = type;
+        score = 0;
+        questionNum = 0;
+        currentStreak = 0;
+        bestStreak = 0;
+        const settings = difficultySettings[difficulty];
+        totalQuestions = settings.questions;
+        timeLeft = settings.time;
+        questions = generateQuestions(type);
+
+        document.getElementById("score").textContent = "0";
+        document.getElementById("total-q").textContent = totalQuestions;
+        document.getElementById("game-title").textContent = titles[type];
+
+        const timerEl = document.getElementById("game-timer");
+        if (timeLeft > 0) {
+          timerEl.style.display = "inline";
+          timerEl.textContent = `⏱ ${timeLeft}s`;
+        } else {
+          timerEl.style.display = "none";
+        }
+
+        document.querySelector(".games-grid").style.display = "none";
+        document.getElementById("results-container").style.display = "none";
+        document.getElementById("game-container").style.display = "block";
+
+        nextQuestion();
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      function generateQuestions(type) {
+        const qs = [];
+        if (type === "elements") {
+          const shuffled = [...elements].sort(() => Math.random() - 0.5);
+          for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
+            const el = shuffled[i];
+            const questionType = Math.random() > 0.5 ? "symbol" : "number";
+            const wrongAnswers = elements.filter(e => e.symbol !== el.symbol).sort(() => Math.random() - 0.5).slice(0, 3).map(e => e.name);
+            qs.push({
+              question: questionType === "symbol" ? `What element has the symbol <span class="highlight">${el.symbol}</span>?` : `What element has atomic number <span class="highlight">${el.number}</span>?`,
+              correct: el.name,
+              options: [el.name, ...wrongAnswers].sort(() => Math.random() - 0.5),
+            });
+          }
+        } else if (type === "formulas") {
+          const shuffled = [...compounds].sort(() => Math.random() - 0.5);
+          for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
+            const comp = shuffled[i];
+            const questionType = Math.random() > 0.5 ? "formula" : "name";
+            if (questionType === "formula") {
+              const wrongAnswers = compounds.filter(c => c.formula !== comp.formula).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.name);
+              qs.push({ question: `What is the name of <span class="highlight">${comp.formula}</span>?`, correct: comp.name, options: [comp.name, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+            } else {
+              const wrongAnswers = compounds.filter(c => c.formula !== comp.formula).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.formula);
+              qs.push({ question: `What is the formula for <span class="highlight">${comp.name}</span>?`, correct: comp.formula, options: [comp.formula, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+            }
+          }
+        } else if (type === "balance") {
+          const shuffled = [...balanceQuestions].sort(() => Math.random() - 0.5);
+          for (let i = 0; i < totalQuestions; i++) {
+            const bq = shuffled[i % shuffled.length];
+            const correctAnswer = bq.answers.join(", ");
+            qs.push({ question: `Balance: <span class="highlight">${bq.display}</span>`, correct: correctAnswer, options: [correctAnswer, ...generateWrongCoefficients(bq.answers.length)].sort(() => Math.random() - 0.5) });
+          }
+        } else if (type === "periodic") {
+          const shuffled = [...periodicClues].sort(() => Math.random() - 0.5);
+          for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
+            const p = shuffled[i];
+            const wrongAnswers = periodicClues.filter(c => c.element !== p.element).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.element);
+            qs.push({ question: `Which element matches: <span class="highlight">${p.clue}</span>?`, correct: p.element, options: [p.element, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+          }
+        } else if (type === "ions") {
+          const shuffled = [...ions].sort(() => Math.random() - 0.5);
+          for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
+            const ion = shuffled[i];
+            const questionType = Math.random() > 0.5 ? "name" : "charge";
+            if (questionType === "name") {
+              const wrongAnswers = ions.filter(c => c.ion !== ion.ion).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.name);
+              qs.push({ question: `What is the name of <span class="highlight">${ion.ion}</span>?`, correct: ion.name, options: [ion.name, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+            } else {
+              const wrongAnswers = ions.filter(c => c.ion !== ion.ion).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.charge);
+              qs.push({ question: `What is the charge of <span class="highlight">${ion.name}</span>?`, correct: ion.charge, options: [ion.charge, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+            }
+          }
+        } else if (type === "reactions") {
+          const shuffled = [...reactions].sort(() => Math.random() - 0.5);
+          for (let i = 0; i < totalQuestions; i++) {
+            const r = shuffled[i % shuffled.length];
+            const wrongAnswers = reactions.filter(c => c.type !== r.type).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.type);
+            qs.push({ question: `What type of reaction is: <span class="highlight">${r.equation}</span>?`, correct: r.type, options: [r.type, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+          }
+        }
+        return qs;
+      }
+
+      function generateWrongCoefficients(length) {
+        const wrong = [];
+        for (let i = 0; i < 3; i++) {
+          const coeffs = [];
+          for (let j = 0; j < length; j++) {
+            coeffs.push(Math.floor(Math.random() * 5) + 1);
+          }
+          wrong.push(coeffs.join(", "));
+        }
+        return wrong;
+      }
+
+      function startTimer() {
+        const settings = difficultySettings[difficulty];
+        if (settings.time <= 0) return;
+        timeLeft = settings.time;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          const timerEl = document.getElementById("game-timer");
+          timerEl.textContent = `⏱ ${timeLeft}s`;
+          timerEl.classList.remove("warning", "danger");
+          if (timeLeft <= 5) timerEl.classList.add("danger");
+          else if (timeLeft <= 10) timerEl.classList.add("warning");
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            checkAnswer(-1);
+          }
+        }, 1000);
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function nextQuestion() {
+        if (questionNum >= questions.length) {
+          showResults();
+          return;
+        }
+
+        const q = questions[questionNum];
+        document.getElementById("question-num").textContent = questionNum + 1;
+        document.getElementById("game-progress").style.width = ((questionNum + 1) / totalQuestions) * 100 + "%";
+
+        let html = `<div class="question-text">${q.question}</div><div class="options-grid">`;
+        q.options.forEach((opt, idx) => {
+          html += `<button class="option-btn" onclick="checkAnswer(${idx})" aria-label="Option: ${opt.replace(/"/g, '&quot;')}">${opt}</button>`;
+        });
+        html += "</div>";
+        document.getElementById("game-content").innerHTML = html;
+
+        startTimer();
+      }
+
+      function checkAnswer(idx) {
+        stopTimer();
+        const q = questions[questionNum];
+        const buttons = document.querySelectorAll(".option-btn");
+        const selected = idx >= 0 ? q.options[idx] : null;
+        const correct = q.correct;
+
+        buttons.forEach((btn, i) => {
+          btn.disabled = true;
+          if (q.options[i] === correct) btn.classList.add("correct");
+          else if (i === idx) btn.classList.add("incorrect");
         });
 
-        function startGame(type) {
-            currentGame = type;
-            score = 0;
-            questionNum = 0;
-            questions = generateQuestions(type);
-            
-            document.querySelector('.games-grid').style.display = 'none';
-            document.getElementById('results-container').style.display = 'none';
-            document.getElementById('game-container').style.display = 'block';
-            
-            const titles = {
-                'elements': 'Element Quiz',
-                'formulas': 'Formula Master',
-                'balance': 'Balance Blitz'
-            };
-            document.getElementById('game-title').textContent = titles[type];
-            
-            nextQuestion();
-            lucide.createIcons();
+        if (selected === correct) {
+          score++;
+          currentStreak++;
+          if (currentStreak > bestStreak) bestStreak = currentStreak;
+          playSound("correct");
+        } else {
+          currentStreak = 0;
+          playSound("wrong");
         }
 
-        function generateQuestions(type) {
-            const qs = [];
-            if (type === 'elements') {
-                const shuffled = [...elements].sort(() => Math.random() - 0.5);
-                for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
-                    const el = shuffled[i];
-                    const questionType = Math.random() > 0.5 ? 'symbol' : 'number';
-                    const wrongAnswers = elements
-                        .filter(e => e.symbol !== el.symbol)
-                        .sort(() => Math.random() - 0.5)
-                        .slice(0, 3)
-                        .map(e => e.name);
-                    
-                    qs.push({
-                        question: questionType === 'symbol' 
-                            ? `What element has the symbol <span class="highlight">${el.symbol}</span>?`
-                            : `What element has atomic number <span class="highlight">${el.number}</span>?`,
-                        correct: el.name,
-                        options: [el.name, ...wrongAnswers].sort(() => Math.random() - 0.5)
-                    });
-                }
-            } else if (type === 'formulas') {
-                const shuffled = [...compounds].sort(() => Math.random() - 0.5);
-                for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
-                    const comp = shuffled[i];
-                    const questionType = Math.random() > 0.5 ? 'formula' : 'name';
-                    
-                    if (questionType === 'formula') {
-                        const wrongAnswers = compounds
-                            .filter(c => c.formula !== comp.formula)
-                            .sort(() => Math.random() - 0.5)
-                            .slice(0, 3)
-                            .map(c => c.name);
-                        
-                        qs.push({
-                            question: `What is the name of <span class="highlight">${comp.formula}</span>?`,
-                            correct: comp.name,
-                            options: [comp.name, ...wrongAnswers].sort(() => Math.random() - 0.5)
-                        });
-                    } else {
-                        const wrongAnswers = compounds
-                            .filter(c => c.formula !== comp.formula)
-                            .sort(() => Math.random() - 0.5)
-                            .slice(0, 3)
-                            .map(c => c.formula);
-                        
-                        qs.push({
-                            question: `What is the formula for <span class="highlight">${comp.name}</span>?`,
-                            correct: comp.formula,
-                            options: [comp.formula, ...wrongAnswers].sort(() => Math.random() - 0.5)
-                        });
-                    }
-                }
-            } else if (type === 'balance') {
-                const shuffled = [...balanceQuestions].sort(() => Math.random() - 0.5);
-                for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
-                    const bq = shuffled[i % shuffled.length];
-                    const correctAnswer = bq.answers.join(', ');
-                    const wrongAnswers = generateWrongCoefficients(bq.answers.length);
-                    
-                    qs.push({
-                        question: `Balance: <span class="highlight">${bq.display}</span>`,
-                        correct: correctAnswer,
-                        options: [correctAnswer, ...wrongAnswers].sort(() => Math.random() - 0.5)
-                    });
-                }
-            }
-            return qs;
-        }
+        document.getElementById("score").textContent = score;
+        questionNum++;
+        setTimeout(nextQuestion, 1200);
+      }
 
-        function generateWrongCoefficients(length) {
-            const wrong = [];
-            for (let i = 0; i < 3; i++) {
-                const coeffs = [];
-                for (let j = 0; j < length; j++) {
-                    coeffs.push(Math.floor(Math.random() * 5) + 1);
-                }
-                wrong.push(coeffs.join(', '));
-            }
-            return wrong;
-        }
+      function showResults() {
+        stopTimer();
+        playSound("gameover");
+        document.getElementById("game-container").style.display = "none";
+        document.getElementById("results-container").style.display = "block";
 
-        function nextQuestion() {
-            if (questionNum >= questions.length) {
-                showResults();
-                return;
-            }
-            
-            const q = questions[questionNum];
-            document.getElementById('question-num').textContent = questionNum + 1;
-            document.getElementById('game-progress').style.width = ((questionNum + 1) / totalQuestions * 100) + '%';
-            
-            let html = `
-                <div class="question-text">${q.question}</div>
-                <div class="options-grid">
-            `;
-            
-            q.options.forEach((opt, idx) => {
-                html += `<button class="option-btn" onclick="checkAnswer(${idx})">${opt}</button>`;
-            });
-            
-            html += '</div>';
-            document.getElementById('game-content').innerHTML = html;
-        }
+        const isNewHigh = saveHighScore(currentGame, score);
+        document.getElementById("new-high-score").style.display = isNewHigh ? "block" : "none";
 
-        function checkAnswer(idx) {
-            const q = questions[questionNum];
-            const buttons = document.querySelectorAll('.option-btn');
-            const selected = q.options[idx];
-            const correct = q.correct;
-            
-            buttons.forEach((btn, i) => {
-                btn.disabled = true;
-                if (q.options[i] === correct) {
-                    btn.classList.add('correct');
-                } else if (i === idx) {
-                    btn.classList.add('incorrect');
-                }
-            });
-            
-            if (selected === correct) {
-                score++;
-                document.getElementById('score').textContent = score;
-            }
-            
-            questionNum++;
-            setTimeout(nextQuestion, 1200);
-        }
+        document.getElementById("final-score").textContent = `${score}/${totalQuestions}`;
+        document.getElementById("correct-count").textContent = score;
+        document.getElementById("best-streak").textContent = bestStreak;
+        document.getElementById("accuracy").textContent = Math.round((score / totalQuestions) * 100) + "%";
 
-        function showResults() {
-            document.getElementById('game-container').style.display = 'none';
-            document.getElementById('results-container').style.display = 'block';
-            
-            document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
-            
-            const percentage = (score / totalQuestions) * 100;
-            let icon, title, message;
-            
-            if (percentage >= 90) {
-                icon = '🏆';
-                title = 'Outstanding!';
-                message = 'You\'re a chemistry genius!';
-            } else if (percentage >= 70) {
-                icon = '🎉';
-                title = 'Great Job!';
-                message = 'You really know your chemistry!';
-            } else if (percentage >= 50) {
-                icon = '👍';
-                title = 'Good Effort!';
-                message = 'Keep practicing to improve!';
-            } else {
-                icon = '📚';
-                title = 'Keep Learning!';
-                message = 'Review and try again - you\'ve got this!';
-            }
-            
-            document.getElementById('results-icon').textContent = icon;
-            document.getElementById('results-title').textContent = title;
-            document.getElementById('results-message').textContent = message;
-            
-            lucide.createIcons();
-        }
+        const percentage = (score / totalQuestions) * 100;
+        let icon, title, message;
+        if (percentage >= 90) { icon = "🏆"; title = "Outstanding!"; message = "You're a chemistry genius!"; }
+        else if (percentage >= 70) { icon = "🎉"; title = "Great Job!"; message = "You really know your chemistry!"; }
+        else if (percentage >= 50) { icon = "👍"; title = "Good Effort!"; message = "Keep practicing to improve!"; }
+        else { icon = "📚"; title = "Keep Learning!"; message = "Review and try again - you've got this!"; }
 
-        function playAgain() {
-            startGame(currentGame);
-        }
+        document.getElementById("results-icon").textContent = icon;
+        document.getElementById("results-title").textContent = title;
+        document.getElementById("results-message").textContent = message;
 
-        function backToGames() {
-            document.getElementById('results-container').style.display = 'none';
-            document.getElementById('game-container').style.display = 'none';
-            document.querySelector('.games-grid').style.display = 'grid';
-        }
+        loadHighScores();
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
 
-        function endGame() {
-            if (confirm('Are you sure you want to exit the game?')) {
-                backToGames();
-            }
+      function playAgain() {
+        startGame(currentGame);
+      }
+
+      function backToGames() {
+        stopTimer();
+        document.getElementById("results-container").style.display = "none";
+        document.getElementById("game-container").style.display = "none";
+        document.querySelector(".games-grid").style.display = "grid";
+      }
+
+      function endGame() {
+        if (confirm("Are you sure you want to exit the game?")) {
+          backToGames();
         }
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && document.getElementById("difficulty-modal").style.display === "flex") {
+          closeDifficultyModal();
+        }
+        if (e.key === "Escape" && document.getElementById("instructions-modal").style.display === "flex") {
+          closeInstructions();
+        }
+      });
     </script>
-</body>
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

@@ -1,363 +1,1106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculate molecular weight from chemical formula">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Calculate molecular weight from chemical formula"
+    />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/mol-weight.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Molecular Weight Calculator - SBS Tools" />
+    <meta property="og:description" content="Calculate molecular weight from chemical formula." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/mol-weight.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Molecular Weight Calculator - SBS Tools" />
+    <meta name="twitter:description" content="Calculate molecular weight from chemical formula." />
+    <meta name="robots" content="index, follow" />
     <title>Molecular Weight Calculator - SBS Tools</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/theme.css">
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/mobile.css">
-    <link rel="stylesheet" href="../../assets/css/tool-page.css">
-</head>
-<body>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+  </head>
+  <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i data-lucide="scale"></i> Molecular Weight Calculator</h1>
-                <p>Calculate molecular weight from chemical formulas</p>
-            </div>
-
-            <div class="tool-card">
-                <div class="form-group">
-                    <label>Chemical Formula</label>
-                    <input type="text" id="formula-input" placeholder="e.g., H2O, C6H12O6, Ca(OH)2, Fe2(SO4)3">
-                </div>
-                <button class="tool-btn tool-btn-primary" onclick="calculate()">
-                    <i data-lucide="calculator"></i> Calculate
-                </button>
-
-                <div class="quick-formulas">
-                    <span>Quick examples:</span>
-                    <button onclick="setFormula('H2O')">H₂O</button>
-                    <button onclick="setFormula('NaCl')">NaCl</button>
-                    <button onclick="setFormula('C6H12O6')">C₆H₁₂O₆</button>
-                    <button onclick="setFormula('H2SO4')">H₂SO₄</button>
-                    <button onclick="setFormula('CaCO3')">CaCO₃</button>
-                    <button onclick="setFormula('C2H5OH')">C₂H₅OH</button>
-                    <button onclick="setFormula('Ca(OH)2')">Ca(OH)₂</button>
-                    <button onclick="setFormula('Fe2(SO4)3')">Fe₂(SO₄)₃</button>
-                </div>
-            </div>
-
-            <div class="tool-card" id="result-card" style="display: none;">
-                <div class="result-header">
-                    <h2 id="result-formula">-</h2>
-                    <div class="result-mw">
-                        <span class="mw-value" id="result-mw">-</span>
-                        <span class="mw-unit">g/mol</span>
-                    </div>
-                </div>
-
-                <div class="composition-section">
-                    <h3><i data-lucide="pie-chart"></i> Elemental Composition</h3>
-                    <div class="composition-table" id="composition-table"></div>
-                    <div class="composition-chart" id="composition-chart"></div>
-                </div>
-            </div>
-
-            <div class="tool-card">
-                <h3><i data-lucide="info"></i> Usage Guide</h3>
-                <div class="guide-content">
-                    <p><strong>Basic elements:</strong> Use standard symbols (H, O, C, N, Fe, Ca, etc.)</p>
-                    <p><strong>Subscripts:</strong> Write numbers after elements (H2O, CO2)</p>
-                    <p><strong>Parentheses:</strong> Group atoms with parentheses: Ca(OH)2, Al2(SO4)3</p>
-                    <p><strong>Hydrates:</strong> Use dot notation: CuSO4.5H2O</p>
-                </div>
-            </div>
+      <div class="tool-container">
+        <div class="tool-header">
+          <h1><i data-lucide="scale"></i> Molecular Weight Calculator</h1>
+          <p>Calculate molecular weight from chemical formulas</p>
         </div>
+
+        <div class="tool-card">
+          <div class="form-group">
+            <label>Chemical Formula</label>
+            <input
+              type="text"
+              id="formula-input"
+              placeholder="e.g., H2O, C6H12O6, Ca(OH)2, Fe2(SO4)3"
+            />
+          </div>
+          <button class="tool-btn tool-btn-primary" onclick="calculate()">
+            <i data-lucide="calculator"></i> Calculate
+          </button>
+
+          <div class="quick-formulas">
+            <span>Quick:</span>
+            <button onclick="setFormula('H2O')">H₂O</button>
+            <button onclick="setFormula('NaCl')">NaCl</button>
+            <button onclick="setFormula('C6H12O6')">C₆H₁₂O₆</button>
+            <button onclick="setFormula('H2SO4')">H₂SO₄</button>
+            <button onclick="setFormula('CaCO3')">CaCO₃</button>
+            <button onclick="setFormula('C2H5OH')">C₂H₅OH</button>
+            <button onclick="setFormula('Ca(OH)2')">Ca(OH)₂</button>
+            <button onclick="setFormula('Fe2(SO4)3')">Fe₂(SO₄)₃</button>
+            <button
+              onclick="setFormula('CuSO4.5H2O')"
+              title="Copper sulfate pentahydrate"
+            >
+              CuSO₄·5H₂O
+            </button>
+            <button
+              onclick="setFormula('Na2CO3.10H2O')"
+              title="Sodium carbonate decahydrate"
+            >
+              Na₂CO₃·10H₂O
+            </button>
+            <button
+              onclick="setFormula('Na2S2O3.5H2O')"
+              title="Sodium thiosulfate pentahydrate"
+            >
+              Na₂S₂O₃·5H₂O
+            </button>
+            <button
+              onclick="setFormula('Al2(SO4)3.18H2O')"
+              title="Aluminum sulfate octadecahydrate"
+            >
+              Al₂(SO₄)₃·18H₂O
+            </button>
+            <button
+              onclick="setFormula('MgSO4.7H2O')"
+              title="Magnesium sulfate heptahydrate"
+            >
+              MgSO₄·7H₂O
+            </button>
+            <button
+              onclick="setFormula('FeSO4.7H2O')"
+              title="Iron(II) sulfate heptahydrate"
+            >
+              FeSO₄·7H₂O
+            </button>
+            <button
+              onclick="setFormula('CaSO4.2H2O')"
+              title="Calcium sulfate dihydrate (Gypsum)"
+            >
+              CaSO₄·2H₂O
+            </button>
+          </div>
+        </div>
+
+        <div class="tool-card" id="result-card" style="display: none">
+          <div class="result-header">
+            <div>
+              <h2 id="result-formula">-</h2>
+              <div class="empirical-formula" id="empirical-formula"></div>
+            </div>
+            <div class="result-mw">
+              <span class="mw-value" id="result-mw">-</span>
+              <span class="mw-unit">g/mol</span>
+              <button
+                class="copy-btn"
+                onclick="copyResult()"
+                title="Copy result"
+              >
+                <i data-lucide="copy"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="element-cards" id="element-cards"></div>
+
+          <div class="composition-section">
+            <h3><i data-lucide="pie-chart"></i> Elemental Composition</h3>
+            <div class="composition-bars" id="composition-bars"></div>
+            <div class="composition-table" id="composition-table"></div>
+          </div>
+        </div>
+
+        <div class="tool-card" id="history-card" style="display: none">
+          <h3><i data-lucide="history"></i> Calculation History</h3>
+          <div class="history-list" id="history-list"></div>
+          <button class="tool-btn" onclick="clearHistory()">
+            Clear History
+          </button>
+        </div>
+
+        <div class="tool-card">
+          <h3><i data-lucide="info"></i> Usage Guide</h3>
+          <div class="guide-content">
+            <p>
+              <strong>Basic elements:</strong> Use standard symbols (H, O, C, N,
+              Fe, Ca, etc.)
+            </p>
+            <p>
+              <strong>Subscripts:</strong> Write numbers after elements (H2O,
+              CO2)
+            </p>
+            <p>
+              <strong>Parentheses:</strong> Group atoms with parentheses:
+              Ca(OH)2, Al2(SO4)3
+            </p>
+            <p><strong>Hydrates:</strong> Use dot notation: CuSO4.5H2O</p>
+          </div>
+        </div>
+      </div>
     </main>
 
     <style>
-        .quick-formulas {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
+      .quick-formulas {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+      .quick-formulas span {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+      .quick-formulas button {
+        padding: 0.4rem 0.8rem;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+      }
+      .quick-formulas button:hover {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
+      }
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+      }
+      .result-header h2 {
+        margin: 0;
+        font-size: 2rem;
+        font-family: "Courier New", monospace;
+      }
+      .empirical-formula {
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+      .empirical-formula span {
+        font-family: "Courier New", monospace;
+        color: var(--accent-color);
+      }
+      .result-mw {
+        text-align: right;
+        position: relative;
+      }
+      .mw-value {
+        display: block;
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(
+          135deg,
+          var(--accent-color),
+          var(--secondary-accent)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .mw-unit {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+      .copy-btn {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+      .copy-btn:hover {
+        background: var(--bg-secondary);
+        color: var(--accent-color);
+      }
+      .element-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .element-card {
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        border: 1px solid var(--border-color);
+      }
+      .element-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+      .element-symbol {
+        font-size: 1.8rem;
+        font-weight: 700;
+        font-family: "Courier New", monospace;
+      }
+      .element-name {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin: 0.25rem 0;
+      }
+      .element-percent {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+      }
+      .element-count {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+      }
+      .composition-section h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .composition-bars {
+        display: flex;
+        height: 40px;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        background: var(--bg-secondary);
+      }
+      .bar-segment {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: flex-grow 0.5s ease;
+        min-width: fit-content;
+        padding: 0 0.75rem;
+        position: relative;
+      }
+      .bar-segment::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        white-space: nowrap;
+      }
+      .composition-table {
+        margin-bottom: 1.5rem;
+      }
+      .comp-row {
+        display: grid;
+        grid-template-columns: 80px 1fr 100px 80px;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+      }
+      .comp-row:nth-child(even) {
+        background: var(--bg-secondary);
+      }
+      .comp-row.header {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .comp-symbol {
+        font-weight: 600;
+        font-family: "Courier New", monospace;
+      }
+      #history-card {
+        margin-top: 1rem;
+      }
+      .history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .history-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+      .history-item:hover {
+        background: var(--accent-color);
+        color: white;
+      }
+      .history-item:hover .history-mw {
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .history-formula {
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+      }
+      .history-mw {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+      .guide-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        color: var(--text-secondary);
+      }
+      .guide-content p {
+        margin: 0;
+      }
+      .guide-content strong {
+        color: var(--text-primary);
+      }
+      .notification {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 1rem 1.5rem;
+        background: var(--bg-primary);
+        border: 1px solid var(--accent-color);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
         }
-        .quick-formulas span {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+        to {
+          transform: translateX(0);
+          opacity: 1;
         }
-        .quick-formulas button {
-            padding: 0.4rem 0.8rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.85rem;
-        }
-        .quick-formulas button:hover {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-            color: white;
-        }
+      }
+      @media (max-width: 600px) {
         .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .result-header h2 {
-            margin: 0;
-            font-size: 2rem;
-            font-family: 'Courier New', monospace;
+          flex-direction: column;
+          gap: 1rem;
         }
         .result-mw {
-            text-align: right;
+          text-align: left;
+          width: 100%;
         }
         .mw-value {
-            display: block;
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+          font-size: 2rem;
         }
-        .mw-unit {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        .composition-section h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .composition-table {
-            margin-bottom: 1.5rem;
+        .element-cards {
+          grid-template-columns: repeat(2, 1fr);
         }
         .comp-row {
-            display: grid;
-            grid-template-columns: 80px 1fr 100px 80px;
-            gap: 1rem;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
+          grid-template-columns: 60px 1fr 80px;
         }
-        .comp-row:nth-child(even) {
-            background: var(--bg-secondary);
+        .comp-row > *:nth-child(2) {
+          display: none;
         }
-        .comp-row.header {
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .quick-formulas {
+          justify-content: center;
         }
-        .comp-symbol {
-            font-weight: 600;
-            font-family: 'Courier New', monospace;
+        .quick-formulas span {
+          width: 100%;
+          text-align: center;
         }
-        .composition-chart {
-            display: flex;
-            height: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            background: var(--bg-secondary);
-        }
-        .chart-segment {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 600;
-            transition: flex-grow 0.5s ease;
-            min-width: fit-content;
-            padding: 0 0.5rem;
-        }
-        .guide-content {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            color: var(--text-secondary);
-        }
-        .guide-content p { margin: 0; }
-        .guide-content strong { color: var(--text-primary); }
-        @media (max-width: 600px) {
-            .result-header { flex-direction: column; gap: 1rem; text-align: center; }
-            .result-mw { text-align: center; }
-            .comp-row { grid-template-columns: 60px 1fr 80px; }
-            .comp-row > *:nth-child(2) { display: none; }
-        }
+      }
     </style>
 
     <script>
-        const atomicWeights = {
-            H: 1.008, He: 4.003, Li: 6.941, Be: 9.012, B: 10.81, C: 12.011, N: 14.007, O: 15.999,
-            F: 18.998, Ne: 20.180, Na: 22.990, Mg: 24.305, Al: 26.982, Si: 28.086, P: 30.974,
-            S: 32.06, Cl: 35.45, Ar: 39.948, K: 39.098, Ca: 40.078, Sc: 44.956, Ti: 47.867,
-            V: 50.942, Cr: 51.996, Mn: 54.938, Fe: 55.845, Co: 58.933, Ni: 58.693, Cu: 63.546,
-            Zn: 65.38, Ga: 69.723, Ge: 72.63, As: 74.922, Se: 78.971, Br: 79.904, Kr: 83.798,
-            Rb: 85.468, Sr: 87.62, Y: 88.906, Zr: 91.224, Nb: 92.906, Mo: 95.95, Tc: 98,
-            Ru: 101.07, Rh: 102.91, Pd: 106.42, Ag: 107.87, Cd: 112.41, In: 114.82, Sn: 118.71,
-            Sb: 121.76, Te: 127.60, I: 126.90, Xe: 131.29, Cs: 132.91, Ba: 137.33, La: 138.91,
-            Ce: 140.12, Pr: 140.91, Nd: 144.24, Pm: 145, Sm: 150.36, Eu: 151.96, Gd: 157.25,
-            Tb: 158.93, Dy: 162.50, Ho: 164.93, Er: 167.26, Tm: 168.93, Yb: 173.05, Lu: 174.97,
-            Hf: 178.49, Ta: 180.95, W: 183.84, Re: 186.21, Os: 190.23, Ir: 192.22, Pt: 195.08,
-            Au: 196.97, Hg: 200.59, Tl: 204.38, Pb: 207.2, Bi: 208.98, Po: 209, At: 210, Rn: 222,
-            Fr: 223, Ra: 226, Ac: 227, Th: 232.04, Pa: 231.04, U: 238.03, Np: 237, Pu: 244,
-            Am: 243, Cm: 247, Bk: 247, Cf: 251, Es: 252, Fm: 257, Md: 258, No: 259, Lr: 266
-        };
+      const atomicWeights = {
+        H: 1.008,
+        He: 4.003,
+        Li: 6.941,
+        Be: 9.012,
+        B: 10.81,
+        C: 12.011,
+        N: 14.007,
+        O: 15.999,
+        F: 18.998,
+        Ne: 20.18,
+        Na: 22.99,
+        Mg: 24.305,
+        Al: 26.982,
+        Si: 28.086,
+        P: 30.974,
+        S: 32.06,
+        Cl: 35.45,
+        Ar: 39.948,
+        K: 39.098,
+        Ca: 40.078,
+        Sc: 44.956,
+        Ti: 47.867,
+        V: 50.942,
+        Cr: 51.996,
+        Mn: 54.938,
+        Fe: 55.845,
+        Co: 58.933,
+        Ni: 58.693,
+        Cu: 63.546,
+        Zn: 65.38,
+        Ga: 69.723,
+        Ge: 72.63,
+        As: 74.922,
+        Se: 78.971,
+        Br: 79.904,
+        Kr: 83.798,
+        Rb: 85.468,
+        Sr: 87.62,
+        Y: 88.906,
+        Zr: 91.224,
+        Nb: 92.906,
+        Mo: 95.95,
+        Tc: 98,
+        Ru: 101.07,
+        Rh: 102.91,
+        Pd: 106.42,
+        Ag: 107.87,
+        Cd: 112.41,
+        In: 114.82,
+        Sn: 118.71,
+        Sb: 121.76,
+        Te: 127.6,
+        I: 126.9,
+        Xe: 131.29,
+        Cs: 132.91,
+        Ba: 137.33,
+        La: 138.91,
+        Ce: 140.12,
+        Pr: 140.91,
+        Nd: 144.24,
+        Pm: 145,
+        Sm: 150.36,
+        Eu: 151.96,
+        Gd: 157.25,
+        Tb: 158.93,
+        Dy: 162.5,
+        Ho: 164.93,
+        Er: 167.26,
+        Tm: 168.93,
+        Yb: 173.05,
+        Lu: 174.97,
+        Hf: 178.49,
+        Ta: 180.95,
+        W: 183.84,
+        Re: 186.21,
+        Os: 190.23,
+        Ir: 192.22,
+        Pt: 195.08,
+        Au: 196.97,
+        Hg: 200.59,
+        Tl: 204.38,
+        Pb: 207.2,
+        Bi: 208.98,
+        Po: 209,
+        At: 210,
+        Rn: 222,
+        Fr: 223,
+        Ra: 226,
+        Ac: 227,
+        Th: 232.04,
+        Pa: 231.04,
+        U: 238.03,
+        Np: 237,
+        Pu: 244,
+        Am: 243,
+        Cm: 247,
+        Bk: 247,
+        Cf: 251,
+        Es: 252,
+        Fm: 257,
+        Md: 258,
+        No: 259,
+        Lr: 266,
+      };
 
-        const elementColors = {
-            H: '#4dabf7', C: '#868e96', N: '#748ffc', O: '#ff6b6b', S: '#ffd43b',
-            P: '#ffa94d', Cl: '#38d9a9', Br: '#f783ac', I: '#da77f2', F: '#69db7c',
-            Na: '#be4bdb', K: '#be4bdb', Ca: '#38d9a9', Mg: '#38d9a9', Fe: '#ffa94d',
-            default: '#6c757d'
-        };
+      const elementColors = {
+        H: "#4dabf7",
+        C: "#868e96",
+        N: "#748ffc",
+        O: "#ff6b6b",
+        S: "#ffd43b",
+        P: "#ffa94d",
+        Cl: "#38d9a9",
+        Br: "#f783ac",
+        I: "#da77f2",
+        F: "#69db7c",
+        Na: "#be4bdb",
+        K: "#be4bdb",
+        Ca: "#38d9a9",
+        Mg: "#38d9a9",
+        Fe: "#ffa94d",
+        default: "#6c757d",
+      };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            document.getElementById('formula-input').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') calculate();
-            });
+      const elementNames = {
+        H: "Hydrogen",
+        He: "Helium",
+        Li: "Lithium",
+        Be: "Beryllium",
+        B: "Boron",
+        C: "Carbon",
+        N: "Nitrogen",
+        O: "Oxygen",
+        F: "Fluorine",
+        Ne: "Neon",
+        Na: "Sodium",
+        Mg: "Magnesium",
+        Al: "Aluminum",
+        Si: "Silicon",
+        P: "Phosphorus",
+        S: "Sulfur",
+        Cl: "Chlorine",
+        Ar: "Argon",
+        K: "Potassium",
+        Ca: "Calcium",
+        Sc: "Scandium",
+        Ti: "Titanium",
+        V: "Vanadium",
+        Cr: "Chromium",
+        Mn: "Manganese",
+        Fe: "Iron",
+        Co: "Cobalt",
+        Ni: "Nickel",
+        Cu: "Copper",
+        Zn: "Zinc",
+        Ga: "Gallium",
+        Ge: "Germanium",
+        As: "Arsenic",
+        Se: "Selenium",
+        Br: "Bromine",
+        Kr: "Krypton",
+        Rb: "Rubidium",
+        Sr: "Strontium",
+        Y: "Yttrium",
+        Zr: "Zirconium",
+        Nb: "Niobium",
+        Mo: "Molybdenum",
+        Tc: "Technetium",
+        Ru: "Ruthenium",
+        Rh: "Rhodium",
+        Pd: "Palladium",
+        Ag: "Silver",
+        Cd: "Cadmium",
+        In: "Indium",
+        Sn: "Tin",
+        Sb: "Antimony",
+        Te: "Tellurium",
+        I: "Iodine",
+        Xe: "Xenon",
+        Cs: "Cesium",
+        Ba: "Barium",
+        La: "Lanthanum",
+        Ce: "Cerium",
+        Pr: "Praseodymium",
+        Nd: "Neodymium",
+        Pm: "Promethium",
+        Sm: "Samarium",
+        Eu: "Europium",
+        Gd: "Gadolinium",
+        Tb: "Terbium",
+        Dy: "Dysprosium",
+        Ho: "Holmium",
+        Er: "Erbium",
+        Tm: "Thulium",
+        Yb: "Ytterbium",
+        Lu: "Lutetium",
+        Hf: "Hafnium",
+        Ta: "Tantalum",
+        W: "Tungsten",
+        Re: "Rhenium",
+        Os: "Osmium",
+        Ir: "Iridium",
+        Pt: "Platinum",
+        Au: "Gold",
+        Hg: "Mercury",
+        Tl: "Thallium",
+        Pb: "Lead",
+        Bi: "Bismuth",
+        Po: "Polonium",
+        At: "Astatine",
+        Rn: "Radon",
+        Fr: "Francium",
+        Ra: "Radium",
+        Ac: "Actinium",
+        Th: "Thorium",
+        Pa: "Protactinium",
+        U: "Uranium",
+        Np: "Neptunium",
+        Pu: "Plutonium",
+        Am: "Americium",
+        Cm: "Curium",
+        Bk: "Berkelium",
+        Cf: "Californium",
+        Es: "Einsteinium",
+        Fm: "Fermium",
+        Md: "Mendelevium",
+        No: "Nobelium",
+        Lr: "Lawrencium",
+      };
+
+      let calculationHistory = JSON.parse(
+        localStorage.getItem("mwHistory") || "[]",
+      );
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof lucide !== "undefined") lucide.createIcons();
+        document
+          .getElementById("formula-input")
+          .addEventListener("keypress", (e) => {
+            if (e.key === "Enter") calculate();
+          });
+        updateHistoryDisplay();
+      });
+
+      function setFormula(formula) {
+        document.getElementById("formula-input").value = formula;
+        calculate();
+      }
+
+      function calculate() {
+        const formula = document.getElementById("formula-input").value.trim();
+        if (!formula) return;
+
+        try {
+          const composition = parseFormula(formula);
+          displayResults(formula, composition);
+          addToHistory(formula, calculateMW(composition));
+        } catch (error) {
+          showNotification("Invalid formula: " + error.message);
+        }
+      }
+
+      function calculateMW(composition) {
+        let total = 0;
+        for (const [element, count] of Object.entries(composition)) {
+          total += atomicWeights[element] * count;
+        }
+        return total;
+      }
+
+      function gcd(a, b) {
+        a = Math.round(a);
+        b = Math.round(b);
+        while (b) {
+          [a, b] = [b, a % b];
+        }
+        return a;
+      }
+
+      function getEmpiricalFormula(composition) {
+        const counts = Object.values(composition);
+        if (counts.length === 0) return "";
+
+        let div = counts[0];
+        for (let i = 1; i < counts.length; i++) {
+          div = gcd(div, counts[i]);
+        }
+
+        let formula = "";
+        const sortedElements = Object.keys(composition).sort();
+        for (const element of sortedElements) {
+          const subscript = Math.round(composition[element] / div);
+          formula += element + (subscript > 1 ? subscript : "");
+        }
+        return formula;
+      }
+
+      function parseFormula(formula) {
+        const parts = formula.split(".");
+        let totalComposition = {};
+
+        parts.forEach((part, index) => {
+          let multiplier = 1;
+          if (index > 0) {
+            const match = part.match(/^(\d+)(.+)$/);
+            if (match) {
+              multiplier = parseInt(match[1]);
+              part = match[2];
+            }
+          }
+
+          const partComposition = parseGroup(part, 1);
+          for (const [element, count] of Object.entries(partComposition)) {
+            totalComposition[element] =
+              (totalComposition[element] || 0) + count * multiplier;
+          }
         });
 
-        function setFormula(formula) {
-            document.getElementById('formula-input').value = formula;
-            calculate();
-        }
+        return totalComposition;
+      }
 
-        function calculate() {
-            const formula = document.getElementById('formula-input').value.trim();
-            if (!formula) return;
-            
-            try {
-                const composition = parseFormula(formula);
-                displayResults(formula, composition);
-            } catch (error) {
-                showNotification('Invalid formula: ' + error.message);
+      function parseGroup(group, multiplier) {
+        const composition = {};
+        let i = 0;
+
+        while (i < group.length) {
+          if (group[i] === "(" || group[i] === "[") {
+            let depth = 1;
+            let j = i + 1;
+            while (j < group.length && depth > 0) {
+              if (group[j] === "(" || group[j] === "[") depth++;
+              if (group[j] === ")" || group[j] === "]") depth--;
+              j++;
             }
-        }
 
-        function parseFormula(formula) {
-            // Handle hydrates (e.g., CuSO4.5H2O)
-            const parts = formula.split('.');
-            let totalComposition = {};
-            
-            parts.forEach((part, index) => {
-                let multiplier = 1;
-                if (index > 0) {
-                    const match = part.match(/^(\d+)(.+)$/);
-                    if (match) {
-                        multiplier = parseInt(match[1]);
-                        part = match[2];
-                    }
-                }
-                
-                const partComposition = parseGroup(part, 1);
-                for (const [element, count] of Object.entries(partComposition)) {
-                    totalComposition[element] = (totalComposition[element] || 0) + count * multiplier;
-                }
-            });
-            
-            return totalComposition;
-        }
+            const innerGroup = group.slice(i + 1, j - 1);
 
-        function parseGroup(group, multiplier) {
-            const composition = {};
-            let i = 0;
-            
-            while (i < group.length) {
-                if (group[i] === '(' || group[i] === '[') {
-                    // Find matching closing bracket
-                    let depth = 1;
-                    let j = i + 1;
-                    while (j < group.length && depth > 0) {
-                        if (group[j] === '(' || group[j] === '[') depth++;
-                        if (group[j] === ')' || group[j] === ']') depth--;
-                        j++;
-                    }
-                    
-                    const innerGroup = group.slice(i + 1, j - 1);
-                    
-                    // Get subscript after closing bracket
-                    let subscript = '';
-                    while (j < group.length && /\d/.test(group[j])) {
-                        subscript += group[j];
-                        j++;
-                    }
-                    subscript = subscript ? parseInt(subscript) : 1;
-                    
-                    const innerComposition = parseGroup(innerGroup, 1);
-                    for (const [element, count] of Object.entries(innerComposition)) {
-                        composition[element] = (composition[element] || 0) + count * subscript * multiplier;
-                    }
-                    
-                    i = j;
-                } else if (/[A-Z]/.test(group[i])) {
-                    // Element symbol
-                    let element = group[i];
-                    let j = i + 1;
-                    
-                    // Check for lowercase letters (two-letter elements)
-                    while (j < group.length && /[a-z]/.test(group[j])) {
-                        element += group[j];
-                        j++;
-                    }
-                    
-                    // Get subscript
-                    let subscript = '';
-                    while (j < group.length && /\d/.test(group[j])) {
-                        subscript += group[j];
-                        j++;
-                    }
-                    subscript = subscript ? parseInt(subscript) : 1;
-                    
-                    if (!atomicWeights[element]) {
-                        throw new Error(`Unknown element: ${element}`);
-                    }
-                    
-                    composition[element] = (composition[element] || 0) + subscript * multiplier;
-                    i = j;
-                } else {
-                    i++;
-                }
+            let subscript = "";
+            while (j < group.length && /\d/.test(group[j])) {
+              subscript += group[j];
+              j++;
             }
-            
-            return composition;
+            subscript = subscript ? parseInt(subscript) : 1;
+
+            const innerComposition = parseGroup(innerGroup, 1);
+            for (const [element, count] of Object.entries(innerComposition)) {
+              composition[element] =
+                (composition[element] || 0) + count * subscript * multiplier;
+            }
+
+            i = j;
+          } else if (/[A-Z]/.test(group[i])) {
+            let element = group[i];
+            let j = i + 1;
+
+            while (j < group.length && /[a-z]/.test(group[j])) {
+              element += group[j];
+              j++;
+            }
+
+            let subscript = "";
+            while (j < group.length && /\d/.test(group[j])) {
+              subscript += group[j];
+              j++;
+            }
+            subscript = subscript ? parseInt(subscript) : 1;
+
+            if (!atomicWeights[element]) {
+              throw new Error(`Unknown element: ${element}`);
+            }
+
+            composition[element] =
+              (composition[element] || 0) + subscript * multiplier;
+            i = j;
+          } else {
+            i++;
+          }
         }
 
-        function displayResults(formula, composition) {
-            let totalMW = 0;
-            const elements = [];
-            
-            for (const [element, count] of Object.entries(composition)) {
-                const weight = atomicWeights[element] * count;
-                totalMW += weight;
-                elements.push({ symbol: element, count, weight });
+        return composition;
+      }
+
+      function displayResults(formula, composition) {
+        let totalMW = 0;
+        const elements = [];
+
+        for (const [element, count] of Object.entries(composition)) {
+          const weight = atomicWeights[element] * count;
+          totalMW += weight;
+          elements.push({ symbol: element, count, weight });
+        }
+
+        elements.forEach((el) => {
+          el.percent = (el.weight / totalMW) * 100;
+        });
+
+        elements.sort((a, b) => b.percent - a.percent);
+
+        const empiricalFormula = getEmpiricalFormula(composition);
+
+        let formattedFormula = formula.replace(/(\d+)/g, "<sub>$1</sub>");
+        document.getElementById("result-formula").innerHTML = formattedFormula;
+        document.getElementById("empirical-formula").innerHTML =
+          empiricalFormula
+            ? `Empirical: <span>${empiricalFormula.replace(/(\d+)/g, "<sub>$1</sub>")}</span>`
+            : "";
+        document.getElementById("result-mw").textContent = totalMW.toFixed(4);
+
+        // Element cards
+        let cardsHTML = "";
+        elements.forEach((el) => {
+          const color = elementColors[el.symbol] || elementColors.default;
+          cardsHTML += `
+            <div class="element-card" style="border-left: 4px solid ${color}">
+              <div class="element-symbol">${el.symbol}</div>
+              <div class="element-name">${elementNames[el.symbol] || "Unknown"}</div>
+              <div class="element-percent">${el.percent.toFixed(2)}%</div>
+              <div class="element-count">${el.count} atom${el.count > 1 ? "s" : ""}</div>
+            </div>
+          `;
+        });
+        document.getElementById("element-cards").innerHTML = cardsHTML;
+
+        // Composition bars
+        let barsHTML = "";
+        elements.forEach((el) => {
+          const color = elementColors[el.symbol] || elementColors.default;
+          barsHTML += `<div class="bar-segment" style="flex-grow: ${el.percent}; background: ${color}" data-tooltip="${el.percent.toFixed(1)}%">${el.percent >= 5 ? el.symbol : ""}</div>`;
+        });
+        document.getElementById("composition-bars").innerHTML = barsHTML;
+
+        // Composition table
+        let tableHTML = `
+          <div class="comp-row header">
+            <span>Element</span>
+            <span>Atomic Weight</span>
+            <span>Count</span>
+            <span>Mass %</span>
+          </div>
+        `;
+
+        elements.forEach((el) => {
+          tableHTML += `
+            <div class="comp-row">
+              <span class="comp-symbol">${el.symbol}</span>
+              <span>${atomicWeights[el.symbol].toFixed(3)}</span>
+              <span>${el.count}</span>
+              <span>${el.percent.toFixed(2)}%</span>
+            </div>
+          `;
+        });
+
+        document.getElementById("composition-table").innerHTML = tableHTML;
+        document.getElementById("result-card").style.display = "block";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      function addToHistory(formula, mw) {
+        const entry = { formula, mw: mw.toFixed(4), timestamp: Date.now() };
+        calculationHistory = [
+          entry,
+          ...calculationHistory.filter((h) => h.formula !== formula),
+        ].slice(0, 20);
+        localStorage.setItem("mwHistory", JSON.stringify(calculationHistory));
+        updateHistoryDisplay();
+      }
+
+      function updateHistoryDisplay() {
+        if (calculationHistory.length === 0) {
+          document.getElementById("history-card").style.display = "none";
+          return;
+        }
+        document.getElementById("history-card").style.display = "block";
+        let html = "";
+        calculationHistory.forEach((item) => {
+          html += `
+            <div class="history-item" onclick="setFormula('${item.formula}')">
+              <span class="history-formula">${item.formula.replace(/(\d+)/g, "<sub>$1</sub>")}</span>
+              <span class="history-mw">${item.mw} g/mol</span>
+            </div>
+          `;
+        });
+        document.getElementById("history-list").innerHTML = html;
+      }
+
+      function clearHistory() {
+        calculationHistory = [];
+        localStorage.removeItem("mwHistory");
+        updateHistoryDisplay();
+      }
+
+      function copyResult() {
+        const mw = document.getElementById("result-mw").textContent;
+        const formula = document.getElementById("formula-input").value;
+        navigator.clipboard.writeText(`${formula}: ${mw} g/mol`).then(() => {
+          showNotification("Copied to clipboard!");
+        });
+      }
+
+      function showNotification(message) {
+        const existing = document.querySelector(".notification");
+        if (existing) existing.remove();
+
+        const notif = document.createElement("div");
+        notif.className = "notification";
+        notif.textContent = message;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 2500);
+      }
+
+      function calculate() {
+        const formula = document.getElementById("formula-input").value.trim();
+        if (!formula) return;
+
+        try {
+          const composition = parseFormula(formula);
+          displayResults(formula, composition);
+        } catch (error) {
+          showNotification("Invalid formula: " + error.message);
+        }
+      }
+
+      function parseFormula(formula) {
+        // Handle hydrates (e.g., CuSO4.5H2O)
+        const parts = formula.split(".");
+        let totalComposition = {};
+
+        parts.forEach((part, index) => {
+          let multiplier = 1;
+          if (index > 0) {
+            const match = part.match(/^(\d+)(.+)$/);
+            if (match) {
+              multiplier = parseInt(match[1]);
+              part = match[2];
             }
-            
-            // Calculate percentages
-            elements.forEach(el => {
-                el.percent = (el.weight / totalMW) * 100;
-            });
-            
-            // Sort by percentage (descending)
-            elements.sort((a, b) => b.percent - a.percent);
-            
-            // Display formatted formula
-            let formattedFormula = formula.replace(/(\d+)/g, '<sub>$1</sub>');
-            document.getElementById('result-formula').innerHTML = formattedFormula;
-            document.getElementById('result-mw').textContent = totalMW.toFixed(4);
-            
-            // Display composition table
-            let tableHTML = `
+          }
+
+          const partComposition = parseGroup(part, 1);
+          for (const [element, count] of Object.entries(partComposition)) {
+            totalComposition[element] =
+              (totalComposition[element] || 0) + count * multiplier;
+          }
+        });
+
+        return totalComposition;
+      }
+
+      function parseGroup(group, multiplier) {
+        const composition = {};
+        let i = 0;
+
+        while (i < group.length) {
+          if (group[i] === "(" || group[i] === "[") {
+            // Find matching closing bracket
+            let depth = 1;
+            let j = i + 1;
+            while (j < group.length && depth > 0) {
+              if (group[j] === "(" || group[j] === "[") depth++;
+              if (group[j] === ")" || group[j] === "]") depth--;
+              j++;
+            }
+
+            const innerGroup = group.slice(i + 1, j - 1);
+
+            // Get subscript after closing bracket
+            let subscript = "";
+            while (j < group.length && /\d/.test(group[j])) {
+              subscript += group[j];
+              j++;
+            }
+            subscript = subscript ? parseInt(subscript) : 1;
+
+            const innerComposition = parseGroup(innerGroup, 1);
+            for (const [element, count] of Object.entries(innerComposition)) {
+              composition[element] =
+                (composition[element] || 0) + count * subscript * multiplier;
+            }
+
+            i = j;
+          } else if (/[A-Z]/.test(group[i])) {
+            // Element symbol
+            let element = group[i];
+            let j = i + 1;
+
+            // Check for lowercase letters (two-letter elements)
+            while (j < group.length && /[a-z]/.test(group[j])) {
+              element += group[j];
+              j++;
+            }
+
+            // Get subscript
+            let subscript = "";
+            while (j < group.length && /\d/.test(group[j])) {
+              subscript += group[j];
+              j++;
+            }
+            subscript = subscript ? parseInt(subscript) : 1;
+
+            if (!atomicWeights[element]) {
+              throw new Error(`Unknown element: ${element}`);
+            }
+
+            composition[element] =
+              (composition[element] || 0) + subscript * multiplier;
+            i = j;
+          } else {
+            i++;
+          }
+        }
+
+        return composition;
+      }
+
+      function displayResults(formula, composition) {
+        let totalMW = 0;
+        const elements = [];
+
+        for (const [element, count] of Object.entries(composition)) {
+          const weight = atomicWeights[element] * count;
+          totalMW += weight;
+          elements.push({ symbol: element, count, weight });
+        }
+
+        // Calculate percentages
+        elements.forEach((el) => {
+          el.percent = (el.weight / totalMW) * 100;
+        });
+
+        // Sort by percentage (descending)
+        elements.sort((a, b) => b.percent - a.percent);
+
+        // Display formatted formula
+        let formattedFormula = formula.replace(/(\d+)/g, "<sub>$1</sub>");
+        document.getElementById("result-formula").innerHTML = formattedFormula;
+        document.getElementById("result-mw").textContent = totalMW.toFixed(4);
+
+        // Display composition table
+        let tableHTML = `
                 <div class="comp-row header">
                     <span>Element</span>
                     <span>Atomic Weight</span>
@@ -365,9 +1108,9 @@
                     <span>Mass %</span>
                 </div>
             `;
-            
-            elements.forEach(el => {
-                tableHTML += `
+
+        elements.forEach((el) => {
+          tableHTML += `
                     <div class="comp-row">
                         <span class="comp-symbol">${el.symbol}</span>
                         <span>${atomicWeights[el.symbol].toFixed(3)}</span>
@@ -375,25 +1118,67 @@
                         <span>${el.percent.toFixed(2)}%</span>
                     </div>
                 `;
-            });
-            
-            document.getElementById('composition-table').innerHTML = tableHTML;
-            
-            // Display composition chart
-            let chartHTML = '';
-            elements.forEach(el => {
-                const color = elementColors[el.symbol] || elementColors.default;
-                if (el.percent >= 3) {
-                    chartHTML += `<div class="chart-segment" style="flex-grow: ${el.percent}; background: ${color}">${el.symbol}</div>`;
-                } else if (el.percent >= 1) {
-                    chartHTML += `<div class="chart-segment" style="flex-grow: ${el.percent}; background: ${color}"></div>`;
-                }
-            });
-            
-            document.getElementById('composition-chart').innerHTML = chartHTML;
-            document.getElementById('result-card').style.display = 'block';
-            lucide.createIcons();
-        }
+        });
+
+        document.getElementById("composition-table").innerHTML = tableHTML;
+
+        // Display composition chart
+        let chartHTML = "";
+        elements.forEach((el) => {
+          const color = elementColors[el.symbol] || elementColors.default;
+          if (el.percent >= 3) {
+            chartHTML += `<div class="chart-segment" style="flex-grow: ${el.percent}; background: ${color}">${el.symbol}</div>`;
+          } else if (el.percent >= 1) {
+            chartHTML += `<div class="chart-segment" style="flex-grow: ${el.percent}; background: ${color}"></div>`;
+          }
+        });
+
+        document.getElementById("composition-chart").innerHTML = chartHTML;
+        document.getElementById("result-card").style.display = "block";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
     </script>
-</body>
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

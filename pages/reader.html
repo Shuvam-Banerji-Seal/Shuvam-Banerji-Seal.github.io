@@ -1,421 +1,1126 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="E-Reader - Read books by Shuvam Banerji Seal">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="E-Reader - Read books by Shuvam Banerji Seal"
+    />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/reader.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="E-Reader - Shuvam Banerji Seal" />
+    <meta property="og:description" content="Online e-reader and document viewer by Shuvam Banerji Seal." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/reader.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="E-Reader - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="Online e-reader and document viewer." />
+    <meta name="robots" content="index, follow" />
     <title>E-Reader - Shuvam Banerji Seal</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <!-- Marked.js for Markdown parsing -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- KaTeX for math rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-    <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
-    <link rel="stylesheet" href="../assets/css/theme.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/animations.css">
-    <link rel="stylesheet" href="../assets/css/mobile.css">
-    <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
-    <link rel="stylesheet" href="../assets/css/overrides.css">
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/animations.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
+    <link rel="stylesheet" href="../assets/css/overrides.css" />
 
-    <!-- Cache Control -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
     <style>
-        :root {
-            --reader-bg: #f5f5f0;
-            --reader-content-bg: #ffffff;
-            --reader-text: #2d2d2d;
-            --reader-accent: #8B4513;
+      :root {
+        --reader-bg: #fdf6e3;
+        --reader-content-bg: #faf8f1;
+        --reader-page-bg: #fffef9;
+        --reader-text: #5c4b37;
+        --reader-text-secondary: #7a6b5a;
+        --reader-text-muted: #a09583;
+        --reader-accent: #b8860b;
+        --reader-accent-hover: #8b6508;
+        --reader-border: #e8e2d6;
+        --reader-code-bg: rgba(184, 134, 11, 0.08);
+        --reader-pre-bg: #f5f1e8;
+        --reader-shadow: rgba(92, 75, 55, 0.12);
+        --reader-shadow-deep: rgba(92, 75, 55, 0.2);
+        --reader-toc-bg: #faf8f1;
+        --reader-shadow-light: 0 2px 8px var(--reader-shadow);
+        --reader-shadow-page: 0 8px 32px var(--reader-shadow-deep);
+      }
+
+      html[data-theme="dark"] {
+        --reader-bg: #1a1a2e;
+        --reader-content-bg: #232338;
+        --reader-page-bg: #2a2a44;
+        --reader-text: #c9c5b8;
+        --reader-text-secondary: #a8a49a;
+        --reader-text-muted: #78746c;
+        --reader-accent: #d4a853;
+        --reader-accent-hover: #e8c068;
+        --reader-border: #3a3a52;
+        --reader-code-bg: rgba(212, 168, 83, 0.1);
+        --reader-pre-bg: #1f1f35;
+        --reader-shadow: rgba(0, 0, 0, 0.3);
+        --reader-shadow-deep: rgba(0, 0, 0, 0.5);
+        --reader-toc-bg: #232338;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--reader-bg);
+        color: var(--reader-text);
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+      }
+
+      .reader-app {
+        display: flex;
+        min-height: 100vh;
+        padding-top: 70px;
+      }
+
+      .reader-toc {
+        width: 280px;
+        background: var(--reader-toc-bg);
+        border-right: 1px solid var(--reader-border);
+        padding: 24px 16px;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        bottom: 0;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+      }
+
+      .reader-toc.open {
+        transform: translateX(0);
+      }
+
+      .toc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--reader-border);
+      }
+
+      .toc-title {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--reader-text-muted);
+      }
+
+      .toc-close {
+        background: none;
+        border: none;
+        color: var(--reader-text-muted);
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+      }
+
+      .toc-close:hover {
+        background: var(--reader-border);
+      }
+
+      .toc-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .toc-item {
+        padding: 10px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--reader-text-secondary);
+        transition: all 0.2s;
+        margin-bottom: 4px;
+      }
+
+      .toc-item:hover {
+        background: var(--reader-border);
+        color: var(--reader-text);
+      }
+
+      .toc-item.active {
+        background: var(--reader-accent);
+        color: white;
+      }
+
+      .reader-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-left: 0;
+        transition: margin-left 0.3s ease;
+      }
+
+      .reader-progress {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--reader-border);
+        z-index: 99;
+      }
+
+      .reader-progress-bar {
+        height: 100%;
+        background: var(--reader-accent);
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .reader-toolbar {
+        position: fixed;
+        top: 73px;
+        right: 20px;
+        display: flex;
+        gap: 8px;
+        z-index: 98;
+        background: var(--reader-content-bg);
+        padding: 8px 12px;
+        border-radius: 12px;
+        box-shadow: var(--reader-shadow-light);
+        border: 1px solid var(--reader-border);
+      }
+
+      .toolbar-btn {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: transparent;
+        color: var(--reader-text-secondary);
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      .toolbar-btn:hover {
+        background: var(--reader-border);
+        color: var(--reader-text);
+      }
+
+      .toolbar-btn.active {
+        background: var(--reader-accent);
+        color: white;
+      }
+
+      .reader-content-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 100px 40px 60px;
+      }
+
+      .reader-page {
+        max-width: 700px;
+        width: 100%;
+        background: var(--reader-page-bg);
+        padding: 60px 80px;
+        border-radius: 4px;
+        box-shadow: var(--reader-shadow-page);
+        min-height: calc(100vh - 200px);
+        position: relative;
+      }
+
+      .reader-page::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 20px;
+        bottom: 20px;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--reader-border) 20%,
+          var(--reader-border) 80%,
+          transparent
+        );
+        opacity: 0.5;
+      }
+
+      .reader-content {
+        font-family: "Lora", "Merriweather", serif;
+        line-height: 1.9;
+        font-size: var(--reader-font-size, 18px);
+        color: var(--reader-text);
+      }
+
+      .reader-content h1,
+      .reader-content h2,
+      .reader-content h3,
+      .reader-content h4 {
+        font-family: "Inter", sans-serif;
+        color: var(--reader-text);
+        margin-top: 2em;
+        margin-bottom: 0.8em;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+
+      .reader-content h1 {
+        font-size: 2.2em;
+        border-bottom: 2px solid var(--reader-accent);
+        padding-bottom: 0.4em;
+        margin-top: 0;
+      }
+
+      .reader-content h2 {
+        font-size: 1.7em;
+      }
+
+      .reader-content h3 {
+        font-size: 1.4em;
+      }
+
+      .reader-content h4 {
+        font-size: 1.2em;
+      }
+
+      .reader-content p {
+        margin-bottom: 1.6em;
+        text-align: justify;
+        text-indent: 1.5em;
+      }
+
+      .reader-content > p:first-of-type::first-letter {
+        float: left;
+        font-size: 3.5em;
+        line-height: 0.8;
+        padding-right: 12px;
+        padding-top: 6px;
+        font-family: "Lora", serif;
+        font-weight: 700;
+        color: var(--reader-accent);
+      }
+
+      .reader-content code {
+        background: var(--reader-code-bg);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 0.88em;
+        color: var(--reader-accent-hover);
+      }
+
+      .reader-content pre {
+        background: var(--reader-pre-bg);
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 24px 0;
+        border: 1px solid var(--reader-border);
+      }
+
+      .reader-content pre code {
+        background: none;
+        padding: 0;
+        color: var(--reader-text);
+      }
+
+      .reader-content blockquote {
+        border-left: 3px solid var(--reader-accent);
+        padding: 8px 0 8px 24px;
+        margin: 24px 0;
+        font-style: italic;
+        color: var(--reader-text-secondary);
+        background: var(--reader-code-bg);
+        border-radius: 0 8px 8px 0;
+      }
+
+      .reader-content ul,
+      .reader-content ol {
+        margin: 1.5em 0;
+        padding-left: 2em;
+      }
+
+      .reader-content li {
+        margin-bottom: 0.5em;
+      }
+
+      .reader-content hr {
+        border: none;
+        border-top: 1px solid var(--reader-border);
+        margin: 3em 0;
+      }
+
+      .reader-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 1.5em 0;
+      }
+
+      .reader-content a {
+        color: var(--reader-accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s;
+      }
+
+      .reader-content a:hover {
+        border-bottom-color: var(--reader-accent);
+      }
+
+      .reader-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5em 0;
+      }
+
+      .reader-content th,
+      .reader-content td {
+        padding: 12px;
+        border: 1px solid var(--reader-border);
+        text-align: left;
+      }
+
+      .reader-content th {
+        background: var(--reader-code-bg);
+        font-weight: 600;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 80px 40px;
+        color: var(--reader-text-muted);
+      }
+
+      .empty-state h2 {
+        font-size: 1.8em;
+        margin-bottom: 16px;
+        color: var(--reader-text-secondary);
+      }
+
+      .empty-state p {
+        font-size: 1.1em;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--reader-border);
+      }
+
+      .pagination-btn {
+        padding: 12px 24px;
+        background: var(--reader-accent);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .pagination-btn:hover:not(:disabled) {
+        background: var(--reader-accent-hover);
+        transform: translateY(-2px);
+      }
+
+      .pagination-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
+      .font-size-modal {
+        position: fixed;
+        top: 120px;
+        right: 80px;
+        background: var(--reader-content-bg);
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: var(--reader-shadow-deep);
+        border: 1px solid var(--reader-border);
+        z-index: 100;
+        display: none;
+      }
+
+      .font-size-modal.open {
+        display: block;
+      }
+
+      .font-size-modal label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--reader-text-muted);
+      }
+
+      .font-size-slider {
+        width: 150px;
+        accent-color: var(--reader-accent);
+      }
+
+      .toc-toggle-mobile {
+        display: none;
+        position: fixed;
+        top: 80px;
+        left: 16px;
+        z-index: 97;
+      }
+
+      .book-select-overlay {
+        position: fixed;
+        top: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--reader-content-bg);
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: var(--reader-shadow-deep);
+        border: 1px solid var(--reader-border);
+        z-index: 100;
+        min-width: 400px;
+        display: none;
+      }
+
+      .book-select-overlay.open {
+        display: block;
+      }
+
+      .book-select-overlay h3 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+      }
+
+      .book-select-overlay select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid var(--reader-accent);
+        border-radius: 8px;
+        background: var(--reader-page-bg);
+        color: var(--reader-text);
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .book-select-overlay select:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.2);
+      }
+
+      .keyboard-hints {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--reader-content-bg);
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 12px;
+        color: var(--reader-text-muted);
+        border: 1px solid var(--reader-border);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+
+      .keyboard-hints.visible {
+        opacity: 1;
+      }
+
+      .keyboard-hints kbd {
+        background: var(--reader-border);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: monospace;
+        margin: 0 2px;
+      }
+
+      @media (max-width: 1024px) {
+        .reader-page {
+          padding: 40px 50px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .reader-toc {
+          width: 100%;
         }
 
-        body[data-theme='dark'] {
-            --reader-bg: #1a1a1a;
-            --reader-content-bg: #2d2d2d;
-            --reader-text: #e5e5e5;
+        .reader-toolbar {
+          top: 73px;
+          right: 12px;
+          padding: 6px 8px;
         }
 
-        body {
-            background: var(--reader-bg);
-            color: var(--reader-text);
+        .toolbar-btn {
+          width: 36px;
+          height: 36px;
         }
 
-        .reader-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 100px 20px 40px;
+        .reader-content-wrapper {
+          padding: 90px 16px 40px;
         }
 
-        .reader-controls {
-            background: var(--reader-content-bg);
-            padding: 24px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        .reader-page {
+          padding: 32px 24px;
+          border-radius: 2px;
         }
 
-        .control-row {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .control-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .control-label {
-            font-weight: 600;
-            min-width: 120px;
-            color: var(--reader-accent);
-        }
-
-        .book-select,
-        .chapter-select {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 16px;
-            border: 2px solid var(--reader-accent);
-            border-radius: 8px;
-            background: var(--reader-content-bg);
-            color: var(--reader-text);
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .book-select:hover,
-        .chapter-select:hover {
-            border-color: #A0522D;
-            transform: translateY(-2px);
-        }
-
-        .chapter-select:focus,
-        .book-select:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.2);
-        }
-
-        .reader-settings {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .setting-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .setting-btn {
-            padding: 8px 16px;
-            border: 2px solid var(--reader-accent);
-            background: transparent;
-            color: var(--reader-text);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.2s;
-        }
-
-        .setting-btn:hover {
-            background: var(--reader-accent);
-            color: white;
-        }
-
-        .font-size-display {
-            min-width: 60px;
-            text-align: center;
-            font-weight: 600;
+        .reader-page::before {
+          display: none;
         }
 
         .reader-content {
-            background: var(--reader-content-bg);
-            padding: 60px 80px;
-            border-radius: 16px;
-            min-height: 600px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            font-family: 'Lora', 'Merriweather', serif;
-            line-height: 1.8;
-            font-size: var(--font-size, 18px);
+          font-size: 16px;
         }
 
-        .reader-content h1,
-        .reader-content h2,
-        .reader-content h3 {
-            color: var(--reader-accent);
-            margin-top: 2em;
-            margin-bottom: 0.8em;
-            font-weight: 700;
+        .toc-toggle-mobile {
+          display: flex;
+        }
+
+        .book-select-overlay {
+          min-width: calc(100vw - 32px);
+          left: 16px;
+          right: 16px;
+          transform: none;
+        }
+
+        .keyboard-hints {
+          display: none;
         }
 
         .reader-content h1 {
-            font-size: 2.5em;
-            border-bottom: 3px solid var(--reader-accent);
-            padding-bottom: 0.3em;
+          font-size: 1.8em;
         }
 
         .reader-content h2 {
-            font-size: 2em;
+          font-size: 1.5em;
+        }
+      }
+
+      @media print {
+        .reader-toolbar,
+        .reader-toc,
+        .reader-progress,
+        .pagination,
+        #navbar-container,
+        .toc-toggle-mobile {
+          display: none !important;
         }
 
-        .reader-content h3 {
-            font-size: 1.5em;
+        .reader-page {
+          box-shadow: none;
+          padding: 0;
         }
+      }
 
-        .reader-content p {
-            margin-bottom: 1.5em;
-            text-align: justify;
+      .fade-in {
+        animation: fadeIn 0.4s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
-
-        .reader-content code {
-            background: rgba(139, 69, 19, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.9em;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-
-        .reader-content pre {
-            background: rgba(139, 69, 19, 0.05);
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 20px 0;
-        }
-
-        .reader-content pre code {
-            background: none;
-            padding: 0;
-        }
-
-        .reader-content blockquote {
-            border-left: 4px solid var(--reader-accent);
-            padding-left: 20px;
-            margin: 20px 0;
-            font-style: italic;
-            color: #666;
-        }
-
-        body[data-theme='dark'] .reader-content blockquote {
-            color: #aaa;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-
-        .empty-state i {
-            font-size: 64px;
-            margin-bottom: 24px;
-            opacity: 0.3;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 32px;
-            padding-top: 24px;
-            border-top: 2px solid rgba(139, 69, 19, 0.2);
-        }
-
-        .pagination-btn {
-            padding: 12px 24px;
-            background: var(--reader-accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .pagination-btn:hover:not(:disabled) {
-            background: #A0522D;
-            transform: translateY(-2px);
-        }
-
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .reader-wrapper {
-                padding: 90px 12px 20px;
-            }
-
-            .reader-content {
-                padding: 32px 24px;
-            }
-
-            .control-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .control-label {
-                min-width: auto;
-            }
-
-            .reader-settings {
-                justify-content: center;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-
-            .reader-controls,
-            .pagination,
-            #navbar-container {
-                display: none !important;
-            }
-
-            .reader-content {
-                box-shadow: none;
-                padding: 0;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="navbar-container"></div>
     <script type="module" src="../assets/js/navbar.js"></script>
 
-    <div class="reader-wrapper">
-        <div class="reader-controls">
-            <div class="control-row">
-                <span class="control-label">
-                    <i data-lucide="book-open" class="inline w-5 h-5"></i> Book
-                </span>
-                <select class="book-select" id="book-select">
-                    <option value="">Select a book...</option>
-                    <option value="sample">Sample Book</option>
-                </select>
-            </div>
+    <div class="reader-app">
+      <nav class="reader-toc" id="reader-toc">
+        <div class="toc-header">
+          <span class="toc-title">Contents</span>
+          <button
+            class="toc-close"
+            onclick="toggleTOC()"
+            aria-label="Close table of contents"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <ul class="toc-list" id="toc-list"></ul>
+      </nav>
 
-            <div class="control-row">
-                <span class="control-label">
-                    <i data-lucide="bookmark" class="inline w-5 h-5"></i> Chapter
-                </span>
-                <select class="chapter-select" id="chapter-select" disabled>
-                    <option value="">Select a chapter...</option>
-                </select>
-            </div>
+      <div class="reader-progress">
+        <div class="reader-progress-bar" id="progress-bar"></div>
+      </div>
 
-            <div class="control-row">
-                <span class="control-label">
-                    <i data-lucide="settings" class="inline w-5 h-5"></i> Settings
-                </span>
-                <div class="reader-settings">
-                    <div class="setting-group">
-                        <button class="setting-btn" onclick="changeFontSize(-2)" title="Decrease font size">A-</button>
-                        <span class="font-size-display" id="font-size-display">18px</span>
-                        <button class="setting-btn" onclick="changeFontSize(2)" title="Increase font size">A+</button>
-                    </div>
-                    <button class="setting-btn" onclick="toggleTheme()" title="Toggle theme">
-                        <i data-lucide="sun"></i>
-                    </button>
-                </div>
-            </div>
+      <main class="reader-main" id="reader-main">
+        <button
+          class="toolbar-btn toc-toggle-mobile"
+          onclick="toggleTOC()"
+          aria-label="Table of contents"
+        >
+          <i data-lucide="list" class="w-5 h-5"></i>
+        </button>
+
+        <div class="reader-toolbar">
+          <button
+            class="toolbar-btn"
+            onclick="openBookSelect()"
+            title="Select Book (B)"
+          >
+            <i data-lucide="book-open" class="w-5 h-5"></i>
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="toggleTOC()"
+            title="Contents (T)"
+          >
+            <i data-lucide="list" class="w-5 h-5"></i>
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="toggleFontSizeModal()"
+            title="Font Size (F)"
+          >
+            <i data-lucide="type" class="w-5 h-5"></i>
+          </button>
+          <button
+            class="toolbar-btn"
+            id="bookmark-btn"
+            onclick="toggleBookmark()"
+            title="Bookmark (Ctrl+B)"
+          >
+            <i data-lucide="bookmark" class="w-5 h-5"></i>
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="toggleTheme()"
+            title="Theme (Ctrl+D)"
+          >
+            <i data-lucide="moon" class="w-5 h-5"></i>
+          </button>
         </div>
 
-        <div class="reader-content" id="reader-content">
-            <div class="empty-state">
-                <div>
-                    <i data-lucide="book-open" class="w-16 h-16 mx-auto mb-4 opacity-30"></i>
-                </div>
+        <div class="font-size-modal" id="font-size-modal">
+          <label for="font-size-slider">Font Size</label>
+          <input
+            type="range"
+            class="font-size-slider"
+            id="font-size-slider"
+            min="14"
+            max="28"
+            value="18"
+            oninput="updateFontSize(this.value)"
+            aria-label="Adjust font size"
+          />
+          <span id="font-size-display">18px</span>
+        </div>
+
+        <div class="book-select-overlay" id="book-select-overlay">
+          <h2>Select a Book</h2>
+          <select id="book-select" onchange="loadBook(this.value)">
+            <option value="">Choose a book...</option>
+            <option value="sample">Sample Book</option>
+          </select>
+        </div>
+
+        <div class="reader-content-wrapper">
+          <div class="reader-page">
+            <div class="reader-content" id="reader-content">
+              <div class="empty-state">
+                <i
+                  data-lucide="book-open"
+                  class="w-16 h-16 mx-auto mb-4 opacity-30"
+                ></i>
                 <h2>Welcome to E-Reader</h2>
-                <p>Select a book from the dropdown above to start reading</p>
+                <p>Select a book to begin reading</p>
+              </div>
             </div>
+          </div>
         </div>
+      </main>
+    </div>
+
+    <div class="keyboard-hints" id="keyboard-hints">
+      <kbd>←</kbd><kbd>→</kbd> Chapters &nbsp;|&nbsp; <kbd>+</kbd
+      ><kbd>-</kbd> Font Size &nbsp;|&nbsp; <kbd>T</kbd> Contents &nbsp;|&nbsp;
+      <kbd>B</kbd> Book
     </div>
 
     <script type="module" src="../assets/js/reader.js"></script>
     <script>
-        lucide.createIcons();
+            if (typeof lucide !== "undefined") lucide.createIcons();
 
-        let currentFontSize = 18;
-        let currentBook = null;
+            let currentFontSize = 18;
+            let currentBook = null;
+            let currentChapter = 0;
+            let isBookmarked = false;
+            let chapters = [];
 
-        function changeFontSize(delta) {
-            currentFontSize = Math.max(14, Math.min(28, currentFontSize + delta));
-            document.getElementById('reader-content').style.setProperty('--font-size', currentFontSize + 'px');
-            document.getElementById('font-size-display').textContent = currentFontSize + 'px';
-        }
+            const books = {
+              sample: {
+                title: "Sample Book",
+                chapters: [
+                  {
+                    title: "Introduction",
+                    content: `# Introduction
 
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', currentTheme === 'dark' ? '' : 'dark');
-        }
+      Welcome to the E-Reader, a beautiful and distraction-free reading experience designed for comfort and focus.
 
-        // Initialize
-        document.getElementById('book-select').addEventListener('change', function () {
-            const bookId = this.value;
-            if (bookId === 'sample') {
-                // Load sample content
-                const content = `
-# Sample Chapter
+      ## Why E-Reader?
 
-This is a sample book to demonstrate the E-Reader functionality.
+      Reading on screens can be straining, with harsh lights and distracting interfaces. This e-reader is designed with your eyes in mind:
 
-## Introduction
+      - **Warm, soothing colors** that reduce eye strain
+      - **Book-like typography** with serif fonts
+      - **Adjustable settings** for personalized comfort
+      - **Chapter navigation** for easy browsing
 
-The E-Reader provides a beautiful, distraction-free reading experience with:
+      ## Getting Started
 
-- Clean, book-like typography
-- Adjustable font sizes
-- Dark/light theme toggle
-- Markdown support with math rendering
+      Select a book from the toolbar or use keyboard shortcuts. The interface is designed to fade away, leaving just you and the text.
 
-## Features
+      > "A reader lives a thousand lives before he dies. The man who never reads lives only one." — George R.R. Martin
 
-You can write **bold text**, *italic text*, and even \`inline code\`.
+      Enjoy your reading journey!`
+                  },
+                  {
+                    title: "Features",
+                    content: `# Features
 
-### Code Blocks
+      This e-reader comes packed with features to enhance your reading experience.
 
-\`\`\`python
-def hello_world():
-    print("Hello from E-Reader!")
-\`\`\`
+      ## Typography
 
-### Mathematics
+      We use carefully selected fonts for optimal readability:
 
-When you add KaTeX support, you can render beautiful math like:
-$$E = mc^2$$
+      - **Lora** for body text - elegant and readable
+      - **Merriweather** as a fallback
+      - **Inter** for headings and UI elements
+      - Line height of 1.9 for comfortable reading
 
-> "The best way to predict the future is to invent it." - Alan Kay
+      ## Code Blocks
 
-Enjoy reading!
-                `;
+      For technical content, code blocks are beautifully styled:
 
-                document.getElementById('reader-content').innerHTML = marked.parse(content);
-                document.getElementById('chapter-select').disabled = false;
+      \`\`\`javascript
+      function greet(name) {
+        return \`Hello, \${name}!\`;
+      }
+
+      console.log(greet('Reader'));
+      \`\`\`
+
+      ## Mathematics
+
+      With KaTeX integration, you can render beautiful mathematics:
+
+      The quadratic formula: $$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$
+
+      Einstein's famous equation: $$E = mc^2`
+
+      ## Tables
+
+      | Feature | Description |
+      |---------|-------------|
+      | Dark Mode | Easy on the eyes |
+      | Font Size | Adjust to your preference |
+      | Bookmarks | Save your place |
+      | Chapters | Easy navigation |`
+                  },
+                  {
+                    title: "Settings",
+                    content: `# Settings
+
+      Customize your reading experience.
+
+      ## Font Size
+
+      Use the toolbar button or keyboard shortcuts:
+      - Press \`+\` to increase font size
+      - Press \`-\` to decrease font size
+      - Range: 14px to 28px
+
+      ## Theme
+
+      Toggle between light and dark modes:
+      - Light mode: Warm cream background
+      - Dark mode: Deep warm dark
+
+      ## Keyboard Shortcuts
+
+      | Key | Action |
+      |-----|--------|
+      | Left Arrow | Previous chapter |
+      | Right Arrow | Next chapter |
+      | T | Toggle contents |
+      | B | Select book |
+      | F | Font size |
+      | Ctrl+B | Toggle bookmark |
+      | Ctrl+D | Toggle theme |
+
+      > Tip: Press \`?\` to show keyboard hints.`
+                  }
+                ]
+              }
+            };
+
+            function loadBook(bookId) {
+              if (!bookId || !books[bookId]) {
+                closeBookSelect();
+                return;
+              }
+
+              currentBook = bookId;
+              chapters = books[bookId].chapters;
+              currentChapter = 0;
+
+              document.getElementById("book-select").value = bookId;
+              closeBookSelect();
+
+              buildTOC();
+              loadChapter(currentChapter);
+              updateBookmarkIcon();
             }
-        });
-    </script>
-</body>
 
+            function loadChapter(index) {
+              if (index < 0 || index >= chapters.length) return;
+
+              currentChapter = index;
+              const chapter = chapters[index];
+
+              const contentDiv = document.getElementById("reader-content");
+              try {
+                contentDiv.innerHTML = typeof marked !== "undefined" ? marked.parse(chapter.content) : chapter.content;
+              } catch (e) {
+                contentDiv.innerHTML = chapter.content;
+                console.warn("Markdown parsing failed:", e);
+              }
+              contentDiv.classList.add("fade-in");
+
+              renderMath();
+              updateActiveTOC();
+              updateProgress();
+
+              setTimeout(() => contentDiv.classList.remove("fade-in"), 400);
+            }
+
+            function renderMath() {
+              if (typeof renderMathInElement === "undefined") return;
+              try {
+                renderMathInElement(document.getElementById("reader-content"), {
+                  delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "$", right: "$", display: false },
+                  ],
+                  throwOnError: false,
+                });
+              } catch (e) {
+                console.warn("Math rendering failed:", e);
+              }
+            }
+
+            function buildTOC() {
+              const tocList = document.getElementById("toc-list");
+              tocList.innerHTML = chapters
+                .map(
+                  (ch, i) =>
+                    `<li class="toc-item" onclick="loadChapter(${i})">${ch.title}</li>`
+                )
+                .join("");
+            }
+
+            function updateActiveTOC() {
+              document.querySelectorAll(".toc-item").forEach((item, i) => {
+                item.classList.toggle("active", i === currentChapter);
+              });
+            }
+
+            function toggleTOC() {
+              document.getElementById("reader-toc").classList.toggle("open");
+            }
+
+            function openBookSelect() {
+              document.getElementById("book-select-overlay").classList.add("open");
+            }
+
+            function closeBookSelect() {
+              document.getElementById("book-select-overlay").classList.remove("open");
+            }
+
+            function toggleFontSizeModal() {
+              document.getElementById("font-size-modal").classList.toggle("open");
+            }
+
+            function updateFontSize(size) {
+              currentFontSize = parseInt(size);
+              document.documentElement.style.setProperty(
+                "--reader-font-size",
+                currentFontSize + "px"
+              );
+              document.getElementById("font-size-display").textContent =
+                currentFontSize + "px";
+              document.getElementById("font-size-slider").value = currentFontSize;
+            }
+
+            function toggleTheme() {
+              const html = document.documentElement;
+              const currentTheme = html.getAttribute("data-theme");
+              const newTheme = currentTheme === "dark" ? "light" : "dark";
+              html.setAttribute("data-theme", newTheme);
+              localStorage.setItem("theme", newTheme);
+            }
+
+            function toggleBookmark() {
+              const key = `reader_bookmark_${currentBook}`;
+              if (isBookmarked) {
+                localStorage.removeItem(key);
+                isBookmarked = false;
+              } else {
+                localStorage.setItem(key, currentChapter);
+                isBookmarked = true;
+              }
+              updateBookmarkIcon();
+            }
+
+            function updateBookmarkIcon() {
+              const btn = document.getElementById("bookmark-btn");
+              if (currentBook) {
+                const saved = localStorage.getItem(`reader_bookmark_${currentBook}`);
+                if (saved !== null) {
+                  currentChapter = parseInt(saved);
+                  isBookmarked = true;
+                  loadChapter(currentChapter);
+                }
+              }
+              btn.classList.toggle("active", isBookmarked);
+              btn.innerHTML = isBookmarked
+                ? '<i data-lucide="bookmark" class="w-5 h-5"></i>'
+                : '<i data-lucide="bookmark" class="w-5 h-5"></i>';
+              if (typeof lucide !== "undefined") lucide.createIcons();
+            }
+
+            function updateProgress() {
+              if (!chapters.length) return;
+              const progress = ((currentChapter + 1) / chapters.length) * 100;
+              document.getElementById("progress-bar").style.width = progress + "%";
+            }
+
+            function prevChapter() {
+              if (currentChapter > 0) {
+                loadChapter(currentChapter - 1);
+              }
+            }
+
+            function nextChapter() {
+              if (currentChapter < chapters.length - 1) {
+                loadChapter(currentChapter + 1);
+              }
+            }
+
+            document.addEventListener("keydown", (e) => {
+              if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT")
+                return;
+
+              switch (e.key) {
+                case "ArrowLeft":
+                  prevChapter();
+                  break;
+                case "ArrowRight":
+                  nextChapter();
+                  break;
+                case "+":
+                case "=":
+                  updateFontSize(Math.min(28, currentFontSize + 2));
+                  break;
+                case "-":
+                  updateFontSize(Math.max(14, currentFontSize - 2));
+                  break;
+                case "t":
+                case "T":
+                  toggleTOC();
+                  break;
+                case "b":
+                case "B":
+                  if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    toggleBookmark();
+                  } else {
+                    openBookSelect();
+                  }
+                  break;
+                case "f":
+                case "F":
+                  toggleFontSizeModal();
+                  break;
+                case "?":
+                  document.getElementById("keyboard-hints").classList.toggle("visible");
+                  break;
+                case "Escape":
+                  document.getElementById("reader-toc").classList.remove("open");
+                  document.getElementById("font-size-modal").classList.remove("open");
+                  closeBookSelect();
+                  break;
+              }
+            });
+
+            document.getElementById("book-select").addEventListener("change", function () {
+              loadBook(this.value);
+            });
+
+            document.addEventListener("click", (e) => {
+              const toc = document.getElementById("reader-toc");
+              const modal = document.getElementById("font-size-modal");
+              const bookOverlay = document.getElementById("book-select-overlay");
+
+              if (!toc.contains(e.target) && !e.target.closest(".toc-toggle-mobile")) {
+                if (window.innerWidth <= 768) {
+                  toc.classList.remove("open");
+                }
+              }
+
+              if (!modal.contains(e.target) && !e.target.closest('[onclick*="toggleFontSizeModal"]')) {
+                modal.classList.remove("open");
+              }
+
+              if (!bookOverlay.contains(e.target) && !e.target.closest('[onclick*="openBookSelect"]')) {
+                closeBookSelect();
+              }
+            });
+    </script>
+  </body>
 </html>

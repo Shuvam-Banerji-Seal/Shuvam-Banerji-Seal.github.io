@@ -156,26 +156,30 @@ async function loadBlogPost(filename) {
         }
 
         // Configure Marked
-        marked.setOptions({
-            highlight: function (code, lang) {
-                if (lang && hljs.getLanguage(lang)) {
-                    return hljs.highlight(code, { language: lang }).value;
-                }
-                return hljs.highlightAuto(code).value;
-            },
-            breaks: true
-        });
+        if (typeof marked !== "undefined") {
+            marked.setOptions({
+                highlight: function (code, lang) {
+                    if (typeof hljs !== "undefined" && lang && hljs.getLanguage(lang)) {
+                        return hljs.highlight(code, { language: lang }).value;
+                    }
+                    return typeof hljs !== "undefined" ? hljs.highlightAuto(code).value : code;
+                },
+                breaks: true
+            });
+        }
 
         // Render Markdown
-        let htmlContent = marked.parse(content);
+        let htmlContent = typeof marked !== "undefined" ? marked.parse(content) : content;
 
         // Render Math (KaTeX)
-        htmlContent = htmlContent.replace(/\$\$([\s\S]+?)\$\$/g, (match, equation) => {
-            try { return katex.renderToString(equation, { displayMode: true }); } catch (e) { return match; }
-        });
-        htmlContent = htmlContent.replace(/\$([^$]+?)\$/g, (match, equation) => {
-            try { return katex.renderToString(equation, { displayMode: false }); } catch (e) { return match; }
-        });
+        if (typeof katex !== "undefined") {
+            htmlContent = htmlContent.replace(/\$\$([\s\S]+?)\$\$/g, (match, equation) => {
+                try { return katex.renderToString(equation, { displayMode: true }); } catch (e) { return match; }
+            });
+            htmlContent = htmlContent.replace(/\$([^$]+?)\$/g, (match, equation) => {
+                try { return katex.renderToString(equation, { displayMode: false }); } catch (e) { return match; }
+            });
+        }
 
         const title = metadata.title || 'Untitled Post';
         const tags = (metadata.tags || []).map(t => `<span class="post-tag">${t}</span>`).join('');
@@ -215,7 +219,9 @@ async function loadBlogPost(filename) {
         window.scrollTo(0, 0);
 
         // Re-run highlight.js on newly inserted code blocks
-        document.querySelectorAll('.prose pre code').forEach(block => hljs.highlightElement(block));
+        if (typeof hljs !== "undefined") {
+            document.querySelectorAll('.prose pre code').forEach(block => hljs.highlightElement(block));
+        }
 
     } catch (error) {
         console.error('Error loading blog post:', error);

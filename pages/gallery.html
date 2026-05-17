@@ -1,295 +1,491 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description"
-        content="Gallery showcasing Shuvam Banerji Seal's interests - Chemistry visuals, Anime art, and personal pictures.">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="google-site-verification"
+      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
+    />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Gallery - Photo gallery of Shuvam Banerji Seal"
+    />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/gallery.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Gallery - Shuvam Banerji Seal" />
+    <meta property="og:description" content="Photo gallery and visual portfolio of Shuvam Banerji Seal." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/gallery.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:title" content="Gallery - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="Photo gallery and visual portfolio." />
+    <meta name="robots" content="index, follow" />
     <title>Gallery - Shuvam Banerji Seal</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
     <!-- Enhanced CSS System -->
-    <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
-    <link rel="stylesheet" href="../assets/css/theme.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/animations.css">
-    <link rel="stylesheet" href="../assets/css/mobile.css">
-    <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
+    <link rel="stylesheet" href="../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/animations.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
     <!-- Overrides - Must be last -->
-    <link rel="stylesheet" href="../assets/css/overrides.css">
+    <link rel="stylesheet" href="../assets/css/overrides.css" />
 
-    <!-- Cache Control -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
     <style>
-        /* Gallery specific styles */
+      /* Gallery specific styles */
+      .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        aspect-ratio: 1 / 1;
+      }
+
+      .gallery-item:hover {
+        transform: scale(1.05);
+        box-shadow: var(--glow-cyan, 0 0 20px rgba(201, 124, 58, 0.25));
+      }
+
+      .gallery-item img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.1);
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          var(--overlay-bg-end, rgba(0, 0, 0, 0.75)) 0%,
+          var(--overlay-bg-start, rgba(0, 0, 0, 0)) 60%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: flex-end;
+        padding: 1rem;
+      }
+
+      .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+      }
+
+      .gallery-overlay p {
+        color: var(--overlay-text-color, #ffffff);
+        font-size: 0.9rem;
+        transform: translateY(10px);
+        opacity: 0;
+        transition:
+          transform 0.3s ease 0.1s,
+          opacity 0.3s ease 0.1s;
+      }
+
+      .gallery-item:hover .gallery-overlay p {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* Light mode gallery overrides */
+      :root .gallery-item:hover,
+      html:not([data-theme="dark"]) .gallery-item:hover {
+        box-shadow: 0 10px 25px rgba(139, 101, 68, 0.2);
+      }
+
+      :root .gallery-overlay,
+      html:not([data-theme="dark"]) .gallery-overlay {
+        background: linear-gradient(
+          to top,
+          rgba(44, 26, 14, 0.7) 0%,
+          rgba(44, 26, 14, 0) 60%
+        );
+      }
+
+      /* Lightbox Styles */
+      .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--lightbox-bg, rgba(0, 0, 0, 0.92));
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        cursor: pointer;
+      }
+
+      .lightbox.active {
+        display: flex;
+      }
+
+      .lightbox img {
+        max-width: 90%;
+        max-height: 85vh;
+        display: block;
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      .lightbox-caption {
+        color: var(--lightbox-caption-color, #cbd5e1);
+        text-align: center;
+        margin-top: 12px;
+        font-size: 0.9rem;
+      }
+
+      /* Mobile responsiveness for gallery grid */
+      @media (max-width: 767px) {
+        .gallery-grid {
+          grid-template-columns: 1fr !important;
+          gap: 1rem !important;
+        }
+
         .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 0.5rem;
-            /* rounded-lg */
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          aspect-ratio: 4 / 3;
         }
 
         .gallery-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3);
-            /* Cyan shadow */
-        }
-
-        .gallery-item img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+          transform: none;
         }
 
         .gallery-item:hover img {
-            transform: scale(1.1);
+          transform: none;
         }
 
-        .gallery-item .overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 60%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            display: flex;
-            align-items: flex-end;
-            padding: 1rem;
+        .gallery-overlay {
+          opacity: 1;
+          background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0) 50%
+          );
         }
 
-        .gallery-item:hover .overlay {
-            opacity: 1;
+        .gallery-overlay p {
+          transform: translateY(0);
+          opacity: 1;
         }
 
-        .gallery-item .overlay-text {
-            color: white;
-            font-size: 0.9rem;
-            transform: translateY(10px);
-            opacity: 0;
-            transition: transform 0.3s ease 0.1s, opacity 0.3s ease 0.1s;
-        }
-
-        .gallery-item:hover .overlay-text {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* Simple Lightbox Styles (optional, can be enhanced with JS library) */
         .lightbox {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            cursor: pointer;
+          padding: 10px;
         }
 
         .lightbox img {
-            max-width: 90%;
-            max-height: 85%;
-            display: block;
-            margin: auto;
-            border-radius: 5px;
+          max-width: 95%;
+          max-height: 80vh;
+          border-radius: 4px;
         }
+      }
 
-        .lightbox-caption {
-            color: #ccc;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 0.9rem;
+      @media (min-width: 768px) and (max-width: 1023px) {
+        .gallery-grid {
+          grid-template-columns: repeat(2, 1fr) !important;
         }
+      }
+
+      /* Page title and subtitle theme-aware styling */
+      .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .page-subtitle {
+        font-size: 1.125rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      html[data-theme="dark"] .page-title {
+        background-image: var(--grad-primary);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
     </style>
-</head>
+  </head>
 
-<body class="">
-
+  <body class="">
     <div id="navbar-container"></div>
     <script type="module" src="../assets/js/navbar.js"></script>
 
     <main class="container section">
-        <header class="text-center mb-16 animate-fade-in-up">
-            <h1 class="page-title">
-                <i data-lucide="image" class="mr-3"></i> Gallery
-            </h1>
-            <p class="page-subtitle">A visual collection of interests: Chemistry, Anime, and more.</p>
-        </header>
+      <header class="text-center mb-16 animate-fade-in-up">
+        <h1 class="page-title">
+          <i data-lucide="image" class="mr-3"></i> Gallery
+        </h1>
+        <p class="page-subtitle">
+          A visual collection of interests: Chemistry, Anime, and more.
+        </p>
+      </header>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-            <div class="gallery-item animate-on-scroll"
-                data-src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz"
-                data-caption="Visualization of a complex molecule.">
-                <img src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz" alt="Chemistry Visualization"
-                    loading="lazy">
-                <div class="gallery-overlay">
-                    <p class="overlay-text">Molecular Dynamics Snapshot</p>
-                </div>
-            </div>
-
-            <div class="gallery-item animate-on-scroll"
-                data-src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene"
-                data-caption="A scene from a favorite anime series.">
-                <img src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene" alt="Anime Scenery"
-                    loading="lazy">
-                <div class="gallery-overlay">
-                    <p class="overlay-text">Favorite Anime Moment</p>
-                </div>
-            </div>
-
-            <div class="gallery-item animate-on-scroll"
-                data-src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work"
-                data-caption="Working on an experiment in the lab.">
-                <img src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work" alt="Lab Work" loading="lazy">
-                <div class="gallery-overlay">
-                    <p class="overlay-text">Computational Setup</p>
-                </div>
-            </div>
-
-            <div class="gallery-item animate-on-scroll" data-src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby"
-                data-caption="Engaging in a personal hobby (e.g., art, karate).">
-                <img src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby" alt="Personal Hobby" loading="lazy">
-                <div class="gallery-overlay">
-                    <p class="overlay-text">Stroke Art Example</p>
-                </div>
-            </div>
-
-            <div class="gallery-item animate-on-scroll"
-                data-src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel"
-                data-caption="A cool manga panel.">
-                <img src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel" alt="Manga Panel" loading="lazy">
-                <div class="gallery-overlay">
-                    <p class="overlay-text">Inspiring Manga Art</p>
-                </div>
-            </div>
-
-            <div class="gallery-item animate-on-scroll"
-                data-src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot"
-                data-caption="Density Functional Theory calculation result plot.">
-                <img src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot" alt="DFT Plot" loading="lazy">
-                <div class="gallery-overlay">
-                    <p class="overlay-text">Electron Density Plot</p>
-                </div>
-            </div>
-
-            <div class="gallery-item animate-on-scroll"
-                data-src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference"
-                data-caption="Presenting at a conference or event.">
-                <img src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference" alt="Conference Presentation"
-                    loading="lazy">
-                <div class="gallery-overlay">
-                    <p class="overlay-text">Anicon 2.0 Event</p>
-                </div>
-            </div>
-
-            <div class="gallery-item animate-on-scroll"
-                data-src="https://placehold.co/600x400/365314/ECFCCB?text=Nature"
-                data-caption="A photo from a nature walk or travel.">
-                <img src="https://placehold.co/600x400/365314/ECFCCB?text=Nature" alt="Nature Photo" loading="lazy">
-                <div class="gallery-overlay">
-                    <p class="overlay-text">Campus Greenery</p>
-                </div>
-            </div>
-
+      <div class="gallery-grid grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          class="gallery-item animate-on-scroll"
+          data-src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz"
+          data-caption="Visualization of a complex molecule."
+        >
+          <img
+            src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz"
+            alt="Chemistry Visualization"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <p class="overlay-text">Molecular Dynamics Snapshot</p>
+          </div>
         </div>
 
+        <div
+          class="gallery-item animate-on-scroll"
+          data-src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene"
+          data-caption="A scene from a favorite anime series."
+        >
+          <img
+            src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene"
+            alt="Anime Scenery"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <p class="overlay-text">Favorite Anime Moment</p>
+          </div>
+        </div>
+
+        <div
+          class="gallery-item animate-on-scroll"
+          data-src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work"
+          data-caption="Working on an experiment in the lab."
+        >
+          <img
+            src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work"
+            alt="Lab Work"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <p class="overlay-text">Computational Setup</p>
+          </div>
+        </div>
+
+        <div
+          class="gallery-item animate-on-scroll"
+          data-src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby"
+          data-caption="Engaging in a personal hobby (e.g., art, karate)."
+        >
+          <img
+            src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby"
+            alt="Personal Hobby"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <p class="overlay-text">Stroke Art Example</p>
+          </div>
+        </div>
+
+        <div
+          class="gallery-item animate-on-scroll"
+          data-src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel"
+          data-caption="A cool manga panel."
+        >
+          <img
+            src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel"
+            alt="Manga Panel"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <p class="overlay-text">Inspiring Manga Art</p>
+          </div>
+        </div>
+
+        <div
+          class="gallery-item animate-on-scroll"
+          data-src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot"
+          data-caption="Density Functional Theory calculation result plot."
+        >
+          <img
+            src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot"
+            alt="DFT Plot"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <p class="overlay-text">Electron Density Plot</p>
+          </div>
+        </div>
+
+        <div
+          class="gallery-item animate-on-scroll"
+          data-src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference"
+          data-caption="Presenting at a conference or event."
+        >
+          <img
+            src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference"
+            alt="Conference Presentation"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <p class="overlay-text">Anicon 2.0 Event</p>
+          </div>
+        </div>
+
+        <div
+          class="gallery-item animate-on-scroll"
+          data-src="https://placehold.co/600x400/365314/ECFCCB?text=Nature"
+          data-caption="A photo from a nature walk or travel."
+        >
+          <img
+            src="https://placehold.co/600x400/365314/ECFCCB?text=Nature"
+            alt="Nature Photo"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <p class="overlay-text">Campus Greenery</p>
+          </div>
+        </div>
+      </div>
     </main>
 
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-        <img id="lightbox-img" src="" alt="Lightbox Image">
-        <div id="lightbox-caption" class="lightbox-caption"></div>
+    <div
+      id="lightbox"
+      class="lightbox"
+      onclick="closeLightbox()"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image viewer"
+    >
+      <img id="lightbox-img" src="" alt="Lightbox Image" />
+      <div id="lightbox-caption" class="lightbox-caption"></div>
     </div>
 
     <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="GitHub Profile">
-                    <i data-lucide="github" class="w-5 h-5"></i>
-                </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="LinkedIn Profile">
-                    <i data-lucide="linkedin" class="w-5 h-5"></i>
-                </a>
-                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
-                </a>
-            </div>
-            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-            <p>Built with <i data-lucide="heart" class="inline-block text-red-500 w-4 h-4"></i>, Chemistry <i
-                    data-lucide="flask-conical" class="inline-block text-cyan-400 w-4 h-4"></i>, and Anime <i
-                    data-lucide="tv" class="inline-block text-purple-400 w-4 h-4"></i>.</p>
-            <div class="mt-4">
-                <button data-theme-toggle class="theme-toggle-btn">
-                    <i data-lucide="moon" class="w-4 h-4 mr-2"></i> Toggle Theme
-                </button>
-            </div>
-        </div>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem">
+        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
+        Portfolio v3.0
+      </p>
     </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 
     <!-- Original functionality -->
     <script type="module" src="../assets/js/main.js"></script>
     <!-- Enhanced features -->
     <script type="module" src="../assets/js/enhanced.js"></script>
     <script>
-        // Simple Lightbox Functionality
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxCaption = document.getElementById('lightbox-caption');
-        const galleryItems = document.querySelectorAll('.gallery-item');
+      // Simple Lightbox Functionality
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
+      const lightboxCaption = document.getElementById("lightbox-caption");
+      const galleryItems = document.querySelectorAll(".gallery-item");
 
-        galleryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const imgSrc = item.getAttribute('data-src');
-                const imgCaption = item.getAttribute('data-caption');
-                if (imgSrc && lightbox && lightboxImg && lightboxCaption) {
-                    lightboxImg.src = imgSrc;
-                    lightboxCaption.textContent = imgCaption || ''; // Use caption or empty string
-                    lightbox.style.display = 'flex'; // Show lightbox
-                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
-                }
-            });
+      galleryItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const imgSrc = item.getAttribute("data-src");
+          const imgCaption = item.getAttribute("data-caption");
+          if (imgSrc && lightbox && lightboxImg && lightboxCaption) {
+            lightboxImg.src = imgSrc;
+            lightboxImg.alt = imgCaption || "Gallery image";
+            lightboxCaption.textContent = imgCaption || "";
+            lightbox.classList.add("active");
+            document.body.style.overflow = "hidden";
+          }
         });
+      });
 
-        function closeLightbox() {
-            if (lightbox) {
-                lightbox.style.display = 'none'; // Hide lightbox
-                document.body.style.overflow = 'auto'; // Restore scrolling
-                lightboxImg.src = ''; // Clear image source
-                lightboxCaption.textContent = '';
-            }
+      function closeLightbox() {
+        if (lightbox) {
+          lightbox.classList.remove("active");
+          document.body.style.overflow = "";
+          setTimeout(() => {
+            lightboxImg.src = "";
+            lightboxImg.alt = "Lightbox Image";
+            lightboxCaption.textContent = "";
+          }, 200);
         }
+      }
 
-        // Close lightbox on escape key
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && lightbox.style.display === 'flex') {
-                closeLightbox();
-            }
-        });
+      // Close lightbox on escape key
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && lightbox.classList.contains("active")) {
+          closeLightbox();
+        }
+      });
 
-        // Initialize Lucide Icons
-        lucide.createIcons();
+      // Initialize Lucide Icons
+      if (typeof lucide !== "undefined") lucide.createIcons();
     </script>
-
-</body>
-
+  </body>
 </html>

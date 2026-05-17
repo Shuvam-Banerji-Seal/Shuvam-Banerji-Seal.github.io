@@ -1,315 +1,525 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Interactive 3D molecule visualizer for chemistry">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Interactive 3D molecule visualizer for chemistry"
+    />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/molecule-viz.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Molecule Visualizer - SBS Tools" />
+    <meta property="og:description" content="Interactive 3D molecule visualizer for chemistry." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/molecule-viz.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Molecule Visualizer - SBS Tools" />
+    <meta name="twitter:description" content="Interactive 3D molecule visualizer for chemistry." />
+    <meta name="robots" content="index, follow" />
     <title>Molecule Visualizer - SBS Tools</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/theme.css">
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/mobile.css">
-    <link rel="stylesheet" href="../../assets/css/tool-page.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+  </head>
+  <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
-        <div class="tool-container wide">
-            <div class="tool-header">
-                <h1><i data-lucide="atom"></i> Molecule Visualizer</h1>
-                <p>Visualize 3D molecular structures interactively</p>
-            </div>
-
-            <div class="molecule-layout">
-                <div class="tool-card sidebar-card">
-                    <h3><i data-lucide="search"></i> Search Molecule</h3>
-                    <div class="form-group">
-                        <label>Molecule Name or PubChem CID</label>
-                        <input type="text" id="molecule-input" placeholder="e.g., caffeine, aspirin, 2244">
-                    </div>
-                    <button class="tool-btn tool-btn-primary" onclick="searchMolecule()">
-                        <i data-lucide="search"></i> Search
-                    </button>
-
-                    <div class="divider"></div>
-
-                    <h3><i data-lucide="list"></i> Common Molecules</h3>
-                    <div class="molecule-quick-list">
-                        <button onclick="loadMolecule('caffeine')">Caffeine</button>
-                        <button onclick="loadMolecule('aspirin')">Aspirin</button>
-                        <button onclick="loadMolecule('glucose')">Glucose</button>
-                        <button onclick="loadMolecule('water')">Water</button>
-                        <button onclick="loadMolecule('ethanol')">Ethanol</button>
-                        <button onclick="loadMolecule('benzene')">Benzene</button>
-                        <button onclick="loadMolecule('methane')">Methane</button>
-                        <button onclick="loadMolecule('acetone')">Acetone</button>
-                        <button onclick="loadMolecule('dopamine')">Dopamine</button>
-                        <button onclick="loadMolecule('cholesterol')">Cholesterol</button>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <h3><i data-lucide="settings"></i> Display Options</h3>
-                    <div class="form-group">
-                        <label>Style</label>
-                        <select id="style-select" onchange="updateStyle()">
-                            <option value="stick">Stick</option>
-                            <option value="sphere">Sphere</option>
-                            <option value="line">Line</option>
-                            <option value="cartoon">Cartoon</option>
-                            <option value="cross">Cross</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Color Scheme</label>
-                        <select id="color-select" onchange="updateStyle()">
-                            <option value="element">Element Colors</option>
-                            <option value="spectrum">Spectrum</option>
-                            <option value="chain">Chain</option>
-                            <option value="ss">Secondary Structure</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Background</label>
-                        <select id="bg-select" onchange="updateBackground()">
-                            <option value="#1a1a2e">Dark Blue</option>
-                            <option value="#0f0f0f">Black</option>
-                            <option value="#ffffff">White</option>
-                            <option value="#1e3a5f">Navy</option>
-                        </select>
-                    </div>
-
-                    <div class="btn-group">
-                        <button class="tool-btn tool-btn-secondary" onclick="viewer.spin(true)">
-                            <i data-lucide="rotate-cw"></i> Spin
-                        </button>
-                        <button class="tool-btn tool-btn-secondary" onclick="viewer.spin(false)">
-                            <i data-lucide="square"></i> Stop
-                        </button>
-                        <button class="tool-btn tool-btn-secondary" onclick="resetView()">
-                            <i data-lucide="home"></i> Reset
-                        </button>
-                    </div>
-                </div>
-
-                <div class="tool-card viewer-card">
-                    <div id="viewer-3d"></div>
-                    <div id="molecule-info" class="molecule-info" style="display: none;">
-                        <h4 id="info-name">-</h4>
-                        <div class="info-grid">
-                            <span><strong>Formula:</strong> <span id="info-formula">-</span></span>
-                            <span><strong>MW:</strong> <span id="info-mw">-</span></span>
-                            <span><strong>CID:</strong> <span id="info-cid">-</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="tool-container wide">
+        <div class="tool-header">
+          <h1><i data-lucide="atom"></i> Molecule Visualizer</h1>
+          <p>Visualize 3D molecular structures interactively</p>
         </div>
+
+        <div class="molecule-layout">
+          <div class="tool-card sidebar-card">
+            <h3><i data-lucide="search"></i> Search Molecule</h3>
+            <div class="form-group">
+              <label>Molecule Name, CID, or SMILES</label>
+              <input
+                type="text"
+                id="molecule-input"
+                placeholder="e.g., caffeine, CCO, aspirin, 2244"
+              />
+            </div>
+            <button
+              class="tool-btn tool-btn-primary"
+              onclick="searchMolecule()"
+            >
+              <i data-lucide="search"></i> Search
+            </button>
+
+            <div class="divider"></div>
+
+            <h3><i data-lucide="list"></i> Common Molecules</h3>
+            <div class="molecule-quick-list">
+              <button onclick="loadMolecule('caffeine')">Caffeine</button>
+              <button onclick="loadMolecule('aspirin')">Aspirin</button>
+              <button onclick="loadMolecule('glucose')">Glucose</button>
+              <button onclick="loadMolecule('water')">Water</button>
+              <button onclick="loadMolecule('ethanol')">Ethanol</button>
+              <button onclick="loadMolecule('benzene')">Benzene</button>
+              <button onclick="loadMolecule('methane')">Methane</button>
+              <button onclick="loadMolecule('acetone')">Acetone</button>
+              <button onclick="loadMolecule('dopamine')">Dopamine</button>
+              <button onclick="loadMolecule('cholesterol')">Cholesterol</button>
+              <button onclick="loadMolecule('C=O')">Formaldehyde</button>
+              <button onclick="loadMolecule('NH3')">Ammonia</button>
+              <button onclick="loadMolecule('hydrogen peroxide')">H2O2</button>
+              <button onclick="loadMolecule('acetic acid')">Acetic Acid</button>
+              <button onclick="loadMolecule(' toluene')">Toluene</button>
+              <button onclick="loadMolecule('naphthalene')">Naphthalene</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <h3><i data-lucide="settings"></i> Display Options</h3>
+            <div class="form-group">
+              <label>Style</label>
+              <select id="style-select" onchange="updateStyle()">
+                <option value="stick">Stick</option>
+                <option value="sphere">Sphere</option>
+                <option value="line">Line</option>
+                <option value="cartoon">Cartoon</option>
+                <option value="cross">Cross</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Color Scheme</label>
+              <select id="color-select" onchange="updateStyle()">
+                <option value="element">Element Colors</option>
+                <option value="spectrum">Spectrum</option>
+                <option value="chain">Chain</option>
+                <option value="ss">Secondary Structure</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Background</label>
+              <select id="bg-select" onchange="updateBackground()">
+                <option value="#1a1a2e">Dark Blue</option>
+                <option value="#0f0f0f">Black</option>
+                <option value="#ffffff">White</option>
+                <option value="#1e3a5f">Navy</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Rotation Speed</label>
+              <input
+                type="range"
+                id="spin-speed"
+                min="0"
+                max="10"
+                value="2"
+                onchange="updateSpinSpeed()"
+              />
+              <div class="range-labels">
+                <span>Off</span>
+                <span>Slow</span>
+                <span>Fast</span>
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <button
+                class="tool-btn tool-btn-secondary"
+                onclick="toggleSpin()"
+              >
+                <i data-lucide="rotate-cw"></i> Auto-Spin
+              </button>
+              <button class="tool-btn tool-btn-secondary" onclick="resetView()">
+                <i data-lucide="home"></i> Reset
+              </button>
+              <button
+                class="tool-btn tool-btn-secondary"
+                onclick="takeScreenshot()"
+              >
+                <i data-lucide="camera"></i> Screenshot
+              </button>
+            </div>
+          </div>
+
+          <div class="tool-card viewer-card">
+            <div id="viewer-3d"></div>
+            <div id="molecule-info" class="molecule-info" style="display: none">
+              <h4 id="info-name">-</h4>
+              <div class="info-grid">
+                <span
+                  ><strong>Formula:</strong>
+                  <span id="info-formula">-</span></span
+                >
+                <span><strong>MW:</strong> <span id="info-mw">-</span></span>
+                <span><strong>CID:</strong> <span id="info-cid">-</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <style>
-        .tool-container.wide { max-width: 1400px; }
+      .tool-container.wide {
+        max-width: 1400px;
+      }
+      .molecule-layout {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 1.5rem;
+      }
+      .sidebar-card {
+        height: fit-content;
+      }
+      .viewer-card {
+        padding: 0;
+        overflow: hidden;
+      }
+      #viewer-3d {
+        width: 100%;
+        height: 600px;
+        position: relative;
+        background: #1a1a2e;
+        border-radius: 16px;
+      }
+      .molecule-info {
+        padding: 1rem 1.5rem;
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+      }
+      .molecule-info h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.1rem;
+        background: linear-gradient(
+          135deg,
+          var(--accent-color),
+          var(--secondary-accent)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .info-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+      .molecule-quick-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .molecule-quick-list button {
+        padding: 0.4rem 0.8rem;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .molecule-quick-list button:hover {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+        color: white;
+      }
+      .range-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+      }
+      input[type="range"] {
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+      .divider {
+        height: 1px;
+        background: var(--border-color);
+        margin: 1.5rem 0;
+      }
+      @media (max-width: 1024px) {
         .molecule-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 1.5rem;
+          grid-template-columns: 1fr;
         }
-        .sidebar-card { height: fit-content; }
-        .viewer-card { padding: 0; overflow: hidden; }
         #viewer-3d {
-            width: 100%;
-            height: 600px;
-            position: relative;
-            background: #1a1a2e;
-            border-radius: 16px;
+          height: 400px;
         }
-        .molecule-info {
-            padding: 1rem 1.5rem;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border-color);
-        }
-        .molecule-info h4 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .info-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        .molecule-quick-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .molecule-quick-list button {
-            padding: 0.4rem 0.8rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .molecule-quick-list button:hover {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-            color: white;
-        }
-        .divider {
-            height: 1px;
-            background: var(--border-color);
-            margin: 1.5rem 0;
-        }
-        @media (max-width: 1024px) {
-            .molecule-layout {
-                grid-template-columns: 1fr;
-            }
-            #viewer-3d { height: 400px; }
-        }
+      }
     </style>
 
     <script>
-        let viewer;
-        let currentModel;
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            initViewer();
-            loadMolecule('caffeine');
-            
-            document.getElementById('molecule-input').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') searchMolecule();
-            });
+      let viewer;
+      let currentModel;
+      let isSpinning = false;
+      let spinSpeed = 2;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof lucide !== "undefined") lucide.createIcons();
+        initViewer();
+        loadMolecule("caffeine");
+
+        document
+          .getElementById("molecule-input")
+          .addEventListener("keypress", (e) => {
+            if (e.key === "Enter") searchMolecule();
+          });
+      });
+
+      function initViewer() {
+        const container = document.getElementById("viewer-3d");
+        viewer = $3Dmol.createViewer(container, {
+          backgroundColor: "#1a1a2e",
+          antialias: true,
         });
+      }
 
-        function initViewer() {
-            const container = document.getElementById('viewer-3d');
-            viewer = $3Dmol.createViewer(container, {
-                backgroundColor: '#1a1a2e',
-                antialias: true
-            });
-        }
+      async function searchMolecule() {
+        const query = document.getElementById("molecule-input").value.trim();
+        if (!query) return;
+        await loadMolecule(query);
+      }
 
-        async function searchMolecule() {
-            const query = document.getElementById('molecule-input').value.trim();
-            if (!query) return;
-            await loadMolecule(query);
-        }
+      async function loadMolecule(nameOrCid) {
+        try {
+          viewer.clear();
+          const input = nameOrCid.toString().trim();
 
-        async function loadMolecule(nameOrCid) {
+          // Check if SMILES string (contains C, N, O, S, P, H, F, Cl, Br, I or digits, parentheses, =, #, +)
+          const isSMILES = /^[CNOPSBrFIcl@\[\]\(\)=#\-\+\d]+$/.test(input);
+
+          let cid = input;
+          let smiles = null;
+
+          if (
+            isSMILES ||
+            input.includes("=") ||
+            input.includes("#") ||
+            input.includes("(")
+          ) {
+            // Try to convert SMILES to CID
             try {
-                viewer.clear();
-                
-                // Try to get CID from name
-                let cid = nameOrCid;
-                if (isNaN(parseInt(nameOrCid))) {
-                    const searchUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(nameOrCid)}/cids/JSON`;
-                    const searchResp = await fetch(searchUrl);
-                    if (!searchResp.ok) throw new Error('Molecule not found');
-                    const searchData = await searchResp.json();
-                    cid = searchData.IdentifierList.CID[0];
-                }
-                
-                // Get 3D structure
-                const sdfUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/SDF?record_type=3d`;
-                const sdfResp = await fetch(sdfUrl);
-                
-                let sdfData;
-                if (sdfResp.ok) {
-                    sdfData = await sdfResp.text();
-                } else {
-                    // Fallback to 2D if 3D not available
-                    const sdf2dUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/SDF`;
-                    const sdf2dResp = await fetch(sdf2dUrl);
-                    if (!sdf2dResp.ok) throw new Error('Could not fetch structure');
-                    sdfData = await sdf2dResp.text();
-                }
-                
-                currentModel = viewer.addModel(sdfData, 'sdf');
-                updateStyle();
-                viewer.zoomTo();
-                viewer.render();
-                
-                // Get compound info
-                const infoUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/property/MolecularFormula,MolecularWeight,IUPACName/JSON`;
-                const infoResp = await fetch(infoUrl);
-                if (infoResp.ok) {
-                    const infoData = await infoResp.json();
-                    const props = infoData.PropertyTable.Properties[0];
-                    document.getElementById('info-name').textContent = nameOrCid.charAt(0).toUpperCase() + nameOrCid.slice(1);
-                    document.getElementById('info-formula').textContent = props.MolecularFormula;
-                    document.getElementById('info-mw').textContent = props.MolecularWeight.toFixed(2) + ' g/mol';
-                    document.getElementById('info-cid').textContent = cid;
-                    document.getElementById('molecule-info').style.display = 'block';
-                }
-            } catch (error) {
-                showNotification('Error loading molecule: ' + error.message);
+              const converterUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/${encodeURIComponent(input)}/cids/JSON`;
+              const convResp = await fetch(converterUrl);
+              if (convResp.ok) {
+                const convData = await convResp.json();
+                cid = convData.IdentifierList.CID[0];
+              } else {
+                throw new Error("SMILES not found in PubChem");
+              }
+            } catch (e) {
+              showNotification(
+                "Could not convert SMILES to molecule. Using direct SDF fetch.",
+              );
             }
+          } else if (isNaN(parseInt(input))) {
+            // Try to get CID from name
+            const searchUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/${encodeURIComponent(input)}/cids/JSON`;
+            const searchResp = await fetch(searchUrl);
+            if (!searchResp.ok) throw new Error("Molecule not found");
+            const searchData = await searchResp.json();
+            cid = searchData.IdentifierList.CID[0];
+          }
+
+          // Get 3D structure
+          const sdfUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/SDF?record_type=3d`;
+          const sdfResp = await fetch(sdfUrl);
+
+          let sdfData;
+          if (sdfResp.ok) {
+            sdfData = await sdfResp.text();
+          } else {
+            // Fallback to 2D if 3D not available
+            const sdf2dUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/SDF`;
+            const sdf2dResp = await fetch(sdf2dUrl);
+            if (!sdf2dResp.ok) throw new Error("Could not fetch structure");
+            sdfData = await sdf2dResp.text();
+          }
+
+          currentModel = viewer.addModel(sdfData, "sdf");
+          updateStyle();
+          viewer.zoomTo();
+          viewer.render();
+
+          // Get compound info
+          const infoUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/property/MolecularFormula,MolecularWeight,IUPACName/JSON`;
+          const infoResp = await fetch(infoUrl);
+          if (infoResp.ok) {
+            const infoData = await infoResp.json();
+            const props = infoData.PropertyTable.Properties[0];
+            document.getElementById("info-name").textContent =
+              nameOrCid.charAt(0).toUpperCase() + nameOrCid.slice(1);
+            document.getElementById("info-formula").textContent =
+              props.MolecularFormula;
+            document.getElementById("info-mw").textContent =
+              props.MolecularWeight.toFixed(2) + " g/mol";
+            document.getElementById("info-cid").textContent = cid;
+            document.getElementById("molecule-info").style.display = "block";
+          }
+        } catch (error) {
+          showNotification("Error loading molecule: " + error.message);
+        }
+      }
+
+      function updateStyle() {
+        if (!currentModel) return;
+
+        const style = document.getElementById("style-select").value;
+        const colorScheme = document.getElementById("color-select").value;
+
+        viewer.setStyle({}, {});
+
+        const styleObj = {};
+        if (colorScheme === "element") {
+          styleObj.colorscheme = "Jmol";
+        } else if (colorScheme === "spectrum") {
+          styleObj.colorscheme = "spectrum";
+        } else if (colorScheme === "chain") {
+          styleObj.colorscheme = "chain";
+        } else if (colorScheme === "ss") {
+          styleObj.colorscheme = "ssJmol";
         }
 
-        function updateStyle() {
-            if (!currentModel) return;
-            
-            const style = document.getElementById('style-select').value;
-            const colorScheme = document.getElementById('color-select').value;
-            
-            viewer.setStyle({}, {});
-            
-            const styleObj = {};
-            if (colorScheme === 'element') {
-                styleObj.colorscheme = 'Jmol';
-            } else if (colorScheme === 'spectrum') {
-                styleObj.colorscheme = 'spectrum';
-            } else if (colorScheme === 'chain') {
-                styleObj.colorscheme = 'chain';
-            } else if (colorScheme === 'ss') {
-                styleObj.colorscheme = 'ssJmol';
-            }
-            
-            switch (style) {
-                case 'stick':
-                    viewer.setStyle({}, { stick: { ...styleObj, radius: 0.15 } });
-                    break;
-                case 'sphere':
-                    viewer.setStyle({}, { sphere: { ...styleObj, scale: 0.3 } });
-                    break;
-                case 'line':
-                    viewer.setStyle({}, { line: styleObj });
-                    break;
-                case 'cartoon':
-                    viewer.setStyle({}, { cartoon: styleObj, stick: { radius: 0.1, ...styleObj } });
-                    break;
-                case 'cross':
-                    viewer.setStyle({}, { cross: { ...styleObj, linewidth: 2 } });
-                    break;
-            }
-            
-            viewer.render();
+        switch (style) {
+          case "stick":
+            viewer.setStyle({}, { stick: { ...styleObj, radius: 0.15 } });
+            break;
+          case "sphere":
+            viewer.setStyle({}, { sphere: { ...styleObj, scale: 0.3 } });
+            break;
+          case "line":
+            viewer.setStyle({}, { line: styleObj });
+            break;
+          case "cartoon":
+            viewer.setStyle(
+              {},
+              { cartoon: styleObj, stick: { radius: 0.1, ...styleObj } },
+            );
+            break;
+          case "cross":
+            viewer.setStyle({}, { cross: { ...styleObj, linewidth: 2 } });
+            break;
         }
 
-        function updateBackground() {
-            const bg = document.getElementById('bg-select').value;
-            viewer.setBackgroundColor(bg);
-        }
+        viewer.render();
+      }
 
-        function resetView() {
-            viewer.zoomTo();
-            viewer.spin(false);
-            viewer.render();
+      function updateBackground() {
+        const bg = document.getElementById("bg-select").value;
+        viewer.setBackgroundColor(bg);
+      }
+
+      function resetView() {
+        viewer.zoomTo();
+        viewer.spin(false);
+        isSpinning = false;
+        viewer.render();
+      }
+
+      function updateSpinSpeed() {
+        spinSpeed = parseInt(document.getElementById("spin-speed").value);
+        if (isSpinning) {
+          viewer.spin(spinSpeed > 0, {
+            x: 0,
+            y: 1,
+            z: 0,
+            speed: spinSpeed * 0.5,
+          });
         }
+      }
+
+      function toggleSpin() {
+        isSpinning = !isSpinning;
+        if (isSpinning) {
+          viewer.spin(true, { x: 0, y: 1, z: 0, speed: spinSpeed * 0.5 });
+          showNotification("Auto-spin enabled");
+        } else {
+          viewer.spin(false);
+          showNotification("Auto-spin disabled");
+        }
+      }
+
+      function takeScreenshot() {
+        const canvas = viewer.canvas;
+        const link = document.createElement("a");
+        link.download = "molecule-" + Date.now() + ".png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        showNotification("Screenshot saved!");
+      }
+
+      function showNotification(message) {
+        const existing = document.querySelector(".notification-toast");
+        if (existing) existing.remove();
+
+        const toast = document.createElement("div");
+        toast.className = "notification-toast";
+        toast.textContent = message;
+        toast.style.cssText =
+          "position:fixed;bottom:20px;right:20px;background:var(--accent-color);color:white;padding:12px 24px;border-radius:8px;z-index:9999;animation:fadeIn 0.3s ease";
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
     </script>
-</body>
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>

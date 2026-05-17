@@ -1,376 +1,994 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculate pH, pOH, and hydrogen ion concentrations">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Calculate pH, pOH, and hydrogen ion concentrations"
+    />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/ph-calculator.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="pH Calculator - SBS Tools" />
+    <meta property="og:description" content="Calculate pH, pOH, and hydrogen ion concentrations for chemical solutions." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/ph-calculator.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="pH Calculator - SBS Tools" />
+    <meta name="twitter:description" content="Calculate pH, pOH, and hydrogen ion concentrations." />
+    <meta name="robots" content="index, follow" />
     <title>pH Calculator - SBS Tools</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/theme.css">
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/mobile.css">
-    <link rel="stylesheet" href="../../assets/css/tool-page.css">
-</head>
-<body>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+  </head>
+  <body>
     <div id="navbar-container"></div>
-    <script src="../../assets/js/navbar.js"></script>
+    <script type="module" src="../../assets/js/navbar.js"></script>
 
     <main class="tool-page">
-        <div class="tool-container">
-            <div class="tool-header">
-                <h1><i data-lucide="droplets"></i> pH Calculator</h1>
-                <p>Calculate pH, pOH, and ion concentrations</p>
-            </div>
-
-            <div class="tool-card">
-                <div class="tabs">
-                    <button class="tab active" data-mode="ph">From pH</button>
-                    <button class="tab" data-mode="poh">From pOH</button>
-                    <button class="tab" data-mode="h">From [H⁺]</button>
-                    <button class="tab" data-mode="oh">From [OH⁻]</button>
-                </div>
-
-                <div class="input-area">
-                    <div class="form-group">
-                        <label id="input-label">Enter pH value</label>
-                        <input type="number" id="input-value" placeholder="7.0" step="any">
-                    </div>
-                    <button class="tool-btn tool-btn-primary" onclick="calculate()">
-                        <i data-lucide="calculator"></i> Calculate
-                    </button>
-                </div>
-
-                <div class="ph-scale">
-                    <div class="scale-bar">
-                        <div class="scale-indicator" id="scale-indicator"></div>
-                    </div>
-                    <div class="scale-labels">
-                        <span>0 (Acidic)</span>
-                        <span>7 (Neutral)</span>
-                        <span>14 (Basic)</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tool-card" id="results-card" style="display: none;">
-                <h3><i data-lucide="flask-conical"></i> Results</h3>
-                <div class="results-grid">
-                    <div class="result-item">
-                        <span class="result-label">pH</span>
-                        <span class="result-value" id="result-ph">-</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">pOH</span>
-                        <span class="result-value" id="result-poh">-</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">[H⁺]</span>
-                        <span class="result-value" id="result-h">-</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">[OH⁻]</span>
-                        <span class="result-value" id="result-oh">-</span>
-                    </div>
-                </div>
-                <div class="solution-type" id="solution-type"></div>
-            </div>
-
-            <div class="tool-card">
-                <h3><i data-lucide="beaker"></i> Common Substances pH</h3>
-                <div class="substances-grid">
-                    <div class="substance" onclick="setpH(0)"><span class="ph-dot" style="background: #ff0000"></span>Battery acid (0)</div>
-                    <div class="substance" onclick="setpH(1)"><span class="ph-dot" style="background: #ff3300"></span>Stomach acid (1)</div>
-                    <div class="substance" onclick="setpH(2.4)"><span class="ph-dot" style="background: #ff6600"></span>Lemon juice (2.4)</div>
-                    <div class="substance" onclick="setpH(2.9)"><span class="ph-dot" style="background: #ff8800"></span>Vinegar (2.9)</div>
-                    <div class="substance" onclick="setpH(4)"><span class="ph-dot" style="background: #ffaa00"></span>Tomato juice (4)</div>
-                    <div class="substance" onclick="setpH(5.5)"><span class="ph-dot" style="background: #ffcc00"></span>Coffee (5.5)</div>
-                    <div class="substance" onclick="setpH(6.5)"><span class="ph-dot" style="background: #ccff00"></span>Milk (6.5)</div>
-                    <div class="substance" onclick="setpH(7)"><span class="ph-dot" style="background: #00ff00"></span>Pure water (7)</div>
-                    <div class="substance" onclick="setpH(7.4)"><span class="ph-dot" style="background: #00ff66"></span>Blood (7.4)</div>
-                    <div class="substance" onclick="setpH(8.3)"><span class="ph-dot" style="background: #00ffcc"></span>Sea water (8.3)</div>
-                    <div class="substance" onclick="setpH(9)"><span class="ph-dot" style="background: #00ccff"></span>Baking soda (9)</div>
-                    <div class="substance" onclick="setpH(10)"><span class="ph-dot" style="background: #0088ff"></span>Milk of magnesia (10)</div>
-                    <div class="substance" onclick="setpH(11)"><span class="ph-dot" style="background: #0044ff"></span>Ammonia (11)</div>
-                    <div class="substance" onclick="setpH(12.5)"><span class="ph-dot" style="background: #4400ff"></span>Bleach (12.5)</div>
-                    <div class="substance" onclick="setpH(14)"><span class="ph-dot" style="background: #8800ff"></span>Drain cleaner (14)</div>
-                </div>
-            </div>
-
-            <div class="tool-card">
-                <h3><i data-lucide="book-open"></i> pH Formulas</h3>
-                <div class="formulas">
-                    <div class="formula-item">
-                        <span class="formula">pH = -log₁₀[H⁺]</span>
-                    </div>
-                    <div class="formula-item">
-                        <span class="formula">pOH = -log₁₀[OH⁻]</span>
-                    </div>
-                    <div class="formula-item">
-                        <span class="formula">pH + pOH = 14</span>
-                        <small>(at 25°C)</small>
-                    </div>
-                    <div class="formula-item">
-                        <span class="formula">[H⁺] × [OH⁻] = 10⁻¹⁴</span>
-                        <small>(Kw at 25°C)</small>
-                    </div>
-                </div>
-            </div>
+      <div class="tool-container">
+        <div class="tool-header">
+          <h1><i data-lucide="droplets"></i> pH Calculator</h1>
+          <p>Calculate pH, pOH, and ion concentrations</p>
         </div>
+
+        <div class="tool-card">
+          <div class="tabs">
+            <button
+              class="tab active"
+              data-mode="ph"
+              title="Calculate from pH value"
+            >
+              <i data-lucide="gauge"></i> From pH
+            </button>
+            <button
+              class="tab"
+              data-mode="poh"
+              title="Calculate from pOH value"
+            >
+              <i data-lucide="gauge"></i> From pOH
+            </button>
+            <button
+              class="tab"
+              data-mode="h"
+              title="Calculate from H+ concentration"
+            >
+              <i data-lucide="atom"></i> From [H⁺]
+            </button>
+            <button
+              class="tab"
+              data-mode="oh"
+              title="Calculate from OH- concentration"
+            >
+              <i data-lucide="atom"></i> From [OH⁻]
+            </button>
+          </div>
+
+          <div class="input-area">
+            <div class="form-group">
+              <label id="input-label">
+                <span class="mode-icon" id="mode-icon"></span>
+                Enter pH value (0-14)
+              </label>
+              <div class="input-wrapper">
+                <span class="input-prefix" id="input-prefix"></span>
+                <input
+                  type="number"
+                  id="input-value"
+                  placeholder="7.0"
+                  step="any"
+                  min="0"
+                  max="14"
+                />
+                <span class="input-suffix" id="input-suffix"></span>
+              </div>
+              <small class="input-hint" id="input-hint"></small>
+            </div>
+            <div class="input-actions">
+              <button class="tool-btn tool-btn-primary" onclick="calculate()">
+                <i data-lucide="calculator"></i> Calculate
+              </button>
+              <button
+                class="tool-btn tool-btn-secondary"
+                onclick="clearAll()"
+                title="Clear"
+              >
+                <i data-lucide="trash-2"></i> Clear
+              </button>
+            </div>
+          </div>
+
+          <div class="ph-scale">
+            <div class="scale-bar">
+              <div class="scale-indicator" id="scale-indicator"></div>
+              <div class="scale-acidic-label">
+                <i data-lucide="flask"></i> Acidic
+              </div>
+              <div class="scale-neutral-label">
+                <i data-lucide="droplets"></i> Neutral
+              </div>
+              <div class="scale-basic-label">
+                <i data-lucide="flask-conical"></i> Basic
+              </div>
+            </div>
+            <div class="scale-labels">
+              <span>0</span>
+              <span>7</span>
+              <span>14</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card" id="results-card" style="display: none">
+          <div class="results-header">
+            <h3><i data-lucide="flask-conical"></i> Results</h3>
+            <button
+              class="copy-btn"
+              id="copy-btn"
+              onclick="copyResults()"
+              title="Copy results"
+            >
+              <i data-lucide="copy"></i> Copy
+            </button>
+          </div>
+          <div class="results-grid">
+            <div class="result-item">
+              <span class="result-label">pH</span>
+              <span class="result-value" id="result-ph">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">pOH</span>
+              <span class="result-value" id="result-poh">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">[H⁺]</span>
+              <span class="result-value" id="result-h">-</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">[OH⁻]</span>
+              <span class="result-value" id="result-oh">-</span>
+            </div>
+          </div>
+          <div class="solution-type" id="solution-type"></div>
+          <div class="result-explanation" id="result-explanation"></div>
+        </div>
+
+        <div class="tool-card">
+          <h3><i data-lucide="beaker"></i> Common Substances pH Reference</h3>
+          <p
+            style="
+              color: var(--text-secondary);
+              font-size: 0.85rem;
+              margin-bottom: 1rem;
+            "
+          >
+            Click any substance to calculate its pH values
+          </p>
+          <div class="substances-grid">
+            <div class="substance" onclick="setpH(0)">
+              <span
+                class="ph-dot"
+                style="background: #ff0000; color: #ff0000"
+              ></span>
+              <span class="substance-name">Battery Acid</span>
+              <span class="substance-ph">pH 0</span>
+            </div>
+            <div class="substance" onclick="setpH(1)">
+              <span
+                class="ph-dot"
+                style="background: #ff3300; color: #ff3300"
+              ></span>
+              <span class="substance-name">Stomach Acid</span>
+              <span class="substance-ph">pH 1</span>
+            </div>
+            <div class="substance" onclick="setpH(2.4)">
+              <span
+                class="ph-dot"
+                style="background: #ff6600; color: #ff6600"
+              ></span>
+              <span class="substance-name">Lemon Juice</span>
+              <span class="substance-ph">pH 2.4</span>
+            </div>
+            <div class="substance" onclick="setpH(2.9)">
+              <span
+                class="ph-dot"
+                style="background: #ff8800; color: #ff8800"
+              ></span>
+              <span class="substance-name">Vinegar</span>
+              <span class="substance-ph">pH 2.9</span>
+            </div>
+            <div class="substance" onclick="setpH(4)">
+              <span
+                class="ph-dot"
+                style="background: #ffaa00; color: #ffaa00"
+              ></span>
+              <span class="substance-name">Tomato Juice</span>
+              <span class="substance-ph">pH 4</span>
+            </div>
+            <div class="substance" onclick="setpH(5.5)">
+              <span
+                class="ph-dot"
+                style="background: #ffcc00; color: #ffcc00"
+              ></span>
+              <span class="substance-name">Coffee</span>
+              <span class="substance-ph">pH 5.5</span>
+            </div>
+            <div class="substance" onclick="setpH(6.5)">
+              <span
+                class="ph-dot"
+                style="background: #ccff00; color: #ccff00"
+              ></span>
+              <span class="substance-name">Milk</span>
+              <span class="substance-ph">pH 6.5</span>
+            </div>
+            <div class="substance" onclick="setpH(7)">
+              <span
+                class="ph-dot"
+                style="background: #00ff00; color: #00ff00"
+              ></span>
+              <span class="substance-name">Pure Water</span>
+              <span class="substance-ph">pH 7</span>
+            </div>
+            <div class="substance" onclick="setpH(7.4)">
+              <span
+                class="ph-dot"
+                style="background: #00ff66; color: #00ff66"
+              ></span>
+              <span class="substance-name">Blood</span>
+              <span class="substance-ph">pH 7.4</span>
+            </div>
+            <div class="substance" onclick="setpH(8.3)">
+              <span
+                class="ph-dot"
+                style="background: #00ffcc; color: #00ffcc"
+              ></span>
+              <span class="substance-name">Sea Water</span>
+              <span class="substance-ph">pH 8.3</span>
+            </div>
+            <div class="substance" onclick="setpH(9)">
+              <span
+                class="ph-dot"
+                style="background: #00ccff; color: #00ccff"
+              ></span>
+              <span class="substance-name">Baking Soda</span>
+              <span class="substance-ph">pH 9</span>
+            </div>
+            <div class="substance" onclick="setpH(10)">
+              <span
+                class="ph-dot"
+                style="background: #0088ff; color: #0088ff"
+              ></span>
+              <span class="substance-name">Milk of Magnesia</span>
+              <span class="substance-ph">pH 10</span>
+            </div>
+            <div class="substance" onclick="setpH(11)">
+              <span
+                class="ph-dot"
+                style="background: #0044ff; color: #0044ff"
+              ></span>
+              <span class="substance-name">Ammonia</span>
+              <span class="substance-ph">pH 11</span>
+            </div>
+            <div class="substance" onclick="setpH(12.5)">
+              <span
+                class="ph-dot"
+                style="background: #4400ff; color: #4400ff"
+              ></span>
+              <span class="substance-name">Bleach</span>
+              <span class="substance-ph">pH 12.5</span>
+            </div>
+            <div class="substance" onclick="setpH(14)">
+              <span
+                class="ph-dot"
+                style="background: #8800ff; color: #8800ff"
+              ></span>
+              <span class="substance-name">Drain Cleaner</span>
+              <span class="substance-ph">pH 14</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card">
+          <h3><i data-lucide="book-open"></i> pH Formulas</h3>
+          <div class="formulas">
+            <div class="formula-item">
+              <span class="formula">pH = -log₁₀[H⁺]</span>
+            </div>
+            <div class="formula-item">
+              <span class="formula">pOH = -log₁₀[OH⁻]</span>
+            </div>
+            <div class="formula-item">
+              <span class="formula">pH + pOH = 14</span>
+              <small>(at 25°C)</small>
+            </div>
+            <div class="formula-item">
+              <span class="formula">[H⁺] × [OH⁻] = 10⁻¹⁴</span>
+              <small>(Kw at 25°C)</small>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <style>
-        .input-area {
-            margin-top: 1.5rem;
-        }
-        .ph-scale {
-            margin-top: 2rem;
-        }
-        .scale-bar {
-            height: 30px;
-            border-radius: 15px;
-            background: linear-gradient(to right, 
-                #ff0000 0%, #ff8800 21%, #ffff00 35%, 
-                #00ff00 50%, #00ffff 65%, #0000ff 79%, #8800ff 100%);
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .scale-indicator {
-            position: absolute;
-            width: 4px;
-            height: 40px;
-            background: white;
-            border: 2px solid var(--bg-primary);
-            border-radius: 4px;
-            top: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: left 0.5s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        .scale-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
+      .input-area {
+        margin-top: 1.5rem;
+      }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .tab {
+        flex: 1;
+        min-width: 120px;
+        padding: 0.75rem 1rem;
+        background: var(--bg-secondary);
+        border: 2px solid transparent;
+        border-radius: 8px;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .tab:hover {
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+      }
+      .tab.active {
+        background: var(--accent-color);
+        color: white;
+        border-color: var(--accent-color);
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+      .input-wrapper {
+        display: flex;
+        align-items: center;
+        background: var(--bg-secondary);
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .input-wrapper:focus-within {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+      .input-prefix,
+      .input-suffix {
+        padding: 0.75rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        background: var(--bg-tertiary);
+      }
+      .input-wrapper input {
+        flex: 1;
+        padding: 0.75rem;
+        border: none;
+        background: transparent;
+        color: var(--text-primary);
+        font-size: 1rem;
+        outline: none;
+        min-width: 0;
+      }
+      .input-hint {
+        display: block;
+        margin-top: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+      }
+      .input-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+      .input-actions .tool-btn {
+        flex: 1;
+        min-width: 120px;
+      }
+      .ph-scale {
+        margin-top: 2rem;
+      }
+      .scale-bar {
+        height: 30px;
+        border-radius: 15px;
+        background: linear-gradient(
+          to right,
+          #ff0000 0%,
+          #ff8800 21%,
+          #ffff00 35%,
+          #00ff00 50%,
+          #00ffff 65%,
+          #0000ff 79%,
+          #8800ff 100%
+        );
+        position: relative;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .scale-indicator {
+        position: absolute;
+        width: 4px;
+        height: 40px;
+        background: white;
+        border: 2px solid var(--bg-primary);
+        border-radius: 4px;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: left 0.5s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        z-index: 2;
+      }
+      .scale-acidic-label,
+      .scale-neutral-label,
+      .scale-basic-label {
+        position: absolute;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        pointer-events: none;
+      }
+      .scale-acidic-label {
+        left: 8%;
+        top: 35px;
+      }
+      .scale-neutral-label {
+        left: 48%;
+        top: 35px;
+      }
+      .scale-basic-label {
+        left: 88%;
+        top: 35px;
+      }
+      .scale-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2.5rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+      .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .results-header h3 {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .copy-btn {
+        padding: 0.5rem 1rem;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: all 0.2s ease;
+      }
+      .copy-btn:hover {
+        background: var(--accent-color);
+        color: white;
+        border-color: var(--accent-color);
+      }
+      .copy-btn.copied {
+        background: #22c55e;
+        color: white;
+        border-color: #22c55e;
+      }
+      .results-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .result-item {
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .result-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      .result-label {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+      .result-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        font-family: "Courier New", monospace;
+        color: var(--accent-color);
+      }
+      .solution-type {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .solution-type.acidic {
+        background: rgba(255, 107, 107, 0.15);
+        color: #ff6b6b;
+        border: 1px solid rgba(255, 107, 107, 0.3);
+      }
+      .solution-type.neutral {
+        background: rgba(56, 217, 169, 0.15);
+        color: #38d9a9;
+        border: 1px solid rgba(56, 217, 169, 0.3);
+      }
+      .solution-type.basic {
+        background: rgba(116, 143, 252, 0.15);
+        color: #748ffc;
+        border: 1px solid rgba(116, 143, 252, 0.3);
+      }
+      .result-explanation {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+      .result-explanation strong {
+        color: var(--text-primary);
+      }
+      .substances-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .substance {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+      }
+      .substance:hover {
+        background: var(--bg-tertiary);
+        transform: translateX(4px);
+        border-color: var(--accent-color);
+      }
+      .substance span.ph-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        box-shadow: 0 0 8px currentColor;
+      }
+      .substance .substance-name {
+        flex: 1;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+      .substance .substance-ph {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+      }
+      .formulas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .formula-item {
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--bg-secondary);
+        border-radius: 12px;
+      }
+      .formula {
+        display: block;
+        font-family: "Courier New", monospace;
+        font-size: 1.1rem;
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+      .formula-item small {
+        display: block;
+        margin-top: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+      }
+      @media (max-width: 600px) {
         .results-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
+          grid-template-columns: 1fr;
         }
-        .result-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--bg-secondary);
-            border-radius: 12px;
+        .tabs {
+          flex-direction: column;
         }
-        .result-label {
-            display: block;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
+        .tab {
+          width: 100%;
         }
-        .result-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            font-family: 'Courier New', monospace;
-        }
-        .solution-type {
-            text-align: center;
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-        .solution-type.acidic {
-            background: rgba(255, 107, 107, 0.2);
-            color: #ff6b6b;
-        }
-        .solution-type.neutral {
-            background: rgba(56, 217, 169, 0.2);
-            color: #38d9a9;
-        }
-        .solution-type.basic {
-            background: rgba(116, 143, 252, 0.2);
-            color: #748ffc;
+        .input-actions {
+          flex-direction: column;
         }
         .substances-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 0.75rem;
-            margin-top: 1rem;
+          grid-template-columns: repeat(2, 1fr);
         }
-        .substance {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        .substance:hover {
-            background: var(--bg-tertiary);
-            transform: translateX(4px);
-        }
-        .ph-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        .formulas {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .formula-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-        }
-        .formula {
-            display: block;
-            font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            color: var(--accent-color);
-        }
-        .formula-item small {
-            display: block;
-            margin-top: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-        @media (max-width: 600px) {
-            .results-grid { grid-template-columns: 1fr; }
-        }
+      }
     </style>
 
     <script>
-        let currentMode = 'ph';
+      let currentMode = "ph";
+      let lastCalculatedValues = {};
 
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    currentMode = tab.dataset.mode;
-                    updateInputLabel();
-                });
-            });
+      const modeConfig = {
+        ph: {
+          label: "Enter pH value (0-14)",
+          placeholder: "7.0",
+          prefix: "pH",
+          hint: "pH measures acidity: 0-6.9 is acidic, 7 is neutral, 7.1-14 is basic",
+          icon: "gauge",
+        },
+        poh: {
+          label: "Enter pOH value (0-14)",
+          placeholder: "7.0",
+          prefix: "pOH",
+          hint: "pOH measures basicity: lower values are more basic",
+          icon: "gauge",
+        },
+        h: {
+          label: "Enter [H⁺] concentration (M)",
+          placeholder: "1e-7",
+          prefix: "[H⁺]",
+          suffix: "M",
+          hint: "Enter as decimal (0.001) or scientific notation (1e-3)",
+          icon: "atom",
+        },
+        oh: {
+          label: "Enter [OH⁻] concentration (M)",
+          placeholder: "1e-7",
+          prefix: "[OH⁻]",
+          suffix: "M",
+          hint: "Enter as decimal (0.001) or scientific notation (1e-3)",
+          icon: "atom",
+        },
+      };
 
-            document.getElementById('input-value').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') calculate();
-            });
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof lucide !== "undefined") lucide.createIcons();
+        updateInputLabel();
+
+        document.querySelectorAll(".tab").forEach((tab) => {
+          tab.addEventListener("click", () => {
+            document
+              .querySelectorAll(".tab")
+              .forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
+            currentMode = tab.dataset.mode;
+            updateInputLabel();
+          });
         });
 
-        function updateInputLabel() {
-            const labels = {
-                'ph': 'Enter pH value (0-14)',
-                'poh': 'Enter pOH value (0-14)',
-                'h': 'Enter [H⁺] concentration (M)',
-                'oh': 'Enter [OH⁻] concentration (M)'
-            };
-            document.getElementById('input-label').textContent = labels[currentMode];
-            document.getElementById('input-value').value = '';
-            document.getElementById('input-value').placeholder = currentMode === 'ph' || currentMode === 'poh' ? '7.0' : '1e-7';
+        const inputEl = document.getElementById("input-value");
+        inputEl.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") calculate();
+        });
+
+        inputEl.addEventListener("input", () => {
+          if (inputEl.value && inputEl.value.trim() !== "") {
+            clearTimeout(window.phCalcTimeout);
+            window.phCalcTimeout = setTimeout(calculate, 500);
+          }
+        });
+      });
+
+      function updateInputLabel() {
+        const config = modeConfig[currentMode];
+        document.getElementById("input-label").innerHTML =
+          `<i data-lucide="${config.icon}"></i> ${config.label}`;
+        document.getElementById("input-value").value = "";
+        document.getElementById("input-value").placeholder = config.placeholder;
+        document.getElementById("input-prefix").textContent =
+          config.prefix || "";
+        document.getElementById("input-suffix").textContent =
+          config.suffix || "";
+        document.getElementById("input-hint").textContent = config.hint || "";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      function setpH(ph) {
+        currentMode = "ph";
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("active"));
+        document.querySelector('[data-mode="ph"]').classList.add("active");
+        document.getElementById("input-value").value = ph;
+        updateInputLabel();
+        calculate();
+      }
+
+      function clearAll() {
+        document.getElementById("input-value").value = "";
+        document.getElementById("results-card").style.display = "none";
+        document.getElementById("scale-indicator").style.left = "50%";
+        lastCalculatedValues = {};
+      }
+
+      function calculate() {
+        const input = parseFloat(document.getElementById("input-value").value);
+        if (isNaN(input)) {
+          document.getElementById("results-card").style.display = "none";
+          return;
         }
 
-        function setpH(ph) {
-            currentMode = 'ph';
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('[data-mode="ph"]').classList.add('active');
-            document.getElementById('input-value').value = ph;
-            updateInputLabel();
-            calculate();
-        }
+        let pH, pOH, hConc, ohConc;
+        let inputValid = true;
 
-        function calculate() {
-            const input = parseFloat(document.getElementById('input-value').value);
-            if (isNaN(input)) return;
-
-            let pH, pOH, hConc, ohConc;
-
-            switch (currentMode) {
-                case 'ph':
-                    pH = input;
-                    pOH = 14 - pH;
-                    hConc = Math.pow(10, -pH);
-                    ohConc = Math.pow(10, -pOH);
-                    break;
-                case 'poh':
-                    pOH = input;
-                    pH = 14 - pOH;
-                    hConc = Math.pow(10, -pH);
-                    ohConc = Math.pow(10, -pOH);
-                    break;
-                case 'h':
-                    hConc = input;
-                    pH = -Math.log10(hConc);
-                    pOH = 14 - pH;
-                    ohConc = Math.pow(10, -pOH);
-                    break;
-                case 'oh':
-                    ohConc = input;
-                    pOH = -Math.log10(ohConc);
-                    pH = 14 - pOH;
-                    hConc = Math.pow(10, -pH);
-                    break;
+        switch (currentMode) {
+          case "ph":
+            if (input < 0 || input > 14) {
+              document.getElementById("input-value").style.borderColor =
+                "#ff6b6b";
+              return;
             }
-
-            // Display results
-            document.getElementById('result-ph').textContent = pH.toFixed(4);
-            document.getElementById('result-poh').textContent = pOH.toFixed(4);
-            document.getElementById('result-h').textContent = formatScientific(hConc) + ' M';
-            document.getElementById('result-oh').textContent = formatScientific(ohConc) + ' M';
-
-            // Update scale indicator
-            const percent = Math.max(0, Math.min(100, (pH / 14) * 100));
-            document.getElementById('scale-indicator').style.left = percent + '%';
-
-            // Solution type
-            const typeEl = document.getElementById('solution-type');
-            if (Math.abs(pH - 7) < 0.01) {
-                typeEl.textContent = '⚖️ Neutral Solution (pH ≈ 7)';
-                typeEl.className = 'solution-type neutral';
-            } else if (pH < 7) {
-                typeEl.textContent = '🧪 Acidic Solution (pH < 7)';
-                typeEl.className = 'solution-type acidic';
-            } else {
-                typeEl.textContent = '🧫 Basic/Alkaline Solution (pH > 7)';
-                typeEl.className = 'solution-type basic';
+            pH = input;
+            pOH = 14 - pH;
+            hConc = Math.pow(10, -pH);
+            ohConc = Math.pow(10, -pOH);
+            break;
+          case "poh":
+            if (input < 0 || input > 14) {
+              document.getElementById("input-value").style.borderColor =
+                "#ff6b6b";
+              return;
             }
-
-            document.getElementById('results-card').style.display = 'block';
-            lucide.createIcons();
-        }
-
-        function formatScientific(num) {
-            if (num === 0) return '0';
-            const exp = Math.floor(Math.log10(Math.abs(num)));
-            const mantissa = num / Math.pow(10, exp);
-            if (exp >= -3 && exp <= 3) {
-                return num.toPrecision(4);
+            pOH = input;
+            pH = 14 - pOH;
+            hConc = Math.pow(10, -pH);
+            ohConc = Math.pow(10, -pOH);
+            break;
+          case "h":
+            if (input <= 0) {
+              document.getElementById("input-value").style.borderColor =
+                "#ff6b6b";
+              return;
             }
-            return mantissa.toFixed(2) + ' × 10' + formatSuperscript(exp);
+            hConc = input;
+            pH = -Math.log10(hConc);
+            pOH = 14 - pH;
+            ohConc = Math.pow(10, -pOH);
+            break;
+          case "oh":
+            if (input <= 0) {
+              document.getElementById("input-value").style.borderColor =
+                "#ff6b6b";
+              return;
+            }
+            ohConc = input;
+            pOH = -Math.log10(ohConc);
+            pH = 14 - pOH;
+            hConc = Math.pow(10, -pH);
+            break;
         }
 
-        function formatSuperscript(n) {
-            const superscripts = {'0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', 
-                                  '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻'};
-            return String(n).split('').map(c => superscripts[c] || c).join('');
+        document.getElementById("input-value").style.borderColor = "";
+
+        lastCalculatedValues = { pH, pOH, hConc, ohConc };
+
+        document.getElementById("result-ph").textContent = pH.toFixed(4);
+        document.getElementById("result-poh").textContent = pOH.toFixed(4);
+        document.getElementById("result-h").textContent =
+          formatScientific(hConc);
+        document.getElementById("result-oh").textContent =
+          formatScientific(ohConc);
+
+        const percent = Math.max(0, Math.min(100, (pH / 14) * 100));
+        document.getElementById("scale-indicator").style.left = percent + "%";
+
+        const typeEl = document.getElementById("solution-type");
+        let type, explanation;
+        if (Math.abs(pH - 7) < 0.01) {
+          type = "neutral";
+          typeEl.innerHTML = `<i data-lucide="equal"></i> Neutral Solution (pH ≈ 7)`;
+        } else if (pH < 7) {
+          type = "acidic";
+          typeEl.innerHTML = `<i data-lucide="flask"></i> Acidic Solution (pH < 7)`;
+        } else {
+          type = "basic";
+          typeEl.innerHTML = `<i data-lucide="flask-conical"></i> Basic/Alkaline Solution (pH > 7)`;
         }
+        typeEl.className = `solution-type ${type}`;
+
+        const acidStrength = getAcidStrength(pH);
+        explanation = generateExplanation(pH, pOH, hConc, ohConc, acidStrength);
+        document.getElementById("result-explanation").innerHTML = explanation;
+
+        document.getElementById("results-card").style.display = "block";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      function getAcidStrength(pH) {
+        if (pH < 0) return "Extremely Strong Acid";
+        if (pH < 2) return "Strong Acid";
+        if (pH < 4) return "Moderate Acid";
+        if (pH < 6) return "Weak Acid";
+        if (Math.abs(pH - 7) < 0.1) return "Neutral";
+        if (pH < 9) return "Weak Base";
+        if (pH < 12) return "Moderate Base";
+        if (pH < 14) return "Strong Base";
+        return "Extremely Strong Base";
+      }
+
+      function generateExplanation(pH, pOH, hConc, ohConc, strength) {
+        let desc = `<strong>Classification:</strong> ${strength}<br>`;
+
+        if (pH < 7) {
+          desc += `<strong>Hydrogen Ion:</strong> [H⁺] = ${formatScientific(hConc)} M (exceeds neutral level of 10⁻⁷ M)<br>`;
+          desc += `<strong>Properties:</strong> High H⁺ concentration, capable of donating protons, often tastes sour`;
+        } else if (pH > 7) {
+          desc += `<strong>Hydroxide Ion:</strong> [OH⁻] = ${formatScientific(ohConc)} M (exceeds neutral level of 10⁻⁷ M)<br>`;
+          desc += `<strong>Properties:</strong> High OH⁻ concentration, capable of accepting protons, often feels slippery, tastes bitter`;
+        } else {
+          desc += `<strong>Ion Balance:</strong> [H⁺] = [OH⁻] = 10⁻⁷ M<br>`;
+          desc += `<strong>Properties:</strong> Perfect balance between H⁺ and OH⁻ ions, neither acidic nor basic`;
+        }
+
+        desc += `<br><br><strong>pH + pOH = 14:</strong> ${pH.toFixed(2)} + ${pOH.toFixed(2)} = 14 ✓`;
+        return desc;
+      }
+
+      function copyResults() {
+        const v = lastCalculatedValues;
+        if (!v.pH) return;
+
+        const text = `pH Calculator Results:
+pH: ${v.pH.toFixed(4)}
+pOH: ${v.pOH.toFixed(4)}
+[H⁺]: ${formatScientific(v.hConc)} M
+[OH⁻]: ${formatScientific(v.ohConc)} M
+
+Calculated with SBS Tools`;
+
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = document.getElementById("copy-btn");
+          btn.innerHTML = `<i data-lucide="check"></i> Copied!`;
+          btn.classList.add("copied");
+          if (typeof lucide !== "undefined") lucide.createIcons();
+          setTimeout(() => {
+            btn.innerHTML = `<i data-lucide="copy"></i> Copy`;
+            btn.classList.remove("copied");
+            if (typeof lucide !== "undefined") lucide.createIcons();
+          }, 2000);
+        });
+      }
+
+      function formatScientific(num) {
+        if (num === 0) return "0";
+        const exp = Math.floor(Math.log10(Math.abs(num)));
+        const mantissa = num / Math.pow(10, exp);
+        if (exp >= -3 && exp <= 3) {
+          return num.toPrecision(4);
+        }
+        return mantissa.toFixed(2) + " × 10" + formatSuperscript(exp);
+      }
+
+      function formatSuperscript(n) {
+        const superscripts = {
+          0: "⁰",
+          1: "¹",
+          2: "²",
+          3: "³",
+          4: "⁴",
+          5: "⁵",
+          6: "⁶",
+          7: "⁷",
+          8: "⁸",
+          9: "⁹",
+          "-": "⁻",
+        };
+        return String(n)
+          .split("")
+          .map((c) => superscripts[c] || c)
+          .join("");
+      }
     </script>
-</body>
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>
