@@ -263,6 +263,31 @@
 
     <script>
       let allResults = [];
+      let searchTimeout = null;
+      const CORS_PROXIES = [
+        (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+        (url) => url, // Direct fallback
+      ];
+
+      async function fetchWithProxy(url, options = {}) {
+        let lastError;
+        for (const proxy of CORS_PROXIES) {
+          try {
+            const proxyUrl = proxy(url);
+            const response = await fetch(proxyUrl, {
+              ...options,
+              signal: AbortSignal.timeout(15000),
+            });
+            if (response.ok) return response;
+            lastError = new Error(`HTTP ${response.status}`);
+          } catch (e) {
+            lastError = e;
+            if (e.name === "AbortError") break;
+          }
+        }
+        throw lastError || new Error("All proxy attempts failed");
+      }
 
       function showNotification(msg) {
         let el = document.getElementById("pf-toast");
@@ -296,6 +321,12 @@
           return;
         }
 
+        // Debounce rapid searches
+        if (searchTimeout) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => executeSearch(query), 300);
+      }
+
+      async function executeSearch(query) {
         const source = document.getElementById("source").value;
         const yearFrom = document.getElementById("year-from").value;
         const yearTo = document.getElementById("year-to").value;
@@ -316,29 +347,45 @@
         document.getElementById("search-btn").disabled = true;
 
         allResults = [];
+        let errors = [];
 
         try {
           if (source === "semantic" || source === "both") {
-            const semanticResults = await searchSemanticScholar(
-              query,
-              yearFrom,
-              yearTo,
-            );
-            allResults = [...allResults, ...semanticResults];
+            try {
+              const semanticResults = await searchSemanticScholar(query, yearFrom, yearTo);
+              allResults = [...allResults, ...semanticResults];
+            } catch (e) {
+              console.warn("Semantic Scholar failed:", e.message);
+              errors.push("Semantic Scholar: " + e.message);
+            }
           }
 
           if (source === "arxiv" || source === "both") {
-            const arxivResults = await searchArxiv(query, yearFrom, yearTo);
-            allResults = [...allResults, ...arxivResults];
+            try {
+              const arxivResults = await searchArxiv(query, yearFrom, yearTo);
+              allResults = [...allResults, ...arxivResults];
+            } catch (e) {
+              console.warn("arXiv failed:", e.message);
+              errors.push("arXiv: " + e.message);
+            }
           }
 
-          displayResults();
+          if (allResults.length === 0 && errors.length > 0) {
+            const errDiv = document.createElement("div");
+            errDiv.className = "alert alert-error";
+            errDiv.innerHTML = `<i data-lucide="alert-circle"></i> <span>Could not fetch papers. ${errors.join("; ")}. Please try again later.</span>`;
+            document.getElementById("results-list").appendChild(errDiv);
+            if (typeof lucide !== "undefined") lucide.createIcons();
+          } else if (errors.length > 0) {
+            showNotification("Partial results: " + errors.join("; "));
+            displayResults();
+          } else {
+            displayResults();
+          }
         } catch (error) {
           const errDiv = document.createElement("div");
           errDiv.className = "alert alert-error";
-          const safeMsg = document.createTextNode("Error searching papers: " + error.message);
-          errDiv.innerHTML = '<i data-lucide="alert-circle"></i> ';
-          errDiv.appendChild(safeMsg);
+          errDiv.innerHTML = `<i data-lucide="alert-circle"></i> <span>Search failed. Please check your connection and try again.</span>`;
           document.getElementById("results-list").innerHTML = "";
           document.getElementById("results-list").appendChild(errDiv);
           if (typeof lucide !== "undefined") lucide.createIcons();
@@ -359,10 +406,10 @@
           url += `&year=-${yearTo}`;
         }
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Semantic Scholar API error");
-
+        const response = await fetchWithProxy(url);
         const data = await response.json();
+
+        if (!data.data) throw new Error("No results from Semantic Scholar");
 
         return (data.data || []).map((paper) => ({
           title: paper.title,
@@ -380,8 +427,7 @@
       async function searchArxiv(query, yearFrom, yearTo) {
         const url = `https://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(query)}&start=0&max_results=20&sortBy=relevance`;
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("arXiv API error");
+        const response = await fetchWithProxy(url);
 
         const text = await response.text();
         const parser = new DOMParser();
