@@ -30,7 +30,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -298,6 +298,16 @@
         const source = document.getElementById("source").value;
         const yearFrom = document.getElementById("year-from").value;
         const yearTo = document.getElementById("year-to").value;
+
+        // Validate year range
+        if (yearFrom && yearTo && parseInt(yearFrom) > parseInt(yearTo)) {
+          showNotification("'Year From' must be ≤ 'Year To'");
+          return;
+        }
+        if (yearFrom && parseInt(yearFrom) < 1900) {
+          showNotification("Year must be 1900 or later");
+          return;
+        }
 
         document.getElementById("results-container").style.display = "block";
         document.getElementById("loading").style.display = "flex";

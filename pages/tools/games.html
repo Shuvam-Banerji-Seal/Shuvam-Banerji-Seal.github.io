@@ -981,6 +981,9 @@
         const settings = difficultySettings[difficulty];
         if (settings.time <= 0) return;
         timeLeft = settings.time;
+        const timerEl = document.getElementById("game-timer");
+        timerEl.textContent = `⏱ ${timeLeft}s`;
+        timerEl.classList.remove("warning", "danger");
         clearInterval(timerInterval);
         timerInterval = setInterval(() => {
           timeLeft--;
