@@ -344,14 +344,28 @@
       }
 
       async function loadPDF(file) {
+        if (file.size > MAX_PDF_SIZE) {
+          showNotification(
+            "File too large (" +
+              formatFileSize(file.size) +
+              "). Max is " +
+              formatFileSize(MAX_PDF_SIZE) +
+              ".",
+            "error",
+          );
+          return;
+        }
         try {
+          if (typeof pdfjsLib === "undefined")
+            throw new Error("PDF.js failed to load. Please refresh.");
+          clearAll();
           const arrayBuffer = await file.arrayBuffer();
           pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
           document.getElementById("file-info").style.display = "block";
           document.getElementById("file-name").textContent = file.name;
           document.getElementById("page-count").textContent =
-            `${pdfDoc.numPages} page${pdfDoc.numPages > 1 ? "s" : ""}`;
+            pdfDoc.numPages + " page" + (pdfDoc.numPages > 1 ? "s" : "");
           document.getElementById("convert-btn").disabled = false;
           document.getElementById("clear-btn").style.display = "inline-flex";
 
@@ -421,6 +435,10 @@
 
           const quality = format === "png" ? 1 : jpegQuality;
           const dataUrl = canvas.toDataURL(mimeType, quality);
+
+          // Free canvas memory
+          canvas.width = 0;
+          canvas.height = 0;
 
           // Calculate size
           const base64Length = dataUrl.split(",")[1].length;

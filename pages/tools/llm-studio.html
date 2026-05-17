@@ -523,7 +523,9 @@
         div.className = `chat-message ${role}`;
 
         if (role === "assistant") {
-          div.innerHTML = marked.parse(content);
+          div.innerHTML = typeof marked !== "undefined"
+            ? marked.parse(content)
+            : content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         } else {
           const p = document.createElement("p");
           p.textContent = content;

@@ -27,7 +27,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -638,31 +638,31 @@
         if (!soundEnabled) return;
         try {
           const ctx = ensureAudioCtx();
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
           osc.connect(gain);
-          gain.connect(audioCtx.destination);
+          gain.connect(ctx.destination);
           if (type === "correct") {
-            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+            osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.2);
+            osc.stop(ctx.currentTime + 0.2);
           } else if (type === "wrong") {
-            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.frequency.setValueAtTime(200, ctx.currentTime);
+            osc.frequency.setValueAtTime(150, ctx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
+            osc.stop(ctx.currentTime + 0.3);
           } else if (type === "gameover") {
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(330, audioCtx.currentTime + 0.2);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.frequency.setValueAtTime(440, ctx.currentTime);
+            osc.frequency.setValueAtTime(330, ctx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.5);
+            osc.stop(ctx.currentTime + 0.5);
           }
         } catch (e) {}
       }

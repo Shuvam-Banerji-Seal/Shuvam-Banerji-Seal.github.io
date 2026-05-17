@@ -19,7 +19,9 @@
     <meta property="og:title" content="E-Reader - Shuvam Banerji Seal" />
     <meta property="og:description" content="Online e-reader and document viewer by Shuvam Banerji Seal." />
     <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/reader.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
     <meta name="twitter:title" content="E-Reader - Shuvam Banerji Seal" />
     <meta name="twitter:description" content="Online e-reader and document viewer." />
     <meta name="robots" content="index, follow" />
@@ -769,6 +771,14 @@
                 <h2>Welcome to E-Reader</h2>
                 <p>Select a book to begin reading</p>
               </div>
+            </div>
+            <div class="pagination" id="chapter-nav" style="display: none">
+              <button class="pagination-btn" id="prev-chapter-btn" onclick="prevChapter()" aria-label="Previous chapter">
+                <i data-lucide="chevron-left"></i> Previous
+              </button>
+              <button class="pagination-btn" id="next-chapter-btn" onclick="nextChapter()" aria-label="Next chapter">
+                Next <i data-lucide="chevron-right"></i>
+              </button>
             </div>
           </div>
         </div>

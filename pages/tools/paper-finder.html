@@ -243,6 +243,20 @@
     <script>
       let allResults = [];
 
+      function showNotification(msg) {
+        let el = document.getElementById("pf-toast");
+        if (!el) {
+          el = document.createElement("div");
+          el.id = "pf-toast";
+          el.style.cssText = "position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--bg-secondary,#1e1e2e);color:var(--text-primary,#fff);padding:.75rem 1.5rem;border-radius:8px;border:1px solid var(--border-color,#333);z-index:9999;font-size:.9rem;opacity:0;transition:opacity .3s;pointer-events:none";
+          document.body.appendChild(el);
+        }
+        el.textContent = msg;
+        el.style.opacity = "1";
+        clearTimeout(el._t);
+        el._t = setTimeout(() => el.style.opacity = "0", 2500);
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         if (typeof lucide !== "undefined") lucide.createIcons();
 
@@ -289,12 +303,13 @@
 
           displayResults();
         } catch (error) {
-          document.getElementById("results-list").innerHTML = `
-                    <div class="alert alert-error">
-                        <i data-lucide="alert-circle"></i>
-                        Error searching papers: ${error.message}
-                    </div>
-                `;
+          const errDiv = document.createElement("div");
+          errDiv.className = "alert alert-error";
+          const safeMsg = document.createTextNode("Error searching papers: " + error.message);
+          errDiv.innerHTML = '<i data-lucide="alert-circle"></i> ';
+          errDiv.appendChild(safeMsg);
+          document.getElementById("results-list").innerHTML = "";
+          document.getElementById("results-list").appendChild(errDiv);
           if (typeof lucide !== "undefined") lucide.createIcons();
         }
 
