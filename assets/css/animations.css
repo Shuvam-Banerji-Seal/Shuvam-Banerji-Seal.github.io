@@ -26,7 +26,7 @@
 
 /* Floating animation for hero elements */
 @keyframes float {
-  0%,
+  0%
   100% {
     transform: translateY(0px);
   }
@@ -37,7 +37,7 @@
 
 /* Pulse animation for buttons and interactive elements */
 @keyframes pulse {
-  0%,
+  0%
   100% {
     transform: scale(1);
     box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
@@ -108,7 +108,7 @@
 
 /* Blink cursor effect */
 @keyframes blink {
-  from,
+  from
   to {
     border-color: transparent;
   }
@@ -119,7 +119,7 @@
 
 /* Gradient shift animation */
 @keyframes gradientShift {
-  0%,
+  0%
   100% {
     background-position: 0% 50%;
   }
@@ -130,7 +130,7 @@
 
 /* Morphing animation for cards */
 @keyframes morph {
-  0%,
+  0%
   100% {
     border-radius: 0.75rem;
     transform: scale(1);
@@ -143,15 +143,15 @@
 
 /* Bouncing animation */
 @keyframes bounce {
-  0%,
-  20%,
-  53%,
-  80%,
+  0%
+  20%
+  53%
+  80%
   100% {
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     transform: translate3d(0, 0, 0);
   }
-  40%,
+  40%
   43% {
     animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     transform: translate3d(0, -30px, 0);
@@ -180,9 +180,9 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
+    90deg
+    transparent
+    rgba(255, 255, 255, 0.2)
     transparent
   );
   transition: left 0.6s;
@@ -212,44 +212,44 @@
 @keyframes glitch {
   0% {
     text-shadow:
-      0.05em 0 0 #00ffff,
-      -0.03em -0.04em 0 #ff00ff,
+      0.05em 0 0 #00ffff
+      -0.03em -0.04em 0 #ff00ff
       0.025em 0.04em 0 #ffff00;
   }
   15% {
     text-shadow:
-      0.05em 0 0 #00ffff,
-      -0.03em -0.04em 0 #ff00ff,
+      0.05em 0 0 #00ffff
+      -0.03em -0.04em 0 #ff00ff
       0.025em 0.04em 0 #ffff00;
   }
   16% {
     text-shadow:
-      -0.05em -0.025em 0 #00ffff,
-      0.025em 0.035em 0 #ff00ff,
+      -0.05em -0.025em 0 #00ffff
+      0.025em 0.035em 0 #ff00ff
       -0.05em -0.05em 0 #ffff00;
   }
   49% {
     text-shadow:
-      -0.05em -0.025em 0 #00ffff,
-      0.025em 0.035em 0 #ff00ff,
+      -0.05em -0.025em 0 #00ffff
+      0.025em 0.035em 0 #ff00ff
       -0.05em -0.05em 0 #ffff00;
   }
   50% {
     text-shadow:
-      0.05em 0.035em 0 #00ffff,
-      0.03em 0 0 #ff00ff,
+      0.05em 0.035em 0 #00ffff
+      0.03em 0 0 #ff00ff
       0 -0.04em 0 #ffff00;
   }
   99% {
     text-shadow:
-      0.05em 0.035em 0 #00ffff,
-      0.03em 0 0 #ff00ff,
+      0.05em 0.035em 0 #00ffff
+      0.03em 0 0 #ff00ff
       0 -0.04em 0 #ffff00;
   }
   100% {
     text-shadow:
-      -0.05em 0 0 #00ffff,
-      -0.025em -0.04em 0 #ff00ff,
+      -0.05em 0 0 #00ffff
+      -0.025em -0.04em 0 #ff00ff
       -0.04em -0.025em 0 #ffff00;
   }
 }
@@ -316,12 +316,12 @@
   }
 }
 
-html[data-theme="dark"] .skeleton {,
-html[data-theme="dark-coffee"] .skeleton {,
-html[data-theme="amber"] .skeleton {,
-html[data-theme="tokyo-night"] .skeleton {,
-html[data-theme="absolute-dark"] .skeleton {,
-html[data-theme="forest"] .skeleton {,
+html[data-theme="dark"] .skeleton {
+html[data-theme="dark-coffee"] .skeleton {
+html[data-theme="amber"] .skeleton {
+html[data-theme="tokyo-night"] .skeleton {
+html[data-theme="absolute-dark"] .skeleton {
+html[data-theme="forest"] .skeleton {
 html[data-theme="dracula"] .skeleton {
   background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
   background-size: 200% 100%;
@@ -387,14 +387,14 @@ html[data-theme="dracula"] .skeleton {
 .form-input:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.1)
     0 0 0 1px rgba(59, 130, 246, 0.2);
 }
 
 .form-input:focus {
   transform: translateY(-3px);
   box-shadow:
-    0 0 0 3px rgba(59, 130, 246, 0.1),
+    0 0 0 3px rgba(59, 130, 246, 0.1)
     0 8px 25px rgba(59, 130, 246, 0.15);
 }
 
@@ -424,9 +424,9 @@ html[data-theme="dracula"] .skeleton {
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
+    90deg
+    transparent
+    rgba(255, 255, 255, 0.2)
     transparent
   );
   transition: left 0.5s ease;
@@ -475,7 +475,7 @@ html[data-theme="dracula"] .skeleton {
 }
 
 @keyframes successPulse {
-  0%,
+  0%
   100% {
     transform: scale(1);
   }
@@ -485,7 +485,7 @@ html[data-theme="dracula"] .skeleton {
 }
 
 @keyframes shake {
-  0%,
+  0%
   100% {
     transform: translateX(0);
   }
@@ -552,8 +552,8 @@ html[data-theme="dracula"] .skeleton {
 
 /* Accessibility: Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
+  *
+  *::before
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

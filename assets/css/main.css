@@ -11,31 +11,31 @@ html {
 body {
   font-family: "Inter", sans-serif;
   background: var(
-    --body-bg,
+    --body-bg
     linear-gradient(135deg, #fef5e7 0%, #fdf8f3 50%, #fef5e7 100%)
   );
   color: var(--text-primary, #2d1810);
   transition:
-    background 0.35s ease,
+    background 0.35s ease
     color 0.35s ease;
   overflow-x: hidden;
   width: 100%;
 }
 
 /* Dark Theme */
-html[data-theme="dark"] body,,
-html[data-theme="dark-coffee"] body,,
-html[data-theme="amber"] body,,
-html[data-theme="tokyo-night"] body,,
-html[data-theme="absolute-dark"] body,,
-html[data-theme="forest"] body,,
-html[data-theme="dracula"] body,
-html[data-theme="dark"],
-html[data-theme="dark-coffee"],
-html[data-theme="amber"],
-html[data-theme="tokyo-night"],
-html[data-theme="absolute-dark"],
-html[data-theme="forest"],
+html[data-theme="dark"] body
+html[data-theme="dark-coffee"] body
+html[data-theme="amber"] body
+html[data-theme="tokyo-night"] body
+html[data-theme="absolute-dark"] body
+html[data-theme="forest"] body
+html[data-theme="dracula"] body
+html[data-theme="dark"]
+html[data-theme="dark-coffee"]
+html[data-theme="amber"]
+html[data-theme="tokyo-night"]
+html[data-theme="absolute-dark"]
+html[data-theme="forest"]
 html[data-theme="dracula"] {
 [data-theme="dark-coffee"] {
 [data-theme="amber"] {
@@ -73,12 +73,12 @@ html[data-theme="dracula"] {
   border: 1px solid #a5f3fc; /* border-cyan-200 */
 }
 
-html[data-theme="dark"] .tech-tag {,
-html[data-theme="dark-coffee"] .tech-tag {,
-html[data-theme="amber"] .tech-tag {,
-html[data-theme="tokyo-night"] .tech-tag {,
-html[data-theme="absolute-dark"] .tech-tag {,
-html[data-theme="forest"] .tech-tag {,
+html[data-theme="dark"] .tech-tag {
+html[data-theme="dark-coffee"] .tech-tag {
+html[data-theme="amber"] .tech-tag {
+html[data-theme="tokyo-night"] .tech-tag {
+html[data-theme="absolute-dark"] .tech-tag {
+html[data-theme="forest"] .tech-tag {
 html[data-theme="dracula"] .tech-tag {
   background-color: rgba(22, 78, 99, 0.5); /* bg-cyan-900/50 */
   color: #a5f3fc; /* text-cyan-300 */
@@ -106,17 +106,17 @@ html[data-theme="dracula"] .tech-tag {
   border-radius: 9999px;
 }
 
-html[data-theme="dark"] .section-title {,
-html[data-theme="dark-coffee"] .section-title {,
-html[data-theme="amber"] .section-title {,
-html[data-theme="tokyo-night"] .section-title {,
-html[data-theme="absolute-dark"] .section-title {,
-html[data-theme="forest"] .section-title {,
+html[data-theme="dark"] .section-title {
+html[data-theme="dark-coffee"] .section-title {
+html[data-theme="amber"] .section-title {
+html[data-theme="tokyo-night"] .section-title {
+html[data-theme="absolute-dark"] .section-title {
+html[data-theme="forest"] .section-title {
 html[data-theme="dracula"] .section-title {
   background-image: linear-gradient(
-    90deg,
-    #22d3ee 0%,
-    #60a5fa 50%,
+    90deg
+    #22d3ee 0%
+    #60a5fa 50%
     #818cf8 100%
   );
   -webkit-background-clip: text;
@@ -124,12 +124,12 @@ html[data-theme="dracula"] .section-title {
   color: transparent;
 }
 
-html[data-theme="dark"] .section-title::after {,
-html[data-theme="dark-coffee"] .section-title::after {,
-html[data-theme="amber"] .section-title::after {,
-html[data-theme="tokyo-night"] .section-title::after {,
-html[data-theme="absolute-dark"] .section-title::after {,
-html[data-theme="forest"] .section-title::after {,
+html[data-theme="dark"] .section-title::after {
+html[data-theme="dark-coffee"] .section-title::after {
+html[data-theme="amber"] .section-title::after {
+html[data-theme="tokyo-night"] .section-title::after {
+html[data-theme="absolute-dark"] .section-title::after {
+html[data-theme="forest"] .section-title::after {
 html[data-theme="dracula"] .section-title::after {
   background: linear-gradient(90deg, #22d3ee, #60a5fa);
 }
@@ -139,7 +139,7 @@ html[data-theme="dracula"] .section-title::after {
   opacity: 0;
   transform: translateY(30px);
   transition:
-    opacity 0.6s ease-out,
+    opacity 0.6s ease-out
     transform 0.6s ease-out;
 }
 
@@ -176,12 +176,12 @@ html[data-theme="dracula"] .section-title::after {
   pointer-events: none;
 }
 
-html[data-theme="dark"] #canvas-container {,
-html[data-theme="dark-coffee"] #canvas-container {,
-html[data-theme="amber"] #canvas-container {,
-html[data-theme="tokyo-night"] #canvas-container {,
-html[data-theme="absolute-dark"] #canvas-container {,
-html[data-theme="forest"] #canvas-container {,
+html[data-theme="dark"] #canvas-container {
+html[data-theme="dark-coffee"] #canvas-container {
+html[data-theme="amber"] #canvas-container {
+html[data-theme="tokyo-night"] #canvas-container {
+html[data-theme="absolute-dark"] #canvas-container {
+html[data-theme="forest"] #canvas-container {
 html[data-theme="dracula"] #canvas-container {
   opacity: 0.12;
 }
@@ -202,12 +202,12 @@ html[data-theme="dracula"] #canvas-container {
   transition: opacity 0.5s ease;
 }
 
-html[data-theme="dark"] #loading-screen {,
-html[data-theme="dark-coffee"] #loading-screen {,
-html[data-theme="amber"] #loading-screen {,
-html[data-theme="tokyo-night"] #loading-screen {,
-html[data-theme="absolute-dark"] #loading-screen {,
-html[data-theme="forest"] #loading-screen {,
+html[data-theme="dark"] #loading-screen {
+html[data-theme="dark-coffee"] #loading-screen {
+html[data-theme="amber"] #loading-screen {
+html[data-theme="tokyo-night"] #loading-screen {
+html[data-theme="absolute-dark"] #loading-screen {
+html[data-theme="forest"] #loading-screen {
 html[data-theme="dracula"] #loading-screen {
   background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
 }
@@ -282,9 +282,9 @@ html[data-theme="dracula"] #loading-screen {
 }
 
 /* Z-index fix */
-nav,
-header,
-main,
+nav
+header
+main
 footer {
   position: relative;
   z-index: 1;
@@ -370,7 +370,7 @@ footer {
   transition: color 0.3s ease;
   color: var(--nav-text, #2c1a0e);
 }
-.nav-link:hover,
+.nav-link:hover
 .nav-link.active {
   color: var(--nav-text-hover, #c97c3a);
 }
@@ -497,12 +497,12 @@ footer {
   color: #06b6d4;
 }
 
-html[data-theme="dark"] #menu-btn:hover {,
-html[data-theme="dark-coffee"] #menu-btn:hover {,
-html[data-theme="amber"] #menu-btn:hover {,
-html[data-theme="tokyo-night"] #menu-btn:hover {,
-html[data-theme="absolute-dark"] #menu-btn:hover {,
-html[data-theme="forest"] #menu-btn:hover {,
+html[data-theme="dark"] #menu-btn:hover {
+html[data-theme="dark-coffee"] #menu-btn:hover {
+html[data-theme="amber"] #menu-btn:hover {
+html[data-theme="tokyo-night"] #menu-btn:hover {
+html[data-theme="absolute-dark"] #menu-btn:hover {
+html[data-theme="forest"] #menu-btn:hover {
 html[data-theme="dracula"] #menu-btn:hover {
   color: #22d3ee;
 }
@@ -524,7 +524,7 @@ html[data-theme="dracula"] #menu-btn:hover {
   cursor: pointer;
   color: var(--nav-text, #2c1a0e);
   transition:
-    color 0.3s ease,
+    color 0.3s ease
     background 0.3s ease;
   border-radius: 0.375rem;
 }
@@ -572,7 +572,7 @@ html[data-theme="dracula"] #menu-btn:hover {
   color: var(--btn-primary-text, #ffffff) !important;
   border: none;
   transition:
-    background 0.25s ease,
+    background 0.25s ease
     transform 0.15s ease;
 }
 .btn-primary:hover {
@@ -598,16 +598,16 @@ footer {
   padding: 2rem 0;
   text-align: center;
 }
-html[data-theme="dark"] footer {,
-html[data-theme="dark-coffee"] footer {,
-html[data-theme="amber"] footer {,
-html[data-theme="tokyo-night"] footer {,
-html[data-theme="absolute-dark"] footer {,
-html[data-theme="forest"] footer {,
+html[data-theme="dark"] footer {
+html[data-theme="dark-coffee"] footer {
+html[data-theme="amber"] footer {
+html[data-theme="tokyo-night"] footer {
+html[data-theme="absolute-dark"] footer {
+html[data-theme="forest"] footer {
 html[data-theme="dracula"] footer {
   background-image: linear-gradient(
-    180deg,
-    rgba(99, 102, 241, 0.06),
+    180deg
+    rgba(99, 102, 241, 0.06)
     rgba(34, 211, 238, 0.1)
   );
   border-top: 1px solid #374151;
@@ -654,12 +654,12 @@ html[data-theme="dracula"] footer {
 .project-title a:hover {
   text-decoration: underline;
 }
-html[data-theme="dark"] .project-title a {,
-html[data-theme="dark-coffee"] .project-title a {,
-html[data-theme="amber"] .project-title a {,
-html[data-theme="tokyo-night"] .project-title a {,
-html[data-theme="absolute-dark"] .project-title a {,
-html[data-theme="forest"] .project-title a {,
+html[data-theme="dark"] .project-title a {
+html[data-theme="dark-coffee"] .project-title a {
+html[data-theme="amber"] .project-title a {
+html[data-theme="tokyo-night"] .project-title a {
+html[data-theme="absolute-dark"] .project-title a {
+html[data-theme="forest"] .project-title a {
 html[data-theme="dracula"] .project-title a {
   color: #67e8f9; /* cyan-300 */
 }
@@ -675,12 +675,12 @@ html[data-theme="dracula"] .project-title a {
   margin-bottom: 1rem;
   flex-grow: 1;
 }
-html[data-theme="dark"] .project-description {,
-html[data-theme="dark-coffee"] .project-description {,
-html[data-theme="amber"] .project-description {,
-html[data-theme="tokyo-night"] .project-description {,
-html[data-theme="absolute-dark"] .project-description {,
-html[data-theme="forest"] .project-description {,
+html[data-theme="dark"] .project-description {
+html[data-theme="dark-coffee"] .project-description {
+html[data-theme="amber"] .project-description {
+html[data-theme="tokyo-night"] .project-description {
+html[data-theme="absolute-dark"] .project-description {
+html[data-theme="forest"] .project-description {
 html[data-theme="dracula"] .project-description {
   color: #9ca3af; /* gray-400 */
 }
@@ -701,12 +701,12 @@ html[data-theme="dracula"] .project-description {
   padding-top: 0.75rem;
   margin-top: auto;
 }
-html[data-theme="dark"] .project-stats {,
-html[data-theme="dark-coffee"] .project-stats {,
-html[data-theme="amber"] .project-stats {,
-html[data-theme="tokyo-night"] .project-stats {,
-html[data-theme="absolute-dark"] .project-stats {,
-html[data-theme="forest"] .project-stats {,
+html[data-theme="dark"] .project-stats {
+html[data-theme="dark-coffee"] .project-stats {
+html[data-theme="amber"] .project-stats {
+html[data-theme="tokyo-night"] .project-stats {
+html[data-theme="absolute-dark"] .project-stats {
+html[data-theme="forest"] .project-stats {
 html[data-theme="dracula"] .project-stats {
   color: #9ca3af; /* gray-400 */
   border-top-color: #374151; /* gray-700 */
@@ -727,12 +727,12 @@ html[data-theme="dracula"] .project-stats {
   width: 2px;
   background-color: #e5e7eb; /* gray-200 */
 }
-html[data-theme="dark"] .timeline::before {,
-html[data-theme="dark-coffee"] .timeline::before {,
-html[data-theme="amber"] .timeline::before {,
-html[data-theme="tokyo-night"] .timeline::before {,
-html[data-theme="absolute-dark"] .timeline::before {,
-html[data-theme="forest"] .timeline::before {,
+html[data-theme="dark"] .timeline::before {
+html[data-theme="dark-coffee"] .timeline::before {
+html[data-theme="amber"] .timeline::before {
+html[data-theme="tokyo-night"] .timeline::before {
+html[data-theme="absolute-dark"] .timeline::before {
+html[data-theme="forest"] .timeline::before {
 html[data-theme="dracula"] .timeline::before {
   background-color: #374151; /* gray-700 */
 }
@@ -756,12 +756,12 @@ html[data-theme="dracula"] .timeline::before {
   background-color: #fff;
   border: 2px solid #e5e7eb;
 }
-html[data-theme="dark"] .timeline-icon {,
-html[data-theme="dark-coffee"] .timeline-icon {,
-html[data-theme="amber"] .timeline-icon {,
-html[data-theme="tokyo-night"] .timeline-icon {,
-html[data-theme="absolute-dark"] .timeline-icon {,
-html[data-theme="forest"] .timeline-icon {,
+html[data-theme="dark"] .timeline-icon {
+html[data-theme="dark-coffee"] .timeline-icon {
+html[data-theme="amber"] .timeline-icon {
+html[data-theme="tokyo-night"] .timeline-icon {
+html[data-theme="absolute-dark"] .timeline-icon {
+html[data-theme="forest"] .timeline-icon {
 html[data-theme="dracula"] .timeline-icon {
   background-color: #1f2937; /* gray-800 */
   border-color: #4b5563; /* gray-600 */
@@ -773,12 +773,12 @@ html[data-theme="dracula"] .timeline-icon {
   color: #6b7280; /* gray-500 */
   margin-bottom: 0.25rem;
 }
-html[data-theme="dark"] .timeline-date {,
-html[data-theme="dark-coffee"] .timeline-date {,
-html[data-theme="amber"] .timeline-date {,
-html[data-theme="tokyo-night"] .timeline-date {,
-html[data-theme="absolute-dark"] .timeline-date {,
-html[data-theme="forest"] .timeline-date {,
+html[data-theme="dark"] .timeline-date {
+html[data-theme="dark-coffee"] .timeline-date {
+html[data-theme="amber"] .timeline-date {
+html[data-theme="tokyo-night"] .timeline-date {
+html[data-theme="absolute-dark"] .timeline-date {
+html[data-theme="forest"] .timeline-date {
 html[data-theme="dracula"] .timeline-date {
   color: #9ca3af; /* gray-400 */
 }
@@ -794,12 +794,12 @@ html[data-theme="dracula"] .timeline-date {
   color: #4b5563; /* gray-600 */
   margin-bottom: 0.5rem;
 }
-html[data-theme="dark"] .timeline-company {,
-html[data-theme="dark-coffee"] .timeline-company {,
-html[data-theme="amber"] .timeline-company {,
-html[data-theme="tokyo-night"] .timeline-company {,
-html[data-theme="absolute-dark"] .timeline-company {,
-html[data-theme="forest"] .timeline-company {,
+html[data-theme="dark"] .timeline-company {
+html[data-theme="dark-coffee"] .timeline-company {
+html[data-theme="amber"] .timeline-company {
+html[data-theme="tokyo-night"] .timeline-company {
+html[data-theme="absolute-dark"] .timeline-company {
+html[data-theme="forest"] .timeline-company {
 html[data-theme="dracula"] .timeline-company {
   color: #d1d5db; /* gray-300 */
 }
@@ -811,24 +811,24 @@ html[data-theme="dracula"] .timeline-company {
 /* Blog Post Card */
 .blog-post-card {
   transition:
-    transform 0.3s ease,
+    transform 0.3s ease
     box-shadow 0.3s ease;
 }
 .blog-post-card:hover {
   transform: translateY(-5px);
   box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 10px 15px -3px rgba(0, 0, 0, 0.1)
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
-html[data-theme="dark"] .blog-post-card:hover {,
-html[data-theme="dark-coffee"] .blog-post-card:hover {,
-html[data-theme="amber"] .blog-post-card:hover {,
-html[data-theme="tokyo-night"] .blog-post-card:hover {,
-html[data-theme="absolute-dark"] .blog-post-card:hover {,
-html[data-theme="forest"] .blog-post-card:hover {,
+html[data-theme="dark"] .blog-post-card:hover {
+html[data-theme="dark-coffee"] .blog-post-card:hover {
+html[data-theme="amber"] .blog-post-card:hover {
+html[data-theme="tokyo-night"] .blog-post-card:hover {
+html[data-theme="absolute-dark"] .blog-post-card:hover {
+html[data-theme="forest"] .blog-post-card:hover {
 html[data-theme="dracula"] .blog-post-card:hover {
   box-shadow:
-    0 10px 15px -3px rgba(0, 255, 255, 0.05),
+    0 10px 15px -3px rgba(0, 255, 255, 0.05)
     0 4px 6px -2px rgba(0, 255, 255, 0.05);
 }
 
@@ -842,12 +842,12 @@ html[data-theme="dracula"] .blog-post-card:hover {
   color: #4b5563;
   margin-bottom: 1rem;
 }
-html[data-theme="dark"] .blog-post-excerpt {,
-html[data-theme="dark-coffee"] .blog-post-excerpt {,
-html[data-theme="amber"] .blog-post-excerpt {,
-html[data-theme="tokyo-night"] .blog-post-excerpt {,
-html[data-theme="absolute-dark"] .blog-post-excerpt {,
-html[data-theme="forest"] .blog-post-excerpt {,
+html[data-theme="dark"] .blog-post-excerpt {
+html[data-theme="dark-coffee"] .blog-post-excerpt {
+html[data-theme="amber"] .blog-post-excerpt {
+html[data-theme="tokyo-night"] .blog-post-excerpt {
+html[data-theme="absolute-dark"] .blog-post-excerpt {
+html[data-theme="forest"] .blog-post-excerpt {
 html[data-theme="dracula"] .blog-post-excerpt {
   color: #9ca3af;
 }
@@ -855,12 +855,12 @@ html[data-theme="dracula"] .blog-post-excerpt {
   font-size: 0.75rem;
   color: #6b7280;
 }
-html[data-theme="dark"] .blog-post-date {,
-html[data-theme="dark-coffee"] .blog-post-date {,
-html[data-theme="amber"] .blog-post-date {,
-html[data-theme="tokyo-night"] .blog-post-date {,
-html[data-theme="absolute-dark"] .blog-post-date {,
-html[data-theme="forest"] .blog-post-date {,
+html[data-theme="dark"] .blog-post-date {
+html[data-theme="dark-coffee"] .blog-post-date {
+html[data-theme="amber"] .blog-post-date {
+html[data-theme="tokyo-night"] .blog-post-date {
+html[data-theme="absolute-dark"] .blog-post-date {
+html[data-theme="forest"] .blog-post-date {
 html[data-theme="dracula"] .blog-post-date {
   color: #9ca3af;
 }
@@ -922,12 +922,12 @@ html[data-theme="dracula"] .blog-post-date {
 .music-item:hover {
   background-color: #f1f5f9; /* slate-100 */
 }
-html[data-theme="dark"] .music-item:hover {,
-html[data-theme="dark-coffee"] .music-item:hover {,
-html[data-theme="amber"] .music-item:hover {,
-html[data-theme="tokyo-night"] .music-item:hover {,
-html[data-theme="absolute-dark"] .music-item:hover {,
-html[data-theme="forest"] .music-item:hover {,
+html[data-theme="dark"] .music-item:hover {
+html[data-theme="dark-coffee"] .music-item:hover {
+html[data-theme="amber"] .music-item:hover {
+html[data-theme="tokyo-night"] .music-item:hover {
+html[data-theme="absolute-dark"] .music-item:hover {
+html[data-theme="forest"] .music-item:hover {
 html[data-theme="dracula"] .music-item:hover {
   background-color: #1e293b; /* slate-800 */
 }
@@ -948,24 +948,24 @@ html[data-theme="dracula"] .music-item:hover {
   font-size: 0.875rem;
   color: #6b7280;
 }
-html[data-theme="dark"] .music-artist {,
-html[data-theme="dark-coffee"] .music-artist {,
-html[data-theme="amber"] .music-artist {,
-html[data-theme="tokyo-night"] .music-artist {,
-html[data-theme="absolute-dark"] .music-artist {,
-html[data-theme="forest"] .music-artist {,
+html[data-theme="dark"] .music-artist {
+html[data-theme="dark-coffee"] .music-artist {
+html[data-theme="amber"] .music-artist {
+html[data-theme="tokyo-night"] .music-artist {
+html[data-theme="absolute-dark"] .music-artist {
+html[data-theme="forest"] .music-artist {
 html[data-theme="dracula"] .music-artist {
   color: #9ca3af;
 }
 .music-play-btn {
   color: #06b6d4;
 }
-html[data-theme="dark"] .music-play-btn {,
-html[data-theme="dark-coffee"] .music-play-btn {,
-html[data-theme="amber"] .music-play-btn {,
-html[data-theme="tokyo-night"] .music-play-btn {,
-html[data-theme="absolute-dark"] .music-play-btn {,
-html[data-theme="forest"] .music-play-btn {,
+html[data-theme="dark"] .music-play-btn {
+html[data-theme="dark-coffee"] .music-play-btn {
+html[data-theme="amber"] .music-play-btn {
+html[data-theme="tokyo-night"] .music-play-btn {
+html[data-theme="absolute-dark"] .music-play-btn {
+html[data-theme="forest"] .music-play-btn {
 html[data-theme="dracula"] .music-play-btn {
   color: #22d3ee;
 }
@@ -975,8 +975,8 @@ html[data-theme="dracula"] .music-play-btn {
   max-width: 800px;
   margin: 2rem auto;
 }
-.blog-content h1,
-.blog-content h2,
+.blog-content h1
+.blog-content h2
 .blog-content h3 {
   font-weight: 600;
   margin-top: 2em;
@@ -999,12 +999,12 @@ html[data-theme="dracula"] .music-play-btn {
   color: #0891b2;
   text-decoration: underline;
 }
-html[data-theme="dark"] .blog-content a {,
-html[data-theme="dark-coffee"] .blog-content a {,
-html[data-theme="amber"] .blog-content a {,
-html[data-theme="tokyo-night"] .blog-content a {,
-html[data-theme="absolute-dark"] .blog-content a {,
-html[data-theme="forest"] .blog-content a {,
+html[data-theme="dark"] .blog-content a {
+html[data-theme="dark-coffee"] .blog-content a {
+html[data-theme="amber"] .blog-content a {
+html[data-theme="tokyo-night"] .blog-content a {
+html[data-theme="absolute-dark"] .blog-content a {
+html[data-theme="forest"] .blog-content a {
 html[data-theme="dracula"] .blog-content a {
   color: #67e8f9;
 }
@@ -1015,12 +1015,12 @@ html[data-theme="dracula"] .blog-content a {
   border-radius: 0.25rem;
   font-size: 0.9em;
 }
-html[data-theme="dark"] .blog-content code {,
-html[data-theme="dark-coffee"] .blog-content code {,
-html[data-theme="amber"] .blog-content code {,
-html[data-theme="tokyo-night"] .blog-content code {,
-html[data-theme="absolute-dark"] .blog-content code {,
-html[data-theme="forest"] .blog-content code {,
+html[data-theme="dark"] .blog-content code {
+html[data-theme="dark-coffee"] .blog-content code {
+html[data-theme="amber"] .blog-content code {
+html[data-theme="tokyo-night"] .blog-content code {
+html[data-theme="absolute-dark"] .blog-content code {
+html[data-theme="forest"] .blog-content code {
 html[data-theme="dracula"] .blog-content code {
   background-color: #374151;
 }
@@ -1043,17 +1043,17 @@ html[data-theme="dracula"] .blog-content code {
   font-style: italic;
   color: #4b5563;
 }
-html[data-theme="dark"] .blog-content blockquote {,
-html[data-theme="dark-coffee"] .blog-content blockquote {,
-html[data-theme="amber"] .blog-content blockquote {,
-html[data-theme="tokyo-night"] .blog-content blockquote {,
-html[data-theme="absolute-dark"] .blog-content blockquote {,
-html[data-theme="forest"] .blog-content blockquote {,
+html[data-theme="dark"] .blog-content blockquote {
+html[data-theme="dark-coffee"] .blog-content blockquote {
+html[data-theme="amber"] .blog-content blockquote {
+html[data-theme="tokyo-night"] .blog-content blockquote {
+html[data-theme="absolute-dark"] .blog-content blockquote {
+html[data-theme="forest"] .blog-content blockquote {
 html[data-theme="dracula"] .blog-content blockquote {
   border-left-color: #4b5563;
   color: #d1d5db;
 }
-.blog-content ul,
+.blog-content ul
 .blog-content ol {
   padding-left: 1.5rem;
   margin-bottom: 1.5em;
@@ -1138,7 +1138,7 @@ html[data-theme="dracula"] .blog-content blockquote {
 }
 
 /* Loading and Error states for dynamic content */
-.loading-text,
+.loading-text
 .error-text {
   text-align: center;
   padding: 2rem;
@@ -1147,12 +1147,12 @@ html[data-theme="dracula"] .blog-content blockquote {
 .error-text {
   color: #ef4444; /* red-500 */
 }
-html[data-theme="dark"] .error-text {,
-html[data-theme="dark-coffee"] .error-text {,
-html[data-theme="amber"] .error-text {,
-html[data-theme="tokyo-night"] .error-text {,
-html[data-theme="absolute-dark"] .error-text {,
-html[data-theme="forest"] .error-text {,
+html[data-theme="dark"] .error-text {
+html[data-theme="dark-coffee"] .error-text {
+html[data-theme="amber"] .error-text {
+html[data-theme="tokyo-night"] .error-text {
+html[data-theme="absolute-dark"] .error-text {
+html[data-theme="forest"] .error-text {
 html[data-theme="dracula"] .error-text {
   color: #f87171; /* red-400 */
 }
@@ -1265,12 +1265,12 @@ html[data-theme="dracula"] .error-text {
   margin-bottom: 0.5rem;
 }
 
-html[data-theme="dark"] .form-label {,
-html[data-theme="dark-coffee"] .form-label {,
-html[data-theme="amber"] .form-label {,
-html[data-theme="tokyo-night"] .form-label {,
-html[data-theme="absolute-dark"] .form-label {,
-html[data-theme="forest"] .form-label {,
+html[data-theme="dark"] .form-label {
+html[data-theme="dark-coffee"] .form-label {
+html[data-theme="amber"] .form-label {
+html[data-theme="tokyo-night"] .form-label {
+html[data-theme="absolute-dark"] .form-label {
+html[data-theme="forest"] .form-label {
 html[data-theme="dracula"] .form-label {
   color: #d1d5db;
 }
@@ -1286,7 +1286,7 @@ html[data-theme="dracula"] .form-label {
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   transition:
-    border-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out
     box-shadow 0.15s ease-in-out;
 }
 
@@ -1305,45 +1305,45 @@ html[data-theme="dracula"] .form-label {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-html[data-theme="dark"] .form-input {,
-html[data-theme="dark-coffee"] .form-input {,
-html[data-theme="amber"] .form-input {,
-html[data-theme="tokyo-night"] .form-input {,
-html[data-theme="absolute-dark"] .form-input {,
-html[data-theme="forest"] .form-input {,
+html[data-theme="dark"] .form-input {
+html[data-theme="dark-coffee"] .form-input {
+html[data-theme="amber"] .form-input {
+html[data-theme="tokyo-night"] .form-input {
+html[data-theme="absolute-dark"] .form-input {
+html[data-theme="forest"] .form-input {
 html[data-theme="dracula"] .form-input {
   color: #ffffff;
   background-color: #374151;
   border-color: #4b5563;
 }
 
-html[data-theme="dark"] .form-input:focus {,
-html[data-theme="dark-coffee"] .form-input:focus {,
-html[data-theme="amber"] .form-input:focus {,
-html[data-theme="tokyo-night"] .form-input:focus {,
-html[data-theme="absolute-dark"] .form-input:focus {,
-html[data-theme="forest"] .form-input:focus {,
+html[data-theme="dark"] .form-input:focus {
+html[data-theme="dark-coffee"] .form-input:focus {
+html[data-theme="amber"] .form-input:focus {
+html[data-theme="tokyo-night"] .form-input:focus {
+html[data-theme="absolute-dark"] .form-input:focus {
+html[data-theme="forest"] .form-input:focus {
 html[data-theme="dracula"] .form-input:focus {
   border-color: #22d3ee;
   box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
 }
 
-html[data-theme="dark"] .form-input:invalid {,
-html[data-theme="dark-coffee"] .form-input:invalid {,
-html[data-theme="amber"] .form-input:invalid {,
-html[data-theme="tokyo-night"] .form-input:invalid {,
-html[data-theme="absolute-dark"] .form-input:invalid {,
-html[data-theme="forest"] .form-input:invalid {,
+html[data-theme="dark"] .form-input:invalid {
+html[data-theme="dark-coffee"] .form-input:invalid {
+html[data-theme="amber"] .form-input:invalid {
+html[data-theme="tokyo-night"] .form-input:invalid {
+html[data-theme="absolute-dark"] .form-input:invalid {
+html[data-theme="forest"] .form-input:invalid {
 html[data-theme="dracula"] .form-input:invalid {
   border-color: #f87171;
 }
 
-html[data-theme="dark"] .form-input:invalid:focus {,
-html[data-theme="dark-coffee"] .form-input:invalid:focus {,
-html[data-theme="amber"] .form-input:invalid:focus {,
-html[data-theme="tokyo-night"] .form-input:invalid:focus {,
-html[data-theme="absolute-dark"] .form-input:invalid:focus {,
-html[data-theme="forest"] .form-input:invalid:focus {,
+html[data-theme="dark"] .form-input:invalid:focus {
+html[data-theme="dark-coffee"] .form-input:invalid:focus {
+html[data-theme="amber"] .form-input:invalid:focus {
+html[data-theme="tokyo-night"] .form-input:invalid:focus {
+html[data-theme="absolute-dark"] .form-input:invalid:focus {
+html[data-theme="forest"] .form-input:invalid:focus {
 html[data-theme="dracula"] .form-input:invalid:focus {
   border-color: #f87171;
   box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.1);
@@ -1353,12 +1353,12 @@ html[data-theme="dracula"] .form-input:invalid:focus {
   color: #9ca3af;
 }
 
-html[data-theme="dark"] .form-input::placeholder {,
-html[data-theme="dark-coffee"] .form-input::placeholder {,
-html[data-theme="amber"] .form-input::placeholder {,
-html[data-theme="tokyo-night"] .form-input::placeholder {,
-html[data-theme="absolute-dark"] .form-input::placeholder {,
-html[data-theme="forest"] .form-input::placeholder {,
+html[data-theme="dark"] .form-input::placeholder {
+html[data-theme="dark-coffee"] .form-input::placeholder {
+html[data-theme="amber"] .form-input::placeholder {
+html[data-theme="tokyo-night"] .form-input::placeholder {
+html[data-theme="absolute-dark"] .form-input::placeholder {
+html[data-theme="forest"] .form-input::placeholder {
 html[data-theme="dracula"] .form-input::placeholder {
   color: #6b7280;
 }
@@ -1370,7 +1370,7 @@ html[data-theme="dracula"] .form-input::placeholder {
 }
 
 /* Social links styling */
-.social-links,
+.social-links
 .footer-social {
   display: flex;
   flex-direction: row;
@@ -1398,23 +1398,23 @@ html[data-theme="dracula"] .form-input::placeholder {
   transform: translateY(-2px);
 }
 
-html[data-theme="dark"] .social-link {,
-html[data-theme="dark-coffee"] .social-link {,
-html[data-theme="amber"] .social-link {,
-html[data-theme="tokyo-night"] .social-link {,
-html[data-theme="absolute-dark"] .social-link {,
-html[data-theme="forest"] .social-link {,
+html[data-theme="dark"] .social-link {
+html[data-theme="dark-coffee"] .social-link {
+html[data-theme="amber"] .social-link {
+html[data-theme="tokyo-night"] .social-link {
+html[data-theme="absolute-dark"] .social-link {
+html[data-theme="forest"] .social-link {
 html[data-theme="dracula"] .social-link {
   background-color: rgba(34, 211, 238, 0.1);
   color: #22d3ee;
 }
 
-html[data-theme="dark"] .social-link:hover {,
-html[data-theme="dark-coffee"] .social-link:hover {,
-html[data-theme="amber"] .social-link:hover {,
-html[data-theme="tokyo-night"] .social-link:hover {,
-html[data-theme="absolute-dark"] .social-link:hover {,
-html[data-theme="forest"] .social-link:hover {,
+html[data-theme="dark"] .social-link:hover {
+html[data-theme="dark-coffee"] .social-link:hover {
+html[data-theme="amber"] .social-link:hover {
+html[data-theme="tokyo-night"] .social-link:hover {
+html[data-theme="absolute-dark"] .social-link:hover {
+html[data-theme="forest"] .social-link:hover {
 html[data-theme="dracula"] .social-link:hover {
   background-color: #22d3ee;
   color: #1f2937;
@@ -1437,23 +1437,23 @@ html[data-theme="dracula"] .social-link:hover {
   color: #6b7280;
 }
 
-html[data-theme="dark"] .text-gray-500 {,
-html[data-theme="dark-coffee"] .text-gray-500 {,
-html[data-theme="amber"] .text-gray-500 {,
-html[data-theme="tokyo-night"] .text-gray-500 {,
-html[data-theme="absolute-dark"] .text-gray-500 {,
-html[data-theme="forest"] .text-gray-500 {,
+html[data-theme="dark"] .text-gray-500 {
+html[data-theme="dark-coffee"] .text-gray-500 {
+html[data-theme="amber"] .text-gray-500 {
+html[data-theme="tokyo-night"] .text-gray-500 {
+html[data-theme="absolute-dark"] .text-gray-500 {
+html[data-theme="forest"] .text-gray-500 {
 html[data-theme="dracula"] .text-gray-500 {
   color: #9ca3af;
 }
 
 /* Dark Theme Overrides */
-html[data-theme="dark"],
-html[data-theme="dark-coffee"],
-html[data-theme="amber"],
-html[data-theme="tokyo-night"],
-html[data-theme="absolute-dark"],
-html[data-theme="forest"],
+html[data-theme="dark"]
+html[data-theme="dark-coffee"]
+html[data-theme="amber"]
+html[data-theme="tokyo-night"]
+html[data-theme="absolute-dark"]
+html[data-theme="forest"]
 html[data-theme="dracula"] {
 [data-theme="dark-coffee"] {
 [data-theme="amber"] {
@@ -1463,34 +1463,34 @@ html[data-theme="dracula"] {
 [data-theme="dracula"] {
   background:
     radial-gradient(
-      1100px 500px at 10% 5%,
-      rgba(34, 211, 238, 0.18),
+      1100px 500px at 10% 5%
+      rgba(34, 211, 238, 0.18)
       transparent 45%
-    ),
+    )
     radial-gradient(
-      800px 400px at 90% 15%,
-      rgba(99, 102, 241, 0.16),
+      800px 400px at 90% 15%
+      rgba(99, 102, 241, 0.16)
       transparent 45%
-    ),
+    )
     radial-gradient(
-      600px 300px at 50% 100%,
-      rgba(16, 185, 129, 0.1),
+      600px 300px at 50% 100%
+      rgba(16, 185, 129, 0.1)
       transparent 40%
-    ),
+    )
     linear-gradient(180deg, #111827 0%, #1f2937 60%, #111827 100%);
   color: #f3f4f6;
 }
 
-html[data-theme="dark"] .glassmorphic {,
-html[data-theme="dark-coffee"] .glassmorphic {,
-html[data-theme="amber"] .glassmorphic {,
-html[data-theme="tokyo-night"] .glassmorphic {,
-html[data-theme="absolute-dark"] .glassmorphic {,
-html[data-theme="forest"] .glassmorphic {,
+html[data-theme="dark"] .glassmorphic {
+html[data-theme="dark-coffee"] .glassmorphic {
+html[data-theme="amber"] .glassmorphic {
+html[data-theme="tokyo-night"] .glassmorphic {
+html[data-theme="absolute-dark"] .glassmorphic {
+html[data-theme="forest"] .glassmorphic {
 html[data-theme="dracula"] .glassmorphic {
   background: linear-gradient(
-    180deg,
-    rgba(31, 41, 55, 0.92),
+    180deg
+    rgba(31, 41, 55, 0.92)
     rgba(31, 41, 55, 0.78)
   );
   backdrop-filter: blur(10px);
@@ -1499,16 +1499,16 @@ html[data-theme="dracula"] .glassmorphic {
   box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
 }
 
-html[data-theme="dark"] #navbar.scrolled .glassmorphic {,
-html[data-theme="dark-coffee"] #navbar.scrolled .glassmorphic {,
-html[data-theme="amber"] #navbar.scrolled .glassmorphic {,
-html[data-theme="tokyo-night"] #navbar.scrolled .glassmorphic {,
-html[data-theme="absolute-dark"] #navbar.scrolled .glassmorphic {,
-html[data-theme="forest"] #navbar.scrolled .glassmorphic {,
+html[data-theme="dark"] #navbar.scrolled .glassmorphic {
+html[data-theme="dark-coffee"] #navbar.scrolled .glassmorphic {
+html[data-theme="amber"] #navbar.scrolled .glassmorphic {
+html[data-theme="tokyo-night"] #navbar.scrolled .glassmorphic {
+html[data-theme="absolute-dark"] #navbar.scrolled .glassmorphic {
+html[data-theme="forest"] #navbar.scrolled .glassmorphic {
 html[data-theme="dracula"] #navbar.scrolled .glassmorphic {
   background: linear-gradient(
-    180deg,
-    rgba(17, 24, 39, 0.95),
+    180deg
+    rgba(17, 24, 39, 0.95)
     rgba(17, 24, 39, 0.85)
   );
   box-shadow: 0 10px 30px rgba(2, 6, 23, 0.1);
@@ -1516,240 +1516,240 @@ html[data-theme="dracula"] #navbar.scrolled .glassmorphic {
 
 /* Override common Tailwind utility colors when dark theme is active */
 /* Text colors */
-html[data-theme="dark"] .text-gray-900 {,
-html[data-theme="dark-coffee"] .text-gray-900 {,
-html[data-theme="amber"] .text-gray-900 {,
-html[data-theme="tokyo-night"] .text-gray-900 {,
-html[data-theme="absolute-dark"] .text-gray-900 {,
-html[data-theme="forest"] .text-gray-900 {,
+html[data-theme="dark"] .text-gray-900 {
+html[data-theme="dark-coffee"] .text-gray-900 {
+html[data-theme="amber"] .text-gray-900 {
+html[data-theme="tokyo-night"] .text-gray-900 {
+html[data-theme="absolute-dark"] .text-gray-900 {
+html[data-theme="forest"] .text-gray-900 {
 html[data-theme="dracula"] .text-gray-900 {
   color: #f3f4f6 !important;
 }
-html[data-theme="dark"] .text-gray-800 {,
-html[data-theme="dark-coffee"] .text-gray-800 {,
-html[data-theme="amber"] .text-gray-800 {,
-html[data-theme="tokyo-night"] .text-gray-800 {,
-html[data-theme="absolute-dark"] .text-gray-800 {,
-html[data-theme="forest"] .text-gray-800 {,
+html[data-theme="dark"] .text-gray-800 {
+html[data-theme="dark-coffee"] .text-gray-800 {
+html[data-theme="amber"] .text-gray-800 {
+html[data-theme="tokyo-night"] .text-gray-800 {
+html[data-theme="absolute-dark"] .text-gray-800 {
+html[data-theme="forest"] .text-gray-800 {
 html[data-theme="dracula"] .text-gray-800 {
   color: #e5e7eb !important;
 }
-html[data-theme="dark"] .text-gray-700 {,
-html[data-theme="dark-coffee"] .text-gray-700 {,
-html[data-theme="amber"] .text-gray-700 {,
-html[data-theme="tokyo-night"] .text-gray-700 {,
-html[data-theme="absolute-dark"] .text-gray-700 {,
-html[data-theme="forest"] .text-gray-700 {,
+html[data-theme="dark"] .text-gray-700 {
+html[data-theme="dark-coffee"] .text-gray-700 {
+html[data-theme="amber"] .text-gray-700 {
+html[data-theme="tokyo-night"] .text-gray-700 {
+html[data-theme="absolute-dark"] .text-gray-700 {
+html[data-theme="forest"] .text-gray-700 {
 html[data-theme="dracula"] .text-gray-700 {
   color: #d1d5db !important;
 }
-html[data-theme="dark"] .text-gray-600 {,
-html[data-theme="dark-coffee"] .text-gray-600 {,
-html[data-theme="amber"] .text-gray-600 {,
-html[data-theme="tokyo-night"] .text-gray-600 {,
-html[data-theme="absolute-dark"] .text-gray-600 {,
-html[data-theme="forest"] .text-gray-600 {,
+html[data-theme="dark"] .text-gray-600 {
+html[data-theme="dark-coffee"] .text-gray-600 {
+html[data-theme="amber"] .text-gray-600 {
+html[data-theme="tokyo-night"] .text-gray-600 {
+html[data-theme="absolute-dark"] .text-gray-600 {
+html[data-theme="forest"] .text-gray-600 {
 html[data-theme="dracula"] .text-gray-600 {
   color: #9ca3af !important;
 }
 
 /* Background utilities commonly used */
-html[data-theme="dark"] .bg-gray-100 {,
-html[data-theme="dark-coffee"] .bg-gray-100 {,
-html[data-theme="amber"] .bg-gray-100 {,
-html[data-theme="tokyo-night"] .bg-gray-100 {,
-html[data-theme="absolute-dark"] .bg-gray-100 {,
-html[data-theme="forest"] .bg-gray-100 {,
+html[data-theme="dark"] .bg-gray-100 {
+html[data-theme="dark-coffee"] .bg-gray-100 {
+html[data-theme="amber"] .bg-gray-100 {
+html[data-theme="tokyo-night"] .bg-gray-100 {
+html[data-theme="absolute-dark"] .bg-gray-100 {
+html[data-theme="forest"] .bg-gray-100 {
 html[data-theme="dracula"] .bg-gray-100 {
   background-color: #111827 !important;
 }
-html[data-theme="dark"] .bg-gray-200 {,
-html[data-theme="dark-coffee"] .bg-gray-200 {,
-html[data-theme="amber"] .bg-gray-200 {,
-html[data-theme="tokyo-night"] .bg-gray-200 {,
-html[data-theme="absolute-dark"] .bg-gray-200 {,
-html[data-theme="forest"] .bg-gray-200 {,
+html[data-theme="dark"] .bg-gray-200 {
+html[data-theme="dark-coffee"] .bg-gray-200 {
+html[data-theme="amber"] .bg-gray-200 {
+html[data-theme="tokyo-night"] .bg-gray-200 {
+html[data-theme="absolute-dark"] .bg-gray-200 {
+html[data-theme="forest"] .bg-gray-200 {
 html[data-theme="dracula"] .bg-gray-200 {
   background-color: #1f2937 !important;
 }
-html[data-theme="dark"] .bg-gray-100\/50 {,
-html[data-theme="dark-coffee"] .bg-gray-100\/50 {,
-html[data-theme="amber"] .bg-gray-100\/50 {,
-html[data-theme="tokyo-night"] .bg-gray-100\/50 {,
-html[data-theme="absolute-dark"] .bg-gray-100\/50 {,
-html[data-theme="forest"] .bg-gray-100\/50 {,
+html[data-theme="dark"] .bg-gray-100\/50 {
+html[data-theme="dark-coffee"] .bg-gray-100\/50 {
+html[data-theme="amber"] .bg-gray-100\/50 {
+html[data-theme="tokyo-night"] .bg-gray-100\/50 {
+html[data-theme="absolute-dark"] .bg-gray-100\/50 {
+html[data-theme="forest"] .bg-gray-100\/50 {
 html[data-theme="dracula"] .bg-gray-100\/50 {
   background-color: rgba(17, 24, 39, 0.5) !important;
 }
-html[data-theme="dark"] .bg-gray-200\/50 {,
-html[data-theme="dark-coffee"] .bg-gray-200\/50 {,
-html[data-theme="amber"] .bg-gray-200\/50 {,
-html[data-theme="tokyo-night"] .bg-gray-200\/50 {,
-html[data-theme="absolute-dark"] .bg-gray-200\/50 {,
-html[data-theme="forest"] .bg-gray-200\/50 {,
+html[data-theme="dark"] .bg-gray-200\/50 {
+html[data-theme="dark-coffee"] .bg-gray-200\/50 {
+html[data-theme="amber"] .bg-gray-200\/50 {
+html[data-theme="tokyo-night"] .bg-gray-200\/50 {
+html[data-theme="absolute-dark"] .bg-gray-200\/50 {
+html[data-theme="forest"] .bg-gray-200\/50 {
 html[data-theme="dracula"] .bg-gray-200\/50 {
   background-color: rgba(31, 41, 55, 0.5) !important;
 }
-html[data-theme="dark"] .bg-gray-50 {,
-html[data-theme="dark-coffee"] .bg-gray-50 {,
-html[data-theme="amber"] .bg-gray-50 {,
-html[data-theme="tokyo-night"] .bg-gray-50 {,
-html[data-theme="absolute-dark"] .bg-gray-50 {,
-html[data-theme="forest"] .bg-gray-50 {,
+html[data-theme="dark"] .bg-gray-50 {
+html[data-theme="dark-coffee"] .bg-gray-50 {
+html[data-theme="amber"] .bg-gray-50 {
+html[data-theme="tokyo-night"] .bg-gray-50 {
+html[data-theme="absolute-dark"] .bg-gray-50 {
+html[data-theme="forest"] .bg-gray-50 {
 html[data-theme="dracula"] .bg-gray-50 {
   background-color: #1f2937 !important;
 }
 
 /* Mobile menu gradient in dark theme */
-html[data-theme="dark"] #mobile-menu {,
-html[data-theme="dark-coffee"] #mobile-menu {,
-html[data-theme="amber"] #mobile-menu {,
-html[data-theme="tokyo-night"] #mobile-menu {,
-html[data-theme="absolute-dark"] #mobile-menu {,
-html[data-theme="forest"] #mobile-menu {,
+html[data-theme="dark"] #mobile-menu {
+html[data-theme="dark-coffee"] #mobile-menu {
+html[data-theme="amber"] #mobile-menu {
+html[data-theme="tokyo-night"] #mobile-menu {
+html[data-theme="absolute-dark"] #mobile-menu {
+html[data-theme="forest"] #mobile-menu {
 html[data-theme="dracula"] #mobile-menu {
   background: linear-gradient(
-    180deg,
-    rgba(17, 24, 39, 0.98),
+    180deg
+    rgba(17, 24, 39, 0.98)
     rgba(31, 41, 55, 0.96)
   );
 }
 
 /* Ensure headers and cyan accents look good on dark */
-html[data-theme="dark"] .text-cyan-400 {,
-html[data-theme="dark-coffee"] .text-cyan-400 {,
-html[data-theme="amber"] .text-cyan-400 {,
-html[data-theme="tokyo-night"] .text-cyan-400 {,
-html[data-theme="absolute-dark"] .text-cyan-400 {,
-html[data-theme="forest"] .text-cyan-400 {,
+html[data-theme="dark"] .text-cyan-400 {
+html[data-theme="dark-coffee"] .text-cyan-400 {
+html[data-theme="amber"] .text-cyan-400 {
+html[data-theme="tokyo-night"] .text-cyan-400 {
+html[data-theme="absolute-dark"] .text-cyan-400 {
+html[data-theme="forest"] .text-cyan-400 {
 html[data-theme="dracula"] .text-cyan-400 {
   color: #67e8f9 !important;
 } /* cyan-300 */
-html[data-theme="dark"] .text-cyan-300 {,
-html[data-theme="dark-coffee"] .text-cyan-300 {,
-html[data-theme="amber"] .text-cyan-300 {,
-html[data-theme="tokyo-night"] .text-cyan-300 {,
-html[data-theme="absolute-dark"] .text-cyan-300 {,
-html[data-theme="forest"] .text-cyan-300 {,
+html[data-theme="dark"] .text-cyan-300 {
+html[data-theme="dark-coffee"] .text-cyan-300 {
+html[data-theme="amber"] .text-cyan-300 {
+html[data-theme="tokyo-night"] .text-cyan-300 {
+html[data-theme="absolute-dark"] .text-cyan-300 {
+html[data-theme="forest"] .text-cyan-300 {
 html[data-theme="dracula"] .text-cyan-300 {
   color: #22d3ee !important;
 } /* cyan-400 */
-html[data-theme="dark"] .border-cyan-400 {,
-html[data-theme="dark-coffee"] .border-cyan-400 {,
-html[data-theme="amber"] .border-cyan-400 {,
-html[data-theme="tokyo-night"] .border-cyan-400 {,
-html[data-theme="absolute-dark"] .border-cyan-400 {,
-html[data-theme="forest"] .border-cyan-400 {,
+html[data-theme="dark"] .border-cyan-400 {
+html[data-theme="dark-coffee"] .border-cyan-400 {
+html[data-theme="amber"] .border-cyan-400 {
+html[data-theme="tokyo-night"] .border-cyan-400 {
+html[data-theme="absolute-dark"] .border-cyan-400 {
+html[data-theme="forest"] .border-cyan-400 {
 html[data-theme="dracula"] .border-cyan-400 {
   border-color: #67e8f9 !important;
 } /* cyan-300 */
 /* Gradient primary CTAs */
-html[data-theme="dark"] .bg-cyan-500 {,
-html[data-theme="dark-coffee"] .bg-cyan-500 {,
-html[data-theme="amber"] .bg-cyan-500 {,
-html[data-theme="tokyo-night"] .bg-cyan-500 {,
-html[data-theme="absolute-dark"] .bg-cyan-500 {,
-html[data-theme="forest"] .bg-cyan-500 {,
+html[data-theme="dark"] .bg-cyan-500 {
+html[data-theme="dark-coffee"] .bg-cyan-500 {
+html[data-theme="amber"] .bg-cyan-500 {
+html[data-theme="tokyo-night"] .bg-cyan-500 {
+html[data-theme="absolute-dark"] .bg-cyan-500 {
+html[data-theme="forest"] .bg-cyan-500 {
 html[data-theme="dracula"] .bg-cyan-500 {
   background-image: linear-gradient(90deg, #22d3ee, #60a5fa) !important;
   color: #f3f4f6 !important;
 }
-html[data-theme="dark"] .hover\:bg-cyan-600:hover {,
-html[data-theme="dark-coffee"] .hover\:bg-cyan-600:hover {,
-html[data-theme="amber"] .hover\:bg-cyan-600:hover {,
-html[data-theme="tokyo-night"] .hover\:bg-cyan-600:hover {,
-html[data-theme="absolute-dark"] .hover\:bg-cyan-600:hover {,
-html[data-theme="forest"] .hover\:bg-cyan-600:hover {,
+html[data-theme="dark"] .hover\:bg-cyan-600:hover {
+html[data-theme="dark-coffee"] .hover\:bg-cyan-600:hover {
+html[data-theme="amber"] .hover\:bg-cyan-600:hover {
+html[data-theme="tokyo-night"] .hover\:bg-cyan-600:hover {
+html[data-theme="absolute-dark"] .hover\:bg-cyan-600:hover {
+html[data-theme="forest"] .hover\:bg-cyan-600:hover {
 html[data-theme="dracula"] .hover\:bg-cyan-600:hover {
   background-color: #0891b2 !important;
   color: #f3f4f6 !important;
 }
 
 /* Inputs and forms in dark theme */
-html[data-theme="dark"] input,,
-html[data-theme="dark-coffee"] input,,
-html[data-theme="amber"] input,,
-html[data-theme="tokyo-night"] input,,
-html[data-theme="absolute-dark"] input,,
-html[data-theme="forest"] input,,
-html[data-theme="dracula"] input,
-html[data-theme="dark"] textarea,,
-html[data-theme="dark-coffee"] textarea,,
-html[data-theme="amber"] textarea,,
-html[data-theme="tokyo-night"] textarea,,
-html[data-theme="absolute-dark"] textarea,,
-html[data-theme="forest"] textarea,,
-html[data-theme="dracula"] textarea,
-html[data-theme="dark"] select {,
-html[data-theme="dark-coffee"] select {,
-html[data-theme="amber"] select {,
-html[data-theme="tokyo-night"] select {,
-html[data-theme="absolute-dark"] select {,
-html[data-theme="forest"] select {,
+html[data-theme="dark"] input
+html[data-theme="dark-coffee"] input
+html[data-theme="amber"] input
+html[data-theme="tokyo-night"] input
+html[data-theme="absolute-dark"] input
+html[data-theme="forest"] input
+html[data-theme="dracula"] input
+html[data-theme="dark"] textarea
+html[data-theme="dark-coffee"] textarea
+html[data-theme="amber"] textarea
+html[data-theme="tokyo-night"] textarea
+html[data-theme="absolute-dark"] textarea
+html[data-theme="forest"] textarea
+html[data-theme="dracula"] textarea
+html[data-theme="dark"] select {
+html[data-theme="dark-coffee"] select {
+html[data-theme="amber"] select {
+html[data-theme="tokyo-night"] select {
+html[data-theme="absolute-dark"] select {
+html[data-theme="forest"] select {
 html[data-theme="dracula"] select {
   color: #f3f4f6;
 }
 
 /* Section surfaces (header/footer) with subtle gradients */
-html[data-theme="dark"] header {,
-html[data-theme="dark-coffee"] header {,
-html[data-theme="amber"] header {,
-html[data-theme="tokyo-night"] header {,
-html[data-theme="absolute-dark"] header {,
-html[data-theme="forest"] header {,
+html[data-theme="dark"] header {
+html[data-theme="dark-coffee"] header {
+html[data-theme="amber"] header {
+html[data-theme="tokyo-night"] header {
+html[data-theme="absolute-dark"] header {
+html[data-theme="forest"] header {
 html[data-theme="dracula"] header {
   background-image: linear-gradient(
-    180deg,
-    rgba(34, 211, 238, 0.1),
+    180deg
+    rgba(34, 211, 238, 0.1)
     rgba(99, 102, 241, 0.06)
   );
   border-bottom: 1px solid #374151;
 }
 /* Borders */
-html[data-theme="dark"] .border-gray-200 {,
-html[data-theme="dark-coffee"] .border-gray-200 {,
-html[data-theme="amber"] .border-gray-200 {,
-html[data-theme="tokyo-night"] .border-gray-200 {,
-html[data-theme="absolute-dark"] .border-gray-200 {,
-html[data-theme="forest"] .border-gray-200 {,
+html[data-theme="dark"] .border-gray-200 {
+html[data-theme="dark-coffee"] .border-gray-200 {
+html[data-theme="amber"] .border-gray-200 {
+html[data-theme="tokyo-night"] .border-gray-200 {
+html[data-theme="absolute-dark"] .border-gray-200 {
+html[data-theme="forest"] .border-gray-200 {
 html[data-theme="dracula"] .border-gray-200 {
   border-color: #374151 !important;
 }
 /* Compatibility styles for all dark themes */
 /* This ensures all dark themes get the same styles as the original dark theme */
 
-html[data-theme="dark-coffee"] body,
-html[data-theme="amber"] body,
-html[data-theme="tokyo-night"] body,
-html[data-theme="absolute-dark"] body,
-html[data-theme="forest"] body,
-html[data-theme="dracula"] body,
-html[data-theme="dark-coffee"],
-html[data-theme="amber"],
-html[data-theme="tokyo-night"],
-html[data-theme="absolute-dark"],
-html[data-theme="forest"],
+html[data-theme="dark-coffee"] body
+html[data-theme="amber"] body
+html[data-theme="tokyo-night"] body
+html[data-theme="absolute-dark"] body
+html[data-theme="forest"] body
+html[data-theme="dracula"] body
+html[data-theme="dark-coffee"]
+html[data-theme="amber"]
+html[data-theme="tokyo-night"]
+html[data-theme="absolute-dark"]
+html[data-theme="forest"]
 html[data-theme="dracula"] {
   background: var(--body-bg);
   color: var(--text-primary);
 }
 
-html[data-theme="dark-coffee"] .tech-tag,
-html[data-theme="amber"] .tech-tag,
-html[data-theme="tokyo-night"] .tech-tag,
-html[data-theme="absolute-dark"] .tech-tag,
-html[data-theme="forest"] .tech-tag,
+html[data-theme="dark-coffee"] .tech-tag
+html[data-theme="amber"] .tech-tag
+html[data-theme="tokyo-night"] .tech-tag
+html[data-theme="absolute-dark"] .tech-tag
+html[data-theme="forest"] .tech-tag
 html[data-theme="dracula"] .tech-tag {
   background: rgba(0, 212, 255, 0.1);
   color: var(--accent-cyan);
   border: 1px solid rgba(0, 212, 255, 0.2);
 }
 
-html[data-theme="dark-coffee"] .section-title,
-html[data-theme="amber"] .section-title,
-html[data-theme="tokyo-night"] .section-title,
-html[data-theme="absolute-dark"] .section-title,
-html[data-theme="forest"] .section-title,
+html[data-theme="dark-coffee"] .section-title
+html[data-theme="amber"] .section-title
+html[data-theme="tokyo-night"] .section-title
+html[data-theme="absolute-dark"] .section-title
+html[data-theme="forest"] .section-title
 html[data-theme="dracula"] .section-title {
   background-image: var(--grad-primary);
   -webkit-background-clip: text;
@@ -1757,294 +1757,294 @@ html[data-theme="dracula"] .section-title {
   color: transparent;
 }
 
-html[data-theme="dark-coffee"] .section-title::after,
-html[data-theme="amber"] .section-title::after,
-html[data-theme="tokyo-night"] .section-title::after,
-html[data-theme="absolute-dark"] .section-title::after,
-html[data-theme="forest"] .section-title::after,
+html[data-theme="dark-coffee"] .section-title::after
+html[data-theme="amber"] .section-title::after
+html[data-theme="tokyo-night"] .section-title::after
+html[data-theme="absolute-dark"] .section-title::after
+html[data-theme="forest"] .section-title::after
 html[data-theme="dracula"] .section-title::after {
   background: var(--grad-primary);
 }
 
-html[data-theme="dark-coffee"] #canvas-container,
-html[data-theme="amber"] #canvas-container,
-html[data-theme="tokyo-night"] #canvas-container,
-html[data-theme="absolute-dark"] #canvas-container,
-html[data-theme="forest"] #canvas-container,
+html[data-theme="dark-coffee"] #canvas-container
+html[data-theme="amber"] #canvas-container
+html[data-theme="tokyo-night"] #canvas-container
+html[data-theme="absolute-dark"] #canvas-container
+html[data-theme="forest"] #canvas-container
 html[data-theme="dracula"] #canvas-container {
   background: transparent;
 }
 
-html[data-theme="dark-coffee"] #loading-screen,
-html[data-theme="amber"] #loading-screen,
-html[data-theme="tokyo-night"] #loading-screen,
-html[data-theme="absolute-dark"] #loading-screen,
-html[data-theme="forest"] #loading-screen,
+html[data-theme="dark-coffee"] #loading-screen
+html[data-theme="amber"] #loading-screen
+html[data-theme="tokyo-night"] #loading-screen
+html[data-theme="absolute-dark"] #loading-screen
+html[data-theme="forest"] #loading-screen
 html[data-theme="dracula"] #loading-screen {
   background: var(--bg-deep);
   color: var(--text-primary);
 }
 
-html[data-theme="dark-coffee"] #menu-btn:hover,
-html[data-theme="amber"] #menu-btn:hover,
-html[data-theme="tokyo-night"] #menu-btn:hover,
-html[data-theme="absolute-dark"] #menu-btn:hover,
-html[data-theme="forest"] #menu-btn:hover,
+html[data-theme="dark-coffee"] #menu-btn:hover
+html[data-theme="amber"] #menu-btn:hover
+html[data-theme="tokyo-night"] #menu-btn:hover
+html[data-theme="absolute-dark"] #menu-btn:hover
+html[data-theme="forest"] #menu-btn:hover
 html[data-theme="dracula"] #menu-btn:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-html[data-theme="dark-coffee"] footer,
-html[data-theme="amber"] footer,
-html[data-theme="tokyo-night"] footer,
-html[data-theme="absolute-dark"] footer,
-html[data-theme="forest"] footer,
+html[data-theme="dark-coffee"] footer
+html[data-theme="amber"] footer
+html[data-theme="tokyo-night"] footer
+html[data-theme="absolute-dark"] footer
+html[data-theme="forest"] footer
 html[data-theme="dracula"] footer {
   background: var(--bg-dark);
   border-top: 1px solid var(--border);
 }
 
-html[data-theme="dark-coffee"] .project-title a,
-html[data-theme="amber"] .project-title a,
-html[data-theme="tokyo-night"] .project-title a,
-html[data-theme="absolute-dark"] .project-title a,
-html[data-theme="forest"] .project-title a,
+html[data-theme="dark-coffee"] .project-title a
+html[data-theme="amber"] .project-title a
+html[data-theme="tokyo-night"] .project-title a
+html[data-theme="absolute-dark"] .project-title a
+html[data-theme="forest"] .project-title a
 html[data-theme="dracula"] .project-title a {
   color: var(--accent-cyan);
 }
 
-html[data-theme="dark-coffee"] .project-description,
-html[data-theme="amber"] .project-description,
-html[data-theme="tokyo-night"] .project-description,
-html[data-theme="absolute-dark"] .project-description,
-html[data-theme="forest"] .project-description,
+html[data-theme="dark-coffee"] .project-description
+html[data-theme="amber"] .project-description
+html[data-theme="tokyo-night"] .project-description
+html[data-theme="absolute-dark"] .project-description
+html[data-theme="forest"] .project-description
 html[data-theme="dracula"] .project-description {
   color: var(--text-secondary);
 }
 
-html[data-theme="dark-coffee"] .project-stats,
-html[data-theme="amber"] .project-stats,
-html[data-theme="tokyo-night"] .project-stats,
-html[data-theme="absolute-dark"] .project-stats,
-html[data-theme="forest"] .project-stats,
+html[data-theme="dark-coffee"] .project-stats
+html[data-theme="amber"] .project-stats
+html[data-theme="tokyo-night"] .project-stats
+html[data-theme="absolute-dark"] .project-stats
+html[data-theme="forest"] .project-stats
 html[data-theme="dracula"] .project-stats {
   color: var(--text-muted);
 }
 
-html[data-theme="dark-coffee"] .timeline::before,
-html[data-theme="amber"] .timeline::before,
-html[data-theme="tokyo-night"] .timeline::before,
-html[data-theme="absolute-dark"] .timeline::before,
-html[data-theme="forest"] .timeline::before,
+html[data-theme="dark-coffee"] .timeline::before
+html[data-theme="amber"] .timeline::before
+html[data-theme="tokyo-night"] .timeline::before
+html[data-theme="absolute-dark"] .timeline::before
+html[data-theme="forest"] .timeline::before
 html[data-theme="dracula"] .timeline::before {
   background: var(--border);
 }
 
-html[data-theme="dark-coffee"] .timeline-icon,
-html[data-theme="amber"] .timeline-icon,
-html[data-theme="tokyo-night"] .timeline-icon,
-html[data-theme="absolute-dark"] .timeline-icon,
-html[data-theme="forest"] .timeline-icon,
+html[data-theme="dark-coffee"] .timeline-icon
+html[data-theme="amber"] .timeline-icon
+html[data-theme="tokyo-night"] .timeline-icon
+html[data-theme="absolute-dark"] .timeline-icon
+html[data-theme="forest"] .timeline-icon
 html[data-theme="dracula"] .timeline-icon {
   background: var(--bg-card);
   border: 2px solid var(--accent-cyan);
   color: var(--accent-cyan);
 }
 
-html[data-theme="dark-coffee"] .timeline-date,
-html[data-theme="amber"] .timeline-date,
-html[data-theme="tokyo-night"] .timeline-date,
-html[data-theme="absolute-dark"] .timeline-date,
-html[data-theme="forest"] .timeline-date,
+html[data-theme="dark-coffee"] .timeline-date
+html[data-theme="amber"] .timeline-date
+html[data-theme="tokyo-night"] .timeline-date
+html[data-theme="absolute-dark"] .timeline-date
+html[data-theme="forest"] .timeline-date
 html[data-theme="dracula"] .timeline-date {
   color: var(--accent-cyan);
 }
 
-html[data-theme="dark-coffee"] .timeline-company,
-html[data-theme="amber"] .timeline-company,
-html[data-theme="tokyo-night"] .timeline-company,
-html[data-theme="absolute-dark"] .timeline-company,
-html[data-theme="forest"] .timeline-company,
+html[data-theme="dark-coffee"] .timeline-company
+html[data-theme="amber"] .timeline-company
+html[data-theme="tokyo-night"] .timeline-company
+html[data-theme="absolute-dark"] .timeline-company
+html[data-theme="forest"] .timeline-company
 html[data-theme="dracula"] .timeline-company {
   color: var(--text-secondary);
 }
 
-html[data-theme="dark-coffee"] .blog-post-card:hover,
-html[data-theme="amber"] .blog-post-card:hover,
-html[data-theme="tokyo-night"] .blog-post-card:hover,
-html[data-theme="absolute-dark"] .blog-post-card:hover,
-html[data-theme="forest"] .blog-post-card:hover,
+html[data-theme="dark-coffee"] .blog-post-card:hover
+html[data-theme="amber"] .blog-post-card:hover
+html[data-theme="tokyo-night"] .blog-post-card:hover
+html[data-theme="absolute-dark"] .blog-post-card:hover
+html[data-theme="forest"] .blog-post-card:hover
 html[data-theme="dracula"] .blog-post-card:hover {
   background: var(--bg-elevated);
   border-color: var(--border-glow);
 }
 
-html[data-theme="dark-coffee"] .blog-post-excerpt,
-html[data-theme="amber"] .blog-post-excerpt,
-html[data-theme="tokyo-night"] .blog-post-excerpt,
-html[data-theme="absolute-dark"] .blog-post-excerpt,
-html[data-theme="forest"] .blog-post-excerpt,
+html[data-theme="dark-coffee"] .blog-post-excerpt
+html[data-theme="amber"] .blog-post-excerpt
+html[data-theme="tokyo-night"] .blog-post-excerpt
+html[data-theme="absolute-dark"] .blog-post-excerpt
+html[data-theme="forest"] .blog-post-excerpt
 html[data-theme="dracula"] .blog-post-excerpt {
   color: var(--text-secondary);
 }
 
-html[data-theme="dark-coffee"] .blog-post-date,
-html[data-theme="amber"] .blog-post-date,
-html[data-theme="tokyo-night"] .blog-post-date,
-html[data-theme="absolute-dark"] .blog-post-date,
-html[data-theme="forest"] .blog-post-date,
+html[data-theme="dark-coffee"] .blog-post-date
+html[data-theme="amber"] .blog-post-date
+html[data-theme="tokyo-night"] .blog-post-date
+html[data-theme="absolute-dark"] .blog-post-date
+html[data-theme="forest"] .blog-post-date
 html[data-theme="dracula"] .blog-post-date {
   color: var(--text-muted);
 }
 
-html[data-theme="dark-coffee"] .music-item:hover,
-html[data-theme="amber"] .music-item:hover,
-html[data-theme="tokyo-night"] .music-item:hover,
-html[data-theme="absolute-dark"] .music-item:hover,
-html[data-theme="forest"] .music-item:hover,
+html[data-theme="dark-coffee"] .music-item:hover
+html[data-theme="amber"] .music-item:hover
+html[data-theme="tokyo-night"] .music-item:hover
+html[data-theme="absolute-dark"] .music-item:hover
+html[data-theme="forest"] .music-item:hover
 html[data-theme="dracula"] .music-item:hover {
   background: var(--bg-elevated);
 }
 
-html[data-theme="dark-coffee"] .skill-category,
-html[data-theme="amber"] .skill-category,
-html[data-theme="tokyo-night"] .skill-category,
-html[data-theme="absolute-dark"] .skill-category,
-html[data-theme="forest"] .skill-category,
+html[data-theme="dark-coffee"] .skill-category
+html[data-theme="amber"] .skill-category
+html[data-theme="tokyo-night"] .skill-category
+html[data-theme="absolute-dark"] .skill-category
+html[data-theme="forest"] .skill-category
 html[data-theme="dracula"] .skill-category {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
-html[data-theme="dark-coffee"] .skill-tag,
-html[data-theme="amber"] .skill-tag,
-html[data-theme="tokyo-night"] .skill-tag,
-html[data-theme="absolute-dark"] .skill-tag,
-html[data-theme="forest"] .skill-tag,
+html[data-theme="dark-coffee"] .skill-tag
+html[data-theme="amber"] .skill-tag
+html[data-theme="tokyo-night"] .skill-tag
+html[data-theme="absolute-dark"] .skill-tag
+html[data-theme="forest"] .skill-tag
 html[data-theme="dracula"] .skill-tag {
   background: rgba(0, 212, 255, 0.1);
   color: var(--accent-cyan);
   border: 1px solid rgba(0, 212, 255, 0.2);
 }
 
-html[data-theme="dark-coffee"] .contact-form input,
-html[data-theme="dark-coffee"] .contact-form textarea,
-html[data-theme="amber"] .contact-form input,
-html[data-theme="amber"] .contact-form textarea,
-html[data-theme="tokyo-night"] .contact-form input,
-html[data-theme="tokyo-night"] .contact-form textarea,
-html[data-theme="absolute-dark"] .contact-form input,
-html[data-theme="absolute-dark"] .contact-form textarea,
-html[data-theme="forest"] .contact-form input,
-html[data-theme="forest"] .contact-form textarea,
-html[data-theme="dracula"] .contact-form input,
+html[data-theme="dark-coffee"] .contact-form input
+html[data-theme="dark-coffee"] .contact-form textarea
+html[data-theme="amber"] .contact-form input
+html[data-theme="amber"] .contact-form textarea
+html[data-theme="tokyo-night"] .contact-form input
+html[data-theme="tokyo-night"] .contact-form textarea
+html[data-theme="absolute-dark"] .contact-form input
+html[data-theme="absolute-dark"] .contact-form textarea
+html[data-theme="forest"] .contact-form input
+html[data-theme="forest"] .contact-form textarea
+html[data-theme="dracula"] .contact-form input
 html[data-theme="dracula"] .contact-form textarea {
   background: var(--input-bg);
   border: 1px solid var(--border);
   color: var(--text-primary);
 }
 
-html[data-theme="dark-coffee"] .contact-form input:focus,
-html[data-theme="dark-coffee"] .contact-form textarea:focus,
-html[data-theme="amber"] .contact-form input:focus,
-html[data-theme="amber"] .contact-form textarea:focus,
-html[data-theme="tokyo-night"] .contact-form input:focus,
-html[data-theme="tokyo-night"] .contact-form textarea:focus,
-html[data-theme="absolute-dark"] .contact-form input:focus,
-html[data-theme="absolute-dark"] .contact-form textarea:focus,
-html[data-theme="forest"] .contact-form input:focus,
-html[data-theme="forest"] .contact-form textarea:focus,
-html[data-theme="dracula"] .contact-form input:focus,
+html[data-theme="dark-coffee"] .contact-form input:focus
+html[data-theme="dark-coffee"] .contact-form textarea:focus
+html[data-theme="amber"] .contact-form input:focus
+html[data-theme="amber"] .contact-form textarea:focus
+html[data-theme="tokyo-night"] .contact-form input:focus
+html[data-theme="tokyo-night"] .contact-form textarea:focus
+html[data-theme="absolute-dark"] .contact-form input:focus
+html[data-theme="absolute-dark"] .contact-form textarea:focus
+html[data-theme="forest"] .contact-form input:focus
+html[data-theme="forest"] .contact-form textarea:focus
+html[data-theme="dracula"] .contact-form input:focus
 html[data-theme="dracula"] .contact-form textarea:focus {
   border-color: var(--accent-cyan);
   box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
 }
 
-html[data-theme="dark-coffee"] .submit-btn,
-html[data-theme="amber"] .submit-btn,
-html[data-theme="tokyo-night"] .submit-btn,
-html[data-theme="absolute-dark"] .submit-btn,
-html[data-theme="forest"] .submit-btn,
+html[data-theme="dark-coffee"] .submit-btn
+html[data-theme="amber"] .submit-btn
+html[data-theme="tokyo-night"] .submit-btn
+html[data-theme="absolute-dark"] .submit-btn
+html[data-theme="forest"] .submit-btn
 html[data-theme="dracula"] .submit-btn {
   background: var(--grad-primary);
   color: #fff;
   border: none;
 }
 
-html[data-theme="dark-coffee"] .submit-btn:hover,
-html[data-theme="amber"] .submit-btn:hover,
-html[data-theme="tokyo-night"] .submit-btn:hover,
-html[data-theme="absolute-dark"] .submit-btn:hover,
-html[data-theme="forest"] .submit-btn:hover,
+html[data-theme="dark-coffee"] .submit-btn:hover
+html[data-theme="amber"] .submit-btn:hover
+html[data-theme="tokyo-night"] .submit-btn:hover
+html[data-theme="absolute-dark"] .submit-btn:hover
+html[data-theme="forest"] .submit-btn:hover
 html[data-theme="dracula"] .submit-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--glow-cyan);
 }
 
-html[data-theme="dark-coffee"] .social-link,
-html[data-theme="amber"] .social-link,
-html[data-theme="tokyo-night"] .social-link,
-html[data-theme="absolute-dark"] .social-link,
-html[data-theme="forest"] .social-link,
+html[data-theme="dark-coffee"] .social-link
+html[data-theme="amber"] .social-link
+html[data-theme="tokyo-night"] .social-link
+html[data-theme="absolute-dark"] .social-link
+html[data-theme="forest"] .social-link
 html[data-theme="dracula"] .social-link {
   color: var(--text-secondary);
 }
 
-html[data-theme="dark-coffee"] .social-link:hover,
-html[data-theme="amber"] .social-link:hover,
-html[data-theme="tokyo-night"] .social-link:hover,
-html[data-theme="absolute-dark"] .social-link:hover,
-html[data-theme="forest"] .social-link:hover,
+html[data-theme="dark-coffee"] .social-link:hover
+html[data-theme="amber"] .social-link:hover
+html[data-theme="tokyo-night"] .social-link:hover
+html[data-theme="absolute-dark"] .social-link:hover
+html[data-theme="forest"] .social-link:hover
 html[data-theme="dracula"] .social-link:hover {
   color: var(--accent-cyan);
   transform: translateY(-3px);
 }
 
-html[data-theme="dark-coffee"] .project-card,
-html[data-theme="amber"] .project-card,
-html[data-theme="tokyo-night"] .project-card,
-html[data-theme="absolute-dark"] .project-card,
-html[data-theme="forest"] .project-card,
+html[data-theme="dark-coffee"] .project-card
+html[data-theme="amber"] .project-card
+html[data-theme="tokyo-night"] .project-card
+html[data-theme="absolute-dark"] .project-card
+html[data-theme="forest"] .project-card
 html[data-theme="dracula"] .project-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
-html[data-theme="dark-coffee"] .project-card:hover,
-html[data-theme="amber"] .project-card:hover,
-html[data-theme="tokyo-night"] .project-card:hover,
-html[data-theme="absolute-dark"] .project-card:hover,
-html[data-theme="forest"] .project-card:hover,
+html[data-theme="dark-coffee"] .project-card:hover
+html[data-theme="amber"] .project-card:hover
+html[data-theme="tokyo-night"] .project-card:hover
+html[data-theme="absolute-dark"] .project-card:hover
+html[data-theme="forest"] .project-card:hover
 html[data-theme="dracula"] .project-card:hover {
   border-color: var(--border-glow);
   box-shadow: var(--shadow-card);
 }
 
-html[data-theme="dark-coffee"] .blog-post-card,
-html[data-theme="amber"] .blog-post-card,
-html[data-theme="tokyo-night"] .blog-post-card,
-html[data-theme="absolute-dark"] .blog-post-card,
-html[data-theme="forest"] .blog-post-card,
+html[data-theme="dark-coffee"] .blog-post-card
+html[data-theme="amber"] .blog-post-card
+html[data-theme="tokyo-night"] .blog-post-card
+html[data-theme="absolute-dark"] .blog-post-card
+html[data-theme="forest"] .blog-post-card
 html[data-theme="dracula"] .blog-post-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
-html[data-theme="dark-coffee"] .music-item,
-html[data-theme="amber"] .music-item,
-html[data-theme="tokyo-night"] .music-item,
-html[data-theme="absolute-dark"] .music-item,
-html[data-theme="forest"] .music-item,
+html[data-theme="dark-coffee"] .music-item
+html[data-theme="amber"] .music-item
+html[data-theme="tokyo-night"] .music-item
+html[data-theme="absolute-dark"] .music-item
+html[data-theme="forest"] .music-item
 html[data-theme="dracula"] .music-item {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
-html[data-theme="dark-coffee"] .skill-category:hover,
-html[data-theme="amber"] .skill-category:hover,
-html[data-theme="tokyo-night"] .skill-category:hover,
-html[data-theme="absolute-dark"] .skill-category:hover,
-html[data-theme="forest"] .skill-category:hover,
+html[data-theme="dark-coffee"] .skill-category:hover
+html[data-theme="amber"] .skill-category:hover
+html[data-theme="tokyo-night"] .skill-category:hover
+html[data-theme="absolute-dark"] .skill-category:hover
+html[data-theme="forest"] .skill-category:hover
 html[data-theme="dracula"] .skill-category:hover {
   border-color: var(--border-glow);
   box-shadow: var(--shadow-card);
