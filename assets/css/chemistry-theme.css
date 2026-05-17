@@ -12,7 +12,13 @@
   );
 }
 
-html[data-theme="dark"] .hero {
+html[data-theme="dark"] .hero {,
+html[data-theme="dark-coffee"] .hero {,
+html[data-theme="amber"] .hero {,
+html[data-theme="tokyo-night"] .hero {,
+html[data-theme="absolute-dark"] .hero {,
+html[data-theme="forest"] .hero {,
+html[data-theme="dracula"] .hero {
   background: linear-gradient(
     135deg,
     rgba(59, 130, 246, 0.1) 0%,
@@ -60,7 +66,13 @@ html[data-theme="dark"] .hero {
   background-size: 200% 200%;
 }
 
-html[data-theme="dark"] .hero h1 {
+html[data-theme="dark"] .hero h1 {,
+html[data-theme="dark-coffee"] .hero h1 {,
+html[data-theme="amber"] .hero h1 {,
+html[data-theme="tokyo-night"] .hero h1 {,
+html[data-theme="absolute-dark"] .hero h1 {,
+html[data-theme="forest"] .hero h1 {,
+html[data-theme="dracula"] .hero h1 {
   text-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
 }
 
@@ -272,7 +284,13 @@ html[data-theme="dark"] .hero h1 {
     0 0 20px rgba(59, 130, 246, 0.2);
 }
 
-html[data-theme="dark"] .form-input:focus {
+html[data-theme="dark"] .form-input:focus {,
+html[data-theme="dark-coffee"] .form-input:focus {,
+html[data-theme="amber"] .form-input:focus {,
+html[data-theme="tokyo-night"] .form-input:focus {,
+html[data-theme="absolute-dark"] .form-input:focus {,
+html[data-theme="forest"] .form-input:focus {,
+html[data-theme="dracula"] .form-input:focus {
   box-shadow:
     0 0 0 3px rgba(59, 130, 246, 0.2),
     0 0 20px rgba(59, 130, 246, 0.4);
@@ -384,7 +402,13 @@ code {
   border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
-html[data-theme="dark"] code {
+html[data-theme="dark"] code {,
+html[data-theme="dark-coffee"] code {,
+html[data-theme="amber"] code {,
+html[data-theme="tokyo-night"] code {,
+html[data-theme="absolute-dark"] code {,
+html[data-theme="forest"] code {,
+html[data-theme="dracula"] code {
   background: linear-gradient(
     135deg,
     rgba(59, 130, 246, 0.2),
@@ -442,7 +466,13 @@ ol li::before {
   pointer-events: none;
 }
 
-html[data-theme="dark"] .section:nth-child(even)::before {
+html[data-theme="dark"] .section:nth-child(even)::before {,
+html[data-theme="dark-coffee"] .section:nth-child(even)::before {,
+html[data-theme="amber"] .section:nth-child(even)::before {,
+html[data-theme="tokyo-night"] .section:nth-child(even)::before {,
+html[data-theme="absolute-dark"] .section:nth-child(even)::before {,
+html[data-theme="forest"] .section:nth-child(even)::before {,
+html[data-theme="dracula"] .section:nth-child(even)::before {
   opacity: 0.5;
 }
 

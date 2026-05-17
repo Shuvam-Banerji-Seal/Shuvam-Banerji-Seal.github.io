@@ -497,7 +497,13 @@
     --accent-color-alpha: rgba(6, 182, 212, 0.1);
 }
 
-[data-theme="dark"],
+[data-theme="dark"],,
+[data-theme="dark-coffee"],,
+[data-theme="amber"],,
+[data-theme="tokyo-night"],,
+[data-theme="absolute-dark"],,
+[data-theme="forest"],,
+[data-theme="dracula"],
 [data-theme="dark-coffee"],
 [data-theme="amber"],
 [data-theme="tokyo-night"],
@@ -517,24 +523,54 @@
     --accent-color-alpha: rgba(34, 211, 238, 0.2);
 }
 
-[data-theme="dark"] .tool-card {
+[data-theme="dark"] .tool-card {,
+[data-theme="dark-coffee"] .tool-card {,
+[data-theme="amber"] .tool-card {,
+[data-theme="tokyo-night"] .tool-card {,
+[data-theme="absolute-dark"] .tool-card {,
+[data-theme="forest"] .tool-card {,
+[data-theme="dracula"] .tool-card {
     background: rgba(31, 41, 55, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.15);
     opacity: 1;
 }
 
-[data-theme="dark"] .tool-card h3,
-[data-theme="dark"] .tool-description {
+[data-theme="dark"] .tool-card h3,,
+[data-theme="dark-coffee"] .tool-card h3,,
+[data-theme="amber"] .tool-card h3,,
+[data-theme="tokyo-night"] .tool-card h3,,
+[data-theme="absolute-dark"] .tool-card h3,,
+[data-theme="forest"] .tool-card h3,,
+[data-theme="dracula"] .tool-card h3,
+[data-theme="dark"] .tool-description {,
+[data-theme="dark-coffee"] .tool-description {,
+[data-theme="amber"] .tool-description {,
+[data-theme="tokyo-night"] .tool-description {,
+[data-theme="absolute-dark"] .tool-description {,
+[data-theme="forest"] .tool-description {,
+[data-theme="dracula"] .tool-description {
     color: var(--text-primary);
 }
 
-[data-theme="dark"] .chat-message.assistant {
+[data-theme="dark"] .chat-message.assistant {,
+[data-theme="dark-coffee"] .chat-message.assistant {,
+[data-theme="amber"] .chat-message.assistant {,
+[data-theme="tokyo-night"] .chat-message.assistant {,
+[data-theme="absolute-dark"] .chat-message.assistant {,
+[data-theme="forest"] .chat-message.assistant {,
+[data-theme="dracula"] .chat-message.assistant {
     background: rgba(31, 41, 55, 0.9);
     color: var(--text-primary);
     border: 2px solid var(--border-color);
 }
 
-[data-theme="dark"] .paper-card {
+[data-theme="dark"] .paper-card {,
+[data-theme="dark-coffee"] .paper-card {,
+[data-theme="amber"] .paper-card {,
+[data-theme="tokyo-night"] .paper-card {,
+[data-theme="absolute-dark"] .paper-card {,
+[data-theme="forest"] .paper-card {,
+[data-theme="dracula"] .paper-card {
     background: rgba(31, 41, 55, 0.9);
     color: var(--text-primary);
 }
