@@ -442,6 +442,9 @@ class ThemeController {
     }
 
     bindEvents() {
+        // Only wire if navbar.js hasn't already handled it
+        if (window.__themeToggleWired) return;
+        window.__themeToggleWired = true;
         const themeButtons = document.querySelectorAll('[data-theme-toggle]');
         themeButtons.forEach(btn => {
             btn.addEventListener('click', () => {

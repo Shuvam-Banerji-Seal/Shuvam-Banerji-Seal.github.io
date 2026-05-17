@@ -53,10 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialTheme = savedTheme || getRandomDarkTheme();
     applyTheme(initialTheme);
 
-    // Add click listeners to all theme toggle buttons
-    themeToggleButtons.forEach(btn => {
-        btn.addEventListener('click', toggleTheme);
-    });
+    // Add click listeners to all theme toggle buttons (only if navbar.js hasn't already)
+    if (!window.__themeToggleWired) {
+        window.__themeToggleWired = true;
+        themeToggleButtons.forEach(btn => {
+            btn.addEventListener('click', toggleTheme);
+        });
+    }
 
     // --- Navbar Functionality ---
     const navbar = document.getElementById('navbar');

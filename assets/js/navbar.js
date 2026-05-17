@@ -372,6 +372,7 @@ function initThemeToggle() {
   applyTheme(currentTheme);
 
   // Wire click handlers on all toggle buttons
+  window.__themeToggleWired = true;
   document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
     // Remove any existing listener by cloning (safe for navbar-injected btn)
     var newBtn = btn.cloneNode(true);
