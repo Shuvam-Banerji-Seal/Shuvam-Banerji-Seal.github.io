@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var t = localStorage.getItem("theme") || "dark";
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -685,7 +685,7 @@
         }
 
         // Use CORS proxy if specified (needed for APIs that don't support browser requests)
-        const fetchUrl = cfg.corsProxy ? cfg.corsProxy + encodeURIComponent(cfg.baseUrl) : cfg.baseUrl;
+        let fetchUrl = cfg.corsProxy ? cfg.corsProxy + encodeURIComponent(cfg.baseUrl) : cfg.baseUrl;
 
         const res = await fetch(fetchUrl, {
           method: "POST",
@@ -705,7 +705,7 @@
             errMsg = e.error?.message || errMsg;
           } catch {}
           if (res.status === 0 || res.status === 403) {
-            errMsg = "CORS error: This API doesn't support direct browser access. Try using a different provider or check your API settings.";
+            errMsg = "CORS error: The API proxy may be rate-limited. Try again in a moment, or switch to a different provider (OpenAI, Groq, Anthropic).";
           }
           throw new Error(errMsg);
         }

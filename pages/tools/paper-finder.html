@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var t = localStorage.getItem("theme") || "dark";
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -373,7 +373,11 @@
           if (allResults.length === 0 && errors.length > 0) {
             const errDiv = document.createElement("div");
             errDiv.className = "alert alert-error";
-            errDiv.innerHTML = `<i data-lucide="alert-circle"></i> <span>Could not fetch papers. ${errors.join("; ")}. Please try again later.</span>`;
+            const isRateLimit = errors.some(e => e.includes("429") || e.includes("rate"));
+            const msg = isRateLimit
+              ? "API rate limit reached. Please wait a moment and try again."
+              : `Could not fetch papers. ${errors.join("; ")}. Please try again later.`;
+            errDiv.innerHTML = `<i data-lucide="alert-circle"></i> <span>${msg}</span>`;
             document.getElementById("results-list").appendChild(errDiv);
             if (typeof lucide !== "undefined") lucide.createIcons();
           } else if (errors.length > 0) {
