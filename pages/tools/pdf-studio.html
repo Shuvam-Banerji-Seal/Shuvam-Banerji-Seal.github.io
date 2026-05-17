@@ -26,12 +26,14 @@
     <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
     <meta name="robots" content="index, follow" />
     <title>PDF Studio - SBS Tools</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script defer src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script defer src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
@@ -1148,7 +1150,13 @@
       setupDropZone(mrgDrop, mrgInput, true, (files) => addMergeFiles(files));
 
       function addMergeFiles(files) {
-        Array.from(files).forEach((f) => mergeFiles.push(f));
+        Array.from(files).forEach((f) => {
+          if (f.size > MAX_PDF_SIZE) {
+            notify("Skipping " + f.name + " (too large: " + fmtSize(f.size) + ")", "error");
+          } else {
+            mergeFiles.push(f);
+          }
+        });
         renderMergeList();
       }
 
@@ -1186,6 +1194,8 @@
         document.getElementById("mrg-run-btn").disabled = true;
 
         try {
+          if (typeof PDFLib === "undefined")
+            throw new Error("pdf-lib failed to load. Please refresh.");
           const { PDFDocument } = PDFLib;
           const merged = await PDFDocument.create();
           let totalPages = 0;
