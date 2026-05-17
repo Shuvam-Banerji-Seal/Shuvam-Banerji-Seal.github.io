@@ -318,6 +318,7 @@
         modal: {
           name: "Modal — GLM-5",
           baseUrl: "https://api.us-west-2.modal.direct/v1/chat/completions",
+          corsProxy: "https://corsproxy.io/?",
           models: ["zai-org/GLM-5-FP8"],
           presetKey: MODAL_KEY,
           defaultMaxTokens: 131072,
@@ -580,7 +581,11 @@
           addMessage("assistant", response);
         } catch (error) {
           hideTyping();
-          addMessage("assistant", `❌ Error: ${error.message}`);
+          let errorMsg = error.message;
+          if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError")) {
+            errorMsg = "Network error: The API endpoint may not support browser requests (CORS). Try switching to a different provider like OpenAI, Groq, or Anthropic which support direct browser access.";
+          }
+          addMessage("assistant", `❌ Error: ${errorMsg}`);
         }
 
         document.getElementById("send-btn").disabled = false;
@@ -679,7 +684,10 @@
           headers["X-Title"] = "LLM Studio";
         }
 
-        const res = await fetch(cfg.baseUrl, {
+        // Use CORS proxy if specified (needed for APIs that don't support browser requests)
+        const fetchUrl = cfg.corsProxy ? cfg.corsProxy + encodeURIComponent(cfg.baseUrl) : cfg.baseUrl;
+
+        const res = await fetch(fetchUrl, {
           method: "POST",
           headers,
           body: JSON.stringify({
@@ -696,6 +704,9 @@
             const e = await res.json();
             errMsg = e.error?.message || errMsg;
           } catch {}
+          if (res.status === 0 || res.status === 403) {
+            errMsg = "CORS error: This API doesn't support direct browser access. Try using a different provider or check your API settings.";
+          }
           throw new Error(errMsg);
         }
         const data = await res.json();
@@ -710,6 +721,15 @@
                 <p style="margin-top: 1rem; color: var(--text-secondary);">Start a conversation with AI</p>
             </div>`;
         if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      // ── Notification ─────────────────────────────────────────────────────────
+      function showNotification(msg) {
+        const n = document.createElement("div");
+        n.style.cssText = "position:fixed;top:80px;right:20px;padding:1rem 1.5rem;background:var(--accent-color,#00ff88);color:#000;border-radius:8px;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);";
+        n.textContent = msg;
+        document.body.appendChild(n);
+        setTimeout(() => n.remove(), 3000);
       }
 
       // ── Init ──────────────────────────────────────────────────────────────────
