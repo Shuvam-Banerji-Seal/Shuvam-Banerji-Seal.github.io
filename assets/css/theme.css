@@ -38,8 +38,8 @@
 /* ----------------------------------------------------------------
    LIGHT THEME — CREAMY COFFEE
    ---------------------------------------------------------------- */
-:root,
-html:not([data-theme="dark"]) {
+:root
+html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) {
   /* Backgrounds */
   --bg-deep: #faf3e8;
   --bg-primary: #faf3e8;
@@ -107,8 +107,8 @@ html:not([data-theme="dark"]) {
   --music-hover-bg: #ede0c8;
   --music-card-bg: rgba(255, 248, 235, 0.98);
   --music-main-gradient: linear-gradient(
-    180deg,
-    rgba(201, 124, 58, 0.3) 0%,
+    180deg
+    rgba(201, 124, 58, 0.3) 0%
     #faf3e8 350px
   );
   --music-search-bg: #ede0c8;
@@ -135,8 +135,14 @@ html:not([data-theme="dark"]) {
 /* ----------------------------------------------------------------
    DARK THEME — MOLECULAR TERMINAL
    ---------------------------------------------------------------- */
-html[data-theme="dark"],
+html[data-theme="dark"]
 [data-theme="dark"] {
+[data-theme="dark-coffee"] {
+[data-theme="amber"] {
+[data-theme="tokyo-night"] {
+[data-theme="absolute-dark"] {
+[data-theme="forest"] {
+[data-theme="dracula"] {
   /* Backgrounds */
   --bg-deep: #060b18;
   --bg-primary: #060b18;
@@ -178,8 +184,8 @@ html[data-theme="dark"],
 
   /* Glassmorphic */
   --glass-bg: linear-gradient(
-    180deg,
-    rgba(31, 41, 55, 0.92),
+    180deg
+    rgba(31, 41, 55, 0.92)
     rgba(31, 41, 55, 0.78)
   );
   --glass-border: rgba(255, 255, 255, 0.06);
@@ -208,8 +214,8 @@ html[data-theme="dark"],
   --music-hover-bg: #282828;
   --music-card-bg: #181818;
   --music-main-gradient: linear-gradient(
-    180deg,
-    rgba(30, 58, 138, 0.8) 0%,
+    180deg
+    rgba(30, 58, 138, 0.8) 0%
     #121212 350px
   );
   --music-search-bg: #282828;
@@ -236,7 +242,7 @@ html[data-theme="dark"],
 /* ----------------------------------------------------------------
    DARK THEME — DARK COFFEE (Warm espresso tones with amber accents)
    ---------------------------------------------------------------- */
-html[data-theme="dark-coffee"],
+html[data-theme="dark-coffee"]
 [data-theme="dark-coffee"] {
   /* Backgrounds */
   --bg-deep: #1a1208;
@@ -329,7 +335,7 @@ html[data-theme="dark-coffee"],
 /* ----------------------------------------------------------------
    DARK THEME — AMBER NIGHT (Golden amber on charcoal)
    ---------------------------------------------------------------- */
-html[data-theme="amber"],
+html[data-theme="amber"]
 [data-theme="amber"] {
   /* Backgrounds */
   --bg-deep: #121212;
@@ -422,7 +428,7 @@ html[data-theme="amber"],
 /* ----------------------------------------------------------------
    DARK THEME — TOKYO NIGHT (Neon purple/blue on deep indigo)
    ---------------------------------------------------------------- */
-html[data-theme="tokyo-night"],
+html[data-theme="tokyo-night"]
 [data-theme="tokyo-night"] {
   /* Backgrounds */
   --bg-deep: #1a1b2e;
@@ -515,7 +521,7 @@ html[data-theme="tokyo-night"],
 /* ----------------------------------------------------------------
    DARK THEME — ABSOLUTE DARK (Pure black with minimal accents)
    ---------------------------------------------------------------- */
-html[data-theme="absolute-dark"],
+html[data-theme="absolute-dark"]
 [data-theme="absolute-dark"] {
   /* Backgrounds */
   --bg-deep: #000000;
@@ -608,7 +614,7 @@ html[data-theme="absolute-dark"],
 /* ----------------------------------------------------------------
    DARK THEME — FOREST NIGHT (Deep green on dark earth)
    ---------------------------------------------------------------- */
-html[data-theme="forest"],
+html[data-theme="forest"]
 [data-theme="forest"] {
   /* Backgrounds */
   --bg-deep: #0a120a;
@@ -701,7 +707,7 @@ html[data-theme="forest"],
 /* ----------------------------------------------------------------
    DARK THEME — DRACULA (Classic purple/pink on dark)
    ---------------------------------------------------------------- */
-html[data-theme="dracula"],
+html[data-theme="dracula"]
 [data-theme="dracula"] {
   /* Backgrounds */
   --bg-deep: #282a36;
@@ -805,7 +811,7 @@ body {
   background: var(--body-bg);
   color: var(--text-primary);
   transition:
-    background 0.35s ease,
+    background 0.35s ease
     color 0.35s ease;
   overflow-x: hidden;
   width: 100%;
@@ -856,7 +862,7 @@ body {
   transition: color 0.25s ease;
 }
 
-.nav-link:hover,
+.nav-link:hover
 .nav-link.active {
   color: var(--nav-text-hover);
 }
@@ -871,7 +877,7 @@ body {
   transition: color 0.25s ease;
 }
 
-.dropdown-toggle:hover,
+.dropdown-toggle:hover
 .dropdown-toggle.active {
   color: var(--nav-text-hover);
 }
@@ -888,7 +894,7 @@ body {
 .dropdown-item {
   color: var(--text-secondary);
   transition:
-    color 0.2s ease,
+    color 0.2s ease
     background 0.2s ease;
 }
 
@@ -906,7 +912,7 @@ body {
   padding: 0.5rem;
   border-radius: 0.375rem;
   transition:
-    color 0.25s ease,
+    color 0.25s ease
     background 0.25s ease;
 }
 
@@ -952,7 +958,7 @@ body {
 /* ----------------------------------------------------------------
    BUTTON — btn-primary
    ---------------------------------------------------------------- */
-.btn-primary,
+.btn-primary
 .nav-contact-btn {
   background: var(--btn-primary-bg);
   color: var(--btn-primary-text) !important;
@@ -961,13 +967,13 @@ body {
   border-radius: 0.5rem;
   font-weight: 600;
   transition:
-    background 0.25s ease,
+    background 0.25s ease
     transform 0.15s ease;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.btn-primary:hover,
+.btn-primary:hover
 .nav-contact-btn:hover {
   background: var(--btn-primary-hover);
   transform: translateY(-1px);
@@ -1011,19 +1017,19 @@ body {
   border-radius: 9999px;
 }
 
-html[data-theme="dark"] .section-title,
-[data-theme="dark"] .section-title,
-html[data-theme="dark-coffee"] .section-title,
-[data-theme="dark-coffee"] .section-title,
-html[data-theme="amber"] .section-title,
-[data-theme="amber"] .section-title,
-html[data-theme="tokyo-night"] .section-title,
-[data-theme="tokyo-night"] .section-title,
-html[data-theme="absolute-dark"] .section-title,
-[data-theme="absolute-dark"] .section-title,
-html[data-theme="forest"] .section-title,
-[data-theme="forest"] .section-title,
-html[data-theme="dracula"] .section-title,
+html[data-theme="dark"] .section-title
+[data-theme="dark"] .section-title
+html[data-theme="dark-coffee"] .section-title
+[data-theme="dark-coffee"] .section-title
+html[data-theme="amber"] .section-title
+[data-theme="amber"] .section-title
+html[data-theme="tokyo-night"] .section-title
+[data-theme="tokyo-night"] .section-title
+html[data-theme="absolute-dark"] .section-title
+[data-theme="absolute-dark"] .section-title
+html[data-theme="forest"] .section-title
+[data-theme="forest"] .section-title
+html[data-theme="dracula"] .section-title
 [data-theme="dracula"] .section-title {
   background-image: var(--grad-primary);
   -webkit-background-clip: text;
@@ -1031,19 +1037,19 @@ html[data-theme="dracula"] .section-title,
   color: transparent;
 }
 
-html[data-theme="dark"] .section-title::after,
-[data-theme="dark"] .section-title::after,
-html[data-theme="dark-coffee"] .section-title::after,
-[data-theme="dark-coffee"] .section-title::after,
-html[data-theme="amber"] .section-title::after,
-[data-theme="amber"] .section-title::after,
-html[data-theme="tokyo-night"] .section-title::after,
-[data-theme="tokyo-night"] .section-title::after,
-html[data-theme="absolute-dark"] .section-title::after,
-[data-theme="absolute-dark"] .section-title::after,
-html[data-theme="forest"] .section-title::after,
-[data-theme="forest"] .section-title::after,
-html[data-theme="dracula"] .section-title::after,
+html[data-theme="dark"] .section-title::after
+[data-theme="dark"] .section-title::after
+html[data-theme="dark-coffee"] .section-title::after
+[data-theme="dark-coffee"] .section-title::after
+html[data-theme="amber"] .section-title::after
+[data-theme="amber"] .section-title::after
+html[data-theme="tokyo-night"] .section-title::after
+[data-theme="tokyo-night"] .section-title::after
+html[data-theme="absolute-dark"] .section-title::after
+[data-theme="absolute-dark"] .section-title::after
+html[data-theme="forest"] .section-title::after
+[data-theme="forest"] .section-title::after
+html[data-theme="dracula"] .section-title::after
 [data-theme="dracula"] .section-title::after {
   background: var(--grad-primary);
 }

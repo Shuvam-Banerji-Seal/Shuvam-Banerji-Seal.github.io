@@ -24,7 +24,13 @@ body {
 
 /* Dark Theme */
 html[data-theme="dark"] body,
-html[data-theme="dark"] {
+html[data-theme="dark"] {,
+[data-theme="dark-coffee"] {,
+[data-theme="amber"] {,
+[data-theme="tokyo-night"] {,
+[data-theme="absolute-dark"] {,
+[data-theme="forest"] {,
+[data-theme="dracula"] {
   background: var(--body-bg, #060b18);
   color: var(--text-primary, #e2e8f0);
 }
@@ -1232,7 +1238,13 @@ html[data-theme="dark"] .text-gray-500 {
 }
 
 /* Dark Theme Overrides */
-html[data-theme="dark"] {
+html[data-theme="dark"] {,
+[data-theme="dark-coffee"] {,
+[data-theme="amber"] {,
+[data-theme="tokyo-night"] {,
+[data-theme="absolute-dark"] {,
+[data-theme="forest"] {,
+[data-theme="dracula"] {
   background:
     radial-gradient(
       1100px 500px at 10% 5%,
