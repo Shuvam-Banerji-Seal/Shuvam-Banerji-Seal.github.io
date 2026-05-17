@@ -1012,7 +1012,19 @@ body {
 }
 
 html[data-theme="dark"] .section-title,
-[data-theme="dark"] .section-title {
+[data-theme="dark"] .section-title,
+html[data-theme="dark-coffee"] .section-title,
+[data-theme="dark-coffee"] .section-title,
+html[data-theme="amber"] .section-title,
+[data-theme="amber"] .section-title,
+html[data-theme="tokyo-night"] .section-title,
+[data-theme="tokyo-night"] .section-title,
+html[data-theme="absolute-dark"] .section-title,
+[data-theme="absolute-dark"] .section-title,
+html[data-theme="forest"] .section-title,
+[data-theme="forest"] .section-title,
+html[data-theme="dracula"] .section-title,
+[data-theme="dracula"] .section-title {
   background-image: var(--grad-primary);
   -webkit-background-clip: text;
   background-clip: text;
@@ -1020,6 +1032,18 @@ html[data-theme="dark"] .section-title,
 }
 
 html[data-theme="dark"] .section-title::after,
-[data-theme="dark"] .section-title::after {
+[data-theme="dark"] .section-title::after,
+html[data-theme="dark-coffee"] .section-title::after,
+[data-theme="dark-coffee"] .section-title::after,
+html[data-theme="amber"] .section-title::after,
+[data-theme="amber"] .section-title::after,
+html[data-theme="tokyo-night"] .section-title::after,
+[data-theme="tokyo-night"] .section-title::after,
+html[data-theme="absolute-dark"] .section-title::after,
+[data-theme="absolute-dark"] .section-title::after,
+html[data-theme="forest"] .section-title::after,
+[data-theme="forest"] .section-title::after,
+html[data-theme="dracula"] .section-title::after,
+[data-theme="dracula"] .section-title::after {
   background: var(--grad-primary);
 }
