@@ -28,6 +28,7 @@
     <title>Chemistry Games - SBS Tools</title>
     <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
@@ -726,6 +727,16 @@
         document.getElementById("difficulty-modal").style.display = "none";
         pendingGameType = null;
       }
+
+      // Escape to close difficulty modal
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          const modal = document.getElementById("difficulty-modal");
+          if (modal && modal.style.display === "flex") {
+            closeDifficultyModal();
+          }
+        }
+      });
 
       function selectDifficulty(level) {
         difficulty = level;

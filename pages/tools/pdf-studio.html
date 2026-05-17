@@ -33,7 +33,7 @@
     <script defer src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -881,6 +881,29 @@
         });
       });
 
+      // ── Notification helper ─────────────────────────────────────────────────────
+      function notify(msg, type) {
+        var n = document.createElement("div");
+        n.style.cssText =
+          "position:fixed;top:1rem;right:1rem;z-index:9999;padding:0.75rem 1.25rem;border-radius:8px;font-size:0.9rem;max-width:400px;animation:fadeIn 0.3s";
+        n.style.background =
+          type === "error"
+            ? "rgba(239,68,68,0.95)"
+            : type === "success"
+              ? "rgba(34,197,94,0.95)"
+              : "rgba(59,130,246,0.95)";
+        n.style.color = "#fff";
+        n.textContent = msg;
+        document.body.appendChild(n);
+        setTimeout(function () {
+          n.style.opacity = "0";
+          n.style.transition = "opacity 0.3s";
+          setTimeout(function () {
+            n.remove();
+          }, 300);
+        }, 4000);
+      }
+
       // ══════════════════════════════════════════════════════════════════════════
       // ── COMPRESS ──────────────────────────────────────────────────────────────
       let cmpFile = null,
@@ -890,6 +913,17 @@
       setupDropZone(cmpDrop, cmpInput, false, (files) => loadCmpFile(files[0]));
 
       function loadCmpFile(file) {
+        if (file.size > MAX_PDF_SIZE) {
+          notify(
+            "File too large (" +
+              fmtSize(file.size) +
+              "). Max is " +
+              fmtSize(MAX_PDF_SIZE) +
+              ".",
+            "error",
+          );
+          return;
+        }
         cmpFile = file;
         cmpBlob = null;
         document.getElementById("cmp-fname").textContent = file.name;
@@ -993,17 +1027,27 @@
       });
 
       async function loadImgFile(file) {
-        const ab = await file.arrayBuffer();
-        imgPdf = await pdfjsLib.getDocument({ data: ab }).promise;
-        document.getElementById("img-fname").textContent = file.name;
-        document.getElementById("img-pagecount").textContent =
-          imgPdf.numPages + " pages";
-        document.getElementById("img-info").style.display = "block";
-        document.getElementById("img-run-btn").disabled = false;
-        document.getElementById("img-result").style.display = "none";
-        document.getElementById("img-grid").innerHTML = "";
-        convertedImgs = [];
-        if (typeof lucide !== "undefined") lucide.createIcons();
+        if (file.size > MAX_PDF_SIZE) {
+          notify("File too large (" + fmtSize(file.size) + "). Max is " + fmtSize(MAX_PDF_SIZE) + ".", "error");
+          return;
+        }
+        try {
+          if (typeof pdfjsLib === "undefined")
+            throw new Error("PDF.js failed to load. Please refresh.");
+          const ab = await file.arrayBuffer();
+          imgPdf = await pdfjsLib.getDocument({ data: ab }).promise;
+          document.getElementById("img-fname").textContent = file.name;
+          document.getElementById("img-pagecount").textContent =
+            imgPdf.numPages + " pages";
+          document.getElementById("img-info").style.display = "block";
+          document.getElementById("img-run-btn").disabled = false;
+          document.getElementById("img-result").style.display = "none";
+          document.getElementById("img-grid").innerHTML = "";
+          convertedImgs = [];
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (error) {
+          notify("Error loading PDF: " + error.message, "error");
+        }
       }
 
       async function runToImages() {
