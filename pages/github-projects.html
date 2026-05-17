@@ -648,13 +648,14 @@
               id="repo-search"
               class="search-input"
               placeholder="Search repositories..."
+              aria-label="Search repositories"
             />
             <i
               data-lucide="search"
               class="absolute right-3 top-3 w-5 h-5 text-gray-400"
             ></i>
           </div>
-          <select id="sort-repos" class="sort-select">
+          <select id="sort-repos" class="sort-select" aria-label="Sort repositories">
             <option value="updated">Recently Updated</option>
             <option value="created">Recently Created</option>
             <option value="name">Name A-Z</option>

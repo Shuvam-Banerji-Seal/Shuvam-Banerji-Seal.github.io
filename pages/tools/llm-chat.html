@@ -817,6 +817,11 @@
         const message = input.value.trim();
         if (!message) return;
 
+        if (message.length > 100000) {
+          showNotification("Message too long (max 100,000 characters)");
+          return;
+        }
+
         const apiKey = document.getElementById("api-key").value;
         if (!apiKey) {
           showNotification("Please enter your API key");

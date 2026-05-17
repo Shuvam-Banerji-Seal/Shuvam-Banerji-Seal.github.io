@@ -9,241 +9,284 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    overflow-x: hidden;
-    width: 100%;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-    overflow-x: hidden;
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
 }
 
 /* ---- Media elements ---- */
-img, picture, video, canvas, svg {
-    display: block;
-    max-width: 100%;
-    height: auto;
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 /* ---- Typography overflow ---- */
-p, h1, h2, h3, h4, h5, h6, li, dt, dd {
-    overflow-wrap: break-word;
-    word-break: break-word;
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+dt,
+dd {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* ---- Container system ---- */
 .container {
-    width: 100%;
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @supports (padding: max(0px)) {
-    .container {
-        padding-left: max(1rem, env(safe-area-inset-left));
-        padding-right: max(1rem, env(safe-area-inset-right));
-    }
+  .container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
 }
 
-@media (min-width: 480px)  { .container { padding-left: 1.25rem; padding-right: 1.25rem; } }
-@media (min-width: 768px)  { .container { padding-left: 2rem;    padding-right: 2rem; } }
-@media (min-width: 1280px) { .container { padding-left: 2.5rem;  padding-right: 2.5rem; } }
+@media (min-width: 480px) {
+  .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+@media (min-width: 1280px) {
+  .container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
 
 /* ---- Navbar layout ---- */
 #navbar {
-    width: 100%;
-    max-width: 100vw;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .nav-content {
-    width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @supports (padding: max(0px)) {
-    .nav-content {
-        padding-left: max(1rem, env(safe-area-inset-left));
-        padding-right: max(1rem, env(safe-area-inset-right));
-    }
+  .nav-content {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
 }
 
 /* Desktop nav links hidden on mobile — shown by main.css @768px */
-.nav-links { display: none; }
+.nav-links {
+  display: none;
+}
 
 @media (min-width: 768px) {
-    .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+  }
 }
 
 /* Hamburger button */
 #menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    min-width: 44px;
-    min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 @media (min-width: 768px) {
-    #menu-btn { display: none; }
+  #menu-btn {
+    display: none;
+  }
 }
 
 /* ---- Mobile sidebar menu ---- */
 #mobile-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 88%;
-    max-width: 340px;
-    z-index: 10000;
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 0;
-    /* Color handled by theme.css / main.css via var(--bg-card) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 88%;
+  max-width: 340px;
+  z-index: 10000;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0;
+  /* Color handled by theme.css / main.css via var(--bg-card) */
 }
 
 /* Open state — navbar.js adds .active */
 #mobile-menu.active {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 /* Mobile menu backdrop */
 #mobile-menu-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    z-index: 9999;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 }
 
 /* navbar.js adds .active to backdrop too */
 #mobile-menu-backdrop.active {
-    opacity: 1;
-    visibility: visible;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Mobile menu header row */
 .mobile-menu-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 1.5rem;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  flex-shrink: 0;
 }
 
 /* Close button — minimum 44×44 touch area */
 #close-menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: background 0.2s ease, color 0.2s ease;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+  flex-shrink: 0;
 }
 
 /* Mobile menu content */
 .mobile-menu-content {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    overflow-y: auto;
+  flex: 1;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  overflow-y: auto;
 }
 
 /* Hide mobile menu on desktop */
 @media (min-width: 768px) {
-    #mobile-menu,
-    #mobile-menu-backdrop {
-        display: none !important;
-    }
+  #mobile-menu,
+  #mobile-menu-backdrop {
+    display: none !important;
+  }
 }
 
 /* ---- Touch-friendly minimum targets ---- */
 @media (max-width: 767px) {
-    button,
-    a.btn,
-    .btn,
-    [role="button"] {
-        min-height: 44px;
-        min-width: 44px;
-    }
+  button,
+  a.btn,
+  .btn,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
 
-    /* Prevent tap highlight on interactive elements */
-    a, button {
-        -webkit-tap-highlight-color: transparent;
-    }
+  /* Prevent tap highlight on interactive elements */
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 /* ---- Grid system — force single column on phones ---- */
 @media (max-width: 767px) {
-    /* Generic named cols */
-    .grid,
-    [class*="card-grid"],
-    [class*="grid-cols"] {
-        grid-template-columns: 1fr !important;
-    }
+  /* Generic named cols */
+  .grid,
+  [class*="card-grid"],
+  [class*="grid-cols"] {
+    grid-template-columns: 1fr !important;
+  }
 
-    /* Tailwind utility classes sometimes used */
-    .md\:grid-cols-2,
-    .md\:grid-cols-3,
-    .lg\:grid-cols-2,
-    .lg\:grid-cols-3,
-    .sm\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-    }
+  /* Tailwind utility classes sometimes used */
+  .md\:grid-cols-2,
+  .md\:grid-cols-3,
+  .lg\:grid-cols-2,
+  .lg\:grid-cols-3,
+  .sm\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
 
-    /* Index page custom grids */
-    .about-layout,
-    .cv-grid {
-        grid-template-columns: 1fr !important;
-    }
+  /* Index page custom grids */
+  .about-layout,
+  .cv-grid {
+    grid-template-columns: 1fr !important;
+  }
 
-    /* Contact: show form first (form is 2nd in DOM, reversed via flex) */
-    .contact-layout {
-        display: flex !important;
-        flex-direction: column-reverse !important;
-        gap: 1.5rem;
-    }
+  /* Contact: show form first (form is 2nd in DOM, reversed via flex) */
+  .contact-layout {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    gap: 1.5rem;
+  }
 }
 
 /* ---- Sections ---- */
 section {
-    width: 100%;
-    overflow-x: hidden;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 @media (max-width: 767px) {
-    section { padding-left: 1rem; padding-right: 1rem; }
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 /* ---- Forms — full-width, touch-friendly ---- */
@@ -251,52 +294,72 @@ input,
 textarea,
 select,
 button {
-    max-width: 100%;
-    font: inherit;
+  max-width: 100%;
+  font: inherit;
 }
 
-textarea { resize: vertical; }
+textarea {
+  resize: vertical;
+}
 
 @media (max-width: 767px) {
-    input[type="text"],
-    input[type="email"],
-    input[type="search"],
-    input[type="url"],
-    input[type="password"],
-    textarea,
-    select {
-        width: 100%;
-        font-size: 16px; /* Prevents iOS auto-zoom */
-        padding: 0.75rem 1rem;
-    }
+  input[type="text"],
+  input[type="email"],
+  input[type="search"],
+  input[type="url"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+    font-size: 16px; /* Prevents iOS auto-zoom */
+    padding: 0.75rem 1rem;
+  }
 }
 
 /* ---- Tables — horizontal scroll wrapper ---- */
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 @media (max-width: 767px) {
-    .table-wrap {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* ---- Typography responsive scale ---- */
 @media (max-width: 767px) {
-    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-    h2 { font-size: clamp(1.25rem, 4vw, 2rem); }
-    h3 { font-size: clamp(1.1rem, 3.5vw, 1.5rem); }
+  h1 {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+  }
+  h2 {
+    font-size: clamp(1.25rem, 4vw, 2rem);
+  }
+  h3 {
+    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+  }
 
-    .section-title { font-size: clamp(1.25rem, 5vw, 1.8rem) !important; }
-    .hero h1  { font-size: clamp(1.5rem, 6vw, 2.5rem); }
+  .section-title {
+    font-size: clamp(1.25rem, 5vw, 1.8rem) !important;
+  }
+  .hero h1 {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
 }
 
 @media (max-width: 480px) {
-    body { font-size: 15px; }
-    .card, .cv-card, .project-card { padding: 1.1rem !important; }
+  body {
+    font-size: 15px;
+  }
+  .card,
+  .cv-card,
+  .project-card {
+    padding: 1.1rem !important;
+  }
 }
 
 /* ---- Cards & panels ---- */
@@ -304,53 +367,57 @@ table {
 .cv-card,
 .project-card,
 .github-card {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* ---- Flex & overflowing row layouts ---- */
 .flex-row-mobile {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 /* ---- Canvas container ---- */
 #canvas-container {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ---- Safe area for notched / dynamic-island iPhones ---- */
 @supports (padding: max(0px)) {
-    .hero,
-    main {
-        padding-left: max(1rem, env(safe-area-inset-left));
-        padding-right: max(1rem, env(safe-area-inset-right));
-    }
+  .hero,
+  main {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
 
-    footer {
-        padding-bottom: max(2rem, env(safe-area-inset-bottom));
-    }
+  footer {
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
 }
 
 /* ---- Minimum hero height on mobile (svh fallback) ---- */
 @media (max-width: 767px) {
-    .hero {
-        min-height: 100vh;
-        min-height: 100svh;
-    }
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
 }
 
 /* ---- Scrollbar ---- */
 @media (max-width: 767px) {
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
 }
 
 /* ---- Accessibility: focus ring ---- */
@@ -358,39 +425,45 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 /* ---- Print ---- */
 @media print {
-    #mobile-menu,
-    #mobile-menu-backdrop,
-    #menu-btn,
-    #canvas-container,
-    nav,
-    .hero-grid-bg,
-    .page-grid-bg {
-        display: none !important;
-    }
+  #mobile-menu,
+  #mobile-menu-backdrop,
+  #menu-btn,
+  #canvas-container,
+  nav,
+  .hero-grid-bg,
+  .page-grid-bg {
+    display: none !important;
+  }
 
-    main {
-        padding-top: 0 !important;
-    }
+  main {
+    padding-top: 0 !important;
+  }
 }
 
 /* ---- Utility helpers ---- */
-.overflow-x-hidden { overflow-x: hidden; }
-.w-full            { width: 100%; }
-.max-w-full        { max-width: 100%; }
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+.w-full {
+  width: 100%;
+}
+.max-w-full {
+  max-width: 100%;
+}
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

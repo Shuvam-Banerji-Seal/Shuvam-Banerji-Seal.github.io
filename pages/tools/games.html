@@ -624,11 +624,20 @@
       let bestStreak = 0;
       let pendingGameType = null;
 
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      
+      let audioCtx = null;
+
+      function ensureAudioCtx() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        return audioCtx;
+      }
+
       function playSound(type) {
         if (!soundEnabled) return;
         try {
+          const ctx = ensureAudioCtx();
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.connect(gain);

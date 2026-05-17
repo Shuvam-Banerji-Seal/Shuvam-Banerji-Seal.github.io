@@ -1,288 +1,488 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="My Notes - Download study notes and resources">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="google-site-verification"
+      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
+    />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="My Notes - Download study notes and resources"
+    />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/notes.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="My Notes - Shuvam Banerji Seal" />
+    <meta property="og:description" content="Personal notes and study materials by Shuvam Banerji Seal." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/notes.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:title" content="My Notes - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="Personal notes and study materials." />
+    <meta name="robots" content="index, follow" />
     <title>My Notes - Shuvam Banerji Seal</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/mobile-fixes.css">
-    <link rel="stylesheet" href="../assets/css/theme.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <link rel="stylesheet" href="../assets/css/animations.css">
-    <link rel="stylesheet" href="../assets/css/mobile.css">
-    <link rel="stylesheet" href="../assets/css/chemistry-theme.css">
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/animations.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
     <!-- Overrides - Must be last -->
-    <link rel="stylesheet" href="../assets/css/overrides.css">
+    <link rel="stylesheet" href="../assets/css/overrides.css" />
 
-    <!-- Cache Control -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
     <style>
+      .notes-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      .notes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .note-card {
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .note-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-card);
+      }
+
+      .note-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--accent-color);
+      }
+
+      .note-description {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        line-height: 1.6;
+      }
+
+      .note-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .github-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+        padding: 1rem 2rem;
+        background: var(--accent);
+        color: var(--btn-primary-text);
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.3s ease;
+      }
+
+      .github-link:hover {
+        transform: scale(1.05);
+      }
+
+      .featured-notes-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: var(--text-primary);
+      }
+
+      .note-icon {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: middle;
+        color: var(--accent);
+      }
+
+      .note-meta-icon {
+        width: 16px;
+        height: 16px;
+        color: var(--text-muted);
+      }
+
+      .note-download-btn {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .notes-usage-list {
+        list-style: disc;
+        margin-left: 2rem;
+        line-height: 2;
+        color: var(--text-secondary);
+      }
+
+      /* Mobile Responsiveness */
+      @media (max-width: 767px) {
         .notes-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
+          padding: 1rem 0.5rem;
         }
 
         .notes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+          grid-template-columns: 1fr;
+          gap: 1rem;
         }
 
         .note-card {
-            padding: 1.5rem;
-            border-radius: 12px;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          padding: 1.25rem;
         }
 
-        .note-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        .featured-notes-title {
+          font-size: 1.5rem;
         }
 
-        .note-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--accent-color);
+        .page-title {
+          font-size: 1.75rem;
         }
 
-        .note-description {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.6;
+        .page-subtitle {
+          font-size: 1rem;
         }
 
-        .note-meta {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+        .notes-usage-list {
+          margin-left: 1.25rem;
+          line-height: 1.8;
         }
+      }
 
-        .github-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-            padding: 1rem 2rem;
-            background: var(--accent-color);
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s ease;
+      @media (min-width: 768px) and (max-width: 1023px) {
+        .notes-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
+      }
 
-        .github-link:hover {
-            transform: scale(1.05);
-        }
+      /* Light mode overrides for any dark-mode-only styles */
+      html:not([data-theme="dark"]) .note-card:hover {
+        box-shadow: 0 8px 16px rgba(44, 26, 14, 0.12);
+      }
+
+      html[data-theme="dark"] .note-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 212, 255, 0.15);
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="navbar-container"></div>
     <script type="module" src="../assets/js/navbar.js"></script>
 
     <div id="mobile-menu-backdrop"></div>
 
     <main class="container">
-        <div class="notes-container">
-            <header class="text-center mb-16 animate-fade-in-up">
-                <h1 class="page-title">
-                    <i data-lucide="notebook-text" class="inline-block"></i>
-                    My Notes & Resources
-                </h1>
-                <p class="page-subtitle">Downloadable study notes, lecture materials, and academic resources</p>
-            </header>
+      <div class="notes-container">
+        <header class="text-center mb-16 animate-fade-in-up">
+          <h1 class="page-title">
+            <i data-lucide="notebook-text" class="inline-block"></i>
+            My Notes & Resources
+          </h1>
+          <p class="page-subtitle">
+            Downloadable study notes, lecture materials, and academic resources
+          </p>
+        </header>
 
-            <div class="glassmorphic card text-center p-8 mb-8">
-                <h2 class="text-2xl font-semibold mb-4">Access Full Repository</h2>
-                <p class="text-lg mb-6">
-                    All my notes are hosted on GitHub for easy access, version control, and collaboration.
-                    You can view, download, or clone the entire repository.
-                </p>
-                <a href="https://github.com/Shuvam-Banerji-Seal/My-Notes" target="_blank" rel="noopener noreferrer"
-                    class="github-link">
-                    <i data-lucide="github"></i>
-                    View on GitHub
-                </a>
-            </div>
-
-            <h2 style="font-size: 2rem; margin-bottom: 1rem; text-align: center;">Featured Notes</h2>
-
-            <div class="notes-grid">
-                <div class="note-card glassmorphic">
-                    <div class="note-title">
-                        <i data-lucide="atom"
-                            style="width: 20px; height: 20px; display: inline-block; vertical-align: middle;"></i>
-                        Quantum Chemistry
-                    </div>
-                    <div class="note-meta">
-                        <span><i data-lucide="calendar" style="width: 16px; height: 16px;"></i> 2024</span>
-                        <span><i data-lucide="file-text" style="width: 16px; height: 16px;"></i> PDF</span>
-                    </div>
-                    <p class="note-description">
-                        Comprehensive notes on quantum mechanics, molecular orbitals, and spectroscopy. Includes solved
-                        problems and exam preparation materials.
-                    </p>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/My-Notes" target="_blank" class="btn btn-secondary"
-                        style="width: 100%;">
-                        <i data-lucide="download"></i> Download
-                    </a>
-                </div>
-
-                <div class="note-card glassmorphic">
-                    <div class="note-title">
-                        <i data-lucide="flask-conical"
-                            style="width: 20px; height: 20px; display: inline-block; vertical-align: middle;"></i>
-                        Organic Chemistry
-                    </div>
-                    <div class="note-meta">
-                        <span><i data-lucide="calendar" style="width: 16px; height: 16px;"></i> 2024</span>
-                        <span><i data-lucide="file-text" style="width: 16px; height: 16px;"></i> PDF</span>
-                    </div>
-                    <p class="note-description">
-                        Reaction mechanisms, synthesis strategies, and spectroscopic analysis. Complete with practice
-                        problems and mnemonic devices.
-                    </p>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/My-Notes" target="_blank" class="btn btn-secondary"
-                        style="width: 100%;">
-                        <i data-lucide="download"></i> Download
-                    </a>
-                </div>
-
-                <div class="note-card glassmorphic">
-                    <div class="note-title">
-                        <i data-lucide="cpu"
-                            style="width: 20px; height: 20px; display: inline-block; vertical-align: middle;"></i>
-                        Computer Science
-                    </div>
-                    <div class="note-meta">
-                        <span><i data-lucide="calendar" style="width: 16px; height: 16px;"></i> 2024</span>
-                        <span><i data-lucide="file-text" style="width: 16px; height: 16px;"></i> PDF</span>
-                    </div>
-                    <p class="note-description">
-                        Data structures, algorithms, and programming concepts. Includes code examples and complexity
-                        analysis.
-                    </p>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/My-Notes" target="_blank" class="btn btn-secondary"
-                        style="width: 100%;">
-                        <i data-lucide="download"></i> Download
-                    </a>
-                </div>
-
-                <div class="note-card glassmorphic">
-                    <div class="note-title">
-                        <i data-lucide="calculator"
-                            style="width: 20px; height: 20px; display: inline-block; vertical-align: middle;"></i>
-                        Mathematics
-                    </div>
-                    <div class="note-meta">
-                        <span><i data-lucide="calendar" style="width: 16px; height: 16px;"></i> 2024</span>
-                        <span><i data-lucide="file-text" style="width: 16px; height: 16px;"></i> PDF</span>
-                    </div>
-                    <p class="note-description">
-                        Linear algebra, calculus, and differential equations. Theory with applications in chemistry and
-                        physics.
-                    </p>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/My-Notes" target="_blank" class="btn btn-secondary"
-                        style="width: 100%;">
-                        <i data-lucide="download"></i> Download
-                    </a>
-                </div>
-
-                <div class="note-card glassmorphic">
-                    <div class="note-title">
-                        <i data-lucide="brain"
-                            style="width: 20px; height: 20px; display: inline-block; vertical-align: middle;"></i>
-                        Machine Learning
-                    </div>
-                    <div class="note-meta">
-                        <span><i data-lucide="calendar" style="width: 16px; height: 16px;"></i> 2024</span>
-                        <span><i data-lucide="file-text" style="width: 16px; height: 16px;"></i> PDF</span>
-                    </div>
-                    <p class="note-description">
-                        Introduction to ML concepts, neural networks, and practical implementations in Python.
-                    </p>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/My-Notes" target="_blank" class="btn btn-secondary"
-                        style="width: 100%;">
-                        <i data-lucide="download"></i> Download
-                    </a>
-                </div>
-
-                <div class="note-card glassmorphic">
-                    <div class="note-title">
-                        <i data-lucide="book-open"
-                            style="width: 20px; height: 20px; display: inline-block; vertical-align: middle;"></i>
-                        Research Methods
-                    </div>
-                    <div class="note-meta">
-                        <span><i data-lucide="calendar" style="width: 16px; height: 16px;"></i> 2024</span>
-                        <span><i data-lucide="file-text" style="width: 16px; height: 16px;"></i> PDF</span>
-                    </div>
-                    <p class="note-description">
-                        Scientific methodology, data analysis, and academic writing. Essential for research students.
-                    </p>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/My-Notes" target="_blank" class="btn btn-secondary"
-                        style="width: 100%;">
-                        <i data-lucide="download"></i> Download
-                    </a>
-                </div>
-            </div>
-
-            <div class="glassmorphic card p-8 mt-8">
-                <h3 class="text-xl font-semibold mb-4">How to Use These Notes</h3>
-                <ul style="list-style: disc; margin-left: 2rem; line-height: 2;">
-                    <li>All notes are in PDF format for easy viewing and printing</li>
-                    <li>Some notes include LaTeX source files for those who want to modify them</li>
-                    <li>Feel free to use them for personal study, but please credit the source</li>
-                    <li>If you find errors or have suggestions, please open an issue on GitHub</li>
-                    <li>Contributions and improvements are welcome via pull requests</li>
-                </ul>
-            </div>
+        <div class="glassmorphic card text-center p-8 mb-8">
+          <h2 class="text-2xl font-semibold mb-4">Access Full Repository</h2>
+          <p class="text-lg mb-6">
+            All my notes are hosted on GitHub for easy access, version control,
+            and collaboration. You can view, download, or clone the entire
+            repository.
+          </p>
+          <a
+            href="https://github.com/Shuvam-Banerji-Seal/My-Notes"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="github-link"
+          >
+            <i data-lucide="code-2"></i>
+            View on GitHub
+          </a>
         </div>
+
+        <h2 class="featured-notes-title">Featured Notes</h2>
+
+        <div class="notes-grid">
+          <div class="note-card glassmorphic">
+            <div class="note-title">
+              <i data-lucide="atom" class="note-icon"></i>
+              Quantum Chemistry
+            </div>
+            <div class="note-meta">
+              <span
+                ><i data-lucide="calendar" class="note-meta-icon"></i>
+                2024</span
+              >
+              <span
+                ><i data-lucide="file-text" class="note-meta-icon"></i>
+                PDF</span
+              >
+            </div>
+            <p class="note-description">
+              Comprehensive notes on quantum mechanics, molecular orbitals, and
+              spectroscopy. Includes solved problems and exam preparation
+              materials.
+            </p>
+            <a
+              href="https://github.com/Shuvam-Banerji-Seal/My-Notes"
+              target="_blank"
+              class="btn btn-secondary note-download-btn"
+            >
+              <i data-lucide="download"></i> Download
+            </a>
+          </div>
+
+          <div class="note-card glassmorphic">
+            <div class="note-title">
+              <i data-lucide="flask-conical" class="note-icon"></i>
+              Organic Chemistry
+            </div>
+            <div class="note-meta">
+              <span
+                ><i data-lucide="calendar" class="note-meta-icon"></i>
+                2024</span
+              >
+              <span
+                ><i data-lucide="file-text" class="note-meta-icon"></i>
+                PDF</span
+              >
+            </div>
+            <p class="note-description">
+              Reaction mechanisms, synthesis strategies, and spectroscopic
+              analysis. Complete with practice problems and mnemonic devices.
+            </p>
+            <a
+              href="https://github.com/Shuvam-Banerji-Seal/My-Notes"
+              target="_blank"
+              class="btn btn-secondary note-download-btn"
+            >
+              <i data-lucide="download"></i> Download
+            </a>
+          </div>
+
+          <div class="note-card glassmorphic">
+            <div class="note-title">
+              <i data-lucide="cpu" class="note-icon"></i>
+              Computer Science
+            </div>
+            <div class="note-meta">
+              <span
+                ><i data-lucide="calendar" class="note-meta-icon"></i>
+                2024</span
+              >
+              <span
+                ><i data-lucide="file-text" class="note-meta-icon"></i>
+                PDF</span
+              >
+            </div>
+            <p class="note-description">
+              Data structures, algorithms, and programming concepts. Includes
+              code examples and complexity analysis.
+            </p>
+            <a
+              href="https://github.com/Shuvam-Banerji-Seal/My-Notes"
+              target="_blank"
+              class="btn btn-secondary note-download-btn"
+            >
+              <i data-lucide="download"></i> Download
+            </a>
+          </div>
+
+          <div class="note-card glassmorphic">
+            <div class="note-title">
+              <i data-lucide="calculator" class="note-icon"></i>
+              Mathematics
+            </div>
+            <div class="note-meta">
+              <span
+                ><i data-lucide="calendar" class="note-meta-icon"></i>
+                2024</span
+              >
+              <span
+                ><i data-lucide="file-text" class="note-meta-icon"></i>
+                PDF</span
+              >
+            </div>
+            <p class="note-description">
+              Linear algebra, calculus, and differential equations. Theory with
+              applications in chemistry and physics.
+            </p>
+            <a
+              href="https://github.com/Shuvam-Banerji-Seal/My-Notes"
+              target="_blank"
+              class="btn btn-secondary note-download-btn"
+            >
+              <i data-lucide="download"></i> Download
+            </a>
+          </div>
+
+          <div class="note-card glassmorphic">
+            <div class="note-title">
+              <i data-lucide="brain" class="note-icon"></i>
+              Machine Learning
+            </div>
+            <div class="note-meta">
+              <span
+                ><i data-lucide="calendar" class="note-meta-icon"></i>
+                2024</span
+              >
+              <span
+                ><i data-lucide="file-text" class="note-meta-icon"></i>
+                PDF</span
+              >
+            </div>
+            <p class="note-description">
+              Introduction to ML concepts, neural networks, and practical
+              implementations in Python.
+            </p>
+            <a
+              href="https://github.com/Shuvam-Banerji-Seal/My-Notes"
+              target="_blank"
+              class="btn btn-secondary note-download-btn"
+            >
+              <i data-lucide="download"></i> Download
+            </a>
+          </div>
+
+          <div class="note-card glassmorphic">
+            <div class="note-title">
+              <i data-lucide="book-open" class="note-icon"></i>
+              Research Methods
+            </div>
+            <div class="note-meta">
+              <span
+                ><i data-lucide="calendar" class="note-meta-icon"></i>
+                2024</span
+              >
+              <span
+                ><i data-lucide="file-text" class="note-meta-icon"></i>
+                PDF</span
+              >
+            </div>
+            <p class="note-description">
+              Scientific methodology, data analysis, and academic writing.
+              Essential for research students.
+            </p>
+            <a
+              href="https://github.com/Shuvam-Banerji-Seal/My-Notes"
+              target="_blank"
+              class="btn btn-secondary note-download-btn"
+            >
+              <i data-lucide="download"></i> Download
+            </a>
+          </div>
+        </div>
+
+        <div class="glassmorphic card p-8 mt-8">
+          <h3 class="text-xl font-semibold mb-4">How to Use These Notes</h3>
+          <ul class="notes-usage-list">
+            <li>All notes are in PDF format for easy viewing and printing</li>
+            <li>
+              Some notes include LaTeX source files for those who want to modify
+              them
+            </li>
+            <li>
+              Feel free to use them for personal study, but please credit the
+              source
+            </li>
+            <li>
+              If you find errors or have suggestions, please open an issue on
+              GitHub
+            </li>
+            <li>
+              Contributions and improvements are welcome via pull requests
+            </li>
+          </ul>
+        </div>
+      </div>
     </main>
 
     <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="GitHub Profile">
-                    <i data-lucide="github" class="w-5 h-5"></i>
-                </a>
-                <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer"
-                    class="social-link" aria-label="LinkedIn Profile">
-                    <i data-lucide="linkedin" class="w-5 h-5"></i>
-                </a>
-                <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
-                    <i data-lucide="mail" class="w-5 h-5"></i>
-                </a>
-            </div>
-            <p>&copy; <span id="current-year"></span> Shuvam Banerji Seal. All Rights Reserved.</p>
-        </div>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem">
+        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
+        Portfolio v3.0
+      </p>
     </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    </script>
 
     <script type="module" src="../assets/js/main.js"></script>
     <script type="module" src="../assets/js/enhanced.js"></script>
-    <script>
-        lucide.createIcons();
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-    </script>
-</body>
-
+  </body>
 </html>

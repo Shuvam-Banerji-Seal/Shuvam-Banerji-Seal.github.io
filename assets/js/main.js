@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="card glassmorphic project-card animate-on-scroll">
             <div>
                 <h3 class="project-title">
-                    <i data-lucide="github"></i>
+                    <i data-lucide="code-2"></i>
                     <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.name}</a>
                 </h3>
                 <p class="project-description">${repo.description || ''}</p>
