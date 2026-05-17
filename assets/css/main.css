@@ -1172,7 +1172,8 @@ html[data-theme="dark"] .form-input::placeholder {
 }
 
 /* Social links styling */
-.social-links {
+.social-links,
+.footer-social {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
