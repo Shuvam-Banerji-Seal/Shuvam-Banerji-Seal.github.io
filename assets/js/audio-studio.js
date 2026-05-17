@@ -61,6 +61,10 @@ class AudioStudio {
 
     async init() {
         try {
+            if (!window.AudioContext && !window.webkitAudioContext) {
+                this.showNotification('Your browser does not support the Web Audio API.', 'error');
+                return;
+            }
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
             this.gainNode = this.audioContext.createGain();
             this.analyser = this.audioContext.createAnalyser();
@@ -77,6 +81,7 @@ class AudioStudio {
             console.log('Audio Studio initialized');
         } catch (error) {
             console.error('Failed to initialize Audio Studio:', error);
+            this.showNotification('Failed to initialize audio engine: ' + error.message, 'error');
         }
     }
 
@@ -95,11 +100,25 @@ class AudioStudio {
         };
 
         // Compressor
-        this.effects.compressor = this.audioContext.createDynamicsCompressor();
-        this.effects.compressor.threshold.value = -24;
-        this.effects.compressor.ratio.value = 4;
-        this.effects.compressor.attack.value = 0.01;
-        this.effects.compressor.release.value = 0.25;
+        this.effects.compressor = {
+            node: this.audioContext.createDynamicsCompressor(),
+            enabled: false
+        };
+        this.effects.compressor.node.threshold.value = -24;
+        this.effects.compressor.node.ratio.value = 4;
+        this.effects.compressor.node.attack.value = 0.01;
+        this.effects.compressor.node.release.value = 0.25;
+
+        // Reverb with generated impulse response
+        this.effects.reverb = {
+            convolver: this.audioContext.createConvolver(),
+            wet: this.audioContext.createGain(),
+            dry: this.audioContext.createGain(),
+            enabled: false
+        };
+        this.effects.reverb.wet.gain.value = 0.3;
+        this.effects.reverb.dry.gain.value = 0.7;
+        this.effects.reverb.convolver.buffer = this.generateImpulseResponse(2.0, 2.0);
 
         // Delay
         this.effects.delay = {
@@ -111,6 +130,21 @@ class AudioStudio {
         this.effects.delay.node.delayTime.value = 0.25;
         this.effects.delay.feedback.gain.value = 0.3;
         this.effects.delay.mix.gain.value = 0.25;
+    }
+
+    generateImpulseResponse(duration, decay) {
+        const sampleRate = this.audioContext.sampleRate;
+        const length = sampleRate * duration;
+        const impulse = this.audioContext.createBuffer(2, length, sampleRate);
+
+        for (let channel = 0; channel < 2; channel++) {
+            const data = impulse.getChannelData(channel);
+            for (let i = 0; i < length; i++) {
+                data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+            }
+        }
+
+        return impulse;
     }
 
     async populateInputDevices() {
@@ -135,6 +169,9 @@ class AudioStudio {
             }
         } catch (error) {
             console.error('Error accessing audio devices:', error);
+            if (error.name === 'NotAllowedError') {
+                this.showNotification('Microphone permission required to list audio devices.', 'info');
+            }
         }
     }
 
@@ -298,6 +335,64 @@ class AudioStudio {
     }
 
     bindEffectControls() {
+        // Effect toggles
+        const toggles = {
+            'eq-enabled': (enabled) => { this.effects.eq.enabled = enabled; },
+            'compressor-enabled': (enabled) => { this.effects.compressor.enabled = enabled; },
+            'reverb-enabled': (enabled) => { this.effects.reverb.enabled = enabled; },
+            'delay-enabled': (enabled) => { this.effects.delay.enabled = enabled; },
+            'noise-reduction-enabled': (enabled) => { /* placeholder */ },
+            'normalize-enabled': (enabled) => { /* placeholder */ },
+            'pitch-enabled': (enabled) => { /* placeholder */ }
+        };
+
+        Object.entries(toggles).forEach(([id, handler]) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('change', e => {
+                    handler(e.target.checked);
+                });
+            }
+        });
+
+        // Reverb controls
+        document.getElementById('reverb-size')?.addEventListener('input', e => {
+            const size = parseFloat(e.target.value) / 100;
+            this.effects.reverb.convolver.buffer = this.generateImpulseResponse(size * 4 + 0.5, 2.0);
+            document.getElementById('reverb-size-val').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('reverb-damping')?.addEventListener('input', e => {
+            const decay = parseFloat(e.target.value) / 50;
+            const size = parseFloat(document.getElementById('reverb-size')?.value || 50) / 100;
+            this.effects.reverb.convolver.buffer = this.generateImpulseResponse(size * 4 + 0.5, decay);
+            document.getElementById('reverb-damping-val').textContent = e.target.value + '%';
+        });
+
+        document.getElementById('reverb-mix')?.addEventListener('input', e => {
+            const wet = parseFloat(e.target.value) / 100;
+            this.effects.reverb.wet.gain.value = wet;
+            this.effects.reverb.dry.gain.value = 1 - wet;
+            document.getElementById('reverb-mix-val').textContent = e.target.value + '%';
+        });
+
+        // Pitch shift (playback rate)
+        document.getElementById('pitch-semitones')?.addEventListener('input', e => {
+            const semitones = parseFloat(e.target.value);
+            const cents = parseFloat(document.getElementById('pitch-cents')?.value || 0);
+            this.playbackRate = Math.pow(2, (semitones + cents / 100) / 12);
+            if (this.sourceNode) this.sourceNode.playbackRate.value = this.playbackRate;
+            document.getElementById('pitch-semitones-val').textContent = e.target.value;
+        });
+
+        document.getElementById('pitch-cents')?.addEventListener('input', e => {
+            const semitones = parseFloat(document.getElementById('pitch-semitones')?.value || 0);
+            const cents = parseFloat(e.target.value);
+            this.playbackRate = Math.pow(2, (semitones + cents / 100) / 12);
+            if (this.sourceNode) this.sourceNode.playbackRate.value = this.playbackRate;
+            document.getElementById('pitch-cents-val').textContent = e.target.value;
+        });
+
         // EQ sliders
         ['60', '170', '310', '600', '1k', '3k', '6k', '12k', '14k', '16k'].forEach((freq, i) => {
             const slider = document.getElementById(`eq-${freq}`);
@@ -308,6 +403,26 @@ class AudioStudio {
                     }
                 });
             }
+        });
+
+        // EQ presets
+        document.getElementById('eq-preset')?.addEventListener('change', e => {
+            const presets = {
+                'flat':      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                'bass-boost':[8, 6, 4, 2, 0, 0, 0, 0, 0, 0],
+                'treble-boost':[0, 0, 0, 0, 0, 2, 4, 6, 8, 8],
+                'vocal':     [-2, -1, 0, 2, 4, 4, 2, 0, -1, -2],
+                'podcast':   [-2, 0, 2, 4, 4, 2, 0, -1, -2, -3]
+            };
+            const values = presets[e.target.value] || presets['flat'];
+            const freqs = ['60', '170', '310', '600', '1k', '3k', '6k', '12k', '14k', '16k'];
+            values.forEach((val, i) => {
+                const slider = document.getElementById(`eq-${freqs[i]}`);
+                if (slider) {
+                    slider.value = val;
+                    if (this.effects.eq.bands[i]) this.effects.eq.bands[i].gain.value = val;
+                }
+            });
         });
 
         // Compressor controls
@@ -416,7 +531,15 @@ class AudioStudio {
 
         } catch (error) {
             console.error('Recording failed:', error);
-            alert('Could not access microphone. Please check permissions.');
+            if (error.name === 'NotAllowedError') {
+                this.showNotification('Microphone access denied. Please allow microphone permissions in your browser settings.', 'error');
+            } else if (error.name === 'NotFoundError') {
+                this.showNotification('No microphone found. Please connect a microphone and try again.', 'error');
+            } else if (error.name === 'NotReadableError') {
+                this.showNotification('Microphone is already in use by another application.', 'error');
+            } else {
+                this.showNotification('Could not access microphone: ' + error.message, 'error');
+            }
         }
     }
 
@@ -490,17 +613,26 @@ class AudioStudio {
             this.updateTimeDisplay();
         } catch (error) {
             console.error('Error loading audio file:', error);
-            alert('Could not load audio file. Please try a different format.');
+            if (error.name === 'EncodingError' || error.message.includes('decode')) {
+                this.showNotification('Unsupported audio format. Please use MP3, WAV, OGG, M4A, or FLAC.', 'error');
+            } else {
+                this.showNotification('Could not load audio file: ' + error.message, 'error');
+            }
         }
     }
 
     async loadAudioBlob(blob) {
-        const arrayBuffer = await blob.arrayBuffer();
-        this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-        this.saveToHistory();
-        this.showWaveform();
-        this.drawWaveform();
-        this.updateTimeDisplay();
+        try {
+            const arrayBuffer = await blob.arrayBuffer();
+            this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+            this.saveToHistory();
+            this.showWaveform();
+            this.drawWaveform();
+            this.updateTimeDisplay();
+        } catch (error) {
+            console.error('Error decoding recorded audio:', error);
+            this.showNotification('Failed to decode recorded audio.', 'error');
+        }
     }
 
     showWaveform() {
@@ -705,6 +837,60 @@ class AudioStudio {
         }
     }
 
+    rebuildEffectsChain() {
+        // Disconnect everything first
+        try { this.sourceNode.disconnect(); } catch(e) {}
+        try { this.gainNode.disconnect(); } catch(e) {}
+        try { this.effects.eq.bands.forEach(b => b.disconnect()); } catch(e) {}
+        try { this.effects.compressor.node.disconnect(); } catch(e) {}
+        try { this.effects.reverb.convolver.disconnect(); } catch(e) {}
+        try { this.effects.reverb.wet.disconnect(); } catch(e) {}
+        try { this.effects.reverb.dry.disconnect(); } catch(e) {}
+        try { this.effects.delay.node.disconnect(); } catch(e) {}
+        try { this.effects.delay.feedback.disconnect(); } catch(e) {}
+        try { this.effects.delay.mix.disconnect(); } catch(e) {}
+
+        // Build chain: source -> [EQ] -> [Compressor] -> [Reverb/Delay] -> gain -> analyser -> destination
+        let currentNode = this.sourceNode;
+
+        // EQ chain
+        if (this.effects.eq.enabled) {
+            for (const band of this.effects.eq.bands) {
+                currentNode.connect(band);
+                currentNode = band;
+            }
+        }
+
+        // Compressor
+        if (this.effects.compressor.enabled) {
+            currentNode.connect(this.effects.compressor.node);
+            currentNode = this.effects.compressor.node;
+        }
+
+        // Reverb (parallel wet/dry)
+        if (this.effects.reverb.enabled) {
+            currentNode.connect(this.effects.reverb.dry);
+            currentNode.connect(this.effects.reverb.convolver);
+            this.effects.reverb.convolver.connect(this.effects.reverb.wet);
+            this.effects.reverb.wet.connect(this.gainNode);
+            this.effects.reverb.dry.connect(this.gainNode);
+        } else {
+            currentNode.connect(this.gainNode);
+        }
+
+        // Delay (parallel)
+        if (this.effects.delay.enabled) {
+            this.gainNode.connect(this.effects.delay.node);
+            this.effects.delay.node.connect(this.effects.delay.feedback);
+            this.effects.delay.feedback.connect(this.effects.delay.node);
+            this.effects.delay.node.connect(this.effects.delay.mix);
+            this.effects.delay.mix.connect(this.analyser);
+        }
+
+        this.gainNode.connect(this.analyser);
+        this.analyser.connect(this.audioContext.destination);
+    }
+
     play() {
         if (!this.audioBuffer) return;
 
@@ -714,8 +900,10 @@ class AudioStudio {
 
         this.sourceNode = this.audioContext.createBufferSource();
         this.sourceNode.buffer = this.audioBuffer;
-        this.sourceNode.connect(this.gainNode);
         this.sourceNode.playbackRate.value = this.playbackRate;
+
+        // Rebuild effects chain based on current toggle states
+        this.rebuildEffectsChain();
 
         if (this.isLooping && this.hasSelection) {
             this.sourceNode.loop = true;
@@ -1226,11 +1414,16 @@ class AudioStudio {
             this.isTunerActive = true;
 
             document.getElementById('tuner-toggle').innerHTML = '<i data-lucide="radio"></i> Stop Tuner';
-            lucide.createIcons();
+            if (typeof lucide !== "undefined") lucide.createIcons();
 
             this.runTuner();
         } catch (error) {
             console.error('Tuner error:', error);
+            if (error.name === 'NotAllowedError') {
+                this.showNotification('Microphone access required for the tuner.', 'error');
+            } else {
+                this.showNotification('Could not start tuner: ' + error.message, 'error');
+            }
         }
     }
 
@@ -1244,7 +1437,7 @@ class AudioStudio {
         document.getElementById('tuner-note').textContent = '--';
         document.getElementById('tuner-freq').textContent = '-- Hz';
         document.getElementById('tuner-needle').style.left = '50%';
-        lucide.createIcons();
+        if (typeof lucide !== "undefined") lucide.createIcons();
     }
 
     runTuner() {
@@ -1517,6 +1710,23 @@ class AudioStudio {
                 case 'l': this.toggleLoop(); break;
             }
         }
+    }
+
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `audio-notification audio-notification-${type}`;
+        notification.innerHTML = `<span>${message}</span>`;
+        notification.style.cssText = `
+            position: fixed; top: 80px; right: 20px; z-index: 10000;
+            padding: 12px 20px; border-radius: 8px; font-size: 14px;
+            animation: slideIn 0.3s ease; max-width: 400px;
+            ${type === 'error' ? 'background: rgba(239,68,68,0.9); color: white;' : 'background: rgba(6,182,212,0.9); color: white;'}
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
     }
 }
 
