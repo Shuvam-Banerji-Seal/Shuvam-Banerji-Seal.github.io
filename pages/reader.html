@@ -910,8 +910,15 @@
             };
 
             function loadBook(bookId) {
-              if (!bookId || !books[bookId]) {
+              if (!bookId) {
                 closeBookSelect();
+                return;
+              }
+
+              if (!books[bookId]) {
+                closeBookSelect();
+                const contentDiv = document.getElementById("reader-content");
+                contentDiv.innerHTML = '<div class="empty-state"><h2>Book Not Found</h2><p>The selected book could not be loaded. Please try another.</p></div>';
                 return;
               }
 
@@ -945,8 +952,25 @@
               renderMath();
               updateActiveTOC();
               updateProgress();
+              updateChapterNav();
 
               setTimeout(() => contentDiv.classList.remove("fade-in"), 400);
+            }
+
+            function updateChapterNav() {
+              const nav = document.getElementById("chapter-nav");
+              const prevBtn = document.getElementById("prev-chapter-btn");
+              const nextBtn = document.getElementById("next-chapter-btn");
+              if (!nav || !prevBtn || !nextBtn) return;
+
+              if (chapters.length > 0) {
+                nav.style.display = "flex";
+                prevBtn.disabled = currentChapter <= 0;
+                nextBtn.disabled = currentChapter >= chapters.length - 1;
+                if (typeof lucide !== "undefined") lucide.createIcons();
+              } else {
+                nav.style.display = "none";
+              }
             }
 
             function renderMath() {

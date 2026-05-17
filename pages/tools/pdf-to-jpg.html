@@ -19,9 +19,11 @@
     <meta property="og:title" content="PDF to JPG Converter - SBS Tools" />
     <meta property="og:description" content="Convert PDF documents to JPG images directly in your browser." />
     <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/pdf-to-jpg.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="PDF to JPG Converter - SBS Tools" />
     <meta name="twitter:description" content="Convert PDF documents to JPG images in your browser." />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
     <meta name="robots" content="index, follow" />
     <title>PDF to JPG Converter - SBS Tools</title>
     <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -538,6 +540,7 @@
       }
 
       function clearAll() {
+        if (pdfDoc && pdfDoc.destroy) pdfDoc.destroy();
         pdfDoc = null;
         convertedImages = [];
         document.getElementById("file-input").value = "";
