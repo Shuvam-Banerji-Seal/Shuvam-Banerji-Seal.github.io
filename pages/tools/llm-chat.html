@@ -186,7 +186,13 @@
         --border-color: var(--border-color, #e2e8f0);
       }
 
-      [data-theme="dark"] {
+      [data-theme="dark"],
+[data-theme="dark-coffee"],
+[data-theme="amber"],
+[data-theme="tokyo-night"],
+[data-theme="absolute-dark"],
+[data-theme="forest"],
+[data-theme="dracula"] {
         --chat-bg: #1e293b;
         --ai-bubble: #334155;
         --ai-bubble-text: #f1f5f9;
@@ -341,7 +347,13 @@
         color: #e06c75;
       }
 
-      [data-theme="dark"] .message-content :not(pre) > code {
+      [data-theme="dark"] .message-content :not(pre) > code,
+[data-theme="dark-coffee"] .message-content :not(pre) > code,
+[data-theme="amber"] .message-content :not(pre) > code,
+[data-theme="tokyo-night"] .message-content :not(pre) > code,
+[data-theme="absolute-dark"] .message-content :not(pre) > code,
+[data-theme="forest"] .message-content :not(pre) > code,
+[data-theme="dracula"] .message-content :not(pre) > code {
         color: #c678dd;
       }
 
