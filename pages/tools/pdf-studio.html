@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Unified PDF Studio — Compress, Convert to images, Merge and Split PDFs in your browser"
+      content="Unified PDF Studio — Compress, Convert, Merge, Split, Rotate, Watermark, Protect, Extract, OCR PDFs in your browser"
     />
     <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/pdf-studio.html" />
     <meta property="og:type" content="website" />
@@ -32,6 +32,7 @@
     <script defer src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script defer src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -386,6 +387,177 @@ html[data-theme="dracula"] .img-card img {
       .comp-opt:hover .comp-card {
         border-color: var(--accent-cyan, #c97c3a);
       }
+
+      /* ── Page thumbnail grid for reorder/extract/rotate ── */
+      .page-thumb-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+      }
+      .page-thumb {
+        background: var(--bg-card);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: grab;
+        transition: transform 0.2s, border-color 0.2s;
+        position: relative;
+      }
+      .page-thumb:active { cursor: grabbing; }
+      .page-thumb:hover { border-color: var(--accent-cyan, #c97c3a); transform: translateY(-2px); }
+      .page-thumb.dragging { opacity: 0.4; transform: scale(0.95); }
+      .page-thumb.drag-over { border-color: var(--accent-cyan, #c97c3a); background: rgba(201,124,58,0.08); }
+      .page-thumb canvas, .page-thumb img { width: 100%; height: 160px; object-fit: contain; display: block; background: #f5f0e8; }
+      html[data-theme="dark"] .page-thumb canvas,
+      html[data-theme="dark"] .page-thumb img,
+      html[data-theme="dark-coffee"] .page-thumb canvas,
+      html[data-theme="dark-coffee"] .page-thumb img,
+      html[data-theme="amber"] .page-thumb canvas,
+      html[data-theme="amber"] .page-thumb img,
+      html[data-theme="tokyo-night"] .page-thumb canvas,
+      html[data-theme="tokyo-night"] .page-thumb img,
+      html[data-theme="absolute-dark"] .page-thumb canvas,
+      html[data-theme="absolute-dark"] .page-thumb img,
+      html[data-theme="forest"] .page-thumb canvas,
+      html[data-theme="forest"] .page-thumb img,
+      html[data-theme="dracula"] .page-thumb canvas,
+      html[data-theme="dracula"] .page-thumb img { background: #0d1526; }
+      .page-thumb-footer {
+        padding: 0.4rem 0.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+      .page-thumb .select-check {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        background: var(--bg-card);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .page-thumb .select-check.checked {
+        background: var(--accent-cyan, #c97c3a);
+        border-color: var(--accent-cyan, #c97c3a);
+      }
+      .page-thumb .select-check.checked::after {
+        content: "✓";
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .page-thumb .rotate-badge {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+        display: none;
+      }
+
+      /* ── Watermark preview ── */
+      .wm-preview-wrap {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin: 1rem auto;
+        aspect-ratio: 8.5/11;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .wm-preview-wrap .wm-text {
+        font-size: 2rem;
+        font-weight: 700;
+        color: rgba(0,0,0,0.15);
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      html[data-theme="dark"] .wm-preview-wrap,
+      html[data-theme="dark-coffee"] .wm-preview-wrap,
+      html[data-theme="amber"] .wm-preview-wrap,
+      html[data-theme="tokyo-night"] .wm-preview-wrap,
+      html[data-theme="absolute-dark"] .wm-preview-wrap,
+      html[data-theme="forest"] .wm-preview-wrap,
+      html[data-theme="dracula"] .wm-preview-wrap {
+        background: #1a1a2e;
+      }
+
+      /* ── Reorder helpers ── */
+      .reorder-hint {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        text-align: center;
+        margin-bottom: 0.75rem;
+      }
+
+      /* ── Password protect ── */
+      .pw-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      /* ── Page number preview ── */
+      .pn-preview {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .pn-preview-card {
+        flex: 1;
+        min-width: 120px;
+        aspect-ratio: 8.5/11;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 1.5rem;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      /* ── Crop preview ── */
+      .crop-preview-wrap {
+        width: 100%;
+        max-width: 500px;
+        margin: 1rem auto;
+        aspect-ratio: 8.5/11;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        position: relative;
+        overflow: hidden;
+      }
+      .crop-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .crop-inner {
+        position: absolute;
+        border: 2px dashed var(--accent-cyan, #c97c3a);
+        background: rgba(201,124,58,0.05);
+      }
     </style>
   </head>
   <body>
@@ -417,6 +589,30 @@ html[data-theme="dracula"] .img-card img {
             </button>
             <button class="mode-btn" data-mode="split">
               <i data-lucide="scissors"></i> Split PDF
+            </button>
+            <button class="mode-btn" data-mode="rotate">
+              <i data-lucide="rotate-cw"></i> Rotate PDF
+            </button>
+            <button class="mode-btn" data-mode="reorder">
+              <i data-lucide="move"></i> Reorder Pages
+            </button>
+            <button class="mode-btn" data-mode="watermark">
+              <i data-lucide="stamp"></i> Watermark
+            </button>
+            <button class="mode-btn" data-mode="protect">
+              <i data-lucide="lock"></i> Password Protect
+            </button>
+            <button class="mode-btn" data-mode="extract">
+              <i data-lucide="file-output"></i> Extract Pages
+            </button>
+            <button class="mode-btn" data-mode="pagenumbers">
+              <i data-lucide="hash"></i> Page Numbers
+            </button>
+            <button class="mode-btn" data-mode="crop">
+              <i data-lucide="crop"></i> Crop Pages
+            </button>
+            <button class="mode-btn" data-mode="ocr">
+              <i data-lucide="scan-text"></i> OCR
             </button>
           </aside>
 
@@ -808,6 +1004,488 @@ html[data-theme="dracula"] .img-card img {
                   <i data-lucide="check-circle"></i> Split Complete
                 </h3>
                 <div id="spl-dl-list" class="file-list"></div>
+              </div>
+            </div>
+
+            <!-- ════════════════════ ROTATE ════════════════════ -->
+            <div class="mode-pane" id="pane-rotate">
+              <div class="tool-card">
+                <div class="upload-zone" id="rot-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>Rotate pages 90°, 180°, or 270°</small>
+                  <input type="file" id="rot-input" accept=".pdf,application/pdf" hidden />
+                </div>
+                <div id="rot-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <div>
+                      <strong id="rot-fname">file.pdf</strong><br />
+                      <span id="rot-pages" style="font-size: 0.85rem"></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top: 1.5rem">
+                  <div class="opts-row">
+                    <div class="form-group">
+                      <label>Rotation</label>
+                      <select id="rot-deg">
+                        <option value="90">90° Clockwise</option>
+                        <option value="180">180°</option>
+                        <option value="270">270° Clockwise</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Apply to</label>
+                      <select id="rot-scope" onchange="toggleRotScope()">
+                        <option value="all">All Pages</option>
+                        <option value="selected">Selected Pages</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div id="rot-page-select" style="display:none;margin-top:1rem">
+                    <p class="reorder-hint">Click pages to select for rotation</p>
+                    <div class="page-thumb-grid" id="rot-thumbs"></div>
+                  </div>
+                </div>
+                <div class="btn-group" style="margin-top: 1.5rem">
+                  <button class="tool-btn tool-btn-primary" id="rot-run-btn" disabled onclick="runRotate()">
+                    <i data-lucide="rotate-cw"></i> Rotate PDF
+                  </button>
+                </div>
+                <div class="prog-wrap" id="rot-prog">
+                  <div class="prog-bar"><div class="prog-fill" id="rot-fill"></div></div>
+                  <div class="prog-text" id="rot-prog-text">Rotating...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="rot-result" style="display: none">
+                <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem">
+                  <i data-lucide="check-circle"></i> Rotation Complete
+                </h3>
+                <button class="tool-btn tool-btn-primary" id="rot-dl" style="width:100%">
+                  <i data-lucide="download"></i> Download Rotated PDF
+                </button>
+              </div>
+            </div>
+
+            <!-- ════════════════════ REORDER ════════════════════ -->
+            <div class="mode-pane" id="pane-reorder">
+              <div class="tool-card">
+                <div class="upload-zone" id="reod-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>Drag pages to reorder them</small>
+                  <input type="file" id="reod-input" accept=".pdf,application/pdf" hidden />
+                </div>
+                <div id="reod-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <span id="reod-fname">file.pdf</span>
+                  </div>
+                </div>
+                <div id="reod-grid-wrap" style="display:none;margin-top:1.5rem">
+                  <p class="reorder-hint">Drag and drop pages to reorder. Current order shown below.</p>
+                  <div class="page-thumb-grid" id="reod-thumbs"></div>
+                </div>
+                <div class="btn-group" style="margin-top: 1.5rem">
+                  <button class="tool-btn tool-btn-primary" id="reod-run-btn" disabled onclick="runReorder()">
+                    <i data-lucide="move"></i> Save Reordered PDF
+                  </button>
+                </div>
+                <div class="prog-wrap" id="reod-prog">
+                  <div class="prog-bar"><div class="prog-fill" id="reod-fill"></div></div>
+                  <div class="prog-text" id="reod-prog-text">Reordering...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="reod-result" style="display: none">
+                <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem">
+                  <i data-lucide="check-circle"></i> Reorder Complete
+                </h3>
+                <button class="tool-btn tool-btn-primary" id="reod-dl" style="width:100%">
+                  <i data-lucide="download"></i> Download Reordered PDF
+                </button>
+              </div>
+            </div>
+
+            <!-- ════════════════════ WATERMARK ════════════════════ -->
+            <div class="mode-pane" id="pane-watermark">
+              <div class="tool-card">
+                <div class="upload-zone" id="wm-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>Add text or image watermark</small>
+                  <input type="file" id="wm-input" accept=".pdf,application/pdf" hidden />
+                </div>
+                <div id="wm-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <span id="wm-fname">file.pdf</span>
+                  </div>
+                </div>
+                <div style="margin-top:1.5rem">
+                  <div class="form-group">
+                    <label>Watermark Type</label>
+                    <select id="wm-type" onchange="toggleWmType()">
+                      <option value="text">Text Watermark</option>
+                      <option value="image">Image Watermark</option>
+                    </select>
+                  </div>
+                  <div id="wm-text-opts">
+                    <div class="form-group" style="margin-top:1rem">
+                      <label>Watermark Text</label>
+                      <input type="text" id="wm-text" value="CONFIDENTIAL" class="form-control" />
+                    </div>
+                    <div class="opts-row" style="margin-top:1rem">
+                      <div class="form-group">
+                        <label>Font Size</label>
+                        <input type="range" id="wm-fontsize" min="20" max="120" value="50" />
+                        <span id="wm-fontsize-val">50</span>pt
+                      </div>
+                      <div class="form-group">
+                        <label>Color</label>
+                        <input type="color" id="wm-color" value="#888888" />
+                      </div>
+                    </div>
+                  </div>
+                  <div id="wm-image-opts" style="display:none;margin-top:1rem">
+                    <div class="upload-zone" id="wm-img-drop" style="padding:1.5rem">
+                      <i data-lucide="image"></i>
+                      <p>Drop watermark image or click</p>
+                      <input type="file" id="wm-img-input" accept="image/*" hidden />
+                    </div>
+                  </div>
+                  <div class="opts-row" style="margin-top:1rem">
+                    <div class="form-group">
+                      <label>Opacity: <span id="wm-opacity-val">30</span>%</label>
+                      <input type="range" id="wm-opacity" min="5" max="100" value="30" />
+                    </div>
+                    <div class="form-group">
+                      <label>Rotation: <span id="wm-rot-val">-45</span>°</label>
+                      <input type="range" id="wm-rotation" min="-180" max="180" value="-45" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-top:1rem">
+                    <label>Position</label>
+                    <select id="wm-position">
+                      <option value="center">Center</option>
+                      <option value="top-left">Top Left</option>
+                      <option value="top-right">Top Right</option>
+                      <option value="bottom-left">Bottom Left</option>
+                      <option value="bottom-right">Bottom Right</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="btn-group" style="margin-top:1.5rem">
+                  <button class="tool-btn tool-btn-primary" id="wm-run-btn" disabled onclick="runWatermark()">
+                    <i data-lucide="stamp"></i> Add Watermark
+                  </button>
+                </div>
+                <div class="prog-wrap" id="wm-prog">
+                  <div class="prog-bar"><div class="prog-fill" id="wm-fill"></div></div>
+                  <div class="prog-text" id="wm-prog-text">Adding watermark...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="wm-result" style="display:none">
+                <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem">
+                  <i data-lucide="check-circle"></i> Watermark Added
+                </h3>
+                <button class="tool-btn tool-btn-primary" id="wm-dl" style="width:100%">
+                  <i data-lucide="download"></i> Download Watermarked PDF
+                </button>
+              </div>
+            </div>
+
+            <!-- ════════════════════ PASSWORD PROTECT ════════════════════ -->
+            <div class="mode-pane" id="pane-protect">
+              <div class="tool-card">
+                <div class="upload-zone" id="prot-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>Add password encryption</small>
+                  <input type="file" id="prot-input" accept=".pdf,application/pdf" hidden />
+                </div>
+                <div id="prot-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <span id="prot-fname">file.pdf</span>
+                  </div>
+                </div>
+                <div class="pw-section" style="margin-top:1.5rem">
+                  <div class="form-group">
+                    <label>User Password (required to open)</label>
+                    <input type="password" id="prot-user-pw" placeholder="Enter password" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <label>Owner Password (required to edit)</label>
+                    <input type="password" id="prot-owner-pw" placeholder="Enter password (optional)" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <label>
+                      <input type="checkbox" id="prot-show-pw" onchange="toggleProtPw()" /> Show passwords
+                    </label>
+                  </div>
+                </div>
+                <div class="btn-group" style="margin-top:1.5rem">
+                  <button class="tool-btn tool-btn-primary" id="prot-run-btn" disabled onclick="runProtect()">
+                    <i data-lucide="lock"></i> Encrypt PDF
+                  </button>
+                </div>
+                <div class="prog-wrap" id="prot-prog">
+                  <div class="prog-bar"><div class="prog-fill" id="prot-fill"></div></div>
+                  <div class="prog-text" id="prot-prog-text">Encrypting...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="prot-result" style="display:none">
+                <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem">
+                  <i data-lucide="check-circle"></i> PDF Encrypted
+                </h3>
+                <button class="tool-btn tool-btn-primary" id="prot-dl" style="width:100%">
+                  <i data-lucide="download"></i> Download Encrypted PDF
+                </button>
+              </div>
+            </div>
+
+            <!-- ════════════════════ EXTRACT ════════════════════ -->
+            <div class="mode-pane" id="pane-extract">
+              <div class="tool-card">
+                <div class="upload-zone" id="ext-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>Click pages to select, then extract</small>
+                  <input type="file" id="ext-input" accept=".pdf,application/pdf" hidden />
+                </div>
+                <div id="ext-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <span id="ext-fname">file.pdf</span>
+                    <span style="margin-left:auto" id="ext-pagecount"></span>
+                  </div>
+                </div>
+                <div id="ext-grid-wrap" style="display:none;margin-top:1.5rem">
+                  <p class="reorder-hint">Click pages to select for extraction. Selected: <strong id="ext-sel-count">0</strong></p>
+                  <div class="page-thumb-grid" id="ext-thumbs"></div>
+                </div>
+                <div class="btn-group" style="margin-top:1.5rem">
+                  <button class="tool-btn tool-btn-primary" id="ext-run-btn" disabled onclick="runExtract()">
+                    <i data-lucide="file-output"></i> Extract Selected Pages
+                  </button>
+                </div>
+                <div class="prog-wrap" id="ext-prog">
+                  <div class="prog-bar"><div class="prog-fill" id="ext-fill"></div></div>
+                  <div class="prog-text" id="ext-prog-text">Extracting...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="ext-result" style="display:none">
+                <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem">
+                  <i data-lucide="check-circle"></i> Extraction Complete
+                </h3>
+                <button class="tool-btn tool-btn-primary" id="ext-dl" style="width:100%">
+                  <i data-lucide="download"></i> Download Extracted PDF
+                </button>
+              </div>
+            </div>
+
+            <!-- ════════════════════ PAGE NUMBERS ════════════════════ -->
+            <div class="mode-pane" id="pane-pagenumbers">
+              <div class="tool-card">
+                <div class="upload-zone" id="pn-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>Add customizable page numbers</small>
+                  <input type="file" id="pn-input" accept=".pdf,application/pdf" hidden />
+                </div>
+                <div id="pn-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <span id="pn-fname">file.pdf</span>
+                    <span style="margin-left:auto" id="pn-pagecount"></span>
+                  </div>
+                </div>
+                <div style="margin-top:1.5rem">
+                  <div class="opts-row">
+                    <div class="form-group">
+                      <label>Position</label>
+                      <select id="pn-pos">
+                        <option value="bottom-center">Bottom Center</option>
+                        <option value="bottom-left">Bottom Left</option>
+                        <option value="bottom-right">Bottom Right</option>
+                        <option value="top-center">Top Center</option>
+                        <option value="top-left">Top Left</option>
+                        <option value="top-right">Top Right</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Format</label>
+                      <select id="pn-format">
+                        <option value="num">1, 2, 3...</option>
+                        <option value="dash">- 1 -, - 2 -...</option>
+                        <option value="page">Page 1, Page 2...</option>
+                        <option value="of">1 of N, 2 of N...</option>
+                        <option value="roman">i, ii, iii...</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="opts-row" style="margin-top:1rem">
+                    <div class="form-group">
+                      <label>Font Size</label>
+                      <input type="range" id="pn-fontsize" min="8" max="24" value="12" />
+                      <span id="pn-fontsize-val">12</span>pt
+                    </div>
+                    <div class="form-group">
+                      <label>Start From</label>
+                      <input type="number" id="pn-start" min="1" value="1" class="form-control" style="width:80px" />
+                    </div>
+                    <div class="form-group">
+                      <label>Skip First</label>
+                      <input type="number" id="pn-skip" min="0" value="0" class="form-control" style="width:80px" />
+                      <span style="font-size:0.78rem;color:var(--text-muted)">pages</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-group" style="margin-top:1.5rem">
+                  <button class="tool-btn tool-btn-primary" id="pn-run-btn" disabled onclick="runPageNumbers()">
+                    <i data-lucide="hash"></i> Add Page Numbers
+                  </button>
+                </div>
+                <div class="prog-wrap" id="pn-prog">
+                  <div class="prog-bar"><div class="prog-fill" id="pn-fill"></div></div>
+                  <div class="prog-text" id="pn-prog-text">Adding page numbers...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="pn-result" style="display:none">
+                <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem">
+                  <i data-lucide="check-circle"></i> Page Numbers Added
+                </h3>
+                <button class="tool-btn tool-btn-primary" id="pn-dl" style="width:100%">
+                  <i data-lucide="download"></i> Download PDF with Page Numbers
+                </button>
+              </div>
+            </div>
+
+            <!-- ════════════════════ CROP ════════════════════ -->
+            <div class="mode-pane" id="pane-crop">
+              <div class="tool-card">
+                <div class="upload-zone" id="crop-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>Adjust page margins</small>
+                  <input type="file" id="crop-input" accept=".pdf,application/pdf" hidden />
+                </div>
+                <div id="crop-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <div>
+                      <strong id="crop-fname">file.pdf</strong><br />
+                      <span id="crop-dims" style="font-size: 0.85rem"></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-top:1.5rem">
+                  <p class="reorder-hint" style="margin-bottom:1rem">Set margins to crop from each side (in points, 72pt = 1 inch)</p>
+                  <div class="opts-row">
+                    <div class="form-group">
+                      <label>Top (pt)</label>
+                      <input type="number" id="crop-top" min="0" value="0" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                      <label>Bottom (pt)</label>
+                      <input type="number" id="crop-bottom" min="0" value="0" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                      <label>Left (pt)</label>
+                      <input type="number" id="crop-left" min="0" value="0" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                      <label>Right (pt)</label>
+                      <input type="number" id="crop-right" min="0" value="0" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-group" style="margin-top:1.5rem">
+                  <button class="tool-btn tool-btn-primary" id="crop-run-btn" disabled onclick="runCrop()">
+                    <i data-lucide="crop"></i> Crop PDF
+                  </button>
+                </div>
+                <div class="prog-wrap" id="crop-prog">
+                  <div class="prog-bar"><div class="prog-fill" id="crop-fill"></div></div>
+                  <div class="prog-text" id="crop-prog-text">Cropping...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="crop-result" style="display:none">
+                <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem">
+                  <i data-lucide="check-circle"></i> Crop Complete
+                </h3>
+                <button class="tool-btn tool-btn-primary" id="crop-dl" style="width:100%">
+                  <i data-lucide="download"></i> Download Cropped PDF
+                </button>
+              </div>
+            </div>
+
+            <!-- ════════════════════ OCR ════════════════════ -->
+            <div class="mode-pane" id="pane-ocr">
+              <div class="tool-card">
+                <div class="upload-zone" id="ocr-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>Extract text from scanned PDFs using OCR</small>
+                  <input type="file" id="ocr-input" accept=".pdf,application/pdf" hidden />
+                </div>
+                <div id="ocr-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <span id="ocr-fname">file.pdf</span>
+                    <span style="margin-left:auto" id="ocr-pagecount"></span>
+                  </div>
+                </div>
+                <div style="margin-top:1.5rem">
+                  <div class="opts-row">
+                    <div class="form-group">
+                      <label>Language</label>
+                      <select id="ocr-lang">
+                        <option value="eng">English</option>
+                        <option value="fra">French</option>
+                        <option value="deu">German</option>
+                        <option value="spa">Spanish</option>
+                        <option value="ita">Italian</option>
+                        <option value="por">Portuguese</option>
+                        <option value="rus">Russian</option>
+                        <option value="jpn">Japanese</option>
+                        <option value="chi_sim">Chinese (Simplified)</option>
+                        <option value="hin">Hindi</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Scale: <span id="ocr-scale-val">2</span>x</label>
+                      <input type="range" id="ocr-scale" min="1" max="4" step="0.5" value="2" />
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-group" style="margin-top:1.5rem">
+                  <button class="tool-btn tool-btn-primary" id="ocr-run-btn" disabled onclick="runOCR()">
+                    <i data-lucide="scan-text"></i> Extract Text (OCR)
+                  </button>
+                </div>
+                <div class="prog-wrap" id="ocr-prog">
+                  <div class="prog-bar"><div class="prog-fill" id="ocr-fill"></div></div>
+                  <div class="prog-text" id="ocr-prog-text">Initializing OCR engine...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="ocr-result" style="display:none">
+                <h3 style="margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem">
+                  <i data-lucide="check-circle"></i> OCR Complete
+                </h3>
+                <div class="form-group">
+                  <label>Extracted Text</label>
+                  <textarea id="ocr-output" style="width:100%;min-height:300px;font-family:var(--font-mono,monospace);font-size:0.88rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-card);color:var(--text-primary);resize:vertical" readonly></textarea>
+                </div>
+                <div class="btn-group" style="margin-top:1rem">
+                  <button class="tool-btn tool-btn-primary" onclick="copyOcrText()">
+                    <i data-lucide="copy"></i> Copy Text
+                  </button>
+                  <button class="tool-btn tool-btn-secondary" onclick="downloadOcrText()">
+                    <i data-lucide="download"></i> Download as .txt
+                  </button>
+                </div>
               </div>
             </div>
           </section>
@@ -1414,6 +2092,726 @@ html[data-theme="dracula"] .img-card img {
 
         hideProgress(progWrap);
         document.getElementById("spl-run-btn").disabled = false;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── ROTATE ──────────────────────────────────────────────────────────────
+      let rotFile = null, rotPdfDoc = null, rotSelected = new Set();
+      const rotDrop = document.getElementById("rot-drop");
+      const rotInput = document.getElementById("rot-input");
+      setupDropZone(rotDrop, rotInput, false, (files) => loadRotFile(files[0]));
+
+      async function loadRotFile(file) {
+        if (file.size > MAX_PDF_SIZE) { notify("File too large.", "error"); return; }
+        try {
+          if (typeof PDFLib === "undefined") throw new Error("pdf-lib failed to load. Please refresh.");
+          rotFile = file;
+          const ab = await file.arrayBuffer();
+          const { PDFDocument } = PDFLib;
+          rotPdfDoc = await PDFDocument.load(ab);
+          const n = rotPdfDoc.getPageCount();
+          document.getElementById("rot-fname").textContent = file.name;
+          document.getElementById("rot-pages").textContent = n + " pages";
+          document.getElementById("rot-info").style.display = "block";
+          document.getElementById("rot-run-btn").disabled = false;
+          document.getElementById("rot-result").style.display = "none";
+          rotSelected.clear();
+          renderRotThumbs();
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Error: " + e.message, "error"); }
+      }
+
+      function toggleRotScope() {
+        const scope = document.getElementById("rot-scope").value;
+        document.getElementById("rot-page-select").style.display = scope === "selected" ? "" : "none";
+      }
+
+      async function renderRotThumbs() {
+        const grid = document.getElementById("rot-thumbs");
+        grid.innerHTML = "";
+        if (!rotPdfDoc || typeof pdfjsLib === "undefined") return;
+        const ab = await rotFile.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const vp = page.getViewport({ scale: 0.3 });
+          const canvas = document.createElement("canvas");
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+          const card = document.createElement("div");
+          card.className = "page-thumb";
+          card.dataset.page = i;
+          card.innerHTML = `<div class="select-check${rotSelected.has(i) ? " checked" : ""}"></div>
+            <div class="rotate-badge">0°</div>
+            <div style="width:100%;height:160px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+              ${canvas.outerHTML}
+            </div>
+            <div class="page-thumb-footer"><span>Page ${i}</span></div>`;
+          card.querySelector(".select-check").onclick = (e) => {
+            e.stopPropagation();
+            if (rotSelected.has(i)) rotSelected.delete(i); else rotSelected.add(i);
+            card.querySelector(".select-check").classList.toggle("checked");
+          };
+          grid.appendChild(card);
+        }
+        pdf.destroy();
+      }
+
+      async function runRotate() {
+        if (!rotPdfDoc) return;
+        const deg = parseInt(document.getElementById("rot-deg").value);
+        const scope = document.getElementById("rot-scope").value;
+        const progWrap = document.getElementById("rot-prog");
+        const progFill = document.getElementById("rot-fill");
+        const progText = document.getElementById("rot-prog-text");
+        document.getElementById("rot-run-btn").disabled = true;
+        document.getElementById("rot-result").style.display = "none";
+        try {
+          const { PDFDocument, degrees } = PDFLib;
+          const total = rotPdfDoc.getPageCount();
+          const pages = rotPdfDoc.getPages();
+          const indices = scope === "selected" ? Array.from(rotSelected).map(p => p - 1) : Array.from({ length: total }, (_, i) => i);
+          for (let idx = 0; idx < indices.length; idx++) {
+            setProgress(progFill, progText, progWrap, ((idx + 1) / indices.length) * 100, `Rotating page ${indices[idx] + 1}...`);
+            pages[indices[idx]].setRotation(degrees(pages[indices[idx]].getRotation().angle + deg));
+          }
+          const bytes = await rotPdfDoc.save();
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("rot-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = rotFile.name.replace(".pdf", "_rotated.pdf");
+            a.click();
+          };
+          document.getElementById("rot-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Rotation error: " + e.message, "error"); }
+        hideProgress(progWrap);
+        document.getElementById("rot-run-btn").disabled = false;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── REORDER ─────────────────────────────────────────────────────────────
+      let reodFile = null, reodPdfDoc = null, reodOrder = [];
+      const reodDrop = document.getElementById("reod-drop");
+      const reodInput = document.getElementById("reod-input");
+      setupDropZone(reodDrop, reodInput, false, (files) => loadReodFile(files[0]));
+
+      async function loadReodFile(file) {
+        if (file.size > MAX_PDF_SIZE) { notify("File too large.", "error"); return; }
+        try {
+          if (typeof PDFLib === "undefined") throw new Error("pdf-lib failed to load. Please refresh.");
+          reodFile = file;
+          const ab = await file.arrayBuffer();
+          const { PDFDocument } = PDFLib;
+          reodPdfDoc = await PDFDocument.load(ab);
+          const n = reodPdfDoc.getPageCount();
+          reodOrder = Array.from({ length: n }, (_, i) => i);
+          document.getElementById("reod-fname").textContent = file.name;
+          document.getElementById("reod-info").style.display = "block";
+          document.getElementById("reod-grid-wrap").style.display = "";
+          document.getElementById("reod-run-btn").disabled = false;
+          document.getElementById("reod-result").style.display = "none";
+          await renderReodThumbs();
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Error: " + e.message, "error"); }
+      }
+
+      async function renderReodThumbs() {
+        const grid = document.getElementById("reod-thumbs");
+        grid.innerHTML = "";
+        if (!reodFile || typeof pdfjsLib === "undefined") return;
+        const ab = await reodFile.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+        for (let idx = 0; idx < reodOrder.length; idx++) {
+          const pageNum = reodOrder[idx] + 1;
+          const page = await pdf.getPage(pageNum);
+          const vp = page.getViewport({ scale: 0.3 });
+          const canvas = document.createElement("canvas");
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+          const card = document.createElement("div");
+          card.className = "page-thumb";
+          card.draggable = true;
+          card.dataset.idx = idx;
+          card.innerHTML = `<div style="width:100%;height:160px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+            ${canvas.outerHTML}
+          </div>
+          <div class="page-thumb-footer"><span>Page ${pageNum}</span><span style="font-size:0.7rem;opacity:0.6">#${idx + 1}</span></div>`;
+          card.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", idx);
+            card.classList.add("dragging");
+          });
+          card.addEventListener("dragend", () => card.classList.remove("dragging"));
+          card.addEventListener("dragover", (e) => { e.preventDefault(); card.classList.add("drag-over"); });
+          card.addEventListener("dragleave", () => card.classList.remove("drag-over"));
+          card.addEventListener("drop", (e) => {
+            e.preventDefault();
+            card.classList.remove("drag-over");
+            const from = parseInt(e.dataTransfer.getData("text/plain"));
+            const to = idx;
+            if (from !== to) {
+              const item = reodOrder.splice(from, 1)[0];
+              reodOrder.splice(to, 0, item);
+              renderReodThumbs();
+            }
+          });
+          grid.appendChild(card);
+        }
+        pdf.destroy();
+      }
+
+      async function runReorder() {
+        if (!reodPdfDoc) return;
+        const progWrap = document.getElementById("reod-prog");
+        const progFill = document.getElementById("reod-fill");
+        const progText = document.getElementById("reod-prog-text");
+        document.getElementById("reod-run-btn").disabled = true;
+        document.getElementById("reod-result").style.display = "none";
+        try {
+          const { PDFDocument } = PDFLib;
+          const newDoc = await PDFDocument.create();
+          for (let i = 0; i < reodOrder.length; i++) {
+            setProgress(progFill, progText, progWrap, ((i + 1) / reodOrder.length) * 100, `Copying page ${reodOrder[i] + 1}...`);
+            const [page] = await newDoc.copyPages(reodPdfDoc, [reodOrder[i]]);
+            newDoc.addPage(page);
+          }
+          const bytes = await newDoc.save();
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("reod-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = reodFile.name.replace(".pdf", "_reordered.pdf");
+            a.click();
+          };
+          document.getElementById("reod-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Reorder error: " + e.message, "error"); }
+        hideProgress(progWrap);
+        document.getElementById("reod-run-btn").disabled = false;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── WATERMARK ────────────────────────────────────────────────────────────
+      let wmFile = null, wmImageData = null;
+      const wmDrop = document.getElementById("wm-drop");
+      const wmInput = document.getElementById("wm-input");
+      setupDropZone(wmDrop, wmInput, false, (files) => loadWmFile(files[0]));
+      const wmImgDrop = document.getElementById("wm-img-drop");
+      const wmImgInput = document.getElementById("wm-img-input");
+      setupDropZone(wmImgDrop, wmImgInput, false, (files) => loadWmImage(files[0]));
+
+      document.getElementById("wm-fontsize").addEventListener("input", (e) => {
+        document.getElementById("wm-fontsize-val").textContent = e.target.value;
+      });
+      document.getElementById("wm-opacity").addEventListener("input", (e) => {
+        document.getElementById("wm-opacity-val").textContent = e.target.value;
+      });
+      document.getElementById("wm-rotation").addEventListener("input", (e) => {
+        document.getElementById("wm-rot-val").textContent = e.target.value;
+      });
+
+      function toggleWmType() {
+        const t = document.getElementById("wm-type").value;
+        document.getElementById("wm-text-opts").style.display = t === "text" ? "" : "none";
+        document.getElementById("wm-image-opts").style.display = t === "image" ? "" : "none";
+      }
+
+      function loadWmImage(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => { wmImageData = e.target.result; };
+        reader.readAsArrayBuffer(file);
+      }
+
+      async function loadWmFile(file) {
+        if (file.size > MAX_PDF_SIZE) { notify("File too large.", "error"); return; }
+        wmFile = file;
+        document.getElementById("wm-fname").textContent = file.name;
+        document.getElementById("wm-info").style.display = "block";
+        document.getElementById("wm-run-btn").disabled = false;
+        document.getElementById("wm-result").style.display = "none";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      async function runWatermark() {
+        if (!wmFile) return;
+        const progWrap = document.getElementById("wm-prog");
+        const progFill = document.getElementById("wm-fill");
+        const progText = document.getElementById("wm-prog-text");
+        document.getElementById("wm-run-btn").disabled = true;
+        document.getElementById("wm-result").style.display = "none";
+        try {
+          if (typeof PDFLib === "undefined") throw new Error("pdf-lib failed to load.");
+          const { PDFDocument, rgb, StandardFonts, degrees } = PDFLib;
+          const ab = await wmFile.arrayBuffer();
+          const pdfDoc = await PDFDocument.load(ab);
+          const pages = pdfDoc.getPages();
+          const wmType = document.getElementById("wm-type").value;
+          const opacity = parseInt(document.getElementById("wm-opacity").value) / 100;
+          const rotation = parseInt(document.getElementById("wm-rotation").value);
+          const position = document.getElementById("wm-position").value;
+
+          let embedImage = null;
+          if (wmType === "image" && wmImageData) {
+            const imgBytes = new Uint8Array(wmImageData);
+            try {
+              embedImage = await pdfDoc.embedPng(imgBytes);
+            } catch {
+              try { embedImage = await pdfDoc.embedJpg(imgBytes); } catch {
+                throw new Error("Unsupported image format. Use PNG or JPEG.");
+              }
+            }
+          }
+
+          const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+          const wmText = document.getElementById("wm-text").value || "WATERMARK";
+          const fontSize = parseInt(document.getElementById("wm-fontsize").value);
+          const colorHex = document.getElementById("wm-color").value;
+          const r = parseInt(colorHex.slice(1, 3), 16) / 255;
+          const g = parseInt(colorHex.slice(3, 5), 16) / 255;
+          const b = parseInt(colorHex.slice(5, 7), 16) / 255;
+
+          for (let i = 0; i < pages.length; i++) {
+            setProgress(progFill, progText, progWrap, ((i + 1) / pages.length) * 100, `Watermarking page ${i + 1}...`);
+            const { width, height } = pages[i].getSize();
+            let x, y;
+            if (wmType === "text") {
+              const textWidth = font.widthOfTextAtSize(wmText, fontSize);
+              const textHeight = fontSize;
+              if (position === "center") { x = (width - textWidth) / 2; y = height / 2 - textHeight / 2; }
+              else if (position === "top-left") { x = 40; y = height - 40 - textHeight; }
+              else if (position === "top-right") { x = width - 40 - textWidth; y = height - 40 - textHeight; }
+              else if (position === "bottom-left") { x = 40; y = 40; }
+              else { x = width - 40 - textWidth; y = 40; }
+              pages[i].drawText(wmText, {
+                x, y, size: fontSize, font,
+                color: rgb(r, g, b), opacity,
+                rotate: degrees(rotation),
+              });
+            } else if (embedImage) {
+              const imgW = embedImage.width * 0.5;
+              const imgH = embedImage.height * 0.5;
+              if (position === "center") { x = (width - imgW) / 2; y = (height - imgH) / 2; }
+              else if (position === "top-left") { x = 40; y = height - 40 - imgH; }
+              else if (position === "top-right") { x = width - 40 - imgW; y = height - 40 - imgH; }
+              else if (position === "bottom-left") { x = 40; y = 40; }
+              else { x = width - 40 - imgW; y = 40; }
+              pages[i].drawImage(embedImage, { x, y, width: imgW, height: imgH, opacity, rotate: degrees(rotation) });
+            }
+          }
+
+          const bytes = await pdfDoc.save();
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("wm-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = wmFile.name.replace(".pdf", "_watermarked.pdf");
+            a.click();
+          };
+          document.getElementById("wm-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Watermark error: " + e.message, "error"); }
+        hideProgress(progWrap);
+        document.getElementById("wm-run-btn").disabled = false;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── PASSWORD PROTECT ────────────────────────────────────────────────────
+      let protFile = null;
+      const protDrop = document.getElementById("prot-drop");
+      const protInput = document.getElementById("prot-input");
+      setupDropZone(protDrop, protInput, false, (files) => loadProtFile(files[0]));
+
+      function toggleProtPw() {
+        const show = document.getElementById("prot-show-pw").checked;
+        const t = show ? "text" : "password";
+        document.getElementById("prot-user-pw").type = t;
+        document.getElementById("prot-owner-pw").type = t;
+      }
+
+      async function loadProtFile(file) {
+        if (file.size > MAX_PDF_SIZE) { notify("File too large.", "error"); return; }
+        protFile = file;
+        document.getElementById("prot-fname").textContent = file.name;
+        document.getElementById("prot-info").style.display = "block";
+        document.getElementById("prot-run-btn").disabled = false;
+        document.getElementById("prot-result").style.display = "none";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      async function runProtect() {
+        if (!protFile) return;
+        const userPw = document.getElementById("prot-user-pw").value;
+        const ownerPw = document.getElementById("prot-owner-pw").value;
+        if (!userPw && !ownerPw) { notify("Enter at least one password.", "error"); return; }
+        const progWrap = document.getElementById("prot-prog");
+        const progFill = document.getElementById("prot-fill");
+        const progText = document.getElementById("prot-prog-text");
+        document.getElementById("prot-run-btn").disabled = true;
+        document.getElementById("prot-result").style.display = "none";
+        setProgress(progFill, progText, progWrap, 30, "Encrypting PDF...");
+        try {
+          if (typeof PDFLib === "undefined") throw new Error("pdf-lib failed to load.");
+          const { PDFDocument } = PDFLib;
+          const ab = await protFile.arrayBuffer();
+          const pdfDoc = await PDFDocument.load(ab);
+          setProgress(progFill, progText, progWrap, 70, "Saving encrypted PDF...");
+          const saveOpts = {};
+          if (userPw) saveOpts.userPassword = userPw;
+          if (ownerPw) saveOpts.ownerPassword = ownerPw;
+          const bytes = await pdfDoc.save(saveOpts);
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("prot-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = protFile.name.replace(".pdf", "_encrypted.pdf");
+            a.click();
+          };
+          document.getElementById("prot-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Encryption error: " + e.message, "error"); }
+        hideProgress(progWrap);
+        document.getElementById("prot-run-btn").disabled = false;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── EXTRACT ─────────────────────────────────────────────────────────────
+      let extFile = null, extPdfDoc = null, extSelected = new Set();
+      const extDrop = document.getElementById("ext-drop");
+      const extInput = document.getElementById("ext-input");
+      setupDropZone(extDrop, extInput, false, (files) => loadExtFile(files[0]));
+
+      async function loadExtFile(file) {
+        if (file.size > MAX_PDF_SIZE) { notify("File too large.", "error"); return; }
+        try {
+          if (typeof PDFLib === "undefined") throw new Error("pdf-lib failed to load.");
+          extFile = file;
+          const ab = await file.arrayBuffer();
+          const { PDFDocument } = PDFLib;
+          extPdfDoc = await PDFDocument.load(ab);
+          const n = extPdfDoc.getPageCount();
+          document.getElementById("ext-fname").textContent = file.name;
+          document.getElementById("ext-pagecount").textContent = n + " pages";
+          document.getElementById("ext-info").style.display = "block";
+          document.getElementById("ext-grid-wrap").style.display = "";
+          document.getElementById("ext-run-btn").disabled = true;
+          document.getElementById("ext-result").style.display = "none";
+          extSelected.clear();
+          updateExtCount();
+          await renderExtThumbs();
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Error: " + e.message, "error"); }
+      }
+
+      function updateExtCount() {
+        document.getElementById("ext-sel-count").textContent = extSelected.size;
+        document.getElementById("ext-run-btn").disabled = extSelected.size === 0;
+      }
+
+      async function renderExtThumbs() {
+        const grid = document.getElementById("ext-thumbs");
+        grid.innerHTML = "";
+        if (!extFile || typeof pdfjsLib === "undefined") return;
+        const ab = await extFile.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const vp = page.getViewport({ scale: 0.3 });
+          const canvas = document.createElement("canvas");
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+          const card = document.createElement("div");
+          card.className = "page-thumb";
+          card.dataset.page = i;
+          card.innerHTML = `<div class="select-check${extSelected.has(i) ? " checked" : ""}"></div>
+            <div style="width:100%;height:160px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+              ${canvas.outerHTML}
+            </div>
+            <div class="page-thumb-footer"><span>Page ${i}</span></div>`;
+          card.addEventListener("click", () => {
+            if (extSelected.has(i)) extSelected.delete(i); else extSelected.add(i);
+            card.querySelector(".select-check").classList.toggle("checked");
+            updateExtCount();
+          });
+          grid.appendChild(card);
+        }
+        pdf.destroy();
+      }
+
+      async function runExtract() {
+        if (!extPdfDoc || extSelected.size === 0) return;
+        const progWrap = document.getElementById("ext-prog");
+        const progFill = document.getElementById("ext-fill");
+        const progText = document.getElementById("ext-prog-text");
+        document.getElementById("ext-run-btn").disabled = true;
+        document.getElementById("ext-result").style.display = "none";
+        try {
+          const { PDFDocument } = PDFLib;
+          const newDoc = await PDFDocument.create();
+          const indices = Array.from(extSelected).sort((a, b) => a - b).map(p => p - 1);
+          for (let i = 0; i < indices.length; i++) {
+            setProgress(progFill, progText, progWrap, ((i + 1) / indices.length) * 100, `Extracting page ${indices[i] + 1}...`);
+            const [page] = await newDoc.copyPages(extPdfDoc, [indices[i]]);
+            newDoc.addPage(page);
+          }
+          const bytes = await newDoc.save();
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("ext-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = extFile.name.replace(".pdf", "_extracted.pdf");
+            a.click();
+          };
+          document.getElementById("ext-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Extract error: " + e.message, "error"); }
+        hideProgress(progWrap);
+        document.getElementById("ext-run-btn").disabled = false;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── PAGE NUMBERS ─────────────────────────────────────────────────────────
+      let pnFile = null;
+      const pnDrop = document.getElementById("pn-drop");
+      const pnInput = document.getElementById("pn-input");
+      setupDropZone(pnDrop, pnInput, false, (files) => loadPnFile(files[0]));
+      document.getElementById("pn-fontsize").addEventListener("input", (e) => {
+        document.getElementById("pn-fontsize-val").textContent = e.target.value;
+      });
+
+      function toRoman(num) {
+        const vals = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
+        const syms = ["M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"];
+        let result = "";
+        for (let i = 0; i < vals.length; i++) { while (num >= vals[i]) { result += syms[i]; num -= vals[i]; } }
+        return result.toLowerCase();
+      }
+
+      async function loadPnFile(file) {
+        if (file.size > MAX_PDF_SIZE) { notify("File too large.", "error"); return; }
+        pnFile = file;
+        document.getElementById("pn-fname").textContent = file.name;
+        document.getElementById("pn-pagecount").textContent = "";
+        document.getElementById("pn-info").style.display = "block";
+        document.getElementById("pn-run-btn").disabled = false;
+        document.getElementById("pn-result").style.display = "none";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      async function runPageNumbers() {
+        if (!pnFile) return;
+        const progWrap = document.getElementById("pn-prog");
+        const progFill = document.getElementById("pn-fill");
+        const progText = document.getElementById("pn-prog-text");
+        document.getElementById("pn-run-btn").disabled = true;
+        document.getElementById("pn-result").style.display = "none";
+        try {
+          if (typeof PDFLib === "undefined") throw new Error("pdf-lib failed to load.");
+          const { PDFDocument, StandardFonts, rgb } = PDFLib;
+          const ab = await pnFile.arrayBuffer();
+          const pdfDoc = await PDFDocument.load(ab);
+          const pages = pdfDoc.getPages();
+          const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+          const fontSize = parseInt(document.getElementById("pn-fontsize").value);
+          const pos = document.getElementById("pn-pos").value;
+          const fmt = document.getElementById("pn-format").value;
+          const startFrom = parseInt(document.getElementById("pn-start").value);
+          const skipFirst = parseInt(document.getElementById("pn-skip").value);
+          const total = pages.length;
+
+          for (let i = 0; i < pages.length; i++) {
+            setProgress(progFill, progText, progWrap, ((i + 1) / pages.length) * 100, `Adding page number ${i + 1}...`);
+            if (i < skipFirst) continue;
+            const { width, height } = pages[i].getSize();
+            const pageNum = startFrom + (i - skipFirst);
+            let label;
+            if (fmt === "num") label = String(pageNum);
+            else if (fmt === "dash") label = `- ${pageNum} -`;
+            else if (fmt === "page") label = `Page ${pageNum}`;
+            else if (fmt === "of") label = `${pageNum} of ${startFrom + (total - skipFirst - 1)}`;
+            else label = toRoman(pageNum);
+
+            const textWidth = font.widthOfTextAtSize(label, fontSize);
+            let x, y;
+            if (pos.includes("center")) x = (width - textWidth) / 2;
+            else if (pos.includes("left")) x = 40;
+            else x = width - 40 - textWidth;
+            if (pos.includes("bottom")) y = 30;
+            else y = height - 30 - fontSize;
+
+            pages[i].drawText(label, { x, y, size: fontSize, font, color: rgb(0, 0, 0) });
+          }
+
+          const bytes = await pdfDoc.save();
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("pn-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = pnFile.name.replace(".pdf", "_numbered.pdf");
+            a.click();
+          };
+          document.getElementById("pn-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Page number error: " + e.message, "error"); }
+        hideProgress(progWrap);
+        document.getElementById("pn-run-btn").disabled = false;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── CROP ─────────────────────────────────────────────────────────────────
+      let cropFile = null;
+      const cropDrop = document.getElementById("crop-drop");
+      const cropInput = document.getElementById("crop-input");
+      setupDropZone(cropDrop, cropInput, false, (files) => loadCropFile(files[0]));
+
+      async function loadCropFile(file) {
+        if (file.size > MAX_PDF_SIZE) { notify("File too large.", "error"); return; }
+        try {
+          if (typeof PDFLib === "undefined") throw new Error("pdf-lib failed to load.");
+          cropFile = file;
+          const ab = await file.arrayBuffer();
+          const { PDFDocument } = PDFLib;
+          const doc = await PDFDocument.load(ab);
+          const page = doc.getPage(0);
+          const { width, height } = page.getSize();
+          document.getElementById("crop-fname").textContent = file.name;
+          document.getElementById("crop-dims").textContent = `${width.toFixed(0)} × ${height.toFixed(0)} pt (page 1)`;
+          document.getElementById("crop-info").style.display = "block";
+          document.getElementById("crop-run-btn").disabled = false;
+          document.getElementById("crop-result").style.display = "none";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Error: " + e.message, "error"); }
+      }
+
+      async function runCrop() {
+        if (!cropFile) return;
+        const progWrap = document.getElementById("crop-prog");
+        const progFill = document.getElementById("crop-fill");
+        const progText = document.getElementById("crop-prog-text");
+        document.getElementById("crop-run-btn").disabled = true;
+        document.getElementById("crop-result").style.display = "none";
+        try {
+          if (typeof PDFLib === "undefined") throw new Error("pdf-lib failed to load.");
+          const { PDFDocument } = PDFLib;
+          const ab = await cropFile.arrayBuffer();
+          const pdfDoc = await PDFDocument.load(ab);
+          const pages = pdfDoc.getPages();
+          const t = parseFloat(document.getElementById("crop-top").value) || 0;
+          const b = parseFloat(document.getElementById("crop-bottom").value) || 0;
+          const l = parseFloat(document.getElementById("crop-left").value) || 0;
+          const r = parseFloat(document.getElementById("crop-right").value) || 0;
+
+          for (let i = 0; i < pages.length; i++) {
+            setProgress(progFill, progText, progWrap, ((i + 1) / pages.length) * 100, `Cropping page ${i + 1}...`);
+            const { width, height } = pages[i].getSize();
+            pages[i].setMediaBox(l, b, width - r, height - t);
+            pages[i].setCropBox(l, b, width - r, height - t);
+          }
+
+          const bytes = await pdfDoc.save();
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("crop-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = cropFile.name.replace(".pdf", "_cropped.pdf");
+            a.click();
+          };
+          document.getElementById("crop-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Crop error: " + e.message, "error"); }
+        hideProgress(progWrap);
+        document.getElementById("crop-run-btn").disabled = false;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── OCR ──────────────────────────────────────────────────────────────────
+      let ocrFile = null, ocrText = "";
+      const ocrDrop = document.getElementById("ocr-drop");
+      const ocrInput = document.getElementById("ocr-input");
+      setupDropZone(ocrDrop, ocrInput, false, (files) => loadOcrFile(files[0]));
+      document.getElementById("ocr-scale").addEventListener("input", (e) => {
+        document.getElementById("ocr-scale-val").textContent = e.target.value;
+      });
+
+      async function loadOcrFile(file) {
+        if (file.size > MAX_PDF_SIZE) { notify("File too large.", "error"); return; }
+        try {
+          if (typeof pdfjsLib === "undefined") throw new Error("PDF.js failed to load.");
+          ocrFile = file;
+          const ab = await file.arrayBuffer();
+          const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+          document.getElementById("ocr-fname").textContent = file.name;
+          document.getElementById("ocr-pagecount").textContent = pdf.numPages + " pages";
+          document.getElementById("ocr-info").style.display = "block";
+          document.getElementById("ocr-run-btn").disabled = false;
+          document.getElementById("ocr-result").style.display = "none";
+          pdf.destroy();
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("Error: " + e.message, "error"); }
+      }
+
+      async function runOCR() {
+        if (!ocrFile) return;
+        if (typeof Tesseract === "undefined") { notify("Tesseract.js failed to load. Please refresh.", "error"); return; }
+        const progWrap = document.getElementById("ocr-prog");
+        const progFill = document.getElementById("ocr-fill");
+        const progTextEl = document.getElementById("ocr-prog-text");
+        document.getElementById("ocr-run-btn").disabled = true;
+        document.getElementById("ocr-result").style.display = "none";
+        try {
+          const lang = document.getElementById("ocr-lang").value;
+          const scale = parseFloat(document.getElementById("ocr-scale").value);
+          const ab = await ocrFile.arrayBuffer();
+          const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+          const total = pdf.numPages;
+          let allText = "";
+
+          const worker = await Tesseract.createWorker(lang, 1, {
+            logger: (m) => {
+              if (m.status === "recognizing text") {
+                setProgress(progFill, progTextEl, progWrap, (m.progress * 100).toFixed(0), `OCR: recognizing text... ${(m.progress * 100).toFixed(0)}%`);
+              }
+            }
+          });
+
+          for (let i = 1; i <= total; i++) {
+            setProgress(progFill, progTextEl, progWrap, ((i - 1) / total) * 100, `Processing page ${i} / ${total}...`);
+            const page = await pdf.getPage(i);
+            const vp = page.getViewport({ scale });
+            const canvas = document.createElement("canvas");
+            canvas.width = vp.width;
+            canvas.height = vp.height;
+            await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+            const { data: { text } } = await worker.recognize(canvas);
+            allText += `--- Page ${i} ---\n${text}\n\n`;
+            canvas.width = 0;
+            canvas.height = 0;
+          }
+
+          await worker.terminate();
+          pdf.destroy();
+          ocrText = allText;
+          document.getElementById("ocr-output").value = allText;
+          document.getElementById("ocr-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) { notify("OCR error: " + e.message, "error"); }
+        hideProgress(progWrap);
+        document.getElementById("ocr-run-btn").disabled = false;
+      }
+
+      function copyOcrText() {
+        navigator.clipboard.writeText(ocrText).then(() => notify("Text copied to clipboard!", "success")).catch(() => notify("Copy failed.", "error"));
+      }
+
+      function downloadOcrText() {
+        const blob = new Blob([ocrText], { type: "text/plain" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = ocrFile ? ocrFile.name.replace(".pdf", "_ocr.txt") : "ocr_output.txt";
+        a.click();
       }
 
       // ── Init ──────────────────────────────────────────────────────────────────
