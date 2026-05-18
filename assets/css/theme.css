@@ -26,7 +26,7 @@
   top: -40px;
   left: 0;
   background: var(--accent);
-  color: white;
+  color: var(--btn-primary-text);
   padding: 8px 16px;
   z-index: 10000;
   transition: top 0.3s;
@@ -918,7 +918,7 @@ body {
 
 .theme-toggle-btn:hover {
   color: var(--nav-text-hover);
-  background: rgba(128, 128, 128, 0.15);
+  background: var(--bg-elevated);
 }
 
 /* ----------------------------------------------------------------
