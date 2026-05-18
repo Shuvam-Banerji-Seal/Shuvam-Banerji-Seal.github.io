@@ -69,55 +69,11 @@
    Global theme variables are in assets/css/theme.css
    ================================================================ */
 
-      /* Dark theme: molecular terminal overrides for this page */
-      html[data-theme="dark"],
-      [data-theme="dark"],
-      [data-theme="dark-coffee"],
-      [data-theme="amber"],
-      [data-theme="tokyo-night"],
-      [data-theme="absolute-dark"],
-      [data-theme="forest"],
-      [data-theme="dracula"] {
-        --bg-deep: #060b18;
-        --bg-dark: #0a1020;
-        --bg-card: #111827;
-        --border: rgba(0, 212, 255, 0.15);
-        --border-glow: rgba(0, 212, 255, 0.4);
-        --text-primary: #e2e8f0;
-        --text-secondary: #94a3b8;
-        --text-muted: #475569;
-        --accent-cyan: #00d4ff;
-        --accent-green: #00ff88;
-        --accent-purple: #7c3aed;
-        --grad-primary: linear-gradient(135deg, #00d4ff, #7c3aed);
-        --grad-green: linear-gradient(135deg, #00ff88, #00d4ff);
-        --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
-        --font-body: "Inter", sans-serif;
-        --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.35);
-        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
-        --input-bg: rgba(10, 16, 32, 0.8);
-      }
-
-      /* Light (creamy coffee) — page-specific vars */
-      :root,
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) {
-        --bg-deep: #f2e6d0;
-        --bg-dark: #f2e6d0;
+      /* Light (creamy coffee) — page-specific overrides */
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) {
         --bg-card: rgba(235, 220, 195, 0.85);
-        --border: rgba(139, 101, 68, 0.25);
-        --border-glow: rgba(201, 124, 58, 0.4);
-        --text-primary: #2c1a0e;
         --text-secondary: #5c4a32;
         --text-muted: #8b7355;
-        --accent-cyan: #c97c3a;
-        --accent-green: #5a8a4a;
-        --accent-purple: #7c3aed;
-        --grad-primary: linear-gradient(135deg, #c97c3a, #7c3aed);
-        --grad-green: linear-gradient(135deg, #5a8a4a, #c97c3a);
-        --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
-        --font-body: "Inter", sans-serif;
-        --glow-cyan: 0 0 20px rgba(201, 124, 58, 0.25);
-        --shadow-card: 0 8px 32px rgba(44, 26, 14, 0.12);
         --input-bg: rgba(255, 248, 236, 0.9);
       }
 
@@ -222,16 +178,16 @@
         color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .loading-info {
-        color: #8b7355;
+        color: var(--text-muted);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .loading-text {
-        color: #5c4a32;
+        color: var(--text-secondary);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .loading-ok {
-        color: #3d6b2e;
+        color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .loading-bar-wrap {
-        background: rgba(139, 101, 68, 0.2);
+        background: var(--border);
       }
 
       /* Icon sizing utilities */
@@ -257,10 +213,10 @@
         color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-help-title {
-        color: #c97c3a;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-help-cmd {
-        color: #3d6b2e;
+        color: var(--accent-green);
       }
 
       /* Terminal command output classes */
@@ -271,34 +227,34 @@
         color: var(--accent-cyan);
       }
       .term-project {
-        color: #a78bfa;
+        color: var(--accent-purple);
       }
       .term-skill-comp {
         color: var(--accent-cyan);
       }
       .term-skill-ai {
-        color: #a78bfa;
+        color: var(--accent-purple);
       }
       .term-skill-prog {
         color: var(--accent-green);
       }
       .term-skill-tools {
-        color: #f59e0b;
+        color: var(--accent-cyan);
       }
       .term-contact-label {
         color: var(--accent-cyan);
       }
       .term-contact-gh {
-        color: #a78bfa;
+        color: var(--accent-purple);
       }
       .term-contact-li {
         color: var(--accent-green);
       }
       .term-contact-orcid {
-        color: #f59e0b;
+        color: var(--accent-cyan);
       }
       .term-commit {
-        color: #f59e0b;
+        color: var(--accent-cyan);
       }
       .term-code {
         color: var(--accent-cyan);
@@ -307,7 +263,7 @@
         color: var(--accent-green);
       }
       .term-status-wait {
-        color: #f59e0b;
+        color: var(--accent-cyan);
       }
       .term-comment {
         color: var(--text-muted);
@@ -315,55 +271,55 @@
 
       /* Light mode terminal command output overrides */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-arrow {
-        color: #3d6b2e;
+        color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-dir {
-        color: #c97c3a;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-project {
-        color: #6d28d9;
+        color: var(--accent-purple);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-skill-comp {
-        color: #c97c3a;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-skill-ai {
-        color: #6d28d9;
+        color: var(--accent-purple);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-skill-prog {
-        color: #3d6b2e;
+        color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-skill-tools {
-        color: #d97706;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-contact-label {
-        color: #c97c3a;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-contact-gh {
-        color: #6d28d9;
+        color: var(--accent-purple);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-contact-li {
-        color: #3d6b2e;
+        color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-contact-orcid {
-        color: #d97706;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-commit {
-        color: #d97706;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-code {
-        color: #c97c3a;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-status-ok {
-        color: #3d6b2e;
+        color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-status-wait {
-        color: #d97706;
+        color: var(--accent-cyan);
       }
       .term-error {
         color: #ff4757;
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-error {
-        color: #dc2626;
+        color: var(--accent-purple);
       }
 
       /* Form status colors */
@@ -371,7 +327,7 @@
         color: #ff4757 !important;
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-status-error {
-        color: #dc2626 !important;
+        color: var(--accent-purple) !important;
       }
 
       /* --- Grid background --- */
@@ -423,7 +379,7 @@
 
       /* Terminal window */
       .terminal-window {
-        background: rgba(10, 16, 32, 0.95);
+        background: var(--code-bg);
         border: 1px solid var(--border);
         border-radius: 12px;
         box-shadow: var(--glow-cyan), var(--shadow-card);
@@ -435,12 +391,12 @@
         max-height: 520px;
       }
       .term-titlebar {
-        background: #0d1526;
+        background: var(--bg-elevated);
         padding: 0.5rem 1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid rgba(0, 212, 255, 0.12);
+        border-bottom: 1px solid var(--border);
         font-family: var(--font-mono);
         font-size: 0.75rem;
       }
@@ -471,11 +427,11 @@
         letter-spacing: 0.05em;
       }
       .term-badge.shell {
-        background: rgba(0, 212, 255, 0.12);
+        background: var(--border);
         color: var(--accent-cyan);
       }
       .term-badge.branch {
-        background: rgba(0, 255, 136, 0.12);
+        background: var(--border);
         color: var(--accent-green);
       }
       .term-title {
@@ -517,27 +473,27 @@
         border-radius: 3px;
       }
       .term-body::-webkit-scrollbar-thumb {
-        background: rgba(0, 212, 255, 0.3);
+        background: var(--border-glow);
         border-radius: 3px;
       }
       .term-body::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 212, 255, 0.5);
+        background: var(--border-glow);
       }
       .term-body {
         scrollbar-width: thin;
-        scrollbar-color: rgba(0, 212, 255, 0.3) rgba(0, 0, 0, 0.15);
+        scrollbar-color: var(--border-glow) rgba(0, 0, 0, 0.15);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body::-webkit-scrollbar-track {
-        background: rgba(139, 101, 68, 0.1);
+        background: var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body::-webkit-scrollbar-thumb {
-        background: rgba(201, 124, 58, 0.35);
+        background: var(--border-glow);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body::-webkit-scrollbar-thumb:hover {
-        background: rgba(201, 124, 58, 0.55);
+        background: var(--border-glow);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body {
-        scrollbar-color: rgba(201, 124, 58, 0.35) rgba(139, 101, 68, 0.1);
+        scrollbar-color: var(--border-glow) var(--border);
       }
       .term-output.title-line {
         font-size: 1.15rem;
@@ -604,11 +560,11 @@
         transition: background-color 5000s ease-in-out 0s;
       }
       .term-input::selection {
-        background: rgba(0, 212, 255, 0.25);
+        background: var(--border-glow);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-input {
-        color: #2c1a0e;
-        caret-color: #3d6b2e;
+        color: var(--text-primary);
+        caret-color: var(--accent-green);
       }
 
       /* Protein panel */
@@ -620,35 +576,35 @@
         gap: 1rem;
       }
       .viewer-window {
-        background: rgba(5, 10, 22, 0.95);
+        background: var(--code-bg);
         border: 1px solid var(--border);
         border-radius: 12px;
         overflow: hidden;
         box-shadow: var(--shadow-card);
       }
       .viewer-titlebar {
-        background: #0f1a30;
+        background: var(--bg-elevated);
         padding: 0.6rem 1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        border-bottom: 1px solid var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .viewer-window {
-        background: rgba(245, 235, 215, 0.96);
-        border-color: rgba(139, 101, 68, 0.3);
+        background: var(--bg-card);
+        border-color: var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .viewer-titlebar {
-        background: #e8d5b0;
-        border-bottom-color: rgba(139, 101, 68, 0.25);
+        background: var(--bg-elevated);
+        border-bottom-color: var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .viewer-info {
-        background: rgba(245, 235, 215, 0.92);
-        border-top-color: rgba(139, 101, 68, 0.1);
+        background: var(--bg-card);
+        border-top-color: var(--border);
         color: var(--text-secondary);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .terminal-window {
-        background: rgba(245, 235, 215, 0.96);
+        background: var(--bg-card);
       }
       .viewer-label {
         font-family: var(--font-mono);
@@ -666,12 +622,12 @@
         cursor: grabbing;
       }
       .viewer-info {
-        background: rgba(5, 10, 22, 0.9);
+        background: var(--code-bg);
         padding: 0.6rem 1rem;
         font-family: var(--font-mono);
         font-size: 0.68rem;
         color: var(--text-muted);
-        border-top: 1px solid rgba(0, 212, 255, 0.05);
+        border-top: 1px solid var(--border);
         display: flex;
         gap: 1.5rem;
         flex-wrap: wrap;
@@ -783,7 +739,7 @@
         font-family: var(--font-mono);
         font-size: 0.82rem;
         padding: 1.5rem;
-        background: rgba(10, 16, 32, 0.8);
+        background: var(--code-bg);
         border-radius: 10px;
         border-left: 3px solid var(--accent-cyan);
         margin-bottom: 1.5rem;
@@ -808,13 +764,13 @@
         border-radius: 6px;
         font-family: var(--font-mono);
         font-size: 0.78rem;
-        background: rgba(0, 212, 255, 0.1);
+        background: var(--border);
         color: var(--accent-cyan);
-        border: 1px solid rgba(0, 212, 255, 0.2);
+        border: 1px solid var(--border-glow);
         transition: all 0.2s ease;
       }
       .skill-tag:hover {
-        background: rgba(0, 212, 255, 0.2);
+        background: var(--border-glow);
         box-shadow: var(--glow-cyan);
       }
       .profile-card {
@@ -843,7 +799,7 @@
         display: flex;
         justify-content: space-between;
         padding: 0.4rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid var(--border);
         color: var(--text-secondary);
       }
       .meta-row:last-child {
@@ -921,9 +877,9 @@
       }
       .tech-tag {
         padding: 0.25rem 0.6rem;
-        background: rgba(124, 58, 237, 0.2);
-        color: #a78bfa;
-        border: 1px solid rgba(124, 58, 237, 0.3);
+        background: var(--border-glow);
+        color: var(--accent-purple);
+        border: 1px solid var(--border-glow);
         border-radius: 4px;
         font-family: var(--font-mono);
         font-size: 0.72rem;
@@ -1016,7 +972,7 @@
       }
       .btn-primary {
         background: var(--grad-primary);
-        color: #fff;
+        color: var(--btn-primary-text);
       }
       .btn-primary:hover {
         transform: translateY(-2px);
@@ -1284,30 +1240,30 @@
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .hero-grid-bg {
         background-image:
-          linear-gradient(rgba(139, 101, 68, 0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(139, 101, 68, 0.04) 1px, transparent 1px);
+          linear-gradient(var(--border) 1px, transparent 1px),
+          linear-gradient(90deg, var(--border) 1px, transparent 1px);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .terminal-window {
-        background: rgba(245, 235, 215, 0.97);
-        border-color: rgba(139, 101, 68, 0.35);
+        background: var(--bg-card);
+        border-color: var(--border);
         box-shadow:
-          0 0 20px rgba(201, 124, 58, 0.15),
-          0 8px 32px rgba(44, 26, 14, 0.1);
+          var(--glow-cyan),
+          var(--shadow-card);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-titlebar {
-        background: #e8d5b0;
-        border-bottom-color: rgba(139, 101, 68, 0.25);
+        background: var(--bg-elevated);
+        border-bottom-color: var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body {
-        background: rgba(250, 243, 228, 0.99);
+        background: var(--bg-deep);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-badge.shell {
-        background: rgba(201, 124, 58, 0.15);
-        color: #8b4513;
+        background: var(--border);
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-badge.branch {
-        background: rgba(90, 138, 74, 0.15);
-        color: #3d6b2e;
+        background: var(--border);
+        color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-path .path-host {
         color: var(--accent-green);
@@ -1339,25 +1295,25 @@
         border-color: var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .log-block {
-        background: rgba(235, 220, 195, 0.85);
-        border-left-color: #c97c3a;
+        background: var(--bg-card);
+        border-left-color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .gjf-block {
-        background: rgba(240, 228, 208, 0.9);
-        border-color: rgba(139, 101, 68, 0.25);
+        background: var(--bg-card);
+        border-color: var(--border);
       }
       /* Terminal text colours in light mode */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-prompt {
-        color: #8b4513;
+        color: var(--accent-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-cmd {
-        color: #2c1a0e;
+        color: var(--text-primary);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-output {
-        color: #5c4a32;
+        color: var(--text-secondary);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-output.highlight {
-        color: #3d6b2e;
+        color: var(--accent-green);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-output.title-line {
         background: var(--grad-primary);
@@ -1367,38 +1323,38 @@
       }
       /* Skill tags light mode */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .skill-tag {
-        background: rgba(201, 124, 58, 0.12);
-        color: #8b4513;
-        border-color: rgba(201, 124, 58, 0.3);
+        background: var(--border);
+        color: var(--accent-cyan);
+        border-color: var(--border-glow);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tech-tag {
-        background: rgba(124, 58, 237, 0.1);
-        color: #6d28d9;
-        border-color: rgba(124, 58, 237, 0.25);
+        background: var(--border);
+        color: var(--accent-purple);
+        border-color: var(--border-glow);
       }
       /* Section headers light mode */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .section-file-label {
-        color: #3d6b2e;
+        color: var(--accent-green);
       }
       /* Form inputs light mode */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field input,
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field textarea {
-        background: rgba(255, 248, 236, 0.9);
-        border-color: rgba(139, 101, 68, 0.3);
-        color: #2c1a0e;
+        background: var(--input-bg);
+        border-color: var(--border);
+        color: var(--text-primary);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field input::placeholder,
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field textarea::placeholder {
-        color: #8b7355;
+        color: var(--text-muted);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field input:focus,
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field textarea:focus {
-        border-color: #c97c3a;
-        box-shadow: 0 0 20px rgba(201, 124, 58, 0.2);
+        border-color: var(--accent-cyan);
+        box-shadow: var(--glow-cyan);
       }
       /* Meta rows light mode */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .meta-row {
-        border-bottom-color: rgba(139, 101, 68, 0.12);
+        border-bottom-color: var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .profile-card {
         background: var(--bg-card);
@@ -1406,28 +1362,28 @@
       }
       /* Footer light mode */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) footer {
-        border-top-color: rgba(139, 101, 68, 0.2);
+        border-top-color: var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .social-link {
-        background: rgba(235, 220, 195, 0.6);
-        border-color: rgba(139, 101, 68, 0.25);
+        background: var(--bg-card);
+        border-color: var(--border);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .social-link:hover {
-        border-color: #c97c3a;
-        color: #c97c3a;
-        box-shadow: 0 0 20px rgba(201, 124, 58, 0.2);
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+        box-shadow: var(--glow-cyan);
       }
       /* Button light mode */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .btn-primary:hover {
-        box-shadow: 0 8px 24px rgba(201, 124, 58, 0.3);
+        box-shadow: var(--glow-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .btn-outline:hover {
-        background: rgba(201, 124, 58, 0.08);
+        background: var(--border);
       }
       /* Card hover light mode */
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .card:hover {
         border-color: var(--border-glow);
-        box-shadow: 0 0 20px rgba(201, 124, 58, 0.15);
+        box-shadow: var(--glow-cyan);
       }
       :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .project-card:hover {
         border-color: var(--border-glow);
@@ -2207,14 +2163,11 @@
             ls.classList.add("hidden");
             setTimeout(() => {
               ls.style.display = "none";
-            }, 700);
+            }, 800);
           }
         }
-        // Hide after 2.5s or when fully loaded, whichever comes first
-        setTimeout(hideLoader, 2500);
-        window.addEventListener("load", () => {
-          setTimeout(hideLoader, 500);
-        });
+        // Let the animation play for at least 4 seconds
+        setTimeout(hideLoader, 4000);
       })();
 
       /* ----- Terminal typewriter + interactive shell ----- */
