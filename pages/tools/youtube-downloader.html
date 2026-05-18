@@ -597,7 +597,7 @@
     <main class="tool-page">
       <div class="yt-downloader">
         <div class="yt-header">
-          <h1><i data-lucide="youtube"></i> YouTube Downloader</h1>
+          <h1><i data-lucide="video"></i> YouTube Downloader</h1>
           <p>Download videos, audio, and thumbnails from YouTube</p>
         </div>
 
@@ -904,8 +904,7 @@
           const isAudioOnly = ['mp3', 'wav', 'flac'].includes(format);
 
           const body = {
-            url: url,
-            filenamePattern: 'basic'
+            url: url
           };
 
           if (isAudioOnly) {
@@ -913,30 +912,38 @@
             body.aFormat = format;
           } else {
             body.vCodec = 'h264';
-            body.vQuality = quality;
+            body.vQuality = quality || '720';
             if (format === 'webm') {
               body.vCodec = 'vp9';
             }
           }
 
-          const response = await fetch('https://api.cobalt.tools/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify(body)
-          });
+          try {
+            const response = await fetch('https://api.cobalt.tools/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify(body)
+            });
 
-          if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            throw new Error(errData.error || 'Download request failed');
+            if (!response.ok) {
+              const errData = await response.json().catch(() => ({}));
+              throw new Error(errData.error?.code || errData.error || `Server returned ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (data.url) return data.url;
+            if (data.text) return data.text;
+            if (data.status === 'error') throw new Error(data.error || 'Download failed');
+            throw new Error('No download URL returned');
+          } catch (fetchErr) {
+            if (fetchErr.message.includes('Failed to fetch') || fetchErr.message.includes('NetworkError')) {
+              throw new Error('CORS error - the API may be unavailable. Try the fallback download services below.');
+            }
+            throw fetchErr;
           }
-
-          const data = await response.json();
-          if (data.url) return data.url;
-          if (data.text) return data.text;
-          throw new Error('No download URL returned');
         }
 
         // ─── Tab Switching ───

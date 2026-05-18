@@ -45,6 +45,46 @@
   flex-direction: column;
   background: var(--panel-bg);
   border-bottom: 1px solid var(--panel-border);
+  flex-shrink: 0;
+}
+
+/* ── Main Content ── */
+.studio-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Track Panel ── */
+.track-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Effects Rack ── */
+.effects-rack {
+  background: var(--panel-bg);
+  border-top: 1px solid var(--panel-border);
+  flex-shrink: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.studio-container.dragover {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 30px var(--glow-cyan);
+}
+
+/* ── Top Bar ── */
+.studio-topbar {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--panel-border);
 }
 
 /* ── Transport Bar ── */
@@ -328,8 +368,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 300px;
-  max-height: calc(100vh - 400px);
+  min-height: 150px;
   overflow-y: auto;
   border-bottom: 1px solid var(--panel-border);
 }
