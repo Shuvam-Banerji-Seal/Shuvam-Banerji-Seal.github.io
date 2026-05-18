@@ -367,8 +367,8 @@
 .track-list {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 150px;
+  flex: 0 0 auto;
+  max-height: 200px;
   overflow-y: auto;
   border-bottom: 1px solid var(--panel-border);
 }
@@ -609,6 +609,7 @@
   padding: 6px 12px;
   background: var(--panel-bg);
   border-top: 1px solid var(--panel-border);
+  flex-shrink: 0;
 }
 
 .toolbar-group {
@@ -757,12 +758,6 @@
   font-size: 10px;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-dim);
-}
-
-/* ── Effects Rack ── */
-.effects-rack {
-  background: var(--panel-bg);
-  border-top: 1px solid var(--panel-border);
 }
 
 .effects-header {

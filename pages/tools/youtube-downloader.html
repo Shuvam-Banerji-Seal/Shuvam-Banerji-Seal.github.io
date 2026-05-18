@@ -900,50 +900,52 @@
           throw new Error('Could not fetch playlist data. Please try a different playlist or download videos individually.');
         }
 
-        async function downloadWithCobalt(url, format, quality) {
+        function getDownloadLinks(videoId, format, quality) {
+          const baseUrl = `https://www.youtube.com/watch?v=${videoId}`;
           const isAudioOnly = ['mp3', 'wav', 'flac'].includes(format);
 
-          const body = {
-            url: url
-          };
+          const links = [];
 
           if (isAudioOnly) {
-            body.isAudioOnly = true;
-            body.aFormat = format;
-          } else {
-            body.vCodec = 'h264';
-            body.vQuality = quality || '720';
-            if (format === 'webm') {
-              body.vCodec = 'vp9';
-            }
-          }
-
-          try {
-            const response = await fetch('https://api.cobalt.tools/', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-              },
-              body: JSON.stringify(body)
+            links.push({
+              name: 'Y2Mate (MP3)',
+              url: `https://www.y2mate.com/youtube/${videoId}`,
+              icon: 'music'
             });
-
-            if (!response.ok) {
-              const errData = await response.json().catch(() => ({}));
-              throw new Error(errData.error?.code || errData.error || `Server returned ${response.status}`);
-            }
-
-            const data = await response.json();
-            if (data.url) return data.url;
-            if (data.text) return data.text;
-            if (data.status === 'error') throw new Error(data.error || 'Download failed');
-            throw new Error('No download URL returned');
-          } catch (fetchErr) {
-            if (fetchErr.message.includes('Failed to fetch') || fetchErr.message.includes('NetworkError')) {
-              throw new Error('CORS error - the API may be unavailable. Try the fallback download services below.');
-            }
-            throw fetchErr;
+            links.push({
+              name: 'SaveFrom (Audio)',
+              url: `https://savefrom.net/#url=${encodeURIComponent(baseUrl)}`,
+              icon: 'download'
+            });
+            links.push({
+              name: 'Cobalt.tools',
+              url: `https://cobalt.tools/#${encodeURIComponent(baseUrl)}`,
+              icon: 'external-link'
+            });
+          } else {
+            links.push({
+              name: `Y2Mate (${quality || '720p'})`,
+              url: `https://www.y2mate.com/youtube/${videoId}`,
+              icon: 'video'
+            });
+            links.push({
+              name: 'SaveFrom (Video)',
+              url: `https://savefrom.net/#url=${encodeURIComponent(baseUrl)}`,
+              icon: 'download'
+            });
+            links.push({
+              name: 'SSYouTube',
+              url: `https://ssyoutube.com/watch?v=${videoId}`,
+              icon: 'external-link'
+            });
+            links.push({
+              name: 'Cobalt.tools',
+              url: `https://cobalt.tools/#${encodeURIComponent(baseUrl)}`,
+              icon: 'external-link'
+            });
           }
+
+          return links;
         }
 
         // ─── Tab Switching ───
@@ -1088,57 +1090,49 @@
 
         // ─── Download Handler ───
         downloadBtn.addEventListener('click', async () => {
-          const urls = [];
+          const videoIds = [];
 
           if (currentTab === 'batch') {
             const batchUrlList = batchUrls.value.trim().split('\n').filter(u => u.trim());
             for (const url of batchUrlList) {
               const vid = extractVideoId(url.trim());
-              if (vid) urls.push(`https://www.youtube.com/watch?v=${vid}`);
+              if (vid) videoIds.push(vid);
             }
           } else if (currentTab === 'playlist') {
             const checked = playlistList.querySelectorAll('input[type="checkbox"]:checked');
             checked.forEach(cb => {
-              urls.push(`https://www.youtube.com/watch?v=${cb.dataset.videoId}`);
+              videoIds.push(cb.dataset.videoId);
             });
           } else {
             if (currentVideoId) {
-              urls.push(`https://www.youtube.com/watch?v=${currentVideoId}`);
+              videoIds.push(currentVideoId);
             }
           }
 
-          if (urls.length === 0) {
+          if (videoIds.length === 0) {
             showStatus('error', 'No videos selected for download');
             return;
           }
 
-          showStatus('loading', `Starting download${urls.length > 1 ? 's' : ''}...`);
-          downloadBtn.disabled = true;
+          // Show download links for the first video
+          const vid = videoIds[0];
+          const links = getDownloadLinks(vid, selectedFormat.format, selectedFormat.quality);
 
-          let successCount = 0;
-          let failCount = 0;
+          // Create download links modal
+          let linksHtml = '<div class="download-links-modal"><h3>Choose a download service:</h3><div class="download-links-list">';
+          links.forEach(link => {
+            linksHtml += `<a href="${link.url}" target="_blank" rel="noopener" class="download-link-btn"><i data-lucide="${link.icon}"></i> ${link.name}</a>`;
+          });
+          linksHtml += '</div><p class="download-note">Each service will open in a new tab. Follow the instructions on their site to complete the download.</p></div>';
 
-          for (const url of urls) {
-            try {
-              const downloadUrl = await downloadWithCobalt(url, selectedFormat.format, selectedFormat.quality);
-              // Open download in new tab
-              window.open(downloadUrl, '_blank');
-              successCount++;
-            } catch (err) {
-              console.error('Download failed for', url, err);
-              failCount++;
-            }
+          // Show in status area
+          showStatus('info', linksHtml);
+          if (typeof lucide !== 'undefined') lucide.createIcons();
+
+          // If multiple videos, show info
+          if (videoIds.length > 1) {
+            showStatus('info', `Showing download links for the first video. ${videoIds.length - 1} more videos selected - repeat for each.`);
           }
-
-          if (successCount > 0 && failCount === 0) {
-            showStatus('success', `${successCount} download${successCount > 1 ? 's' : ''} started!`);
-          } else if (successCount > 0) {
-            showStatus('success', `${successCount} started, ${failCount} failed. Try fallback services below.`);
-          } else {
-            showStatus('error', 'Downloads failed. Please use the fallback services below.');
-          }
-
-          downloadBtn.disabled = false;
         });
 
         // ─── Playlist Rendering ───
