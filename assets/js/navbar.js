@@ -193,6 +193,13 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "headphones",
         },
         {
+          name: "YouTube Downloader",
+          href: isHome
+            ? "pages/tools/youtube-downloader.html"
+            : pathDepth + "pages/tools/youtube-downloader.html",
+          icon: "youtube",
+        },
+        {
           name: "Chemistry Games",
           href: isHome
             ? "pages/tools/games.html"

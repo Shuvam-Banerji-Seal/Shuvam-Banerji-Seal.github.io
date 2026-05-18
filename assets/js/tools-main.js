@@ -18,7 +18,8 @@ window.openTool = function(toolId) {
         'equation-balancer': 'tools/equation-balancer.html',
         'ph-calculator': 'tools/ph-calculator.html',
         'mermaid-editor': 'mermaid-tool.html',
-        'audio-studio': 'tools/audio-studio.html'
+        'audio-studio': 'tools/audio-studio.html',
+        'youtube-downloader': 'tools/youtube-downloader.html'
     };
 
     const page = toolPages[toolId];
