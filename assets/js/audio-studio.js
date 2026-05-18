@@ -1,6 +1,6 @@
 /**
- * SBS Audio Studio - Professional Multi-Track DAW
- * Multi-track editing, visualizers, mixer, effects, export
+ * SBS Audio Studio - Professional Web DAW
+ * Real-time recording, multi-track editing, effects chain, multi-format export
  */
 
 const TRACK_COLORS = [
@@ -56,12 +56,17 @@ class AudioStudio {
     this.recordedChunks = [];
     this.recordingStartTime = 0;
     this.inputAnalyser = null;
+    this.recordStream = null;
+    this._visRAF = null;
+    this._recRAF = null;
 
     this.effects = {
       eq: { bands: [], enabled: false },
       compressor: { node: null, enabled: false },
       reverb: { convolver: null, wet: null, dry: null, enabled: false },
-      delay: { node: null, feedback: null, mix: null, enabled: false }
+      delay: { node: null, feedback: null, mix: null, enabled: false },
+      noisegate: { threshold: -40, attack: 0.005, release: 0.1, hold: 0.05, enabled: false },
+      limiter: { node: null, enabled: false }
     };
 
     this.init();
@@ -87,8 +92,6 @@ class AudioStudio {
       this.bindEvents();
       this.drawEmptyVisualizer();
       this.drawEmptyEQ();
-
-      console.log('Audio Studio initialized');
     } catch (e) {
       console.error('Init failed:', e);
       this.notify('Failed to initialize: ' + e.message, 'error');
@@ -125,6 +128,14 @@ class AudioStudio {
     this.effects.delay.node.delayTime.value = 0.25;
     this.effects.delay.feedback.gain.value = 0.3;
     this.effects.delay.mix.gain.value = 0.25;
+
+    // Limiter via DynamicsCompressor with extreme settings
+    this.effects.limiter.node = this.ctx.createDynamicsCompressor();
+    this.effects.limiter.node.threshold.value = -0.3;
+    this.effects.limiter.node.knee.value = 0;
+    this.effects.limiter.node.ratio.value = 20;
+    this.effects.limiter.node.attack.value = 0.001;
+    this.effects.limiter.node.release.value = 0.1;
   }
 
   makeIR(duration, decay) {
@@ -145,12 +156,8 @@ class AudioStudio {
     this.eqCanvas = document.getElementById('eq-canvas');
     this.eqCtx = this.eqCanvas?.getContext('2d');
 
-    if (this.vizCanvas) {
-      this.resizeCanvas(this.vizCanvas);
-    }
-    if (this.eqCanvas) {
-      this.resizeCanvas(this.eqCanvas);
-    }
+    if (this.vizCanvas) this.resizeCanvas(this.vizCanvas);
+    if (this.eqCanvas) this.resizeCanvas(this.eqCanvas);
 
     window.addEventListener('resize', () => {
       if (this.vizCanvas) this.resizeCanvas(this.vizCanvas);
@@ -170,8 +177,11 @@ class AudioStudio {
     canvas.getContext('2d').scale(dpr, dpr);
   }
 
+  // ═══════════════════════════════════════════
+  // EVENT BINDING
+  // ═══════════════════════════════════════════
+
   bindEvents() {
-    // Transport
     document.getElementById('play-btn')?.addEventListener('click', () => this.togglePlay());
     document.getElementById('stop-btn')?.addEventListener('click', () => this.stop());
     document.getElementById('skip-start-btn')?.addEventListener('click', () => this.skipToStart());
@@ -179,31 +189,25 @@ class AudioStudio {
     document.getElementById('record-btn')?.addEventListener('click', () => this.toggleRecord());
     document.getElementById('loop-btn')?.addEventListener('click', () => this.toggleLoop());
 
-    // Zoom
     document.getElementById('zoom-in-btn')?.addEventListener('click', () => this.setZoom(this.zoom * 1.5));
     document.getElementById('zoom-out-btn')?.addEventListener('click', () => this.setZoom(this.zoom / 1.5));
     document.getElementById('zoom-slider')?.addEventListener('input', e => {
       this.setZoom(parseFloat(e.target.value) / 10);
     });
 
-    // BPM
     document.getElementById('bpm-input')?.addEventListener('change', e => {
       this.bpm = Math.max(20, Math.min(300, parseInt(e.target.value) || 120));
     });
 
-    // Track management
     document.getElementById('add-track-btn')?.addEventListener('click', () => this.addEmptyTrack());
     document.getElementById('import-audio-btn')?.addEventListener('click', () => {
       document.getElementById('audio-file-input')?.click();
     });
     document.getElementById('audio-file-input')?.addEventListener('change', e => {
-      for (const file of e.target.files) {
-        this.importFile(file);
-      }
+      for (const file of e.target.files) this.importFile(file);
       e.target.value = '';
     });
 
-    // Edit toolbar
     document.getElementById('cut-btn')?.addEventListener('click', () => this.cut());
     document.getElementById('copy-btn')?.addEventListener('click', () => this.copy());
     document.getElementById('paste-btn')?.addEventListener('click', () => this.paste());
@@ -217,7 +221,6 @@ class AudioStudio {
     document.getElementById('normalize-btn')?.addEventListener('click', () => this.normalize());
     document.getElementById('marker-btn')?.addEventListener('click', () => this.addMarker());
 
-    // Master volume
     document.getElementById('master-volume')?.addEventListener('input', e => {
       const val = parseFloat(e.target.value) / 100;
       this.masterGain.gain.value = val;
@@ -243,12 +246,15 @@ class AudioStudio {
       });
     });
 
+    // Effect toggle buttons
+    document.querySelectorAll('.effect-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => this.toggleEffect(btn.dataset.effect));
+    });
+
     this.bindEffectsControls();
 
-    // Export
     document.getElementById('export-btn')?.addEventListener('click', () => this.exportAudio());
 
-    // Timeline interaction
     const timeline = document.getElementById('timeline-area');
     if (timeline) {
       timeline.addEventListener('mousedown', e => this.onTimelineMouseDown(e));
@@ -256,11 +262,9 @@ class AudioStudio {
       timeline.addEventListener('mouseup', () => this.onTimelineMouseUp());
     }
 
-    // Keyboard
     document.addEventListener('keydown', e => this.onKeyDown(e));
 
-    // Drag and drop
-    const studio = document.querySelector('.studio-container');
+    const studio = document.getElementById('studio-container');
     if (studio) {
       studio.addEventListener('dragover', e => { e.preventDefault(); studio.classList.add('dragover'); });
       studio.addEventListener('dragleave', () => studio.classList.remove('dragover'));
@@ -275,17 +279,13 @@ class AudioStudio {
   }
 
   bindEffectsControls() {
-    // EQ sliders
     ['60','170','310','600','1k','3k','6k','12k','16k'].forEach((f, i) => {
       document.getElementById(`eq-${f}`)?.addEventListener('input', e => {
-        if (this.effects.eq.bands[i]) {
-          this.effects.eq.bands[i].gain.value = parseFloat(e.target.value);
-        }
+        if (this.effects.eq.bands[i]) this.effects.eq.bands[i].gain.value = parseFloat(e.target.value);
         this.drawEQCurve();
       });
     });
 
-    // EQ presets
     document.getElementById('eq-preset')?.addEventListener('change', e => {
       const presets = {
         'flat': [0,0,0,0,0,0,0,0,0],
@@ -303,7 +303,6 @@ class AudioStudio {
       this.drawEQCurve();
     });
 
-    // Compressor
     const compMap = [
       ['comp-threshold','threshold','',1],['comp-ratio','ratio',':1',1],
       ['comp-attack','attack',' ms',0.001],['comp-release','release',' ms',0.001],
@@ -312,7 +311,9 @@ class AudioStudio {
     compMap.forEach(([id,param,suffix,scale]) => {
       document.getElementById(id)?.addEventListener('input', e => {
         const v = parseFloat(e.target.value);
-        if (this.effects.compressor.node[param]) {
+        if (param === 'gain') {
+          // Makeup gain is separate from compressor node
+        } else if (this.effects.compressor.node[param]) {
           this.effects.compressor.node[param].value = v * scale;
         }
         const valEl = document.getElementById(`${id}-val`);
@@ -320,7 +321,6 @@ class AudioStudio {
       });
     });
 
-    // Reverb
     document.getElementById('reverb-size')?.addEventListener('input', e => {
       const s = parseFloat(e.target.value) / 100;
       const d = parseFloat(document.getElementById('reverb-damping')?.value || 50) / 50;
@@ -340,7 +340,6 @@ class AudioStudio {
       document.getElementById('reverb-mix-val').textContent = e.target.value + '%';
     });
 
-    // Delay
     document.getElementById('delay-time')?.addEventListener('input', e => {
       this.effects.delay.node.delayTime.value = e.target.value / 1000;
       document.getElementById('delay-time-val').textContent = e.target.value + ' ms';
@@ -353,9 +352,61 @@ class AudioStudio {
       this.effects.delay.mix.gain.value = e.target.value / 100;
       document.getElementById('delay-mix-val').textContent = e.target.value + '%';
     });
+
+    // Noise Gate controls
+    document.getElementById('gate-threshold')?.addEventListener('input', e => {
+      this.effects.noisegate.threshold = parseFloat(e.target.value);
+      document.getElementById('gate-threshold-val').textContent = e.target.value + ' dB';
+    });
+    document.getElementById('gate-attack')?.addEventListener('input', e => {
+      this.effects.noisegate.attack = parseFloat(e.target.value) / 1000;
+      document.getElementById('gate-attack-val').textContent = e.target.value + ' ms';
+    });
+    document.getElementById('gate-release')?.addEventListener('input', e => {
+      this.effects.noisegate.release = parseFloat(e.target.value) / 1000;
+      document.getElementById('gate-release-val').textContent = e.target.value + ' ms';
+    });
+    document.getElementById('gate-hold')?.addEventListener('input', e => {
+      this.effects.noisegate.hold = parseFloat(e.target.value) / 1000;
+      document.getElementById('gate-hold-val').textContent = e.target.value + ' ms';
+    });
+
+    // Limiter controls
+    document.getElementById('limit-ceiling')?.addEventListener('input', e => {
+      this.effects.limiter.node.threshold.value = parseFloat(e.target.value);
+      document.getElementById('limit-ceiling-val').textContent = e.target.value + ' dB';
+    });
+    document.getElementById('limit-release')?.addEventListener('input', e => {
+      this.effects.limiter.node.release.value = parseFloat(e.target.value) / 1000;
+      document.getElementById('limit-release-val').textContent = e.target.value + ' ms';
+    });
+    document.getElementById('limit-gain')?.addEventListener('input', e => {
+      document.getElementById('limit-gain-val').textContent = e.target.value + ' dB';
+    });
   }
 
-  // ========== TRACK MANAGEMENT ==========
+  // ═══════════════════════════════════════════
+  // EFFECT TOGGLE (with clear ON/OFF state)
+  // ═══════════════════════════════════════════
+
+  toggleEffect(effectName) {
+    this.effects[effectName].enabled = !this.effects[effectName].enabled;
+    const btn = document.querySelector(`.effect-toggle-btn[data-effect="${effectName}"]`);
+    if (btn) {
+      btn.setAttribute('aria-pressed', this.effects[effectName].enabled);
+      const label = btn.querySelector('.toggle-label');
+      if (label) label.textContent = this.effects[effectName].enabled ? 'ON' : 'OFF';
+    }
+    // Rebuild effect chain if playing
+    if (this.isPlaying) {
+      this.stopAllSources();
+      this.play();
+    }
+  }
+
+  // ═══════════════════════════════════════════
+  // TRACK MANAGEMENT
+  // ═══════════════════════════════════════════
 
   addEmptyTrack() {
     const id = this.nextTrackId++;
@@ -384,7 +435,7 @@ class AudioStudio {
       this.renderMixer();
       this.drawTrackCanvases();
       this.updateTimeDisplay();
-      this.notify(`Imported: ${name}`, 'info');
+      this.notify(`Imported: ${name}`, 'success');
     } catch (e) {
       console.error('Import error:', e);
       this.notify('Failed to import: ' + e.message, 'error');
@@ -419,7 +470,9 @@ class AudioStudio {
     return Math.max(...this.tracks.map(t => t.buffer.duration));
   }
 
-  // ========== RENDERING ==========
+  // ═══════════════════════════════════════════
+  // RENDERING
+  // ═══════════════════════════════════════════
 
   renderTracks() {
     const list = document.getElementById('track-list');
@@ -436,7 +489,6 @@ class AudioStudio {
     }
 
     this.tracks.forEach(track => {
-      // Track item in list
       const item = document.createElement('div');
       item.className = `track-item${track.id === this.selectedTrackId ? ' selected' : ''}`;
       item.onclick = () => this.selectTrack(track.id);
@@ -457,7 +509,6 @@ class AudioStudio {
       `;
       list.appendChild(item);
 
-      // Canvas row
       const row = document.createElement('div');
       row.className = 'track-canvas-row';
       row.dataset.trackId = track.id;
@@ -513,11 +564,9 @@ class AudioStudio {
     const data = track.buffer.getChannelData(0);
     ctx.clearRect(0, 0, w, h);
 
-    // Background
     ctx.fillStyle = 'rgba(0,0,0,0.2)';
     ctx.fillRect(0, 0, w, h);
 
-    // Center line
     ctx.strokeStyle = 'rgba(255,255,255,0.05)';
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -525,7 +574,6 @@ class AudioStudio {
     ctx.lineTo(w, h / 2);
     ctx.stroke();
 
-    // Waveform
     const grad = ctx.createLinearGradient(0, 0, 0, h);
     grad.addColorStop(0, track.color);
     grad.addColorStop(0.5, track.color + '80');
@@ -553,7 +601,6 @@ class AudioStudio {
     }
     ctx.stroke();
 
-    // Selection
     if (this.hasSelection && this.selectedTrackId === track.id) {
       const dur = track.buffer.duration;
       const sx = (this.selection.start / dur) * w;
@@ -569,7 +616,9 @@ class AudioStudio {
     }
   }
 
-  // ========== TRANSPORT ==========
+  // ═══════════════════════════════════════════
+  // TRANSPORT
+  // ═══════════════════════════════════════════
 
   togglePlay() {
     if (this.isPlaying) this.pause();
@@ -593,8 +642,17 @@ class AudioStudio {
       source.buffer = track.buffer;
       source.playbackRate.value = this.playbackRate;
 
+      // Build per-track effect chain
+      let lastNode = track.gainNode;
       source.connect(track.gainNode);
       track.panNode.connect(this.masterGain);
+
+      // Connect gain -> pan
+      track.gainNode.disconnect();
+      track.gainNode.connect(track.panNode);
+
+      // Apply effects to master
+      this.applyEffectsChain(this.masterGain);
 
       if (this.isLooping && this.hasSelection) {
         source.loop = true;
@@ -612,6 +670,79 @@ class AudioStudio {
     this.updatePlayBtn();
     this.animatePlayhead();
     this.startVisualizer();
+  }
+
+  applyEffectsChain(inputNode) {
+    let current = inputNode;
+
+    if (this.effects.eq.enabled) {
+      this.effects.eq.bands.forEach(band => {
+        current.connect(band);
+        current = band;
+      });
+    }
+
+    if (this.effects.compressor.enabled) {
+      current.connect(this.effects.compressor.node);
+      current = this.effects.compressor.node;
+    }
+
+    if (this.effects.noisegate.enabled) {
+      // Noise gate via ScriptProcessor (legacy but functional)
+      if (!this._noiseGateNode) {
+        this._noiseGateNode = this.ctx.createScriptProcessor(4096, 2, 2);
+        this._noiseGateNode.onaudioprocess = (e) => {
+          if (!this.effects.noisegate.enabled) return;
+          for (let ch = 0; ch < e.inputBuffer.numberOfChannels; ch++) {
+            const input = e.inputBuffer.getChannelData(ch);
+            const output = e.outputBuffer.getChannelData(ch);
+            const threshold = Math.pow(10, this.effects.noisegate.threshold / 20);
+            for (let i = 0; i < input.length; i++) {
+              output[i] = Math.abs(input[i]) < threshold ? 0 : input[i];
+            }
+          }
+        };
+      }
+      current.connect(this._noiseGateNode);
+      current = this._noiseGateNode;
+    }
+
+    if (this.effects.reverb.enabled) {
+      const wet = this.effects.reverb.wet;
+      const dry = this.effects.reverb.dry;
+      const conv = this.effects.reverb.convolver;
+      current.connect(conv);
+      conv.connect(wet);
+      current.connect(dry);
+      const merger = this.ctx.createGain();
+      wet.connect(merger);
+      dry.connect(merger);
+      current = merger;
+    }
+
+    if (this.effects.delay.enabled) {
+      const delay = this.effects.delay.node;
+      const fb = this.effects.delay.feedback;
+      const mix = this.effects.delay.mix;
+      current.connect(delay);
+      delay.connect(fb);
+      fb.connect(delay);
+      delay.connect(mix);
+      const dryGain = this.ctx.createGain();
+      dryGain.gain.value = 1;
+      current.connect(dryGain);
+      const merger = this.ctx.createGain();
+      mix.connect(merger);
+      dryGain.connect(merger);
+      current = merger;
+    }
+
+    if (this.effects.limiter.enabled) {
+      current.connect(this.effects.limiter.node);
+      current = this.effects.limiter.node;
+    }
+
+    current.connect(this.ctx.destination);
   }
 
   pause() {
@@ -634,6 +765,9 @@ class AudioStudio {
   stopAllSources() {
     this.activeSources.forEach(s => { try { s.stop(); } catch(e) {} try { s.disconnect(); } catch(e) {} });
     this.activeSources = [];
+    if (this._noiseGateNode) {
+      try { this._noiseGateNode.disconnect(); } catch(e) {}
+    }
   }
 
   skipToStart() {
@@ -654,7 +788,11 @@ class AudioStudio {
 
   toggleLoop() {
     this.isLooping = !this.isLooping;
-    document.getElementById('loop-btn')?.classList.toggle('active', this.isLooping);
+    const btn = document.getElementById('loop-btn');
+    if (btn) {
+      btn.classList.toggle('active', this.isLooping);
+      btn.setAttribute('aria-pressed', this.isLooping);
+    }
   }
 
   toggleMute(id) {
@@ -684,6 +822,7 @@ class AudioStudio {
     const btn = document.getElementById('play-btn');
     if (btn) {
       btn.classList.toggle('playing', this.isPlaying);
+      btn.setAttribute('aria-pressed', this.isPlaying);
       const icon = btn.querySelector('i, svg');
       if (icon) icon.setAttribute('data-lucide', this.isPlaying ? 'pause' : 'play');
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -718,7 +857,9 @@ class AudioStudio {
     this.drawTimeRuler();
   }
 
-  // ========== RECORDING ==========
+  // ═══════════════════════════════════════════
+  // RECORDING (with live waveform)
+  // ═══════════════════════════════════════════
 
   async toggleRecord() {
     if (this.isRecording) this.stopRecording();
@@ -731,11 +872,13 @@ class AudioStudio {
       const source = this.ctx.createMediaStreamSource(stream);
       this.inputAnalyser = this.ctx.createAnalyser();
       this.inputAnalyser.fftSize = 2048;
+      this.inputAnalyser.smoothingTimeConstant = 0.8;
       source.connect(this.inputAnalyser);
 
       this.recordStream = stream;
       this.mediaRecorder = new MediaRecorder(stream, {
-        mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4'
+        mimeType: MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' :
+                  MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4'
       });
       this.recordedChunks = [];
       this.mediaRecorder.ondataavailable = e => { if (e.data.size > 0) this.recordedChunks.push(e.data); };
@@ -753,36 +896,104 @@ class AudioStudio {
         this.renderMixer();
         this.drawTrackCanvases();
         this.updateTimeDisplay();
-        this.notify('Recording added', 'info');
+        this.notify('Recording added', 'success');
       };
 
       this.mediaRecorder.start(100);
       this.isRecording = true;
       this.recordingStartTime = Date.now();
-      document.getElementById('record-btn')?.classList.add('recording');
+
+      const btn = document.getElementById('record-btn');
+      if (btn) {
+        btn.classList.add('recording');
+        btn.setAttribute('aria-pressed', 'true');
+      }
+
+      // Start live waveform visualization
+      this.drawLiveWaveform();
+      this.startVisualizer();
     } catch (e) {
       console.error('Record error:', e);
       this.notify('Recording failed: ' + e.message, 'error');
     }
   }
 
+  drawLiveWaveform() {
+    if (!this.isRecording || !this.inputAnalyser || !this.vizCtx || !this.vizCanvas) return;
+
+    const ctx = this.vizCtx;
+    const w = this.vizCanvas.width / (window.devicePixelRatio || 1);
+    const h = this.vizCanvas.height / (window.devicePixelRatio || 1);
+
+    const data = new Float32Array(this.inputAnalyser.fftSize);
+    this.inputAnalyser.getFloatTimeDomainData(data);
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Background
+    ctx.fillStyle = 'rgba(239, 68, 68, 0.03)';
+    ctx.fillRect(0, 0, w, h);
+
+    // Center line
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.1)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, h / 2);
+    ctx.lineTo(w, h / 2);
+    ctx.stroke();
+
+    // Live waveform
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#ef4444';
+    ctx.shadowColor = 'rgba(239, 68, 68, 0.5)';
+    ctx.shadowBlur = 4;
+    ctx.beginPath();
+
+    const sliceW = w / data.length;
+    for (let i = 0; i < data.length; i++) {
+      const x = i * sliceW;
+      const y = (1 + data[i]) * h / 2;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Recording time indicator
+    const elapsed = ((Date.now() - this.recordingStartTime) / 1000);
+    ctx.fillStyle = '#ef4444';
+    ctx.font = '12px JetBrains Mono, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('REC ' + this.fmtTime(elapsed, true), w - 8, 16);
+
+    this._recRAF = requestAnimationFrame(() => this.drawLiveWaveform());
+  }
+
   stopRecording() {
     if (this.mediaRecorder && this.isRecording) {
       this.mediaRecorder.stop();
       this.isRecording = false;
-      document.getElementById('record-btn')?.classList.remove('recording');
+      if (this._recRAF) cancelAnimationFrame(this._recRAF);
+
+      const btn = document.getElementById('record-btn');
+      if (btn) {
+        btn.classList.remove('recording');
+        btn.setAttribute('aria-pressed', 'false');
+      }
       this.inputAnalyser = null;
     }
   }
 
-  // ========== VISUALIZERS ==========
+  // ═══════════════════════════════════════════
+  // VISUALIZERS
+  // ═══════════════════════════════════════════
 
   startVisualizer() {
     if (this._visRAF) cancelAnimationFrame(this._visRAF);
     const draw = () => {
       if (!this.isPlaying && !this.isRecording) return;
       this._visRAF = requestAnimationFrame(draw);
-      this.drawVisualizer();
+      if (!this.isRecording) this.drawVisualizer();
       this.drawMeters();
     };
     draw();
@@ -795,7 +1006,7 @@ class AudioStudio {
     const h = this.vizCanvas.height / (window.devicePixelRatio || 1);
     ctx.clearRect(0, 0, w, h);
 
-    const analyser = this.isRecording ? this.inputAnalyser : this.analyser;
+    const analyser = this.analyser;
     if (!analyser) return;
 
     const bufLen = analyser.frequencyBinCount;
@@ -888,7 +1099,6 @@ class AudioStudio {
     const h = this.eqCanvas.height / (window.devicePixelRatio || 1);
     ctx.clearRect(0, 0, w, h);
 
-    // Grid
     ctx.strokeStyle = 'rgba(255,255,255,0.05)';
     ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
@@ -898,17 +1108,15 @@ class AudioStudio {
       ctx.stroke();
     }
 
-    // Zero line
     ctx.strokeStyle = 'rgba(255,255,255,0.15)';
     ctx.beginPath();
     ctx.moveTo(0, h / 2);
     ctx.lineTo(w, h / 2);
     ctx.stroke();
 
-    // EQ curve
     const gains = this.effects.eq.bands.map(b => b.gain.value);
     const maxGain = 12;
-    ctx.strokeStyle = '#06b6d4';
+    ctx.strokeStyle = this.effects.eq.enabled ? '#06b6d4' : 'rgba(6,182,212,0.4)';
     ctx.lineWidth = 2;
     ctx.beginPath();
     for (let i = 0; i < gains.length; i++) {
@@ -919,11 +1127,10 @@ class AudioStudio {
     }
     ctx.stroke();
 
-    // Dots
     for (let i = 0; i < gains.length; i++) {
       const x = (i / (gains.length - 1)) * w;
       const y = h / 2 - (gains[i] / maxGain) * (h / 2);
-      ctx.fillStyle = '#06b6d4';
+      ctx.fillStyle = this.effects.eq.enabled ? '#06b6d4' : 'rgba(6,182,212,0.4)';
       ctx.beginPath();
       ctx.arc(x, y, 4, 0, Math.PI * 2);
       ctx.fill();
@@ -953,7 +1160,9 @@ class AudioStudio {
     }
   }
 
-  // ========== SELECTION ==========
+  // ═══════════════════════════════════════════
+  // SELECTION
+  // ═══════════════════════════════════════════
 
   onTimelineMouseDown(e) {
     if (this.totalDuration === 0) return;
@@ -1022,7 +1231,9 @@ class AudioStudio {
     this.drawTrackCanvases();
   }
 
-  // ========== EDIT OPERATIONS ==========
+  // ═══════════════════════════════════════════
+  // EDIT OPERATIONS
+  // ═══════════════════════════════════════════
 
   cut() { this.copy(); this.deleteSelection(); }
 
@@ -1124,7 +1335,7 @@ class AudioStudio {
   applyFade(dir) {
     if (!this.selectedTrack) return;
     const track = this.selectedTrack;
-    const dur = 1.0;
+    const dur = this.hasSelection ? (this.selection.end - this.selection.start) : 1.0;
     const sr = track.buffer.sampleRate;
     const fadeSamples = Math.floor(dur * sr);
     const ss = this.hasSelection ? Math.floor(this.selection.start * sr) : (dir === 'in' ? 0 : track.buffer.length - fadeSamples);
@@ -1141,7 +1352,7 @@ class AudioStudio {
 
     this.saveHistory();
     this.drawTrackCanvases();
-    this.notify(`Fade ${dir} applied`, 'info');
+    this.notify(`Fade ${dir} applied`, 'success');
   }
 
   normalize() {
@@ -1162,7 +1373,7 @@ class AudioStudio {
 
     this.saveHistory();
     this.drawTrackCanvases();
-    this.notify('Normalized', 'info');
+    this.notify('Normalized', 'success');
   }
 
   addMarker() {
@@ -1186,7 +1397,9 @@ class AudioStudio {
     });
   }
 
-  // ========== HISTORY ==========
+  // ═══════════════════════════════════════════
+  // HISTORY
+  // ═══════════════════════════════════════════
 
   saveHistory() {
     this.history = this.history.slice(0, this.historyIndex + 1);
@@ -1238,15 +1451,21 @@ class AudioStudio {
     this.updateTimeDisplay();
   }
 
-  // ========== EXPORT ==========
+  // ═══════════════════════════════════════════
+  // EXPORT (WAV 16/24/32, FLAC, OGG, MP3, AIFF)
+  // ═══════════════════════════════════════════
 
   async exportAudio() {
-    if (this.tracks.length === 0) return;
+    if (this.tracks.length === 0) {
+      this.notify('No tracks to export', 'error');
+      return;
+    }
     this.showModal('Exporting...');
 
     try {
       const duration = this.totalDuration;
       const sr = parseInt(document.getElementById('sample-rate')?.value || 44100);
+      const format = document.getElementById('export-format')?.value || 'wav16';
       const offline = new OfflineAudioContext(2, Math.ceil(duration * sr), sr);
 
       const hasSolo = this.tracks.some(t => t.soloed);
@@ -1264,22 +1483,32 @@ class AudioStudio {
       });
 
       const rendered = await offline.startRendering();
-      const format = document.getElementById('export-format')?.value || 'wav';
       let blob;
+      let ext;
 
-      if (format === 'wav') {
-        blob = this.toWav(rendered);
+      if (format.startsWith('wav')) {
+        const bits = parseInt(format.replace('wav', ''));
+        blob = this.encodeWAV(rendered, bits);
+        ext = 'wav';
+      } else if (format === 'aiff') {
+        blob = this.encodeAIFF(rendered);
+        ext = 'aiff';
+      } else if (format === 'flac') {
+        blob = this.encodeWAV(rendered, 24); // FLAC via WAV fallback
+        ext = 'wav';
+        this.notify('FLAC export uses WAV 24-bit (browser limitation)', 'info');
       } else {
         blob = await this.encodeMedia(rendered, format);
+        ext = format;
       }
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `export.${format}`;
+      a.download = `export.${ext}`;
       a.click();
       URL.revokeObjectURL(url);
-      this.notify('Export complete', 'info');
+      this.notify('Export complete', 'success');
     } catch (e) {
       console.error('Export error:', e);
       this.notify('Export failed: ' + e.message, 'error');
@@ -1288,11 +1517,11 @@ class AudioStudio {
     this.hideModal();
   }
 
-  toWav(buffer) {
+  encodeWAV(buffer, bitsPerSample = 16) {
     const numCh = buffer.numberOfChannels;
     const sr = buffer.sampleRate;
-    const bps = 16;
-    const blockAlign = numCh * (bps / 8);
+    const bytesPerSample = bitsPerSample / 8;
+    const blockAlign = numCh * bytesPerSample;
     const dataLen = buffer.length * blockAlign;
     const ab = new ArrayBuffer(44 + dataLen);
     const v = new DataView(ab);
@@ -1300,22 +1529,89 @@ class AudioStudio {
 
     ws(0, 'RIFF'); v.setUint32(4, ab.byteLength - 8, true);
     ws(8, 'WAVE'); ws(12, 'fmt '); v.setUint32(16, 16, true);
-    v.setUint16(20, 1, true); v.setUint16(22, numCh, true);
-    v.setUint32(24, sr, true); v.setUint32(28, sr * blockAlign, true);
-    v.setUint16(32, blockAlign, true); v.setUint16(34, bps, true);
+
+    const audioFormat = bitsPerSample === 32 ? 3 : 1; // 3 = IEEE float
+    v.setUint16(20, audioFormat, true);
+    v.setUint16(22, numCh, true);
+    v.setUint32(24, sr, true);
+    v.setUint32(28, sr * blockAlign, true);
+    v.setUint16(32, blockAlign, true);
+    v.setUint16(34, bitsPerSample, true);
     ws(36, 'data'); v.setUint32(40, dataLen, true);
 
     const chs = [];
     for (let i = 0; i < numCh; i++) chs.push(buffer.getChannelData(i));
     let off = 44;
+
     for (let i = 0; i < buffer.length; i++) {
       for (let ch = 0; ch < numCh; ch++) {
         const s = Math.max(-1, Math.min(1, chs[ch][i]));
-        v.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
-        off += 2;
+        if (bitsPerSample === 16) {
+          v.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+        } else if (bitsPerSample === 24) {
+          const val = Math.round(s * 0x7FFFFF);
+          v.setUint8(off, val & 0xFF);
+          v.setUint8(off + 1, (val >> 8) & 0xFF);
+          v.setUint8(off + 2, (val >> 16) & 0xFF);
+        } else if (bitsPerSample === 32) {
+          v.setFloat32(off, s, true);
+        }
+        off += bytesPerSample;
       }
     }
     return new Blob([ab], { type: 'audio/wav' });
+  }
+
+  encodeAIFF(buffer) {
+    const numCh = buffer.numberOfChannels;
+    const sr = buffer.sampleRate;
+    const bitsPerSample = 16;
+    const bytesPerSample = bitsPerSample / 8;
+    const numFrames = buffer.length;
+    const dataLen = numFrames * numCh * bytesPerSample;
+    const totalLen = 4 + 18 + 8 + dataLen + (dataLen % 2);
+    const ab = new ArrayBuffer(12 + totalLen);
+    const v = new DataView(ab);
+    const ws = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+
+    // FORM chunk
+    ws(0, 'FORM');
+    v.setUint32(4, totalLen, false);
+    ws(8, 'AIFF');
+
+    // COMM chunk
+    ws(12, 'COMM');
+    v.setUint32(16, 18, false);
+    v.setUint16(20, numCh, false);
+    v.setUint32(22, numFrames, false);
+    v.setUint16(26, bitsPerSample, false);
+
+    // Sample rate as 80-bit extended precision
+    const exp = 16383 + Math.log2(sr);
+    v.setUint16(28, exp, false);
+    v.setUint32(30, sr * 65536, false);
+    v.setUint32(34, 0, false);
+
+    // SSND chunk
+    const ssndOff = 38;
+    ws(ssndOff, 'SSND');
+    v.setUint32(ssndOff + 4, dataLen + 8, false);
+    v.setUint32(ssndOff + 8, 0, false);
+    v.setUint32(ssndOff + 12, 0, false);
+
+    const chs = [];
+    for (let i = 0; i < numCh; i++) chs.push(buffer.getChannelData(i));
+    let off = ssndOff + 16;
+
+    for (let i = 0; i < numFrames; i++) {
+      for (let ch = 0; ch < numCh; ch++) {
+        const s = Math.max(-1, Math.min(1, chs[ch][i]));
+        v.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7FFF, false);
+        off += 2;
+      }
+    }
+
+    return new Blob([ab], { type: 'audio/aiff' });
   }
 
   async encodeMedia(buffer, format) {
@@ -1326,7 +1622,16 @@ class AudioStudio {
       const dest = offline.createMediaStreamDestination();
       source.connect(dest);
       source.start();
-      const mime = format === 'mp3' ? 'audio/webm' : `audio/${format}`;
+
+      let mime;
+      if (format === 'ogg') mime = 'audio/ogg; codecs=vorbis';
+      else if (format === 'mp3') mime = 'audio/mpeg';
+      else mime = `audio/${format}`;
+
+      if (!MediaRecorder.isTypeSupported(mime)) {
+        mime = 'audio/webm';
+      }
+
       const rec = new MediaRecorder(dest.stream, { mimeType: mime });
       const chunks = [];
       rec.ondataavailable = e => chunks.push(e.data);
@@ -1337,7 +1642,9 @@ class AudioStudio {
     });
   }
 
-  // ========== ZOOM ==========
+  // ═══════════════════════════════════════════
+  // ZOOM
+  // ═══════════════════════════════════════════
 
   setZoom(val) {
     this.zoom = Math.max(1, Math.min(20, val));
@@ -1346,7 +1653,9 @@ class AudioStudio {
     this.drawTrackCanvases();
   }
 
-  // ========== KEYBOARD ==========
+  // ═══════════════════════════════════════════
+  // KEYBOARD
+  // ═══════════════════════════════════════════
 
   onKeyDown(e) {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
@@ -1377,7 +1686,9 @@ class AudioStudio {
     }
   }
 
-  // ========== HELPERS ==========
+  // ═══════════════════════════════════════════
+  // HELPERS
+  // ═══════════════════════════════════════════
 
   fmtTime(sec, ms = false) {
     const m = Math.floor(sec / 60);
@@ -1414,10 +1725,13 @@ class AudioStudio {
 
   notify(msg, type = 'info') {
     const el = document.createElement('div');
-    el.style.cssText = `position:fixed;top:80px;right:20px;z-index:10000;padding:12px 20px;border-radius:8px;font-size:14px;max-width:400px;animation:slideIn .3s ease;${type === 'error' ? 'background:rgba(239,68,68,.9);color:#fff' : 'background:rgba(6,182,212,.9);color:#fff'}`;
+    el.className = `studio-toast ${type}`;
     el.textContent = msg;
     document.body.appendChild(el);
-    setTimeout(() => { el.style.animation = 'slideOut .3s ease'; setTimeout(() => el.remove(), 300); }, 3000);
+    setTimeout(() => {
+      el.style.animation = 'toast-out 0.3s ease forwards';
+      setTimeout(() => el.remove(), 300);
+    }, 3000);
   }
 }
 
