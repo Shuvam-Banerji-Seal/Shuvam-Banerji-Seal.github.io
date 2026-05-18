@@ -144,7 +144,7 @@
 /* Bouncing animation */
 @keyframes bounce {
   0%,
-  20%
+  20%,
   53%,
   80%,
   100% {
