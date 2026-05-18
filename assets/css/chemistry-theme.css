@@ -6,9 +6,9 @@
   overflow: hidden;
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.05) 0%,
-    rgba(16, 185, 129, 0.05) 50%,
-    rgba(139, 92, 246, 0.05) 100%
+    color-mix(in srgb, var(--accent-cyan) 5%, transparent) 0%,
+    color-mix(in srgb, var(--accent-green) 5%, transparent) 50%,
+    color-mix(in srgb, var(--accent-purple) 5%, transparent) 100%
   );
 }
 
@@ -21,9 +21,9 @@ html[data-theme="forest"] .hero,
 html[data-theme="dracula"] .hero {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.1) 0%,
-    rgba(16, 185, 129, 0.1) 50%,
-    rgba(139, 92, 246, 0.1) 100%
+    color-mix(in srgb, var(--accent-cyan) 10%, transparent) 0%,
+    color-mix(in srgb, var(--accent-green) 10%, transparent) 50%,
+    color-mix(in srgb, var(--accent-purple) 10%, transparent) 100%
   );
 }
 
@@ -36,7 +36,7 @@ html[data-theme="dracula"] .hero {
   height: 200%;
   background: radial-gradient(
     circle at center,
-    rgba(59, 130, 246, 0.1) 0%,
+    color-mix(in srgb, var(--accent-cyan) 10%, transparent) 0%,
     transparent 50%
   );
   animation: pulse-glow 8s ease-in-out infinite;
@@ -57,11 +57,11 @@ html[data-theme="dracula"] .hero {
 }
 
 .hero h1 {
-  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+  background: var(--grad-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+  text-shadow: 0 0 40px color-mix(in srgb, var(--accent-cyan) 30%, transparent);
   animation: gradient-shift 5s ease infinite;
   background-size: 200% 200%;
 }
@@ -73,7 +73,7 @@ html[data-theme="tokyo-night"] .hero h1,
 html[data-theme="absolute-dark"] .hero h1,
 html[data-theme="forest"] .hero h1,
 html[data-theme="dracula"] .hero h1 {
-  text-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+  text-shadow: 0 0 40px color-mix(in srgb, var(--accent-cyan) 50%, transparent);
 }
 
 @keyframes gradient-shift {
@@ -139,7 +139,7 @@ html[data-theme="dracula"] .hero h1 {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(59, 130, 246, 0.1)
+    color-mix(in srgb, var(--accent-cyan) 10%, transparent)
     transparent
   );
   transition: left 0.5s ease;
@@ -174,7 +174,7 @@ html[data-theme="dracula"] .hero h1 {
 
 .tech-tag:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-cyan) 30%, transparent);
 }
 
 .tech-tag::before {
@@ -184,7 +184,7 @@ html[data-theme="dracula"] .hero h1 {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6);
+  background: var(--grad-primary);
   border-radius: 9999px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -203,22 +203,22 @@ html[data-theme="dracula"] .hero h1 {
 }
 
 .project-card:nth-child(4n + 1) {
-  border-left-color: #3b82f6;
+  border-left-color: var(--accent-cyan);
   /* Blue - like Hydrogen */
 }
 
 .project-card:nth-child(4n + 2) {
-  border-left-color: #10b981;
+  border-left-color: var(--accent-green);
   /* Green - like Carbon */
 }
 
 .project-card:nth-child(4n + 3) {
-  border-left-color: #f59e0b;
+  border-left-color: var(--accent-cyan);
   /* Amber - like Oxygen */
 }
 
 .project-card:nth-child(4n + 4) {
-  border-left-color: #8b5cf6;
+  border-left-color: var(--accent-purple);
   /* Purple - like Nitrogen */
 }
 
@@ -234,9 +234,9 @@ html[data-theme="dracula"] .hero h1 {
   background: linear-gradient(
     90deg,
     transparent,
-    #3b82f6,
-    #06b6d4,
-    #8b5cf6,
+    var(--accent-cyan),
+    var(--accent-green),
+    var(--accent-purple),
     transparent
   );
 }
@@ -261,7 +261,7 @@ html[data-theme="dracula"] .hero h1 {
   height: 100px;
   background: radial-gradient(
     circle,
-    rgba(59, 130, 246, 0.1) 0%,
+    color-mix(in srgb, var(--accent-cyan) 10%, transparent) 0%,
     transparent 70%
   );
   border-radius: 50%;
@@ -278,10 +278,10 @@ html[data-theme="dracula"] .hero h1 {
 
 /* Enhanced form inputs with chemistry theme */
 .form-input:focus {
-  border-color: #3b82f6;
+  border-color: var(--accent-cyan);
   box-shadow:
-    0 0 0 3px rgba(59, 130, 246, 0.1),
-    0 0 20px rgba(59, 130, 246, 0.2);
+    0 0 0 3px color-mix(in srgb, var(--accent-cyan) 10%, transparent),
+    0 0 20px color-mix(in srgb, var(--accent-cyan) 20%, transparent);
 }
 
 html[data-theme="dark"] .form-input:focus,
@@ -292,8 +292,8 @@ html[data-theme="absolute-dark"] .form-input:focus,
 html[data-theme="forest"] .form-input:focus,
 html[data-theme="dracula"] .form-input:focus {
   box-shadow:
-    0 0 0 3px rgba(59, 130, 246, 0.2),
-    0 0 20px rgba(59, 130, 246, 0.4);
+    0 0 0 3px color-mix(in srgb, var(--accent-cyan) 20%, transparent),
+    0 0 20px color-mix(in srgb, var(--accent-cyan) 40%, transparent);
 }
 
 /* Animated chemical bonds on page transitions */
@@ -303,7 +303,7 @@ html[data-theme="dracula"] .form-input:focus {
   left: 0;
   width: 100%;
   height: 4px;
-  background: linear-gradient(90deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+  background: var(--grad-primary);
   transform: scaleX(0);
   transform-origin: left;
   z-index: 9999;
@@ -329,7 +329,7 @@ html[data-theme="dracula"] .form-input:focus {
   transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  background: var(--grad-green);
   transition: width 0.3s ease;
 }
 
@@ -393,13 +393,13 @@ html[data-theme="dracula"] .form-input:focus {
 code {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.1),
-    rgba(139, 92, 246, 0.1)
+    color-mix(in srgb, var(--accent-cyan) 10%, transparent),
+    color-mix(in srgb, var(--accent-purple) 10%, transparent)
   );
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-family: "Source Code Pro", monospace;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 20%, transparent);
 }
 
 html[data-theme="dark"] code,
@@ -411,10 +411,10 @@ html[data-theme="forest"] code,
 html[data-theme="dracula"] code {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.2),
-    rgba(139, 92, 246, 0.2)
+    color-mix(in srgb, var(--accent-cyan) 20%, transparent),
+    color-mix(in srgb, var(--accent-purple) 20%, transparent)
   );
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: color-mix(in srgb, var(--accent-cyan) 30%, transparent);
 }
 
 /* Atomic number labels for list items */
@@ -435,7 +435,7 @@ ol li::before {
   top: 0;
   width: 2rem;
   height: 2rem;
-  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  background: var(--grad-primary);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -458,8 +458,8 @@ ol li::before {
   width: 200px;
   height: 200px;
   background-image:
-    linear-gradient(#3b82f620 1px, transparent 1px)
-    linear-gradient(90deg, #3b82f620 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--accent-cyan) 12%, transparent) 1px, transparent 1px)
+    linear-gradient(90deg, color-mix(in srgb, var(--accent-cyan) 12%, transparent) 1px, transparent 1px);
   background-size: 40px 40px;
   transform: rotate(45deg);
   opacity: 0.3;
@@ -503,7 +503,7 @@ html[data-theme="dracula"] .section:nth-child(even)::before {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: var(--accent-cyan);
   animation: molecule-bounce 1.5s ease-in-out infinite;
 }
 
