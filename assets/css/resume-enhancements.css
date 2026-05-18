@@ -93,7 +93,7 @@
   margin-bottom: 0.75rem;
 }
 
-.timeline-node .item-meta
+.timeline-node .item-meta,
 .timeline-node .item-date {
   margin-bottom: 0.5rem;
 }
@@ -400,43 +400,43 @@
 }
 
 /* ===== DARK THEME ADAPTATIONS ===== */
-[data-theme="dark"] .resume-card {
-[data-theme="dark-coffee"] .resume-card {
-[data-theme="amber"] .resume-card {
-[data-theme="tokyo-night"] .resume-card {
-[data-theme="absolute-dark"] .resume-card {
-[data-theme="forest"] .resume-card {
+[data-theme="dark"] .resume-card,
+[data-theme="dark-coffee"] .resume-card,
+[data-theme="amber"] .resume-card,
+[data-theme="tokyo-night"] .resume-card,
+[data-theme="absolute-dark"] .resume-card,
+[data-theme="forest"] .resume-card,
 [data-theme="dracula"] .resume-card {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .resume-card .item-description {
-[data-theme="dark-coffee"] .resume-card .item-description {
-[data-theme="amber"] .resume-card .item-description {
-[data-theme="tokyo-night"] .resume-card .item-description {
-[data-theme="absolute-dark"] .resume-card .item-description {
-[data-theme="forest"] .resume-card .item-description {
+[data-theme="dark"] .resume-card .item-description,
+[data-theme="dark-coffee"] .resume-card .item-description,
+[data-theme="amber"] .resume-card .item-description,
+[data-theme="tokyo-night"] .resume-card .item-description,
+[data-theme="absolute-dark"] .resume-card .item-description,
+[data-theme="forest"] .resume-card .item-description,
 [data-theme="dracula"] .resume-card .item-description {
   color: rgba(255, 255, 255, 0.75);
 }
 
-[data-theme="dark"] .skill-progress {
-[data-theme="dark-coffee"] .skill-progress {
-[data-theme="amber"] .skill-progress {
-[data-theme="tokyo-night"] .skill-progress {
-[data-theme="absolute-dark"] .skill-progress {
-[data-theme="forest"] .skill-progress {
+[data-theme="dark"] .skill-progress,
+[data-theme="dark-coffee"] .skill-progress,
+[data-theme="amber"] .skill-progress,
+[data-theme="tokyo-night"] .skill-progress,
+[data-theme="absolute-dark"] .skill-progress,
+[data-theme="forest"] .skill-progress,
 [data-theme="dracula"] .skill-progress {
   background: rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="dark"] .modern-badge {
-[data-theme="dark-coffee"] .modern-badge {
-[data-theme="amber"] .modern-badge {
-[data-theme="tokyo-night"] .modern-badge {
-[data-theme="absolute-dark"] .modern-badge {
-[data-theme="forest"] .modern-badge {
+[data-theme="dark"] .modern-badge,
+[data-theme="dark-coffee"] .modern-badge,
+[data-theme="amber"] .modern-badge,
+[data-theme="tokyo-night"] .modern-badge,
+[data-theme="absolute-dark"] .modern-badge,
+[data-theme="forest"] .modern-badge,
 [data-theme="dracula"] .modern-badge {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.1);
@@ -491,17 +491,17 @@
 
 /* ===== ACCESSIBILITY ===== */
 @media (prefers-reduced-motion: reduce) {
-  .float-animation
-  .float-delayed
-  .timeline-dot
-  .resume-card::before
-  .modern-badge::before
+  .float-animation,
+  .float-delayed,
+  .timeline-dot,
+  .resume-card::before,
+  .modern-badge::before,
   .skill-progress-bar::after {
     animation: none;
   }
 
-  .resume-card
-  .modern-badge
+  .resume-card,
+  .modern-badge,
   .interactive-card {
     transition: none;
   }
@@ -538,12 +538,12 @@ html {
   border-radius: 2px;
 }
 
-[data-theme="dark"] .section-subtitle-left::after {
-[data-theme="dark-coffee"] .section-subtitle-left::after {
-[data-theme="amber"] .section-subtitle-left::after {
-[data-theme="tokyo-night"] .section-subtitle-left::after {
-[data-theme="absolute-dark"] .section-subtitle-left::after {
-[data-theme="forest"] .section-subtitle-left::after {
+[data-theme="dark"] .section-subtitle-left::after,
+[data-theme="dark-coffee"] .section-subtitle-left::after,
+[data-theme="amber"] .section-subtitle-left::after,
+[data-theme="tokyo-night"] .section-subtitle-left::after,
+[data-theme="absolute-dark"] .section-subtitle-left::after,
+[data-theme="forest"] .section-subtitle-left::after,
 [data-theme="dracula"] .section-subtitle-left::after {
   background: linear-gradient(90deg, #22d3ee, #60a5fa);
 }

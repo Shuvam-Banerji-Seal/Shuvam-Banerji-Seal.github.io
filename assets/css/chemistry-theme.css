@@ -5,24 +5,24 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(
-    135deg
-    rgba(59, 130, 246, 0.05) 0%
-    rgba(16, 185, 129, 0.05) 50%
+    135deg,
+    rgba(59, 130, 246, 0.05) 0%,
+    rgba(16, 185, 129, 0.05) 50%,
     rgba(139, 92, 246, 0.05) 100%
   );
 }
 
-html[data-theme="dark"] .hero {
-html[data-theme="dark-coffee"] .hero {
-html[data-theme="amber"] .hero {
-html[data-theme="tokyo-night"] .hero {
-html[data-theme="absolute-dark"] .hero {
-html[data-theme="forest"] .hero {
+html[data-theme="dark"] .hero,
+html[data-theme="dark-coffee"] .hero,
+html[data-theme="amber"] .hero,
+html[data-theme="tokyo-night"] .hero,
+html[data-theme="absolute-dark"] .hero,
+html[data-theme="forest"] .hero,
 html[data-theme="dracula"] .hero {
   background: linear-gradient(
-    135deg
-    rgba(59, 130, 246, 0.1) 0%
-    rgba(16, 185, 129, 0.1) 50%
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(16, 185, 129, 0.1) 50%,
     rgba(139, 92, 246, 0.1) 100%
   );
 }
@@ -35,8 +35,8 @@ html[data-theme="dracula"] .hero {
   width: 200%;
   height: 200%;
   background: radial-gradient(
-    circle at center
-    rgba(59, 130, 246, 0.1) 0%
+    circle at center,
+    rgba(59, 130, 246, 0.1) 0%,
     transparent 50%
   );
   animation: pulse-glow 8s ease-in-out infinite;
@@ -44,7 +44,7 @@ html[data-theme="dracula"] .hero {
 }
 
 @keyframes pulse-glow {
-  0%
+  0%,
   100% {
     opacity: 0.3;
     transform: scale(1);
@@ -66,18 +66,18 @@ html[data-theme="dracula"] .hero {
   background-size: 200% 200%;
 }
 
-html[data-theme="dark"] .hero h1 {
-html[data-theme="dark-coffee"] .hero h1 {
-html[data-theme="amber"] .hero h1 {
-html[data-theme="tokyo-night"] .hero h1 {
-html[data-theme="absolute-dark"] .hero h1 {
-html[data-theme="forest"] .hero h1 {
+html[data-theme="dark"] .hero h1,
+html[data-theme="dark-coffee"] .hero h1,
+html[data-theme="amber"] .hero h1,
+html[data-theme="tokyo-night"] .hero h1,
+html[data-theme="absolute-dark"] .hero h1,
+html[data-theme="forest"] .hero h1,
 html[data-theme="dracula"] .hero h1 {
   text-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
 }
 
 @keyframes gradient-shift {
-  0%
+  0%,
   100% {
     background-position: 0% 50%;
   }
@@ -93,7 +93,7 @@ html[data-theme="dracula"] .hero h1 {
   padding-right: 2rem;
 }
 
-.subtitle::before
+.subtitle::before,
 .subtitle::after {
   content: "⚛️";
   position: absolute;
@@ -137,8 +137,8 @@ html[data-theme="dracula"] .hero h1 {
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    90deg
-    transparent
+    90deg,
+    transparent,
     rgba(59, 130, 246, 0.1)
     transparent
   );
@@ -151,7 +151,7 @@ html[data-theme="dracula"] .hero h1 {
 
 /* Molecule icon animations */
 @keyframes float-molecule {
-  0%
+  0%,
   100% {
     transform: translateY(0px) rotate(0deg);
   }
@@ -161,7 +161,7 @@ html[data-theme="dracula"] .hero h1 {
   }
 }
 
-.tool-icon
+.tool-icon,
 .project-title i {
   animation: float-molecule 6s ease-in-out infinite;
 }
@@ -232,11 +232,11 @@ html[data-theme="dracula"] .hero h1 {
   width: 80px;
   height: 2px;
   background: linear-gradient(
-    90deg
-    transparent
-    #3b82f6
-    #06b6d4
-    #8b5cf6
+    90deg,
+    transparent,
+    #3b82f6,
+    #06b6d4,
+    #8b5cf6,
     transparent
   );
 }
@@ -260,8 +260,8 @@ html[data-theme="dracula"] .hero h1 {
   width: 100px;
   height: 100px;
   background: radial-gradient(
-    circle
-    rgba(59, 130, 246, 0.1) 0%
+    circle,
+    rgba(59, 130, 246, 0.1) 0%,
     transparent 70%
   );
   border-radius: 50%;
@@ -280,19 +280,19 @@ html[data-theme="dracula"] .hero h1 {
 .form-input:focus {
   border-color: #3b82f6;
   box-shadow:
-    0 0 0 3px rgba(59, 130, 246, 0.1)
+    0 0 0 3px rgba(59, 130, 246, 0.1),
     0 0 20px rgba(59, 130, 246, 0.2);
 }
 
-html[data-theme="dark"] .form-input:focus {
-html[data-theme="dark-coffee"] .form-input:focus {
-html[data-theme="amber"] .form-input:focus {
-html[data-theme="tokyo-night"] .form-input:focus {
-html[data-theme="absolute-dark"] .form-input:focus {
-html[data-theme="forest"] .form-input:focus {
+html[data-theme="dark"] .form-input:focus,
+html[data-theme="dark-coffee"] .form-input:focus,
+html[data-theme="amber"] .form-input:focus,
+html[data-theme="tokyo-night"] .form-input:focus,
+html[data-theme="absolute-dark"] .form-input:focus,
+html[data-theme="forest"] .form-input:focus,
 html[data-theme="dracula"] .form-input:focus {
   box-shadow:
-    0 0 0 3px rgba(59, 130, 246, 0.2)
+    0 0 0 3px rgba(59, 130, 246, 0.2),
     0 0 20px rgba(59, 130, 246, 0.4);
 }
 
@@ -333,7 +333,7 @@ html[data-theme="dracula"] .form-input:focus {
   transition: width 0.3s ease;
 }
 
-.nav-link:hover::after
+.nav-link:hover::after,
 .nav-link.active::after {
   width: 100%;
 }
@@ -355,7 +355,7 @@ html[data-theme="dracula"] .form-input:focus {
   background: rgba(255, 255, 255, 0.3);
   transform: translate(-50%, -50%);
   transition:
-    width 0.6s ease
+    width 0.6s ease,
     height 0.6s ease;
 }
 
@@ -368,7 +368,7 @@ html[data-theme="dracula"] .form-input:focus {
   width: 0;
   height: 0;
   transition:
-    width 0s
+    width 0s,
     height 0s;
 }
 
@@ -392,8 +392,8 @@ html[data-theme="dracula"] .form-input:focus {
 /* Molecular formula style for code blocks */
 code {
   background: linear-gradient(
-    135deg
-    rgba(59, 130, 246, 0.1)
+    135deg,
+    rgba(59, 130, 246, 0.1),
     rgba(139, 92, 246, 0.1)
   );
   padding: 0.2rem 0.4rem;
@@ -402,16 +402,16 @@ code {
   border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
-html[data-theme="dark"] code {
-html[data-theme="dark-coffee"] code {
-html[data-theme="amber"] code {
-html[data-theme="tokyo-night"] code {
-html[data-theme="absolute-dark"] code {
-html[data-theme="forest"] code {
+html[data-theme="dark"] code,
+html[data-theme="dark-coffee"] code,
+html[data-theme="amber"] code,
+html[data-theme="tokyo-night"] code,
+html[data-theme="absolute-dark"] code,
+html[data-theme="forest"] code,
 html[data-theme="dracula"] code {
   background: linear-gradient(
-    135deg
-    rgba(59, 130, 246, 0.2)
+    135deg,
+    rgba(59, 130, 246, 0.2),
     rgba(139, 92, 246, 0.2)
   );
   border-color: rgba(59, 130, 246, 0.3);
@@ -466,19 +466,19 @@ ol li::before {
   pointer-events: none;
 }
 
-html[data-theme="dark"] .section:nth-child(even)::before {
-html[data-theme="dark-coffee"] .section:nth-child(even)::before {
-html[data-theme="amber"] .section:nth-child(even)::before {
-html[data-theme="tokyo-night"] .section:nth-child(even)::before {
-html[data-theme="absolute-dark"] .section:nth-child(even)::before {
-html[data-theme="forest"] .section:nth-child(even)::before {
+html[data-theme="dark"] .section:nth-child(even)::before,
+html[data-theme="dark-coffee"] .section:nth-child(even)::before,
+html[data-theme="amber"] .section:nth-child(even)::before,
+html[data-theme="tokyo-night"] .section:nth-child(even)::before,
+html[data-theme="absolute-dark"] .section:nth-child(even)::before,
+html[data-theme="forest"] .section:nth-child(even)::before,
 html[data-theme="dracula"] .section:nth-child(even)::before {
   opacity: 0.5;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .subtitle::before
+  .subtitle::before,
   .subtitle::after {
     font-size: 1rem;
   }
@@ -496,7 +496,7 @@ html[data-theme="dracula"] .section:nth-child(even)::before {
   position: relative;
 }
 
-.loading-molecule::before
+.loading-molecule::before,
 .loading-molecule::after {
   content: "";
   position: absolute;
@@ -517,7 +517,7 @@ html[data-theme="dracula"] .section:nth-child(even)::before {
 }
 
 @keyframes molecule-bounce {
-  0%
+  0%,
   100% {
     transform: translateY(0);
   }

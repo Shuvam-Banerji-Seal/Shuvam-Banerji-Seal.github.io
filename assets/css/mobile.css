@@ -205,8 +205,8 @@
 /* Touch Improvements */
 @media (max-width: 767px) {
   /* Larger touch targets */
-  .btn
-  .social-link
+  .btn,
+  .social-link,
   .nav-link {
     min-height: 44px;
     min-width: 44px;
@@ -216,8 +216,8 @@
   }
 
   /* Touch feedback */
-  .btn:active
-  .card:active
+  .btn:active,
+  .card:active,
   .social-link:active {
     transform: scale(0.95);
     transition: transform 0.1s ease;
@@ -343,22 +343,22 @@
 
 /* Dark mode mobile optimizations */
 @media (max-width: 767px) {
-html[data-theme="dark"] .mobile-nav-full {
-html[data-theme="dark-coffee"] .mobile-nav-full {
-html[data-theme="amber"] .mobile-nav-full {
-html[data-theme="tokyo-night"] .mobile-nav-full {
-html[data-theme="absolute-dark"] .mobile-nav-full {
-html[data-theme="forest"] .mobile-nav-full {
+html[data-theme="dark"] .mobile-nav-full,
+html[data-theme="dark-coffee"] .mobile-nav-full,
+html[data-theme="amber"] .mobile-nav-full,
+html[data-theme="tokyo-night"] .mobile-nav-full,
+html[data-theme="absolute-dark"] .mobile-nav-full,
+html[data-theme="forest"] .mobile-nav-full,
 html[data-theme="dracula"] .mobile-nav-full {
     background: rgba(17, 24, 39, 0.95);
   }
 
-html[data-theme="dark"] .lazy-load {
-html[data-theme="dark-coffee"] .lazy-load {
-html[data-theme="amber"] .lazy-load {
-html[data-theme="tokyo-night"] .lazy-load {
-html[data-theme="absolute-dark"] .lazy-load {
-html[data-theme="forest"] .lazy-load {
+html[data-theme="dark"] .lazy-load,
+html[data-theme="dark-coffee"] .lazy-load,
+html[data-theme="amber"] .lazy-load,
+html[data-theme="tokyo-night"] .lazy-load,
+html[data-theme="absolute-dark"] .lazy-load,
+html[data-theme="forest"] .lazy-load,
 html[data-theme="dracula"] .lazy-load {
     background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
     background-size: 200% 100%;
