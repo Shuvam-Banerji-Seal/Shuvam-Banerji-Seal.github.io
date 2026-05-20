@@ -40,6 +40,7 @@ export default defineConfig({
         'periodic-table': resolve(__dirname, 'pages/tools/periodic-table.html'),
         'ph-calculator': resolve(__dirname, 'pages/tools/ph-calculator.html'),
         'unit-converter': resolve(__dirname, 'pages/tools/unit-converter.html'),
+        'youtube-downloader': resolve(__dirname, 'pages/tools/youtube-downloader.html'),
       },
     },
 
