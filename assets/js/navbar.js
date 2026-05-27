@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
           href: isHome
             ? "pages/tools/youtube-downloader.html"
             : pathDepth + "pages/tools/youtube-downloader.html",
-          icon: "youtube",
+          icon: "video",
         },
         {
           name: "Chemistry Games",

@@ -368,7 +368,7 @@
             <span>Search</span>
         </div>
         <div class="mobile-nav-item"
-            onclick="document.getElementById('sidebar').classList.toggle('active'); lucide.createIcons();">
+            onclick="document.getElementById('sidebar').classList.toggle('active'); if (typeof lucide !== 'undefined') lucide.createIcons();">
             <i data-lucide="folder" class="w-5 h-5"></i>
             <span>Library</span>
         </div>
@@ -508,8 +508,15 @@
     <script type="module" src="/assets/js/navbar.js?v=1.0"></script>
     <script type="module" src="/assets/js/music-player-enhanced.js?v=3.7"></script>
     <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
+        // Initialize Lucide icons (wait for deferred script to load)
+        function initLucide() {
+            if (typeof lucide !== 'undefined') {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            } else {
+                window.addEventListener('load', () => { lucide.createIcons(); });
+            }
+        }
+        initLucide();
 
         // Set greeting based on time
         // Set greeting based on time with funny quotes
