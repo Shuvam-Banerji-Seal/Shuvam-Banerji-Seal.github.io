@@ -484,7 +484,11 @@
       }
 
       /* --- Hero --- */
-      .hero {
+      /* High specificity (body section.hero) so the two-column hero survives
+         Vite's build-time CSS reordering: bundled main/mobile.css load AFTER
+         this inline block in dist and would otherwise flatten the grid back
+         to a centered flex column. */
+      body section.hero {
         min-height: 100vh;
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1241,7 +1245,7 @@
 
       /* --- responsive --- */
       @media (max-width: 1024px) {
-        .hero {
+        body section.hero {
           grid-template-columns: 1fr;
           padding: 5rem 2rem 3rem;
           text-align: center;
@@ -1271,7 +1275,7 @@
         }
       }
       @media (max-width: 768px) {
-        .hero {
+        body section.hero {
           padding: 4rem 1rem 2rem;
           gap: 2rem;
         }
@@ -1341,7 +1345,7 @@
         }
       }
       @media (max-width: 480px) {
-        .hero {
+        body section.hero {
           padding: 3.5rem 0.75rem 1.5rem;
           gap: 1.5rem;
         }
