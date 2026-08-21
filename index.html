@@ -87,34 +87,40 @@
 
     <!-- Loading Screen -->
     <div id="loading-screen">
-      <div class="loading-terminal">
-        <div class="loading-line" style="animation-delay: 0s">
-          <span class="loading-prompt">shuvam@iiserk:~$ </span>source
-          portfolio.sh
-        </div>
-        <div class="loading-line" style="animation-delay: 0.4s">
-          <span class="loading-info">[INFO] </span
-          ><span class="loading-text"
-            >Initializing molecular environment...</span
+      <svg class="fl-lattice" viewBox="0 0 600 600" aria-hidden="true">
+        <defs>
+          <pattern
+            id="hexes"
+            width="60"
+            height="52"
+            patternUnits="userSpaceOnUse"
           >
-        </div>
-        <div class="loading-line" style="animation-delay: 0.8s">
-          <span class="loading-info">[INFO] </span
-          ><span class="loading-text">Loading DFT, RAG, ML modules...</span>
-        </div>
-        <div class="loading-line" style="animation-delay: 1.2s">
-          <span class="loading-info">[INFO] </span
-          ><span class="loading-text"
-            >Loading ATP molecule from local PDB...</span
-          >
-        </div>
-        <div class="loading-line" style="animation-delay: 1.6s">
-          <span class="loading-ok">[OK] </span
-          ><span class="loading-text"
-            >All systems nominal. Launching portfolio.</span
-          >
-        </div>
+            <path
+              d="M30 0 L60 17 L60 51 L30 68 L0 51 L0 17 Z"
+              fill="none"
+              stroke="rgba(125,211,252,0.10)"
+              stroke-width="1"
+            />
+          </pattern>
+        </defs>
+        <rect width="600" height="600" fill="url(#hexes)" />
+      </svg>
+
+      <div class="fl-orbital">
+        <div class="fl-core"></div>
+        <div class="fl-ring fl-r1"><i class="fl-electron e-cyan"></i></div>
+        <div class="fl-ring fl-r2"><i class="fl-electron e-violet"></i></div>
+        <div class="fl-ring fl-r3"><i class="fl-electron e-amber"></i></div>
       </div>
+
+      <div class="fl-boot">
+        <div class="fl-boot-line">
+          I N I T I A L I S I N G&nbsp;&nbsp;M O L E C U L A R&nbsp;&nbsp;E N V
+          I R O N M E N T
+        </div>
+        <div class="fl-pct" id="fl-pct">0%</div>
+      </div>
+
       <div class="loading-bar-wrap">
         <div class="loading-bar" id="loading-bar"></div>
       </div>
@@ -846,6 +852,18 @@
             bar.style.width = "100%";
           });
         }
+        // percentage counter synced with the 2s bar transition
+        const pctEl = document.getElementById("fl-pct");
+        if (pctEl) {
+          const t0 = performance.now();
+          const tick = (t) => {
+            const p = Math.min(100, Math.round(((t - t0) / 2000) * 100));
+            pctEl.textContent = p + "%";
+            if (p < 100 && document.getElementById("loading-screen"))
+              requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
         function hideLoader() {
           const ls = document.getElementById("loading-screen");
           if (ls) {
@@ -855,8 +873,8 @@
             }, 800);
           }
         }
-        // Let the animation play for at least 4 seconds
-        setTimeout(hideLoader, 4000);
+        // Cinematic but snappy — out by ~2.2s
+        setTimeout(hideLoader, 2200);
       })();
 
       /* ----- Terminal typewriter + interactive shell ----- */
@@ -881,6 +899,11 @@
             '  <span class="term-help-cmd">date              </span> — current date/time',
             '  <span class="term-help-cmd">uname -a          </span> — system info',
             '  <span class="term-help-cmd">python3 demo.py   </span> — run a quick demo',
+            '  <span class="term-help-cmd">tools              </span> — list launchable tools',
+            '  <span class="term-help-cmd">open &lt;tool&gt;        </span> — jump straight to a tool',
+            '  <span class="term-help-cmd">neofetch           </span> — system info, arch-style',
+            '  <span class="term-help-cmd">history            </span> — recent commands',
+            '  <span class="term-help-cmd">echo &lt;text&gt;        </span> — say it back',
             '  <span class="term-help-cmd">./run-research.sh </span> — show research pipeline',
             '  <span class="term-help-cmd">clear             </span> — clear terminal',
             '  <span class="term-help-cmd">exit              </span> — close terminal',
@@ -960,6 +983,71 @@
             '<span class="term-status-ok">[DONE]</span>   ΔG‡ = 18.4 kcal/mol (transition state)',
             '<span class="term-status-ok">[DONE]</span>   Research pipeline complete.',
           ],
+          tools: () => [
+            '<span class="term-help-title">Launchable tools — use: open &lt;name&gt;</span>',
+            '  <span class="term-help-cmd">open balancer      </span> — equation balancer',
+            '  <span class="term-help-cmd">open molweight     </span> — molecular weight calc',
+            '  <span class="term-help-cmd">open periodic      </span> — periodic table explorer',
+            '  <span class="term-help-cmd">open pdfstudio     </span> — 13-mode PDF suite',
+            '  <span class="term-help-cmd">open audiostudio   </span> — browser DAW',
+            '  <span class="term-help-cmd">open webcam        </span> — webcam tester + air guitar',
+            '  <span class="term-help-cmd">open playground    </span> — live HTML/CSS/JS editor',
+            '  <span class="term-help-cmd">open beam          </span> — P2P file sharing',
+            '  <span class="term-help-cmd">open papers        </span> — multi-source paper search',
+            '  <span class="term-help-cmd">open mermaid       </span> — diagram editor',
+            '  <span class="term-help-cmd">open games         </span> — chemistry games',
+            '  <span class="term-help-cmd">open resume        </span> — CV page',
+          ],
+          history: () =>
+            history.length
+              ? history
+                  .slice(0, 12)
+                  .reverse()
+                  .map((h, i) => `  ${(i + 1).toString().padStart(3)}  ${h}`)
+              : ["(no history yet)"],
+          echo: (...args) => [args.join(" ") || ""],
+          neofetch: () => {
+            const cur =
+              document.documentElement.getAttribute("data-theme") || "dark";
+            return [
+              '<span style="color:#7dd3fc">        shuvam@iiserk</span>',
+              '<span style="color:#7dd3fc">        -------------</span>',
+              '  <span style="color:#a78bfa">OS</span>       Arch Linux (btw)',
+              '  <span style="color:#a78bfa">Shell</span>    zsh 5.9',
+              '  <span style="color:#a78bfa">Editor</span>   Neovim',
+              '  <span style="color:#a78bfa">Field</span>    Comp. Chemistry + AI',
+              '  <span style="color:#a78bfa">Focus</span>    DFT \u00B7 RAG \u00B7 ML potentials',
+              '  <span style="color:#a78bfa">Theme</span>    ' + cur,
+              '  <span style="color:#a78bfa">Uptime</span>   since 2022 @ IISER Kolkata',
+            ];
+          },
+          open: (arg) => {
+            const routes = {
+              balancer: "pages/tools/equation-balancer.html",
+              molweight: "pages/tools/mol-weight.html",
+              periodic: "pages/tools/periodic-table.html",
+              ph: "pages/tools/ph-calculator.html",
+              units: "pages/tools/unit-converter.html",
+              pdfstudio: "pages/tools/pdf-studio.html",
+              audiostudio: "pages/tools/audio-studio.html",
+              webcam: "pages/tools/webcam-tester.html",
+              guitar: "pages/tools/webcam-tester.html",
+              playground: "pages/tools/playground.html",
+              beam: "pages/tools/file-share.html",
+              papers: "pages/tools/paper-finder.html",
+              mermaid: "pages/mermaid-tool.html",
+              games: "pages/tools/games.html",
+              resume: "pages/resume.html",
+              blog: "pages/blog.html",
+              music: "pages/music.html",
+            };
+            if (!arg)
+              return ["usage: open <tool>   (try 'tools' for the list)"];
+            const route = routes[arg];
+            if (!route) return [`open: unknown tool '${arg}'  (try 'tools')`];
+            setTimeout(() => (window.location.href = route), 450);
+            return [`Launching ${arg}\u2026`];
+          },
           exit: () => {
             const tw = document.getElementById("hero-terminal");
             if (tw) {
@@ -1097,9 +1185,21 @@
                 spawnInput();
                 return;
               }
-              const fn = COMMANDS[cmd];
+              let fn = COMMANDS[cmd];
+              let args = [];
+              if (!fn) {
+                // prefix commands that take arguments (echo/open)
+                const sp = cmd.indexOf(" ");
+                if (sp > -1) {
+                  const base = cmd.slice(0, sp);
+                  if (base === "echo" || base === "open") {
+                    fn = COMMANDS[base];
+                    args = [cmd.slice(sp + 1)];
+                  }
+                }
+              }
               if (fn) {
-                const out = fn();
+                const out = fn(...args);
                 out.forEach((line) => {
                   const d = document.createElement("div");
                   d.className = "term-output";
@@ -1637,5 +1737,6 @@
 
       if (typeof lucide !== "undefined") lucide.createIcons();
     </script>
+    <script type="module" src="assets/js/home-cinematics.js"></script>
   </body>
 </html>
