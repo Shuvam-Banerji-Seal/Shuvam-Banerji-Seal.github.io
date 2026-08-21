@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -14,20 +25,41 @@
       name="description"
       content="Search and discover research papers from Semantic Scholar and arXiv"
     />
-    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/paper-finder.html" />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/paper-finder.html"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Research Paper Finder - SBS Tools" />
-    <meta property="og:description" content="Search and discover research papers from Semantic Scholar and arXiv." />
-    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/paper-finder.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:description"
+      content="Search and discover research papers from Semantic Scholar and arXiv."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/paper-finder.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Research Paper Finder - SBS Tools" />
-    <meta name="twitter:description" content="Search and discover research papers from Semantic Scholar and arXiv." />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      name="twitter:description"
+      content="Search and discover research papers from Semantic Scholar and arXiv."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="robots" content="index, follow" />
     <title>Research Paper Finder - SBS Tools</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -69,7 +101,10 @@
                 <select id="source">
                   <option value="semantic">Semantic Scholar</option>
                   <option value="arxiv">arXiv</option>
-                  <option value="both">Both</option>
+                  <option value="openalex">OpenAlex</option>
+                  <option value="crossref">Crossref</option>
+                  <option value="pubmed">Europe PMC (PubMed)</option>
+                  <option value="all" selected>All sources</option>
                 </select>
               </div>
               <div class="form-group">
@@ -228,6 +263,18 @@
         background: rgba(178, 34, 34, 0.15);
         color: #b22222;
       }
+      .source-badge.openalex {
+        background: rgba(166, 87, 252, 0.15);
+        color: #a657fc;
+      }
+      .source-badge.crossref {
+        background: rgba(0, 150, 199, 0.15);
+        color: #0096c7;
+      }
+      .source-badge.pubmed {
+        background: rgba(66, 156, 96, 0.15);
+        color: #429c60;
+      }
       .toggle-abstract {
         background: none;
         border: none;
@@ -252,7 +299,9 @@
         animation: pf-spin 0.8s linear infinite;
       }
       @keyframes pf-spin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
       @media (max-width: 768px) {
         .form-row {
@@ -266,7 +315,8 @@
       let searchTimeout = null;
       const CORS_PROXIES = [
         (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-        (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+        (url) =>
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
         (url) => url, // Direct fallback
       ];
 
@@ -294,13 +344,14 @@
         if (!el) {
           el = document.createElement("div");
           el.id = "pf-toast";
-          el.style.cssText = "position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--bg-secondary,#1e1e2e);color:var(--text-primary,#fff);padding:.75rem 1.5rem;border-radius:8px;border:1px solid var(--border-color,#333);z-index:9999;font-size:.9rem;opacity:0;transition:opacity .3s;pointer-events:none";
+          el.style.cssText =
+            "position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--bg-secondary,#1e1e2e);color:var(--text-primary,#fff);padding:.75rem 1.5rem;border-radius:8px;border:1px solid var(--border-color,#333);z-index:9999;font-size:.9rem;opacity:0;transition:opacity .3s;pointer-events:none";
           document.body.appendChild(el);
         }
         el.textContent = msg;
         el.style.opacity = "1";
         clearTimeout(el._t);
-        el._t = setTimeout(() => el.style.opacity = "0", 2500);
+        el._t = setTimeout(() => (el.style.opacity = "0"), 2500);
       }
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -350,30 +401,34 @@
         let errors = [];
 
         try {
-          if (source === "semantic" || source === "both") {
+          const runSource = async (key, fn) => {
+            if (source !== key && source !== "all") return;
             try {
-              const semanticResults = await searchSemanticScholar(query, yearFrom, yearTo);
-              allResults = [...allResults, ...semanticResults];
+              const results = await fn(query, yearFrom, yearTo);
+              allResults = [...allResults, ...results];
             } catch (e) {
-              console.warn("Semantic Scholar failed:", e.message);
-              errors.push("Semantic Scholar: " + e.message);
+              console.warn(key + " failed:", e.message);
+              errors.push(labelOf(key) + ": " + e.message);
             }
-          }
+          };
 
-          if (source === "arxiv" || source === "both") {
-            try {
-              const arxivResults = await searchArxiv(query, yearFrom, yearTo);
-              allResults = [...allResults, ...arxivResults];
-            } catch (e) {
-              console.warn("arXiv failed:", e.message);
-              errors.push("arXiv: " + e.message);
-            }
-          }
+          // All sources in parallel — each fails independently.
+          await Promise.allSettled([
+            runSource("semantic", searchSemanticScholar),
+            runSource("arxiv", searchArxiv),
+            runSource("openalex", searchOpenAlex),
+            runSource("crossref", searchCrossref),
+            runSource("pubmed", searchEuropePMC),
+          ]);
+
+          allResults = dedupePapers(allResults);
 
           if (allResults.length === 0 && errors.length > 0) {
             const errDiv = document.createElement("div");
             errDiv.className = "alert alert-error";
-            const isRateLimit = errors.some(e => e.includes("429") || e.includes("rate"));
+            const isRateLimit = errors.some(
+              (e) => e.includes("429") || e.includes("rate"),
+            );
             const msg = isRateLimit
               ? "API rate limit reached. Please wait a moment and try again."
               : `Could not fetch papers. ${errors.join("; ")}. Please try again later.`;
@@ -397,6 +452,155 @@
 
         document.getElementById("loading").style.display = "none";
         document.getElementById("search-btn").disabled = false;
+      }
+
+      // ── multi-source helpers ─────────────────────────────────────────────
+      function labelOf(key) {
+        return (
+          {
+            semantic: "Semantic Scholar",
+            arxiv: "arXiv",
+            openalex: "OpenAlex",
+            crossref: "Crossref",
+            pubmed: "Europe PMC",
+          }[key] || key
+        );
+      }
+
+      function dedupePapers(papers) {
+        const seen = new Set();
+        return papers.filter((p) => {
+          const normTitle = (p.title || "")
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, "");
+          const key = p.doi || normTitle;
+          if (!key || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      }
+
+      // OpenAlex — 250M+ works, CORS-open, no key. Polite pool with mailto.
+      async function searchOpenAlex(query, yearFrom, yearTo) {
+        const params = new URLSearchParams({
+          search: query,
+          per_page: "20",
+          mailto: "sbs22ms076@iiserkol.ac.in",
+        });
+        if (yearFrom || yearTo) {
+          params.set(
+            "filter",
+            `from_publication_date:${yearFrom || "1900-01-01"},to_publication_date:${yearTo || "2099-12-31"}`,
+          );
+        }
+        const response = await fetch(
+          `https://api.openalex.org/works?${params}`,
+        );
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        return (data.results || []).map((w) => ({
+          title: w.display_name || "Untitled",
+          authors:
+            (w.authorships || [])
+              .map((a) => a.author?.display_name)
+              .filter(Boolean)
+              .slice(0, 6)
+              .join(", ") || "Unknown",
+          year: w.publication_year,
+          abstract: w.abstract
+            ? String(w.abstract)
+            : w.abstract_inverted_index
+              ? abstractFromInverted(w.abstract_inverted_index)
+              : "No abstract available",
+          citations: w.cited_by_count || 0,
+          url: w.doi
+            ? `https://doi.org/${w.doi.replace("https://doi.org/", "")}`
+            : w.primary_location?.landing_page_url || "#",
+          pdfUrl: w.open_access?.oa_url || undefined,
+          doi: w.doi ? w.doi.replace("https://doi.org/", "") : undefined,
+          source: "openalex",
+        }));
+      }
+
+      function abstractFromInverted(inv) {
+        // OpenAlex ships abstracts as an inverted word index.
+        try {
+          const words = [];
+          for (const [word, positions] of Object.entries(inv)) {
+            for (const pos of positions) words[pos] = word;
+          }
+          return words.join(" ").slice(0, 600) + "\u2026";
+        } catch (e) {
+          return "No abstract available";
+        }
+      }
+
+      // Crossref — 150M+ records, CORS-open.
+      async function searchCrossref(query, yearFrom, yearTo) {
+        const params = new URLSearchParams({
+          query: query,
+          rows: "20",
+          select: "DOI,title,author,issued,abstract,URL,is-referenced-by-count",
+        });
+        if (yearFrom && yearTo) {
+          params.set(
+            "filter",
+            `from-pub-date:${yearFrom}-01-01,until-pub-date:${yearTo}-12-31`,
+          );
+        }
+        const response = await fetch(
+          `https://api.crossref.org/works?${params}`,
+        );
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        return (data.message?.items || []).map((w) => ({
+          title: (w.title || ["Untitled"])[0],
+          authors:
+            (w.author || [])
+              .map((a) => [a.given, a.family].filter(Boolean).join(" "))
+              .join(", ") || "Unknown",
+          year: w.issued?.["date-parts"]?.[0]?.[0],
+          abstract: (w.abstract || "No abstract available")
+            .replace(/<[^>]+>/g, "")
+            .slice(0, 600),
+          citations: w["is-referenced-by-count"] || 0,
+          url: w.URL || (w.DOI ? `https://doi.org/${w.DOI}` : "#"),
+          doi: w.DOI,
+          source: "crossref",
+        }));
+      }
+
+      // Europe PMC — biomedical + preprints, CORS-open.
+      async function searchEuropePMC(query, yearFrom, yearTo) {
+        let q = encodeURIComponent(query);
+        if (yearFrom && yearTo) {
+          q += `%20AND%20(PUB_YEAR:%5B${yearFrom}%20TO%20${yearTo}%5D)`;
+        } else if (yearFrom) {
+          q += `%20AND%20PUB_YEAR:%3E%3D${yearFrom}`;
+        }
+        const response = await fetch(
+          `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${q}&format=json&pageSize=20`,
+        );
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        return (data.resultList?.result || []).map((r) => ({
+          title: r.title || "Untitled",
+          authors: r.authorString || "Unknown",
+          year: parseInt(r.pubYear) || undefined,
+          abstract: r.abstractText
+            ? r.abstractText.replace(/<[^>]+>/g, "").slice(0, 600)
+            : "No abstract available",
+          citations: parseInt(r.citedByCount) || 0,
+          url: r.doi
+            ? `https://doi.org/${r.doi}`
+            : `https://europepmc.org/article/${r.source}/${r.id}`,
+          pdfUrl:
+            r.isOpenAccess === "Y"
+              ? `https://europepmc.org/article/${r.source}/${r.id}`
+              : undefined,
+          doi: r.doi,
+          source: "pubmed",
+        }));
       }
 
       async function searchSemanticScholar(query, yearFrom, yearTo) {
@@ -506,7 +710,7 @@
                 <div class="paper-card">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
                         <a href="${paper.url}" target="_blank" class="paper-title">${paper.title}</a>
-                        <span class="source-badge ${paper.source}">${paper.source === "semantic" ? "Semantic Scholar" : "arXiv"}</span>
+                        <span class="source-badge ${paper.source}">${labelOf(paper.source)}</span>
                     </div>
                     <div class="paper-authors">${paper.authors}</div>
                     <div class="paper-meta">

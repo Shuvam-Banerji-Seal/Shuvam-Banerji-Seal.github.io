@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Live HTML/CSS/JS playground: paste code, see it render instantly in a sandboxed iframe. Console capture, auto-run, layout presets, download, shareable links — all local."
+    />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/playground.html"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="HTML Playground - SBS Tools" />
+    <meta
+      property="og:description"
+      content="Paste HTML, CSS and JS — rendered live in a sandboxed frame with console capture, auto-run, layout presets, download and shareable links."
+    />
+    <meta name="robots" content="index, follow" />
+    <title>HTML Playground - SBS Tools</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <style>
+      .pg-wrap {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding-top: 6rem;
+        padding-bottom: 2rem;
+      }
+      .pg-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+      }
+      .pg-title {
+        font-family: var(--font-mono);
+        font-size: 1.4rem;
+        font-weight: 700;
+      }
+      .pg-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .pg-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        padding: 0.5rem 0.9rem;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .pg-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .pg-btn.primary {
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-text);
+        border-color: transparent;
+      }
+      .pg-btn svg {
+        width: 15px;
+        height: 15px;
+      }
+      .pg-grid {
+        display: grid;
+        gap: 0.8rem;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "editors preview";
+      }
+      .pg-grid[data-layout="col"] {
+        grid-template-columns: 1fr;
+        grid-template-areas: "editors" "preview";
+      }
+      .pg-editors {
+        grid-area: editors;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        min-width: 0;
+      }
+      .pg-preview-wrap {
+        grid-area: preview;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .editor-box {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--code-bg, #0d1117);
+      }
+      .editor-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.45rem 0.8rem;
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+      }
+      .editor-head .lang-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 0.45rem;
+      }
+      .editor-box textarea {
+        width: 100%;
+        min-height: 130px;
+        padding: 0.8rem;
+        resize: vertical;
+        background: transparent;
+        color: var(--text-primary);
+        font-family: "Source Code Pro", var(--font-mono);
+        font-size: 0.84rem;
+        line-height: 1.55;
+        border: none;
+        outline: none;
+        tab-size: 2;
+        white-space: pre;
+        overflow: auto;
+      }
+      .preview-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.45rem 0.8rem;
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+      }
+      .preview-frame-box {
+        position: relative;
+        background: #fff;
+        border-radius: 0 0 10px 10px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-top: none;
+        min-height: 420px;
+      }
+      #pg-frame {
+        width: 100%;
+        height: 520px;
+        border: none;
+        background: #fff;
+        display: block;
+      }
+      .console-box {
+        margin-top: 0.6rem;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #0b1020;
+        overflow: hidden;
+      }
+      .console-box .console-head {
+        padding: 0.4rem 0.8rem;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: #8b949e;
+        border-bottom: 1px solid #21262d;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #pg-console {
+        max-height: 160px;
+        overflow-y: auto;
+        padding: 0.5rem 0.8rem;
+        font-family: "Source Code Pro", monospace;
+        font-size: 0.78rem;
+      }
+      #pg-console .line {
+        padding: 0.12rem 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+        word-break: break-word;
+        white-space: pre-wrap;
+      }
+      #pg-console .l-log {
+        color: #c9d1d9;
+      }
+      #pg-console .l-warn {
+        color: #f0b72f;
+      }
+      #pg-console .l-err {
+        color: #ff7b72;
+      }
+      #pg-console .l-sys {
+        color: #58a6ff;
+      }
+      .status-chip {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 99px;
+        background: rgba(63, 185, 80, 0.15);
+        color: #3fb950;
+        border: 1px solid rgba(63, 185, 80, 0.35);
+      }
+      .status-chip.dirty {
+        background: rgba(240, 183, 47, 0.12);
+        color: #f0b72f;
+        border-color: rgba(240, 183, 47, 0.35);
+      }
+      @media (max-width: 900px) {
+        .pg-grid {
+          grid-template-columns: 1fr;
+          grid-template-areas: "editors" "preview";
+        }
+        #pg-frame {
+          height: 420px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+      <div class="pg-wrap">
+        <div class="pg-head">
+          <h1 class="pg-title">&lt;/&gt; HTML PLAYGROUND</h1>
+          <div class="pg-actions">
+            <button
+              class="pg-btn"
+              id="layout-btn"
+              title="Stack editors above preview"
+            >
+              <i data-lucide="rows-3"></i> Layout
+            </button>
+            <button class="pg-btn" id="copy-link-btn">
+              <i data-lucide="link"></i> Copy link
+            </button>
+            <button class="pg-btn" id="download-btn">
+              <i data-lucide="download"></i> Download
+            </button>
+            <button class="pg-btn" id="clear-btn">
+              <i data-lucide="trash-2"></i> Clear
+            </button>
+            <button class="pg-btn primary" id="run-btn">
+              <i data-lucide="play"></i> Run
+            </button>
+          </div>
+        </div>
+
+        <div class="pg-grid" id="pg-grid">
+          <div class="pg-editors">
+            <div class="editor-box">
+              <div class="editor-head">
+                <span
+                  ><span class="lang-dot" style="background: #e34c26"></span
+                  >HTML</span
+                >
+                <span class="status-chip" id="chip-html">synced</span>
+              </div>
+              <textarea
+                id="ed-html"
+                spellcheck="false"
+                aria-label="HTML editor"
+              ></textarea>
+            </div>
+            <div class="editor-box">
+              <div class="editor-head">
+                <span
+                  ><span class="lang-dot" style="background: #563d7c"></span
+                  >CSS</span
+                >
+                <span class="status-chip" id="chip-css">synced</span>
+              </div>
+              <textarea
+                id="ed-css"
+                spellcheck="false"
+                aria-label="CSS editor"
+              ></textarea>
+            </div>
+            <div class="editor-box">
+              <div class="editor-head">
+                <span
+                  ><span class="lang-dot" style="background: #f1e05a"></span
+                  >JS</span
+                >
+                <span class="status-chip" id="chip-js">synced</span>
+              </div>
+              <textarea
+                id="ed-js"
+                spellcheck="false"
+                aria-label="JavaScript editor"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="pg-preview-wrap">
+            <div class="preview-frame-box">
+              <div class="preview-head">
+                <span>PREVIEW (sandboxed)</span>
+                <span id="render-info">—</span>
+              </div>
+              <iframe
+                id="pg-frame"
+                title="Live preview"
+                sandbox="allow-scripts allow-modals allow-forms allow-popups"
+              ></iframe>
+            </div>
+            <div class="console-box">
+              <div class="console-head">
+                <span>CONSOLE</span>
+                <button
+                  class="pg-btn"
+                  id="console-clear-btn"
+                  style="padding: 0.2rem 0.55rem; font-size: 0.68rem"
+                >
+                  clear
+                </button>
+              </div>
+              <div id="pg-console">
+                <div class="line l-sys">› console output appears here</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+          Chemistry &amp; Code
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="../../assets/js/playground.js"></script>
+    <script>
+      if (typeof lucide !== "undefined") lucide.createIcons();
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

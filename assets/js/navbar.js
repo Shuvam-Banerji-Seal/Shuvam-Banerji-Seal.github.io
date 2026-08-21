@@ -116,20 +116,6 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "search",
         },
         {
-          name: "PDF to JPG",
-          href: isHome
-            ? "pages/tools/pdf-to-jpg.html"
-            : pathDepth + "pages/tools/pdf-to-jpg.html",
-          icon: "image",
-        },
-        {
-          name: "PDF Compressor",
-          href: isHome
-            ? "pages/tools/pdf-reducer.html"
-            : pathDepth + "pages/tools/pdf-reducer.html",
-          icon: "minimize-2",
-        },
-        {
           name: "Molecule 3D",
           href: isHome
             ? "pages/tools/molecule-viz.html"
@@ -198,6 +184,20 @@ document.addEventListener("DOMContentLoaded", function () {
             ? "pages/tools/webcam-tester.html"
             : pathDepth + "pages/tools/webcam-tester.html",
           icon: "camera",
+        },
+        {
+          name: "HTML Playground",
+          href: isHome
+            ? "pages/tools/playground.html"
+            : pathDepth + "pages/tools/playground.html",
+          icon: "code-2",
+        },
+        {
+          name: "Beam File Sharing",
+          href: isHome
+            ? "pages/tools/file-share.html"
+            : pathDepth + "pages/tools/file-share.html",
+          icon: "zap",
         },
         {
           name: "YouTube Downloader",

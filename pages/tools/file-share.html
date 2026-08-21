@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Share files between devices peer-to-peer over an encrypted WebRTC channel — no server, no upload, no size limits. Connect by exchanging a short code."
+    />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/file-share.html"
+    />
+    <meta
+      property="og:title"
+      content="Beam - Serverless File Sharing - SBS Tools"
+    />
+    <meta
+      property="og:description"
+      content="Device-to-device file transfer over encrypted WebRTC. No backend, no accounts, no size caps."
+    />
+    <title>Beam — File Sharing - SBS Tools</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <style>
+      .fs-wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding-top: 6rem;
+        padding-bottom: 2rem;
+      }
+      .fs-title {
+        font-family: var(--font-mono);
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.4rem;
+      }
+      .fs-sub {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        line-height: 1.6;
+        margin-bottom: 1.4rem;
+      }
+      .conn-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        padding: 0.35rem 0.8rem;
+        border-radius: 99px;
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        color: var(--text-muted);
+      }
+      .conn-badge .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #6b7280;
+      }
+      .conn-badge.connecting .dot {
+        background: #f0b72f;
+        animation: fs-pulse 1s infinite;
+      }
+      .conn-badge.open .dot {
+        background: #22c55e;
+        box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+      }
+      @keyframes fs-pulse {
+        50% {
+          opacity: 0.4;
+        }
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      @media (max-width: 760px) {
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+      .step-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.1rem 1.2rem;
+      }
+      .step-card h3 {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        margin: 0 0 0.7rem;
+        color: var(--accent);
+        letter-spacing: 0.05em;
+      }
+      .code-area {
+        width: 100%;
+        min-height: 110px;
+        resize: vertical;
+        background: var(--code-bg, #0b1020);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 0.68rem;
+        line-height: 1.5;
+        padding: 0.6rem;
+        word-break: break-all;
+      }
+      .fs-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        padding: 0.5rem 0.95rem;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        margin-top: 0.6rem;
+      }
+      .fs-btn:hover:not(:disabled) {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .fs-btn.primary {
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-text);
+        border-color: transparent;
+      }
+      .fs-btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .fs-btn svg {
+        width: 15px;
+        height: 15px;
+      }
+      .transfer-panel {
+        display: none;
+        margin-top: 1.2rem;
+      }
+      .transfer-panel.show {
+        display: block;
+      }
+      .dropzone {
+        border: 2px dashed var(--border);
+        border-radius: 12px;
+        padding: 2.2rem 1rem;
+        text-align: center;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: var(--font-mono);
+        font-size: 0.88rem;
+      }
+      .dropzone:hover,
+      .dropzone.dragover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(125, 211, 252, 0.04);
+      }
+      .xfer-list {
+        margin-top: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+      }
+      .xfer-item {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.75rem 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+      }
+      .xfer-item .fi {
+        flex-shrink: 0;
+      }
+      .xfer-item .meta {
+        flex: 1;
+        min-width: 0;
+      }
+      .xfer-item .name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .xfer-item .size {
+        color: var(--text-muted);
+        font-size: 0.72rem;
+      }
+      .bar {
+        height: 6px;
+        background: var(--bg-elevated);
+        border-radius: 99px;
+        overflow: hidden;
+        margin-top: 0.35rem;
+      }
+      .bar > div {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #22d3ee, #a78bfa);
+        transition: width 0.25s ease;
+      }
+      .xfer-item.done .bar > div {
+        background: #22c55e;
+      }
+      .xfer-item a.dl {
+        color: #7dd3fc;
+        text-decoration: none;
+        font-size: 0.72rem;
+        border: 1px solid rgba(125, 211, 252, 0.35);
+        padding: 0.28rem 0.6rem;
+        border-radius: 6px;
+      }
+      .fs-note {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        line-height: 1.65;
+        margin-top: 1.4rem;
+      }
+      .err-line {
+        color: #f87171;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        min-height: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+      <div class="fs-wrap">
+        <h1 class="fs-title">
+          <i data-lucide="zap"></i> BEAM
+          <span style="font-size: 0.85rem; color: var(--text-muted)"
+            >— serverless file sharing</span
+          >
+        </h1>
+        <p class="fs-sub">
+          Files travel <strong>directly device-to-device</strong> through an
+          encrypted WebRTC channel. Nothing is uploaded anywhere — this page
+          only helps the two devices find each other by trading a short code.
+          Both devices must have this page open at the same time.
+        </p>
+
+        <span class="conn-badge" id="conn-badge"
+          ><span class="dot"></span
+          ><span id="conn-text">disconnected</span></span
+        >
+
+        <div class="steps" style="margin-top: 1.2rem">
+          <div class="step-card">
+            <h3>STEP 1 — YOUR CODE</h3>
+            <button class="fs-btn primary" id="create-btn">
+              <i data-lucide="radio"></i> Create connection code
+            </button>
+            <button class="fs-btn" id="join-toggle-btn">
+              <i data-lucide="log-in"></i> I have a code instead
+            </button>
+            <textarea
+              class="code-area"
+              id="local-code"
+              readonly
+              placeholder="Your connection code appears here…"
+              aria-label="Your connection code"
+            ></textarea>
+            <button class="fs-btn" id="copy-code-btn" disabled>
+              <i data-lucide="copy"></i> Copy your code
+            </button>
+          </div>
+          <div class="step-card">
+            <h3>STEP 2 — THEIR REPLY CODE</h3>
+            <textarea
+              class="code-area"
+              id="remote-code"
+              placeholder="Paste the reply code from the other device…"
+              aria-label="Remote reply code"
+            ></textarea>
+            <button class="fs-btn primary" id="accept-btn" disabled>
+              <i data-lucide="plug-zap"></i> Connect
+            </button>
+            <div class="err-line" id="sig-err"></div>
+          </div>
+        </div>
+
+        <div class="transfer-panel" id="transfer-panel">
+          <div
+            class="dropzone"
+            id="dropzone"
+            role="button"
+            tabindex="0"
+            aria-label="Drop files here or click to choose"
+          >
+            Drop files here or click to choose — they are sent instantly
+          </div>
+          <input type="file" id="file-input" multiple hidden />
+          <div class="xfer-list" id="xfer-list"></div>
+        </div>
+
+        <p class="fs-note">
+          <strong>How it connects:</strong> both devices exchange handshake
+          codes manually (chat, email — anything), then negotiate a direct path
+          using public STUN servers. Traffic is DTLS-encrypted end to end and
+          never touches any server. Devices behind very restrictive corporate
+          NATs may fail to connect — try a home or mobile network.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+          Chemistry &amp; Code
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // ══════════════════════════════════════════════════════════════════
+      // Beam — serverless P2P file transfer over WebRTC DataChannel.
+      // Signaling = manual copy/paste of a compressed SDP exchange.
+      // ══════════════════════════════════════════════════════════════════
+      const ICE_CONFIG = {
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:stun1.l.google.com:19302" },
+        ],
+      };
+      const CHUNK = 64 * 1024;
+      const BUFFER_HIGH = 4 * 1024 * 1024;
+
+      let pc = null;
+      let dc = null;
+      let connected = false;
+
+      const $ = (id) => document.getElementById(id);
+
+      function setConn(state) {
+        const badge = $("conn-badge");
+        badge.className = "conn-badge " + state;
+        $("conn-text").textContent =
+          state === "open"
+            ? "connected — P2P"
+            : state === "connecting"
+              ? "negotiating\u2026"
+              : "disconnected";
+        if (state === "open") {
+          connected = true;
+          $("transfer-panel").classList.add("show");
+        }
+      }
+
+      function sigError(msg) {
+        $("sig-err").textContent = msg || "";
+      }
+
+      // ── code compression: JSON → deflate → base64url ────────────────────
+      async function encodeCode(obj) {
+        const raw = new TextEncoder().encode(JSON.stringify(obj));
+        if ("CompressionStream" in window) {
+          const cs = new CompressionStream("deflate");
+          const stream = new Blob([raw]).stream().pipeThrough(cs);
+          const buf = new Uint8Array(await new Response(stream).arrayBuffer());
+          return b64url(buf) + ".z";
+        }
+        return b64url(raw);
+      }
+
+      async function decodeCode(str) {
+        str = str.trim();
+        const isZ = str.endsWith(".z");
+        if (isZ) str = str.slice(0, -2);
+        const bytes = unb64url(str);
+        if (isZ) {
+          const ds = new DecompressionStream("deflate");
+          const stream = new Blob([bytes]).stream().pipeThrough(ds);
+          const out = new Uint8Array(await new Response(stream).arrayBuffer());
+          return JSON.parse(new TextDecoder().decode(out));
+        }
+        return JSON.parse(new TextDecoder().decode(bytes));
+      }
+
+      function b64url(bytes) {
+        let bin = "";
+        bytes.forEach((b) => (bin += String.fromCharCode(b)));
+        return btoa(bin)
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_")
+          .replace(/=+$/, "");
+      }
+      function unb64url(str) {
+        const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+        const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
+        return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+      }
+
+      // Wait for ICE gathering to finish so the code is complete (no trickle).
+      function waitIce(pc) {
+        return new Promise((resolve) => {
+          if (pc.iceGatheringState === "complete") return resolve();
+          const check = () => {
+            if (pc.iceGatheringState === "complete") {
+              pc.removeEventListener("icegatheringstatechange", check);
+              resolve();
+            }
+          };
+          pc.addEventListener("icegatheringstatechange", check);
+          setTimeout(resolve, 3500); // safety net
+        });
+      }
+
+      function wireChannel(dc_) {
+        dc = dc_;
+        dc.binaryType = "arraybuffer";
+        dc.bufferedAmountLowThreshold = 512 * 1024;
+        dc.onopen = () => setConn("open");
+        dc.onclose = () => setConn("idle");
+        dc.onmessage = onMessage;
+      }
+
+      // ── host: create offer ──────────────────────────────────────────────
+      $("create-btn").addEventListener("click", async () => {
+        sigError("");
+        pc = new RTCPeerConnection(ICE_CONFIG);
+        wireChannel(pc.createDataChannel("beam", { ordered: true }));
+        pc.onconnectionstatechange = () => {
+          if (["failed", "disconnected", "closed"].includes(pc.connectionState))
+            setConn("idle");
+        };
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        await waitIce(pc);
+        const code = await encodeCode({ t: "o", sdp: pc.localDescription.sdp });
+        $("local-code").value = code;
+        $("copy-code-btn").disabled = false;
+        setConn("connecting");
+        $("accept-btn").disabled = false;
+      });
+
+      // ── guest: accept an offer, produce answer ─────────────────────────
+      $("join-toggle-btn").addEventListener("click", () => {
+        $("local-code").value = "";
+        $("local-code").placeholder =
+          "Skip STEP 1 — paste the other device's code below, then send them YOUR reply code.";
+        $("create-btn").disabled = true;
+        $("join-toggle-btn").disabled = true;
+        $("remote-code").focus();
+      });
+
+      $("remote-code").addEventListener("input", (e) => {
+        $("accept-btn").disabled = e.target.value.trim().length < 20;
+      });
+
+      $("accept-btn").addEventListener("click", async () => {
+        sigError("");
+        try {
+          const incoming = await decodeCode($("remote-code").value);
+          if (!pc) {
+            pc = new RTCPeerConnection(ICE_CONFIG);
+            pc.ondatachannel = (e) => wireChannel(e.channel);
+            pc.onconnectionstatechange = () => {
+              if (
+                ["failed", "disconnected", "closed"].includes(
+                  pc.connectionState,
+                )
+              )
+                setConn("idle");
+            };
+          }
+          if (incoming.t === "o") {
+            await pc.setRemoteDescription({ type: "offer", sdp: incoming.sdp });
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+            await waitIce(pc);
+            const code = await encodeCode({
+              t: "a",
+              sdp: pc.localDescription.sdp,
+            });
+            $("local-code").value = code;
+            $("copy-code-btn").disabled = false;
+            $("local-code").placeholder =
+              "Send THIS reply code back to the other device.";
+            setConn("connecting");
+          } else if (incoming.t === "a") {
+            if (!pc.currentRemoteDescription) {
+              await pc.setRemoteDescription({
+                type: "answer",
+                sdp: incoming.sdp,
+              });
+            }
+          } else {
+            sigError("That code is not a Beam connection code.");
+          }
+        } catch (e) {
+          sigError("Invalid code: " + e.message);
+        }
+      });
+
+      $("copy-code-btn").addEventListener("click", async () => {
+        const v = $("local-code").value;
+        if (!v) return;
+        try {
+          await navigator.clipboard.writeText(v);
+          flash($("copy-code-btn"), "Copied!");
+        } catch (e) {
+          $("local-code").select();
+          document.execCommand("copy");
+          flash($("copy-code-btn"), "Copied!");
+        }
+      });
+
+      function flash(btn, msg) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = msg;
+        setTimeout(() => (btn.innerHTML = orig), 1300);
+      }
+
+      // ── file transfer ───────────────────────────────────────────────────
+      const dz = $("dropzone");
+      dz.addEventListener("click", () => connected && $("file-input").click());
+      dz.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && connected) $("file-input").click();
+      });
+      ["dragover", "dragenter"].forEach((ev) =>
+        dz.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dz.classList.add("dragover");
+        }),
+      );
+      ["dragleave", "drop"].forEach((ev) =>
+        dz.addEventListener(ev, (e) => {
+          e.preventDefault();
+          dz.classList.remove("dragover");
+        }),
+      );
+      dz.addEventListener("drop", (e) => {
+        if (connected) sendFiles([...e.dataTransfer.files]);
+      });
+      $("file-input").addEventListener("change", (e) => {
+        sendFiles([...e.target.files]);
+        e.target.value = "";
+      });
+
+      function addRow(name, size, kind) {
+        const row = document.createElement("div");
+        row.className = "xfer-item";
+        row.innerHTML = `
+          <i data-lucide="${kind === "up" ? "upload-cloud" : "download-cloud"}" class="fi"></i>
+          <div class="meta">
+            <div class="name">${escapeHtml(name)}</div>
+            <div class="size">${fmtSize(size)} · ${kind === "up" ? "sending" : "receiving"}</div>
+            <div class="bar"><div></div></div>
+          </div>`;
+        $("xfer-list").prepend(row);
+        if (typeof lucide !== "undefined") lucide.createIcons();
+        const bar = row.querySelector(".bar > div");
+        return {
+          set(pct) {
+            bar.style.width = Math.min(100, pct) + "%";
+          },
+          done(dlName) {
+            row.classList.add("done");
+            bar.style.width = "100%";
+            row.querySelector(".size").textContent =
+              fmtSize(size) + " · complete";
+            if (kind === "down" && dlName) {
+              const a = document.createElement("a");
+              a.className = "dl";
+              a.href = dlName.url;
+              a.download = dlName.name;
+              a.textContent = "save";
+              row.appendChild(a);
+            }
+          },
+        };
+      }
+
+      function escapeHtml(s) {
+        return s.replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+
+      function fmtSize(b) {
+        if (b < 1024) return b + " B";
+        if (b < 1048576) return (b / 1024).toFixed(1) + " KB";
+        if (b < 1073741824) return (b / 1048576).toFixed(1) + " MB";
+        return (b / 1073741824).toFixed(2) + " GB";
+      }
+
+      async function sendFiles(files) {
+        for (const file of files) {
+          const row = addRow(file.name, file.size, "up");
+          // Control frames go as STRINGS — DataChannel preserves message
+          // type, so the receiver can tell metadata from binary chunks.
+          dc.send(
+            JSON.stringify({
+              type: "meta",
+              name: file.name,
+              size: file.size,
+            }),
+          );
+
+          let offset = 0;
+          while (offset < file.size) {
+            const slice = await file
+              .slice(offset, offset + CHUNK)
+              .arrayBuffer();
+            await waitDrain();
+            dc.send(slice);
+            offset += slice.byteLength;
+            row.set((offset / file.size) * 100);
+          }
+          row.done();
+        }
+      }
+
+      function waitDrain() {
+        if (dc.bufferedAmount <= BUFFER_HIGH) return Promise.resolve();
+        return new Promise((resolve) => {
+          const onLow = () => {
+            dc.removeEventListener("bufferedamountlow", onLow);
+            resolve();
+          };
+          dc.addEventListener("bufferedamountlow", onLow);
+        });
+      }
+
+      // ── receive side ────────────────────────────────────────────────────
+      let rx = null; // { name, size, chunks, received, row }
+
+      function onMessage(e) {
+        if (typeof e.data === "string") {
+          const msg = JSON.parse(e.data);
+          if (msg.type === "meta") {
+            const row = addRow(msg.name, msg.size, "down");
+            rx = {
+              name: msg.name,
+              size: msg.size,
+              chunks: [],
+              received: 0,
+              row,
+            };
+          }
+          return;
+        }
+        if (!rx) return;
+        rx.chunks.push(e.data);
+        rx.received += e.data.byteLength;
+        rx.row.set((rx.received / rx.size) * 100);
+        if (rx.received >= rx.size) {
+          const blob = new Blob(rx.chunks);
+          const url = URL.createObjectURL(blob);
+          rx.row.done({ url, name: rx.name });
+          rx = null;
+        }
+      }
+
+      if (typeof lucide !== "undefined") lucide.createIcons();
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

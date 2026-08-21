@@ -48,6 +48,8 @@ export default defineConfig({
           "pages/tools/youtube-downloader.html",
         ),
         "webcam-tester": resolve(__dirname, "pages/tools/webcam-tester.html"),
+        playground: resolve(__dirname, "pages/tools/playground.html"),
+        "file-share": resolve(__dirname, "pages/tools/file-share.html"),
       },
     },
 
