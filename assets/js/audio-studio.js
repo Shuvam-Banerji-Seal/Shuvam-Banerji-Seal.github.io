@@ -1714,9 +1714,25 @@ class AudioStudio {
         blob = this.encodeWAV(rendered, 24); // FLAC via WAV fallback
         ext = "wav";
         this.notify("FLAC export uses WAV 24-bit (browser limitation)", "info");
+      } else if (format === "mp3") {
+        // Real MP3 encoding via lamejs (pure JS, lazy-loaded).
+        blob = await this.encodeMP3(rendered);
+        ext = "mp3";
       } else {
-        blob = await this.encodeMedia(rendered, format);
-        ext = format;
+        // OGG etc. need a REALTIME MediaRecorder pass (a MediaStream
+        // destination cannot be created on an OfflineAudioContext — the
+        // previous code crashed here on every mp3/ogg export).
+        try {
+          blob = await this.encodeMedia(rendered, format);
+          ext = format;
+        } catch (err) {
+          this.notify(
+            `${format.toUpperCase()} is not supported by this browser — exported MP3 instead`,
+            "info",
+          );
+          blob = await this.encodeMP3(rendered);
+          ext = "mp3";
+        }
       }
 
       const url = URL.createObjectURL(blob);
@@ -1853,14 +1869,12 @@ class AudioStudio {
 
   async encodeMedia(buffer, format) {
     return new Promise((resolve, reject) => {
-      const offline = new OfflineAudioContext(
-        buffer.numberOfChannels,
-        buffer.length,
-        buffer.sampleRate,
-      );
-      const source = offline.createBufferSource();
+      // MediaStreamDestination only exists on a REAL AudioContext, so this
+      // pass records in realtime (track duration = export wait time).
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const source = ctx.createBufferSource();
       source.buffer = buffer;
-      const dest = offline.createMediaStreamDestination();
+      const dest = ctx.createMediaStreamDestination();
       source.connect(dest);
       source.start();
 
@@ -1869,18 +1883,81 @@ class AudioStudio {
       else if (format === "mp3") mime = "audio/mpeg";
       else mime = `audio/${format}`;
 
-      if (!MediaRecorder.isTypeSupported(mime)) {
-        mime = "audio/webm";
+      if (!window.MediaRecorder || !MediaRecorder.isTypeSupported(mime)) {
+        ctx.close();
+        reject(
+          new Error(`${format} recording is not supported by this browser`),
+        );
+        return;
       }
 
       const rec = new MediaRecorder(dest.stream, { mimeType: mime });
       const chunks = [];
       rec.ondataavailable = (e) => chunks.push(e.data);
-      rec.onstop = () => resolve(new Blob(chunks, { type: mime }));
-      rec.onerror = (e) => reject(e);
+      rec.onstop = () => {
+        ctx.close();
+        resolve(new Blob(chunks, { type: mime }));
+      };
+      rec.onerror = (e) => {
+        ctx.close();
+        reject(e.error || new Error("MediaRecorder failed"));
+      };
       rec.start();
-      offline.startRendering().then(() => setTimeout(() => rec.stop(), 100));
+      source.onended = () =>
+        setTimeout(() => rec.state !== "inactive" && rec.stop(), 100);
     });
+  }
+
+  // ── MP3 encoding via lamejs ─────────────────────────────────────────
+  loadScriptOnce(src) {
+    this._loadedScripts = this._loadedScripts || {};
+    if (!this._loadedScripts[src]) {
+      this._loadedScripts[src] = new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () =>
+          reject(new Error("Failed to load encoder from " + src));
+        document.head.appendChild(s);
+      });
+    }
+    return this._loadedScripts[src];
+  }
+
+  async encodeMP3(buffer) {
+    // lamejs is ~150 KB — fetch it only when an MP3 export is requested.
+    await this.loadScriptOnce(
+      "https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js",
+    );
+    if (typeof lamejs === "undefined")
+      throw new Error("MP3 encoder failed to initialize");
+
+    const channels = Math.min(2, buffer.numberOfChannels);
+    const enc = new lamejs.Mp3Encoder(channels, buffer.sampleRate, 192);
+
+    const toInt16 = (chData) => {
+      const out = new Int16Array(chData.length);
+      for (let i = 0; i < chData.length; i++) {
+        const v = Math.max(-1, Math.min(1, chData[i]));
+        out[i] = v < 0 ? v * 0x8000 : v * 0x7fff;
+      }
+      return out;
+    };
+
+    const left = toInt16(buffer.getChannelData(0));
+    const right = channels > 1 ? toInt16(buffer.getChannelData(1)) : null;
+
+    const blockSize = 1152;
+    const chunks = [];
+    for (let i = 0; i < left.length; i += blockSize) {
+      const l = left.subarray(i, i + blockSize);
+      const r = right ? right.subarray(i, i + blockSize) : null;
+      const buf = channels > 1 ? enc.encodeBuffer(l, r) : enc.encodeBuffer(l);
+      if (buf.length > 0) chunks.push(new Int8Array(buf));
+    }
+    const end = enc.flush();
+    if (end.length > 0) chunks.push(new Int8Array(end));
+    return new Blob(chunks, { type: "audio/mpeg" });
   }
 
   // ═══════════════════════════════════════════
