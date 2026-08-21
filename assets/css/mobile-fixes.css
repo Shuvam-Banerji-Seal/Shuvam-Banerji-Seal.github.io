@@ -219,6 +219,79 @@ dd {
   overflow-y: auto;
 }
 
+/* ---- Mobile menu item layout ------------------------------------------
+   These rules were missing entirely: links rendered as cramped inline
+   blocks, submenu icons stacked above their labels, accordion chevrons
+   wrapped below their text, and all accordions were permanently expanded
+   (no collapsed state). See plans/05-audit-log.md B51. */
+
+/* Opaque backing: pages may override --bg-card with translucent
+   glassmorphism (index does, at 0.85 alpha) — the slide-out panel must
+   never let page content bleed through. Gradient tint over opaque base. */
+#mobile-menu {
+  background-image: linear-gradient(var(--bg-card), var(--bg-card));
+  background-color: #ffffff;
+}
+
+.mobile-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  min-height: 44px; /* touch target */
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+/* Submenu rows: icon + label on one line, indented under parent */
+.mobile-submenu-link {
+  padding-left: 1.4rem;
+  font-weight: 400;
+}
+
+.mobile-submenu-link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Accordion toggle: label left, chevron right, single row */
+.mobile-accordion-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  min-height: 44px;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.mobile-accordion-toggle svg,
+.mobile-accordion-toggle .accordion-arrow {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+/* Expanded state (navbar.js toggles .open + inline max-height) */
+.mobile-accordion.open > .mobile-accordion-toggle .accordion-arrow,
+.mobile-accordion.open > .mobile-accordion-toggle svg {
+  transform: rotate(180deg);
+}
+
+.mobile-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
 /* Hide mobile menu on desktop */
 @media (min-width: 768px) {
   #mobile-menu,
