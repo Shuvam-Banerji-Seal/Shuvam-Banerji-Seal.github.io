@@ -106,7 +106,9 @@
         <rect width="600" height="600" fill="url(#hexes)" />
       </svg>
 
-      <div class="fl-orbital">
+      <canvas id="fl3d-canvas" aria-hidden="true"></canvas>
+
+      <div class="fl-orbital fl-fallback">
         <div class="fl-core"></div>
         <div class="fl-ring fl-r1"><i class="fl-electron e-cyan"></i></div>
         <div class="fl-ring fl-r2"><i class="fl-electron e-violet"></i></div>
@@ -120,6 +122,8 @@
         </div>
         <div class="fl-pct" id="fl-pct">0%</div>
       </div>
+
+      <div class="fl-flash" id="fl-flash"></div>
 
       <div class="loading-bar-wrap">
         <div class="loading-bar" id="loading-bar"></div>
@@ -852,29 +856,32 @@
             bar.style.width = "100%";
           });
         }
-        // percentage counter synced with the 2s bar transition
-        const pctEl = document.getElementById("fl-pct");
-        if (pctEl) {
-          const t0 = performance.now();
-          const tick = (t) => {
-            const p = Math.min(100, Math.round(((t - t0) / 2000) * 100));
-            pctEl.textContent = p + "%";
-            if (p < 100 && document.getElementById("loading-screen"))
-              requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
+        // 3D loader drives the percentage; this script only waits for the
+        // 'fl-loader-done' event (with a hard cap as safety net).
         function hideLoader() {
           const ls = document.getElementById("loading-screen");
+          const flash = document.getElementById("fl-flash");
+          if (flash) {
+            flash.classList.add("on");
+            setTimeout(() => flash.classList.remove("on"), 620);
+          }
           if (ls) {
             ls.classList.add("hidden");
             setTimeout(() => {
               ls.style.display = "none";
-            }, 800);
+            }, 780);
           }
         }
-        // Cinematic but snappy — out by ~2.2s
-        setTimeout(hideLoader, 2200);
+        let hidden = false;
+        window.addEventListener("fl-loader-done", () => {
+          if (hidden) return;
+          hidden = true;
+          setTimeout(hideLoader, 260);
+        });
+        // hard cap — never hold the page hostage
+        setTimeout(() => {
+          if (!hidden) hideLoader();
+        }, 5200);
       })();
 
       /* ----- Terminal typewriter + interactive shell ----- */
@@ -1738,5 +1745,6 @@
       if (typeof lucide !== "undefined") lucide.createIcons();
     </script>
     <script type="module" src="assets/js/home-cinematics.js"></script>
+    <script type="module" src="assets/js/loader-3d.js"></script>
   </body>
 </html>
