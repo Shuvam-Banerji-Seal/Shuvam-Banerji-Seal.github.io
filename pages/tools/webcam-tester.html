@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Test your webcam in the browser: device picker, live resolution and FPS readout, mirror, grid overlay, snapshots — plus an air guitar you play by strumming your hand through the camera (MediaPipe hand tracking)."
+    />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/webcam-tester.html"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Webcam Tester + Air Guitar - SBS Tools"
+    />
+    <meta
+      property="og:description"
+      content="Check your camera: live preview, real resolution/FPS stats, snapshots. Bonus: a playable air guitar driven by MediaPipe hand tracking."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/webcam-tester.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Webcam Tester + Air Guitar - SBS Tools"
+    />
+    <meta
+      name="twitter:description"
+      content="Camera diagnostics plus a MediaPipe-powered air guitar. Strum the strings with your hand through the webcam."
+    />
+    <meta name="robots" content="index, follow" />
+    <title>Webcam Tester + Air Guitar - SBS Tools</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <style>
+      .wc-wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding-top: 6rem;
+        padding-bottom: 3rem;
+      }
+      .wc-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+      }
+      .wc-title {
+        font-family: var(--font-mono);
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .wc-title .cam-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ef4444;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+        opacity: 0.25;
+        transition: opacity 0.2s ease;
+      }
+      .wc-title .cam-dot.live {
+        opacity: 1;
+        animation: wc-pulse 1.4s infinite;
+      }
+      @keyframes wc-pulse {
+        50% {
+          box-shadow: 0 0 18px rgba(239, 68, 68, 1);
+        }
+      }
+      .wc-modes {
+        display: flex;
+        gap: 0.4rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.3rem;
+      }
+      .wc-mode-btn {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        padding: 0.45rem 1rem;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+        border-radius: 7px;
+        transition: all 0.15s ease;
+      }
+      .wc-mode-btn.active {
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-text);
+      }
+      .wc-stage {
+        position: relative;
+        background: #000;
+        border-radius: 14px;
+        overflow: hidden;
+        aspect-ratio: 16 / 9;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-card);
+      }
+      .wc-stage video,
+      .wc-stage canvas.overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .wc-stage.mirrored video,
+      .wc-stage.mirrored canvas.overlay {
+        transform: scaleX(-1);
+      }
+      .wc-hud {
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        z-index: 5;
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        pointer-events: none;
+      }
+      .hud-chip {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        padding: 0.25rem 0.55rem;
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.65);
+        color: #7dd3fc;
+        border: 1px solid rgba(125, 211, 252, 0.25);
+      }
+      .hud-chip.rec {
+        color: #fca5a5;
+        border-color: rgba(252, 165, 165, 0.35);
+      }
+      .wc-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        align-items: center;
+        margin: 1rem 0;
+      }
+      .wc-select {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        padding: 0.55rem 0.8rem;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        max-width: 280px;
+      }
+      .wc-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        padding: 0.55rem 0.95rem;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .wc-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .wc-btn.primary {
+        background: var(--btn-primary-bg);
+        color: var(--btn-primary-text);
+        border-color: transparent;
+      }
+      .wc-btn.toggled {
+        border-color: var(--accent);
+        color: var(--accent);
+        box-shadow: inset 0 0 0 1px var(--accent);
+      }
+      .wc-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .wc-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.6rem;
+        margin: 1rem 0;
+      }
+      .stat-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.7rem 0.9rem;
+      }
+      .stat-box .k {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+      .stat-box .v {
+        font-family: var(--font-mono);
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-top: 0.2rem;
+      }
+      .wc-error {
+        display: none;
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        color: var(--text-primary);
+        border-radius: 12px;
+        padding: 1.2rem 1.4rem;
+        margin: 1rem 0;
+        line-height: 1.6;
+      }
+      .wc-error.show {
+        display: block;
+      }
+      .wc-error strong {
+        color: #f87171;
+      }
+      /* guitar */
+      .guitar-bar {
+        display: none;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        margin: 1rem 0;
+      }
+      .guitar-bar.show {
+        display: flex;
+      }
+      .chord-btn {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 1rem;
+        width: 52px;
+        height: 44px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all 0.12s ease;
+      }
+      .chord-btn:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+      }
+      .chord-btn.active {
+        background: linear-gradient(135deg, #22d3ee, #a78bfa);
+        color: #0b1020;
+        border-color: transparent;
+        box-shadow: 0 4px 18px rgba(34, 211, 238, 0.35);
+      }
+      .guitar-slider {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+      }
+      .guitar-status {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        min-height: 1.2em;
+        margin: 0.4rem 0;
+      }
+      .snaps {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.6rem;
+        margin-top: 1rem;
+      }
+      .snap-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+      .snap-item img {
+        width: 100%;
+        display: block;
+      }
+      .snap-item a {
+        position: absolute;
+        right: 4px;
+        bottom: 4px;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        background: rgba(0, 0, 0, 0.7);
+        color: #7dd3fc;
+        padding: 0.2rem 0.45rem;
+        border-radius: 5px;
+        text-decoration: none;
+      }
+      .wc-note {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin-top: 1.4rem;
+      }
+      @media (max-width: 640px) {
+        .wc-wrap {
+          padding: 5rem 1rem 2rem;
+        }
+        .wc-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+      <div class="wc-wrap">
+        <div class="wc-head">
+          <h1 class="wc-title">
+            <span class="cam-dot" id="live-dot"></span>
+            WEBCAM TESTER
+          </h1>
+          <div class="wc-modes" role="tablist">
+            <button class="wc-mode-btn active" data-wcmode="tester" role="tab">
+              CAMERA TEST
+            </button>
+            <button class="wc-mode-btn" data-wcmode="guitar" role="tab">
+              AIR GUITAR &#127928;
+            </button>
+          </div>
+        </div>
+
+        <div class="wc-stage mirrored" id="stage">
+          <video id="cam" autoplay playsinline muted></video>
+          <canvas class="overlay" id="overlay"></canvas>
+          <div class="wc-hud" id="hud"></div>
+        </div>
+
+        <!-- tester controls -->
+        <div id="tester-controls">
+          <div class="wc-controls">
+            <select
+              class="wc-select"
+              id="device-select"
+              aria-label="Camera device"
+            >
+              <option value="">Default camera</option>
+            </select>
+            <select
+              class="wc-select"
+              id="res-select"
+              aria-label="Requested resolution"
+            >
+              <option value="1920">Request 1080p</option>
+              <option value="1280" selected>Request 720p</option>
+              <option value="640">Request 480p</option>
+            </select>
+            <button class="wc-btn primary" id="start-btn">
+              <i data-lucide="play"></i> Start
+            </button>
+            <button
+              class="wc-btn toggled"
+              id="mirror-btn"
+              title="Mirror preview"
+            >
+              <i data-lucide="flip-horizontal-2"></i> Mirror
+            </button>
+            <button class="wc-btn" id="grid-btn" title="Rule-of-thirds grid">
+              <i data-lucide="grid-3x3"></i> Grid
+            </button>
+            <button class="wc-btn" id="snapshot-btn">
+              <i data-lucide="camera"></i> Snapshot
+            </button>
+            <button class="wc-btn" id="fs-btn" title="Fullscreen">
+              <i data-lucide="maximize"></i>
+            </button>
+          </div>
+
+          <div class="wc-stats">
+            <div class="stat-box">
+              <div class="k">Resolution</div>
+              <div class="v" id="stat-res">&mdash;</div>
+            </div>
+            <div class="stat-box">
+              <div class="k">Frame rate</div>
+              <div class="v" id="stat-fps">&mdash;</div>
+            </div>
+            <div class="stat-box">
+              <div class="k">Aspect</div>
+              <div class="v" id="stat-aspect">&mdash;</div>
+            </div>
+            <div class="stat-box">
+              <div class="k">Device</div>
+              <div class="v" id="stat-device">&mdash;</div>
+            </div>
+          </div>
+
+          <div class="wc-error" id="err-box"></div>
+
+          <div class="snaps" id="snaps"></div>
+        </div>
+
+        <!-- guitar controls -->
+        <div id="guitar-controls" style="display: none">
+          <div class="guitar-bar show">
+            <span
+              style="
+                font-family: var(--font-mono);
+                font-size: 0.75rem;
+                color: var(--text-muted);
+              "
+              >CHORD</span
+            >
+            <button class="chord-btn" data-chord="Em">Em</button>
+            <button class="chord-btn active" data-chord="G">G</button>
+            <button class="chord-btn" data-chord="C">C</button>
+            <button class="chord-btn" data-chord="D">D</button>
+            <button class="chord-btn" data-chord="Am">Am</button>
+            <button class="chord-btn" data-chord="E">E</button>
+            <div class="guitar-slider">
+              VOLUME
+              <input
+                type="range"
+                id="guitar-vol"
+                min="0"
+                max="100"
+                value="70"
+              />
+            </div>
+          </div>
+          <div class="wc-controls">
+            <button class="wc-btn primary" id="guitar-enable-btn">
+              <i data-lucide="hand"></i> Enable hand tracking
+            </button>
+          </div>
+          <div class="guitar-status" id="guitar-status">
+            Point your hand at the camera and strum through the strings.
+          </div>
+        </div>
+
+        <p class="wc-note">
+          Everything runs locally in your browser &mdash; no video ever leaves
+          this page. The air-guitar mode loads Google's MediaPipe Hands model
+          from a CDN only when you enable it. Camera access requires HTTPS.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div
+          class="footer-social"
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+          "
+        ></div>
+        <p>
+          &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+          Chemistry &amp; Code
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="../../assets/js/webcam-tester.js"></script>
+    <script>
+      if (typeof lucide !== "undefined") lucide.createIcons();
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

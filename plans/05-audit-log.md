@@ -282,6 +282,31 @@ Functional battery (all PASS): open+scroll-lock+aria swap; single-accordion-open
 
 Deployed: LOOP 1 = commit 43b1db8; LOOP 2 = this change.
 
+### Session 2026-08-22 — NEW TOOL: Webcam Tester + MediaPipe Air Guitar
+
+New page pages/tools/webcam-tester.html + assets/js/webcam-tester.js (tester core)
+
+- assets/js/air-guitar.js (hand-tracking instrument). Wired into vite entries,
+  tools.html card grid, navbar Tools dropdown. All local processing; MediaPipe
+  model lazy-loads from CDN only when guitar mode is enabled.
+
+| Feature     | Detail                                                                                                                                                                                                                                                                                                                  | Verify                                                                                                                                                                                |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Camera test | device picker (labels post-permission), resolution request presets, mirror toggle, rule-of-thirds grid, fullscreen, snapshot → gallery + auto-download PNG, live stats (actual res / measured fps via requestVideoFrameCallback / aspect / device), graceful errors for NotAllowed/NotFound/NotReadable/InsecureContext | [VERIFIED with mocked getUserMedia: 1280×720@30fps stats populate from fake track; snapshot downloads webcam-*.png; device list populates]                                            |
+| Air guitar  | 6 glowing strings over mirrored video; fingertip crossings pluck; Karplus–Strong synthesis precomputed per chord change (Em/G/C/D/Am/E); velocity→volume; ripple+vibration visuals; hand skeleton overlay                                                                                                               | [VERIFIED unit-style with synthetic landmarks: down-strum sequence exactly [0,1,2,3,4,5]; up-strum [5,4,3,2,1,0]; teleport-after-gap guard 0 phantom plucks; settled jitter 0 plucks] |
+| Robustness  | MediaPipe alert() shielded into status line (WASM/GL failures no longer block page); GPU-less message differentiates WebGL failure from network; audio path independent of tracking availability                                                                                                                        | [VERIFIED headless: graceful status message, chord switching + plucks still work]                                                                                                     |
+
+Detection-tuning history (all Playwright-unit-tested before settling):
+
+1. v1 per-fingertip debounce → 4× over-pluck per strum (4 tips × same string) — replaced
+2. v2 per-string debounce + tips[8,12] → correct single pluck per string per sweep ✓
+
+Test methodology note: headless Chromium lacks a real camera AND WebGL. Camera mocked
+via canvas.captureStream() injected before load; hand tracking verified only to its
+graceful-degradation boundary (WebGL required for WASM inference). Strum logic tested
+by driving detectPlucks() directly with synthetic landmark arrays — the algorithm is
+fully deterministic and browser-independent.
+
 ### Wave B regression sweep (2026-08-21) — ALL previously-fixed bugs verified intact
 
 | Tool               | Checks                                                                                                                             | Result                       |

@@ -193,6 +193,13 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "headphones",
         },
         {
+          name: "Webcam Tester + Air Guitar",
+          href: isHome
+            ? "pages/tools/webcam-tester.html"
+            : pathDepth + "pages/tools/webcam-tester.html",
+          icon: "camera",
+        },
+        {
           name: "YouTube Downloader",
           href: isHome
             ? "pages/tools/youtube-downloader.html"
