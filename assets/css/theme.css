@@ -25,8 +25,9 @@
   position: absolute;
   top: -40px;
   left: 0;
-  background: var(--accent);
-  color: var(--btn-primary-text);
+  /* fixed dark surface + white text: ≥7:1 in every theme */
+  background: #1f2937;
+  color: #ffffff;
   padding: 8px 16px;
   z-index: 10000;
   transition: top 0.3s;
@@ -39,7 +40,11 @@
    LIGHT THEME — CREAMY COFFEE
    ---------------------------------------------------------------- */
 :root,
-html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) {
+html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+    [data-theme="amber"]
+  ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+    [data-theme="forest"]
+  ):not([data-theme="dracula"]) {
   /* Backgrounds */
   --bg-deep: #faf3e8;
   --bg-primary: #faf3e8;
@@ -93,10 +98,11 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="a
   --code-bg: rgba(237, 224, 200, 0.6);
   --canvas-bg: #f5edd8;
 
-  /* Buttons */
-  --btn-primary-bg: #c97c3a;
+  /* Buttons — bg darkened from #c97c3a (3.27:1 vs white, WCAG-fail)
+     to #ad5f1d (4.74:1) so white button text passes AA */
+  --btn-primary-bg: #ad5f1d;
   --btn-primary-text: #ffffff;
-  --btn-primary-hover: #b86c2a;
+  --btn-primary-hover: #9e5417;
 
   /* Music Player - Light Mode */
   --music-bg: #faf3e8;
@@ -284,7 +290,11 @@ html[data-theme="dark-coffee"],
   --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 
   /* Glassmorphic */
-  --glass-bg: linear-gradient(180deg, rgba(42, 31, 18, 0.92), rgba(42, 31, 18, 0.78));
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(42, 31, 18, 0.92),
+    rgba(42, 31, 18, 0.78)
+  );
   --glass-border: rgba(255, 255, 255, 0.06);
   --glass-shadow: rgba(0, 0, 0, 0.08);
 
@@ -310,7 +320,11 @@ html[data-theme="dark-coffee"],
   --music-sidebar-border: rgba(217, 169, 104, 0.2);
   --music-hover-bg: #352818;
   --music-card-bg: #2a1f12;
-  --music-main-gradient: linear-gradient(180deg, rgba(212, 168, 83, 0.3) 0%, #1a1208 350px);
+  --music-main-gradient: linear-gradient(
+    180deg,
+    rgba(212, 168, 83, 0.3) 0%,
+    #1a1208 350px
+  );
   --music-search-bg: #352818;
   --music-album-gradient: linear-gradient(135deg, #d4a853, #b87d4b);
   --music-accent: #d4a853;
@@ -377,7 +391,11 @@ html[data-theme="amber"],
   --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 
   /* Glassmorphic */
-  --glass-bg: linear-gradient(180deg, rgba(34, 34, 34, 0.92), rgba(34, 34, 34, 0.78));
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(34, 34, 34, 0.92),
+    rgba(34, 34, 34, 0.78)
+  );
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-shadow: rgba(0, 0, 0, 0.1);
 
@@ -403,7 +421,11 @@ html[data-theme="amber"],
   --music-sidebar-border: #282828;
   --music-hover-bg: #282828;
   --music-card-bg: #181818;
-  --music-main-gradient: linear-gradient(180deg, rgba(255, 191, 0, 0.3) 0%, #121212 350px);
+  --music-main-gradient: linear-gradient(
+    180deg,
+    rgba(255, 191, 0, 0.3) 0%,
+    #121212 350px
+  );
   --music-search-bg: #282828;
   --music-album-gradient: linear-gradient(135deg, #ffbf00, #ff6b35);
   --music-accent: #ffbf00;
@@ -470,7 +492,11 @@ html[data-theme="tokyo-night"],
   --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 
   /* Glassmorphic */
-  --glass-bg: linear-gradient(180deg, rgba(40, 42, 72, 0.92), rgba(40, 42, 72, 0.78));
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(40, 42, 72, 0.92),
+    rgba(40, 42, 72, 0.78)
+  );
   --glass-border: rgba(255, 255, 255, 0.06);
   --glass-shadow: rgba(0, 0, 0, 0.08);
 
@@ -496,7 +522,11 @@ html[data-theme="tokyo-night"],
   --music-sidebar-border: rgba(125, 133, 252, 0.2);
   --music-hover-bg: #2f3156;
   --music-card-bg: #282a48;
-  --music-main-gradient: linear-gradient(180deg, rgba(125, 133, 252, 0.3) 0%, #1a1b2e 350px);
+  --music-main-gradient: linear-gradient(
+    180deg,
+    rgba(125, 133, 252, 0.3) 0%,
+    #1a1b2e 350px
+  );
   --music-search-bg: #2f3156;
   --music-album-gradient: linear-gradient(135deg, #7d85fc, #bb9af7);
   --music-accent: #7d85fc;
@@ -563,7 +593,11 @@ html[data-theme="absolute-dark"],
   --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 
   /* Glassmorphic */
-  --glass-bg: linear-gradient(180deg, rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.85));
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.95),
+    rgba(10, 10, 10, 0.85)
+  );
   --glass-border: rgba(255, 255, 255, 0.05);
   --glass-shadow: rgba(0, 0, 0, 0.1);
 
@@ -589,7 +623,11 @@ html[data-theme="absolute-dark"],
   --music-sidebar-border: #111111;
   --music-hover-bg: #111111;
   --music-card-bg: #0a0a0a;
-  --music-main-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, #000000 350px);
+  --music-main-gradient: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    #000000 350px
+  );
   --music-search-bg: #111111;
   --music-album-gradient: linear-gradient(135deg, #ffffff, #888888);
   --music-accent: #ffffff;
@@ -656,7 +694,11 @@ html[data-theme="forest"],
   --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 
   /* Glassmorphic */
-  --glass-bg: linear-gradient(180deg, rgba(21, 32, 21, 0.92), rgba(21, 32, 21, 0.78));
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(21, 32, 21, 0.92),
+    rgba(21, 32, 21, 0.78)
+  );
   --glass-border: rgba(255, 255, 255, 0.06);
   --glass-shadow: rgba(0, 0, 0, 0.08);
 
@@ -682,7 +724,11 @@ html[data-theme="forest"],
   --music-sidebar-border: rgba(76, 175, 80, 0.2);
   --music-hover-bg: #1a2a1a;
   --music-card-bg: #152015;
-  --music-main-gradient: linear-gradient(180deg, rgba(102, 187, 106, 0.3) 0%, #0a120a 350px);
+  --music-main-gradient: linear-gradient(
+    180deg,
+    rgba(102, 187, 106, 0.3) 0%,
+    #0a120a 350px
+  );
   --music-search-bg: #1a2a1a;
   --music-album-gradient: linear-gradient(135deg, #66bb6a, #a5d6a7);
   --music-accent: #66bb6a;
@@ -749,7 +795,11 @@ html[data-theme="dracula"],
   --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 
   /* Glassmorphic */
-  --glass-bg: linear-gradient(180deg, rgba(52, 55, 70, 0.92), rgba(52, 55, 70, 0.78));
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(52, 55, 70, 0.92),
+    rgba(52, 55, 70, 0.78)
+  );
   --glass-border: rgba(255, 255, 255, 0.06);
   --glass-shadow: rgba(0, 0, 0, 0.08);
 
@@ -775,7 +825,11 @@ html[data-theme="dracula"],
   --music-sidebar-border: rgba(189, 147, 249, 0.2);
   --music-hover-bg: #3c3f58;
   --music-card-bg: #343746;
-  --music-main-gradient: linear-gradient(180deg, rgba(189, 147, 249, 0.3) 0%, #282a36 350px);
+  --music-main-gradient: linear-gradient(
+    180deg,
+    rgba(189, 147, 249, 0.3) 0%,
+    #282a36 350px
+  );
   --music-search-bg: #3c3f58;
   --music-album-gradient: linear-gradient(135deg, #bd93f9, #ff79c6);
   --music-accent: #bd93f9;

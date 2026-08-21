@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -18,22 +29,40 @@
       content="Chemistry Tools & Utilities - LLM Chat, PDF Tools, Games, and Research utilities by Shuvam Banerji Seal"
     />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools.html" />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools.html"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Tools - Shuvam Banerji Seal" />
-    <meta property="og:description" content="Collection of chemistry, AI, and productivity tools by Shuvam Banerji Seal." />
-    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:description"
+      content="Collection of chemistry, AI, and productivity tools by Shuvam Banerji Seal."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:title" content="Tools - Shuvam Banerji Seal" />
-    <meta name="twitter:description" content="Collection of chemistry, AI, and productivity tools." />
+    <meta
+      name="twitter:description"
+      content="Collection of chemistry, AI, and productivity tools."
+    />
     <meta name="robots" content="index, follow" />
     <title>Tools - Shuvam Banerji Seal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/theme.css" />
@@ -41,7 +70,10 @@
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
     <style>
       /* Tools page CSS variables — dark mode (default) */
       :root {
@@ -54,18 +86,18 @@
         --tools-launch-hover-text: #0a1020;
       }
       html[data-theme="dark"],
-html[data-theme="dark-coffee"],
-html[data-theme="amber"],
-html[data-theme="tokyo-night"],
-html[data-theme="absolute-dark"],
-html[data-theme="forest"],
-html[data-theme="dracula"],
-[data-theme="dark-coffee"],
-[data-theme="amber"],
-[data-theme="tokyo-night"],
-[data-theme="absolute-dark"],
-[data-theme="forest"],
-[data-theme="dracula"] {
+      html[data-theme="dark-coffee"],
+      html[data-theme="amber"],
+      html[data-theme="tokyo-night"],
+      html[data-theme="absolute-dark"],
+      html[data-theme="forest"],
+      html[data-theme="dracula"],
+      [data-theme="dark-coffee"],
+      [data-theme="amber"],
+      [data-theme="tokyo-night"],
+      [data-theme="absolute-dark"],
+      [data-theme="forest"],
+      [data-theme="dracula"] {
         --tools-titlebar-bg: #0d1526;
         --tools-titlebar-border: rgba(0, 212, 255, 0.1);
         --tools-card-bg: rgba(255, 255, 255, 0.03);
@@ -74,7 +106,11 @@ html[data-theme="dracula"],
         --tools-launch-hover-bg: var(--accent-cyan);
         --tools-launch-hover-text: #0a1020;
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"]) {
         --tools-titlebar-bg: #e8d5b0;
         --tools-titlebar-border: rgba(139, 101, 68, 0.2);
         --tools-card-bg: rgba(255, 255, 255, 0.7);
@@ -117,7 +153,12 @@ html[data-theme="dracula"],
         pointer-events: none;
         z-index: 9999;
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) body::before {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        body::before {
         opacity: 0.4;
       }
       .page-grid-bg {
@@ -130,7 +171,12 @@ html[data-theme="dracula"],
         z-index: 0;
         pointer-events: none;
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .page-grid-bg {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .page-grid-bg {
         background-image:
           linear-gradient(rgba(139, 101, 68, 0.035) 1px, transparent 1px),
           linear-gradient(90deg, rgba(139, 101, 68, 0.035) 1px, transparent 1px);
@@ -189,16 +235,35 @@ html[data-theme="dracula"],
       .path-host {
         color: var(--accent-green);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .titlebar-path {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .titlebar-path {
         color: #8b4513;
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .path-host {
-        color: #3d6b2e;
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .path-host {
+        color: #2f5517;
       }
       .titlebar-right {
         color: var(--text-muted);
         font-family: var(--font-mono);
         font-size: 0.73rem;
+      }
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .titlebar-right {
+        /* light theme: muted #9c7a5a was 2.7:1 on the parchment bar */
+        color: #6b4226;
       }
       .header-body {
         padding: 2rem 2.5rem;
@@ -231,7 +296,12 @@ html[data-theme="dracula"],
       .stat-val {
         color: var(--text-secondary);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .stat-key {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .stat-key {
         color: #8b4513;
       }
       .tools-section {
@@ -255,10 +325,20 @@ html[data-theme="dracula"],
         font-weight: 700;
         color: var(--accent-cyan);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .section-label {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .section-label {
         border-color: #8b4513;
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .section-title {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .section-title {
         color: #8b4513;
       }
       .tools-grid {
@@ -283,7 +363,12 @@ html[data-theme="dracula"],
         box-shadow: 0 12px 40px var(--tools-glow);
         border-color: var(--accent-cyan);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tool-card:hover {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tool-card:hover {
         box-shadow: 0 12px 40px rgba(201, 124, 58, 0.15);
         border-color: #8b4513;
       }
@@ -291,7 +376,12 @@ html[data-theme="dracula"],
         border-color: rgba(0, 212, 255, 0.35);
         background: rgba(0, 212, 255, 0.04);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tool-card.featured {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tool-card.featured {
         border-color: rgba(139, 101, 68, 0.45);
         background: rgba(139, 101, 68, 0.06);
       }
@@ -336,12 +426,22 @@ html[data-theme="dracula"],
         font-size: 0.65rem;
         border: 1px solid rgba(0, 212, 255, 0.3);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tool-label {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tool-label {
         color: #8b4513;
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tool-featured-badge {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tool-featured-badge {
         background: rgba(139, 101, 68, 0.12);
-        color: #8b4513;
+        color: #6f3710;
         border-color: rgba(139, 101, 68, 0.3);
       }
       .tool-body {
@@ -393,7 +493,12 @@ html[data-theme="dracula"],
         font-family: var(--font-mono);
         font-size: 0.67rem;
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tool-tag {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tool-tag {
         background: rgba(139, 101, 68, 0.06);
         border-color: rgba(139, 101, 68, 0.2);
       }
@@ -419,11 +524,21 @@ html[data-theme="dracula"],
         background: var(--tools-launch-hover-bg);
         color: var(--tools-launch-hover-text);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tool-launch {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tool-launch {
         border-color: #8b4513;
         color: #8b4513;
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tool-launch:hover {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tool-launch:hover {
         background: #8b4513;
         color: #fff;
       }
@@ -460,7 +575,12 @@ html[data-theme="dracula"],
         border-color: var(--accent-cyan);
         color: var(--accent-cyan);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .social-link:hover {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .social-link:hover {
         border-color: #8b4513;
         color: #8b4513;
       }
@@ -480,7 +600,12 @@ html[data-theme="dracula"],
         border-color: var(--accent-cyan);
         color: var(--accent-cyan);
       }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tools-theme-btn:hover {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tools-theme-btn:hover {
         border-color: #8b4513;
         color: #8b4513;
       }
@@ -822,7 +947,8 @@ html[data-theme="dracula"],
               </div>
               <div class="tool-desc">
                 Download YouTube videos and audio in multiple formats (MP4, MP3,
-                WEBM, WAV, FLAC) and qualities up to 4K. Supports playlists and batch downloads.
+                WEBM, WAV, FLAC) and qualities up to 4K. Supports playlists and
+                batch downloads.
               </div>
               <div class="tool-footer">
                 <div class="tool-tags">
@@ -830,7 +956,10 @@ html[data-theme="dracula"],
                   ><span class="tool-tag">audio</span
                   ><span class="tool-tag">download</span>
                 </div>
-                <button class="tool-launch" onclick="openTool('youtube-downloader')">
+                <button
+                  class="tool-launch"
+                  onclick="openTool('youtube-downloader')"
+                >
                   launch &rarr;
                 </button>
               </div>
@@ -1124,6 +1253,32 @@ html[data-theme="dracula"],
     </script>
     <script type="module" src="../assets/js/navbar.js"></script>
     <script type="module" src="../assets/js/main.js"></script>
-    <script type="module" src="../assets/js/tools-main.js"></script>
+    <script>
+      // Tool cards navigate to dedicated pages. The old tools-main.js
+      // (60 KB, mostly an unused legacy modal system) is replaced by this
+      // shim exposing the only function the inline onclick handlers need.
+      window.openTool = function (toolId) {
+        const toolPages = {
+          "llm-chat": "tools/llm-chat.html",
+          "llm-studio": "tools/llm-studio.html",
+          "paper-finder": "tools/paper-finder.html",
+          "pdf-to-jpg": "tools/pdf-to-jpg.html",
+          "pdf-reducer": "tools/pdf-reducer.html",
+          "pdf-studio": "tools/pdf-studio.html",
+          "molecule-viz": "tools/molecule-viz.html",
+          games: "tools/games.html",
+          "unit-converter": "tools/unit-converter.html",
+          "mol-weight": "tools/mol-weight.html",
+          "periodic-table": "tools/periodic-table.html",
+          "equation-balancer": "tools/equation-balancer.html",
+          "ph-calculator": "tools/ph-calculator.html",
+          "mermaid-editor": "mermaid-tool.html",
+          "audio-studio": "tools/audio-studio.html",
+          "youtube-downloader": "tools/youtube-downloader.html",
+        };
+        const page = toolPages[toolId];
+        if (page) window.location.href = page;
+      };
+    </script>
   </body>
 </html>

@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -14,24 +25,45 @@
       name="description"
       content="Calculate pH, pOH, and hydrogen ion concentrations"
     />
-    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/ph-calculator.html" />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/ph-calculator.html"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="pH Calculator - SBS Tools" />
-    <meta property="og:description" content="Calculate pH, pOH, and hydrogen ion concentrations for chemical solutions." />
-    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/ph-calculator.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:description"
+      content="Calculate pH, pOH, and hydrogen ion concentrations for chemical solutions."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/ph-calculator.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="pH Calculator - SBS Tools" />
-    <meta name="twitter:description" content="Calculate pH, pOH, and hydrogen ion concentrations." />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      name="twitter:description"
+      content="Calculate pH, pOH, and hydrogen ion concentrations."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="robots" content="index, follow" />
     <title>pH Calculator - SBS Tools</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -753,6 +785,9 @@
         document.getElementById("input-suffix").textContent =
           config.suffix || "";
         document.getElementById("input-hint").textContent = config.hint || "";
+        document.getElementById("input-hint").style.color = "";
+        document.getElementById("input-value").style.borderColor = "";
+        document.getElementById("results-card").style.display = "none";
         if (typeof lucide !== "undefined") lucide.createIcons();
       }
 
@@ -767,17 +802,41 @@
         calculate();
       }
 
+      // Show a clear inline validation error instead of silently keeping
+      // a stale result on screen.
+      function showInputError(message) {
+        const inputEl = document.getElementById("input-value");
+        inputEl.style.borderColor = "#ff6b6b";
+        document.getElementById("results-card").style.display = "none";
+        const hint = document.getElementById("input-hint");
+        if (hint) {
+          hint.textContent = message;
+          hint.style.color = "#ff6b6b";
+        }
+      }
+
+      function clearInputError() {
+        document.getElementById("input-value").style.borderColor = "";
+        const hint = document.getElementById("input-hint");
+        if (hint) {
+          hint.textContent = modeConfig[currentMode].hint || "";
+          hint.style.color = "";
+        }
+      }
+
       function clearAll() {
         document.getElementById("input-value").value = "";
         document.getElementById("results-card").style.display = "none";
         document.getElementById("scale-indicator").style.left = "50%";
         lastCalculatedValues = {};
+        clearInputError();
       }
 
       function calculate() {
         const input = parseFloat(document.getElementById("input-value").value);
         if (isNaN(input)) {
           document.getElementById("results-card").style.display = "none";
+          clearInputError();
           return;
         }
 
@@ -787,8 +846,7 @@
         switch (currentMode) {
           case "ph":
             if (input < 0 || input > 14) {
-              document.getElementById("input-value").style.borderColor =
-                "#ff6b6b";
+              showInputError("pH must be between 0 and 14 at 25 °C.");
               return;
             }
             pH = input;
@@ -798,8 +856,7 @@
             break;
           case "poh":
             if (input < 0 || input > 14) {
-              document.getElementById("input-value").style.borderColor =
-                "#ff6b6b";
+              showInputError("pOH must be between 0 and 14 at 25 °C.");
               return;
             }
             pOH = input;
@@ -809,8 +866,7 @@
             break;
           case "h":
             if (input <= 0) {
-              document.getElementById("input-value").style.borderColor =
-                "#ff6b6b";
+              showInputError("Concentration must be a positive number.");
               return;
             }
             hConc = input;
@@ -820,8 +876,7 @@
             break;
           case "oh":
             if (input <= 0) {
-              document.getElementById("input-value").style.borderColor =
-                "#ff6b6b";
+              showInputError("Concentration must be a positive number.");
               return;
             }
             ohConc = input;
@@ -831,7 +886,7 @@
             break;
         }
 
-        document.getElementById("input-value").style.borderColor = "";
+        clearInputError();
 
         lastCalculatedValues = { pH, pOH, hConc, ohConc };
 

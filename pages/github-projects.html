@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -17,24 +28,48 @@
       name="description"
       content="GitHub Projects - Shuvam Banerji Seal's open source contributions and repositories"
     />
-    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/github-projects.html" />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/github-projects.html"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="GitHub Projects - Shuvam Banerji Seal" />
-    <meta property="og:description" content="Open source projects and repositories by Shuvam Banerji Seal." />
-    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/github-projects.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:description"
+      content="Open source projects and repositories by Shuvam Banerji Seal."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/github-projects.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
-    <meta name="twitter:title" content="GitHub Projects - Shuvam Banerji Seal" />
-    <meta name="twitter:description" content="Open source projects and repositories." />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
+    <meta
+      name="twitter:title"
+      content="GitHub Projects - Shuvam Banerji Seal"
+    />
+    <meta
+      name="twitter:description"
+      content="Open source projects and repositories."
+    />
     <meta name="robots" content="index, follow" />
     <title>GitHub Projects - Shuvam Banerji Seal</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <!-- Enhanced CSS System -->
@@ -62,13 +97,13 @@
         overflow: hidden;
       }
 
-html[data-theme="dark"] .github-hero,
-html[data-theme="dark-coffee"] .github-hero,
-html[data-theme="amber"] .github-hero,
-html[data-theme="tokyo-night"] .github-hero,
-html[data-theme="absolute-dark"] .github-hero,
-html[data-theme="forest"] .github-hero,
-html[data-theme="dracula"] .github-hero {
+      html[data-theme="dark"] .github-hero,
+      html[data-theme="dark-coffee"] .github-hero,
+      html[data-theme="amber"] .github-hero,
+      html[data-theme="tokyo-night"] .github-hero,
+      html[data-theme="absolute-dark"] .github-hero,
+      html[data-theme="forest"] .github-hero,
+      html[data-theme="dracula"] .github-hero {
         background: linear-gradient(
           135deg,
           #0f172a 0%,
@@ -130,13 +165,13 @@ html[data-theme="dracula"] .github-hero {
         overflow: hidden;
       }
 
-html[data-theme="dark"] .repo-card,
-html[data-theme="dark-coffee"] .repo-card,
-html[data-theme="amber"] .repo-card,
-html[data-theme="tokyo-night"] .repo-card,
-html[data-theme="absolute-dark"] .repo-card,
-html[data-theme="forest"] .repo-card,
-html[data-theme="dracula"] .repo-card {
+      html[data-theme="dark"] .repo-card,
+      html[data-theme="dark-coffee"] .repo-card,
+      html[data-theme="amber"] .repo-card,
+      html[data-theme="tokyo-night"] .repo-card,
+      html[data-theme="absolute-dark"] .repo-card,
+      html[data-theme="forest"] .repo-card,
+      html[data-theme="dracula"] .repo-card {
         background: linear-gradient(
           145deg,
           rgba(31, 41, 55, 0.9),
@@ -194,13 +229,13 @@ html[data-theme="dracula"] .repo-card {
         border: 1px solid rgba(16, 185, 129, 0.3);
       }
 
-html[data-theme="dark"] .visibility-public,
-html[data-theme="dark-coffee"] .visibility-public,
-html[data-theme="amber"] .visibility-public,
-html[data-theme="tokyo-night"] .visibility-public,
-html[data-theme="absolute-dark"] .visibility-public,
-html[data-theme="forest"] .visibility-public,
-html[data-theme="dracula"] .visibility-public {
+      html[data-theme="dark"] .visibility-public,
+      html[data-theme="dark-coffee"] .visibility-public,
+      html[data-theme="amber"] .visibility-public,
+      html[data-theme="tokyo-night"] .visibility-public,
+      html[data-theme="absolute-dark"] .visibility-public,
+      html[data-theme="forest"] .visibility-public,
+      html[data-theme="dracula"] .visibility-public {
         background: rgba(16, 185, 129, 0.15);
         color: #34d399;
       }
@@ -211,13 +246,13 @@ html[data-theme="dracula"] .visibility-public {
         border: 1px solid rgba(239, 68, 68, 0.3);
       }
 
-html[data-theme="dark"] .visibility-private,
-html[data-theme="dark-coffee"] .visibility-private,
-html[data-theme="amber"] .visibility-private,
-html[data-theme="tokyo-night"] .visibility-private,
-html[data-theme="absolute-dark"] .visibility-private,
-html[data-theme="forest"] .visibility-private,
-html[data-theme="dracula"] .visibility-private {
+      html[data-theme="dark"] .visibility-private,
+      html[data-theme="dark-coffee"] .visibility-private,
+      html[data-theme="amber"] .visibility-private,
+      html[data-theme="tokyo-night"] .visibility-private,
+      html[data-theme="absolute-dark"] .visibility-private,
+      html[data-theme="forest"] .visibility-private,
+      html[data-theme="dracula"] .visibility-private {
         background: rgba(239, 68, 68, 0.15);
         color: #f87171;
       }
@@ -246,13 +281,13 @@ html[data-theme="dracula"] .visibility-private {
         border: 1px solid rgba(59, 130, 246, 0.3);
       }
 
-html[data-theme="dark"] .topic-tag,
-html[data-theme="dark-coffee"] .topic-tag,
-html[data-theme="amber"] .topic-tag,
-html[data-theme="tokyo-night"] .topic-tag,
-html[data-theme="absolute-dark"] .topic-tag,
-html[data-theme="forest"] .topic-tag,
-html[data-theme="dracula"] .topic-tag {
+      html[data-theme="dark"] .topic-tag,
+      html[data-theme="dark-coffee"] .topic-tag,
+      html[data-theme="amber"] .topic-tag,
+      html[data-theme="tokyo-night"] .topic-tag,
+      html[data-theme="absolute-dark"] .topic-tag,
+      html[data-theme="forest"] .topic-tag,
+      html[data-theme="dracula"] .topic-tag {
         background: rgba(59, 130, 246, 0.15);
         color: #60a5fa;
       }
@@ -336,13 +371,13 @@ html[data-theme="dracula"] .topic-tag {
         box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
       }
 
-html[data-theme="dark"] .search-input,
-html[data-theme="dark-coffee"] .search-input,
-html[data-theme="amber"] .search-input,
-html[data-theme="tokyo-night"] .search-input,
-html[data-theme="absolute-dark"] .search-input,
-html[data-theme="forest"] .search-input,
-html[data-theme="dracula"] .search-input {
+      html[data-theme="dark"] .search-input,
+      html[data-theme="dark-coffee"] .search-input,
+      html[data-theme="amber"] .search-input,
+      html[data-theme="tokyo-night"] .search-input,
+      html[data-theme="absolute-dark"] .search-input,
+      html[data-theme="forest"] .search-input,
+      html[data-theme="dracula"] .search-input {
         border-color: rgba(255, 255, 255, 0.2);
       }
 
@@ -363,20 +398,20 @@ html[data-theme="dracula"] .search-input {
         align-items: center;
       }
 
-html[data-theme="dark"] .sort-select,,
-html[data-theme="dark-coffee"] .sort-select,,
-html[data-theme="amber"] .sort-select,,
-html[data-theme="tokyo-night"] .sort-select,,
-html[data-theme="absolute-dark"] .sort-select,,
-html[data-theme="forest"] .sort-select,,
-html[data-theme="dracula"] .sort-select,
-html[data-theme="dark"] .language-filter,
-html[data-theme="dark-coffee"] .language-filter,
-html[data-theme="amber"] .language-filter,
-html[data-theme="tokyo-night"] .language-filter,
-html[data-theme="absolute-dark"] .language-filter,
-html[data-theme="forest"] .language-filter,
-html[data-theme="dracula"] .language-filter {
+      html[data-theme="dark"] .sort-select,
+      html[data-theme="dark-coffee"] .sort-select,
+      html[data-theme="amber"] .sort-select,
+      html[data-theme="tokyo-night"] .sort-select,
+      html[data-theme="absolute-dark"] .sort-select,
+      html[data-theme="forest"] .sort-select,
+      html[data-theme="dracula"] .sort-select,
+      html[data-theme="dark"] .language-filter,
+      html[data-theme="dark-coffee"] .language-filter,
+      html[data-theme="amber"] .language-filter,
+      html[data-theme="tokyo-night"] .language-filter,
+      html[data-theme="absolute-dark"] .language-filter,
+      html[data-theme="forest"] .language-filter,
+      html[data-theme="dracula"] .language-filter {
         border-color: rgba(255, 255, 255, 0.2);
       }
 
@@ -386,13 +421,13 @@ html[data-theme="dracula"] .language-filter {
         color: #ef4444;
       }
 
-html[data-theme="dark"] .error-state,
-html[data-theme="dark-coffee"] .error-state,
-html[data-theme="amber"] .error-state,
-html[data-theme="tokyo-night"] .error-state,
-html[data-theme="absolute-dark"] .error-state,
-html[data-theme="forest"] .error-state,
-html[data-theme="dracula"] .error-state {
+      html[data-theme="dark"] .error-state,
+      html[data-theme="dark-coffee"] .error-state,
+      html[data-theme="amber"] .error-state,
+      html[data-theme="tokyo-night"] .error-state,
+      html[data-theme="absolute-dark"] .error-state,
+      html[data-theme="forest"] .error-state,
+      html[data-theme="dracula"] .error-state {
         color: #f87171;
       }
 
@@ -710,14 +745,22 @@ html[data-theme="dracula"] .error-state {
               class="absolute right-3 top-3 w-5 h-5 text-gray-400"
             ></i>
           </div>
-          <select id="sort-repos" class="sort-select" aria-label="Sort repositories">
+          <select
+            id="sort-repos"
+            class="sort-select"
+            aria-label="Sort repositories"
+          >
             <option value="updated">Recently Updated</option>
             <option value="created">Recently Created</option>
             <option value="name">Name A-Z</option>
             <option value="stars">Most Stars</option>
             <option value="forks">Most Forks</option>
           </select>
-          <select id="language-filter" class="language-filter" aria-label="Filter by language">
+          <select
+            id="language-filter"
+            class="language-filter"
+            aria-label="Filter by language"
+          >
             <option value="">All Languages</option>
           </select>
         </div>
@@ -808,7 +851,6 @@ html[data-theme="dracula"] .error-state {
           this.repos = [];
           this.filteredRepos = [];
           this.currentPage = 1;
-          this.perPage = 30;
           this.languages = new Set();
           this.init();
         }
@@ -825,6 +867,7 @@ html[data-theme="dracula"] .error-state {
             const response = await fetch(
               `https://api.github.com/users/${this.username}`,
             );
+            if (!response.ok) throw new Error(`GitHub API ${response.status}`);
             const user = await response.json();
 
             document.getElementById("followers-count").textContent =
@@ -836,60 +879,116 @@ html[data-theme="dracula"] .error-state {
           }
         }
 
+        // Cache successful fetches so repeat visits don't burn the
+        // unauthenticated GitHub API budget (60 req/hr per IP).
+        static get CACHE_KEY() {
+          return "gh-repos-cache-v1";
+        }
+        static get CACHE_TTL_MS() {
+          return 15 * 60 * 1000;
+        }
+        static get MAX_PAGES() {
+          return 10;
+        }
+
+        readCache(ignoreTtl = false) {
+          try {
+            const raw = localStorage.getItem(GitHubProjects.CACHE_KEY);
+            if (!raw) return null;
+            const entry = JSON.parse(raw);
+            if (!entry || !Array.isArray(entry.repos)) return null;
+            if (
+              !ignoreTtl &&
+              Date.now() - entry.t > GitHubProjects.CACHE_TTL_MS
+            ) {
+              return null;
+            }
+            return entry;
+          } catch (error) {
+            return null;
+          }
+        }
+
+        writeCache(repos) {
+          try {
+            localStorage.setItem(
+              GitHubProjects.CACHE_KEY,
+              JSON.stringify({ t: Date.now(), repos }),
+            );
+          } catch (error) {
+            /* storage unavailable (private mode/quota) — non-fatal */
+          }
+        }
+
+        async fetchAllRepos() {
+          const allRepos = [];
+          for (let page = 1; page <= GitHubProjects.MAX_PAGES; page++) {
+            const response = await fetch(
+              `https://api.github.com/users/${this.username}/repos?page=${page}&per_page=100&sort=updated`,
+            );
+            if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+            const repos = await response.json();
+            if (!Array.isArray(repos)) {
+              throw new Error("Unexpected GitHub API response");
+            }
+            allRepos.push(...repos);
+            if (repos.length < 100) break; // last page — stop paginating
+          }
+          return allRepos;
+        }
+
         async fetchRepositories() {
           try {
-            const container = document.getElementById("repos-container");
-
-            // Fetch all repositories
-            let allRepos = [];
-            let page = 1;
-            let hasMore = true;
-
-            while (hasMore) {
-              const response = await fetch(
-                `https://api.github.com/users/${this.username}/repos?page=${page}&per_page=100&sort=updated`,
-              );
-              const repos = await response.json();
-
-              if (repos.length === 0) {
-                hasMore = false;
-              } else {
-                allRepos = allRepos.concat(repos);
-                page++;
-              }
+            const fresh = this.readCache();
+            if (fresh) {
+              this.applyRepos(fresh.repos);
+              return;
             }
 
-            this.repos = allRepos;
-            this.filteredRepos = [...this.repos];
-
-            // Calculate total stars and forks
-            const totalStars = this.repos.reduce(
-              (sum, repo) => sum + repo.stargazers_count,
-              0,
-            );
-            const totalForks = this.repos.reduce(
-              (sum, repo) => sum + repo.forks_count,
-              0,
-            );
-
-            document.getElementById("total-stars").textContent = totalStars;
-            document.getElementById("total-forks").textContent = totalForks;
-
-            // Collect languages
-            this.repos.forEach((repo) => {
-              if (repo.language) {
-                this.languages.add(repo.language);
-              }
-            });
-
-            this.populateLanguageFilter();
-            this.renderRepositories();
+            const allRepos = await this.fetchAllRepos();
+            this.writeCache(allRepos);
+            this.applyRepos(allRepos);
           } catch (error) {
             console.error("Error fetching repositories:", error);
-            this.showError(
-              "Failed to load repositories. Please try again later.",
-            );
+            // Stale-while-error: prefer showing slightly-old data over nothing.
+            const stale = this.readCache(true);
+            if (stale) {
+              this.applyRepos(stale.repos);
+              return;
+            }
+            const message = /403|429/.test(String(error))
+              ? "GitHub API rate limit reached. Please try again in about an hour."
+              : "Failed to load repositories. Please try again later.";
+            this.showError(message);
           }
+        }
+
+        applyRepos(repos) {
+          this.repos = repos;
+          this.filteredRepos = [...this.repos];
+
+          // Calculate total stars and forks
+          const totalStars = this.repos.reduce(
+            (sum, repo) => sum + repo.stargazers_count,
+            0,
+          );
+          const totalForks = this.repos.reduce(
+            (sum, repo) => sum + repo.forks_count,
+            0,
+          );
+
+          document.getElementById("total-stars").textContent = totalStars;
+          document.getElementById("total-forks").textContent = totalForks;
+
+          // Collect languages
+          this.repos.forEach((repo) => {
+            if (repo.language) {
+              this.languages.add(repo.language);
+            }
+          });
+
+          this.populateLanguageFilter();
+          this.renderRepositories();
         }
 
         populateLanguageFilter() {

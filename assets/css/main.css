@@ -1,5 +1,6 @@
-/* Import Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap");
+/* Fonts are loaded via <link rel="stylesheet"> in each page's <head>
+   (Inter, JetBrains Mono, Source Code Pro) — a CSS @import here would
+   serialize the font CSS fetch after main.css and block first paint. */
 
 /* Base Styles */
 html {
@@ -9,8 +10,13 @@ html {
 }
 
 body {
+  /* reset UA default 8px margin — caused +8px horizontal overflow on
+     pages whose sections are width:100% */
+  margin: 0;
   font-family: "Inter", sans-serif;
-  background: var(--body-bg, linear-gradient(135deg, #fef5e7 0%, #fdf8f3 50%, #fef5e7 100%)
+  background: var(
+    --body-bg,
+    linear-gradient(135deg, #fef5e7 0%, #fdf8f3 50%, #fef5e7 100%)
   );
   color: var(--text-primary, #2d1810);
   transition:
@@ -507,7 +513,7 @@ footer {
 }
 
 .btn-primary {
-  background: var(--btn-primary-bg, #c97c3a);
+  background: var(--btn-primary-bg, #ad5f1d);
   color: var(--btn-primary-text, #ffffff) !important;
   border: none;
   transition:
@@ -515,7 +521,7 @@ footer {
     transform 0.15s ease;
 }
 .btn-primary:hover {
-  background: var(--btn-primary-hover, #b86c2a);
+  background: var(--btn-primary-hover, #9e5417);
   transform: translateY(-1px);
 }
 
@@ -536,6 +542,13 @@ footer {
 footer {
   padding: 2rem 0;
   text-align: center;
+}
+
+/* Footer legibility: inherited muted palette failed WCAG AA contrast
+   (e.g. 2.5:1 in dracula) — use the theme's primary text color, which is
+   guaranteed readable against every theme background. */
+footer p {
+  color: var(--text-primary);
 }
 html[data-theme="dark"] footer,
 html[data-theme="dark-coffee"] footer,
@@ -1123,7 +1136,8 @@ html[data-theme="dracula"] footer {
 }
 
 .text-gray-500 {
-  color: var(--text-muted);
+  /* --text-muted was only ~3.2:1 on light parchment; --text-secondary passes AA */
+  color: var(--text-secondary);
 }
 
 /* Dark Theme Overrides */

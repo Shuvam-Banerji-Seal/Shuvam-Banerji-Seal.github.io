@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -14,25 +25,49 @@
       name="description"
       content="LLM Studio — Chat with AI models including GLM-5, GPT-4o, Claude, Gemini and more, using your own API keys"
     />
-    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/llm-studio.html" />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/llm-studio.html"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="LLM Studio - SBS Tools" />
-    <meta property="og:description" content="Chat with AI models including GPT-4o, Claude, Gemini using your own API keys." />
-    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/llm-studio.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:description"
+      content="Chat with AI models including GPT-4o, Claude, Gemini using your own API keys."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/llm-studio.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="LLM Studio - SBS Tools" />
-    <meta name="twitter:description" content="Chat with AI models using your own API keys." />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      name="twitter:description"
+      content="Chat with AI models using your own API keys."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="robots" content="index, follow" />
     <title>LLM Studio - SBS Tools</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+    ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -283,7 +318,7 @@
                     margin-top: 0.5rem;
                   "
                 >
-                  GLM-5 is pre-configured and ready — just type!
+                  Pick a provider, paste your API key, and just type!
                 </p>
               </div>
             </div>
@@ -311,8 +346,30 @@
       "use strict";
 
       // ── Provider configurations ────────────────────────────────────────────────
-      const MODAL_KEY =
-        "modalresearch_7vhc_w5LHckOja0MylAME_H8bnYSIS3B9A0qr4RtlMk";
+      // SECURITY: No API keys are hardcoded in this file (see plans/05-audit-log
+      // bug B17). Optional provider presets may live in assets/llm-config.json,
+      // which is fetched at runtime. That file is deployed manually and MUST NOT
+      // be committed to git with real keys. Keys there remain visible to any
+      // visitor in the browser — this is only acceptable for throwaway public
+      // demo keys; rotate them regularly.
+      async function loadLlmPresets() {
+        try {
+          const res = await fetch("/assets/llm-config.json", {
+            cache: "no-store",
+          });
+          if (!res.ok) return {};
+          const text = await res.text();
+          // Strip // comment lines (the file ships with docs, not secrets)
+          const stripped = text
+            .split("\n")
+            .filter((l) => !l.trim().startsWith("//"))
+            .join("\n");
+          const cfg = JSON.parse(stripped);
+          return cfg && typeof cfg === "object" ? cfg : {};
+        } catch {
+          return {};
+        }
+      }
 
       const providers = {
         modal: {
@@ -320,7 +377,8 @@
           baseUrl: "https://api.us-west-2.modal.direct/v1/chat/completions",
           corsProxy: "https://corsproxy.io/?",
           models: ["zai-org/GLM-5-FP8"],
-          presetKey: MODAL_KEY,
+          // Filled from assets/llm-config.json at runtime (never committed).
+          presetKey: "",
           defaultMaxTokens: 131072,
           openaiCompat: true,
         },
@@ -527,9 +585,10 @@
         div.className = `chat-message ${role}`;
 
         if (role === "assistant") {
-          div.innerHTML = typeof marked !== "undefined"
-            ? marked.parse(content)
-            : content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          div.innerHTML =
+            typeof marked !== "undefined"
+              ? marked.parse(content)
+              : content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         } else {
           const p = document.createElement("p");
           p.textContent = content;
@@ -582,8 +641,12 @@
         } catch (error) {
           hideTyping();
           let errorMsg = error.message;
-          if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError")) {
-            errorMsg = "Network error: The API endpoint may not support browser requests (CORS). Try switching to a different provider like OpenAI, Groq, or Anthropic which support direct browser access.";
+          if (
+            error.message.includes("Failed to fetch") ||
+            error.message.includes("NetworkError")
+          ) {
+            errorMsg =
+              "Network error: The API endpoint may not support browser requests (CORS). Try switching to a different provider like OpenAI, Groq, or Anthropic which support direct browser access.";
           }
           addMessage("assistant", `❌ Error: ${errorMsg}`);
         }
@@ -603,7 +666,13 @@
         const temperature = parseFloat(
           document.getElementById("temperature").value,
         );
-        const maxTokens = Math.max(256, Math.min(200000, parseInt(document.getElementById("max-tokens").value) || 4096));
+        const maxTokens = Math.max(
+          256,
+          Math.min(
+            200000,
+            parseInt(document.getElementById("max-tokens").value) || 4096,
+          ),
+        );
 
         // Build messages array
         const messages = [];
@@ -685,7 +754,9 @@
         }
 
         // Use CORS proxy if specified (needed for APIs that don't support browser requests)
-        let fetchUrl = cfg.corsProxy ? cfg.corsProxy + encodeURIComponent(cfg.baseUrl) : cfg.baseUrl;
+        let fetchUrl = cfg.corsProxy
+          ? cfg.corsProxy + encodeURIComponent(cfg.baseUrl)
+          : cfg.baseUrl;
 
         const res = await fetch(fetchUrl, {
           method: "POST",
@@ -705,7 +776,8 @@
             errMsg = e.error?.message || errMsg;
           } catch {}
           if (res.status === 0 || res.status === 403) {
-            errMsg = "CORS error: The API proxy may be rate-limited. Try again in a moment, or switch to a different provider (OpenAI, Groq, Anthropic).";
+            errMsg =
+              "CORS error: The API proxy may be rate-limited. Try again in a moment, or switch to a different provider (OpenAI, Groq, Anthropic).";
           }
           throw new Error(errMsg);
         }
@@ -726,15 +798,26 @@
       // ── Notification ─────────────────────────────────────────────────────────
       function showNotification(msg) {
         const n = document.createElement("div");
-        n.style.cssText = "position:fixed;top:80px;right:20px;padding:1rem 1.5rem;background:var(--accent-color,#00ff88);color:#000;border-radius:8px;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);";
+        n.style.cssText =
+          "position:fixed;top:80px;right:20px;padding:1rem 1.5rem;background:var(--accent-color,#00ff88);color:#000;border-radius:8px;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);";
         n.textContent = msg;
         document.body.appendChild(n);
         setTimeout(() => n.remove(), 3000);
       }
 
       // ── Init ──────────────────────────────────────────────────────────────────
-      document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("DOMContentLoaded", async () => {
         if (typeof lucide !== "undefined") lucide.createIcons();
+
+        // Load any externally-supplied provider preset keys (see loadLlmPresets),
+        // then re-render the current provider so the key field reflects them.
+        const presets = await loadLlmPresets();
+        for (const p of Object.keys(presets)) {
+          if (providers[p] && presets[p] && presets[p].presetKey) {
+            providers[p].presetKey = presets[p].presetKey;
+          }
+        }
+
         loadSettings();
 
         // Enter to send

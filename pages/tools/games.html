@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -14,24 +25,45 @@
       name="description"
       content="Fun chemistry games to test your knowledge"
     />
-    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/games.html" />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/games.html"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Chemistry Games - SBS Tools" />
-    <meta property="og:description" content="Interactive chemistry games and quizzes for learning." />
-    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/games.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:description"
+      content="Interactive chemistry games and quizzes for learning."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/games.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Chemistry Games - SBS Tools" />
-    <meta name="twitter:description" content="Interactive chemistry games and quizzes." />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      name="twitter:description"
+      content="Interactive chemistry games and quizzes."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="robots" content="index, follow" />
     <title>Chemistry Games - SBS Tools</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -55,48 +87,87 @@
           <button class="tool-btn tool-btn-secondary" onclick="toggleSound()">
             <i data-lucide="volume-2" id="sound-icon"></i> Sound
           </button>
-          <button class="tool-btn tool-btn-secondary" onclick="showInstructions()">
+          <button
+            class="tool-btn tool-btn-secondary"
+            onclick="showInstructions()"
+          >
             <i data-lucide="help-circle"></i> How to Play
           </button>
         </div>
 
         <div class="games-grid" id="games-grid">
-          <div class="game-card" data-game="elements" tabindex="0" role="button" aria-label="Element Quiz game">
+          <div
+            class="game-card"
+            data-game="elements"
+            tabindex="0"
+            role="button"
+            aria-label="Element Quiz game"
+          >
             <div class="game-icon"><i data-lucide="atom"></i></div>
             <h3>Element Quiz</h3>
             <p>Guess elements from their symbols or atomic numbers</p>
             <span class="game-badge">Quick Play</span>
             <div class="high-score" id="high-elements"></div>
           </div>
-          <div class="game-card" data-game="formulas" tabindex="0" role="button" aria-label="Formula Master game">
+          <div
+            class="game-card"
+            data-game="formulas"
+            tabindex="0"
+            role="button"
+            aria-label="Formula Master game"
+          >
             <div class="game-icon"><i data-lucide="flask-conical"></i></div>
             <h3>Formula Master</h3>
             <p>Match chemical formulas to compound names</p>
             <span class="game-badge">Challenge</span>
             <div class="high-score" id="high-formulas"></div>
           </div>
-          <div class="game-card" data-game="balance" tabindex="0" role="button" aria-label="Balance Blitz game">
+          <div
+            class="game-card"
+            data-game="balance"
+            tabindex="0"
+            role="button"
+            aria-label="Balance Blitz game"
+          >
             <div class="game-icon"><i data-lucide="scale"></i></div>
             <h3>Balance Blitz</h3>
             <p>Balance chemical equations against the clock</p>
             <span class="game-badge">Timed</span>
             <div class="high-score" id="high-balance"></div>
           </div>
-          <div class="game-card" data-game="periodic" tabindex="0" role="button" aria-label="Periodic Puzzle game">
+          <div
+            class="game-card"
+            data-game="periodic"
+            tabindex="0"
+            role="button"
+            aria-label="Periodic Puzzle game"
+          >
             <div class="game-icon"><i data-lucide="grid-3x3"></i></div>
             <h3>Periodic Puzzle</h3>
             <p>Place elements in their correct groups and periods</p>
             <span class="game-badge">Advanced</span>
             <div class="high-score" id="high-periodic"></div>
           </div>
-          <div class="game-card" data-game="ions" tabindex="0" role="button" aria-label="Ion Challenger game">
+          <div
+            class="game-card"
+            data-game="ions"
+            tabindex="0"
+            role="button"
+            aria-label="Ion Challenger game"
+          >
             <div class="game-icon"><i data-lucide="zap"></i></div>
             <h3>Ion Challenger</h3>
             <p>Identify common ions and their charges</p>
             <span class="game-badge">Expert</span>
             <div class="high-score" id="high-ions"></div>
           </div>
-          <div class="game-card" data-game="reactions" tabindex="0" role="button" aria-label="Reaction Types game">
+          <div
+            class="game-card"
+            data-game="reactions"
+            tabindex="0"
+            role="button"
+            aria-label="Reaction Types game"
+          >
             <div class="game-icon"><i data-lucide="flame"></i></div>
             <h3>Reaction Types</h3>
             <p>Identify synthesis, decomposition, and more</p>
@@ -121,7 +192,11 @@
               </span>
             </div>
             <div class="game-controls">
-              <button class="icon-btn" onclick="toggleFullscreen()" title="Fullscreen">
+              <button
+                class="icon-btn"
+                onclick="toggleFullscreen()"
+                title="Fullscreen"
+              >
                 <i data-lucide="maximize" id="fullscreen-icon"></i>
               </button>
               <button class="tool-btn tool-btn-secondary" onclick="endGame()">
@@ -166,32 +241,58 @@
                 <small>20 questions, 15s each</small>
               </button>
             </div>
-            <button class="tool-btn tool-btn-secondary" onclick="closeDifficultyModal()">Cancel</button>
+            <button
+              class="tool-btn tool-btn-secondary"
+              onclick="closeDifficultyModal()"
+            >
+              Cancel
+            </button>
           </div>
         </div>
 
         <!-- Instructions Modal -->
-        <div class="modal-overlay" id="instructions-modal" style="display: none">
+        <div
+          class="modal-overlay"
+          id="instructions-modal"
+          style="display: none"
+        >
           <div class="modal-content">
             <h3><i data-lucide="help-circle"></i> How to Play</h3>
             <div class="instructions-content">
               <h4>Element Quiz</h4>
-              <p>Identify elements by their symbol or atomic number. Each correct answer earns points!</p>
+              <p>
+                Identify elements by their symbol or atomic number. Each correct
+                answer earns points!
+              </p>
               <h4>Formula Master</h4>
               <p>Match chemical formulas to compound names or vice versa.</p>
               <h4>Balance Blitz</h4>
-              <p>Balance chemical equations by selecting the correct coefficients.</p>
+              <p>
+                Balance chemical equations by selecting the correct
+                coefficients.
+              </p>
               <h4>Periodic Puzzle</h4>
-              <p>Place elements in their correct positions on the periodic table based on clues.</p>
+              <p>
+                Place elements in their correct positions on the periodic table
+                based on clues.
+              </p>
               <h4>Ion Challenger</h4>
               <p>Identify common ions and their charges.</p>
               <h4>Reaction Types</h4>
               <p>Identify the type of chemical reaction shown.</p>
-              <hr>
+              <hr />
               <h4>Scoring</h4>
-              <p>Earn more points on harder difficulties! Your high scores are saved locally.</p>
+              <p>
+                Earn more points on harder difficulties! Your high scores are
+                saved locally.
+              </p>
             </div>
-            <button class="tool-btn tool-btn-primary" onclick="closeInstructions()">Got it!</button>
+            <button
+              class="tool-btn tool-btn-primary"
+              onclick="closeInstructions()"
+            >
+              Got it!
+            </button>
           </div>
         </div>
 
@@ -207,7 +308,9 @@
             <div class="score-breakdown">
               <div class="stat-item">
                 <span class="stat-label">Correct</span>
-                <span class="stat-value correct-count" id="correct-count">0</span>
+                <span class="stat-value correct-count" id="correct-count"
+                  >0</span
+                >
               </div>
               <div class="stat-item">
                 <span class="stat-label">Streak</span>
@@ -219,7 +322,11 @@
               </div>
             </div>
             <p id="results-message">You're a chemistry expert!</p>
-            <div class="new-high-score" id="new-high-score" style="display: none">
+            <div
+              class="new-high-score"
+              id="new-high-score"
+              style="display: none"
+            >
               🎉 New High Score! 🎉
             </div>
             <div class="btn-group">
@@ -356,8 +463,13 @@
         animation: pulse 0.5s infinite;
       }
       @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
       }
       .game-controls {
         display: flex;
@@ -503,8 +615,12 @@
         animation: bounce 0.5s infinite alternate;
       }
       @keyframes bounce {
-        from { transform: translateY(0); }
-        to { transform: translateY(-5px); }
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(-5px);
+        }
       }
 
       .modal-overlay {
@@ -674,12 +790,16 @@
       function toggleSound() {
         soundEnabled = !soundEnabled;
         localStorage.setItem("gameSound", soundEnabled);
-        document.getElementById("sound-icon").setAttribute("data-lucide", soundEnabled ? "volume-2" : "volume-x");
+        document
+          .getElementById("sound-icon")
+          .setAttribute("data-lucide", soundEnabled ? "volume-2" : "volume-x");
         if (typeof lucide !== "undefined") lucide.createIcons();
       }
 
       function updateSoundIcon() {
-        document.getElementById("sound-icon").setAttribute("data-lucide", soundEnabled ? "volume-2" : "volume-x");
+        document
+          .getElementById("sound-icon")
+          .setAttribute("data-lucide", soundEnabled ? "volume-2" : "volume-x");
       }
 
       function showInstructions() {
@@ -708,7 +828,7 @@
       });
 
       function setupGameCards() {
-        document.querySelectorAll(".game-card").forEach(card => {
+        document.querySelectorAll(".game-card").forEach((card) => {
           const openDifficulty = () => {
             pendingGameType = card.dataset.game;
             document.getElementById("difficulty-modal").style.display = "flex";
@@ -741,15 +861,25 @@
 
       function selectDifficulty(level) {
         difficulty = level;
+        // Capture the pending game before closing the modal, because
+        // closeDifficultyModal() resets pendingGameType.
+        const gameType = pendingGameType;
         closeDifficultyModal();
-        if (pendingGameType) {
-          startGame(pendingGameType);
+        if (gameType) {
+          startGame(gameType);
         }
       }
 
       function loadHighScores() {
-        const games = ["elements", "formulas", "balance", "periodic", "ions", "reactions"];
-        games.forEach(game => {
+        const games = [
+          "elements",
+          "formulas",
+          "balance",
+          "periodic",
+          "ions",
+          "reactions",
+        ];
+        games.forEach((game) => {
           const high = localStorage.getItem(`highScore_${game}`) || 0;
           const el = document.getElementById(`high-${game}`);
           if (el && high > 0) el.textContent = `Best: ${high}`;
@@ -815,26 +945,86 @@
       ];
 
       const balanceQuestions = [
-        { unbalanced: "H₂ + O₂ → H₂O", answers: ["2", "1", "2"], display: "_H₂ + _O₂ → _H₂O" },
-        { unbalanced: "Fe + O₂ → Fe₂O₃", answers: ["4", "3", "2"], display: "_Fe + _O₂ → _Fe₂O₃" },
-        { unbalanced: "N₂ + H₂ → NH₃", answers: ["1", "3", "2"], display: "_N₂ + _H₂ → _NH₃" },
-        { unbalanced: "CH₄ + O₂ → CO₂ + H₂O", answers: ["1", "2", "1", "2"], display: "_CH₄ + _O₂ → _CO₂ + _H₂O" },
-        { unbalanced: "Na + Cl₂ → NaCl", answers: ["2", "1", "2"], display: "_Na + _Cl₂ → _NaCl" },
-        { unbalanced: "Al + O₂ → Al₂O₃", answers: ["4", "3", "2"], display: "_Al + _O₂ → _Al₂O₃" },
-        { unbalanced: "KClO₃ → KCl + O₂", answers: ["2", "2", "3"], display: "_KClO₃ → _KCl + _O₂" },
+        {
+          unbalanced: "H₂ + O₂ → H₂O",
+          answers: ["2", "1", "2"],
+          display: "_H₂ + _O₂ → _H₂O",
+        },
+        {
+          unbalanced: "Fe + O₂ → Fe₂O₃",
+          answers: ["4", "3", "2"],
+          display: "_Fe + _O₂ → _Fe₂O₃",
+        },
+        {
+          unbalanced: "N₂ + H₂ → NH₃",
+          answers: ["1", "3", "2"],
+          display: "_N₂ + _H₂ → _NH₃",
+        },
+        {
+          unbalanced: "CH₄ + O₂ → CO₂ + H₂O",
+          answers: ["1", "2", "1", "2"],
+          display: "_CH₄ + _O₂ → _CO₂ + _H₂O",
+        },
+        {
+          unbalanced: "Na + Cl₂ → NaCl",
+          answers: ["2", "1", "2"],
+          display: "_Na + _Cl₂ → _NaCl",
+        },
+        {
+          unbalanced: "Al + O₂ → Al₂O₃",
+          answers: ["4", "3", "2"],
+          display: "_Al + _O₂ → _Al₂O₃",
+        },
+        {
+          unbalanced: "KClO₃ → KCl + O₂",
+          answers: ["2", "2", "3"],
+          display: "_KClO₃ → _KCl + _O₂",
+        },
       ];
 
       const periodicClues = [
-        { element: "H", clue: "Atomic number 1, lightest element", position: "1,1" },
+        {
+          element: "H",
+          clue: "Atomic number 1, lightest element",
+          position: "1,1",
+        },
         { element: "He", clue: "Atomic number 2, noble gas", position: "1,18" },
-        { element: "Li", clue: "Atomic number 3, alkali metal", position: "2,1" },
-        { element: "Be", clue: "Atomic number 4, alkaline earth", position: "2,2" },
+        {
+          element: "Li",
+          clue: "Atomic number 3, alkali metal",
+          position: "2,1",
+        },
+        {
+          element: "Be",
+          clue: "Atomic number 4, alkaline earth",
+          position: "2,2",
+        },
         { element: "B", clue: "Atomic number 5, metalloid", position: "2,13" },
-        { element: "C", clue: "Atomic number 6, basis of organic chemistry", position: "2,14" },
-        { element: "N", clue: "Atomic number 7, makes 78% of air", position: "2,15" },
-        { element: "O", clue: "Atomic number 8, essential for life", position: "2,16" },
-        { element: "F", clue: "Atomic number 9, most electronegative", position: "2,17" },
-        { element: "Ne", clue: "Atomic number 10, noble gas", position: "2,18" },
+        {
+          element: "C",
+          clue: "Atomic number 6, basis of organic chemistry",
+          position: "2,14",
+        },
+        {
+          element: "N",
+          clue: "Atomic number 7, makes 78% of air",
+          position: "2,15",
+        },
+        {
+          element: "O",
+          clue: "Atomic number 8, essential for life",
+          position: "2,16",
+        },
+        {
+          element: "F",
+          clue: "Atomic number 9, most electronegative",
+          position: "2,17",
+        },
+        {
+          element: "Ne",
+          clue: "Atomic number 10, noble gas",
+          position: "2,18",
+        },
       ];
 
       const ions = [
@@ -856,14 +1046,46 @@
       ];
 
       const reactions = [
-        { equation: "2H₂ + O₂ → 2H₂O", type: "Synthesis", explanation: "Two substances combine to form one" },
-        { equation: "2H₂O → 2H₂ + O₂", type: "Decomposition", explanation: "One substance breaks into two" },
-        { equation: "Zn + 2HCl → ZnCl₂ + H₂", type: "Single Replacement", explanation: "One element replaces another" },
-        { equation: "CH₄ + 2O₂ → CO₂ + 2H₂O", type: "Combustion", explanation: "Rapid reaction with oxygen" },
-        { equation: "Fe + CuSO₄ → FeSO₄ + Cu", type: "Single Replacement", explanation: "More reactive element replaces less" },
-        { equation: "2Na + Cl₂ → 2NaCl", type: "Synthesis", explanation: "Metal + non-metal = salt" },
-        { equation: "CaCO₃ → CaO + CO₂", type: "Decomposition", explanation: "Compound breaks down on heating" },
-        { equation: "AB + CD → AD + CB", type: "Double Replacement", explanation: "Ions switch places" },
+        {
+          equation: "2H₂ + O₂ → 2H₂O",
+          type: "Synthesis",
+          explanation: "Two substances combine to form one",
+        },
+        {
+          equation: "2H₂O → 2H₂ + O₂",
+          type: "Decomposition",
+          explanation: "One substance breaks into two",
+        },
+        {
+          equation: "Zn + 2HCl → ZnCl₂ + H₂",
+          type: "Single Replacement",
+          explanation: "One element replaces another",
+        },
+        {
+          equation: "CH₄ + 2O₂ → CO₂ + 2H₂O",
+          type: "Combustion",
+          explanation: "Rapid reaction with oxygen",
+        },
+        {
+          equation: "Fe + CuSO₄ → FeSO₄ + Cu",
+          type: "Single Replacement",
+          explanation: "More reactive element replaces less",
+        },
+        {
+          equation: "2Na + Cl₂ → 2NaCl",
+          type: "Synthesis",
+          explanation: "Metal + non-metal = salt",
+        },
+        {
+          equation: "CaCO₃ → CaO + CO₂",
+          type: "Decomposition",
+          explanation: "Compound breaks down on heating",
+        },
+        {
+          equation: "AB + CD → AD + CB",
+          type: "Double Replacement",
+          explanation: "Ions switch places",
+        },
       ];
 
       const titles = {
@@ -919,11 +1141,20 @@
           for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
             const el = shuffled[i];
             const questionType = Math.random() > 0.5 ? "symbol" : "number";
-            const wrongAnswers = elements.filter(e => e.symbol !== el.symbol).sort(() => Math.random() - 0.5).slice(0, 3).map(e => e.name);
+            const wrongAnswers = elements
+              .filter((e) => e.symbol !== el.symbol)
+              .sort(() => Math.random() - 0.5)
+              .slice(0, 3)
+              .map((e) => e.name);
             qs.push({
-              question: questionType === "symbol" ? `What element has the symbol <span class="highlight">${el.symbol}</span>?` : `What element has atomic number <span class="highlight">${el.number}</span>?`,
+              question:
+                questionType === "symbol"
+                  ? `What element has the symbol <span class="highlight">${el.symbol}</span>?`
+                  : `What element has atomic number <span class="highlight">${el.number}</span>?`,
               correct: el.name,
-              options: [el.name, ...wrongAnswers].sort(() => Math.random() - 0.5),
+              options: [el.name, ...wrongAnswers].sort(
+                () => Math.random() - 0.5,
+              ),
             });
           }
         } else if (type === "formulas") {
@@ -932,26 +1163,65 @@
             const comp = shuffled[i];
             const questionType = Math.random() > 0.5 ? "formula" : "name";
             if (questionType === "formula") {
-              const wrongAnswers = compounds.filter(c => c.formula !== comp.formula).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.name);
-              qs.push({ question: `What is the name of <span class="highlight">${comp.formula}</span>?`, correct: comp.name, options: [comp.name, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+              const wrongAnswers = compounds
+                .filter((c) => c.formula !== comp.formula)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map((c) => c.name);
+              qs.push({
+                question: `What is the name of <span class="highlight">${comp.formula}</span>?`,
+                correct: comp.name,
+                options: [comp.name, ...wrongAnswers].sort(
+                  () => Math.random() - 0.5,
+                ),
+              });
             } else {
-              const wrongAnswers = compounds.filter(c => c.formula !== comp.formula).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.formula);
-              qs.push({ question: `What is the formula for <span class="highlight">${comp.name}</span>?`, correct: comp.formula, options: [comp.formula, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+              const wrongAnswers = compounds
+                .filter((c) => c.formula !== comp.formula)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map((c) => c.formula);
+              qs.push({
+                question: `What is the formula for <span class="highlight">${comp.name}</span>?`,
+                correct: comp.formula,
+                options: [comp.formula, ...wrongAnswers].sort(
+                  () => Math.random() - 0.5,
+                ),
+              });
             }
           }
         } else if (type === "balance") {
-          const shuffled = [...balanceQuestions].sort(() => Math.random() - 0.5);
+          const shuffled = [...balanceQuestions].sort(
+            () => Math.random() - 0.5,
+          );
           for (let i = 0; i < totalQuestions; i++) {
             const bq = shuffled[i % shuffled.length];
             const correctAnswer = bq.answers.join(", ");
-            qs.push({ question: `Balance: <span class="highlight">${bq.display}</span>`, correct: correctAnswer, options: [correctAnswer, ...generateWrongCoefficients(bq.answers.length)].sort(() => Math.random() - 0.5) });
+            qs.push({
+              question: `Balance: <span class="highlight">${bq.display}</span>`,
+              correct: correctAnswer,
+              options: [
+                correctAnswer,
+                ...generateWrongCoefficients(bq.answers.length),
+              ].sort(() => Math.random() - 0.5),
+            });
           }
         } else if (type === "periodic") {
           const shuffled = [...periodicClues].sort(() => Math.random() - 0.5);
           for (let i = 0; i < Math.min(totalQuestions, shuffled.length); i++) {
             const p = shuffled[i];
-            const wrongAnswers = periodicClues.filter(c => c.element !== p.element).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.element);
-            qs.push({ question: `Which element matches: <span class="highlight">${p.clue}</span>?`, correct: p.element, options: [p.element, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+            const wrongAnswers = periodicClues
+              .filter((c) => c.element !== p.element)
+              .sort(() => Math.random() - 0.5)
+              .slice(0, 3)
+              .map((c) => c.element);
+            qs.push({
+              question: `Which element matches: <span class="highlight">${p.clue}</span>?`,
+              correct: p.element,
+              options: [p.element, ...wrongAnswers].sort(
+                () => Math.random() - 0.5,
+              ),
+            });
           }
         } else if (type === "ions") {
           const shuffled = [...ions].sort(() => Math.random() - 0.5);
@@ -959,19 +1229,49 @@
             const ion = shuffled[i];
             const questionType = Math.random() > 0.5 ? "name" : "charge";
             if (questionType === "name") {
-              const wrongAnswers = ions.filter(c => c.ion !== ion.ion).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.name);
-              qs.push({ question: `What is the name of <span class="highlight">${ion.ion}</span>?`, correct: ion.name, options: [ion.name, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+              const wrongAnswers = ions
+                .filter((c) => c.ion !== ion.ion)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map((c) => c.name);
+              qs.push({
+                question: `What is the name of <span class="highlight">${ion.ion}</span>?`,
+                correct: ion.name,
+                options: [ion.name, ...wrongAnswers].sort(
+                  () => Math.random() - 0.5,
+                ),
+              });
             } else {
-              const wrongAnswers = ions.filter(c => c.ion !== ion.ion).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.charge);
-              qs.push({ question: `What is the charge of <span class="highlight">${ion.name}</span>?`, correct: ion.charge, options: [ion.charge, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+              const wrongAnswers = ions
+                .filter((c) => c.ion !== ion.ion)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map((c) => c.charge);
+              qs.push({
+                question: `What is the charge of <span class="highlight">${ion.name}</span>?`,
+                correct: ion.charge,
+                options: [ion.charge, ...wrongAnswers].sort(
+                  () => Math.random() - 0.5,
+                ),
+              });
             }
           }
         } else if (type === "reactions") {
           const shuffled = [...reactions].sort(() => Math.random() - 0.5);
           for (let i = 0; i < totalQuestions; i++) {
             const r = shuffled[i % shuffled.length];
-            const wrongAnswers = reactions.filter(c => c.type !== r.type).sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.type);
-            qs.push({ question: `What type of reaction is: <span class="highlight">${r.equation}</span>?`, correct: r.type, options: [r.type, ...wrongAnswers].sort(() => Math.random() - 0.5) });
+            const wrongAnswers = reactions
+              .filter((c) => c.type !== r.type)
+              .sort(() => Math.random() - 0.5)
+              .slice(0, 3)
+              .map((c) => c.type);
+            qs.push({
+              question: `What type of reaction is: <span class="highlight">${r.equation}</span>?`,
+              correct: r.type,
+              options: [r.type, ...wrongAnswers].sort(
+                () => Math.random() - 0.5,
+              ),
+            });
           }
         }
         return qs;
@@ -1023,11 +1323,12 @@
 
         const q = questions[questionNum];
         document.getElementById("question-num").textContent = questionNum + 1;
-        document.getElementById("game-progress").style.width = ((questionNum + 1) / totalQuestions) * 100 + "%";
+        document.getElementById("game-progress").style.width =
+          ((questionNum + 1) / totalQuestions) * 100 + "%";
 
         let html = `<div class="question-text">${q.question}</div><div class="options-grid">`;
         q.options.forEach((opt, idx) => {
-          html += `<button class="option-btn" onclick="checkAnswer(${idx})" aria-label="Option: ${opt.replace(/"/g, '&quot;')}">${opt}</button>`;
+          html += `<button class="option-btn" onclick="checkAnswer(${idx})" aria-label="Option: ${opt.replace(/"/g, "&quot;")}">${opt}</button>`;
         });
         html += "</div>";
         document.getElementById("game-content").innerHTML = html;
@@ -1070,19 +1371,36 @@
         document.getElementById("results-container").style.display = "block";
 
         const isNewHigh = saveHighScore(currentGame, score);
-        document.getElementById("new-high-score").style.display = isNewHigh ? "block" : "none";
+        document.getElementById("new-high-score").style.display = isNewHigh
+          ? "block"
+          : "none";
 
-        document.getElementById("final-score").textContent = `${score}/${totalQuestions}`;
+        document.getElementById("final-score").textContent =
+          `${score}/${totalQuestions}`;
         document.getElementById("correct-count").textContent = score;
         document.getElementById("best-streak").textContent = bestStreak;
-        document.getElementById("accuracy").textContent = Math.round((score / totalQuestions) * 100) + "%";
+        document.getElementById("accuracy").textContent =
+          Math.round((score / totalQuestions) * 100) + "%";
 
         const percentage = (score / totalQuestions) * 100;
         let icon, title, message;
-        if (percentage >= 90) { icon = "🏆"; title = "Outstanding!"; message = "You're a chemistry genius!"; }
-        else if (percentage >= 70) { icon = "🎉"; title = "Great Job!"; message = "You really know your chemistry!"; }
-        else if (percentage >= 50) { icon = "👍"; title = "Good Effort!"; message = "Keep practicing to improve!"; }
-        else { icon = "📚"; title = "Keep Learning!"; message = "Review and try again - you've got this!"; }
+        if (percentage >= 90) {
+          icon = "🏆";
+          title = "Outstanding!";
+          message = "You're a chemistry genius!";
+        } else if (percentage >= 70) {
+          icon = "🎉";
+          title = "Great Job!";
+          message = "You really know your chemistry!";
+        } else if (percentage >= 50) {
+          icon = "👍";
+          title = "Good Effort!";
+          message = "Keep practicing to improve!";
+        } else {
+          icon = "📚";
+          title = "Keep Learning!";
+          message = "Review and try again - you've got this!";
+        }
 
         document.getElementById("results-icon").textContent = icon;
         document.getElementById("results-title").textContent = title;
@@ -1110,10 +1428,16 @@
       }
 
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && document.getElementById("difficulty-modal").style.display === "flex") {
+        if (
+          e.key === "Escape" &&
+          document.getElementById("difficulty-modal").style.display === "flex"
+        ) {
           closeDifficultyModal();
         }
-        if (e.key === "Escape" && document.getElementById("instructions-modal").style.display === "flex") {
+        if (
+          e.key === "Escape" &&
+          document.getElementById("instructions-modal").style.display === "flex"
+        ) {
           closeInstructions();
         }
       });

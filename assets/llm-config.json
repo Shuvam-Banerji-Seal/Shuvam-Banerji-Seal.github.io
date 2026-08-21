@@ -1,0 +1,15 @@
+// SECURITY NOTE — do NOT commit real keys to version control.
+//
+// This file holds provider presets that used to be hardcoded in
+// pages/tools/llm-studio.html (B17). It is git-ignored (*.json is NOT
+// git-ignored, so keep it empty/committed, OR add assets/llm-config.json
+// to .gitignore and deploy it manually).
+//
+// The previously committed Modal key leaked into public git history —
+// treat it as compromised and ROTATE it in the Modal dashboard.
+//
+// When this file contains no real key, LLM Studio simply asks the user
+// for their key (which then stays in the user's own localStorage).
+{
+  "modal": { "presetKey": "" }
+}

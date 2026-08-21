@@ -18,19 +18,19 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: 'recursive'
+          submodules: "recursive"
           lfs: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install Dependencies
         run: npm install --no-audit --no-fund
@@ -54,6 +54,8 @@ jobs:
           cp -r assets ./dist/
           # Copy assets_for_my_website (music, etc.)
           cp -r assets_for_my_website ./dist/
+          # Copy the E-Reader books (reader.js fetches /books/all_books/...)
+          if [ -d books ]; then cp -r books ./dist/; fi
           # Remove git-related files to prevent issues
           rm -rf ./dist/assets_for_my_website/.git
           rm -f ./dist/assets_for_my_website/.gitattributes

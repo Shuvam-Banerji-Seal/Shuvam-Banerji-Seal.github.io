@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://shuvam-banerji-seal.github.io/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/resume.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/github-projects.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/music.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/gallery.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/notes.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/reader.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/thermodynamics.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/equation-balancer.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/mol-weight.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/ph-calculator.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/unit-converter.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/periodic-table.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/games.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/paper-finder.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/pdf-studio.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/pdf-to-jpg.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/pdf-reducer.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/audio-studio.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/youtube-downloader.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/llm-chat.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/tools/llm-studio.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://shuvam-banerji-seal.github.io/pages/mermaid-tool.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+</urlset>

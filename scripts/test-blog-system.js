@@ -1,54 +1,54 @@
-import { existsSync, readFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import assert from 'assert';
+import { existsSync, readFileSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+import assert from "assert";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-console.log('Running Blog System Tests...');
+console.log("Running Blog System Tests...");
 
 // Test 1: Verify Manifest Generation Logic
-console.log('Test 1: Verifying Manifest Generator...');
+console.log("Test 1: Verifying Manifest Generator...");
 try {
-    const manifestPath = join(__dirname, '../assets/blog-manifest.json');
-    if (!existsSync(manifestPath)) {
-        throw new Error('Manifest file does not exist');
-    }
+  const manifestPath = join(__dirname, "../public/blog-manifest.json");
+  if (!existsSync(manifestPath)) {
+    throw new Error("Manifest file does not exist");
+  }
 
-    const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
-    assert(Array.isArray(manifest), 'Manifest should be an array');
-    assert(manifest.length > 0, 'Manifest should not be empty');
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+  assert(Array.isArray(manifest), "Manifest should be an array");
+  assert(manifest.length > 0, "Manifest should not be empty");
 
-    const post = manifest[0];
-    assert(post.title, 'Post should have a title');
-    assert(post.date, 'Post should have a date');
-    assert(post.filename, 'Post should have a filename');
-    assert(Array.isArray(post.tags), 'Tags should be an array');
+  const post = manifest[0];
+  assert(post.title, "Post should have a title");
+  assert(post.date, "Post should have a date");
+  assert(post.filename, "Post should have a filename");
+  assert(Array.isArray(post.tags), "Tags should be an array");
 
-    console.log('✅ Manifest structure is valid.');
+  console.log("✅ Manifest structure is valid.");
 } catch (error) {
-    console.error('❌ Test 1 Failed:', error.message);
-    process.exit(1);
+  console.error("❌ Test 1 Failed:", error.message);
+  process.exit(1);
 }
 
 // Test 2: Verify Markdown Frontmatter Parsing
-console.log('Test 2: Verifying Sample Post Frontmatter...');
+console.log("Test 2: Verifying Sample Post Frontmatter...");
 try {
-    const postPath = join(__dirname, '../assets/posts/welcome.md');
-    const content = readFileSync(postPath, 'utf-8');
+  const postPath = join(__dirname, "../public/posts/welcome.md");
+  const content = readFileSync(postPath, "utf-8");
 
-    const match = content.match(/^---\n([\s\S]*?)\n---/);
-    assert(match, 'Post should have frontmatter');
+  const match = content.match(/^---\n([\s\S]*?)\n---/);
+  assert(match, "Post should have frontmatter");
 
-    const frontMatter = match[1];
-    assert(frontMatter.includes('title:'), 'Frontmatter should contain title');
-    assert(frontMatter.includes('date:'), 'Frontmatter should contain date');
+  const frontMatter = match[1];
+  assert(frontMatter.includes("title:"), "Frontmatter should contain title");
+  assert(frontMatter.includes("date:"), "Frontmatter should contain date");
 
-    console.log('✅ Sample post frontmatter is valid.');
+  console.log("✅ Sample post frontmatter is valid.");
 } catch (error) {
-    console.error('❌ Test 2 Failed:', error.message);
-    process.exit(1);
+  console.error("❌ Test 2 Failed:", error.message);
+  process.exit(1);
 }
 
-console.log('🎉 All Blog System Tests Passed!');
+console.log("🎉 All Blog System Tests Passed!");

@@ -1,0 +1,5 @@
+# https://shuvam-banerji-seal.github.io
+User-agent: *
+Allow: /
+
+Sitemap: https://shuvam-banerji-seal.github.io/sitemap.xml

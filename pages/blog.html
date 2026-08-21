@@ -32,7 +32,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/theme.css" />
@@ -48,7 +48,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
     />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
     <style>
       * {
         box-sizing: border-box;
@@ -170,12 +170,21 @@
         color: #8b4513;
       }
       html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .path-host {
-        color: #3d6b2e;
+        color: #2f5517;
       }
       .titlebar-right {
         color: var(--text-muted);
         font-family: var(--font-mono);
         font-size: 0.73rem;
+      }
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .titlebar-right {
+        /* light theme: muted #9c7a5a was 2.7:1 on the parchment bar */
+        color: #6b4226;
       }
       .header-body {
         padding: 2rem 2.5rem;

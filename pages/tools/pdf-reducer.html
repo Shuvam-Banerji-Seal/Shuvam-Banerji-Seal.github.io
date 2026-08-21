@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -14,26 +25,53 @@
       name="description"
       content="Compress PDF files to reduce their size while maintaining quality"
     />
-    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/pdf-reducer.html" />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/pdf-reducer.html"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="PDF Compressor - SBS Tools" />
-    <meta property="og:description" content="Compress PDF files to reduce their size while maintaining quality." />
-    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/pdf-reducer.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:description"
+      content="Compress PDF files to reduce their size while maintaining quality."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/pdf-reducer.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="PDF Compressor - SBS Tools" />
-    <meta name="twitter:description" content="Compress PDF files to reduce their size." />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      name="twitter:description"
+      content="Compress PDF files to reduce their size."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="robots" content="index, follow" />
     <title>PDF Compressor - SBS Tools</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script defer src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+    ></script>
+    <script
+      defer
+      src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"
+    ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -289,7 +327,8 @@
       let compressedBlob = null;
 
       document.addEventListener("DOMContentLoaded", () => {
-        if (typeof lucide !== "undefined") if (typeof lucide !== "undefined") lucide.createIcons();
+        if (typeof lucide !== "undefined")
+          if (typeof lucide !== "undefined") lucide.createIcons();
 
         const dropZone = document.getElementById("drop-zone");
         const fileInput = document.getElementById("file-input");
@@ -311,8 +350,7 @@
           dropZone.classList.remove("dragover");
           const file = e.dataTransfer.files[0];
           if (file && file.type === "application/pdf") loadFile(file);
-          else if (file)
-            showNotification("Please select a PDF file.", "error");
+          else if (file) showNotification("Please select a PDF file.", "error");
         });
       });
 
@@ -478,7 +516,10 @@
       function showResult(pagesProcessed = null, totalPages = null) {
         const original = originalFile.size;
         const compressed = compressedBlob.size;
-        const reduction = ((1 - compressed / original) * 100).toFixed(1);
+        const actuallySmaller = compressed < original;
+        const reduction = actuallySmaller
+          ? ((1 - compressed / original) * 100).toFixed(1)
+          : "0";
 
         let statsHtml = `
           <div class="stat-item">
@@ -506,16 +547,49 @@
 
         document.querySelector(".result-stats").innerHTML = statsHtml;
 
+        // When the "compressed" output is not smaller, reword the result so
+        // the UI never reports a negative/misleading reduction.
+        if (actuallySmaller) {
+          setResultHeading("check-circle", "Compression Complete");
+        } else {
+          setResultHeading(
+            "info",
+            "Already Optimized \u2014 Nothing to Reduce",
+          );
+          showNotification(
+            "This PDF could not be compressed further. The original file has been kept downloadable.",
+            "info",
+          );
+        }
+
         document.getElementById("result-container").style.display = "block";
 
-        document.getElementById("download-btn").onclick = () => {
+        const downloadBtn = document.getElementById("download-btn");
+        if (downloadBtn) {
+          downloadBtn.innerHTML = actuallySmaller
+            ? '<i data-lucide="download"></i> Download Compressed PDF'
+            : '<i data-lucide="download"></i> Download Original PDF';
+        }
+
+        downloadBtn.onclick = () => {
           const link = document.createElement("a");
-          link.download = originalFile.name.replace(".pdf", "_compressed.pdf");
-          link.href = URL.createObjectURL(compressedBlob);
+          link.download = actuallySmaller
+            ? originalFile.name.replace(".pdf", "_compressed.pdf")
+            : originalFile.name;
+          link.href = URL.createObjectURL(
+            actuallySmaller ? compressedBlob : originalFile,
+          );
           link.click();
         };
 
         if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      function setResultHeading(iconName, text) {
+        const heading = document.querySelector("#result-container > h3");
+        if (heading) {
+          heading.innerHTML = `<i data-lucide="${iconName}"></i> ${text}`;
+        }
       }
 
       function updateProgress(current, total) {

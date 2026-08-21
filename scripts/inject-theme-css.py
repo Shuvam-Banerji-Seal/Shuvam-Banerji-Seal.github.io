@@ -1,7 +1,8 @@
 """Inject theme.css link into all HTML pages (before main.css)."""
 import os, re
 
-ROOT = "/home/shuvam/codes/Shuvam-Banerji-Seal.github.io"
+# Repo root = parent of the scripts/ folder this file lives in (portable).
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pages_depth = {
     "pages":       "../assets/css/theme.css",

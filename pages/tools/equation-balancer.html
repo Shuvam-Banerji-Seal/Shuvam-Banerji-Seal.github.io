@@ -4,7 +4,18 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -14,24 +25,45 @@
       name="description"
       content="Balance chemical equations automatically"
     />
-    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/tools/equation-balancer.html" />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/equation-balancer.html"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Equation Balancer - SBS Tools" />
-    <meta property="og:description" content="Balance chemical equations automatically with this free tool." />
-    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/tools/equation-balancer.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:description"
+      content="Balance chemical equations automatically with this free tool."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/equation-balancer.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Equation Balancer - SBS Tools" />
-    <meta name="twitter:description" content="Balance chemical equations automatically." />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      name="twitter:description"
+      content="Balance chemical equations automatically."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="robots" content="index, follow" />
     <title>Equation Balancer - SBS Tools</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -590,14 +622,17 @@
 
       function balanceEquation() {
         const input = document.getElementById("equation-input").value.trim();
+        const resultCard = document.getElementById("result-card");
         if (!input) {
           showNotification("Please enter a chemical equation", "error");
+          if (resultCard) resultCard.style.display = "none";
           return;
         }
 
         const validation = validateInput(input);
         if (!validation.valid) {
           showNotification(validation.message, "error");
+          if (resultCard) resultCard.style.display = "none";
           return;
         }
 
@@ -660,6 +695,8 @@
           displayResult(reactants, products, coefficients, elementList);
         } catch (error) {
           showNotification("Error: " + error.message, "error");
+          // Hide any stale result so it doesn't contradict the error
+          if (resultCard) resultCard.style.display = "none";
         }
       }
 
@@ -683,13 +720,16 @@
               "Both sides of the equation must have at least one compound.",
           };
         }
-        const compoundRegex = /^[A-Z][a-z]?\d*(\(.*\)\d*)*[A-Z]?\d*$/;
+        // Grammar-aware compound validation: elements, subscripts,
+        // brackets (any nesting depth) and hydrate dots. The previous
+        // regex allowed at most two elements and rejected valid
+        // compounds like KClO3 or KMnO4.
         const allCompounds = [
           ...sides[0].split(/\s*\+\s*/),
           ...sides[1].split(/\s*\+\s*/),
         ].filter((s) => s.trim());
         for (const compound of allCompounds) {
-          if (!compoundRegex.test(compound.trim())) {
+          if (!isValidCompound(compound.trim())) {
             return {
               valid: false,
               message: `Invalid compound format: ${compound}`,
@@ -697,6 +737,39 @@
           }
         }
         return { valid: true, message: "" };
+      }
+
+      function isValidCompound(compound) {
+        if (!compound || !/[A-Z]/.test(compound)) return false;
+        let i = 0;
+        const n = compound.length;
+        while (i < n) {
+          const ch = compound[i];
+          if (ch === "(" || ch === "[") {
+            let depth = 1;
+            i++;
+            while (i < n && depth > 0) {
+              if (compound[i] === "(" || compound[i] === "[") depth++;
+              else if (compound[i] === ")" || compound[i] === "]") depth--;
+              i++;
+            }
+            if (depth !== 0) return false;
+            // optional subscript after the closing bracket
+            while (i < n && /\d/.test(compound[i])) i++;
+          } else if (/[A-Z]/.test(ch)) {
+            i++;
+            while (i < n && /[a-z]/.test(compound[i])) i++;
+            while (i < n && /\d/.test(compound[i])) i++;
+          } else if (ch === ".") {
+            // hydrate dot must be followed by a digit (e.g. CuSO4.5H2O)
+            i++;
+            if (i >= n || !/\d/.test(compound[i])) return false;
+            while (i < n && /\d/.test(compound[i])) i++;
+          } else {
+            return false;
+          }
+        }
+        return true;
       }
 
       function checkIfAlreadyBalanced(
@@ -922,12 +995,27 @@
       }
 
       function formatCompound(compound) {
-        return compound.replace(/(\d+)/g, "<sub>$1</sub>");
+        // Render hydrate dots as middots before subscripting numbers
+        return compound
+          .replace(/\.(\d*)/g, "\u00b7$1")
+          .replace(/(\d+)/g, "<sub>$1</sub>");
       }
 
       function parseCompound(compound) {
         const composition = {};
-        parseGroup(compound, 1, composition);
+        // Handle hydrates (e.g. CuSO4.5H2O): the number after the dot
+        // multiplies the following part of the formula.
+        compound.split(".").forEach((part, index) => {
+          let multiplier = 1;
+          if (index > 0) {
+            const m = part.match(/^(\d+)(.*)$/);
+            if (m) {
+              multiplier = parseInt(m[1]);
+              part = m[2];
+            }
+          }
+          parseGroup(part, multiplier, composition);
+        });
         return composition;
       }
 

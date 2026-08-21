@@ -5,7 +5,18 @@
     <!-- Early theme injection to prevent FOUC -->
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -34,9 +45,15 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://shuvam-banerji-seal.github.io/" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
     <meta name="twitter:title" content="Shuvam Banerji Seal" />
     <meta
       name="twitter:description"
@@ -50,13 +67,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
 
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
 
     <link rel="stylesheet" href="assets/css/theme.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -70,7 +89,11 @@
    ================================================================ */
 
       /* Light (creamy coffee) — page-specific overrides */
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) {
+      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"]) {
         --bg-card: rgba(235, 220, 195, 0.85);
         --text-secondary: #5c4a32;
         --text-muted: #8b7355;
@@ -177,16 +200,36 @@
       .loading-ok {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .loading-info {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .loading-info {
         color: var(--text-muted);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .loading-text {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .loading-text {
         color: var(--text-secondary);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .loading-ok {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .loading-ok {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .loading-bar-wrap {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .loading-bar-wrap {
         background: var(--border);
       }
 
@@ -212,10 +255,20 @@
       .term-help-cmd {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-help-title {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-help-title {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-help-cmd {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-help-cmd {
         color: var(--accent-green);
       }
 
@@ -270,55 +323,135 @@
       }
 
       /* Light mode terminal command output overrides */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-arrow {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-arrow {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-dir {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-dir {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-project {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-project {
         color: var(--accent-purple);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-skill-comp {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-skill-comp {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-skill-ai {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-skill-ai {
         color: var(--accent-purple);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-skill-prog {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-skill-prog {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-skill-tools {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-skill-tools {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-contact-label {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-contact-label {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-contact-gh {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-contact-gh {
         color: var(--accent-purple);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-contact-li {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-contact-li {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-contact-orcid {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-contact-orcid {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-commit {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-commit {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-code {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-code {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-status-ok {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-status-ok {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-status-wait {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-status-wait {
         color: var(--accent-cyan);
       }
       .term-error {
         color: #ff4757;
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-error {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-error {
         color: var(--accent-purple);
       }
 
@@ -326,7 +459,12 @@
       .form-status-error {
         color: #ff4757 !important;
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-status-error {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .form-status-error {
         color: var(--accent-purple) !important;
       }
 
@@ -445,6 +583,10 @@
         font-family: var(--font-mono);
         font-size: 0.85rem;
         line-height: 1.8;
+        /* Preserve space-padded columns (help table, ls columns, aligned tags).
+           pre-wrap keeps alignment while still allowing long lines to wrap. */
+        white-space: pre-wrap;
+        word-break: break-word;
         min-height: 380px;
         max-height: 450px;
         overflow-y: auto;
@@ -483,16 +625,36 @@
         scrollbar-width: thin;
         scrollbar-color: var(--border-glow) rgba(0, 0, 0, 0.15);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body::-webkit-scrollbar-track {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-body::-webkit-scrollbar-track {
         background: var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body::-webkit-scrollbar-thumb {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-body::-webkit-scrollbar-thumb {
         background: var(--border-glow);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body::-webkit-scrollbar-thumb:hover {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-body::-webkit-scrollbar-thumb:hover {
         background: var(--border-glow);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-body {
         scrollbar-color: var(--border-glow) var(--border);
       }
       .term-output.title-line {
@@ -526,6 +688,12 @@
         display: flex;
         align-items: center;
         gap: 0;
+      }
+      /* .hero becomes text-align:center on ≤1024px viewports; terminal content must
+         stay strictly left-aligned or pre-wrap indentation drifts per line. */
+      .terminal-window,
+      .term-body {
+        text-align: left;
       }
       .term-input {
         flex: 1 1 auto;
@@ -562,7 +730,12 @@
       .term-input::selection {
         background: var(--border-glow);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-input {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-input {
         color: var(--text-primary);
         caret-color: var(--accent-green);
       }
@@ -590,20 +763,40 @@
         justify-content: space-between;
         border-bottom: 1px solid var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .viewer-window {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .viewer-window {
         background: var(--bg-card);
         border-color: var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .viewer-titlebar {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .viewer-titlebar {
         background: var(--bg-elevated);
         border-bottom-color: var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .viewer-info {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .viewer-info {
         background: var(--bg-card);
         border-top-color: var(--border);
         color: var(--text-secondary);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .terminal-window {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .terminal-window {
         background: var(--bg-card);
       }
       .viewer-label {
@@ -1235,47 +1428,103 @@
       }
 
       /* --- LIGHT THEME OVERRIDES (creamy coffee) --- */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) body::before {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        body::before {
         opacity: 0.015;
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .hero-grid-bg {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .hero-grid-bg {
         background-image:
           linear-gradient(var(--border) 1px, transparent 1px),
           linear-gradient(90deg, var(--border) 1px, transparent 1px);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .terminal-window {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .terminal-window {
         background: var(--bg-card);
         border-color: var(--border);
-        box-shadow:
-          var(--glow-cyan),
-          var(--shadow-card);
+        box-shadow: var(--glow-cyan), var(--shadow-card);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-titlebar {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-titlebar {
         background: var(--bg-elevated);
         border-bottom-color: var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-body {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-body {
         background: var(--bg-deep);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-badge.shell {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-badge.shell {
         background: var(--border);
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-badge.branch {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-badge.branch {
         background: var(--border);
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-path .path-host {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-path
+        .path-host {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-path .path-sep {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-path
+        .path-sep {
         color: var(--text-muted);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-path .path-dir {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-path
+        .path-dir {
         color: var(--text-primary);
       }
       /* Protein viewer stays dark — it's a "screen" display */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .hero::after {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .hero::after {
         background:
           radial-gradient(
             ellipse 60% 40% at 20% 50%,
@@ -1289,107 +1538,253 @@
           );
       }
       /* Cards, log blocks, contact block — light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .card,
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .project-card {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .card,
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .project-card {
         background: var(--bg-card);
         border-color: var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .log-block {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .log-block {
         background: var(--bg-card);
         border-left-color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .gjf-block {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .gjf-block {
         background: var(--bg-card);
         border-color: var(--border);
       }
       /* Terminal text colours in light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-prompt {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-prompt {
         color: var(--accent-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-cmd {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-cmd {
         color: var(--text-primary);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-output {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-output {
         color: var(--text-secondary);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-output.highlight {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-output.highlight {
         color: var(--accent-green);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .term-output.title-line {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .term-output.title-line {
         background: var(--grad-primary);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
       /* Skill tags light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .skill-tag {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .skill-tag {
         background: var(--border);
         color: var(--accent-cyan);
         border-color: var(--border-glow);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .tech-tag {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .tech-tag {
         background: var(--border);
         color: var(--accent-purple);
         border-color: var(--border-glow);
       }
       /* Section headers light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .section-file-label {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .section-file-label {
         color: var(--accent-green);
       }
       /* Form inputs light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field input,
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field textarea {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .form-field
+        input,
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .form-field
+        textarea {
         background: var(--input-bg);
         border-color: var(--border);
         color: var(--text-primary);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field input::placeholder,
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field textarea::placeholder {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .form-field
+        input::placeholder,
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .form-field
+        textarea::placeholder {
         color: var(--text-muted);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field input:focus,
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .form-field textarea:focus {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .form-field
+        input:focus,
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .form-field
+        textarea:focus {
         border-color: var(--accent-cyan);
         box-shadow: var(--glow-cyan);
       }
       /* Meta rows light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .meta-row {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .meta-row {
         border-bottom-color: var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .profile-card {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .profile-card {
         background: var(--bg-card);
         border-color: var(--border);
       }
       /* Footer light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) footer {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        footer {
         border-top-color: var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .social-link {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .social-link {
         background: var(--bg-card);
         border-color: var(--border);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .social-link:hover {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .social-link:hover {
         border-color: var(--accent-cyan);
         color: var(--accent-cyan);
         box-shadow: var(--glow-cyan);
       }
       /* Button light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .btn-primary:hover {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .btn-primary:hover {
         box-shadow: var(--glow-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .btn-outline:hover {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .btn-outline:hover {
         background: var(--border);
       }
       /* Card hover light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .card:hover {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .card:hover {
         border-color: var(--border-glow);
         box-shadow: var(--glow-cyan);
       }
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .project-card:hover {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        .project-card:hover {
         border-color: var(--border-glow);
       }
       /* Loading screen light mode */
-      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) #loading-screen {
+      :not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+          [data-theme="amber"]
+        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+          [data-theme="forest"]
+        ):not([data-theme="dracula"])
+        #loading-screen {
         background: var(--bg-deep);
       }
     </style>
@@ -1439,7 +1834,9 @@
 
     <!-- ========== HERO ========== -->
     <section class="hero" id="main-content">
-      <h1 class="sr-only">Shuvam Banerji Seal - Computational Chemist & AI Researcher</h1>
+      <h1 class="sr-only">
+        Shuvam Banerji Seal - Computational Chemist & AI Researcher
+      </h1>
       <!-- Terminal window -->
       <div class="terminal-window fade-in" id="hero-terminal">
         <div class="term-titlebar">
@@ -2178,22 +2575,23 @@
         // ── Command registry ────────────────────────────────────────────────────
         const COMMANDS = {
           help: () => [
+            // Column convention: cmd padded to 18 mono chars, then " — desc".
             '<span class="term-help-title">Available commands:</span>',
-            '  <span class="term-help-cmd">whoami</span>       — display current user',
-            '  <span class="term-help-cmd">cat role.txt</span> — show current role',
-            '  <span class="term-help-cmd">ls research/</span> — list research areas',
-            '  <span class="term-help-cmd">ls projects/</span> — list featured projects',
-            '  <span class="term-help-cmd">cat about.txt</span>— brief biography',
-            '  <span class="term-help-cmd">cat skills.md</span>— technical skills',
-            '  <span class="term-help-cmd">cat contacts.txt</span>— contact info',
-            '  <span class="term-help-cmd">git log</span>      — recent activity',
-            '  <span class="term-help-cmd">pwd</span>          — print working directory',
-            '  <span class="term-help-cmd">date</span>         — current date/time',
-            '  <span class="term-help-cmd">uname -a</span>    — system info',
-            '  <span class="term-help-cmd">python3 demo.py</span>— run a quick demo',
-            '  <span class="term-help-cmd">./run-research.sh</span>— show research pipeline',
-            '  <span class="term-help-cmd">clear</span>        — clear terminal',
-            '  <span class="term-help-cmd">exit</span>         — close terminal',
+            '  <span class="term-help-cmd">whoami            </span> — display current user',
+            '  <span class="term-help-cmd">cat role.txt      </span> — show current role',
+            '  <span class="term-help-cmd">ls research/      </span> — list research areas',
+            '  <span class="term-help-cmd">ls projects/      </span> — list featured projects',
+            '  <span class="term-help-cmd">cat about.txt     </span> — brief biography',
+            '  <span class="term-help-cmd">cat skills.md     </span> — technical skills',
+            '  <span class="term-help-cmd">cat contacts.txt  </span> — contact info',
+            '  <span class="term-help-cmd">git log           </span> — recent activity',
+            '  <span class="term-help-cmd">pwd               </span> — print working directory',
+            '  <span class="term-help-cmd">date              </span> — current date/time',
+            '  <span class="term-help-cmd">uname -a          </span> — system info',
+            '  <span class="term-help-cmd">python3 demo.py   </span> — run a quick demo',
+            '  <span class="term-help-cmd">./run-research.sh </span> — show research pipeline',
+            '  <span class="term-help-cmd">clear             </span> — clear terminal',
+            '  <span class="term-help-cmd">exit              </span> — close terminal',
           ],
           whoami: () => ["Shuvam Banerji Seal"],
           pwd: () => ["/home/shuvam/portfolio"],
@@ -2207,15 +2605,17 @@
             '<span class="term-arrow">&gt;</span> Chemistry Major · Computer Science Minor',
           ],
           "ls research/": () => [
+            // even 3-space separation between directory columns.
             '<span class="term-dir">DFT-Catalysis/</span>   <span class="term-dir">RAG-Systems/</span>   <span class="term-dir">TREC-NLP/</span>   <span class="term-dir">Mol-Dynamics/</span>',
-            '<span class="term-dir">Protein-Struct/</span>  <span class="term-dir">LLM-Inference/</span> <span class="term-dir">IR-Research/</span>',
+            '<span class="term-dir">Protein-Struct/</span>   <span class="term-dir">LLM-Inference/</span>   <span class="term-dir">IR-Research/</span>',
           ],
           "ls projects/": () => [
-            '<span class="term-project">hybrid-rag/</span>         — RAG pipeline for IISER-K intranet',
-            '<span class="term-project">trec-retrieval/</span>     — TREC 2024 NLP retrieval system',
-            '<span class="term-project">dft-catalyst/</span>       — DFT modelling of transition states',
-            '<span class="term-project">mol-dynamics-sim/</span>   — GROMACS protein folding study',
-            '<span class="term-project">sbs-portfolio/</span>      — this website :)',
+            // project dir padded to 18 mono chars, then " — desc".
+            '<span class="term-project">hybrid-rag/       </span> — RAG pipeline for IISER-K intranet',
+            '<span class="term-project">trec-retrieval/   </span> — TREC 2024 NLP retrieval system',
+            '<span class="term-project">dft-catalyst/     </span> — DFT modelling of transition states',
+            '<span class="term-project">mol-dynamics-sim/ </span> — GROMACS protein folding study',
+            '<span class="term-project">sbs-portfolio/    </span> — this website :)',
           ],
           "cat about.txt": () => [
             "I'm Shuvam — a BS-MS student at IISER Kolkata pursuing",
@@ -2234,10 +2634,11 @@
             '<span class="term-skill-tools"># Tools</span>: Git · Docker · Streamlit · Lucene · SQLite',
           ],
           "cat contacts.txt": () => [
-            '<span class="term-contact-label">email</span>: sbs22ms076@iiserkol.ac.in',
-            '<span class="term-contact-gh">github</span>: github.com/Shuvam-Banerji-Seal',
+            // labels padded to 8 chars so the colons align.
+            '<span class="term-contact-label">email   </span>: sbs22ms076@iiserkol.ac.in',
+            '<span class="term-contact-gh">github  </span>: github.com/Shuvam-Banerji-Seal',
             '<span class="term-contact-li">linkedin</span>: linkedin.com/in/mastersbs',
-            '<span class="term-contact-orcid">orcid</span>: orcid.org/0009-0000-0714-569X',
+            '<span class="term-contact-orcid">orcid   </span>: orcid.org/0009-0000-0714-569X',
           ],
           "git log": () => [
             '<span class="term-commit">commit a8f3c2d</span> (HEAD -&gt; main)  Add ATP 3D viewer',
@@ -2460,337 +2861,384 @@
       /* ----- Three.js ATP Ball-and-Stick Viewer ----- */
       window.addEventListener("DOMContentLoaded", function () {
         const canvas = document.getElementById("protein-canvas");
-        if (!canvas || typeof THREE === "undefined") return;
+        if (!canvas) return;
 
-        try {
-        const renderer = new THREE.WebGLRenderer({
-          canvas,
-          antialias: true,
-          alpha: true,
-        });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x060c1e, 0.018);
-
-        const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 500);
-        camera.position.set(0, 0, 40);
-
-        // Lights — stored for theme updates
-        const ambLight = new THREE.AmbientLight(0x223355, 2.2);
-        scene.add(ambLight);
-        const dl1 = new THREE.DirectionalLight(0xffffff, 3.0);
-        dl1.position.set(10, 15, 10);
-        scene.add(dl1);
-        const dl2 = new THREE.DirectionalLight(0x7c3aed, 2.0);
-        dl2.position.set(-8, -8, 5);
-        scene.add(dl2);
-        const pl = new THREE.PointLight(0x00d4ff, 2.5, 100);
-        pl.position.set(0, 10, 10);
-        scene.add(pl);
-
-        // CPK element colours
-        const EL_COLOR = {
-          P: "#FF8C00",
-          O: "#FF3333",
-          N: "#4488FF",
-          C: "#00D4FF",
-          H: "#CCCCCC",
-          S: "#FFFF00",
-        };
-        // vdW-inspired radii for balls (scaled down for display)
-        const EL_RADIUS = {
-          P: 0.8,
-          O: 0.55,
-          N: 0.58,
-          C: 0.55,
-          H: 0.35,
-          S: 0.7,
-        };
-
-        // ATP atoms (44 HETATM from ATP.pdb)
-        const atoms = [
-          { name: "PA", el: "P", x: 5.562, y: 20.965, z: 11.527 },
-          { name: "PB", el: "P", x: 3.828, y: 23.334, z: 11.082 },
-          { name: "PG", el: "P", x: 0.942, y: 23.641, z: 11.956 },
-          { name: "C5*", el: "C", x: 4.892, y: 19.279, z: 9.602 },
-          { name: "O5*", el: "O", x: 5.945, y: 19.986, z: 10.293 },
-          { name: "C4*", el: "C", x: 5.249, y: 17.8, z: 9.447 },
-          { name: "O4*", el: "O", x: 6.419, y: 17.604, z: 8.615 },
-          { name: "C3*", el: "C", x: 5.505, y: 17.072, z: 10.772 },
-          { name: "O3*", el: "O", x: 5.039, y: 15.707, z: 10.788 },
-          { name: "C2*", el: "C", x: 7.022, y: 17.119, z: 10.877 },
-          { name: "O2*", el: "O", x: 7.52, y: 16.069, z: 11.726 },
-          { name: "C1*", el: "C", x: 7.44, y: 16.999, z: 9.417 },
-          { name: "N1", el: "N", x: 12.416, y: 16.845, z: 8.061 },
-          { name: "O1A", el: "O", x: 6.859, y: 21.523, z: 12.024 },
-          { name: "O1B", el: "O", x: 4.221, y: 23.589, z: 12.489 },
-          { name: "O1G", el: "O", x: 0.128, y: 22.494, z: 12.468 },
-          { name: "C2", el: "C", x: 11.528, y: 15.839, z: 8.106 },
-          { name: "O2A", el: "O", x: 4.642, y: 20.301, z: 12.47 },
-          { name: "O2B", el: "O", x: 4.03, y: 24.384, z: 10.053 },
-          { name: "O2G", el: "O", x: 0.294, y: 24.71, z: 11.096 },
-          { name: "N3", el: "N", x: 10.268, y: 16.049, z: 8.468 },
-          { name: "O3A", el: "O", x: 4.75, y: 22.102, z: 10.688 },
-          { name: "O3B", el: "O", x: 2.266, y: 22.96, z: 11.124 },
-          { name: "O3G", el: "O", x: 1.474, y: 24.522, z: 13.215 },
-          { name: "C4", el: "C", x: 9.871, y: 17.284, z: 8.794 },
-          { name: "C5", el: "C", x: 10.762, y: 18.341, z: 8.753 },
-          { name: "C6", el: "C", x: 12.074, y: 18.102, z: 8.373 },
-          { name: "N6", el: "N", x: 12.978, y: 19.07, z: 8.32 },
-          { name: "N7", el: "N", x: 10.089, y: 19.427, z: 9.115 },
-          { name: "C8", el: "C", x: 8.832, y: 19.082, z: 9.389 },
-          { name: "N9", el: "N", x: 8.695, y: 17.771, z: 9.196 },
-          { name: "H01", el: "H", x: 8.045, y: 19.761, z: 9.717 },
-          { name: "H02", el: "H", x: 4.751, y: 19.72, z: 8.615 },
-          { name: "H03", el: "H", x: 4.362, y: 17.373, z: 8.979 },
-          { name: "H04", el: "H", x: 4.97, y: 17.537, z: 11.6 },
-          { name: "H05", el: "H", x: 4.937, y: 15.414, z: 11.696 },
-          { name: "H06", el: "H", x: 7.425, y: 18.017, z: 11.345 },
-          { name: "H07", el: "H", x: 7.71, y: 15.291, z: 11.196 },
-          { name: "H08", el: "H", x: 7.589, y: 15.95, z: 9.16 },
-          { name: "H09", el: "H", x: -0.014, y: 22.598, z: 13.412 },
-          { name: "H10", el: "H", x: 11.847, y: 14.831, z: 7.84 },
-          { name: "H11", el: "H", x: 12.719, y: 20.017, z: 8.558 },
-          { name: "H12", el: "H", x: 13.926, y: 18.861, z: 8.042 },
-          { name: "H13", el: "H", x: 3.974, y: 19.36, z: 10.184 },
-        ];
-
-        // Center the molecule
-        const cx = atoms.reduce((s, a) => s + a.x, 0) / atoms.length;
-        const cy = atoms.reduce((s, a) => s + a.y, 0) / atoms.length;
-        const cz = atoms.reduce((s, a) => s + a.z, 0) / atoms.length;
-        const sc = 1.4; // scale Å to scene units
-        const pts = atoms.map(
-          (a) =>
-            new THREE.Vector3(
-              (a.x - cx) * sc,
-              (a.y - cy) * sc,
-              (a.z - cz) * sc,
-            ),
-        );
-
-        // Atom spheres — no shared geometry so each can have its own colour
-        const atomMeshes = [];
-        atoms.forEach((a, i) => {
-          const el = a.el.charAt(0);
-          const col = EL_COLOR[el] || "#888888";
-          const r = (EL_RADIUS[el] || 0.5) * (el === "H" ? 0.7 : 1.0);
-          const geo = new THREE.SphereGeometry(r, 14, 10);
-          const mat = new THREE.MeshPhongMaterial({
-            color: col,
-            emissive: col,
-            emissiveIntensity: 0.15,
-            shininess: 200,
-            specular: 0xffffff,
-          });
-          const m = new THREE.Mesh(geo, mat);
-          m.position.copy(pts[i]);
-          m.userData = { name: a.name, el: a.el, idx: i };
-          scene.add(m);
-          atomMeshes.push(m);
-        });
-
-        // Sticks between bonded atoms (distance threshold)
-        function bondThreshold(el1, el2) {
-          if (el1 === "H" || el2 === "H") return 1.4;
-          return 2.05;
-        }
-        const bondGroup = new THREE.Group();
-        scene.add(bondGroup);
-        for (let i = 0; i < atoms.length; i++) {
-          const el1 = atoms[i].el.charAt(0);
-          for (let j = i + 1; j < atoms.length; j++) {
-            const el2 = atoms[j].el.charAt(0);
-            const d = pts[i].distanceTo(pts[j]);
-            if (d / sc > bondThreshold(el1, el2)) continue;
-            // Build cylinder from midpoint, half to each atom
-            const mid = pts[i].clone().lerp(pts[j], 0.5);
-            const dir = pts[j].clone().sub(pts[i]);
-            const len = dir.length();
-            // Two half-cylinders for CPK colour split
-            [
-              [pts[i], 0, atoms[i].el, 0.5],
-              [pts[j], 0.5, atoms[j].el, 1.0],
-            ].forEach(([origin, from, el, to]) => {
-              const halfStart = pts[i].clone().lerp(pts[j], from);
-              const halfEnd = pts[i].clone().lerp(pts[j], to);
-              const halfLen = halfStart.distanceTo(halfEnd);
-              const halfMid = halfStart.clone().lerp(halfEnd, 0.5);
-              const cGeo = new THREE.CylinderGeometry(0.18, 0.18, halfLen, 8);
-              const col = EL_COLOR[el.charAt(0)] || "#888888";
-              const cMat = new THREE.MeshPhongMaterial({
-                color: col,
-                shininess: 80,
-              });
-              const cm = new THREE.Mesh(cGeo, cMat);
-              cm.position.copy(halfMid);
-              const axis = new THREE.Vector3(0, 1, 0);
-              const halfDir = halfEnd.clone().sub(halfStart).normalize();
-              cm.quaternion.setFromUnitVectors(axis, halfDir);
-              bondGroup.add(cm);
-            });
-          }
-        }
-
-        // Starfield
-        const sg = new THREE.BufferGeometry();
-        const sp = [];
-        for (let i = 0; i < 700; i++)
-          sp.push(
-            (Math.random() - 0.5) * 180,
-            (Math.random() - 0.5) * 180,
-            (Math.random() - 0.5) * 180,
-          );
-        sg.setAttribute("position", new THREE.Float32BufferAttribute(sp, 3));
-        const starMat = new THREE.PointsMaterial({
-          color: 0x2a3a5a,
-          size: 0.28,
-          transparent: true,
-          opacity: 0.7,
-        });
-        scene.add(new THREE.Points(sg, starMat));
-
-        // Resize
-        function resize() {
-          const w = canvas.clientWidth,
-            h = canvas.clientHeight;
-          renderer.setSize(w, h, false);
-          camera.aspect = w / h;
-          camera.updateProjectionMatrix();
-        }
-        resize();
-        window.addEventListener("resize", resize);
-
-        // Mouse/touch drag + scroll zoom
-        let drag = false,
-          lx = 0,
-          ly = 0,
-          tx = 0,
-          ty = 0;
-        canvas.addEventListener("mousedown", (e) => {
-          drag = true;
-          lx = e.clientX;
-          ly = e.clientY;
-        });
-        canvas.addEventListener(
-          "touchstart",
-          (e) => {
-            drag = true;
-            lx = e.touches[0].clientX;
-            ly = e.touches[0].clientY;
-          },
-          { passive: true },
-        );
-        window.addEventListener("mouseup", () => {
-          drag = false;
-        });
-        window.addEventListener("touchend", () => {
-          drag = false;
-        });
-        window.addEventListener("mousemove", (e) => {
-          if (!drag) return;
-          tx += (e.clientX - lx) * 0.012;
-          ty += (e.clientY - ly) * 0.012;
-          lx = e.clientX;
-          ly = e.clientY;
-        });
-        window.addEventListener(
-          "touchmove",
-          (e) => {
-            if (!drag) return;
-            tx += (e.touches[0].clientX - lx) * 0.012;
-            ty += (e.touches[0].clientY - ly) * 0.012;
-            lx = e.touches[0].clientX;
-            ly = e.touches[0].clientY;
-          },
-          { passive: true },
-        );
-        canvas.addEventListener(
-          "wheel",
-          (e) => {
-            e.preventDefault();
-            camera.position.z = Math.max(
-              10,
-              Math.min(80, camera.position.z + e.deltaY * 0.04),
+        // WebGL support probe — skip the ~600 KB three.js download entirely
+        // on devices where the scene can never render.
+        function webglAvailable() {
+          try {
+            const probe = document.createElement("canvas");
+            return !!(
+              window.WebGLRenderingContext &&
+              (probe.getContext("webgl") ||
+                probe.getContext("experimental-webgl"))
             );
-          },
-          { passive: false },
-        );
-
-        // Hover info
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        const hoverEl = document.getElementById("atp-hover-info");
-        canvas.addEventListener("mousemove", (e) => {
-          if (drag) return;
-          const rect = canvas.getBoundingClientRect();
-          mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-          mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-          raycaster.setFromCamera(mouse, camera);
-          const hits = raycaster.intersectObjects(atomMeshes);
-          if (hits.length > 0 && hoverEl) {
-            const { name, el } = hits[0].object.userData;
-            hoverEl.innerHTML = `<span>${name}</span>&nbsp;(${el})`;
-          } else if (hoverEl) {
-            hoverEl.innerHTML = `<span>DRAG</span>&nbsp;to rotate`;
+          } catch (e) {
+            return false;
           }
-        });
-
-        // Animate
-        let rx = 0,
-          ry = 0,
-          time = 0,
-          pivotGroup;
-        // Put everything under a pivot group for clean rotation
-        pivotGroup = new THREE.Group();
-        scene.remove(bondGroup);
-        atomMeshes.forEach((m) => scene.remove(m));
-        scene.children
-          .filter((c) => c.isGroup || c.isMesh)
-          .forEach((c) => {
-            if (c !== pivotGroup) pivotGroup.add(c);
-          });
-        pivotGroup.add(bondGroup);
-        atomMeshes.forEach((m) => pivotGroup.add(m));
-        scene.add(pivotGroup);
-
-        // Theme-aware colors
-        function applyMolTheme() {
-          const isDark =
-            document.documentElement.getAttribute("data-theme") !== "light";
-          const bg = isDark ? 0x060c1e : 0xede8de;
-          renderer.setClearColor(bg, 1);
-          scene.fog.color.setHex(bg);
-          ambLight.color.setHex(isDark ? 0x223355 : 0xd4c4a0);
-          ambLight.intensity = isDark ? 2.2 : 1.8;
-          dl2.color.setHex(isDark ? 0x7c3aed : 0xc97c3a);
-          pl.color.setHex(isDark ? 0x00d4ff : 0xff8c00);
-          starMat.color.setHex(isDark ? 0x2a3a5a : 0xb8a898);
         }
-        applyMolTheme();
-        new MutationObserver(applyMolTheme).observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ["data-theme"],
-        });
 
-        function animate() {
-          requestAnimationFrame(animate);
-          time += 0.004;
-          tx += 0.003;
-          rx += (ty - rx) * 0.06;
-          ry += (tx - ry) * 0.06;
-          pivotGroup.rotation.x = rx;
-          pivotGroup.rotation.y = ry;
-          pl.position.x = Math.sin(time * 0.7) * 15;
-          pl.position.z = Math.cos(time * 0.5) * 15 + 15;
-          renderer.render(scene, camera);
+        function initViewer() {
+          if (typeof THREE === "undefined") return;
+
+          try {
+            const renderer = new THREE.WebGLRenderer({
+              canvas,
+              antialias: true,
+              alpha: true,
+            });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x060c1e, 0.018);
+
+            const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 500);
+            camera.position.set(0, 0, 40);
+
+            // Lights — stored for theme updates
+            const ambLight = new THREE.AmbientLight(0x223355, 2.2);
+            scene.add(ambLight);
+            const dl1 = new THREE.DirectionalLight(0xffffff, 3.0);
+            dl1.position.set(10, 15, 10);
+            scene.add(dl1);
+            const dl2 = new THREE.DirectionalLight(0x7c3aed, 2.0);
+            dl2.position.set(-8, -8, 5);
+            scene.add(dl2);
+            const pl = new THREE.PointLight(0x00d4ff, 2.5, 100);
+            pl.position.set(0, 10, 10);
+            scene.add(pl);
+
+            // CPK element colours
+            const EL_COLOR = {
+              P: "#FF8C00",
+              O: "#FF3333",
+              N: "#4488FF",
+              C: "#00D4FF",
+              H: "#CCCCCC",
+              S: "#FFFF00",
+            };
+            // vdW-inspired radii for balls (scaled down for display)
+            const EL_RADIUS = {
+              P: 0.8,
+              O: 0.55,
+              N: 0.58,
+              C: 0.55,
+              H: 0.35,
+              S: 0.7,
+            };
+
+            // ATP atoms (44 HETATM from ATP.pdb)
+            const atoms = [
+              { name: "PA", el: "P", x: 5.562, y: 20.965, z: 11.527 },
+              { name: "PB", el: "P", x: 3.828, y: 23.334, z: 11.082 },
+              { name: "PG", el: "P", x: 0.942, y: 23.641, z: 11.956 },
+              { name: "C5*", el: "C", x: 4.892, y: 19.279, z: 9.602 },
+              { name: "O5*", el: "O", x: 5.945, y: 19.986, z: 10.293 },
+              { name: "C4*", el: "C", x: 5.249, y: 17.8, z: 9.447 },
+              { name: "O4*", el: "O", x: 6.419, y: 17.604, z: 8.615 },
+              { name: "C3*", el: "C", x: 5.505, y: 17.072, z: 10.772 },
+              { name: "O3*", el: "O", x: 5.039, y: 15.707, z: 10.788 },
+              { name: "C2*", el: "C", x: 7.022, y: 17.119, z: 10.877 },
+              { name: "O2*", el: "O", x: 7.52, y: 16.069, z: 11.726 },
+              { name: "C1*", el: "C", x: 7.44, y: 16.999, z: 9.417 },
+              { name: "N1", el: "N", x: 12.416, y: 16.845, z: 8.061 },
+              { name: "O1A", el: "O", x: 6.859, y: 21.523, z: 12.024 },
+              { name: "O1B", el: "O", x: 4.221, y: 23.589, z: 12.489 },
+              { name: "O1G", el: "O", x: 0.128, y: 22.494, z: 12.468 },
+              { name: "C2", el: "C", x: 11.528, y: 15.839, z: 8.106 },
+              { name: "O2A", el: "O", x: 4.642, y: 20.301, z: 12.47 },
+              { name: "O2B", el: "O", x: 4.03, y: 24.384, z: 10.053 },
+              { name: "O2G", el: "O", x: 0.294, y: 24.71, z: 11.096 },
+              { name: "N3", el: "N", x: 10.268, y: 16.049, z: 8.468 },
+              { name: "O3A", el: "O", x: 4.75, y: 22.102, z: 10.688 },
+              { name: "O3B", el: "O", x: 2.266, y: 22.96, z: 11.124 },
+              { name: "O3G", el: "O", x: 1.474, y: 24.522, z: 13.215 },
+              { name: "C4", el: "C", x: 9.871, y: 17.284, z: 8.794 },
+              { name: "C5", el: "C", x: 10.762, y: 18.341, z: 8.753 },
+              { name: "C6", el: "C", x: 12.074, y: 18.102, z: 8.373 },
+              { name: "N6", el: "N", x: 12.978, y: 19.07, z: 8.32 },
+              { name: "N7", el: "N", x: 10.089, y: 19.427, z: 9.115 },
+              { name: "C8", el: "C", x: 8.832, y: 19.082, z: 9.389 },
+              { name: "N9", el: "N", x: 8.695, y: 17.771, z: 9.196 },
+              { name: "H01", el: "H", x: 8.045, y: 19.761, z: 9.717 },
+              { name: "H02", el: "H", x: 4.751, y: 19.72, z: 8.615 },
+              { name: "H03", el: "H", x: 4.362, y: 17.373, z: 8.979 },
+              { name: "H04", el: "H", x: 4.97, y: 17.537, z: 11.6 },
+              { name: "H05", el: "H", x: 4.937, y: 15.414, z: 11.696 },
+              { name: "H06", el: "H", x: 7.425, y: 18.017, z: 11.345 },
+              { name: "H07", el: "H", x: 7.71, y: 15.291, z: 11.196 },
+              { name: "H08", el: "H", x: 7.589, y: 15.95, z: 9.16 },
+              { name: "H09", el: "H", x: -0.014, y: 22.598, z: 13.412 },
+              { name: "H10", el: "H", x: 11.847, y: 14.831, z: 7.84 },
+              { name: "H11", el: "H", x: 12.719, y: 20.017, z: 8.558 },
+              { name: "H12", el: "H", x: 13.926, y: 18.861, z: 8.042 },
+              { name: "H13", el: "H", x: 3.974, y: 19.36, z: 10.184 },
+            ];
+
+            // Center the molecule
+            const cx = atoms.reduce((s, a) => s + a.x, 0) / atoms.length;
+            const cy = atoms.reduce((s, a) => s + a.y, 0) / atoms.length;
+            const cz = atoms.reduce((s, a) => s + a.z, 0) / atoms.length;
+            const sc = 1.4; // scale Å to scene units
+            const pts = atoms.map(
+              (a) =>
+                new THREE.Vector3(
+                  (a.x - cx) * sc,
+                  (a.y - cy) * sc,
+                  (a.z - cz) * sc,
+                ),
+            );
+
+            // Atom spheres — no shared geometry so each can have its own colour
+            const atomMeshes = [];
+            atoms.forEach((a, i) => {
+              const el = a.el.charAt(0);
+              const col = EL_COLOR[el] || "#888888";
+              const r = (EL_RADIUS[el] || 0.5) * (el === "H" ? 0.7 : 1.0);
+              const geo = new THREE.SphereGeometry(r, 14, 10);
+              const mat = new THREE.MeshPhongMaterial({
+                color: col,
+                emissive: col,
+                emissiveIntensity: 0.15,
+                shininess: 200,
+                specular: 0xffffff,
+              });
+              const m = new THREE.Mesh(geo, mat);
+              m.position.copy(pts[i]);
+              m.userData = { name: a.name, el: a.el, idx: i };
+              scene.add(m);
+              atomMeshes.push(m);
+            });
+
+            // Sticks between bonded atoms (distance threshold)
+            function bondThreshold(el1, el2) {
+              if (el1 === "H" || el2 === "H") return 1.4;
+              return 2.05;
+            }
+            const bondGroup = new THREE.Group();
+            scene.add(bondGroup);
+            for (let i = 0; i < atoms.length; i++) {
+              const el1 = atoms[i].el.charAt(0);
+              for (let j = i + 1; j < atoms.length; j++) {
+                const el2 = atoms[j].el.charAt(0);
+                const d = pts[i].distanceTo(pts[j]);
+                if (d / sc > bondThreshold(el1, el2)) continue;
+                // Build cylinder from midpoint, half to each atom
+                const mid = pts[i].clone().lerp(pts[j], 0.5);
+                const dir = pts[j].clone().sub(pts[i]);
+                const len = dir.length();
+                // Two half-cylinders for CPK colour split
+                [
+                  [pts[i], 0, atoms[i].el, 0.5],
+                  [pts[j], 0.5, atoms[j].el, 1.0],
+                ].forEach(([origin, from, el, to]) => {
+                  const halfStart = pts[i].clone().lerp(pts[j], from);
+                  const halfEnd = pts[i].clone().lerp(pts[j], to);
+                  const halfLen = halfStart.distanceTo(halfEnd);
+                  const halfMid = halfStart.clone().lerp(halfEnd, 0.5);
+                  const cGeo = new THREE.CylinderGeometry(
+                    0.18,
+                    0.18,
+                    halfLen,
+                    8,
+                  );
+                  const col = EL_COLOR[el.charAt(0)] || "#888888";
+                  const cMat = new THREE.MeshPhongMaterial({
+                    color: col,
+                    shininess: 80,
+                  });
+                  const cm = new THREE.Mesh(cGeo, cMat);
+                  cm.position.copy(halfMid);
+                  const axis = new THREE.Vector3(0, 1, 0);
+                  const halfDir = halfEnd.clone().sub(halfStart).normalize();
+                  cm.quaternion.setFromUnitVectors(axis, halfDir);
+                  bondGroup.add(cm);
+                });
+              }
+            }
+
+            // Starfield
+            const sg = new THREE.BufferGeometry();
+            const sp = [];
+            for (let i = 0; i < 700; i++)
+              sp.push(
+                (Math.random() - 0.5) * 180,
+                (Math.random() - 0.5) * 180,
+                (Math.random() - 0.5) * 180,
+              );
+            sg.setAttribute(
+              "position",
+              new THREE.Float32BufferAttribute(sp, 3),
+            );
+            const starMat = new THREE.PointsMaterial({
+              color: 0x2a3a5a,
+              size: 0.28,
+              transparent: true,
+              opacity: 0.7,
+            });
+            scene.add(new THREE.Points(sg, starMat));
+
+            // Resize
+            function resize() {
+              const w = canvas.clientWidth,
+                h = canvas.clientHeight;
+              renderer.setSize(w, h, false);
+              camera.aspect = w / h;
+              camera.updateProjectionMatrix();
+            }
+            resize();
+            window.addEventListener("resize", resize);
+
+            // Mouse/touch drag + scroll zoom
+            let drag = false,
+              lx = 0,
+              ly = 0,
+              tx = 0,
+              ty = 0;
+            canvas.addEventListener("mousedown", (e) => {
+              drag = true;
+              lx = e.clientX;
+              ly = e.clientY;
+            });
+            canvas.addEventListener(
+              "touchstart",
+              (e) => {
+                drag = true;
+                lx = e.touches[0].clientX;
+                ly = e.touches[0].clientY;
+              },
+              { passive: true },
+            );
+            window.addEventListener("mouseup", () => {
+              drag = false;
+            });
+            window.addEventListener("touchend", () => {
+              drag = false;
+            });
+            window.addEventListener("mousemove", (e) => {
+              if (!drag) return;
+              tx += (e.clientX - lx) * 0.012;
+              ty += (e.clientY - ly) * 0.012;
+              lx = e.clientX;
+              ly = e.clientY;
+            });
+            window.addEventListener(
+              "touchmove",
+              (e) => {
+                if (!drag) return;
+                tx += (e.touches[0].clientX - lx) * 0.012;
+                ty += (e.touches[0].clientY - ly) * 0.012;
+                lx = e.touches[0].clientX;
+                ly = e.touches[0].clientY;
+              },
+              { passive: true },
+            );
+            canvas.addEventListener(
+              "wheel",
+              (e) => {
+                e.preventDefault();
+                camera.position.z = Math.max(
+                  10,
+                  Math.min(80, camera.position.z + e.deltaY * 0.04),
+                );
+              },
+              { passive: false },
+            );
+
+            // Hover info
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            const hoverEl = document.getElementById("atp-hover-info");
+            canvas.addEventListener("mousemove", (e) => {
+              if (drag) return;
+              const rect = canvas.getBoundingClientRect();
+              mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+              mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+              raycaster.setFromCamera(mouse, camera);
+              const hits = raycaster.intersectObjects(atomMeshes);
+              if (hits.length > 0 && hoverEl) {
+                const { name, el } = hits[0].object.userData;
+                hoverEl.innerHTML = `<span>${name}</span>&nbsp;(${el})`;
+              } else if (hoverEl) {
+                hoverEl.innerHTML = `<span>DRAG</span>&nbsp;to rotate`;
+              }
+            });
+
+            // Animate
+            let rx = 0,
+              ry = 0,
+              time = 0,
+              pivotGroup;
+            // Put everything under a pivot group for clean rotation
+            pivotGroup = new THREE.Group();
+            scene.remove(bondGroup);
+            atomMeshes.forEach((m) => scene.remove(m));
+            scene.children
+              .filter((c) => c.isGroup || c.isMesh)
+              .forEach((c) => {
+                if (c !== pivotGroup) pivotGroup.add(c);
+              });
+            pivotGroup.add(bondGroup);
+            atomMeshes.forEach((m) => pivotGroup.add(m));
+            scene.add(pivotGroup);
+
+            // Theme-aware colors
+            function applyMolTheme() {
+              const isDark =
+                document.documentElement.getAttribute("data-theme") !== "light";
+              const bg = isDark ? 0x060c1e : 0xede8de;
+              renderer.setClearColor(bg, 1);
+              scene.fog.color.setHex(bg);
+              ambLight.color.setHex(isDark ? 0x223355 : 0xd4c4a0);
+              ambLight.intensity = isDark ? 2.2 : 1.8;
+              dl2.color.setHex(isDark ? 0x7c3aed : 0xc97c3a);
+              pl.color.setHex(isDark ? 0x00d4ff : 0xff8c00);
+              starMat.color.setHex(isDark ? 0x2a3a5a : 0xb8a898);
+            }
+            applyMolTheme();
+            new MutationObserver(applyMolTheme).observe(
+              document.documentElement,
+              {
+                attributes: true,
+                attributeFilter: ["data-theme"],
+              },
+            );
+
+            function animate() {
+              requestAnimationFrame(animate);
+              time += 0.004;
+              tx += 0.003;
+              rx += (ty - rx) * 0.06;
+              ry += (tx - ry) * 0.06;
+              pivotGroup.rotation.x = rx;
+              pivotGroup.rotation.y = ry;
+              pl.position.x = Math.sin(time * 0.7) * 15;
+              pl.position.z = Math.cos(time * 0.5) * 15 + 15;
+              renderer.render(scene, camera);
+            }
+            animate();
+          } catch (e) {
+            console.warn("Three.js molecule viewer failed to initialize:", e);
+            canvas.style.display = "none";
+          }
         }
-        animate();
-        } catch (e) {
-          console.warn("Three.js molecule viewer failed to initialize:", e);
+
+        // Load three.js (~600 KB) only when WebGL can actually render the
+        // scene — otherwise skip the download entirely.
+        if (!webglAvailable()) {
           canvas.style.display = "none";
+          return;
         }
+        const threeScript = document.createElement("script");
+        threeScript.src =
+          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+        threeScript.defer = true;
+        threeScript.onload = initViewer;
+        threeScript.onerror = function () {
+          console.warn("three.js failed to load — molecule viewer skipped");
+          canvas.style.display = "none";
+        };
+        document.head.appendChild(threeScript);
       });
 
       /* ----- Scroll animations ----- */
@@ -2847,9 +3295,21 @@
 
       // Apply theme: respect saved preference, default to random dark theme
       (function () {
-        var DARK_THEMES = ["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];
-        function isDark(theme) { return DARK_THEMES.includes(theme); }
-        function getRandomDark() { return DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)]; }
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        function isDark(theme) {
+          return DARK_THEMES.includes(theme);
+        }
+        function getRandomDark() {
+          return DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+        }
         var saved = localStorage.getItem("theme");
         if (!saved) saved = getRandomDark();
         document.documentElement.setAttribute("data-theme", saved);
@@ -2861,11 +3321,13 @@
           btns.forEach(function (btn) {
             var icon = btn.querySelector("i");
             if (icon) {
-              var cur = document.documentElement.getAttribute("data-theme") || "dark";
+              var cur =
+                document.documentElement.getAttribute("data-theme") || "dark";
               icon.setAttribute("data-lucide", isDark(cur) ? "sun" : "moon");
             }
             btn.addEventListener("click", function () {
-              var current = document.documentElement.getAttribute("data-theme") || "dark";
+              var current =
+                document.documentElement.getAttribute("data-theme") || "dark";
               var next = isDark(current) ? "light" : getRandomDark();
               document.documentElement.setAttribute("data-theme", next);
               document.body.setAttribute("data-theme", next);

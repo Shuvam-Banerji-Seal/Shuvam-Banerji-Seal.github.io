@@ -1,7 +1,8 @@
 """Add FOUC-prevention early theme script to all pages/*.html files."""
 import os, re
 
-ROOT = "/home/shuvam/codes/Shuvam-Banerji-Seal.github.io"
+# Repo root = parent of the scripts/ folder this file lives in (portable).
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 EARLY_THEME = """<script>(function(){var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t;})()</script>"""
 

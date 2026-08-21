@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <div id="mobile-menu">
         <div class="mobile-menu-header">
             <span class="mobile-menu-title">Menu</span>
-            <button id="close-menu-btn">
+            <button id="close-menu-btn" aria-label="Close mobile menu">
                 <i data-lucide="x" class="w-8 h-8"></i>
             </button>
         </div>
@@ -334,7 +334,7 @@ const DARK_THEMES = [
   "tokyo-night",
   "absolute-dark",
   "forest",
-  "dracula"
+  "dracula",
 ];
 
 function getRandomDarkTheme() {
@@ -385,7 +385,8 @@ function initThemeToggle() {
     var newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
     newBtn.addEventListener("click", function () {
-      var current = document.documentElement.getAttribute("data-theme") || "light";
+      var current =
+        document.documentElement.getAttribute("data-theme") || "light";
       var next;
       if (isDarkTheme(current)) {
         // If currently dark, switch to light
@@ -417,10 +418,19 @@ function initDropdowns() {
       toggle.classList.remove("active");
     });
 
-    // Click behavior for touch devices
+    // Click behavior: toggle on touch devices only.
+    // On hover-capable devices the menu already opens on hover, so a click
+    // toggling it closed would be a UX trap — clicks there just (re-)open it.
     toggle.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
+
+      if (window.matchMedia("(hover: hover)").matches) {
+        menu.classList.add("show");
+        toggle.classList.add("active");
+        return;
+      }
+
       const isOpen = menu.classList.contains("show");
 
       // Close all other dropdowns

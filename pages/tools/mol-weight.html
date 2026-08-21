@@ -27,11 +27,11 @@
     <meta name="robots" content="index, follow" />
     <title>Molecular Weight Calculator - SBS Tools</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -975,171 +975,6 @@
         notif.textContent = message;
         document.body.appendChild(notif);
         setTimeout(() => notif.remove(), 2500);
-      }
-
-      function calculate() {
-        const formula = document.getElementById("formula-input").value.trim();
-        if (!formula) return;
-
-        try {
-          const composition = parseFormula(formula);
-          displayResults(formula, composition);
-        } catch (error) {
-          showNotification("Invalid formula: " + error.message);
-        }
-      }
-
-      function parseFormula(formula) {
-        // Handle hydrates (e.g., CuSO4.5H2O)
-        const parts = formula.split(".");
-        let totalComposition = {};
-
-        parts.forEach((part, index) => {
-          let multiplier = 1;
-          if (index > 0) {
-            const match = part.match(/^(\d+)(.+)$/);
-            if (match) {
-              multiplier = parseInt(match[1]);
-              part = match[2];
-            }
-          }
-
-          const partComposition = parseGroup(part, 1);
-          for (const [element, count] of Object.entries(partComposition)) {
-            totalComposition[element] =
-              (totalComposition[element] || 0) + count * multiplier;
-          }
-        });
-
-        return totalComposition;
-      }
-
-      function parseGroup(group, multiplier) {
-        const composition = {};
-        let i = 0;
-
-        while (i < group.length) {
-          if (group[i] === "(" || group[i] === "[") {
-            // Find matching closing bracket
-            let depth = 1;
-            let j = i + 1;
-            while (j < group.length && depth > 0) {
-              if (group[j] === "(" || group[j] === "[") depth++;
-              if (group[j] === ")" || group[j] === "]") depth--;
-              j++;
-            }
-
-            const innerGroup = group.slice(i + 1, j - 1);
-
-            // Get subscript after closing bracket
-            let subscript = "";
-            while (j < group.length && /\d/.test(group[j])) {
-              subscript += group[j];
-              j++;
-            }
-            subscript = subscript ? parseInt(subscript) : 1;
-
-            const innerComposition = parseGroup(innerGroup, 1);
-            for (const [element, count] of Object.entries(innerComposition)) {
-              composition[element] =
-                (composition[element] || 0) + count * subscript * multiplier;
-            }
-
-            i = j;
-          } else if (/[A-Z]/.test(group[i])) {
-            // Element symbol
-            let element = group[i];
-            let j = i + 1;
-
-            // Check for lowercase letters (two-letter elements)
-            while (j < group.length && /[a-z]/.test(group[j])) {
-              element += group[j];
-              j++;
-            }
-
-            // Get subscript
-            let subscript = "";
-            while (j < group.length && /\d/.test(group[j])) {
-              subscript += group[j];
-              j++;
-            }
-            subscript = subscript ? parseInt(subscript) : 1;
-
-            if (!atomicWeights[element]) {
-              throw new Error(`Unknown element: ${element}`);
-            }
-
-            composition[element] =
-              (composition[element] || 0) + subscript * multiplier;
-            i = j;
-          } else {
-            i++;
-          }
-        }
-
-        return composition;
-      }
-
-      function displayResults(formula, composition) {
-        let totalMW = 0;
-        const elements = [];
-
-        for (const [element, count] of Object.entries(composition)) {
-          const weight = atomicWeights[element] * count;
-          totalMW += weight;
-          elements.push({ symbol: element, count, weight });
-        }
-
-        // Calculate percentages
-        elements.forEach((el) => {
-          el.percent = (el.weight / totalMW) * 100;
-        });
-
-        // Sort by percentage (descending)
-        elements.sort((a, b) => b.percent - a.percent);
-
-        // Display formatted formula
-        let formattedFormula = formula.replace(/(\d+)/g, "<sub>$1</sub>");
-        document.getElementById("result-formula").innerHTML = formattedFormula;
-        document.getElementById("result-mw").textContent = totalMW.toFixed(4);
-
-        // Display composition table
-        let tableHTML = `
-                <div class="comp-row header">
-                    <span>Element</span>
-                    <span>Atomic Weight</span>
-                    <span>Count</span>
-                    <span>Mass %</span>
-                </div>
-            `;
-
-        elements.forEach((el) => {
-          tableHTML += `
-                    <div class="comp-row">
-                        <span class="comp-symbol">${el.symbol}</span>
-                        <span>${atomicWeights[el.symbol].toFixed(3)}</span>
-                        <span>${el.count}</span>
-                        <span>${el.percent.toFixed(2)}%</span>
-                    </div>
-                `;
-        });
-
-        document.getElementById("composition-table").innerHTML = tableHTML;
-
-        // Display composition chart
-        let chartHTML = "";
-        elements.forEach((el) => {
-          const color = elementColors[el.symbol] || elementColors.default;
-          if (el.percent >= 3) {
-            chartHTML += `<div class="chart-segment" style="flex-grow: ${el.percent}; background: ${color}">${el.symbol}</div>`;
-          } else if (el.percent >= 1) {
-            chartHTML += `<div class="chart-segment" style="flex-grow: ${el.percent}; background: ${color}"></div>`;
-          }
-        });
-
-        document.getElementById("composition-chart").innerHTML = chartHTML;
-        document.getElementById("result-card").style.display = "block";
-        if (typeof lucide !== "undefined") lucide.createIcons();
       }
     </script>
     <footer>
