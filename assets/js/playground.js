@@ -96,6 +96,7 @@ let dirty = false;
 
 function setChip(id, isDirty) {
   const chip = document.getElementById(id);
+  if (!chip) return; // defensive: never crash on a missing status chip
   chip.textContent = isDirty ? "edited" : "synced";
   chip.classList.toggle("dirty", isDirty);
 }
@@ -118,7 +119,9 @@ function run() {
   els.frame.addEventListener(
     "load",
     () => {
-      els.renderInfo.textContent = `rendered in ${Math.round(performance.now() - t0)} ms`;
+      const info = document.getElementById("render-info");
+      if (info)
+        info.textContent = `rendered in ${Math.round(performance.now() - t0)} ms`;
     },
     { once: true },
   );
