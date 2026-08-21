@@ -3015,9 +3015,52 @@
         document.getElementById("prot-result").style.display = "none";
         setProgress(progFill, progText, progWrap, 30, "Encrypting PDF...");
         try {
-          if (typeof PDFLib === "undefined")
-            throw new Error("pdf-lib failed to load.");
-          const { PDFDocument } = PDFLib;
+          // Standard pdf-lib CANNOT encrypt (its save() silently ignores
+          // password options, producing an unprotected file that merely
+          // LOOKS protected). @cantoo/pdf-lib is a maintained fork with
+          // real AES-256 support via doc.encrypt(). Loaded lazily here so
+          // the 600 KB library is only fetched when Protect is actually
+          // used. It exposes the same window.PDFLib global.
+          function loadCryptoPdfLib() {
+            return new Promise((resolve, reject) => {
+              if (
+                window.PDFLib &&
+                typeof window.PDFLib.PDFDocument.prototype.encrypt ===
+                  "function"
+              ) {
+                resolve(window.PDFLib);
+                return;
+              }
+              const s = document.createElement("script");
+              s.src =
+                "https://cdn.jsdelivr.net/npm/@cantoo/pdf-lib@2.9.1/dist/pdf-lib.min.js";
+              s.onload = () => {
+                if (
+                  window.PDFLib &&
+                  typeof window.PDFLib.PDFDocument.prototype.encrypt ===
+                    "function"
+                ) {
+                  resolve(window.PDFLib);
+                } else {
+                  reject(
+                    new Error(
+                      "Encryption library loaded but does not support encrypt().",
+                    ),
+                  );
+                }
+              };
+              s.onerror = () =>
+                reject(
+                  new Error(
+                    "Could not load the encryption library. Check your connection.",
+                  ),
+                );
+              document.head.appendChild(s);
+            });
+          }
+
+          const CryptoPDFLib = await loadCryptoPdfLib();
+          const { PDFDocument } = CryptoPDFLib;
           const ab = await protFile.arrayBuffer();
           const pdfDoc = await PDFDocument.load(ab);
           setProgress(
@@ -3025,12 +3068,34 @@
             progText,
             progWrap,
             70,
-            "Saving encrypted PDF...",
+            "Applying AES-256 encryption...",
           );
-          const saveOpts = {};
-          if (userPw) saveOpts.userPassword = userPw;
-          if (ownerPw) saveOpts.ownerPassword = ownerPw;
-          const bytes = await pdfDoc.save(saveOpts);
+          pdfDoc.encrypt({
+            userPassword: userPw || undefined,
+            ownerPassword: ownerPw || undefined,
+            permissions: {
+              printing: "highResolution",
+              modifying: false,
+              copying: false,
+            },
+          });
+          const bytes = await pdfDoc.save();
+          // Sanity check: an encrypted PDF must contain /Encrypt.
+          // If it doesn't, refuse to present the file as "protected".
+          const head = new TextDecoder("latin1").decode(bytes.slice(0, 4096));
+          let hasEncrypt = head.includes("/Encrypt");
+          if (!hasEncrypt) {
+            // /Encrypt may live in a later object; scan the tail too.
+            const tail = new TextDecoder("latin1").decode(
+              bytes.slice(Math.max(0, bytes.length - 4096)),
+            );
+            hasEncrypt = tail.includes("/Encrypt");
+          }
+          if (!hasEncrypt) {
+            throw new Error(
+              "Encryption could not be applied — no password was set on the output. Nothing was downloaded.",
+            );
+          }
           const blob = new Blob([bytes], { type: "application/pdf" });
           document.getElementById("prot-dl").onclick = () => {
             const a = document.createElement("a");
