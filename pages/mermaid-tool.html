@@ -175,21 +175,12 @@
         opacity: 0.8;
       }
     </style>
-    <script
-      type="module"
-      crossorigin
-      src="/assets/mermaid-tool-CcQdSQuu.js"
-    ></script>
-    <link
-      rel="modulepreload"
-      crossorigin
-      href="/assets/modulepreload-polyfill-B5Qt9EMX.js"
-    />
-    <link
-      rel="stylesheet"
-      crossorigin
-      href="/assets/mermaid-tool-OD-GLX3d.css"
-    />
+    <!-- Real React source entry. Previously this referenced a stale
+          prebuilt bundle (/assets/mermaid-tool-CcQdSQuu.js) whose embedded
+          Vite preload manifest pointed at old chunk hashes that only the
+          deploy's `cp -r assets` step could satisfy — bare builds 404'd.
+          Building from src/mermaid-tool yields a fully consistent graph. -->
+    <script type="module" src="/src/mermaid-tool/main.jsx"></script>
   </head>
   <body>
     <div id="root">
