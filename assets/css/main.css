@@ -577,6 +577,9 @@ footer {
 footer p {
   color: var(--text-primary);
 }
+/* Refined footer surface: deep panel + hairline top border. The old full
+   --grad-primary wash read as a loud blue banner; the accent now lives in
+   a 2px top hairline instead (see .footer-accent-line). */
 html[data-theme="quantum"] footer,
 html[data-theme="dark"] footer,
 html[data-theme="quantum"] footer,
@@ -591,7 +594,7 @@ html[data-theme="quantum"] footer,
 html[data-theme="forest"] footer,
 html[data-theme="quantum"] footer,
 html[data-theme="dracula"] footer {
-  background-image: var(--grad-primary);
+  background: var(--bg-dark);
   border-top: 1px solid var(--border);
 }
 
