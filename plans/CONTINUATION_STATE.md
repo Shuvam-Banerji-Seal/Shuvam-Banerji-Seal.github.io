@@ -118,6 +118,13 @@ main bundle by vite, present on production HTML.
 - LIVE-VERIFIED: quantum default in HTML, matrix canvas present,
   141 quantum selectors in live CSS bundle, pi/matrix code in JS bundle
 
+### Footer banner redesign — DEPLOYED (commit a5f8112)
+
+Loud full-width grad-primary banner replaced: deep panel + radial cyan
+base glow + 2px accent hairline, three-zone grid (SBS wordmark / quick
+nav / socials), base bar with copyright + back-to-top button.
+LIVE-VERIFIED (3/3 new elements present in prod HTML).
+
 ### No outstanding bugs. Remaining optional items:
 
 - Tree-shaken lucide ESM per page (~90KB gz savings; large refactor)
