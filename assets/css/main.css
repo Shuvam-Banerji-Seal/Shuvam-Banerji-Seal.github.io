@@ -27,25 +27,45 @@ body {
 }
 
 /* Dark Theme */
+html[data-theme="quantum"] body,
 html[data-theme="dark"] body,
+html[data-theme="quantum"] body,
 html[data-theme="dark-coffee"] body,
+html[data-theme="quantum"] body,
 html[data-theme="amber"] body,
+html[data-theme="quantum"] body,
 html[data-theme="tokyo-night"] body,
+html[data-theme="quantum"] body,
 html[data-theme="absolute-dark"] body,
+html[data-theme="quantum"] body,
 html[data-theme="forest"] body,
+html[data-theme="quantum"] body,
 html[data-theme="dracula"] body,
+html[data-theme="quantum"],
 html[data-theme="dark"],
+html[data-theme="quantum"],
 html[data-theme="dark-coffee"],
+html[data-theme="quantum"],
 html[data-theme="amber"],
+html[data-theme="quantum"],
 html[data-theme="tokyo-night"],
+html[data-theme="quantum"],
 html[data-theme="absolute-dark"],
+html[data-theme="quantum"],
 html[data-theme="forest"],
+html[data-theme="quantum"],
 html[data-theme="dracula"],
+[data-theme="quantum"],
 [data-theme="dark-coffee"],
+[data-theme="quantum"],
 [data-theme="amber"],
+[data-theme="quantum"],
 [data-theme="tokyo-night"],
+[data-theme="quantum"],
 [data-theme="absolute-dark"],
+[data-theme="quantum"],
 [data-theme="forest"],
+[data-theme="quantum"],
 [data-theme="dracula"] {
   background: var(--body-bg, #060b18);
   color: var(--text-primary, #e2e8f0);
@@ -141,12 +161,19 @@ html[data-theme="dracula"],
   pointer-events: none;
 }
 
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="dark"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="dark-coffee"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="amber"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="tokyo-night"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="absolute-dark"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="forest"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="dracula"] #canvas-container {
   opacity: 0.12;
 }
@@ -550,12 +577,19 @@ footer {
 footer p {
   color: var(--text-primary);
 }
+html[data-theme="quantum"] footer,
 html[data-theme="dark"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="dark-coffee"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="amber"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="tokyo-night"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="absolute-dark"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="forest"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="dracula"] footer {
   background-image: var(--grad-primary);
   border-top: 1px solid var(--border);
@@ -1141,29 +1175,49 @@ html[data-theme="dracula"] footer {
 }
 
 /* Dark Theme Overrides */
+html[data-theme="quantum"],
 html[data-theme="dark"],
+html[data-theme="quantum"],
 html[data-theme="dark-coffee"],
+html[data-theme="quantum"],
 html[data-theme="amber"],
+html[data-theme="quantum"],
 html[data-theme="tokyo-night"],
+html[data-theme="quantum"],
 html[data-theme="absolute-dark"],
+html[data-theme="quantum"],
 html[data-theme="forest"],
+html[data-theme="quantum"],
 html[data-theme="dracula"],
+[data-theme="quantum"],
 [data-theme="dark-coffee"],
+[data-theme="quantum"],
 [data-theme="amber"],
+[data-theme="quantum"],
 [data-theme="tokyo-night"],
+[data-theme="quantum"],
 [data-theme="absolute-dark"],
+[data-theme="quantum"],
 [data-theme="forest"],
+[data-theme="quantum"],
 [data-theme="dracula"] {
   background: var(--body-bg);
   color: var(--text-primary);
 }
 
+html[data-theme="quantum"] .glassmorphic,
 html[data-theme="dark"] .glassmorphic,
+html[data-theme="quantum"] .glassmorphic,
 html[data-theme="dark-coffee"] .glassmorphic,
+html[data-theme="quantum"] .glassmorphic,
 html[data-theme="amber"] .glassmorphic,
+html[data-theme="quantum"] .glassmorphic,
 html[data-theme="tokyo-night"] .glassmorphic,
+html[data-theme="quantum"] .glassmorphic,
 html[data-theme="absolute-dark"] .glassmorphic,
+html[data-theme="quantum"] .glassmorphic,
 html[data-theme="forest"] .glassmorphic,
+html[data-theme="quantum"] .glassmorphic,
 html[data-theme="dracula"] .glassmorphic {
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
@@ -1172,12 +1226,19 @@ html[data-theme="dracula"] .glassmorphic {
   box-shadow: 0 10px 30px var(--glass-shadow);
 }
 
+html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
 html[data-theme="dark"] #navbar.scrolled .glassmorphic,
+html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
 html[data-theme="dark-coffee"] #navbar.scrolled .glassmorphic,
+html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
 html[data-theme="amber"] #navbar.scrolled .glassmorphic,
+html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
 html[data-theme="tokyo-night"] #navbar.scrolled .glassmorphic,
+html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
 html[data-theme="absolute-dark"] #navbar.scrolled .glassmorphic,
+html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
 html[data-theme="forest"] #navbar.scrolled .glassmorphic,
+html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
 html[data-theme="dracula"] #navbar.scrolled .glassmorphic {
   background: var(--nav-bg);
   box-shadow: 0 10px 30px var(--glass-shadow);
@@ -1185,174 +1246,300 @@ html[data-theme="dracula"] #navbar.scrolled .glassmorphic {
 
 /* Override common Tailwind utility colors when dark theme is active */
 /* Text colors */
+html[data-theme="quantum"] .text-gray-900,
 html[data-theme="dark"] .text-gray-900,
+html[data-theme="quantum"] .text-gray-900,
 html[data-theme="dark-coffee"] .text-gray-900,
+html[data-theme="quantum"] .text-gray-900,
 html[data-theme="amber"] .text-gray-900,
+html[data-theme="quantum"] .text-gray-900,
 html[data-theme="tokyo-night"] .text-gray-900,
+html[data-theme="quantum"] .text-gray-900,
 html[data-theme="absolute-dark"] .text-gray-900,
+html[data-theme="quantum"] .text-gray-900,
 html[data-theme="forest"] .text-gray-900,
+html[data-theme="quantum"] .text-gray-900,
 html[data-theme="dracula"] .text-gray-900 {
   color: var(--text-primary) !important;
 }
+html[data-theme="quantum"] .text-gray-800,
 html[data-theme="dark"] .text-gray-800,
+html[data-theme="quantum"] .text-gray-800,
 html[data-theme="dark-coffee"] .text-gray-800,
+html[data-theme="quantum"] .text-gray-800,
 html[data-theme="amber"] .text-gray-800,
+html[data-theme="quantum"] .text-gray-800,
 html[data-theme="tokyo-night"] .text-gray-800,
+html[data-theme="quantum"] .text-gray-800,
 html[data-theme="absolute-dark"] .text-gray-800,
+html[data-theme="quantum"] .text-gray-800,
 html[data-theme="forest"] .text-gray-800,
+html[data-theme="quantum"] .text-gray-800,
 html[data-theme="dracula"] .text-gray-800 {
   color: var(--text-primary) !important;
 }
+html[data-theme="quantum"] .text-gray-700,
 html[data-theme="dark"] .text-gray-700,
+html[data-theme="quantum"] .text-gray-700,
 html[data-theme="dark-coffee"] .text-gray-700,
+html[data-theme="quantum"] .text-gray-700,
 html[data-theme="amber"] .text-gray-700,
+html[data-theme="quantum"] .text-gray-700,
 html[data-theme="tokyo-night"] .text-gray-700,
+html[data-theme="quantum"] .text-gray-700,
 html[data-theme="absolute-dark"] .text-gray-700,
+html[data-theme="quantum"] .text-gray-700,
 html[data-theme="forest"] .text-gray-700,
+html[data-theme="quantum"] .text-gray-700,
 html[data-theme="dracula"] .text-gray-700 {
   color: var(--text-secondary) !important;
 }
+html[data-theme="quantum"] .text-gray-600,
 html[data-theme="dark"] .text-gray-600,
+html[data-theme="quantum"] .text-gray-600,
 html[data-theme="dark-coffee"] .text-gray-600,
+html[data-theme="quantum"] .text-gray-600,
 html[data-theme="amber"] .text-gray-600,
+html[data-theme="quantum"] .text-gray-600,
 html[data-theme="tokyo-night"] .text-gray-600,
+html[data-theme="quantum"] .text-gray-600,
 html[data-theme="absolute-dark"] .text-gray-600,
+html[data-theme="quantum"] .text-gray-600,
 html[data-theme="forest"] .text-gray-600,
+html[data-theme="quantum"] .text-gray-600,
 html[data-theme="dracula"] .text-gray-600 {
   color: var(--text-muted) !important;
 }
 
 /* Background utilities commonly used */
+html[data-theme="quantum"] .bg-gray-100,
 html[data-theme="dark"] .bg-gray-100,
+html[data-theme="quantum"] .bg-gray-100,
 html[data-theme="dark-coffee"] .bg-gray-100,
+html[data-theme="quantum"] .bg-gray-100,
 html[data-theme="amber"] .bg-gray-100,
+html[data-theme="quantum"] .bg-gray-100,
 html[data-theme="tokyo-night"] .bg-gray-100,
+html[data-theme="quantum"] .bg-gray-100,
 html[data-theme="absolute-dark"] .bg-gray-100,
+html[data-theme="quantum"] .bg-gray-100,
 html[data-theme="forest"] .bg-gray-100,
+html[data-theme="quantum"] .bg-gray-100,
 html[data-theme="dracula"] .bg-gray-100 {
   background-color: var(--bg-deep) !important;
 }
+html[data-theme="quantum"] .bg-gray-200,
 html[data-theme="dark"] .bg-gray-200,
+html[data-theme="quantum"] .bg-gray-200,
 html[data-theme="dark-coffee"] .bg-gray-200,
+html[data-theme="quantum"] .bg-gray-200,
 html[data-theme="amber"] .bg-gray-200,
+html[data-theme="quantum"] .bg-gray-200,
 html[data-theme="tokyo-night"] .bg-gray-200,
+html[data-theme="quantum"] .bg-gray-200,
 html[data-theme="absolute-dark"] .bg-gray-200,
+html[data-theme="quantum"] .bg-gray-200,
 html[data-theme="forest"] .bg-gray-200,
+html[data-theme="quantum"] .bg-gray-200,
 html[data-theme="dracula"] .bg-gray-200 {
   background-color: var(--bg-card) !important;
 }
+html[data-theme="quantum"] .bg-gray-100\/50,
 html[data-theme="dark"] .bg-gray-100\/50,
+html[data-theme="quantum"] .bg-gray-100\/50,
 html[data-theme="dark-coffee"] .bg-gray-100\/50,
+html[data-theme="quantum"] .bg-gray-100\/50,
 html[data-theme="amber"] .bg-gray-100\/50,
+html[data-theme="quantum"] .bg-gray-100\/50,
 html[data-theme="tokyo-night"] .bg-gray-100\/50,
+html[data-theme="quantum"] .bg-gray-100\/50,
 html[data-theme="absolute-dark"] .bg-gray-100\/50,
+html[data-theme="quantum"] .bg-gray-100\/50,
 html[data-theme="forest"] .bg-gray-100\/50,
+html[data-theme="quantum"] .bg-gray-100\/50,
 html[data-theme="dracula"] .bg-gray-100\/50 {
   background-color: var(--bg-deep) !important;
   opacity: 0.5;
 }
+html[data-theme="quantum"] .bg-gray-200\/50,
 html[data-theme="dark"] .bg-gray-200\/50,
+html[data-theme="quantum"] .bg-gray-200\/50,
 html[data-theme="dark-coffee"] .bg-gray-200\/50,
+html[data-theme="quantum"] .bg-gray-200\/50,
 html[data-theme="amber"] .bg-gray-200\/50,
+html[data-theme="quantum"] .bg-gray-200\/50,
 html[data-theme="tokyo-night"] .bg-gray-200\/50,
+html[data-theme="quantum"] .bg-gray-200\/50,
 html[data-theme="absolute-dark"] .bg-gray-200\/50,
+html[data-theme="quantum"] .bg-gray-200\/50,
 html[data-theme="forest"] .bg-gray-200\/50,
+html[data-theme="quantum"] .bg-gray-200\/50,
 html[data-theme="dracula"] .bg-gray-200\/50 {
   background-color: var(--bg-card) !important;
   opacity: 0.5;
 }
+html[data-theme="quantum"] .bg-gray-50,
 html[data-theme="dark"] .bg-gray-50,
+html[data-theme="quantum"] .bg-gray-50,
 html[data-theme="dark-coffee"] .bg-gray-50,
+html[data-theme="quantum"] .bg-gray-50,
 html[data-theme="amber"] .bg-gray-50,
+html[data-theme="quantum"] .bg-gray-50,
 html[data-theme="tokyo-night"] .bg-gray-50,
+html[data-theme="quantum"] .bg-gray-50,
 html[data-theme="absolute-dark"] .bg-gray-50,
+html[data-theme="quantum"] .bg-gray-50,
 html[data-theme="forest"] .bg-gray-50,
+html[data-theme="quantum"] .bg-gray-50,
 html[data-theme="dracula"] .bg-gray-50 {
   background-color: var(--bg-card) !important;
 }
 
 /* Mobile menu gradient in dark theme */
+html[data-theme="quantum"] #mobile-menu,
 html[data-theme="dark"] #mobile-menu,
+html[data-theme="quantum"] #mobile-menu,
 html[data-theme="dark-coffee"] #mobile-menu,
+html[data-theme="quantum"] #mobile-menu,
 html[data-theme="amber"] #mobile-menu,
+html[data-theme="quantum"] #mobile-menu,
 html[data-theme="tokyo-night"] #mobile-menu,
+html[data-theme="quantum"] #mobile-menu,
 html[data-theme="absolute-dark"] #mobile-menu,
+html[data-theme="quantum"] #mobile-menu,
 html[data-theme="forest"] #mobile-menu,
+html[data-theme="quantum"] #mobile-menu,
 html[data-theme="dracula"] #mobile-menu {
   background: var(--bg-card);
 }
 
 /* Ensure headers and cyan accents look good on dark */
+html[data-theme="quantum"] .text-cyan-400,
 html[data-theme="dark"] .text-cyan-400,
+html[data-theme="quantum"] .text-cyan-400,
 html[data-theme="dark-coffee"] .text-cyan-400,
+html[data-theme="quantum"] .text-cyan-400,
 html[data-theme="amber"] .text-cyan-400,
+html[data-theme="quantum"] .text-cyan-400,
 html[data-theme="tokyo-night"] .text-cyan-400,
+html[data-theme="quantum"] .text-cyan-400,
 html[data-theme="absolute-dark"] .text-cyan-400,
+html[data-theme="quantum"] .text-cyan-400,
 html[data-theme="forest"] .text-cyan-400,
+html[data-theme="quantum"] .text-cyan-400,
 html[data-theme="dracula"] .text-cyan-400 {
   color: var(--accent) !important;
 }
+html[data-theme="quantum"] .text-cyan-300,
 html[data-theme="dark"] .text-cyan-300,
+html[data-theme="quantum"] .text-cyan-300,
 html[data-theme="dark-coffee"] .text-cyan-300,
+html[data-theme="quantum"] .text-cyan-300,
 html[data-theme="amber"] .text-cyan-300,
+html[data-theme="quantum"] .text-cyan-300,
 html[data-theme="tokyo-night"] .text-cyan-300,
+html[data-theme="quantum"] .text-cyan-300,
 html[data-theme="absolute-dark"] .text-cyan-300,
+html[data-theme="quantum"] .text-cyan-300,
 html[data-theme="forest"] .text-cyan-300,
+html[data-theme="quantum"] .text-cyan-300,
 html[data-theme="dracula"] .text-cyan-300 {
   color: var(--accent) !important;
 }
+html[data-theme="quantum"] .border-cyan-400,
 html[data-theme="dark"] .border-cyan-400,
+html[data-theme="quantum"] .border-cyan-400,
 html[data-theme="dark-coffee"] .border-cyan-400,
+html[data-theme="quantum"] .border-cyan-400,
 html[data-theme="amber"] .border-cyan-400,
+html[data-theme="quantum"] .border-cyan-400,
 html[data-theme="tokyo-night"] .border-cyan-400,
+html[data-theme="quantum"] .border-cyan-400,
 html[data-theme="absolute-dark"] .border-cyan-400,
+html[data-theme="quantum"] .border-cyan-400,
 html[data-theme="forest"] .border-cyan-400,
+html[data-theme="quantum"] .border-cyan-400,
 html[data-theme="dracula"] .border-cyan-400 {
   border-color: var(--accent) !important;
 }
 /* Gradient primary CTAs */
+html[data-theme="quantum"] .bg-cyan-500,
 html[data-theme="dark"] .bg-cyan-500,
+html[data-theme="quantum"] .bg-cyan-500,
 html[data-theme="dark-coffee"] .bg-cyan-500,
+html[data-theme="quantum"] .bg-cyan-500,
 html[data-theme="amber"] .bg-cyan-500,
+html[data-theme="quantum"] .bg-cyan-500,
 html[data-theme="tokyo-night"] .bg-cyan-500,
+html[data-theme="quantum"] .bg-cyan-500,
 html[data-theme="absolute-dark"] .bg-cyan-500,
+html[data-theme="quantum"] .bg-cyan-500,
 html[data-theme="forest"] .bg-cyan-500,
+html[data-theme="quantum"] .bg-cyan-500,
 html[data-theme="dracula"] .bg-cyan-500 {
   background-image: var(--grad-primary) !important;
   color: var(--text-primary) !important;
 }
+html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
 html[data-theme="dark"] .hover\:bg-cyan-600:hover,
+html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
 html[data-theme="dark-coffee"] .hover\:bg-cyan-600:hover,
+html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
 html[data-theme="amber"] .hover\:bg-cyan-600:hover,
+html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
 html[data-theme="tokyo-night"] .hover\:bg-cyan-600:hover,
+html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
 html[data-theme="absolute-dark"] .hover\:bg-cyan-600:hover,
+html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
 html[data-theme="forest"] .hover\:bg-cyan-600:hover,
+html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
 html[data-theme="dracula"] .hover\:bg-cyan-600:hover {
   background-color: var(--accent) !important;
   color: var(--text-primary) !important;
 }
 
 /* Inputs and forms in dark theme */
+html[data-theme="quantum"] input,
 html[data-theme="dark"] input,
+html[data-theme="quantum"] input,
 html[data-theme="dark-coffee"] input,
+html[data-theme="quantum"] input,
 html[data-theme="amber"] input,
+html[data-theme="quantum"] input,
 html[data-theme="tokyo-night"] input,
+html[data-theme="quantum"] input,
 html[data-theme="absolute-dark"] input,
+html[data-theme="quantum"] input,
 html[data-theme="forest"] input,
+html[data-theme="quantum"] input,
 html[data-theme="dracula"] input,
+html[data-theme="quantum"] textarea,
 html[data-theme="dark"] textarea,
+html[data-theme="quantum"] textarea,
 html[data-theme="dark-coffee"] textarea,
+html[data-theme="quantum"] textarea,
 html[data-theme="amber"] textarea,
+html[data-theme="quantum"] textarea,
 html[data-theme="tokyo-night"] textarea,
+html[data-theme="quantum"] textarea,
 html[data-theme="absolute-dark"] textarea,
+html[data-theme="quantum"] textarea,
 html[data-theme="forest"] textarea,
+html[data-theme="quantum"] textarea,
 html[data-theme="dracula"] textarea,
+html[data-theme="quantum"] select,
 html[data-theme="dark"] select,
+html[data-theme="quantum"] select,
 html[data-theme="dark-coffee"] select,
+html[data-theme="quantum"] select,
 html[data-theme="amber"] select,
+html[data-theme="quantum"] select,
 html[data-theme="tokyo-night"] select,
+html[data-theme="quantum"] select,
 html[data-theme="absolute-dark"] select,
+html[data-theme="quantum"] select,
 html[data-theme="forest"] select,
+html[data-theme="quantum"] select,
 html[data-theme="dracula"] select {
   color: var(--text-primary);
   background-color: var(--input-bg);
@@ -1360,61 +1547,99 @@ html[data-theme="dracula"] select {
 }
 
 /* Section surfaces (header/footer) with subtle gradients */
+html[data-theme="quantum"] header,
 html[data-theme="dark"] header,
+html[data-theme="quantum"] header,
 html[data-theme="dark-coffee"] header,
+html[data-theme="quantum"] header,
 html[data-theme="amber"] header,
+html[data-theme="quantum"] header,
 html[data-theme="tokyo-night"] header,
+html[data-theme="quantum"] header,
 html[data-theme="absolute-dark"] header,
+html[data-theme="quantum"] header,
 html[data-theme="forest"] header,
+html[data-theme="quantum"] header,
 html[data-theme="dracula"] header {
   background-image: var(--grad-primary);
   border-bottom: 1px solid var(--border);
 }
 /* Borders */
+html[data-theme="quantum"] .border-gray-200,
 html[data-theme="dark"] .border-gray-200,
+html[data-theme="quantum"] .border-gray-200,
 html[data-theme="dark-coffee"] .border-gray-200,
+html[data-theme="quantum"] .border-gray-200,
 html[data-theme="amber"] .border-gray-200,
+html[data-theme="quantum"] .border-gray-200,
 html[data-theme="tokyo-night"] .border-gray-200,
+html[data-theme="quantum"] .border-gray-200,
 html[data-theme="absolute-dark"] .border-gray-200,
+html[data-theme="quantum"] .border-gray-200,
 html[data-theme="forest"] .border-gray-200,
+html[data-theme="quantum"] .border-gray-200,
 html[data-theme="dracula"] .border-gray-200 {
   border-color: var(--border) !important;
 }
 /* Compatibility styles for all dark themes */
 /* This ensures all dark themes get the same styles as the original dark theme */
 
+html[data-theme="quantum"] body,
 html[data-theme="dark-coffee"] body,
+html[data-theme="quantum"] body,
 html[data-theme="amber"] body,
+html[data-theme="quantum"] body,
 html[data-theme="tokyo-night"] body,
+html[data-theme="quantum"] body,
 html[data-theme="absolute-dark"] body,
+html[data-theme="quantum"] body,
 html[data-theme="forest"] body,
+html[data-theme="quantum"] body,
 html[data-theme="dracula"] body,
+html[data-theme="quantum"],
 html[data-theme="dark-coffee"],
+html[data-theme="quantum"],
 html[data-theme="amber"],
+html[data-theme="quantum"],
 html[data-theme="tokyo-night"],
+html[data-theme="quantum"],
 html[data-theme="absolute-dark"],
+html[data-theme="quantum"],
 html[data-theme="forest"],
+html[data-theme="quantum"],
 html[data-theme="dracula"] {
   background: var(--body-bg);
   color: var(--text-primary);
 }
 
+html[data-theme="quantum"] .tech-tag,
 html[data-theme="dark-coffee"] .tech-tag,
+html[data-theme="quantum"] .tech-tag,
 html[data-theme="amber"] .tech-tag,
+html[data-theme="quantum"] .tech-tag,
 html[data-theme="tokyo-night"] .tech-tag,
+html[data-theme="quantum"] .tech-tag,
 html[data-theme="absolute-dark"] .tech-tag,
+html[data-theme="quantum"] .tech-tag,
 html[data-theme="forest"] .tech-tag,
+html[data-theme="quantum"] .tech-tag,
 html[data-theme="dracula"] .tech-tag {
   background: var(--bg-elevated);
   color: var(--accent);
   border: 1px solid var(--border);
 }
 
+html[data-theme="quantum"] .section-title,
 html[data-theme="dark-coffee"] .section-title,
+html[data-theme="quantum"] .section-title,
 html[data-theme="amber"] .section-title,
+html[data-theme="quantum"] .section-title,
 html[data-theme="tokyo-night"] .section-title,
+html[data-theme="quantum"] .section-title,
 html[data-theme="absolute-dark"] .section-title,
+html[data-theme="quantum"] .section-title,
 html[data-theme="forest"] .section-title,
+html[data-theme="quantum"] .section-title,
 html[data-theme="dracula"] .section-title {
   background-image: var(--grad-primary);
   -webkit-background-clip: text;
@@ -1422,296 +1647,482 @@ html[data-theme="dracula"] .section-title {
   color: transparent;
 }
 
+html[data-theme="quantum"] .section-title::after,
 html[data-theme="dark-coffee"] .section-title::after,
+html[data-theme="quantum"] .section-title::after,
 html[data-theme="amber"] .section-title::after,
+html[data-theme="quantum"] .section-title::after,
 html[data-theme="tokyo-night"] .section-title::after,
+html[data-theme="quantum"] .section-title::after,
 html[data-theme="absolute-dark"] .section-title::after,
+html[data-theme="quantum"] .section-title::after,
 html[data-theme="forest"] .section-title::after,
+html[data-theme="quantum"] .section-title::after,
 html[data-theme="dracula"] .section-title::after {
   background: var(--grad-primary);
 }
 
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="dark-coffee"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="amber"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="tokyo-night"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="absolute-dark"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="forest"] #canvas-container,
+html[data-theme="quantum"] #canvas-container,
 html[data-theme="dracula"] #canvas-container {
   background: transparent;
 }
 
+html[data-theme="quantum"] #loading-screen,
 html[data-theme="dark-coffee"] #loading-screen,
+html[data-theme="quantum"] #loading-screen,
 html[data-theme="amber"] #loading-screen,
+html[data-theme="quantum"] #loading-screen,
 html[data-theme="tokyo-night"] #loading-screen,
+html[data-theme="quantum"] #loading-screen,
 html[data-theme="absolute-dark"] #loading-screen,
+html[data-theme="quantum"] #loading-screen,
 html[data-theme="forest"] #loading-screen,
+html[data-theme="quantum"] #loading-screen,
 html[data-theme="dracula"] #loading-screen {
   background: var(--bg-deep);
   color: var(--text-primary);
 }
 
+html[data-theme="quantum"] #menu-btn:hover,
 html[data-theme="dark-coffee"] #menu-btn:hover,
+html[data-theme="quantum"] #menu-btn:hover,
 html[data-theme="amber"] #menu-btn:hover,
+html[data-theme="quantum"] #menu-btn:hover,
 html[data-theme="tokyo-night"] #menu-btn:hover,
+html[data-theme="quantum"] #menu-btn:hover,
 html[data-theme="absolute-dark"] #menu-btn:hover,
+html[data-theme="quantum"] #menu-btn:hover,
 html[data-theme="forest"] #menu-btn:hover,
+html[data-theme="quantum"] #menu-btn:hover,
 html[data-theme="dracula"] #menu-btn:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
+html[data-theme="quantum"] footer,
 html[data-theme="dark-coffee"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="amber"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="tokyo-night"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="absolute-dark"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="forest"] footer,
+html[data-theme="quantum"] footer,
 html[data-theme="dracula"] footer {
   background: var(--bg-dark);
   border-top: 1px solid var(--border);
 }
 
+html[data-theme="quantum"] .project-title a,
 html[data-theme="dark-coffee"] .project-title a,
+html[data-theme="quantum"] .project-title a,
 html[data-theme="amber"] .project-title a,
+html[data-theme="quantum"] .project-title a,
 html[data-theme="tokyo-night"] .project-title a,
+html[data-theme="quantum"] .project-title a,
 html[data-theme="absolute-dark"] .project-title a,
+html[data-theme="quantum"] .project-title a,
 html[data-theme="forest"] .project-title a,
+html[data-theme="quantum"] .project-title a,
 html[data-theme="dracula"] .project-title a {
   color: var(--accent-cyan);
 }
 
+html[data-theme="quantum"] .project-description,
 html[data-theme="dark-coffee"] .project-description,
+html[data-theme="quantum"] .project-description,
 html[data-theme="amber"] .project-description,
+html[data-theme="quantum"] .project-description,
 html[data-theme="tokyo-night"] .project-description,
+html[data-theme="quantum"] .project-description,
 html[data-theme="absolute-dark"] .project-description,
+html[data-theme="quantum"] .project-description,
 html[data-theme="forest"] .project-description,
+html[data-theme="quantum"] .project-description,
 html[data-theme="dracula"] .project-description {
   color: var(--text-secondary);
 }
 
+html[data-theme="quantum"] .project-stats,
 html[data-theme="dark-coffee"] .project-stats,
+html[data-theme="quantum"] .project-stats,
 html[data-theme="amber"] .project-stats,
+html[data-theme="quantum"] .project-stats,
 html[data-theme="tokyo-night"] .project-stats,
+html[data-theme="quantum"] .project-stats,
 html[data-theme="absolute-dark"] .project-stats,
+html[data-theme="quantum"] .project-stats,
 html[data-theme="forest"] .project-stats,
+html[data-theme="quantum"] .project-stats,
 html[data-theme="dracula"] .project-stats {
   color: var(--text-muted);
 }
 
+html[data-theme="quantum"] .timeline::before,
 html[data-theme="dark-coffee"] .timeline::before,
+html[data-theme="quantum"] .timeline::before,
 html[data-theme="amber"] .timeline::before,
+html[data-theme="quantum"] .timeline::before,
 html[data-theme="tokyo-night"] .timeline::before,
+html[data-theme="quantum"] .timeline::before,
 html[data-theme="absolute-dark"] .timeline::before,
+html[data-theme="quantum"] .timeline::before,
 html[data-theme="forest"] .timeline::before,
+html[data-theme="quantum"] .timeline::before,
 html[data-theme="dracula"] .timeline::before {
   background: var(--border);
 }
 
+html[data-theme="quantum"] .timeline-icon,
 html[data-theme="dark-coffee"] .timeline-icon,
+html[data-theme="quantum"] .timeline-icon,
 html[data-theme="amber"] .timeline-icon,
+html[data-theme="quantum"] .timeline-icon,
 html[data-theme="tokyo-night"] .timeline-icon,
+html[data-theme="quantum"] .timeline-icon,
 html[data-theme="absolute-dark"] .timeline-icon,
+html[data-theme="quantum"] .timeline-icon,
 html[data-theme="forest"] .timeline-icon,
+html[data-theme="quantum"] .timeline-icon,
 html[data-theme="dracula"] .timeline-icon {
   background: var(--bg-card);
   border: 2px solid var(--accent-cyan);
   color: var(--accent-cyan);
 }
 
+html[data-theme="quantum"] .timeline-date,
 html[data-theme="dark-coffee"] .timeline-date,
+html[data-theme="quantum"] .timeline-date,
 html[data-theme="amber"] .timeline-date,
+html[data-theme="quantum"] .timeline-date,
 html[data-theme="tokyo-night"] .timeline-date,
+html[data-theme="quantum"] .timeline-date,
 html[data-theme="absolute-dark"] .timeline-date,
+html[data-theme="quantum"] .timeline-date,
 html[data-theme="forest"] .timeline-date,
+html[data-theme="quantum"] .timeline-date,
 html[data-theme="dracula"] .timeline-date {
   color: var(--accent-cyan);
 }
 
+html[data-theme="quantum"] .timeline-company,
 html[data-theme="dark-coffee"] .timeline-company,
+html[data-theme="quantum"] .timeline-company,
 html[data-theme="amber"] .timeline-company,
+html[data-theme="quantum"] .timeline-company,
 html[data-theme="tokyo-night"] .timeline-company,
+html[data-theme="quantum"] .timeline-company,
 html[data-theme="absolute-dark"] .timeline-company,
+html[data-theme="quantum"] .timeline-company,
 html[data-theme="forest"] .timeline-company,
+html[data-theme="quantum"] .timeline-company,
 html[data-theme="dracula"] .timeline-company {
   color: var(--text-secondary);
 }
 
+html[data-theme="quantum"] .blog-post-card:hover,
 html[data-theme="dark-coffee"] .blog-post-card:hover,
+html[data-theme="quantum"] .blog-post-card:hover,
 html[data-theme="amber"] .blog-post-card:hover,
+html[data-theme="quantum"] .blog-post-card:hover,
 html[data-theme="tokyo-night"] .blog-post-card:hover,
+html[data-theme="quantum"] .blog-post-card:hover,
 html[data-theme="absolute-dark"] .blog-post-card:hover,
+html[data-theme="quantum"] .blog-post-card:hover,
 html[data-theme="forest"] .blog-post-card:hover,
+html[data-theme="quantum"] .blog-post-card:hover,
 html[data-theme="dracula"] .blog-post-card:hover {
   background: var(--bg-elevated);
   border-color: var(--border-glow);
 }
 
+html[data-theme="quantum"] .blog-post-excerpt,
 html[data-theme="dark-coffee"] .blog-post-excerpt,
+html[data-theme="quantum"] .blog-post-excerpt,
 html[data-theme="amber"] .blog-post-excerpt,
+html[data-theme="quantum"] .blog-post-excerpt,
 html[data-theme="tokyo-night"] .blog-post-excerpt,
+html[data-theme="quantum"] .blog-post-excerpt,
 html[data-theme="absolute-dark"] .blog-post-excerpt,
+html[data-theme="quantum"] .blog-post-excerpt,
 html[data-theme="forest"] .blog-post-excerpt,
+html[data-theme="quantum"] .blog-post-excerpt,
 html[data-theme="dracula"] .blog-post-excerpt {
   color: var(--text-secondary);
 }
 
+html[data-theme="quantum"] .blog-post-date,
 html[data-theme="dark-coffee"] .blog-post-date,
+html[data-theme="quantum"] .blog-post-date,
 html[data-theme="amber"] .blog-post-date,
+html[data-theme="quantum"] .blog-post-date,
 html[data-theme="tokyo-night"] .blog-post-date,
+html[data-theme="quantum"] .blog-post-date,
 html[data-theme="absolute-dark"] .blog-post-date,
+html[data-theme="quantum"] .blog-post-date,
 html[data-theme="forest"] .blog-post-date,
+html[data-theme="quantum"] .blog-post-date,
 html[data-theme="dracula"] .blog-post-date {
   color: var(--text-muted);
 }
 
+html[data-theme="quantum"] .music-item:hover,
 html[data-theme="dark-coffee"] .music-item:hover,
+html[data-theme="quantum"] .music-item:hover,
 html[data-theme="amber"] .music-item:hover,
+html[data-theme="quantum"] .music-item:hover,
 html[data-theme="tokyo-night"] .music-item:hover,
+html[data-theme="quantum"] .music-item:hover,
 html[data-theme="absolute-dark"] .music-item:hover,
+html[data-theme="quantum"] .music-item:hover,
 html[data-theme="forest"] .music-item:hover,
+html[data-theme="quantum"] .music-item:hover,
 html[data-theme="dracula"] .music-item:hover {
   background: var(--bg-elevated);
 }
 
+html[data-theme="quantum"] .skill-category,
 html[data-theme="dark-coffee"] .skill-category,
+html[data-theme="quantum"] .skill-category,
 html[data-theme="amber"] .skill-category,
+html[data-theme="quantum"] .skill-category,
 html[data-theme="tokyo-night"] .skill-category,
+html[data-theme="quantum"] .skill-category,
 html[data-theme="absolute-dark"] .skill-category,
+html[data-theme="quantum"] .skill-category,
 html[data-theme="forest"] .skill-category,
+html[data-theme="quantum"] .skill-category,
 html[data-theme="dracula"] .skill-category {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
+html[data-theme="quantum"] .skill-tag,
 html[data-theme="dark-coffee"] .skill-tag,
+html[data-theme="quantum"] .skill-tag,
 html[data-theme="amber"] .skill-tag,
+html[data-theme="quantum"] .skill-tag,
 html[data-theme="tokyo-night"] .skill-tag,
+html[data-theme="quantum"] .skill-tag,
 html[data-theme="absolute-dark"] .skill-tag,
+html[data-theme="quantum"] .skill-tag,
 html[data-theme="forest"] .skill-tag,
+html[data-theme="quantum"] .skill-tag,
 html[data-theme="dracula"] .skill-tag {
   background: var(--bg-elevated);
   color: var(--accent);
   border: 1px solid var(--border);
 }
 
+html[data-theme="quantum"] .contact-form input,
 html[data-theme="dark-coffee"] .contact-form input,
+html[data-theme="quantum"] .contact-form textarea,
 html[data-theme="dark-coffee"] .contact-form textarea,
+html[data-theme="quantum"] .contact-form input,
 html[data-theme="amber"] .contact-form input,
+html[data-theme="quantum"] .contact-form textarea,
 html[data-theme="amber"] .contact-form textarea,
+html[data-theme="quantum"] .contact-form input,
 html[data-theme="tokyo-night"] .contact-form input,
+html[data-theme="quantum"] .contact-form textarea,
 html[data-theme="tokyo-night"] .contact-form textarea,
+html[data-theme="quantum"] .contact-form input,
 html[data-theme="absolute-dark"] .contact-form input,
+html[data-theme="quantum"] .contact-form textarea,
 html[data-theme="absolute-dark"] .contact-form textarea,
+html[data-theme="quantum"] .contact-form input,
 html[data-theme="forest"] .contact-form input,
+html[data-theme="quantum"] .contact-form textarea,
 html[data-theme="forest"] .contact-form textarea,
+html[data-theme="quantum"] .contact-form input,
 html[data-theme="dracula"] .contact-form input,
+html[data-theme="quantum"] .contact-form textarea,
 html[data-theme="dracula"] .contact-form textarea {
   background: var(--input-bg);
   border: 1px solid var(--border);
   color: var(--text-primary);
 }
 
+html[data-theme="quantum"] .contact-form input:focus,
 html[data-theme="dark-coffee"] .contact-form input:focus,
+html[data-theme="quantum"] .contact-form textarea:focus,
 html[data-theme="dark-coffee"] .contact-form textarea:focus,
+html[data-theme="quantum"] .contact-form input:focus,
 html[data-theme="amber"] .contact-form input:focus,
+html[data-theme="quantum"] .contact-form textarea:focus,
 html[data-theme="amber"] .contact-form textarea:focus,
+html[data-theme="quantum"] .contact-form input:focus,
 html[data-theme="tokyo-night"] .contact-form input:focus,
+html[data-theme="quantum"] .contact-form textarea:focus,
 html[data-theme="tokyo-night"] .contact-form textarea:focus,
+html[data-theme="quantum"] .contact-form input:focus,
 html[data-theme="absolute-dark"] .contact-form input:focus,
+html[data-theme="quantum"] .contact-form textarea:focus,
 html[data-theme="absolute-dark"] .contact-form textarea:focus,
+html[data-theme="quantum"] .contact-form input:focus,
 html[data-theme="forest"] .contact-form input:focus,
+html[data-theme="quantum"] .contact-form textarea:focus,
 html[data-theme="forest"] .contact-form textarea:focus,
+html[data-theme="quantum"] .contact-form input:focus,
 html[data-theme="dracula"] .contact-form input:focus,
+html[data-theme="quantum"] .contact-form textarea:focus,
 html[data-theme="dracula"] .contact-form textarea:focus {
   border-color: var(--accent-cyan);
   box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
 }
 
+html[data-theme="quantum"] .submit-btn,
 html[data-theme="dark-coffee"] .submit-btn,
+html[data-theme="quantum"] .submit-btn,
 html[data-theme="amber"] .submit-btn,
+html[data-theme="quantum"] .submit-btn,
 html[data-theme="tokyo-night"] .submit-btn,
+html[data-theme="quantum"] .submit-btn,
 html[data-theme="absolute-dark"] .submit-btn,
+html[data-theme="quantum"] .submit-btn,
 html[data-theme="forest"] .submit-btn,
+html[data-theme="quantum"] .submit-btn,
 html[data-theme="dracula"] .submit-btn {
   background: var(--grad-primary);
   color: var(--btn-primary-text);
   border: none;
 }
 
+html[data-theme="quantum"] .submit-btn:hover,
 html[data-theme="dark-coffee"] .submit-btn:hover,
+html[data-theme="quantum"] .submit-btn:hover,
 html[data-theme="amber"] .submit-btn:hover,
+html[data-theme="quantum"] .submit-btn:hover,
 html[data-theme="tokyo-night"] .submit-btn:hover,
+html[data-theme="quantum"] .submit-btn:hover,
 html[data-theme="absolute-dark"] .submit-btn:hover,
+html[data-theme="quantum"] .submit-btn:hover,
 html[data-theme="forest"] .submit-btn:hover,
+html[data-theme="quantum"] .submit-btn:hover,
 html[data-theme="dracula"] .submit-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--glow-cyan);
 }
 
+html[data-theme="quantum"] .social-link,
 html[data-theme="dark-coffee"] .social-link,
+html[data-theme="quantum"] .social-link,
 html[data-theme="amber"] .social-link,
+html[data-theme="quantum"] .social-link,
 html[data-theme="tokyo-night"] .social-link,
+html[data-theme="quantum"] .social-link,
 html[data-theme="absolute-dark"] .social-link,
+html[data-theme="quantum"] .social-link,
 html[data-theme="forest"] .social-link,
+html[data-theme="quantum"] .social-link,
 html[data-theme="dracula"] .social-link {
   background: var(--bg-elevated);
   color: var(--accent);
 }
 
+html[data-theme="quantum"] .social-link:hover,
 html[data-theme="dark-coffee"] .social-link:hover,
+html[data-theme="quantum"] .social-link:hover,
 html[data-theme="amber"] .social-link:hover,
+html[data-theme="quantum"] .social-link:hover,
 html[data-theme="tokyo-night"] .social-link:hover,
+html[data-theme="quantum"] .social-link:hover,
 html[data-theme="absolute-dark"] .social-link:hover,
+html[data-theme="quantum"] .social-link:hover,
 html[data-theme="forest"] .social-link:hover,
+html[data-theme="quantum"] .social-link:hover,
 html[data-theme="dracula"] .social-link:hover {
   background: var(--accent);
   color: var(--btn-primary-text);
   transform: translateY(-3px);
 }
 
+html[data-theme="quantum"] .project-card,
 html[data-theme="dark-coffee"] .project-card,
+html[data-theme="quantum"] .project-card,
 html[data-theme="amber"] .project-card,
+html[data-theme="quantum"] .project-card,
 html[data-theme="tokyo-night"] .project-card,
+html[data-theme="quantum"] .project-card,
 html[data-theme="absolute-dark"] .project-card,
+html[data-theme="quantum"] .project-card,
 html[data-theme="forest"] .project-card,
+html[data-theme="quantum"] .project-card,
 html[data-theme="dracula"] .project-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
+html[data-theme="quantum"] .project-card:hover,
 html[data-theme="dark-coffee"] .project-card:hover,
+html[data-theme="quantum"] .project-card:hover,
 html[data-theme="amber"] .project-card:hover,
+html[data-theme="quantum"] .project-card:hover,
 html[data-theme="tokyo-night"] .project-card:hover,
+html[data-theme="quantum"] .project-card:hover,
 html[data-theme="absolute-dark"] .project-card:hover,
+html[data-theme="quantum"] .project-card:hover,
 html[data-theme="forest"] .project-card:hover,
+html[data-theme="quantum"] .project-card:hover,
 html[data-theme="dracula"] .project-card:hover {
   border-color: var(--border-glow);
   box-shadow: var(--shadow-card);
 }
 
+html[data-theme="quantum"] .blog-post-card,
 html[data-theme="dark-coffee"] .blog-post-card,
+html[data-theme="quantum"] .blog-post-card,
 html[data-theme="amber"] .blog-post-card,
+html[data-theme="quantum"] .blog-post-card,
 html[data-theme="tokyo-night"] .blog-post-card,
+html[data-theme="quantum"] .blog-post-card,
 html[data-theme="absolute-dark"] .blog-post-card,
+html[data-theme="quantum"] .blog-post-card,
 html[data-theme="forest"] .blog-post-card,
+html[data-theme="quantum"] .blog-post-card,
 html[data-theme="dracula"] .blog-post-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
+html[data-theme="quantum"] .music-item,
 html[data-theme="dark-coffee"] .music-item,
+html[data-theme="quantum"] .music-item,
 html[data-theme="amber"] .music-item,
+html[data-theme="quantum"] .music-item,
 html[data-theme="tokyo-night"] .music-item,
+html[data-theme="quantum"] .music-item,
 html[data-theme="absolute-dark"] .music-item,
+html[data-theme="quantum"] .music-item,
 html[data-theme="forest"] .music-item,
+html[data-theme="quantum"] .music-item,
 html[data-theme="dracula"] .music-item {
   background: var(--bg-card);
   border: 1px solid var(--border);
 }
 
+html[data-theme="quantum"] .skill-category:hover,
 html[data-theme="dark-coffee"] .skill-category:hover,
+html[data-theme="quantum"] .skill-category:hover,
 html[data-theme="amber"] .skill-category:hover,
+html[data-theme="quantum"] .skill-category:hover,
 html[data-theme="tokyo-night"] .skill-category:hover,
+html[data-theme="quantum"] .skill-category:hover,
 html[data-theme="absolute-dark"] .skill-category:hover,
+html[data-theme="quantum"] .skill-category:hover,
 html[data-theme="forest"] .skill-category:hover,
+html[data-theme="quantum"] .skill-category:hover,
 html[data-theme="dracula"] .skill-category:hover {
   border-color: var(--border-glow);
   box-shadow: var(--shadow-card);

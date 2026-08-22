@@ -335,6 +335,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // All available dark themes
 const DARK_THEMES = [
+  "quantum",
   "dark",
   "dark-coffee",
   "amber",

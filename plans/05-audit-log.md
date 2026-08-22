@@ -307,6 +307,19 @@ graceful-degradation boundary (WebGL required for WASM inference). Strum logic t
 by driving detectPlucks() directly with synthetic landmark arrays — the algorithm is
 fully deterministic and browser-independent.
 
+### Session 2026-08-22 — Loader v2 + quantum theme
+
+| ID  | Sev  | Location     | Finding                                                                                                                                                                                                                                                                                                              | Fix                                                                                                                                                                                                                                                                                               | Verify                                                                                                        |
+| --- | ---- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| B54 | high | loader       | #fl-matrix canvas had NO positioning CSS → sat in flex flow at 1440×900 intrinsic size → column overflow → flex-shrink crushed .fl-orbital to height 0 (children all absolute = min-content 0). Orbital invisible, boot text pushed off-bottom.                                                                      | absolute positioning for #fl-matrix (z0) under fl3d canvas (z1); .fl-orbital flex-shrink:0                                                                                                                                                                                                        | [VERIFIED: orbital rect 220×220 centered; screenshot loader-final.png]                                        |
+| B55 | med  | theme system | THREE separate "stompers" re-rolled random themes over the FOUC script's choice on every load: main.js applyTheme init, enhanced.js ThemeController ctor, index.html inline theme script — each `saved \|\| getRandomDark()`. Also new quantum theme wasn't in their DARK_THEMES lists → toggle treated it as light. | all three now respect documentElement data-theme first; quantum added to every DARK_THEMES list; quantum added to all html:not([...]) exclusion chains (72 in index-overrides + 1 light-theme chain in theme.css) and positive enumerations cloned in main.css/mobile.css (411+14 selector lines) | [VERIFIED: fresh visit = quantum (#04060d bg, #22d3ee accent, cyan→violet grad); toggle cycles incl. quantum] |
+
+Loader v2 features: cmatrix rain (periodic-table glyphs + Greek letters, 15fps chunky
+cadence, stops on done-event), π-electron clouds (two additive tori above/below ring,
+inflate during final assembly phase, counter-rotating, breathing bob), benzene
+assembly unchanged. Fallback path regression-tested: pct→100%, hides cleanly.
+Final: tests 11/11, crawl 29/29 clean.
+
 ### Wave B regression sweep (2026-08-21) — ALL previously-fixed bugs verified intact
 
 | Tool               | Checks                                                                                                                             | Result                       |

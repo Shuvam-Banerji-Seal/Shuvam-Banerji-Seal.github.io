@@ -13,6 +13,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- Theme Toggle ---
   const DARK_THEMES = [
+    "quantum",
     "dark",
     "dark-coffee",
     "amber",
@@ -64,9 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(nextTheme);
   }
 
-  // Set initial theme
+  // Set initial theme — respect the early FOUC script's choice (e.g. the
+  // homepage's signature quantum theme) instead of re-rolling a random one.
   const savedTheme = localStorage.getItem("theme");
-  const initialTheme = savedTheme || getRandomDarkTheme();
+  const htmlTheme = document.documentElement.getAttribute("data-theme");
+  const initialTheme = savedTheme || htmlTheme || getRandomDarkTheme();
   applyTheme(initialTheme);
 
   // Add click listeners to all theme toggle buttons (only if navbar.js hasn't already)

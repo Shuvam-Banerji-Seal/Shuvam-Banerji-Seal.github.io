@@ -44,7 +44,7 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
     [data-theme="amber"]
   ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
     [data-theme="forest"]
-  ):not([data-theme="dracula"]) {
+  ):not([data-theme="dracula"]):not([data-theme="quantum"]) {
   /* Backgrounds */
   --bg-deep: #faf3e8;
   --bg-primary: #faf3e8;
@@ -239,6 +239,110 @@ html[data-theme="dark"],
   --music-nav-text: #b3b3b3;
   --music-nav-text-hover: #ffffff;
   --music-nav-logo: #ffffff;
+
+  /* Font stacks (same) */
+  --font-mono: "JetBrains Mono", "Source Code Pro", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+
+/* ----------------------------------------------------------------
+   QUANTUM THEME — signature look. Deep indigo-black canvas, electric
+   cyan primary + violet support, refined glass. Informed by
+   awwwards-pattern dark portfolios tuned for a computational
+   chemistry × AI identity.
+   ---------------------------------------------------------------- */
+html[data-theme="quantum"],
+[data-theme="quantum"] {
+  /* Backgrounds */
+  --bg-deep: #04060d;
+  --bg-primary: #050810;
+  --bg-dark: #070b16;
+  --bg-secondary: #0a0e1e;
+  --bg-card: #0c1122;
+  --bg-elevated: #111832;
+
+  /* Borders */
+  --border: rgba(34, 211, 238, 0.14);
+  --border-glow: rgba(34, 211, 238, 0.45);
+
+  /* Text */
+  --text-primary: #e6edf7;
+  --text-secondary: #9fb0c8;
+  --text-muted: #5b6b85;
+
+  /* Accents */
+  --accent-cyan: #22d3ee;
+  --accent: #22d3ee;
+  --accent-green: #34d399;
+  --accent-purple: #a78bfa;
+  --accent-2: #a78bfa;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #22d3ee, #a78bfa);
+  --grad-green: linear-gradient(135deg, #34d399, #22d3ee);
+
+  /* Glows & Shadows */
+  --glow-cyan: 0 0 20px rgba(34, 211, 238, 0.35);
+  --shadow-card: 0 8px 32px rgba(2, 6, 18, 0.55);
+
+  /* Navbar */
+  --nav-bg: rgba(4, 7, 15, 0.88);
+  --nav-border: rgba(34, 211, 238, 0.12);
+  --nav-text: #e6edf7;
+  --nav-text-hover: #22d3ee;
+  --nav-shadow: 0 4px 30px rgba(2, 6, 18, 0.5);
+
+  /* Glassmorphic */
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(13, 19, 38, 0.92),
+    rgba(10, 14, 30, 0.80)
+  );
+  --glass-border: rgba(148, 190, 255, 0.07);
+  --glass-shadow: rgba(2, 6, 18, 0.12);
+
+  /* Body */
+  --body-bg: #04060d;
+  --body-color: #e6edf7;
+
+  /* Inputs / Code */
+  --input-bg: rgba(10, 15, 30, 0.9);
+  --code-bg: rgba(5, 8, 17, 0.82);
+  --canvas-bg: #070b16;
+
+  /* Buttons — cyan on deep navy passes AA both ways */
+  --btn-primary-bg: #22d3ee;
+  --btn-primary-text: #04101a;
+  --btn-primary-hover: #67e8f9;
+
+  /* Music Player - Dark Mode */
+  --music-bg: #000000;
+  --music-text: #ffffff;
+  --music-text-secondary: #b3b3b3;
+  --music-sidebar-bg: #000000;
+  --music-sidebar-border: #282828;
+  --music-hover-bg: #282828;
+  --music-card-bg: #181818;
+  --music-main-gradient: linear-gradient(
+    180deg,
+    rgba(19, 62, 96, 0.8) 0%,
+    #121212 350px
+  );
+  --music-search-bg: #282828;
+  --music-album-gradient: linear-gradient(135deg, #1db954, #191414);
+  --music-accent: #1db954;
+  --music-accent-hover: #1ed760;
+  --music-player-bg: rgba(24, 24, 24, 0.95);
+  --music-player-bg-hover: rgba(24, 24, 24, 0.98);
+  --music-player-border: rgba(255, 255, 255, 0.1);
+  --music-play-btn-bg: #ffffff;
+  --music-progress-bg: #4d4d4d;
+  --music-volume-bg: #4d4d4d;
+  --music-nav-bg: #000000;
+  --music-nav-border: #282828;
+  --music-nav-text: #b3b3b3;
+  --music-nav-text-hover: #ffffff;
 
   /* Font stacks (same) */
   --font-mono: "JetBrains Mono", "Source Code Pro", monospace;

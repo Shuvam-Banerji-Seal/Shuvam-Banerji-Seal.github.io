@@ -86,9 +86,76 @@ if (new URLSearchParams(location.search).has("fl3dtest")) {
   window.__fl3dTest = { benzeneGeometry, assemblyProgress };
 }
 
+/* ── matrix rain (chemistry edition) ────────────────────────────────────
+   Classic digital-rain algorithm, but the glyph set is periodic-table
+   symbols and hex digits — a nod to both The Matrix and the niche. Runs
+   behind the 3D molecule at low opacity for the whole loader lifetime. */
+const MATRIX_GLYPHS =
+  "01ABCDEFHeLiBeNeCNOFNaMgAlSiPSClArKCaFeCuZnAgSnIAuHgPbπΣΩΔΨλ".split("");
+
+function startMatrixRain() {
+  const canvas = document.getElementById("fl-matrix");
+  if (!canvas) return () => {};
+  const ctx = canvas.getContext("2d");
+  const FONT = 13;
+  let cols = 0;
+  let drops = [];
+
+  function resize() {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    cols = Math.ceil(canvas.width / (FONT * 0.85));
+    drops = Array.from({ length: cols }, () =>
+      Math.floor((Math.random() * canvas.height) / FONT),
+    );
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  let last = 0;
+  let rafId = 0;
+  function frame(t) {
+    rafId = requestAnimationFrame(frame);
+    if (t - last < 66) return; // ~15fps: authentic chunky rain cadence
+    last = t;
+
+    // translucent veil → fading trails
+    ctx.fillStyle = "rgba(4, 6, 12, 0.28)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = FONT + "px 'JetBrains Mono', monospace";
+
+    for (let i = 0; i < cols; i++) {
+      const ch = MATRIX_GLYPHS[(Math.random() * MATRIX_GLYPHS.length) | 0];
+      const x = i * FONT * 0.85;
+      const y = drops[i] * FONT;
+
+      if (Math.random() > 0.975) {
+        ctx.fillStyle = "rgba(230, 255, 250, 0.9)";
+      } else {
+        ctx.fillStyle =
+          Math.random() > 0.5
+            ? "rgba(34, 211, 238, 0.55)"
+            : "rgba(52, 211, 153, 0.45)";
+      }
+      ctx.fillText(ch, x, y);
+
+      if (y > canvas.height && Math.random() > 0.976) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  rafId = requestAnimationFrame(frame);
+
+  return function stop() {
+    cancelAnimationFrame(rafId);
+  };
+}
+
 /* ── boot ──────────────────────────────────────────────────────────── */
 (async () => {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const stopMatrix = startMatrixRain();
+  window.addEventListener(DONE_EVENT, stopMatrix, { once: true });
 
   if (reduced || !webglOK()) {
     linearPct(MIN_SHOW_MS - 200, fireDone);
@@ -277,6 +344,35 @@ function run3D() {
     bondMeshes.push(mesh);
   }
 
+  // ── delocalized π-electron clouds ──
+  // Textbook benzene: two torus-shaped charge clouds hovering above and
+  // below the ring plane. Additive-blended so they glow like electron
+  // density; they inflate during the final third of assembly.
+  const piMat = new THREE.MeshPhysicalMaterial({
+    color: 0x67e8f9,
+    emissive: 0x22d3ee,
+    emissiveIntensity: 0.5,
+    transparent: true,
+    opacity: 0,
+    roughness: 0.35,
+    metalness: 0,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  });
+  const piClouds = [];
+  [0.62, -0.62].forEach((h) => {
+    const cloud = new THREE.Mesh(
+      new THREE.TorusGeometry(2.15, 0.52, 28, 110),
+      piMat.clone(),
+    );
+    cloud.rotation.x = Math.PI / 2;
+    cloud.position.y = h;
+    cloud.scale.setScalar(0.55);
+    mol.add(cloud);
+    piClouds.push(cloud);
+  });
+
   // ── animation loop ──
   const clock = new THREE.Clock();
   const EASE = (t) => 1 - Math.pow(1 - t, 3); // ease-out cubic
@@ -324,9 +420,23 @@ function run3D() {
       }
     });
 
-    setPct(
-      assemblyProgress(atomsArrived, bondsDone, atoms.length, totalBondCount),
+    const progress = assemblyProgress(
+      atomsArrived,
+      bondsDone,
+      atoms.length,
+      totalBondCount,
     );
+    setPct(progress);
+
+    // π-clouds inflate during the last stretch of assembly, then breathe
+    const piPhase = Math.max(0, Math.min(1, (progress - 62) / 38));
+    piClouds.forEach((cloud, i) => {
+      cloud.scale.setScalar(0.55 + EASE(piPhase) * 0.45);
+      cloud.material.opacity = piPhase * 0.17;
+      cloud.rotation.z += i === 0 ? 0.006 : -0.006; // counter-rotate
+      cloud.position.y =
+        (i === 0 ? 1 : -1) * (0.62 + Math.sin(t / 900 + i) * 0.05);
+    });
 
     // gentle rotation + wobble
     mol.rotation.y += 0.0042;

@@ -5,18 +5,11 @@
     <!-- Early theme injection to prevent FOUC -->
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
-        var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+        // Signature homepage identity: the quantum theme. A previously
+        // saved choice still wins, but first-time visitors get the
+        // brand look instead of a random pick.
+        var saved = localStorage.getItem("theme");
+        var t = saved && saved.trim() ? saved : "quantum";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -106,6 +99,7 @@
         <rect width="600" height="600" fill="url(#hexes)" />
       </svg>
 
+      <canvas id="fl-matrix" aria-hidden="true"></canvas>
       <canvas id="fl3d-canvas" aria-hidden="true"></canvas>
 
       <div class="fl-orbital fl-fallback">
@@ -1692,9 +1686,11 @@
       /* ----- Misc ----- */
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      // Apply theme: respect saved preference, default to random dark theme
+      // Apply theme: respect saved preference AND the early FOUC script's
+      // choice (quantum) — never re-roll a random theme over either.
       (function () {
         var DARK_THEMES = [
+          "quantum",
           "dark",
           "dark-coffee",
           "amber",
@@ -1709,7 +1705,9 @@
         function getRandomDark() {
           return DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
         }
-        var saved = localStorage.getItem("theme");
+        var saved =
+          localStorage.getItem("theme") ||
+          document.documentElement.getAttribute("data-theme");
         if (!saved) saved = getRandomDark();
         document.documentElement.setAttribute("data-theme", saved);
         document.body.setAttribute("data-theme", saved);
