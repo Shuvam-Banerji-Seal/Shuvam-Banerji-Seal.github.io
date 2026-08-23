@@ -1291,22 +1291,40 @@ const validLucideIcons = [
 ];
 
 test("No invalid lucide icon references", () => {
-  for (const htmlFile of htmlFiles) {
-    const content = readFileSync(htmlFile, "utf8");
-    const iconRefs = content.match(/data-lucide="([^"]+)"/g) || [];
-    for (const ref of iconRefs) {
+  // Validate every literal data-lucide name against the REAL lucide@1.33.0
+  // icon set (tests/fixtures/lucide-icons.json, generated from the pinned
+  // UMD). The runtime resolves an attr name by toPascalCasing it and
+  // looking it up in the icons object — we mirror exactly that, so this
+  // catches typos like the "flask" bug (not a glyph; empty icon + warning).
+  const iconKeys = JSON.parse(
+    readFileSync(join(ROOT, "tests/fixtures/lucide-icons.json"), "utf8"),
+  );
+  const iconSet = new Set(iconKeys);
+  const toPascal = (h) => {
+    const t = h.replace(/^([A-Z])|[\s-_]+(\w)/g, (_, d, c) =>
+      c ? c.toUpperCase() : d.toLowerCase(),
+    );
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  };
+  const files = [
+    ...htmlFiles,
+    ...readdirSync(join(ROOT, "assets/js"))
+      .filter((f) => f.endsWith(".js"))
+      .map((f) => join(ROOT, "assets/js", f)),
+  ];
+  for (const file of files) {
+    const content = readFileSync(file, "utf8");
+    const refs = content.match(/data-lucide="([^"]+)"/g) || [];
+    for (const ref of refs) {
       const iconName = ref.match(/data-lucide="([^"]+)"/)[1];
-      // Skip known valid icons and check
-      if (iconName && !iconName.includes("{{")) {
-        // We'll just warn about potentially invalid icons
-        const knownInvalid = ["youtube", "github-brand", "linkedin-brand"];
-        if (knownInvalid.includes(iconName)) {
-          assert(
-            false,
-            `${htmlFile.replace(ROOT + "/", "")}: Invalid icon "${iconName}"`,
-          );
-        }
-      }
+      // skip dynamic (template-injected) names — not statically checkable
+      if (!iconName || iconName.includes("${") || iconName.includes("{{"))
+        continue;
+      assert(
+        iconSet.has(toPascal(iconName)),
+        `${file.replace(ROOT + "/", "")}: lucide has no icon "${iconName}"` +
+          ` (empty slot + console warning at runtime)`,
+      );
     }
   }
 });
