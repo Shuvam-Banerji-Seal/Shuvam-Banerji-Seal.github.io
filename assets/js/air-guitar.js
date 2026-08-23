@@ -80,6 +80,10 @@ class AirGuitar {
   // ── public API (called from webcam-tester.js) ─────────────────────────
   attach(videoStream) {
     this.stream = videoStream;
+    // webcam-tester.js hands us the MediaStream; the <video> element it
+    // feeds is the frame source MediaPipe needs. Without this reference
+    // the send-gate in loop() never opens and tracking never runs.
+    this.video = document.getElementById("cam") || this.video;
     if (this.active && !this.hands) this.enable(); // auto-start once enabled
   }
 
@@ -89,7 +93,13 @@ class AirGuitar {
       this.canvas = document.getElementById("overlay");
       this.ctx2d = this.canvas.getContext("2d");
     }
+    this.video = document.getElementById("cam") || this.video;
     if (!this.audioCtx) this.initAudio();
+    // A context created outside a gesture (or before the first click)
+    // starts suspended — resume it so plucks are actually audible.
+    if (this.audioCtx.state === "suspended") {
+      this.audioCtx.resume().catch(() => {});
+    }
     if (this.stream && !this.hands && !this.loadingModel) {
       // user switched to guitar tab before enabling — arm automatically
       this.enable();
@@ -182,6 +192,7 @@ class AirGuitar {
   async enable() {
     if (this.handsReady || this.loadingModel) return;
     this.loadingModel = true;
+    this.active = true;
     const status = document.getElementById("guitar-status");
     try {
       status.textContent = "Loading hand-tracking model\u2026";
@@ -272,22 +283,29 @@ class AirGuitar {
     const gap = (canvas.height * 0.56) / (STRINGS.length - 1);
     this.stringYs = STRINGS.map((_, i) => top + gap * i);
 
-    // feed frames to MediaPipe at ~30fps
+    // feed frames to MediaPipe at ~30fps — never stack sends: the
+    // solution API rejects concurrent send() calls, so gate on the
+    // previous frame's promise settling.
     const now = performance.now();
     if (
       this.hands &&
       this.handsReady &&
       this.stream &&
+      !this._sending &&
       now - this.lastSendT > 33 &&
       this.video &&
       this.video.readyState >= 2
     ) {
       this.lastSendT = now;
-      try {
-        this.hands.send({ image: this.video });
-      } catch (e) {
-        /* transient decode hiccup — skip frame */
-      }
+      this._sending = true;
+      this.hands
+        .send({ image: this.video })
+        .catch(() => {
+          /* transient decode hiccup — skip frame */
+        })
+        .finally(() => {
+          this._sending = false;
+        });
     }
 
     if (this.handsReady && this.results?.multiHandLandmarks) {
