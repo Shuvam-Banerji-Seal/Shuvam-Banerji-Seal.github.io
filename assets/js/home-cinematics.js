@@ -240,6 +240,7 @@ if (document.readyState === "loading") {
     initReveals();
     initParallax();
     initToTop();
+    initScrollProgress();
   });
 } else {
   initCursor();
@@ -247,6 +248,7 @@ if (document.readyState === "loading") {
   initReveals();
   initParallax();
   initToTop();
+  initScrollProgress();
 }
 
 /* ── 5. Back-to-top ─────────────────────────────────────────────────── */
@@ -256,4 +258,27 @@ function initToTop() {
   btn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+}
+
+/* ── 6. Scroll progress bar ─────────────────────────────────────────── */
+function initScrollProgress() {
+  if (REDUCED) return;
+  const bar = document.createElement("div");
+  bar.id = "scroll-progress";
+  document.body.appendChild(bar);
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        const p = max > 0 ? window.scrollY / max : 0;
+        bar.style.transform = `scaleX(${p})`;
+        ticking = false;
+      });
+    },
+    { passive: true },
+  );
 }
