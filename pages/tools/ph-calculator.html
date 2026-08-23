@@ -153,7 +153,7 @@
             <div class="scale-bar">
               <div class="scale-indicator" id="scale-indicator"></div>
               <div class="scale-acidic-label">
-                <i data-lucide="flask"></i> Acidic
+                <i data-lucide="flask-conical"></i> Acidic
               </div>
               <div class="scale-neutral-label">
                 <i data-lucide="droplets"></i> Neutral
@@ -907,7 +907,7 @@
           typeEl.innerHTML = `<i data-lucide="equal"></i> Neutral Solution (pH ≈ 7)`;
         } else if (pH < 7) {
           type = "acidic";
-          typeEl.innerHTML = `<i data-lucide="flask"></i> Acidic Solution (pH < 7)`;
+          typeEl.innerHTML = `<i data-lucide="flask-conical"></i> Acidic Solution (pH < 7)`;
         } else {
           type = "basic";
           typeEl.innerHTML = `<i data-lucide="flask-conical"></i> Basic/Alkaline Solution (pH > 7)`;

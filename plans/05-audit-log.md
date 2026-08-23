@@ -344,3 +344,22 @@ Final: tests 11/11, crawl 29/29 clean.
 | audio-studio       | tone.wav→1 track, 1.0s shown, EQ/Comp/Rev/Delay/Gate/Limiter panels, 3 canvases                                                    | PASS                         |
 
 Notes: music sessionStorage `sbs_music_auth` persists across Playwright navigations (expected). Terminal input is dynamically spawned after boot animation — tests must waitForSelector('.term-input').
+
+## Session 2026-08-23 — site-wide design-system wave COMPLETED + DEPLOYED (commit 8fc9b15, run 32655521348)
+
+Finished the interrupted uncommitted wave found in the tree (on top of 9aa5506):
+
+| Check | Result |
+|-------|--------|
+| Diff audit (32 files) | polish CSS moved index-overrides→main.css; Space Grotesk font links on all 30 non-stub pages; tool-page SG rule — no other changes hiding |
+| Cascade safety | mobile-fixes scrollbar/focus rules complementary (element-specific wins by specificity — intended); index-overrides .section-title rule is additive |
+| #scroll-progress gap | CSS was site-wide but creator existed only on homepage → navbar.js now creates it everywhere (reduced-motion guarded); home-cinematics.js duplicate-guard added; verified exactly 1 bar on index (both scripts loaded) |
+| mermaid-tool scope exception | loads no main.css (self-contained React chrome) → polish/progress-bar intentionally absent there; documented |
+| npm test | 11/11 |
+| comprehensive-tests | 521/521 (was 511 — pdf-reducer/pdf-to-jpg stubs given meta description/canonical/OG + theme/main/tool-page css) |
+| build-verification | 106/106 — CSS size gate strengthened: gzip wire-size <30KB + 200KB raw ceiling (index bundle 109KB raw/16.8KB gzip is by-design B49 aggregation) |
+| axe (homepage, quantum) | serious/critical = 0 (footer color-contrast regression from a5f8112 fixed: footer-tag/footer-base → --text-secondary; ALL 9 themes' --text-muted computed <4.5:1 on own bg — muted kept for decorative use, small functional text moved to secondary which passes in all 9) |
+| Visual | quantum home, light home, blog, equation-balancer, 390px mobile (0px overflow), footer — screenshots verified |
+| Redirect stubs | pdf-reducer→pdf-studio#compress, pdf-to-jpg→#tojpg both live-verified in browser |
+| Deploy | commit 8fc9b15 → run 32655521348 success → live curl: font link, #scroll-progress + h1-h3 SG rule in main-BEXVp-7K.css, navbar-C-GjkDCt.js creator, tool-page-CMIUEVfh.css SG, stub meta — all present |
+| Double-audit | wave 2: all 3 suites re-run green; 5 live URLs 200; live in-browser: SG headings + bar + footer color confirmed |
