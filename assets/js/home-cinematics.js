@@ -263,6 +263,8 @@ function initToTop() {
 /* ── 6. Scroll progress bar ─────────────────────────────────────────── */
 function initScrollProgress() {
   if (REDUCED) return;
+  // navbar.js also creates this bar site-wide; never allow two.
+  if (document.getElementById("scroll-progress")) return;
   const bar = document.createElement("div");
   bar.id = "scroll-progress";
   document.body.appendChild(bar);

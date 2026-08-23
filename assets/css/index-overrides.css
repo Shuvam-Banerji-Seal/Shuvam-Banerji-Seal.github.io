@@ -194,7 +194,10 @@ footer.site-footer {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  /* --text-secondary, not --text-muted: this is small functional text and
+     every theme's muted value fails WCAG AA (4.5:1) on its own bg-deep.
+     Secondary passes in all 9 themes; hierarchy survives via size/tracking. */
+  color: var(--text-secondary);
 }
 .footer-nav {
   display: flex;
@@ -229,7 +232,8 @@ footer.site-footer .footer-social {
   padding-bottom: 1.4rem;
   font-family: var(--font-mono);
   font-size: 0.74rem;
-  color: var(--text-muted);
+  /* See .footer-tag note — small functional text needs AA contrast. */
+  color: var(--text-secondary);
 }
 .fb-mid {
   letter-spacing: 0.06em;
@@ -479,119 +483,6 @@ h3,
   -webkit-text-fill-color: transparent;
 }
 
-/* Themed text selection */
-::selection {
-  background: rgba(34, 211, 238, 0.28);
-  color: #eaf6ff;
-}
-
-/* Themed scrollbars (WebKit + thin Firefox) */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-deep);
-}
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(34, 211, 238, 0.45),
-    rgba(167, 139, 250, 0.45)
-  );
-  border-radius: 99px;
-  border: 2px solid var(--bg-deep);
-}
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(34, 211, 238, 0.5) var(--bg-deep);
-}
-
-/* Scroll progress bar */
-#scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  width: 100%;
-  transform-origin: 0 50%;
-  transform: scaleX(0);
-  background: var(--grad-primary);
-  z-index: 10001;
-  pointer-events: none;
-}
-
-/* Quantum card hover: gradient border glow instead of flat border */
-.card,
-.glassmorphic {
-  position: relative;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
-}
-.card:hover,
-.glassmorphic:hover {
-  border-color: rgba(34, 211, 238, 0.4);
-  box-shadow:
-    0 0 0 1px rgba(34, 211, 238, 0.18),
-    0 12px 40px rgba(2, 8, 20, 0.55);
-}
-
-/* Section divider hairline with animated gradient sweep */
-.section-divider {
-  position: relative;
-  height: 1px;
-  background: var(--border);
-  overflow: visible;
-}
-.section-divider::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: 30%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--accent-cyan),
-    transparent
-  );
-  animation: div-sweep 3.2s ease-in-out infinite;
-}
-@keyframes div-sweep {
-  0% {
-    transform: translateX(-110%);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(380%);
-    opacity: 0;
-  }
-}
-
-/* Subtle film grain for depth */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 9990;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-}
-
-/* Accessible focus rings in the accent color */
-:focus-visible {
-  outline: 2px solid var(--accent-cyan);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
 .loading-line {
   opacity: 0;
   animation: fadeIn 0.3s ease forwards;

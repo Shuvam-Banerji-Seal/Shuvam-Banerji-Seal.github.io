@@ -566,3 +566,11 @@
         max-width: 90%;
     }
 }
+
+/* Quantum identity: display face + gradient titles on tool pages */
+.tool-page h1,
+.tool-page h2,
+.tool-page-title {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  letter-spacing: -0.02em;
+}

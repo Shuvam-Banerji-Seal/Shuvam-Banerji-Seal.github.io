@@ -331,7 +331,34 @@ document.addEventListener("DOMContentLoaded", function () {
   initDropdowns();
   initMobileMenuLogic();
   initThemeToggle();
+  initScrollProgress();
 });
+
+// Site-wide scroll progress bar (#scroll-progress styles live in main.css).
+// The homepage's home-cinematics.js has its own instance that boots earlier;
+// the existence guard keeps exactly one bar regardless of execution order.
+function initScrollProgress() {
+  if (document.getElementById("scroll-progress")) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const bar = document.createElement("div");
+  bar.id = "scroll-progress";
+  document.body.appendChild(bar);
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const p = max > 0 ? window.scrollY / max : 0;
+        bar.style.transform = `scaleX(${p})`;
+        ticking = false;
+      });
+    },
+    { passive: true },
+  );
+}
 
 // All available dark themes
 const DARK_THEMES = [
