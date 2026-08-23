@@ -375,3 +375,18 @@ Finished the interrupted uncommitted wave found in the tree (on top of 9aa5506):
 | Mobile 390px live | hamburger opens (backdrop+scroll-lock), 3 accordions, Tools→17 sub-links, navigate to pdf-studio works, menu auto-closes; pdf-studio mobile layout clean |
 | BUG FOUND+FIXED | `data-lucide="flask"` (nonexistent in lucide@1.33.0) → empty icon slots + console warnings on ph-calculator (x2) & equation-balancer (x1). Fixed → flask-conical. Live-verified: 0 warnings, SVGs render |
 | Screenshots | live-pdfstudio-mobile.png |
+
+## Session 2026-08-24 — AIR GUITAR FIX (root cause + deploy) — commits a5b2c5f, ad80525
+
+**User report:** "the air guitar is not working."
+
+| Step | Result |
+|------|--------|
+| Root cause | webcam-tester.js passes only the MediaStream to AirGuitar.attach(); air-guitar.js declared this.video but NEVER assigned it. The rAF loop gates hands.send() on this.video.readyState → gate never opened → zero frames reached MediaPipe → onResults never fired → status stuck at "Waiting for hand…", strings drawn but nothing plucked. Bug existed since the feature shipped (aaa8e30) — the prior session's "strum detection unit-tested" covered detectPlucks math, not the frame-feed wiring. |
+| Fix | attach()/show() bind #cam; hands.send() gated on previous frame's promise (solution API rejects concurrent sends); AudioContext resumed if suspended; active flag set in enable() |
+| Headless E2E (local) | fake getUserMedia (animated canvas stream) + fake Hands (fingertip sweep): all 6 strings plucked [0,1,2,3,4,5], status "Tracking 1 hand — strum!", audio running |
+| Regression tests | +2 (air-guitar binds #cam; webcam-tester attaches stream) → 523 total |
+| Icon validator upgrade | old lucide test was a 3-name blocklist (couldn't catch "flask"); now validates every literal data-lucide against tests/fixtures/lucide-icons.json (2030 keys from pinned UMD) using the runtime's exact toPascal lookup. Scans HTML + assets/js. |
+| Deploy | a5b2c5f + ad80525 → run success → live bundle webcam-tester-BKxH4m9B.js contains fix |
+| Live E2E (production) | same fake-camera/fake-Hands harness against PROD: videoBound ✓ handsReady ✓ "Tracking 1 hand — strum!" ✓ plucked [0,1,2,3,4,5] ✓ audio running ✓ |
+| Real-device expectation | user should now see "Tracking armed" → "Tracking N hand(s) — strum!" and hear plucks; requires WebGL (real browsers have it) + camera permission |
