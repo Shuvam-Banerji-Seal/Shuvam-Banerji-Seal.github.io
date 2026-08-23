@@ -363,3 +363,15 @@ Finished the interrupted uncommitted wave found in the tree (on top of 9aa5506):
 | Redirect stubs | pdf-reducer→pdf-studio#compress, pdf-to-jpg→#tojpg both live-verified in browser |
 | Deploy | commit 8fc9b15 → run 32655521348 success → live curl: font link, #scroll-progress + h1-h3 SG rule in main-BEXVp-7K.css, navbar-C-GjkDCt.js creator, tool-page-CMIUEVfh.css SG, stub meta — all present |
 | Double-audit | wave 2: all 3 suites re-run green; 5 live URLs 200; live in-browser: SG headings + bar + footer color confirmed |
+
+## Session 2026-08-23 (evening) — full live-site Playwright QA + icon fix DEPLOYED (commit 029a3ac, run 32658792709)
+
+| Check | Result |
+|-------|--------|
+| Deploy state | 8fc9b15 run 32655521348 success; live bundle hash == local dist hash; then 029a3ac run 32658792709 success |
+| Homepage live | loader completes, terminal boots (13 lines) + `neofetch` executes, navbar 3 dropdowns, theme toggle quantum→light persisted, Tools dropdown opens w/ correct items, dropdown click-through navigates |
+| Page sweep (25 pages, live, console-instrumented) | 24/25 zero console errors; github-projects shows graceful 403 degradation (rate-limited env, placeholders + full page — known-env-only); molecule-viz single 3Dmol WebGL-init error = documented headless-env limitation, page functional |
+| Interactive live | periodic table H-click→detail panel; equation balancer H2+O2→H2O → "Balanced"; games quiz→difficulty modal; music gate present; mermaid SVG renders |
+| Mobile 390px live | hamburger opens (backdrop+scroll-lock), 3 accordions, Tools→17 sub-links, navigate to pdf-studio works, menu auto-closes; pdf-studio mobile layout clean |
+| BUG FOUND+FIXED | `data-lucide="flask"` (nonexistent in lucide@1.33.0) → empty icon slots + console warnings on ph-calculator (x2) & equation-balancer (x1). Fixed → flask-conical. Live-verified: 0 warnings, SVGs render |
+| Screenshots | live-pdfstudio-mobile.png |
