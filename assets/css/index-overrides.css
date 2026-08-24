@@ -2112,3 +2112,245 @@ footer p {
   #loading-screen {
   background: var(--bg-deep);
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   HOMEPAGE REDESIGN (design.md) — claim hero, positioning, featured
+   work, capabilities, editorial band, contact closer. Solid ink only.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── §2.1 Hero claim ── */
+.hero-claim {
+  grid-column: 1 / -1;
+  max-width: 900px;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+
+.hero-kicker {
+  font: 600 0.72rem "JetBrains Mono", monospace;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  opacity: 0.85;
+  margin-bottom: 0.9rem;
+}
+
+.hero-statement {
+  font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+  font-size: clamp(2.1rem, 4.6vw, 3.9rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 1.6rem;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+/* ── §2.2 Positioning ── */
+.positioning {
+  max-width: 72ch;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem 0;
+}
+
+.positioning p {
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+/* ── §2.3 Featured Work ── */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.work-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.work-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: 0 16px 44px rgba(2, 8, 20, 0.55);
+}
+
+.work-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+}
+
+.work-index {
+  font: 700 0.78rem "JetBrains Mono", monospace;
+  color: var(--accent-cyan);
+  opacity: 0.8;
+}
+
+.work-card .project-title {
+  font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+}
+
+.work-foot {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+
+.work-foot .project-status {
+  margin-right: auto;
+}
+
+.work-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font: 600 0.82rem var(--font-body, Inter);
+  color: var(--accent-cyan);
+  text-decoration: none;
+}
+
+.work-link:hover {
+  text-decoration: underline;
+}
+
+.work-link svg,
+.work-link i {
+  width: 13px;
+  height: 13px;
+}
+
+/* ── §2.4 Capabilities ── */
+.capabilities {
+  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.cap-card {
+  padding: 1.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.cap-card:hover {
+  border-color: rgba(34, 211, 238, 0.4);
+  transform: translateY(-2px);
+}
+
+.cap-num {
+  font: 700 0.8rem "JetBrains Mono", monospace;
+  color: var(--accent-cyan);
+  opacity: 0.75;
+}
+
+.cap-card h3 {
+  font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+  font-size: 1.12rem;
+  margin: 0.55rem 0 0.3rem;
+  color: var(--text-primary);
+}
+
+.cap-hook {
+  font: 600 0.85rem var(--font-body, Inter);
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.cap-card p:last-child {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+/* ── §2.5 Editorial band ── */
+.editorial-band {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: clamp(3.5rem, 8vw, 6.5rem) 1.5rem;
+  text-align: center;
+}
+
+.editorial-band p {
+  font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+  font-size: clamp(1.7rem, 3.6vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text-primary);
+  max-width: 24ch;
+  margin: 0 auto;
+}
+
+/* ── §2.7 Contact closer ── */
+.contact-closer {
+  text-align: center;
+  padding: clamp(3rem, 7vw, 5.5rem) 1.5rem clamp(2rem, 4vw, 3rem);
+}
+
+.closer-line {
+  font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+  font-size: clamp(1.9rem, 4vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 1.2rem;
+}
+
+.giant-mail {
+  font: 600 clamp(1rem, 2.4vw, 1.8rem) "JetBrains Mono", monospace;
+  color: var(--accent-cyan);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+  word-break: break-all;
+}
+
+.giant-mail:hover {
+  border-bottom-color: var(--accent-cyan);
+}
+
+/* ── Responsive ── */
+@media (max-width: 980px) {
+  .work-grid,
+  .cap-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-claim {
+    grid-column: 1 / -1;
+  }
+}
