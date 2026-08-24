@@ -1,47 +1,53 @@
-# CONTINUATION STATE — 2026-08-23 (design-system wave COMPLETED + DEPLOYED)
+# CONTINUATION STATE — 2026-08-24 (air-guitar fix deployed & verified)
 
 ## Session Summary
 
-| Field            | Value                                                                                                                                                                                                                                                                                                                                                                                          |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Session #        | N+2                                                                                                                                                                                                                                                                                                                                                                                            |
-| Phase            | IMPLEMENT → TEST → AUDIT → DEPLOY (all complete)                                                                                                                                                                                                                                                                                                                                               |
-| What I did       | Finished the interrupted site-wide design-system wave: verified the 32-file diff, closed the scroll-progress gap (navbar.js creator + duplicate guard), fixed footer AA-contrast regression, gave redirect stubs proper heads, strengthened the CSS size gate to gzip, ran full suites + axe + visual + responsive, committed 8fc9b15, deployed (run 32655521348 success), live-verified twice |
-| What worked      | Reference-grep diff audit; per-theme WCAG computation before choosing fix scope; idempotency guards for the progress bar                                                                                                                                                                                                                                                                       |
-| What failed      | require() in ESM test (fixed w/ top-level import); GitHub REST rate-limit (used gh CLI)                                                                                                                                                                                                                                                                                                        |
-| Errors remaining | none                                                                                                                                                                                                                                                                                                                                                                                           |
-| Next priorities  | optional items below                                                                                                                                                                                                                                                                                                                                                                           |
-| Blockers         | none                                                                                                                                                                                                                                                                                                                                                                                           |
-| Audit status     | DOUBLE_PASS (two consecutive verification waves, both green, live-confirmed)                                                                                                                                                                                                                                                                                                                   |
+| Field            | Value                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Session #        | N+3                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Phase            | DEBUG → FIX → TEST → DEPLOY → LIVE-VERIFY (complete)                                                                                                                                                                                                                                                                                                                                                                  |
+| What I did       | Root-caused "air guitar not working": this.video never assigned → hands.send() gate never opened. Fixed binding + concurrent-send guard + AudioContext resume. Proved pipeline headless with fake camera + fake Hands (all 6 strings pluck). Upgraded lucide icon test to validate against the real 2030-icon set (fixture from pinned UMD). Deployed a5b2c5f + ad80525; ran the same E2E against PRODUCTION — green. |
+| What worked      | Reading the integration seam (attach() contract) before touching code; fake-Hands E2E harness; runtime-exact icon validation                                                                                                                                                                                                                                                                                          |
+| What failed      | First fake used getter/setter for onResults — method-call API shape broke it (my test's bug, not the site's); real MediaPipe can't init headless (WebGL) so the fake was necessary                                                                                                                                                                                                                                    |
+| Errors remaining | none                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Next priorities  | optional backlog below                                                                                                                                                                                                                                                                                                                                                                                                |
+| Blockers         | none                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Audit status     | LIVE-VERIFIED on production (bundle contains fix; E2E plucks all strings)                                                                                                                                                                                                                                                                                                                                             |
 
 ## Deployed state
 
-- HEAD = 8fc9b15 "feat: site-wide design system — Space Grotesk display type everywhere, shared polish CSS, site-wide scroll-progress bar, footer AA contrast"
-- Live-verified: Space Grotesk headings, #scroll-progress bar w/ quantum gradient, footer #9fb0c8, stub meta tags, 5 key URLs 200.
-- Suites: basic 11/11 · comprehensive 521/521 · build-verification 106/106 · axe serious/critical = 0 (homepage).
+- HEAD = e5dc801 (docs). Code HEADs: a5b2c5f (air-guitar fix), ad80525 (icon validator + fixture).
+- Suites: basic 11/11 · comprehensive 523/523 · build-verification 106/106.
+- Live: webcam-tester-BKxH4m9B.js contains the fix; production E2E green.
 
-## Known scope exceptions (documented, intentional)
+## User-facing expectation (real device)
 
-- mermaid-tool.html: no main.css → no site polish/progress bar there (self-contained React chrome; D8 in 04-decisions).
-- --text-muted remains sub-AA for decorative uses (D6); small functional text uses --text-secondary.
+Open /pages/tools/webcam-tester.html → Start camera → Guitar tab → model loads (~2-4s) →
+"Tracking armed — sweep your fingertips across the strings!" → show a hand →
+"Tracking 1 hand — strum!" → sweep index/middle fingertips vertically through the
+strings → plucks sound (Karplus–Strong) + string ripple animation. Requires camera
+permission + WebGL (any normal browser). Chord buttons + volume slider re-render
+buffers / set master gain.
 
-## Remaining optional items (no bugs outstanding)
+## Optional backlog (unchanged)
 
-1. Tree-shaken lucide ESM per page (~90KB gz savings; large refactor).
-2. Inline critical CSS for the ~1s emulated font-CSS chain.
-3. Bump actions/\* versions in deploy.yml (Node 20 deprecation annotation).
-4. Quarantine 6 orphaned JS modules + stale hashed bundles in root assets/ (.rigor-trash w/ INDEX entries): tools-main.js, enhanced-particles.js, anime-animations.js, molecule-background.js, dna-helix.js, benzene-loader.js.
-5. Owner action item (out of code scope): rotate the Modal API key leaked in git history (commit 3f41677).
+1. Tree-shaken lucide ESM per page (~90KB gz; large refactor)
+2. Inline critical CSS for font-CSS chain
+3. Bump actions/\* versions in deploy.yml
+4. Quarantine 6 orphaned JS modules + stale hashed bundles (rigor-trash w/ INDEX)
+5. Owner: rotate Modal API key leaked in git history (3f41677)
 
 ## File Manifest
 
-| File                        | Status                             |
-| --------------------------- | ---------------------------------- |
-| plans/00-understanding.md   | current (Rev 2 structural map)     |
-| plans/04-decisions.md       | current (D5–D9 added)              |
-| plans/05-audit-log.md       | current (2026-08-23 session entry) |
-| plans/CONTINUATION_STATE.md | this file                          |
+| File                        | Status                     |
+| --------------------------- | -------------------------- |
+| plans/00-understanding.md   | current (Rev 2)            |
+| plans/05-audit-log.md       | current (air-guitar entry) |
+| plans/CONTINUATION_STATE.md | this file                  |
 
 ## Continuation Prompt Hints
 
-No outstanding bugs; site deployed and verified. Next session should pick from the optional list above (lucide ESM refactor is the highest-value; quarantining orphans is the lowest-risk) or take any new user request — full structural context lives in plans/00-understanding.md Rev 2.
+No known bugs. If the user reports air-guitar still failing on THEIR device, ask for:
+browser + whether status reaches "Tracking armed" (model load OK) vs "Waiting for hand"
+(model OK but no hand detected → lighting/camera) vs WebGL error message — the status
+line now discriminates all three failure stages.

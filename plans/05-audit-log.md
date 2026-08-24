@@ -390,3 +390,26 @@ Finished the interrupted uncommitted wave found in the tree (on top of 9aa5506):
 | Deploy | a5b2c5f + ad80525 → run success → live bundle webcam-tester-BKxH4m9B.js contains fix |
 | Live E2E (production) | same fake-camera/fake-Hands harness against PROD: videoBound ✓ handsReady ✓ "Tracking 1 hand — strum!" ✓ plucked [0,1,2,3,4,5] ✓ audio running ✓ |
 | Real-device expectation | user should now see "Tracking armed" → "Tracking N hand(s) — strum!" and hear plucks; requires WebGL (real browsers have it) + camera permission |
+
+## Session 2026-08-24 (late) — AUDIO STUDIO PRO DAW UI — commit f1b183d, deployed
+
+**User request:** professional, flexible UI like Audacity/Premiere Pro — resizable + rearrangeable panels, scrolling, track selection, configurable, polished hardware feel.
+
+| Piece | What shipped |
+|-------|--------------|
+| studio-dock.js (new, ~700 ln) | Premiere-style docking: binary tree (splits/tabs/panels), drag headers → edge-split / tabify / float, floating windows (drag+resize+dock-back), splitters w/ normalization, collapse, maximize (dbl-click), header context menu, localStorage persistence (validated, floats-aware) + reset. Content nodes MOVED not recreated → engine listeners survive. |
+| audio-studio.html (rewritten) | fixed transport bar (LED time, snap toggle, layout reset), dock workspace with 6 panels (Tracks/Analyzer/Edit-Tools/Mixer/Effects/Export), fixed status bar (cursor/selection, zoom, sr, tracks, duration). All engine IDs preserved. |
+| audio-studio.css (rewritten ~1400 ln) | hardware visual language: beveled buttons, LED time display w/ glow, gradient meters, vertical faders (writing-mode), track headers w/ color strips, ruler, playhead w/ cap, selection overlay, markers, DAW scrollbars, responsive stack <900px |
+| audio-studio.js (surgical patches) | pps zoom model + viewport-window waveform rendering; lanes scroll sync (rAF); ResizeObserver canvas re-measure; playhead auto-follow; snap-to-beat; per-track analyser taps + RMS meters; pan (header removed → mixer); rename (dblclick); drag-reorder; lane heights S/M/L; updateStatus(); dock boot + docklayout re-measure |
+
+| Check | Result |
+|-------|--------|
+| Suites | basic 11/11 · comprehensive 523/523 · build-verification 106/106 (fixed .time-display.dim dup) |
+| Dock ops (headless E2E) | float ✓ tabify ✓ persist-across-reload ✓ edge-split ✓ dock-back ✓ collapse ✓ maximize/restore ✓ reset ✓ splitter resize ✓ |
+| Timeline | selection+overlay ✓ snap 0.31→0.5 @120bpm ✓ zoom 100→200pps (innerW 660→1160, 12 ticks) ✓ scroll sync ✓ playhead content-coords ✓ |
+| Tracks | rename ✓ reorder ✓ mute/solo ✓ heights ✓ pan ✓ per-track meters (39% while playing) ✓ |
+| Effects/export/keys | EQ toggle+slider+curve ✓ comp knob ✓ WAV export 882KB blob ✓ space/m/ctrl+z ✓ |
+| Mobile 390px | 0 overflow, stacked panels, lanes 300px ✓ |
+| Deploy | f1b183d → run success → LIVE: dock boots, float+tabify works on prod, waveform paints, light-theme page keeps dark studio chrome ✓ |
+
+Bugs found+fixed during build: Vite dev served stale empty CSS (restart); _swapNode signature mismatch (path-entry vs raw node); _replaceInParent never defined (replaced w/ recursive _cleanup); float registry not cleared on re-dock; persistence validation rejected floated layouts; sizer didn't renormalize 3-child splits; mobile lanes 0-height.
