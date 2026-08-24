@@ -413,3 +413,15 @@ Finished the interrupted uncommitted wave found in the tree (on top of 9aa5506):
 | Deploy | f1b183d → run success → LIVE: dock boots, float+tabify works on prod, waveform paints, light-theme page keeps dark studio chrome ✓ |
 
 Bugs found+fixed during build: Vite dev served stale empty CSS (restart); _swapNode signature mismatch (path-entry vs raw node); _replaceInParent never defined (replaced w/ recursive _cleanup); float registry not cleared on re-dock; persistence validation rejected floated layouts; sizer didn't renormalize 3-child splits; mobile lanes 0-height.
+
+## Session 2026-08-25 — multi-page improvement wave — commit 0ad8859, deployed
+
+| Item | What | Verification |
+|------|------|--------------|
+| B-HOME (bug) | terminal input auto-focus yanked users to hero mid-read (global scroll-behavior:smooth animates focus-scroll). Fix: focus({preventScroll:true}) | live: scroll to 3150px during boot window, zero yank |
+| B-BEAM (bug) | unb64url padding formula (L+3)%4 wrong for EVERY length class; L%4==0 codes threw in atob (~1 in 4 codes dead). Fix: (4-L%4)%4 + whitespace-tolerant decode + 2 extra STUN servers | codec roundtrip L=10..5000 all OK; live offer code decodes to valid SDP |
+| Air guitar v2 | 5 fingertips (was 2), EMA velocity → dynamics, down/up articulation (separate KS buffers), 8 chords (+Dm/Em7), sensitivity slider, metronome+BPM, session recording→WAV, fingertip trails, chord flash, tracking dot | headless E2E: all 6 strings pluck w/ 5-finger sweep, chord switch, metro toggle, trails active |
+| Studio cursor | hover cut-position line + snapped time badge over lanes; hides on leave | E2E: tracks mouse, snaps, hides |
+| Navbar | Audio Studio + PDF Studio → Apps dropdown | live: Apps shows both; Tools no longer lists them |
+| Music premium | flat deep surfaces, hover-lift cards, elevated blurred player bar, accent play btn, hover progress thumb, themed scrollbars; dark console in any page theme | live screenshot: Spotify-grade shell, 448 cards, 0 overflow |
+| De-gradient | --grad-primary/--grad-green → solid per theme (18 defs site-wide), resume gradient vars → solids, divider sweep → solid accent | projects/resume/about screenshots: clean flat design |
