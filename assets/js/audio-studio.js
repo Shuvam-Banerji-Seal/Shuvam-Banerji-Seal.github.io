@@ -26,9 +26,14 @@ class AudioTrack {
     this.pan = 0;
     this.muted = false;
     this.soloed = false;
+    this.height = "M"; // S | M | L lane height
     this.gainNode = ctx.createGain();
     this.panNode = ctx.createStereoPanner();
     this.gainNode.connect(this.panNode);
+    // metering tap (does not pass audio through)
+    this.analyser = ctx.createAnalyser();
+    this.analyser.fftSize = 256;
+    this.panNode.connect(this.analyser);
   }
 }
 
@@ -51,8 +56,10 @@ class AudioStudio {
     this.isSelecting = false;
     this.markers = [];
     this.clipboard = null;
-    this.zoom = 1;
-    this.scrollOffset = 0;
+    this.pps = 100; // pixels per second — the zoom model
+    this.scrollLeft = 0; // lanes horizontal scroll (px)
+    this.snapEnabled = true;
+    this._scrollRAF = null;
     this.history = [];
     this.historyIndex = -1;
     this.maxHistory = 50;
@@ -103,6 +110,9 @@ class AudioStudio {
       this.setupEffects();
       this.initCanvases();
       this.bindEvents();
+      this.renderTracks();
+      this.renderMixer();
+      this.updateStatus();
       this.drawEmptyVisualizer();
       this.drawEmptyEQ();
     } catch (e) {
@@ -172,9 +182,28 @@ class AudioStudio {
     if (this.vizCanvas) this.resizeCanvas(this.vizCanvas);
     if (this.eqCanvas) this.resizeCanvas(this.eqCanvas);
 
+    // Panels resize when the dock layout changes — observe the canvas
+    // containers directly instead of relying on window resizes alone.
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => {
+        if (this.vizCanvas) this.resizeCanvas(this.vizCanvas);
+        if (this.eqCanvas) this.resizeCanvas(this.eqCanvas);
+        this.updateLanesWidth();
+        this.drawTrackCanvases();
+        this.drawEQCurve();
+      });
+      if (this.vizCanvas?.parentElement)
+        ro.observe(this.vizCanvas.parentElement);
+      if (this.eqCanvas?.parentElement) ro.observe(this.eqCanvas.parentElement);
+      const lanes = document.getElementById("lanes-scroll");
+      if (lanes) ro.observe(lanes);
+      this._canvasRO = ro;
+    }
+
     window.addEventListener("resize", () => {
       if (this.vizCanvas) this.resizeCanvas(this.vizCanvas);
       if (this.eqCanvas) this.resizeCanvas(this.eqCanvas);
+      this.updateLanesWidth();
       this.drawTrackCanvases();
     });
   }
@@ -216,12 +245,12 @@ class AudioStudio {
 
     document
       .getElementById("zoom-in-btn")
-      ?.addEventListener("click", () => this.setZoom(this.zoom * 1.5));
+      ?.addEventListener("click", () => this.setZoom(this.pps * 1.5));
     document
       .getElementById("zoom-out-btn")
-      ?.addEventListener("click", () => this.setZoom(this.zoom / 1.5));
+      ?.addEventListener("click", () => this.setZoom(this.pps / 1.5));
     document.getElementById("zoom-slider")?.addEventListener("input", (e) => {
-      this.setZoom(parseFloat(e.target.value) / 10);
+      this.setZoom(parseFloat(e.target.value) * 10);
     });
 
     document.getElementById("bpm-input")?.addEventListener("change", (e) => {
@@ -326,16 +355,22 @@ class AudioStudio {
       .getElementById("export-btn")
       ?.addEventListener("click", () => this.exportAudio());
 
-    const timeline = document.getElementById("timeline-area");
-    if (timeline) {
-      timeline.addEventListener("mousedown", (e) =>
-        this.onTimelineMouseDown(e),
-      );
-      timeline.addEventListener("mousemove", (e) =>
-        this.onTimelineMouseMove(e),
-      );
-      timeline.addEventListener("mouseup", () => this.onTimelineMouseUp());
+    const lanes = document.getElementById("lanes-scroll");
+    if (lanes) {
+      lanes.addEventListener("scroll", () => this.onLanesScroll(), {
+        passive: true,
+      });
+      const inner = document.getElementById("lanes-inner");
+      if (inner) {
+        inner.addEventListener("mousedown", (e) => this.onTimelineMouseDown(e));
+        inner.addEventListener("mousemove", (e) => this.onTimelineMouseMove(e));
+        window.addEventListener("mouseup", () => this.onTimelineMouseUp());
+      }
     }
+
+    document
+      .getElementById("snap-btn")
+      ?.addEventListener("click", () => this.toggleSnap());
 
     document.addEventListener("keydown", (e) => this.onKeyDown(e));
 
@@ -600,34 +635,81 @@ class AudioStudio {
     canvasContainer.innerHTML = "";
 
     if (this.tracks.length === 0) {
-      list.innerHTML = `<div class="empty-state"><i data-lucide="audio-waveform"></i><p>No tracks. Import audio or add an empty track.</p></div>`;
+      list.innerHTML = "";
+      canvasContainer.innerHTML = `<div class="empty-state"><i data-lucide="audio-waveform"></i><p>No tracks yet.<br/>Import audio, drop files anywhere, or add an empty track.</p></div>`;
       if (typeof lucide !== "undefined") lucide.createIcons();
+      this.updateLanesWidth();
       return;
     }
 
-    this.tracks.forEach((track) => {
+    const HEIGHTS = { S: 56, M: 84, L: 122 };
+
+    this.tracks.forEach((track, index) => {
+      const h = HEIGHTS[track.height] || HEIGHTS.M;
+
+      // ── header (sticky left column) ──
       const item = document.createElement("div");
       item.className = `track-item${track.id === this.selectedTrackId ? " selected" : ""}`;
-      item.onclick = () => this.selectTrack(track.id);
+      item.style.height = h + "px";
+      item.dataset.trackId = track.id;
+      item.draggable = true;
       item.innerHTML = `
+        <span class="track-drag-handle" title="Drag to reorder">⋮⋮</span>
         <div class="track-color" style="background:${track.color}"></div>
         <div class="track-info">
-          <div class="track-name">${this.esc(track.name)}</div>
+          <div class="track-name" title="Double-click to rename">${this.esc(track.name)}</div>
           <div class="track-meta">${track.buffer.duration.toFixed(1)}s · ${track.buffer.numberOfChannels}ch · ${(track.buffer.sampleRate / 1000).toFixed(1)}kHz</div>
         </div>
         <div class="track-controls">
+          <input type="range" class="track-volume" min="0" max="150" value="${Math.round(track.volume * 100)}" oninput="window.studio.setTrackVolume(${track.id},this.value)" onclick="event.stopPropagation()" title="Volume" aria-label="Volume for ${this.esc(track.name)}" />
           <button class="track-btn mute${track.muted ? " active" : ""}" onclick="event.stopPropagation();window.studio.toggleMute(${track.id})" title="Mute">M</button>
           <button class="track-btn solo${track.soloed ? " active" : ""}" onclick="event.stopPropagation();window.studio.toggleSolo(${track.id})" title="Solo">S</button>
-          <input type="range" class="track-volume" min="0" max="150" value="${Math.round(track.volume * 100)}" onclick="event.stopPropagation()" oninput="window.studio.setTrackVolume(${track.id},this.value)" title="Volume" />
-          <button class="track-btn delete" onclick="event.stopPropagation();window.studio.removeTrack(${track.id})" title="Remove">
+          <button class="track-btn height-btn" onclick="event.stopPropagation();window.studio.cycleTrackHeight(${track.id})" title="Lane height">${track.height}</button>
+          <button class="track-btn delete" onclick="event.stopPropagation();window.studio.removeTrack(${track.id})" title="Remove track">
             <i data-lucide="x"></i>
           </button>
-        </div>
-      `;
+        </div>`;
+
+      item.addEventListener("click", () => this.selectTrack(track.id));
+
+      // rename on double-click
+      const nameEl = item.querySelector(".track-name");
+      nameEl.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        this._beginRename(track.id, nameEl);
+      });
+
+      // drag-to-reorder
+      item.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/studio-track", String(track.id));
+        e.dataTransfer.effectAllowed = "move";
+        item.style.opacity = "0.4";
+      });
+      item.addEventListener("dragend", () => (item.style.opacity = ""));
+      item.addEventListener("dragover", (e) => {
+        if (e.dataTransfer.types.includes("text/studio-track")) {
+          e.preventDefault();
+          item.classList.add("drag-over");
+        }
+      });
+      item.addEventListener("dragleave", () =>
+        item.classList.remove("drag-over"),
+      );
+      item.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        item.classList.remove("drag-over");
+        const dragId = parseInt(e.dataTransfer.getData("text/studio-track"));
+        if (!Number.isNaN(dragId) && dragId !== track.id)
+          this.reorderTracks(dragId, index);
+      });
+
       list.appendChild(item);
 
+      // ── waveform lane (sticky viewport window) ──
       const row = document.createElement("div");
-      row.className = "track-canvas-row";
+      row.className = `track-canvas-row${track.id === this.selectedTrackId ? " selected-lane" : ""}`;
+      row.style.height = h + "px";
       row.dataset.trackId = track.id;
       const canvas = document.createElement("canvas");
       canvas.id = `track-canvas-${track.id}`;
@@ -636,7 +718,108 @@ class AudioStudio {
     });
 
     if (typeof lucide !== "undefined") lucide.createIcons();
+    this.updateLanesWidth();
     this.drawTrackCanvases();
+    this.updateStatus();
+  }
+
+  _beginRename(trackId, nameEl) {
+    const track = this.tracks.find((t) => t.id === trackId);
+    if (!track) return;
+    const input = document.createElement("input");
+    input.className = "track-name-input";
+    input.value = track.name;
+    input.setAttribute("aria-label", "Track name");
+    nameEl.replaceWith(input);
+    input.focus();
+    input.select();
+    const commit = () => {
+      const v = input.value.trim();
+      if (v) track.name = v.slice(0, 48);
+      this.renderTracks();
+      this.renderMixer();
+    };
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") commit();
+      if (e.key === "Escape") this.renderTracks();
+      e.stopPropagation();
+    });
+    input.addEventListener("blur", commit);
+    input.addEventListener("click", (e) => e.stopPropagation());
+  }
+
+  reorderTracks(dragId, toIndex) {
+    const from = this.tracks.findIndex((t) => t.id === dragId);
+    if (from < 0) return;
+    const [moved] = this.tracks.splice(from, 1);
+    this.tracks.splice(toIndex, 0, moved);
+    this.saveHistory();
+    this.renderTracks();
+    this.renderMixer();
+  }
+
+  cycleTrackHeight(id) {
+    const t = this.tracks.find((t) => t.id === id);
+    if (!t) return;
+    t.height = t.height === "S" ? "M" : t.height === "M" ? "L" : "S";
+    this.renderTracks();
+  }
+
+  setTrackPan(id, val) {
+    const t = this.tracks.find((t) => t.id === id);
+    if (!t) return;
+    t.pan = val / 100;
+    if (t.panNode.pan) t.panNode.pan.value = t.pan;
+  }
+
+  toggleSnap() {
+    this.snapEnabled = !this.snapEnabled;
+    const btn = document.getElementById("snap-btn");
+    if (btn) {
+      btn.classList.toggle("active", this.snapEnabled);
+      btn.setAttribute("aria-pressed", this.snapEnabled);
+    }
+    this.updateStatus();
+  }
+
+  _snapTime(t) {
+    if (!this.snapEnabled) return t;
+    const beat = 60 / (this.bpm || 120);
+    return Math.round(t / beat) * beat;
+  }
+
+  // content width of the lanes area (px) for the current zoom
+  contentWidth() {
+    const scroll = document.getElementById("lanes-scroll");
+    const vw = scroll ? scroll.clientWidth : 900;
+    return Math.max(Math.ceil(this.totalDuration * this.pps) + 160, vw);
+  }
+
+  updateLanesWidth() {
+    const inner = document.getElementById("lanes-inner");
+    const container = document.getElementById("track-canvas-container");
+    if (!inner) return;
+    const w = this.contentWidth();
+    inner.style.width = w + "px";
+    if (container) {
+      // waveform lanes are a sticky viewport window, not full content width
+      const scroll = document.getElementById("lanes-scroll");
+      container.style.width = (scroll ? scroll.clientWidth : 900) + "px";
+    }
+    this.drawTimeRuler();
+  }
+
+  onLanesScroll() {
+    if (this._scrollRAF) return;
+    this._scrollRAF = requestAnimationFrame(() => {
+      this._scrollRAF = null;
+      const scroll = document.getElementById("lanes-scroll");
+      if (scroll) this.scrollLeft = scroll.scrollLeft;
+      this.drawTrackCanvases();
+      this.updatePlayhead();
+      this.updateSelection();
+      this.drawMarkers();
+    });
   }
 
   renderMixer() {
@@ -648,13 +831,13 @@ class AudioStudio {
       const ch = document.createElement("div");
       ch.className = "mixer-channel";
       ch.innerHTML = `
-        <div class="channel-label" style="color:${track.color}">${this.esc(track.name)}</div>
-        <div class="channel-meter">
-          <div class="meter-fill" id="meter-${track.id}-l"></div>
-          <div class="meter-fill" id="meter-${track.id}-r"></div>
+        <div class="channel-label" style="color:${track.color}" title="${this.esc(track.name)}">${this.esc(track.name)}</div>
+        <div class="channel-meter" aria-hidden="true">
+          <div class="meter-track"><div class="meter-fill" id="meter-${track.id}-l"></div></div>
+          <div class="meter-track"><div class="meter-fill" id="meter-${track.id}-r"></div></div>
         </div>
-        <input type="range" min="0" max="150" value="${Math.round(track.volume * 100)}" class="volume-fader" orient="vertical"
-          oninput="window.studio.setTrackVolume(${track.id},this.value)" />
+        <input type="range" min="0" max="150" value="${Math.round(track.volume * 100)}" class="volume-fader" oninput="window.studio.setTrackVolume(${track.id},this.value)" aria-label="Volume for ${this.esc(track.name)}" />
+        <input type="range" min="-100" max="100" value="${Math.round(track.pan * 100)}" class="channel-pan" oninput="window.studio.setTrackPan(${track.id},this.value)" aria-label="Pan for ${this.esc(track.name)}" title="Pan" />
         <div class="volume-db">${this.toDB(track.volume)}</div>
       `;
       container.appendChild(ch);
@@ -662,31 +845,33 @@ class AudioStudio {
   }
 
   drawTrackCanvases() {
+    const container = document.getElementById("track-canvas-container");
+    const dpr = window.devicePixelRatio || 1;
     this.tracks.forEach((track) => {
       const canvas = document.getElementById(`track-canvas-${track.id}`);
       if (!canvas) return;
       const parent = canvas.parentElement;
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = parent.clientWidth * dpr;
-      canvas.height = parent.clientHeight * dpr;
-      canvas.style.width = parent.clientWidth + "px";
-      canvas.style.height = parent.clientHeight + "px";
+      const w = parent.clientWidth;
+      const h = parent.clientHeight;
+      if (w === 0 || h === 0) return;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
       const ctx = canvas.getContext("2d");
-      ctx.scale(dpr, dpr);
-      this.drawTrackWaveform(
-        ctx,
-        track,
-        parent.clientWidth,
-        parent.clientHeight,
-      );
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      this.drawTrackWaveform(ctx, track, w, h);
     });
+    void container;
   }
 
+  // Draw only the visible time window: [scrollLeft/pps, +viewportWidth/pps].
   drawTrackWaveform(ctx, track, w, h) {
     const data = track.buffer.getChannelData(0);
+    const sr = track.buffer.sampleRate;
     ctx.clearRect(0, 0, w, h);
 
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
     ctx.fillRect(0, 0, w, h);
 
     ctx.strokeStyle = "rgba(255,255,255,0.05)";
@@ -696,6 +881,11 @@ class AudioStudio {
     ctx.lineTo(w, h / 2);
     ctx.stroke();
 
+    const scrollT = this.scrollLeft / this.pps;
+    const visDur = w / this.pps;
+    const s0 = Math.max(0, Math.floor(scrollT * sr));
+    const s1 = Math.min(data.length, Math.ceil((scrollT + visDur) * sr));
+
     const grad = ctx.createLinearGradient(0, 0, 0, h);
     grad.addColorStop(0, track.color);
     grad.addColorStop(0.5, track.color + "80");
@@ -703,40 +893,38 @@ class AudioStudio {
     ctx.strokeStyle = grad;
     ctx.lineWidth = 1;
 
-    const spp = Math.max(1, Math.floor(data.length / (w * this.zoom)));
-    const start = Math.floor(this.scrollOffset * data.length);
-
-    ctx.beginPath();
-    for (let x = 0; x < w; x++) {
-      const si = start + Math.floor(x * spp);
-      let min = 1,
-        max = -1;
-      for (let i = 0; i < spp && si + i < data.length; i++) {
-        const s = data[si + i];
-        if (s < min) min = s;
-        if (s > max) max = s;
-      }
-      const yMin = ((1 - min) * h) / 2;
-      const yMax = ((1 - max) * h) / 2;
-      if (x === 0) ctx.moveTo(x, yMin);
-      ctx.lineTo(x, yMin);
-      ctx.lineTo(x, yMax);
-    }
-    ctx.stroke();
-
-    if (this.hasSelection && this.selectedTrackId === track.id) {
-      const dur = track.buffer.duration;
-      const sx = (this.selection.start / dur) * w;
-      const ex = (this.selection.end / dur) * w;
-      ctx.fillStyle = "rgba(6,182,212,0.2)";
-      ctx.fillRect(sx, 0, ex - sx, h);
-      ctx.strokeStyle = "#06b6d4";
-      ctx.lineWidth = 2;
+    if (s1 > s0) {
+      const spp = Math.max(1, (s1 - s0) / w);
       ctx.beginPath();
-      ctx.moveTo(sx, 0);
-      ctx.lineTo(sx, h);
-      ctx.moveTo(ex, 0);
-      ctx.lineTo(ex, h);
+      for (let x = 0; x < w; x++) {
+        const a = s0 + Math.floor(x * spp);
+        const b = Math.min(s1, s0 + Math.floor((x + 1) * spp));
+        let min = 1;
+        let max = -1;
+        for (let i = a; i < b; i++) {
+          const s = data[i];
+          if (s < min) min = s;
+          if (s > max) max = s;
+        }
+        if (a >= b) {
+          min = 0;
+          max = 0;
+        }
+        const yMin = ((1 - min) * h) / 2;
+        const yMax = ((1 - max) * h) / 2;
+        if (x === 0) ctx.moveTo(x, yMin);
+        ctx.lineTo(x, yMin);
+        ctx.lineTo(x, yMax);
+      }
+      ctx.stroke();
+    }
+
+    // time-0 marker when scrolled
+    if (scrollT <= 0) {
+      ctx.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx.beginPath();
+      ctx.moveTo(-this.scrollLeft, 0);
+      ctx.lineTo(-this.scrollLeft, h);
       ctx.stroke();
     }
   }
@@ -975,10 +1163,24 @@ class AudioStudio {
 
   updatePlayhead() {
     const ph = document.getElementById("playhead");
-    const container = document.getElementById("track-canvas-container");
-    if (!ph || !container || this.totalDuration === 0) return;
-    const progress = this.pauseTime / this.totalDuration;
-    ph.style.left = progress * container.clientWidth + "px";
+    if (!ph) return;
+    if (this.totalDuration === 0) {
+      ph.style.left = "0px";
+      return;
+    }
+    ph.style.left = this.pauseTime * this.pps + "px";
+    // auto-follow during playback
+    if (this.isPlaying && !this.isSelecting) {
+      const scroll = document.getElementById("lanes-scroll");
+      if (scroll) {
+        const x = this.pauseTime * this.pps;
+        const viewL = scroll.scrollLeft;
+        const viewR = viewL + scroll.clientWidth;
+        if (x > viewR - 80 || x < viewL) {
+          scroll.scrollLeft = Math.max(0, x - scroll.clientWidth * 0.15);
+        }
+      }
+    }
   }
 
   animatePlayhead() {
@@ -999,6 +1201,29 @@ class AudioStudio {
     if (cur) cur.textContent = this.fmtTime(this.pauseTime, true);
     if (tot) tot.textContent = this.fmtTime(this.totalDuration, true);
     this.drawTimeRuler();
+    this.updateStatus();
+  }
+
+  updateStatus() {
+    const sel = document.getElementById("status-selection");
+    if (sel) {
+      sel.textContent = this.hasSelection
+        ? `sel ${this.fmtTime(Math.min(this.selection.start, this.selection.end), true)} → ${this.fmtTime(Math.max(this.selection.start, this.selection.end), true)} (${Math.abs(this.selection.end - this.selection.start).toFixed(2)}s)`
+        : `cursor ${this.fmtTime(this.pauseTime, true)}${this.snapEnabled ? " · snap" : ""}`;
+    }
+    const z = document.getElementById("status-zoom");
+    if (z) z.textContent = Math.round(this.pps) + " px/s";
+    const sr = document.getElementById("status-sr");
+    if (sr)
+      sr.textContent = this.tracks.length
+        ? (this.tracks[0].buffer.sampleRate / 1000).toFixed(1) + " kHz"
+        : "— kHz";
+    const tc = document.getElementById("status-tracks");
+    if (tc)
+      tc.textContent =
+        this.tracks.length + (this.tracks.length === 1 ? " track" : " tracks");
+    const td = document.getElementById("status-duration");
+    if (td) td.textContent = this.fmtTime(this.totalDuration, false) + ".0";
   }
 
   // ═══════════════════════════════════════════
@@ -1229,6 +1454,24 @@ class AudioStudio {
     const mR = document.getElementById("master-meter-r");
     if (mL) mL.style.height = level + "%";
     if (mR) mR.style.height = level * 0.95 + "%";
+
+    // per-track RMS meters
+    const buf = new Uint8Array(128);
+    this.tracks.forEach((track) => {
+      if (!track.analyser) return;
+      track.analyser.getByteTimeDomainData(buf);
+      let sum = 0;
+      for (let i = 0; i < buf.length; i++) {
+        const v = (buf[i] - 128) / 128;
+        sum += v * v;
+      }
+      const rms = Math.sqrt(sum / buf.length);
+      const pct = Math.min(100, rms * 220);
+      const l = document.getElementById(`meter-${track.id}-l`);
+      const r = document.getElementById(`meter-${track.id}-r`);
+      if (l) l.style.height = pct + "%";
+      if (r) r.style.height = pct * 0.96 + "%";
+    });
   }
 
   drawEmptyVisualizer() {
@@ -1306,24 +1549,18 @@ class AudioStudio {
   drawTimeRuler() {
     const ruler = document.getElementById("time-ruler");
     if (!ruler) return;
-    const dur = this.totalDuration;
-    if (dur === 0) {
-      ruler.innerHTML = "";
-      return;
-    }
-
-    const w = ruler.clientWidth;
-    let interval = 1;
-    if (dur > 60) interval = 5;
-    if (dur > 300) interval = 15;
-    if (dur > 600) interval = 30;
-
+    const w = this.contentWidth();
+    ruler.style.width = w + "px";
     ruler.innerHTML = "";
-    for (let t = 0; t <= dur; t += interval) {
-      const x = (t / dur) * w;
+    if (this.totalDuration === 0) return;
+
+    // pick a nice interval so ticks are ≥ 70px apart
+    const steps = [0.1, 0.25, 0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300];
+    const interval = steps.find((s) => s * this.pps >= 70) || 600;
+    for (let t = 0; t <= this.totalDuration + interval; t += interval) {
       const tick = document.createElement("div");
       tick.className = "ruler-tick";
-      tick.style.left = x + "px";
+      tick.style.left = t * this.pps + "px";
       tick.textContent = this.fmtTime(t);
       ruler.appendChild(tick);
     }
@@ -1333,18 +1570,26 @@ class AudioStudio {
   // SELECTION
   // ═══════════════════════════════════════════
 
+  // x (px, content coords) → seconds
+  _pxToTime(clientX) {
+    const container = document.getElementById("track-canvas-container");
+    const scroll = document.getElementById("lanes-scroll");
+    if (!container) return 0;
+    const rect = container.getBoundingClientRect();
+    const x = clientX - rect.left + (scroll ? scroll.scrollLeft : 0);
+    return Math.max(0, x / this.pps);
+  }
+
   onTimelineMouseDown(e) {
     if (this.totalDuration === 0) return;
-    const container = document.getElementById("track-canvas-container");
-    if (!container) return;
-    const rect = container.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const progress = Math.max(0, Math.min(1, x / rect.width));
+    if (e.target.closest(".track-list")) return; // headers are not timeline
+    if (e.target.closest(".marker")) return;
+    const t = this._pxToTime(e.clientX);
 
     if (e.shiftKey) {
-      this.selection.end = progress * this.totalDuration;
+      this.selection.end = this._snapTime(t);
     } else {
-      this.selection.start = progress * this.totalDuration;
+      this.selection.start = this._snapTime(t);
       this.selection.end = this.selection.start;
       this.pauseTime = this.selection.start;
     }
@@ -1356,19 +1601,15 @@ class AudioStudio {
 
   onTimelineMouseMove(e) {
     if (!this.isSelecting || this.totalDuration === 0) return;
-    const container = document.getElementById("track-canvas-container");
-    if (!container) return;
-    const rect = container.getBoundingClientRect();
-    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-    const progress = x / rect.width;
-    this.selection.end = progress * this.totalDuration;
+    const t = this._snapTime(this._pxToTime(e.clientX));
+    this.selection.end = t;
     this.hasSelection =
       Math.abs(this.selection.end - this.selection.start) > 0.01;
     this.updateSelection();
-    this.drawTrackCanvases();
   }
 
   onTimelineMouseUp() {
+    if (!this.isSelecting) return;
     this.isSelecting = false;
     if (this.selection.start > this.selection.end) {
       [this.selection.start, this.selection.end] = [
@@ -1376,23 +1617,22 @@ class AudioStudio {
         this.selection.start,
       ];
     }
+    this.updateSelection();
   }
 
   updateSelection() {
     const overlay = document.getElementById("selection-overlay");
-    const container = document.getElementById("track-canvas-container");
-    if (!overlay || !container || this.totalDuration === 0) return;
-
-    if (this.hasSelection) {
-      const w = container.clientWidth;
-      const sx = (this.selection.start / this.totalDuration) * w;
-      const ex = (this.selection.end / this.totalDuration) * w;
+    if (!overlay) return;
+    if (this.hasSelection && this.totalDuration > 0) {
       overlay.style.display = "block";
-      overlay.style.left = sx + "px";
-      overlay.style.width = ex - sx + "px";
+      overlay.style.left =
+        Math.min(this.selection.start, this.selection.end) * this.pps + "px";
+      overlay.style.width =
+        Math.abs(this.selection.end - this.selection.start) * this.pps + "px";
     } else {
       overlay.style.display = "none";
     }
+    this.updateStatus();
   }
 
   selectAll() {
@@ -1590,17 +1830,15 @@ class AudioStudio {
   }
 
   drawMarkers() {
-    const container = document.getElementById("timeline-area");
-    if (!container) return;
-    container.querySelectorAll(".marker").forEach((m) => m.remove());
-
+    const layer = document.getElementById("markers-layer");
+    if (!layer) return;
+    layer.innerHTML = "";
     this.markers.forEach((m) => {
       const el = document.createElement("div");
       el.className = "marker";
       el.dataset.label = m.label;
-      const x = (m.time / this.totalDuration) * container.clientWidth;
-      el.style.left = x + "px";
-      container.appendChild(el);
+      el.style.left = m.time * this.pps + "px";
+      layer.appendChild(el);
     });
   }
 
@@ -1965,10 +2203,16 @@ class AudioStudio {
   // ═══════════════════════════════════════════
 
   setZoom(val) {
-    this.zoom = Math.max(1, Math.min(20, val));
+    // val is a pps multiplier relative to the 100px/s base (slider maps /20)
+    this.pps = Math.max(10, Math.min(1000, val));
     const slider = document.getElementById("zoom-slider");
-    if (slider) slider.value = this.zoom * 10;
+    if (slider) slider.value = Math.round(this.pps / 10);
+    this.updateLanesWidth();
     this.drawTrackCanvases();
+    this.updatePlayhead();
+    this.updateSelection();
+    this.drawMarkers();
+    this.updateStatus();
   }
 
   // ═══════════════════════════════════════════
@@ -2044,10 +2288,13 @@ class AudioStudio {
           break;
         case "=":
         case "+":
-          this.setZoom(this.zoom * 1.3);
+          this.setZoom(this.pps * 1.3);
           break;
         case "-":
-          this.setZoom(this.zoom / 1.3);
+          this.setZoom(this.pps / 1.3);
+          break;
+        case "s":
+          this.toggleSnap();
           break;
       }
     }
@@ -2105,4 +2352,39 @@ class AudioStudio {
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   window.studio = new AudioStudio();
+
+  // ── boot the docking panel system ─────────────────────────────────────
+  import("./studio-dock.js").then(() => {
+    const root = document.getElementById("studio-dock-root");
+    if (!root || typeof StudioDock === "undefined") return;
+    const panels = {};
+    root.querySelectorAll(":scope > .dock-panel").forEach((el) => {
+      const id = el.dataset.panel;
+      const titles = {
+        tracks: ["Layers", "layers"],
+        mixer: ["Mixer", "sliders"],
+        effects: ["Effects", "sparkles"],
+        export: ["Export", "download"],
+        visualizer: ["Analyzer", "activity"],
+        "edit-tools": ["Edit Tools", "scissors"],
+      };
+      const [title, icon] = titles[id] || [id, null];
+      panels[id] = { title, icon, el };
+    });
+    try {
+      window.studioDock = new StudioDock(root, panels, {
+        storageKey: "sbs-audio-studio-layout-v1",
+      });
+      // panel geometry changed → canvases must re-measure
+      root.addEventListener("docklayout", () => {
+        window.studio?.drawTrackCanvases();
+        window.dispatchEvent(new Event("resize"));
+      });
+      document
+        .getElementById("layout-reset-btn")
+        ?.addEventListener("click", () => window.studioDock.resetLayout());
+    } catch (e) {
+      console.error("Dock init failed:", e);
+    }
+  });
 });
