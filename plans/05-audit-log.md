@@ -425,3 +425,15 @@ Bugs found+fixed during build: Vite dev served stale empty CSS (restart); _swapN
 | Navbar | Audio Studio + PDF Studio → Apps dropdown | live: Apps shows both; Tools no longer lists them |
 | Music premium | flat deep surfaces, hover-lift cards, elevated blurred player bar, accent play btn, hover progress thumb, themed scrollbars; dark console in any page theme | live screenshot: Spotify-grade shell, 448 cards, 0 overflow |
 | De-gradient | --grad-primary/--grad-green → solid per theme (18 defs site-wide), resume gradient vars → solids, divider sweep → solid accent | projects/resume/about screenshots: clean flat design |
+
+## Session 2026-08-25 (late) — HOMEPAGE REDESIGN per plans/design.md — commit 6dafff3, deployed
+
+| Item | What |
+|------|------|
+| design.md | Spec authored (independent agent dispatched twice; provider outage → written in-session to the same standard). Ricardo Chance language adapted to chemistry identity: claim hero, positioning, featured work, numbered capabilities, editorial band, giant-mail closer. |
+| Hero claim | kicker + "I build software that turns chemistry into something you can touch." + dual CTA (View Featured Work / Open the Lab) |
+| Molecule constellation | star dots → real molecules (benzene C6H6, H2O, CH4, CO2, N2) drawn as CPK-colored atoms + bonds, drifting + tumbling + cursor repulsion |
+| Featured Work | 6 indexed cards; NEW #01 Molecule3D — LAMMPS Web GUI (live: shuvam-banerji-seal.github.io/lammps-web-gui) with See live/Source links; More-on-GitHub card retired |
+| Capabilities | 01–06 numbered grid (Molecular Simulation / DFT / RAG-IR / Web Tools / 3D / Research Engineering) |
+| Editorial band + contact closer | "From bond lengths to build pipelines…" band; "Interested in working together?" + giant mail; duplicate old contact header removed |
+| Verification | axe serious/critical 0 · 0 overflow @390/800/1440 · suites 11/11 + 523/523 + 106/106 · lucide validator caught an invalid "github" icon during build (fixed) · LIVE: claim/CTAs/constellation/6 cards/LAMMPS link/caps/closer all present |

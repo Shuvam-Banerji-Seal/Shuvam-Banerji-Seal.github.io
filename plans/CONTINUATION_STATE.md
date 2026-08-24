@@ -1,52 +1,38 @@
-# CONTINUATION STATE — 2026-08-24 (night) — AUDIO STUDIO PRO DAW UI DEPLOYED
+# CONTINUATION STATE — 2026-08-25 — multi-page improvement wave DEPLOYED
 
 ## Session Summary
 
-| Field            | Value                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Session #        | N+4                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Phase            | DESIGN → IMPLEMENT → TEST → DEPLOY → LIVE-VERIFY (complete)                                                                                                                                                                                                                                                                                                                                                                               |
-| What I did       | Built the professional DAW interface for Audio Studio: new docking panel system (studio-dock.js — splits/tab-groups/floats/splitters/collapse/maximize/persist), rebuilt timeline on a pixels-per-second model (viewport-window waveforms, sticky synced headers, ruler, snap grid, auto-follow), hardware-style visual language, per-track meters/pan/rename/reorder/heights, status bar. Deployed f1b183d, live-verified on production. |
-| What worked      | ID-preserving restructure (engine untouched at its API surface); content-node-moving dock (listeners survive); headless E2E of dock ops with real mouse events                                                                                                                                                                                                                                                                            |
-| What failed      | Vite dev stale-CSS cache (restart fixed); 3 dock tree-mutation bugs (swap signature, missing helper, float registry) — all caught by the E2E battery before deploy                                                                                                                                                                                                                                                                        |
-| Errors remaining | none known                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| Next priorities  | optional: project save/load (serialize tracks to file), clip-level editing (move/split regions), more effect presets                                                                                                                                                                                                                                                                                                                      |
-| Blockers         | none                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Audit status     | LIVE-VERIFIED (prod: dock ops + waveform paint + light/dark themes)                                                                                                                                                                                                                                                                                                                                                                       |
+| Field            | Value                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Session #        | N+5                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Phase            | 7 workstreams: 2 bug fixes, 5 feature/design waves — all deployed                                                                                                                                                                                                                                                                                                                                        |
+| What I did       | (1) fixed homepage scroll-yank (terminal focus + smooth-scroll), (2) fixed Beam codec (inverted b64 padding — 1-in-4 codes dead), (3) air guitar v2 (5-finger tracking, dynamics, articulation, 8 chords, metronome, WAV recording, trails), (4) studio hover cut-cursor w/ snapped badge, (5) navbar Apps regroup, (6) music premium pass, (7) site-wide de-gradient + resume/projects/about refinement |
+| What worked      | reproduce-first debugging (scroll sampling caught the smooth-yank; padding table caught Beam); override-pass CSS for the complex music page                                                                                                                                                                                                                                                              |
+| What failed      | Vite stale cache again (restart); music gate needed real password (sessionStorage key check differs)                                                                                                                                                                                                                                                                                                     |
+| Errors remaining | none known                                                                                                                                                                                                                                                                                                                                                                                               |
+| Next priorities  | backlog below                                                                                                                                                                                                                                                                                                                                                                                            |
+| Blockers         | none                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Audit status     | LIVE-VERIFIED (homepage no-yank, Beam codec, Apps dropdown on prod)                                                                                                                                                                                                                                                                                                                                      |
 
 ## Deployed state
 
-- HEAD = d739f17 (docs). Code HEAD = f1b183d.
-- Suites: basic 11/11 · comprehensive 523/523 · build-verification 106/106.
-- Live: dock boots, tabify-by-drag works on prod, waveforms paint, status bar live.
+- HEAD = 23da62a (docs). Code HEAD = 0ad8859. Actions run success.
+- Suites: 11/11 · 523/523 · 106/106.
 
-## User-facing guide (new UI)
+## Notes for future sessions
 
-- **Rearrange**: drag any panel header → drop on another panel's edge (split), center (tabify), or outside (float). Double-click header = maximize. Right-click header = menu. Chevron = collapse.
-- **Resize**: drag the glowing splitters between panels.
-- **Reset**: layout button in the transport (top-right).
-- **Timeline**: scroll vertically/horizontally; drag on lanes to select (snaps to BPM grid, S toggles); shift-drag extends; zoom slider or +/-. Playhead auto-follows during playback.
-- **Tracks**: drag ⋮⋮ handle to reorder, double-click name to rename, M/S/mute-solo, L button cycles lane height, per-track volume; pan + faders + live meters in the Mixer.
-- **Export**: Export tab → format + sample rate → Render & Export (or Ctrl+S).
-- Layout persists across visits (localStorage).
+- Beam P2P still STUN-only: symmetric-NAT pairs cannot connect (inherent to serverless; a TURN server would be the only upgrade).
+- Air guitar recording produces WAV via MediaRecorder(webm)→decode→PCM encode.
+- Music gate password is owner's; sessionStorage `sbs_music_auth`.
+- De-gradient: --grad-primary/--grad-green are now SOLID colors per theme — consumers automatically flat. Remaining gradients are intentional (light body wash, album-art placeholder, shimmer sheens, studio hardware bevels).
 
-## Optional backlog (added)
+## Optional backlog
 
-- Project save/load (serialize track buffers + effects state to a file)
-- Clip-based editing (move/split/rubber-band regions) — engine is buffer-based today
-- Effect presets per chain; A/B compare
-- Orphan-module quarantine + older optional items (lucide ESM, actions bump) still open
-
-## File Manifest
-
-| File                          | Status                                               |
-| ----------------------------- | ---------------------------------------------------- |
-| assets/js/studio-dock.js      | NEW — docking system                                 |
-| pages/tools/audio-studio.html | rewritten (panel shells, IDs preserved)              |
-| assets/css/audio-studio.css   | rewritten (DAW theme)                                |
-| assets/js/audio-studio.js     | patched (pps zoom, lanes, meters, pan, snap, status) |
-| plans/05-audit-log.md         | session entry                                        |
+- Project save/load + clip-level editing (audio studio)
+- TURN server option for Beam (needs a hosted service)
+- Air guitar: chord-progression sequencer, palm-mute detection
+- Older: lucide ESM tree-shake, critical CSS, actions/\* bump, orphan quarantine, Modal key rotation (owner)
 
 ## Continuation Prompt Hints
 
-If user reports dock issues: clear localStorage key `sbs-audio-studio-layout-v1` or click the layout-reset button (top-right transport). Mobile (<900px) intentionally disables docking (stacked panels).
+All user-reported issues resolved + deployed. If new reports arrive, reproduce on LIVE first (this session's two bugs were both environment-timing or math errors invisible to static reading).
