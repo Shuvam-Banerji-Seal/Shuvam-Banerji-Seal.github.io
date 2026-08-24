@@ -725,6 +725,33 @@
   pointer-events: none;
 }
 
+/* ── Hover cut-position cursor ── */
+.lane-cursor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 17;
+  display: none;
+  pointer-events: none;
+  border-left: 1px dashed rgba(255, 255, 255, 0.45);
+}
+
+.lane-cursor-badge {
+  position: absolute;
+  top: 30px;
+  left: 4px;
+  padding: 2px 6px;
+  background: rgba(5, 7, 13, 0.9);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  border-radius: 4px;
+  font:
+    600 9.5px "JetBrains Mono",
+    monospace;
+  color: var(--accent-cyan, #22d3ee);
+  white-space: nowrap;
+}
+
 .markers-layer {
   position: absolute;
   inset: 0;

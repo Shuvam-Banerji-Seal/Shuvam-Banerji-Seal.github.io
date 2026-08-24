@@ -76,6 +76,20 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "music",
         },
         {
+          name: "Audio Studio",
+          href: isHome
+            ? "pages/tools/audio-studio.html"
+            : pathDepth + "pages/tools/audio-studio.html",
+          icon: "headphones",
+        },
+        {
+          name: "PDF Studio",
+          href: isHome
+            ? "pages/tools/pdf-studio.html"
+            : pathDepth + "pages/tools/pdf-studio.html",
+          icon: "file-search",
+        },
+        {
           name: "Mermaid Editor",
           href: isHome
             ? "pages/mermaid-tool.html"
@@ -163,20 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
             ? "pages/tools/llm-studio.html"
             : pathDepth + "pages/tools/llm-studio.html",
           icon: "brain",
-        },
-        {
-          name: "PDF Studio",
-          href: isHome
-            ? "pages/tools/pdf-studio.html"
-            : pathDepth + "pages/tools/pdf-studio.html",
-          icon: "file-search",
-        },
-        {
-          name: "Audio Studio",
-          href: isHome
-            ? "pages/tools/audio-studio.html"
-            : pathDepth + "pages/tools/audio-studio.html",
-          icon: "headphones",
         },
         {
           name: "Webcam Tester + Air Guitar",

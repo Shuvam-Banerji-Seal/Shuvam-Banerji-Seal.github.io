@@ -797,7 +797,9 @@
       <div class="footer-accent-line" aria-hidden="true"></div>
       <div class="container footer-grid">
         <div class="footer-brand">
-          <a href="#main-content" class="footer-wordmark">SBS<span class="wm-dot">.</span></a>
+          <a href="#main-content" class="footer-wordmark"
+            >SBS<span class="wm-dot">.</span></a
+          >
           <p class="footer-tag">Computational Chemistry &times; AI Research</p>
         </div>
 
@@ -811,16 +813,38 @@
         </nav>
 
         <div class="footer-social" aria-label="Social profiles">
-          <a href="https://github.com/Shuvam-Banerji-Seal" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+          <a
+            href="https://github.com/Shuvam-Banerji-Seal"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            aria-label="GitHub"
+          >
             <i data-lucide="code-2" class="social-icon"></i>
           </a>
-          <a href="https://linkedin.com/in/mastersbs" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">
+          <a
+            href="https://linkedin.com/in/mastersbs"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            aria-label="LinkedIn"
+          >
             <i data-lucide="briefcase" class="social-icon"></i>
           </a>
-          <a href="https://orcid.org/0009-0000-0714-569X" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="ORCID">
+          <a
+            href="https://orcid.org/0009-0000-0714-569X"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            aria-label="ORCID"
+          >
             <i data-lucide="award" class="social-icon"></i>
           </a>
-          <a href="mailto:sbs22ms076@iiserkol.ac.in" class="social-link" aria-label="Email">
+          <a
+            href="mailto:sbs22ms076@iiserkol.ac.in"
+            class="social-link"
+            aria-label="Email"
+          >
             <i data-lucide="mail" class="social-icon"></i>
           </a>
         </div>
@@ -828,7 +852,9 @@
 
       <div class="container footer-base">
         <span>&copy; <span id="year"></span> Shuvam Banerji Seal</span>
-        <span class="fb-mid">Built with Chemistry &amp; Code &middot; IISER Kolkata</span>
+        <span class="fb-mid"
+          >Built with Chemistry &amp; Code &middot; IISER Kolkata</span
+        >
         <button class="to-top" id="to-top-btn" aria-label="Back to top">
           TOP <i data-lucide="arrow-up-right"></i>
         </button>
@@ -1156,8 +1182,12 @@
           inp.setAttribute("autocapitalize", "off");
           row.appendChild(inp);
           termBody.appendChild(row);
-          inp.focus();
-          termBody.addEventListener("click", () => inp.focus());
+          // preventScroll: without it, this focus yanks the user back to
+          // the hero mid-read (global scroll-behavior:smooth animates it).
+          inp.focus({ preventScroll: true });
+          termBody.addEventListener("click", () =>
+            inp.focus({ preventScroll: true }),
+          );
 
           // history
           let history = [],

@@ -363,7 +363,11 @@ class AudioStudio {
       const inner = document.getElementById("lanes-inner");
       if (inner) {
         inner.addEventListener("mousedown", (e) => this.onTimelineMouseDown(e));
-        inner.addEventListener("mousemove", (e) => this.onTimelineMouseMove(e));
+        inner.addEventListener("mousemove", (e) => {
+          this.updateLaneCursor(e);
+          this.onTimelineMouseMove(e);
+        });
+        inner.addEventListener("mouseleave", () => this.hideLaneCursor());
         window.addEventListener("mouseup", () => this.onTimelineMouseUp());
       }
     }
@@ -1578,6 +1582,25 @@ class AudioStudio {
     const rect = container.getBoundingClientRect();
     const x = clientX - rect.left + (scroll ? scroll.scrollLeft : 0);
     return Math.max(0, x / this.pps);
+  }
+
+  // Hover cut-position indicator: a vertical line + time badge that
+  // follows the mouse over the lanes (snapped when snap is on), so you
+  // always see where a cut/selection will land before clicking.
+  updateLaneCursor(e) {
+    const cur = document.getElementById("lane-cursor");
+    const badge = document.getElementById("lane-cursor-badge");
+    if (!cur) return;
+    if (e.target.closest(".track-list")) return (cur.style.display = "none");
+    const t = this._snapTime(this._pxToTime(e.clientX));
+    cur.style.display = "block";
+    cur.style.left = t * this.pps + "px";
+    if (badge) badge.textContent = this.fmtTime(t, true);
+  }
+
+  hideLaneCursor() {
+    const cur = document.getElementById("lane-cursor");
+    if (cur) cur.style.display = "none";
   }
 
   onTimelineMouseDown(e) {

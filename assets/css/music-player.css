@@ -1937,3 +1937,253 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   text-align: center;
   padding: 40px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PREMIUM PASS v2 — flatter, deeper, more tactile. Solid surfaces +
+   one accent (no gradients), Spotify-grade spacing and hover language.
+   Appended last so it wins the cascade without touching v1 rules.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --mx-bg: #0a0c10;
+  --mx-panel: #10131a;
+  --mx-panel-2: #161a23;
+  --mx-line: rgba(255, 255, 255, 0.07);
+  --mx-text: #e8edf5;
+  --mx-text-2: #9aa6b8;
+  --mx-text-3: #6b7688;
+  --mx-accent: #22d3ee;
+  --mx-accent-ink: #041016;
+}
+
+/* ── App shell ── */
+.music-app-shell,
+.main-content {
+  background: var(--mx-bg);
+}
+
+.main-header {
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--mx-line);
+}
+
+.greeting {
+  font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--mx-text);
+}
+
+.greeting-quote {
+  color: var(--mx-text-3);
+  font-size: 13px;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--mx-panel);
+  border-right: 1px solid var(--mx-line);
+}
+
+.sidebar .playlist-item,
+.sidebar .nav-item,
+.sidebar > * {
+  border-color: var(--mx-line);
+}
+
+.playlist-item {
+  border-radius: 10px;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.playlist-item:hover {
+  background: var(--mx-panel-2);
+  transform: translateX(2px);
+}
+
+.section-title {
+  font: 700 10.5px var(--font-body, Inter);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mx-text-3);
+}
+
+/* ── Search ── */
+.search-bar {
+  background: var(--mx-panel-2);
+  border: 1px solid var(--mx-line);
+  border-radius: 10px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.search-bar:focus-within {
+  border-color: var(--mx-accent);
+  background: #12161f;
+}
+
+/* ── Cards & album art: hover lift + play overlay ── */
+.song-card,
+.folder-card,
+.album-card,
+.track-card {
+  background: var(--mx-panel);
+  border: 1px solid var(--mx-line);
+  border-radius: 12px;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.song-card:hover,
+.folder-card:hover,
+.album-card:hover,
+.track-card:hover {
+  background: var(--mx-panel-2);
+  transform: translateY(-3px);
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+.album-art {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Player bar: floating, elevated ── */
+.player-bar {
+  background: rgba(13, 16, 22, 0.92);
+  backdrop-filter: blur(18px);
+  border-top: 1px solid var(--mx-line);
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.55);
+}
+
+.now-playing-title {
+  font-weight: 600;
+  color: var(--mx-text);
+}
+
+.now-playing-artist {
+  color: var(--mx-text-2);
+  font-size: 12px;
+}
+
+.play-pause-btn {
+  background: var(--mx-accent);
+  color: var(--mx-accent-ink);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(34, 211, 238, 0.35);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.play-pause-btn:hover {
+  transform: scale(1.06);
+  filter: brightness(1.1);
+}
+
+.play-pause-btn:active {
+  transform: scale(0.97);
+}
+
+.control-btn {
+  color: var(--mx-text-2);
+  transition: color 0.15s ease, transform 0.12s ease;
+}
+
+.control-btn:hover {
+  color: var(--mx-text);
+  transform: scale(1.08);
+}
+
+/* ── Progress bar: thicker on hover, accent fill ── */
+.progress-bar-container {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.09);
+  transition: height 0.15s ease;
+  cursor: pointer;
+}
+
+.progress-bar-container:hover {
+  height: 7px;
+}
+
+.progress-fill {
+  background: var(--mx-accent);
+  border-radius: 2px;
+}
+
+.progress-bar-container:hover .progress-fill::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Scrollbars ── */
+.main-content::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+  width: 9px;
+}
+
+.main-content::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+  background: #232a36;
+  border-radius: 5px;
+  border: 2px solid var(--mx-bg);
+}
+
+.main-content::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #313b4d;
+}
+
+/* ── Light theme keeps the dark console (like real music apps) ── */
+html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+    [data-theme="amber"]
+  ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+    [data-theme="forest"]
+  ):not([data-theme="dracula"]):not([data-theme="quantum"])
+  .player-bar,
+html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+    [data-theme="amber"]
+  ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+    [data-theme="forest"]
+  ):not([data-theme="dracula"]):not([data-theme="quantum"])
+  .sidebar,
+html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+    [data-theme="amber"]
+  ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+    [data-theme="forest"]
+  ):not([data-theme="dracula"]):not([data-theme="quantum"])
+  .main-content {
+  background: var(--mx-bg);
+}
+
+html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+    [data-theme="amber"]
+  ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+    [data-theme="forest"]
+  ):not([data-theme="dracula"]):not([data-theme="quantum"])
+  .now-playing-title,
+html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+    [data-theme="amber"]
+  ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+    [data-theme="forest"]
+  ):not([data-theme="dracula"]):not([data-theme="quantum"])
+  .greeting {
+  color: var(--mx-text);
+}

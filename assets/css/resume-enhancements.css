@@ -2,10 +2,10 @@
 
 /* ===== ROOT VARIABLES ===== */
 :root {
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  --primary-gradient: #6366f1; /* solid — de-gradiented */
+  --secondary-gradient: #f43f5e; /* solid — de-gradiented */
+  --accent-gradient: #22d3ee; /* solid — de-gradiented */
+  --success-gradient: #34d399; /* solid — de-gradiented */
   --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.2);
   --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -534,7 +534,7 @@ html {
   left: 0;
   width: 80px;
   height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  background: #6366f1;
   border-radius: 2px;
 }
 
@@ -545,7 +545,7 @@ html {
 [data-theme="absolute-dark"] .section-subtitle-left::after,
 [data-theme="forest"] .section-subtitle-left::after,
 [data-theme="dracula"] .section-subtitle-left::after {
-  background: linear-gradient(90deg, #22d3ee, #60a5fa);
+  background: #22d3ee;
 }
 
 /* Space between resume sections for better readability */

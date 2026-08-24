@@ -473,6 +473,8 @@
             <button class="chord-btn" data-chord="D">D</button>
             <button class="chord-btn" data-chord="Am">Am</button>
             <button class="chord-btn" data-chord="E">E</button>
+            <button class="chord-btn" data-chord="Dm">Dm</button>
+            <button class="chord-btn" data-chord="Em7">Em7</button>
             <div class="guitar-slider">
               VOLUME
               <input
@@ -483,10 +485,45 @@
                 value="70"
               />
             </div>
+            <div class="guitar-slider">
+              SENSITIVITY
+              <input
+                type="range"
+                id="guitar-sens"
+                min="0"
+                max="100"
+                value="50"
+              />
+            </div>
           </div>
           <div class="wc-controls">
             <button class="wc-btn primary" id="guitar-enable-btn">
               <i data-lucide="hand"></i> Enable hand tracking
+            </button>
+            <button
+              class="wc-btn"
+              id="metro-btn"
+              aria-pressed="false"
+              title="Metronome"
+            >
+              <i data-lucide="timer"></i> Metronome
+            </button>
+            <input
+              type="number"
+              id="metro-bpm"
+              value="90"
+              min="30"
+              max="240"
+              title="Metronome BPM"
+              aria-label="Metronome BPM"
+              style="width: 74px"
+            />
+            <button
+              class="wc-btn"
+              id="record-session-btn"
+              title="Record your session to a WAV file"
+            >
+              <i data-lucide="disc-3"></i> Record Session
             </button>
           </div>
           <div class="guitar-status" id="guitar-status">

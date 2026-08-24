@@ -70,8 +70,8 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   --accent-2: #7c3aed;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #c97c3a, #7c3aed);
-  --grad-green: linear-gradient(135deg, #5a8a4a, #c97c3a);
+  --grad-primary: #c97c3a;
+  --grad-green: #5a8a4a;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(201, 124, 58, 0.25);
@@ -118,7 +118,7 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
     #faf3e8 350px
   );
   --music-search-bg: #ede0c8;
-  --music-album-gradient: linear-gradient(135deg, #c97c3a, #7c3aed);
+  --music-album-gradient: #c97c3a;
   --music-accent: #c97c3a;
   --music-accent-hover: #b86c2a;
   --music-player-bg: rgba(237, 224, 200, 0.95);
@@ -174,8 +174,8 @@ html[data-theme="dark"],
   --accent-2: #7c3aed;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #00d4ff, #7c3aed);
-  --grad-green: linear-gradient(135deg, #00ff88, #00d4ff);
+  --grad-primary: #00d4ff;
+  --grad-green: #00ff88;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.35);
@@ -279,8 +279,8 @@ html[data-theme="quantum"],
   --accent-2: #a78bfa;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #22d3ee, #a78bfa);
-  --grad-green: linear-gradient(135deg, #34d399, #22d3ee);
+  --grad-primary: #22d3ee;
+  --grad-green: #34d399;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(34, 211, 238, 0.35);
@@ -379,8 +379,8 @@ html[data-theme="dark-coffee"],
   --accent-2: #b87d4b;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #d4a853, #b87d4b);
-  --grad-green: linear-gradient(135deg, #8fbc5a, #d4a853);
+  --grad-primary: #d4a853;
+  --grad-green: #8fbc5a;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(212, 168, 83, 0.3);
@@ -430,7 +430,7 @@ html[data-theme="dark-coffee"],
     #1a1208 350px
   );
   --music-search-bg: #352818;
-  --music-album-gradient: linear-gradient(135deg, #d4a853, #b87d4b);
+  --music-album-gradient: #d4a853;
   --music-accent: #d4a853;
   --music-accent-hover: #e4b863;
   --music-player-bg: rgba(42, 31, 18, 0.95);
@@ -480,8 +480,8 @@ html[data-theme="amber"],
   --accent-2: #ff6b35;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #ffbf00, #ff6b35);
-  --grad-green: linear-gradient(135deg, #4caf50, #ffbf00);
+  --grad-primary: #ffbf00;
+  --grad-green: #4caf50;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(255, 191, 0, 0.3);
@@ -531,7 +531,7 @@ html[data-theme="amber"],
     #121212 350px
   );
   --music-search-bg: #282828;
-  --music-album-gradient: linear-gradient(135deg, #ffbf00, #ff6b35);
+  --music-album-gradient: #ffbf00;
   --music-accent: #ffbf00;
   --music-accent-hover: #ffd740;
   --music-player-bg: rgba(24, 24, 24, 0.95);
@@ -581,8 +581,8 @@ html[data-theme="tokyo-night"],
   --accent-2: #bb9af7;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #7d85fc, #bb9af7);
-  --grad-green: linear-gradient(135deg, #9ece6a, #7d85fc);
+  --grad-primary: #7d85fc;
+  --grad-green: #9ece6a;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(125, 133, 252, 0.3);
@@ -632,7 +632,7 @@ html[data-theme="tokyo-night"],
     #1a1b2e 350px
   );
   --music-search-bg: #2f3156;
-  --music-album-gradient: linear-gradient(135deg, #7d85fc, #bb9af7);
+  --music-album-gradient: #7d85fc;
   --music-accent: #7d85fc;
   --music-accent-hover: #8d95ff;
   --music-player-bg: rgba(40, 42, 72, 0.95);
@@ -682,8 +682,8 @@ html[data-theme="absolute-dark"],
   --accent-2: #666666;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #ffffff, #888888);
-  --grad-green: linear-gradient(135deg, #888888, #ffffff);
+  --grad-primary: #e6e6e6;
+  --grad-green: #888888;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(255, 255, 255, 0.15);
@@ -733,7 +733,7 @@ html[data-theme="absolute-dark"],
     #000000 350px
   );
   --music-search-bg: #111111;
-  --music-album-gradient: linear-gradient(135deg, #ffffff, #888888);
+  --music-album-gradient: #e6e6e6;
   --music-accent: #ffffff;
   --music-accent-hover: #e0e0e0;
   --music-player-bg: rgba(10, 10, 10, 0.95);
@@ -783,8 +783,8 @@ html[data-theme="forest"],
   --accent-2: #81c784;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #66bb6a, #a5d6a7);
-  --grad-green: linear-gradient(135deg, #a5d6a7, #66bb6a);
+  --grad-primary: #66bb6a;
+  --grad-green: #a5d6a7;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(102, 187, 106, 0.3);
@@ -834,7 +834,7 @@ html[data-theme="forest"],
     #0a120a 350px
   );
   --music-search-bg: #1a2a1a;
-  --music-album-gradient: linear-gradient(135deg, #66bb6a, #a5d6a7);
+  --music-album-gradient: #66bb6a;
   --music-accent: #66bb6a;
   --music-accent-hover: #76cb7a;
   --music-player-bg: rgba(21, 32, 21, 0.95);
@@ -884,8 +884,8 @@ html[data-theme="dracula"],
   --accent-2: #ff79c6;
 
   /* Gradients */
-  --grad-primary: linear-gradient(135deg, #bd93f9, #ff79c6);
-  --grad-green: linear-gradient(135deg, #50fa7b, #bd93f9);
+  --grad-primary: #bd93f9;
+  --grad-green: #50fa7b;
 
   /* Glows & Shadows */
   --glow-cyan: 0 0 20px rgba(189, 147, 249, 0.3);
@@ -935,7 +935,7 @@ html[data-theme="dracula"],
     #282a36 350px
   );
   --music-search-bg: #3c3f58;
-  --music-album-gradient: linear-gradient(135deg, #bd93f9, #ff79c6);
+  --music-album-gradient: #bd93f9;
   --music-accent: #bd93f9;
   --music-accent-hover: #cda3ff;
   --music-player-bg: rgba(52, 55, 70, 0.95);

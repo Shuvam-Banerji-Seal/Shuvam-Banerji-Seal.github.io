@@ -373,6 +373,8 @@
         iceServers: [
           { urls: "stun:stun.l.google.com:19302" },
           { urls: "stun:stun1.l.google.com:19302" },
+          { urls: "stun:global.stun.twilio.com:3478" },
+          { urls: "stun:stun.cloudflare.com:3478" },
         ],
       };
       const CHUNK = 64 * 1024;
@@ -416,7 +418,8 @@
       }
 
       async function decodeCode(str) {
-        str = str.trim();
+        // tolerate whitespace/newlines introduced by copy-paste
+        str = str.replace(/\s+/g, "");
         const isZ = str.endsWith(".z");
         if (isZ) str = str.slice(0, -2);
         const bytes = unb64url(str);
@@ -439,7 +442,12 @@
       }
       function unb64url(str) {
         const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
-        const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
+        // re-add the padding b64url stripped: (4 - L%4) % 4. The old
+        // (L+3)%4 formula added WRONG padding for every length class —
+        // codes with L%4==0 got "===" and atob threw, so ~1 in 4
+        // connection codes simply failed to decode.
+        const pad = (4 - (b64.length % 4)) % 4;
+        const bin = atob(b64 + "=".repeat(pad));
         return Uint8Array.from(bin, (c) => c.charCodeAt(0));
       }
 

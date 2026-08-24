@@ -2191,7 +2191,7 @@ html[data-theme="dracula"] .skill-category:hover {
     0 12px 40px rgba(2, 8, 20, 0.55);
 }
 
-/* Section divider hairline with animated gradient sweep */
+/* Section divider hairline with animated accent sweep (solid — no gradient) */
 .section-divider {
   position: relative;
   height: 1px;
@@ -2203,12 +2203,9 @@ html[data-theme="dracula"] .skill-category:hover {
   position: absolute;
   inset: 0;
   width: 30%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--accent-cyan),
-    transparent
-  );
+  background: var(--accent-cyan);
+  opacity: 0.85;
+  border-radius: 1px;
   animation: div-sweep 3.2s ease-in-out infinite;
 }
 @keyframes div-sweep {
@@ -2247,7 +2244,9 @@ body::after {
 }
 
 /* Display face for headings across the whole site */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: "Space Grotesk", "Inter", sans-serif;
   letter-spacing: -0.02em;
 }
