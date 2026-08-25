@@ -419,16 +419,21 @@ function initThemeToggle() {
     // Remove any existing listener by cloning (safe for navbar-injected btn)
     var newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
+    var lastDark = isDarkTheme(
+      document.documentElement.getAttribute("data-theme") || "quantum",
+    )
+      ? document.documentElement.getAttribute("data-theme")
+      : "quantum";
     newBtn.addEventListener("click", function () {
       var current =
         document.documentElement.getAttribute("data-theme") || "light";
       var next;
       if (isDarkTheme(current)) {
-        // If currently dark, switch to light
+        // going light: remember which dark the user had (no slot machine)
+        lastDark = current;
         next = "light";
       } else {
-        // If currently light, switch to a random dark theme
-        next = getRandomDarkTheme();
+        next = lastDark || getRandomDarkTheme();
       }
       applyTheme(next);
     });
@@ -463,6 +468,7 @@ function initDropdowns() {
       if (window.matchMedia("(hover: hover)").matches) {
         menu.classList.add("show");
         toggle.classList.add("active");
+        toggle.setAttribute("aria-expanded", "true");
         return;
       }
 
@@ -490,7 +496,24 @@ function initDropdowns() {
       .forEach((m) => m.classList.remove("show"));
     document
       .querySelectorAll(".dropdown-toggle")
-      .forEach((t) => t.classList.remove("active"));
+      .forEach((t) => {
+        t.classList.remove("active");
+        t.setAttribute("aria-expanded", "false");
+      });
+  });
+
+  // Escape closes any open dropdown and restores focus to its toggle
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    document.querySelectorAll(".dropdown-menu.show").forEach((m) => {
+      m.classList.remove("show");
+      const t = m.parentElement.querySelector(".dropdown-toggle");
+      if (t) {
+        t.classList.remove("active");
+        t.setAttribute("aria-expanded", "false");
+        t.focus();
+      }
+    });
   });
 }
 

@@ -125,28 +125,35 @@
     </div>
 
     <!-- Navbar -->
+    <noscript
+      ><style>
+        .fade-in {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style></noscript
+    >
     <div id="navbar-container"></div>
     <script type="module" src="assets/js/navbar.js"></script>
 
     <!-- ========== HERO ========== -->
     <section class="hero" id="main-content">
-      <h1 class="sr-only">
-        Shuvam Banerji Seal - Computational Chemist & AI Researcher
-      </h1>
       <!-- Claim block: one sentence + dual CTA (design.md §2.1) -->
       <div class="hero-claim fade-in">
-        <p class="hero-kicker">Computational Chemist × AI Researcher</p>
-        <p class="hero-statement">
-          I build software that turns chemistry into something you can touch.
+        <p class="hero-kicker">
+          Shuvam Banerji Seal — Computational Chemist × AI Researcher
         </p>
+        <h1 class="hero-statement">
+          I build software that turns chemistry into something you can touch.
+        </h1>
         <div class="hero-cta-row">
           <a href="#work" class="btn btn-primary">
             <i data-lucide="flask-conical" class="btn-icon"></i>
-            View Featured Work
+            View Selected Work
           </a>
-          <a href="pages/tools.html" class="btn btn-outline">
-            <i data-lucide="atom" class="btn-icon"></i>
-            Open the Lab
+          <a href="pages/resume.html" class="btn btn-outline">
+            <i data-lucide="file-text" class="btn-icon"></i>
+            Resume
           </a>
         </div>
       </div>
@@ -174,25 +181,21 @@
             >
             <span class="viewer-label viewer-live">&#9679; LIVE</span>
           </div>
-          <canvas id="protein-canvas"></canvas>
+          <canvas
+            id="protein-canvas"
+            role="img"
+            tabindex="0"
+            aria-label="Interactive 3D model of ATP — drag to rotate, arrow keys to rotate, Ctrl+scroll to zoom"
+          ></canvas>
           <div class="viewer-info">
             <div class="info-item"><span>PDB</span>&nbsp;ATP</div>
             <div class="info-item"><span>ATOMS</span>&nbsp;44</div>
             <div class="info-item"><span>FORMULA</span>&nbsp;C₁₀H₁₆N₅O₁₃P₃</div>
             <div class="info-item" id="atp-hover-info">
-              <span>DRAG</span>&nbsp;to rotate
+              <span>DRAG</span>&nbsp;to rotate ·
+              <span>CTRL+SCROLL</span>&nbsp;to zoom
             </div>
           </div>
-        </div>
-        <div class="hero-actions">
-          <a href="#about" class="btn btn-primary">
-            <i data-lucide="flask-conical" class="btn-icon"></i>
-            Explore Research
-          </a>
-          <a href="pages/resume.html" class="btn btn-outline">
-            <i data-lucide="file-text" class="btn-icon"></i>
-            View Resume
-          </a>
         </div>
       </div>
     </section>
@@ -570,87 +573,158 @@
           <div class="section-divider"></div>
         </div>
         <div class="work-grid fade-in">
-
           <article class="work-card fade-in">
-            <div class="work-top"><span class="work-index">01</span><span class="project-type">3D / Simulation Tooling</span></div>
+            <div class="work-top">
+              <span class="work-index">02</span
+              ><span class="project-type">3D / Simulation Tooling</span>
+            </div>
             <h3 class="project-title">
-              <i data-lucide="boxes" style="width: 20px; height: 20px; color: var(--accent-cyan)"></i>
+              <i
+                data-lucide="boxes"
+                style="width: 20px; height: 20px; color: var(--accent-cyan)"
+              ></i>
               Molecule3D — LAMMPS Web GUI
             </h3>
             <p class="project-desc">
-              GPU-accelerated 3D molecular structure viewer and LAMMPS workbench:
-              186-command visual script builder, CMake compiler helper, dump-trajectory
-              playback, measurement tools — four structure formats, entirely in the browser.
+              GPU-accelerated 3D molecular structure viewer and LAMMPS
+              workbench: 186-command visual script builder, CMake compiler
+              helper, dump-trajectory playback, measurement tools — four
+              structure formats, entirely in the browser.
             </p>
             <div class="tech-tags">
-              <span class="tech-tag">React 19</span><span class="tech-tag">three.js</span>
-              <span class="tech-tag">TypeScript</span><span class="tech-tag">WebGL</span>
+              <span class="tech-tag">React 19</span
+              ><span class="tech-tag">three.js</span>
+              <span class="tech-tag">TypeScript</span
+              ><span class="tech-tag">WebGL</span>
             </div>
             <div class="work-foot">
               <span class="project-status">Live</span>
-              <a class="work-link" href="https://shuvam-banerji-seal.github.io/lammps-web-gui/" target="_blank" rel="noopener">See live <i data-lucide="arrow-up-right"></i></a>
-              <a class="work-link" href="https://github.com/Shuvam-Banerji-Seal/lammps-web-gui" target="_blank" rel="noopener">Source <i data-lucide="code-2"></i></a>
+              <a
+                class="work-link"
+                href="https://shuvam-banerji-seal.github.io/lammps-web-gui/"
+                target="_blank"
+                rel="noopener"
+                >See live <i data-lucide="arrow-up-right"></i
+              ></a>
+              <a
+                class="work-link"
+                href="https://github.com/Shuvam-Banerji-Seal/lammps-web-gui"
+                target="_blank"
+                rel="noopener"
+                >Source <i data-lucide="code-2"></i
+              ></a>
             </div>
           </article>
 
           <article class="work-card fade-in">
-            <div class="work-top"><span class="work-index">02</span><span class="project-type">RAG / Information Retrieval</span></div>
+            <div class="work-top">
+              <span class="work-index">03</span
+              ><span class="project-type">RAG / Information Retrieval</span>
+            </div>
             <h3 class="project-title">
-              <i data-lucide="database" style="width: 20px; height: 20px; color: var(--accent-cyan)"></i>
+              <i
+                data-lucide="database"
+                style="width: 20px; height: 20px; color: var(--accent-cyan)"
+              ></i>
               Hybrid RAG Architecture
             </h3>
             <p class="project-desc">
-              Comprehensive RAG pipeline for IISER-K intranet with automated data
-              acquisition, OCR processing, and hybrid search combining dense vector
-              retrieval with BM25 for verifiable answer synthesis.
+              Comprehensive RAG pipeline for IISER-K intranet with automated
+              data acquisition, OCR processing, and hybrid search combining
+              dense vector retrieval with BM25 for verifiable answer synthesis.
             </p>
             <div class="tech-tags">
-              <span class="tech-tag">Python</span><span class="tech-tag">FAISS</span>
-              <span class="tech-tag">Qwen3-4B</span><span class="tech-tag">Streamlit</span>
+              <span class="tech-tag">Python</span
+              ><span class="tech-tag">FAISS</span>
+              <span class="tech-tag">Qwen3-4B</span
+              ><span class="tech-tag">Streamlit</span>
             </div>
-            <div class="work-foot"><span class="project-status">Completed (2025)</span></div>
+            <div class="work-foot">
+              <span class="project-status">Completed (2025)</span>
+            </div>
           </article>
 
           <article class="work-card fade-in">
-            <div class="work-top"><span class="work-index">03</span><span class="project-type">NLP / Search</span></div>
+            <div class="work-top">
+              <span class="work-index">01</span
+              ><span class="project-type">NLP / Search · TREC 2024</span>
+            </div>
             <h3 class="project-title">
-              <i data-lucide="search" style="width: 20px; height: 20px; color: var(--accent-cyan)"></i>
+              <i
+                data-lucide="search"
+                style="width: 20px; height: 20px; color: var(--accent-cyan)"
+              ></i>
               TREC Retrieval Model
             </h3>
             <p class="project-desc">
-              Multi-layer BM-25 filtering with dynamic search-domain contraction and
-              transformer-based query expansion using Local LLMs for TREC 2024
-              Tip-of-Tongue track. Published in TREC proceedings.
+              Search that works when you only remember how the word feels.
+              Multi-layer BM25 filtering, dynamic search-domain contraction, and
+              local-LLM query expansion — published in the TREC 2024
+              proceedings.
             </p>
             <div class="tech-tags">
-              <span class="tech-tag">Java</span><span class="tech-tag">Lucene</span>
-              <span class="tech-tag">LLMs</span><span class="tech-tag">NLP</span>
+              <span class="tech-tag">Java</span
+              ><span class="tech-tag">Lucene</span>
+              <span class="tech-tag">LLMs</span
+              ><span class="tech-tag">NLP</span>
             </div>
-            <div class="work-foot"><span class="project-status">Published (2024)</span></div>
+            <div class="work-foot">
+              <span class="project-status">Published (2024)</span>
+              <a
+                class="work-link"
+                href="https://trec.nist.gov/pubs/trec33/papers/TOG_IISERK.pdf"
+                target="_blank"
+                rel="noopener"
+                >Paper <i data-lucide="file-text"></i
+              ></a>
+              <a
+                class="work-link"
+                href="https://github.com/Shuvam-Banerji-Seal"
+                target="_blank"
+                rel="noopener"
+                >Source <i data-lucide="code-2"></i
+              ></a>
+            </div>
           </article>
 
           <article class="work-card fade-in">
-            <div class="work-top"><span class="work-index">04</span><span class="project-type">Computational Chemistry</span></div>
+            <div class="work-top">
+              <span class="work-index">04</span
+              ><span class="project-type">Computational Chemistry</span>
+            </div>
             <h3 class="project-title">
-              <i data-lucide="atom" style="width: 20px; height: 20px; color: var(--accent-cyan)"></i>
+              <i
+                data-lucide="atom"
+                style="width: 20px; height: 20px; color: var(--accent-cyan)"
+              ></i>
               DFT Catalyst Modeling
             </h3>
             <p class="project-desc">
-              DFT methods (B3LYP) for MO energy calculations and electronic structure
-              analysis of [VO(SALIEP)(DTP)] as water-reducing catalyst using
-              Gaussian&nbsp;16 and transition state theory.
+              DFT methods (B3LYP) for MO energy calculations and electronic
+              structure analysis of [VO(SALIEP)(DTP)] as water-reducing catalyst
+              using Gaussian&nbsp;16 and transition state theory.
             </p>
             <div class="tech-tags">
-              <span class="tech-tag">DFT</span><span class="tech-tag">Gaussian 16</span>
-              <span class="tech-tag">B3LYP</span><span class="tech-tag">Catalysis</span>
+              <span class="tech-tag">DFT</span
+              ><span class="tech-tag">Gaussian 16</span>
+              <span class="tech-tag">B3LYP</span
+              ><span class="tech-tag">Catalysis</span>
             </div>
-            <div class="work-foot"><span class="project-status">To Be Submitted (2025)</span></div>
+            <div class="work-foot">
+              <span class="project-status">Manuscript in prep (2025)</span>
+            </div>
           </article>
 
           <article class="work-card fade-in">
-            <div class="work-top"><span class="work-index">05</span><span class="project-type">Systems / GUI</span></div>
+            <div class="work-top">
+              <span class="work-index">05</span
+              ><span class="project-type">Systems / GUI</span>
+            </div>
             <h3 class="project-title">
-              <i data-lucide="app-window" style="width: 20px; height: 20px; color: var(--accent-cyan)"></i>
+              <i
+                data-lucide="app-window"
+                style="width: 20px; height: 20px; color: var(--accent-cyan)"
+              ></i>
               GTK4 NLP Application
             </h3>
             <p class="project-desc">
@@ -660,32 +734,44 @@
             </p>
             <div class="tech-tags">
               <span class="tech-tag">C</span><span class="tech-tag">GTK4</span>
-              <span class="tech-tag">SQLite3</span><span class="tech-tag">BM25</span>
+              <span class="tech-tag">SQLite3</span
+              ><span class="tech-tag">BM25</span>
             </div>
-            <div class="work-foot"><span class="project-status">Completed (2024)</span></div>
+            <div class="work-foot">
+              <span class="project-status">Completed (2024)</span>
+            </div>
           </article>
 
           <article class="work-card fade-in">
-            <div class="work-top"><span class="work-index">06</span><span class="project-type">Bioinformatics</span></div>
+            <div class="work-top">
+              <span class="work-index">06</span
+              ><span class="project-type">Bioinformatics</span>
+            </div>
             <h3 class="project-title">
-              <i data-lucide="dna" style="width: 20px; height: 20px; color: var(--accent-cyan)"></i>
+              <i
+                data-lucide="dna"
+                style="width: 20px; height: 20px; color: var(--accent-cyan)"
+              ></i>
               Protein Structure Analysis
             </h3>
             <p class="project-desc">
-              Computational analysis of protein-ligand interactions and conformational
-              dynamics using molecular dynamics simulations, with visualization
-              pipelines built on PyMOL and custom Python tooling.
+              Computational analysis of protein-ligand interactions and
+              conformational dynamics using molecular dynamics simulations, with
+              visualization pipelines built on PyMOL and custom Python tooling.
             </p>
             <div class="tech-tags">
-              <span class="tech-tag">Python</span><span class="tech-tag">PyMOL</span>
-              <span class="tech-tag">MDAnalysis</span><span class="tech-tag">GROMACS</span>
+              <span class="tech-tag">Python</span
+              ><span class="tech-tag">PyMOL</span>
+              <span class="tech-tag">MDAnalysis</span
+              ><span class="tech-tag">GROMACS</span>
             </div>
             <div class="work-foot">
               <span class="project-status">Ongoing</span>
-              <a class="work-link" href="pages/github-projects.html">All projects <i data-lucide="arrow-right"></i></a>
+              <a class="work-link" href="pages/github-projects.html"
+                >All projects <i data-lucide="arrow-right"></i
+              ></a>
             </div>
           </article>
-
         </div>
       </section>
     </div>
@@ -702,56 +788,70 @@
           <span class="cap-num">01</span>
           <h3>Molecular Simulation</h3>
           <p class="cap-hook">Classical MD, end to end.</p>
-          <p>GROMACS and LAMMPS pipelines for protein&ndash;ligand and materials
-             systems &mdash; setup, execution, trajectory analysis and rendering
-             with MDAnalysis and custom tooling.</p>
+          <p>
+            GROMACS and LAMMPS pipelines for protein&ndash;ligand and materials
+            systems &mdash; setup, execution, trajectory analysis and rendering
+            with MDAnalysis and custom tooling.
+          </p>
         </div>
         <div class="cap-card">
           <span class="cap-num">02</span>
           <h3>DFT &amp; Quantum Chemistry</h3>
           <p class="cap-hook">Electronic structure, applied.</p>
-          <p>B3LYP/6-311G(d,p) geometry optimisations and MO analysis in
-             Gaussian&nbsp;16 and ORCA &mdash; transition-state theory applied to
-             real catalysts.</p>
+          <p>
+            B3LYP/6-311G(d,p) geometry optimisations and MO analysis in
+            Gaussian&nbsp;16 and ORCA &mdash; transition-state theory applied to
+            real catalysts.
+          </p>
         </div>
         <div class="cap-card">
           <span class="cap-num">03</span>
           <h3>RAG &amp; Information Retrieval</h3>
           <p class="cap-hook">Search that cites its sources.</p>
-          <p>Hybrid dense+BM25 retrieval, FAISS indexing and LLM answer
-             synthesis &mdash; published at TREC 2024 for verifiable
-             tip-of-the-tongue search.</p>
+          <p>
+            Hybrid dense+BM25 retrieval, FAISS indexing and LLM answer synthesis
+            &mdash; published at TREC 2024 for verifiable tip-of-the-tongue
+            search.
+          </p>
         </div>
         <div class="cap-card">
           <span class="cap-num">04</span>
           <h3>Scientific Web Tools</h3>
           <p class="cap-hook">Instruments, not websites.</p>
-          <p>Browser-native tools scientists use daily: a 13-mode PDF studio, a
-             multi-track DAW, chemistry calculators &mdash; all local-first, no
-             uploads.</p>
+          <p>
+            Browser-native tools scientists use daily: a 13-mode PDF studio, a
+            multi-track DAW, chemistry calculators &mdash; all local-first, no
+            uploads.
+          </p>
         </div>
         <div class="cap-card">
           <span class="cap-num">05</span>
           <h3>3D &amp; Visualization</h3>
           <p class="cap-hook">Molecules you can grab.</p>
-          <p>three.js and WebGL rendering with CPK palettes, instanced draw
-             calls and measurement overlays &mdash; from ATP in the hero to
-             full LAMMPS trajectories.</p>
+          <p>
+            three.js and WebGL rendering with CPK palettes, instanced draw calls
+            and measurement overlays &mdash; from ATP in the hero to full LAMMPS
+            trajectories.
+          </p>
         </div>
         <div class="cap-card">
           <span class="cap-num">06</span>
           <h3>Research Engineering</h3>
           <p class="cap-hook">From idea to tested, shipped artifact.</p>
-          <p>Python, Java, C/C++ and modern web stacks with the testing and CI
-             discipline to keep them alive &mdash; 500+ automated checks on this
-             site alone.</p>
+          <p>
+            Python, Java, C/C++ and modern web stacks with the testing and CI
+            discipline to keep them alive &mdash; 500+ automated checks on this
+            site alone.
+          </p>
         </div>
       </div>
     </section>
 
     <!-- ========== EDITORIAL BAND (design.md §2.5) ========== -->
     <section class="editorial-band fade-in" aria-label="Statement">
-      <p>From bond lengths to build pipelines &mdash; the details are the design.</p>
+      <p>
+        From bond lengths to build pipelines &mdash; the details are the design.
+      </p>
     </section>
 
     <!-- ========== CONTACT ========== -->
@@ -795,9 +895,9 @@
             </div>
             <br />
             <div class="gjf-comment">
-              -- Open to: research collaborations, internships,
+              -- Open to: internships · research collaborations · PhD positions
+              --
             </div>
-            <div class="gjf-comment">scientific computing discussions --</div>
           </div>
         </div>
         <div class="card fade-in fade-in-delay-1">
@@ -851,10 +951,12 @@
             </div>
             <button type="submit" class="btn btn-primary">
               <i data-lucide="send" class="btn-icon"></i>
-              Execute Contact
+              Send Message
             </button>
             <p
               id="form-status"
+              role="status"
+              aria-live="polite"
               style="
                 font-family: var(--font-mono);
                 font-size: 0.82rem;
@@ -881,7 +983,7 @@
 
         <nav class="footer-nav" aria-label="Footer">
           <a href="#about">About</a>
-          <a href="#research">Research</a>
+          <a href="#work">Work</a>
           <a href="#projects">Projects</a>
           <a href="pages/blog.html">Blog</a>
           <a href="pages/tools.html">Tools</a>
@@ -1046,6 +1148,11 @@
             '<span class="term-skill-prog"># Programming</span>: Python · Java · C/C++ · JavaScript · Three.js',
             '<span class="term-skill-tools"># Tools</span>: Git · Docker · Streamlit · Lucene · SQLite',
           ],
+          "cat interests.md": () => [
+            "> Hybrid RAG for Scientific QA",
+            "> DFT Modelling of Catalysts",
+            "> Protein Structure & Molecular Dynamics",
+          ],
           "cat contacts.txt": () => [
             // labels padded to 8 chars so the colons align.
             '<span class="term-contact-label">email   </span>: sbs22ms076@iiserkol.ac.in',
@@ -1146,15 +1253,9 @@
             setTimeout(() => (window.location.href = route), 450);
             return [`Launching ${arg}\u2026`];
           },
-          exit: () => {
-            const tw = document.getElementById("hero-terminal");
-            if (tw) {
-              tw.style.transition = "opacity 0.5s";
-              tw.style.opacity = "0";
-              setTimeout(() => (tw.style.display = "none"), 500);
-            }
-            return ["Goodbye!"];
-          },
+          exit: () => [
+            '<span class="term-error">nice try — this terminal is load-bearing. (reload to reset)</span>',
+          ],
           clear: () => {
             termBody.innerHTML = "";
             return [];
@@ -1215,6 +1316,19 @@
             return d;
           }
         }
+
+        // click-to-skip: flush the intro instantly (scrutiny — 7s unskippable boot)
+        termBody.addEventListener("click", function skipIntro() {
+          if (li >= lines.length) return;
+          termBody.removeEventListener("click", skipIntro);
+          termBody.innerHTML = "";
+          lines.forEach((l) => {
+            const el = mkLine(l);
+            el.innerHTML = l.type === "cmd" ? l.text : l.text;
+          });
+          li = lines.length;
+          spawnInput();
+        });
 
         function type() {
           if (li >= lines.length) {
@@ -1349,7 +1463,7 @@
           });
         }
 
-        setTimeout(type, 2200);
+        setTimeout(type, 400);
       })();
 
       /* ----- Three.js ATP Ball-and-Stick Viewer ----- */
@@ -1583,6 +1697,16 @@
             resize();
             window.addEventListener("resize", resize);
 
+            canvas.style.cursor = "grab";
+            canvas.addEventListener(
+              "mousedown",
+              () => (canvas.style.cursor = "grabbing"),
+            );
+            window.addEventListener(
+              "mouseup",
+              () => (canvas.style.cursor = "grab"),
+            );
+
             // Mouse/touch drag + scroll zoom
             let drag = false,
               lx = 0,
@@ -1630,6 +1754,9 @@
             canvas.addEventListener(
               "wheel",
               (e) => {
+                // scroll-jacking fix: plain scroll must scroll the PAGE;
+                // zoom requires Ctrl/Cmd (hint updated to match)
+                if (!e.ctrlKey && !e.metaKey) return;
                 e.preventDefault();
                 camera.position.z = Math.max(
                   10,
@@ -1735,30 +1862,20 @@
         document.head.appendChild(threeScript);
       });
 
-      /* ----- Scroll animations ----- */
-      (function () {
-        const els = document.querySelectorAll(".fade-in");
-        const io = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((e) => {
-              if (e.isIntersecting) {
-                e.target.classList.add("visible");
-                io.unobserve(e.target);
-              }
-            });
-          },
-          { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
-        );
-        els.forEach((el) => io.observe(el));
-      })();
+      /* scroll reveals: single engine lives in home-cinematics.js */
 
       /* ----- Contact form ----- */
       (function () {
         const form = document.getElementById("contact-form");
         const status = document.getElementById("form-status");
         if (!form) return;
+        const submitBtn = form.querySelector('[type="submit"]');
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = "Executing…";
+          }
           try {
             const res = await fetch(e.target.action, {
               method: "POST",
@@ -1781,6 +1898,8 @@
             status.textContent = "";
             status.classList.remove("form-status-error");
           }, 6000);
+          finally_placeholder: {
+          }
         });
       })();
 

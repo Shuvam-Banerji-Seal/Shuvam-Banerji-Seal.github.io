@@ -18,6 +18,12 @@ function initCursor() {
   dot.className = "cur-dot";
   ring.className = "cur-ring";
   document.body.append(dot, ring);
+  // commit to the custom cursor: hide the native one (scrutiny — three
+  // pointers on screen was worse than either option alone)
+  const style = document.createElement("style");
+  style.textContent =
+    "body, a, button, [role='button'], input, textarea, select, .terminal-window { cursor: none !important; }";
+  document.head.appendChild(style);
 
   let mx = innerWidth / 2,
     my = innerHeight / 2;
@@ -35,8 +41,8 @@ function initCursor() {
   );
 
   (function followRing() {
-    rx += (mx - rx) * 0.16;
-    ry += (my - ry) * 0.16;
+    rx += (mx - rx) * 0.35;
+    ry += (my - ry) * 0.35;
     ring.style.transform = `translate(${rx}px, ${ry}px)`;
     requestAnimationFrame(followRing);
   })();
@@ -195,8 +201,15 @@ function initConstellation() {
   resize();
   seed();
   window.addEventListener("resize", () => {
+    const oldW = W;
+    const oldH = H;
     resize();
-    seed();
+    // keep molecule positions proportional — reshuffling on devtools
+    // open felt like a glitch (scrutiny)
+    mols.forEach((m) => {
+      m.x = oldW ? (m.x / oldW) * W : Math.random() * W;
+      m.y = oldH ? (m.y / oldH) * H : Math.random() * H;
+    });
   });
 
   host.addEventListener(
@@ -295,9 +308,20 @@ function initReveals() {
           translateY: [34, 0],
           duration: 750,
           ease: "outCubic",
-          delay: 60,
+          delay:
+            60 +
+            Math.min(
+              90 * Array.prototype.indexOf.call(el.parentElement.children, el),
+              400,
+            ),
         });
         el.classList.add("visible"); // keep legacy CSS hooks happy
+        // once revealed, transform must not be transitioned — the hero
+        // parallax writes style.transform per mousemove (scrutiny: 0.6s
+        // transform transition made the tilt trail the cursor)
+        setTimeout(() => {
+          el.style.transition = "opacity 0.2s ease";
+        }, 800);
       });
     },
     { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
@@ -318,8 +342,8 @@ function initParallax() {
     (e) => {
       const nx = e.clientX / innerWidth - 0.5;
       const ny = e.clientY / innerHeight - 0.5;
-      term.style.transform = `perspective(1100px) rotateY(${nx * 4}deg) rotateX(${-ny * 3}deg)`;
-      panel.style.transform = `perspective(1100px) rotateY(${nx * -3.2}deg) rotateX(${ny * 2.4}deg)`;
+      term.style.transform = `perspective(1100px) rotateY(${nx * 2}deg) rotateX(${-ny * 1.5}deg)`;
+      panel.style.transform = `perspective(1100px) rotateY(${nx * -1.6}deg) rotateX(${ny * 1.2}deg)`;
     },
     { passive: true },
   );
@@ -363,7 +387,8 @@ function initToTop() {
 
 /* ── 6. Scroll progress bar ─────────────────────────────────────────── */
 function initScrollProgress() {
-  if (REDUCED) return;
+  // the progress bar is information, not decoration — reduced-motion
+  // users keep it (the transform update is not an animation per se)
   // navbar.js also creates this bar site-wide; never allow two.
   if (document.getElementById("scroll-progress")) return;
   const bar = document.createElement("div");

@@ -106,11 +106,17 @@
         --tools-launch-hover-bg: var(--accent-cyan);
         --tools-launch-hover-text: #0a1020;
       }
+        html[data-theme="quantum"],
+        [data-theme="quantum"] {
+          --tools-titlebar-bg: #0d1526;
+          --tools-card-bg: rgba(255, 255, 255, 0.03);
+          --tools-glow: rgba(34, 211, 238, 0.12);
+        }
       html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"]) {
+        ):not([data-theme="dracula"]):not([data-theme="quantum"]) {
         --tools-titlebar-bg: #e8d5b0;
         --tools-titlebar-border: rgba(139, 101, 68, 0.2);
         --tools-card-bg: rgba(255, 255, 255, 0.7);
@@ -157,7 +163,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         body::before {
         opacity: 0.4;
       }
@@ -175,7 +181,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .page-grid-bg {
         background-image:
           linear-gradient(rgba(139, 101, 68, 0.035) 1px, transparent 1px),
@@ -239,7 +245,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .titlebar-path {
         color: #8b4513;
       }
@@ -247,7 +253,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .path-host {
         color: #2f5517;
       }
@@ -260,7 +266,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .titlebar-right {
         /* light theme: muted #9c7a5a was 2.7:1 on the parchment bar */
         color: #6b4226;
@@ -300,7 +306,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .stat-key {
         color: #8b4513;
       }
@@ -329,7 +335,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .section-label {
         border-color: #8b4513;
       }
@@ -337,7 +343,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .section-title {
         color: #8b4513;
       }
@@ -367,7 +373,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .tool-card:hover {
         box-shadow: 0 12px 40px rgba(201, 124, 58, 0.15);
         border-color: #8b4513;
@@ -380,7 +386,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .tool-card.featured {
         border-color: rgba(139, 101, 68, 0.45);
         background: rgba(139, 101, 68, 0.06);
@@ -430,7 +436,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .tool-label {
         color: #8b4513;
       }
@@ -438,7 +444,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .tool-featured-badge {
         background: rgba(139, 101, 68, 0.12);
         color: #6f3710;
@@ -497,7 +503,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .tool-tag {
         background: rgba(139, 101, 68, 0.06);
         border-color: rgba(139, 101, 68, 0.2);
@@ -528,7 +534,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .tool-launch {
         border-color: #8b4513;
         color: #8b4513;
@@ -537,7 +543,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .tool-launch:hover {
         background: #8b4513;
         color: #fff;
@@ -579,7 +585,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .social-link:hover {
         border-color: #8b4513;
         color: #8b4513;
@@ -604,7 +610,7 @@
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
           [data-theme="forest"]
-        ):not([data-theme="dracula"])
+        ):not([data-theme="dracula"]):not([data-theme="quantum"])
         .tools-theme-btn:hover {
         border-color: #8b4513;
         color: #8b4513;
