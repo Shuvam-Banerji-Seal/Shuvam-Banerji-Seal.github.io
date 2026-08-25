@@ -437,3 +437,19 @@ Bugs found+fixed during build: Vite dev served stale empty CSS (restart); _swapN
 | Capabilities | 01–06 numbered grid (Molecular Simulation / DFT / RAG-IR / Web Tools / 3D / Research Engineering) |
 | Editorial band + contact closer | "From bond lengths to build pipelines…" band; "Interested in working together?" + giant mail; duplicate old contact header removed |
 | Verification | axe serious/critical 0 · 0 overflow @390/800/1440 · suites 11/11 + 523/523 + 106/106 · lucide validator caught an invalid "github" icon during build (fixed) · LIVE: claim/CTAs/constellation/6 cards/LAMMPS link/caps/closer all present |
+
+## Session 2026-08-25 (late II) — 4-AGENT SCRUTINY WAVE — commit 983f175, deployed
+
+Method: 10 Playwright screenshots (home×5, resume×2, github-projects, tools, music) → 4 parallel critique agents (visual-hierarchy / interaction / content-IA / a11y-consistency) → 40+ findings → synthesized + implemented ~25.
+
+| Sev | Fix |
+|-----|-----|
+| 5 | Section headers: kicker/title/divider were split across two alignment systems on EVERY section → one left-aligned system |
+| 5 | Resume + Tools quantum bug: light-theme `:not()` chains predated quantum → cream panels + 1.5:1 name. 51 chain positions + missing .cv-name/.cv-role light overrides |
+| 5 | ATP canvas scroll-jacking: plain wheel now scrolls page; Ctrl+scroll zooms (hint updated) |
+| 4 | Hero: ONE CTA row (View Selected Work + Resume); second row deleted; hero statement = real h1; scrim over molecule canvas; editorial/closer demoted |
+| 4 | False-affordance hover gated to cards containing links (`:has(a)`); parallax transform-transition lag stripped post-reveal + angles halved; terminal boots 400ms + click-to-skip; custom cursor committed (cursor:none, ring 0.35); dual reveal engines merged w/ stagger; --text-muted → AA in all 9 themes; global :focus-visible |
+| 3 | Form pending state + aria-live; dropdown aria-expanded + 120ms grace + Esc; exit no longer bricks terminal; cat interests.md registered; theme toggle remembers last dark; constellation resize repositions; scroll-progress for reduced-motion; noscript fallback; grab cursor; nav underline; #research→#work; canvas a11y; music 40px targets + 140px clearance; copy consistency (BM25, Tip of the Tongue, Send Message, Manuscript in prep) |
+
+Deferred (documented): og:image PNG (owner asset), Apps/Tools nav merge (content decision), full section-header unification across subpages, --text-muted decorative uses.
+Verification: suites 11/11 · 523/523 · 106/106 · build ✓ · LIVE: single CTA row, h1 statement, scrim, headers aligned (152px==152px), resume name solid ink in light + quantum fixed.
