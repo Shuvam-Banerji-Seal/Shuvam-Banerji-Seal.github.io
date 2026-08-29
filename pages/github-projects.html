@@ -659,6 +659,18 @@
     <section class="github-hero" data-animate="fade-in">
       <div class="container">
         <div class="text-center github-hero-content">
+          <div
+            style="
+              font: 600 0.75rem 'JetBrains Mono', monospace;
+              letter-spacing: 0.2em;
+              text-transform: uppercase;
+              color: var(--accent-cyan);
+              opacity: 0.85;
+              margin-bottom: 0.8rem;
+            "
+          >
+            // GITHUB.ACTIVITY
+          </div>
           <h1
             class="text-4xl md:text-6xl font-bold mb-4 typewriter"
             data-speed="120"
@@ -1011,7 +1023,7 @@
             container.innerHTML = `
                         <div class="col-span-full text-center py-12">
                             <i data-lucide="search-x" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
-                            <h3 class="text-xl font-semibold text-gray-600 mb-2">No repositories found</h3>
+                            <h2 class="text-xl font-semibold text-gray-600 mb-2">No repositories found</h2>
                             <p class="text-gray-500">Try adjusting your search or filter criteria.</p>
                         </div>
                     `;
@@ -1192,7 +1204,7 @@
           container.innerHTML = `
                     <div class="col-span-full error-state">
                         <i data-lucide="alert-circle"></i>
-                        <h3 class="text-xl font-semibold mb-2">Error Loading Repositories</h3>
+                        <h2 class="text-xl font-semibold mb-2">Error Loading Repositories</h2>
                         <p>${message}</p>
                         <button onclick="location.reload()" class="btn btn-primary mt-4">
                             <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i>

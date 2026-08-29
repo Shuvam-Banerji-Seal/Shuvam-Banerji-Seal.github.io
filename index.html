@@ -24,7 +24,7 @@
     />
     <meta
       name="description"
-      content="Shuvam Banerji Seal - Computational Chemist and AI Researcher at IISER Kolkata. DFT, RAG systems, molecular dynamics."
+      content="BS-MS computational chemistry × CS at IISER Kolkata. TREC-published IR research; browser instruments for scientists."
     />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="canonical" href="https://shuvam-banerji-seal.github.io/" />
@@ -40,12 +40,12 @@
     <meta property="og:url" content="https://shuvam-banerji-seal.github.io/" />
     <meta
       property="og:image"
-      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png"
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:image"
-      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png"
     />
     <meta name="twitter:title" content="Shuvam Banerji Seal" />
     <meta
@@ -212,7 +212,7 @@
     </section>
 
     <!-- ========== ABOUT ========== -->
-    <section id="about" style="padding-top: 4rem">
+    <section id="about">
       <div class="section-header fade-in">
         <div class="section-file-label">ABOUT.log</div>
         <h2 class="section-title">About Me</h2>
@@ -544,7 +544,7 @@
           </picture>
           <div class="profile-meta">
             <div class="meta-row">
-              <span class="meta-key">NAME</span><span>Shuvam B. Seal</span>
+              <span class="meta-key">NAME</span><span>Shuvam Banerji Seal</span>
             </div>
             <div class="meta-row">
               <span class="meta-key">ROLE</span><span>BS-MS Student</span>
@@ -858,7 +858,7 @@
     <section id="contact">
       <div class="contact-closer fade-in">
         <p class="hero-kicker">CONTACT.gjf</p>
-        <p class="closer-line">Interested in working together?</p>
+        <p class="closer-line">Got a problem that needs chemistry and code?</p>
         <a class="giant-mail" href="mailto:sbs22ms076@iiserkol.ac.in"
           >sbs22ms076@iiserkol.ac.in</a
         >
@@ -1712,9 +1712,11 @@
               lx = 0,
               ly = 0,
               tx = 0,
-              ty = 0;
+              ty = 0,
+              lastInteract = 0;
             canvas.addEventListener("mousedown", (e) => {
               drag = true;
+              lastInteract = performance.now();
               lx = e.clientX;
               ly = e.clientY;
             });
@@ -1735,6 +1737,7 @@
             });
             window.addEventListener("mousemove", (e) => {
               if (!drag) return;
+              lastInteract = performance.now();
               tx += (e.clientX - lx) * 0.012;
               ty += (e.clientY - ly) * 0.012;
               lx = e.clientX;
@@ -1828,7 +1831,7 @@
             function animate() {
               requestAnimationFrame(animate);
               time += 0.004;
-              tx += 0.003;
+              if (performance.now() - lastInteract > 3000) tx += 0.003;
               rx += (ty - rx) * 0.06;
               ry += (tx - ry) * 0.06;
               pivotGroup.rotation.x = rx;

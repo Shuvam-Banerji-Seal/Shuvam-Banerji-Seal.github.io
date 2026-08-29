@@ -2114,6 +2114,26 @@ footer p {
   background: var(--bg-deep);
 }
 
+/* Shared vertical rhythm + gutter (scrutiny: every section negotiated
+   its own padding; gutters tighter than card padding felt cramped) */
+:root {
+  --section-gap: clamp(4.5rem, 8vw, 6.5rem);
+  --gutter: 1.5rem;
+}
+.work-grid,
+.cap-grid {
+  gap: var(--gutter);
+}
+.capabilities {
+  padding-block: var(--section-gap);
+}
+.positioning {
+  padding-block: var(--section-gap) 0;
+}
+.editorial-band {
+  padding-block: var(--section-gap);
+}
+
 /* Section headers: one alignment system — kicker, title, divider all left */
 .section-header {
   display: flex;
@@ -2312,7 +2332,8 @@ a.work-card:hover,
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s ease;
 }
 
 .cap-card:hover {
