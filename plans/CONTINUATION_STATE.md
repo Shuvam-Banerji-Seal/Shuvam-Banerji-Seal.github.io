@@ -1,3 +1,29 @@
+# CONTINUATION STATE — 2026-08-25 (scrutiny follow-up + quarantine) — DEPLOYED 23d8581
+
+## Session Summary
+| Field | Value |
+|-------|-------|
+| Session # | N+7 |
+| Phase | SCRUTINY POLISH → QUARANTINE → LIVE-VERIFY |
+| What I did | Fixed remaining scrutiny findings (resume quantum contrast, tools quantum vars, music touch targets), generated 1200x630 og-image.png (dark, claim + molecules) and updated meta, polished homepage (ATP idle timer, About layout, rhythm/gutter tokens), quarantined 68 stale hashed bundles (2.5MB) + 6 orphaned JS modules to .rigor-trash with INDEX entries |
+| What worked | Cross-agent scrutiny caught systemic theme bugs; og-image generated via Playwright screenshot |
+| What failed | Vite dev CSS cache returned empty (restart fixed); scrutiny agents flagged already-handled items (e.g., Tailwind gray compat shims were present) |
+| Errors remaining | none |
+| Next priorities | Optional: project save/load, TURN for Beam (STUN-only remains) |
+| Blockers | none |
+| Audit status | LIVE-VERIFIED: og-image 200, homepage no-yank, Beam codec, Apps dropdown on prod; axe 0 serious; 0 overflow @390/800/1440; suites 11/11 523/523 106/106 |
+
+## Deployed state
+- HEAD = 23d8581. Actions run success. 80 files changed (68 deletions, 12 modifications).
+- Suites: 11/11 · 523/523 · 106/106.
+- Live: site 200, og-image.png 200, no references to quarantined bundles.
+
+## Quarantine
+- .rigor-trash/20260825-110000-orphan-js/ (6 modules)
+- .rigor-trash/20260825-110500-stale-bundles/ (68 hashed bundles)
+- See .rigor-trash/INDEX.md for restore commands. Nothing hard-deleted.
+
+---
 # CONTINUATION STATE — 2026-08-25 (night) — HOMEPAGE REDESIGN DEPLOYED
 
 ## Session Summary
