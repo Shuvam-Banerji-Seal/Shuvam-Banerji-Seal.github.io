@@ -184,7 +184,7 @@
 }
 
 .result-content {
-    font-family: 'Source Code Pro', monospace;
+    font-family: 'JetBrains Mono', monospace;
     background: var(--code-bg);
     padding: 1rem;
     border-radius: 8px;
