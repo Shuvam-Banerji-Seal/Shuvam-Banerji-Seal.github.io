@@ -53,6 +53,158 @@ dd {
   word-break: break-word;
 }
 
+/* ---- Comprehensive Mobile UI Overhaul (390px audit) ---- */
+@media (max-width: 480px) {
+  /* Hero: ensure kicker never clips under fixed nav; honor safe-area */
+  .hero {
+    padding-top: max(
+      5rem,
+      calc(72px + env(safe-area-inset-top, 0px) + 1rem)
+    ) !important;
+  }
+  .hero-kicker {
+    font-size: 0.68rem !important;
+    letter-spacing: 0.12em !important;
+    line-height: 1.5 !important;
+  }
+  .hero-statement {
+    font-size: clamp(1.7rem, 8vw, 2.1rem) !important;
+    line-height: 1.15 !important;
+  }
+  .hero-cta-row {
+    gap: 0.7rem !important;
+  }
+  .hero-cta-row .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+    min-height: 46px;
+  }
+  /* Section headers: prevent cramped titles on narrow viewports */
+  .section-title {
+    font-size: clamp(1.45rem, 7vw, 1.8rem) !important;
+    line-height: 1.2 !important;
+  }
+  .section-file-label {
+    font-size: 0.68rem !important;
+  }
+  /* Work / Capabilities cards: ensure tap targets + breathing room */
+  .work-card,
+  .cap-card {
+    padding: 1.1rem !important;
+  }
+  .work-foot .work-link,
+  .project-card a,
+  .cap-card a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 2px;
+  }
+  /* Terminal: prevent horizontal overflow of code lines */
+  .terminal-window {
+    border-radius: 10px !important;
+  }
+  .term-body {
+    font-size: 0.76rem !important;
+    line-height: 1.6 !important;
+    padding: 0.9rem !important;
+  }
+  /* Profile card: stack meta rows for readability */
+  .profile-meta {
+    padding: 1rem !important;
+  }
+  /* Contact: ensure form not crushed */
+  .contact-layout {
+    gap: 1.25rem !important;
+  }
+  .gjf-block {
+    padding: 0.9rem !important;
+    font-size: 0.74rem !important;
+  }
+  /* Footer: ensure no tiny tap targets */
+  .footer-nav a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .footer-social .social-link {
+    width: 46px !important;
+    height: 46px !important;
+  }
+}
+
+/* Audio Studio — mobile transport wrapping + lane usability */
+@media (max-width: 640px) {
+  .transport-bar {
+    flex-wrap: wrap;
+    gap: 8px !important;
+    padding: 8px 10px !important;
+  }
+  .transport-left {
+    flex-wrap: wrap;
+    gap: 6px !important;
+  }
+  .transport-center {
+    order: -1;
+    flex-basis: 100%;
+    justify-content: center;
+  }
+  .transport-right {
+    flex-wrap: wrap;
+    gap: 6px !important;
+  }
+  .zoom-controls {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+  .time-led {
+    padding: 5px 10px !important;
+  }
+  .time-display {
+    font-size: 14px !important;
+  }
+  .track-item {
+    padding: 6px 6px 6px 0 !important;
+  }
+  .track-info {
+    min-width: 0;
+  }
+  .track-name {
+    font-size: 11px !important;
+  }
+  .track-meta {
+    font-size: 8.5px !important;
+  }
+  .track-volume {
+    width: 44px !important;
+  }
+  .toolbar-btn {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .eq-controls {
+    gap: 2px !important;
+  }
+  .eq-band span {
+    font-size: 7.5px !important;
+  }
+  .control-group {
+    grid-template-columns: 72px 1fr 52px !important;
+    gap: 6px !important;
+  }
+}
+
+/* Ensure no horizontal scroll from molecule canvas / fixed elements */
+@media (max-width: 480px) {
+  .constellation,
+  .hero-grid-bg,
+  #fl-matrix,
+  #fl3d-canvas {
+    max-width: 100vw;
+    overflow: hidden;
+  }
+}
+
 /* ---- Container system ---- */
 .container {
   width: 100%;
