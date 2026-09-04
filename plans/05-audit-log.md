@@ -453,3 +453,20 @@ Method: 10 Playwright screenshots (home×5, resume×2, github-projects, tools, m
 
 Deferred (documented): og:image PNG (owner asset), Apps/Tools nav merge (content decision), full section-header unification across subpages, --text-muted decorative uses.
 Verification: suites 11/11 · 523/523 · 106/106 · build ✓ · LIVE: single CTA row, h1 statement, scrim, headers aligned (152px==152px), resume name solid ink in light + quantum fixed.
+
+## Session 2026-09-04 — LOADER REDESIGN + GAP FIX + IMAGE STUDIO + AUDIO TOOLS — commit 973eb24, deployed
+
+User feedback addressed:
+1. "space between status bar and text — no space here" → unified nav/hero gap
+2. "loading screen too crowded, architecture not making sense, π-clouds on different side" → redesign
+3. "develop audio studio further" → reverse/strip-silence/speed
+4. "proper photo JPG and compression/conversion tools" → Image Studio
+
+| Item | What | Verification |
+|------|------|--------------|
+| Loader redesign | lattice removed; boot block consolidated (%→label→bar in one column at bottom); matrix dimmed 0.5→0.35→0.18; π-clouds moved to y±0.42 (was ±0.62, tighter torus); camera eye-level y0.3 (was 1.4) | live: latticeGone ✓ barInBoot ✓ matrix 0.18 ✓ |
+| Nav/hero gap | calc(72px nav + 24px gap) desktop / +20px tablet / +16px mobile — unified rhythm | live: gap=24px desktop consistent |
+| Image Studio (NEW) | JPG/PNG/WebP compress+convert, quality 10-100%, resize w/ aspect, batch, per-card stats + % saved, download all, original compare — 100% local | E2E: 539KB PNG → 4.9KB WebP (99% saved); live page + navbar Apps + tools hub wired |
+| Audio Studio tools | Reverse (verified: ramp 0→1 becomes 1→0); Strip silence (−50dB, 300ms+); Speed cycle 0.5×→2× (verified 1→1.25) | live: all 3 buttons present |
+
+Suites: 11/11 · 539/539 · 108/108 · build ✓ · LIVE all green
