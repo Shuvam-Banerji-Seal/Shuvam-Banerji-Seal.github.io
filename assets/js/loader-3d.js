@@ -201,7 +201,9 @@ function run3D() {
     120,
   );
   const camR = 11.5;
-  camera.position.set(0, 1.4, camR);
+  // Eye-level with the ring (y≈0.3): the π-clouds above/below read as
+  // part of the molecule instead of drifting to the top of the frame.
+  camera.position.set(0, 0.3, camR);
 
   function sizeToScreen() {
     renderer.setSize(innerWidth, innerHeight);
@@ -346,8 +348,9 @@ function run3D() {
 
   // ── delocalized π-electron clouds ──
   // Textbook benzene: two torus-shaped charge clouds hovering above and
-  // below the ring plane. Additive-blended so they glow like electron
-  // density; they inflate during the final third of assembly.
+  // below the ring plane, CLOSE to the ring (aromatic distance ~0.4).
+  // Additive-blended so they glow like electron density; they inflate
+  // during the final third of assembly and hug the ring visually.
   const piMat = new THREE.MeshPhysicalMaterial({
     color: 0x67e8f9,
     emissive: 0x22d3ee,
@@ -361,9 +364,9 @@ function run3D() {
     side: THREE.DoubleSide,
   });
   const piClouds = [];
-  [0.62, -0.62].forEach((h) => {
+  [0.42, -0.42].forEach((h) => {
     const cloud = new THREE.Mesh(
-      new THREE.TorusGeometry(2.15, 0.52, 28, 110),
+      new THREE.TorusGeometry(2.05, 0.38, 24, 96),
       piMat.clone(),
     );
     cloud.rotation.x = Math.PI / 2;
@@ -435,7 +438,7 @@ function run3D() {
       cloud.material.opacity = piPhase * 0.17;
       cloud.rotation.z += i === 0 ? 0.006 : -0.006; // counter-rotate
       cloud.position.y =
-        (i === 0 ? 1 : -1) * (0.62 + Math.sin(t / 900 + i) * 0.05);
+        (i === 0 ? 1 : -1) * (0.42 + Math.sin(t / 900 + i) * 0.04);
     });
 
     // gentle rotation + wobble
@@ -444,10 +447,11 @@ function run3D() {
 
     stars.rotation.y += 0.00035;
 
-    // camera drift-orbit
+    // camera drift-orbit (stays near ring plane — π-clouds stay in frame)
     const ang = t * 0.00016;
     camera.position.x = Math.sin(ang) * 3.2;
     camera.position.z = camR + Math.cos(ang) * 1.4;
+    camera.position.y = 0.3 + Math.sin(t / 3000) * 0.5;
     camera.lookAt(0, 0, 0);
 
     // completion: everything assembled + minimum showtime

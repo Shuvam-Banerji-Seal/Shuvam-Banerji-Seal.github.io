@@ -106,12 +106,12 @@
         --tools-launch-hover-bg: var(--accent-cyan);
         --tools-launch-hover-text: #0a1020;
       }
-        html[data-theme="quantum"],
-        [data-theme="quantum"] {
-          --tools-titlebar-bg: #0d1526;
-          --tools-card-bg: rgba(255, 255, 255, 0.03);
-          --tools-glow: rgba(34, 211, 238, 0.12);
-        }
+      html[data-theme="quantum"],
+      [data-theme="quantum"] {
+        --tools-titlebar-bg: #0d1526;
+        --tools-card-bg: rgba(255, 255, 255, 0.03);
+        --tools-glow: rgba(34, 211, 238, 0.12);
+      }
       html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
           [data-theme="amber"]
         ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
@@ -937,6 +937,35 @@
               </div>
             </div>
           </div>
+          <div class="tool-card" data-tool="image-studio">
+            <div class="tool-titlebar">
+              <div class="tool-dots">
+                <span class="tdot tdot-r"></span
+                ><span class="tdot tdot-y"></span
+                ><span class="tdot tdot-g"></span>
+              </div>
+              <span class="tool-label">image-studio.sh</span>
+            </div>
+            <div class="tool-body">
+              <div class="tool-icon-row">
+                <span class="tool-emoji">&#x1F5BC;</span
+                ><span class="tool-name">Image Studio</span>
+              </div>
+              <div class="tool-desc">
+                Compress and convert images — JPG, PNG, WebP. Quality control,
+                resize, batch processing. All local.
+              </div>
+              <div class="tool-footer">
+                <div class="tool-tags">
+                  <span class="tool-tag">images</span
+                  ><span class="tool-tag">compression</span>
+                </div>
+                <button class="tool-launch" onclick="openTool('image-studio')">
+                  launch &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
           <div class="tool-card" data-tool="webcam-tester">
             <div class="tool-titlebar">
               <div class="tool-dots">
@@ -1311,6 +1340,7 @@
           "ph-calculator": "tools/ph-calculator.html",
           "mermaid-editor": "mermaid-tool.html",
           "audio-studio": "tools/audio-studio.html",
+          "image-studio": "tools/image-studio.html",
           "webcam-tester": "tools/webcam-tester.html",
           "youtube-downloader": "tools/youtube-downloader.html",
         };

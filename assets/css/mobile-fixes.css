@@ -55,12 +55,9 @@ dd {
 
 /* ---- Comprehensive Mobile UI Overhaul (390px audit) ---- */
 @media (max-width: 480px) {
-  /* Hero: ensure kicker never clips under fixed nav; honor safe-area */
+  /* Hero: unified nav clearance (72px nav + 16px gap on small screens) */
   .hero {
-    padding-top: max(
-      5rem,
-      calc(72px + env(safe-area-inset-top, 0px) + 1rem)
-    ) !important;
+    padding-top: calc(72px + 16px) !important;
   }
   .hero-kicker {
     font-size: 0.68rem !important;

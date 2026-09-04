@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Compress and convert images in your browser — JPG, PNG, WebP. Quality control, resize, batch processing. No uploads, everything local."
+    />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/image-studio.html"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Image Studio - SBS Tools" />
+    <meta
+      property="og:description"
+      content="Compress and convert images locally — JPG, PNG, WebP. Quality control, resize, batch processing."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/image-studio.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Image Studio - SBS Tools" />
+    <meta
+      name="twitter:description"
+      content="Compress and convert images locally — JPG, PNG, WebP."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png"
+    />
+    <meta name="robots" content="index, follow" />
+    <title>Image Studio - SBS Tools</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <style>
+      /* ── Image Studio layout ── */
+      .img-studio {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 3rem;
+      }
+
+      .img-studio-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .img-studio-header h1 {
+        font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+        font-size: 1.8rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.4rem;
+      }
+
+      .img-studio-header p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      .img-drop-zone {
+        border: 2px dashed var(--border-glow);
+        border-radius: 12px;
+        padding: 3rem 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: var(--bg-card);
+      }
+
+      .img-drop-zone:hover,
+      .img-drop-zone.dragover {
+        border-color: var(--accent-cyan);
+        background: rgba(34, 211, 238, 0.04);
+      }
+
+      .img-drop-zone svg,
+      .img-drop-zone i {
+        width: 48px;
+        height: 48px;
+        color: var(--accent-cyan);
+        opacity: 0.7;
+        margin-bottom: 0.8rem;
+      }
+
+      .img-drop-zone p {
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 0.3rem;
+      }
+
+      .img-drop-zone small {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+      }
+
+      .img-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+
+      .img-controls label {
+        display: block;
+        font: 600 0.78rem var(--font-body, Inter);
+        letter-spacing: 0.04em;
+        color: var(--text-muted);
+        margin-bottom: 0.4rem;
+      }
+
+      .img-controls select,
+      .img-controls input[type="range"] {
+        width: 100%;
+        padding: 0.5rem;
+        background: var(--input-bg, rgba(10, 16, 32, 0.8));
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+      }
+
+      .img-controls input[type="range"] {
+        padding: 0;
+        height: 4px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: var(--border);
+        border-radius: 2px;
+        cursor: pointer;
+      }
+
+      .img-controls input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--accent-cyan);
+        cursor: pointer;
+      }
+
+      .img-controls input[type="range"]::-moz-range-thumb {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--accent-cyan);
+        border: none;
+        cursor: pointer;
+      }
+
+      .img-batch {
+        margin-top: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .img-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: border-color 0.2s ease;
+      }
+
+      .img-card:hover {
+        border-color: var(--border-glow);
+      }
+
+      .img-card-preview {
+        position: relative;
+        background: repeating-conic-gradient(
+            var(--bg-deep) 0% 25%,
+            var(--bg-card) 0% 50%
+          )
+          50% / 16px 16px;
+        aspect-ratio: 4/3;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .img-card-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .img-card-info {
+        padding: 0.75rem;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .img-card-info .fname {
+        color: var(--text-secondary);
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .img-card-info .stats {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      .img-card-info .stat {
+        color: var(--accent-cyan);
+      }
+
+      .img-card-info .saved {
+        color: var(--accent-green);
+      }
+
+      .img-card-actions {
+        padding: 0 0.75rem 0.75rem;
+        display: flex;
+        gap: 0.4rem;
+      }
+
+      .img-card-actions button {
+        flex: 1;
+        padding: 0.45rem;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--text-secondary);
+        font: 600 0.72rem var(--font-body, Inter);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3rem;
+      }
+
+      .img-card-actions button:hover {
+        border-color: var(--accent-cyan);
+        color: var(--accent-cyan);
+      }
+
+      .img-card-actions button svg,
+      .img-card-actions button i {
+        width: 12px;
+        height: 12px;
+      }
+
+      .img-summary {
+        margin-top: 1.5rem;
+        padding: 1rem 1.25rem;
+        background: rgba(34, 211, 238, 0.06);
+        border: 1px solid rgba(34, 211, 238, 0.25);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+      }
+
+      .img-summary strong {
+        color: var(--accent-cyan);
+      }
+
+      .img-summary .total-saved {
+        color: var(--accent-green);
+        font-weight: 700;
+      }
+
+      .btn-dl-all {
+        margin-left: auto;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--accent-green);
+        border-radius: 7px;
+        background: rgba(52, 211, 153, 0.08);
+        color: var(--accent-green);
+        font: 600 0.8rem var(--font-body, Inter);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .btn-dl-all:hover {
+        background: rgba(52, 211, 153, 0.15);
+      }
+
+      .btn-dl-all svg,
+      .btn-dl-all i {
+        width: 14px;
+        height: 14px;
+      }
+
+      .resize-row {
+        display: flex;
+        gap: 0.75rem;
+        align-items: end;
+      }
+
+      .resize-row .form-group {
+        flex: 1;
+      }
+
+      .resize-row input[type="number"] {
+        width: 100%;
+        padding: 0.5rem;
+        background: var(--input-bg, rgba(10, 16, 32, 0.8));
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+      }
+
+      @media (max-width: 640px) {
+        .img-batch {
+          grid-template-columns: 1fr;
+        }
+        .img-summary {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.75rem;
+        }
+        .btn-dl-all {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page">
+      <div class="img-studio">
+        <header class="img-studio-header">
+          <h1>Image Studio</h1>
+          <p>
+            Compress &amp; convert images locally — JPG, PNG, WebP. Nothing
+            leaves your browser.
+          </p>
+        </header>
+
+        <!-- Drop zone -->
+        <div
+          class="img-drop-zone"
+          id="img-drop"
+          role="button"
+          tabindex="0"
+          aria-label="Upload images"
+        >
+          <i data-lucide="image-plus"></i>
+          <p>Drag &amp; drop images or click to browse</p>
+          <small>JPG · PNG · WebP · GIF · BMP — batch supported</small>
+          <input type="file" id="img-input" accept="image/*" multiple hidden />
+        </div>
+
+        <!-- Controls -->
+        <div class="img-controls" id="img-controls" style="display: none">
+          <div class="form-group">
+            <label>Output Format</label>
+            <select id="out-format">
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp" selected>
+                WebP (best compression)
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              Quality: <span id="q-val">80</span>%
+              <small style="opacity: 0.6">(JPEG / WebP only)</small>
+            </label>
+            <input type="range" id="quality" min="10" max="100" value="80" />
+          </div>
+          <div class="form-group">
+            <label>Max Width (px, 0 = keep)</label>
+            <input type="number" id="max-w" value="0" min="0" step="100" />
+          </div>
+          <div class="form-group">
+            <label>Max Height (px, 0 = keep)</label>
+            <input type="number" id="max-h" value="0" min="0" step="100" />
+          </div>
+        </div>
+
+        <!-- Summary bar -->
+        <div class="img-summary" id="img-summary" style="display: none">
+          <span
+            ><strong id="sum-count">0</strong> images ·
+            <span id="sum-before">0 KB</span> →
+            <span id="sum-after">0 KB</span></span
+          >
+          <span class="total-saved" id="sum-saved">Saved 0%</span>
+          <button class="btn-dl-all" id="dl-all-btn">
+            <i data-lucide="download"></i> Download All
+          </button>
+        </div>
+
+        <!-- Results grid -->
+        <div class="img-batch" id="img-batch"></div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        const drop = document.getElementById("img-drop");
+        const input = document.getElementById("img-input");
+        const controls = document.getElementById("img-controls");
+        const batch = document.getElementById("img-batch");
+        const summary = document.getElementById("img-summary");
+        const qSlider = document.getElementById("quality");
+        const qVal = document.getElementById("q-val");
+        const fmtSel = document.getElementById("out-format");
+        const maxW = document.getElementById("max-w");
+        const maxH = document.getElementById("max-h");
+        const dlAllBtn = document.getElementById("dl-all-btn");
+
+        let files = []; // {file, origBlob, outBlob, origW, origH, outW, outH}
+        let results = [];
+
+        qSlider.addEventListener("input", () => {
+          qVal.textContent = qSlider.value;
+        });
+
+        // ── file intake ──
+        drop.addEventListener("click", () => input.click());
+        drop.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") input.click();
+        });
+        input.addEventListener("change", (e) => addFiles(e.target.files));
+        drop.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          drop.classList.add("dragover");
+        });
+        drop.addEventListener("dragleave", () =>
+          drop.classList.remove("dragover"),
+        );
+        drop.addEventListener("drop", (e) => {
+          e.preventDefault();
+          drop.classList.remove("dragover");
+          addFiles(e.dataTransfer.files);
+        });
+
+        function addFiles(list) {
+          const imgs = [...list].filter((f) => f.type.startsWith("image/"));
+          if (!imgs.length) return;
+          files = imgs;
+          controls.style.display = "grid";
+          processAll();
+        }
+
+        // ── core: compress/convert one image ──
+        async function processImage(file) {
+          const bitmap = await createImageBitmap(file);
+          let w = bitmap.width;
+          let h = bitmap.height;
+
+          // resize if requested
+          const mw = parseInt(maxW.value) || 0;
+          const mh = parseInt(maxH.value) || 0;
+          let outW = w;
+          let outH = h;
+          if (mw > 0 && w > mw) {
+            outW = mw;
+            outH = Math.round((h * mw) / w);
+          }
+          if (mh > 0 && outH > mh) {
+            outH = mh;
+            outW = Math.round((outW * mh) / outH);
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = outW;
+          canvas.height = outH;
+          const ctx = canvas.getContext("2d");
+          // white background for JPEG (no alpha)
+          const fmt = fmtSel.value;
+          if (fmt === "image/jpeg") {
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, 0, outW, outH);
+          }
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+          ctx.drawImage(bitmap, 0, 0, outW, outH);
+
+          const q = parseInt(qSlider.value) / 100;
+          const blob = await new Promise((res) => canvas.toBlob(res, fmt, q));
+          bitmap.close?.();
+          return {
+            file,
+            origBlob: file,
+            outBlob: blob,
+            origW: w,
+            origH: h,
+            outW,
+            outH,
+          };
+        }
+
+        async function processAll() {
+          batch.innerHTML = "";
+          results = [];
+          for (const f of files) {
+            try {
+              const r = await processImage(f);
+              results.push(r);
+              renderCard(r, results.length - 1);
+            } catch (e) {
+              console.warn("Failed:", f.name, e);
+            }
+          }
+          updateSummary();
+          if (results.length) {
+            summary.style.display = "flex";
+            if (typeof lucide !== "undefined") lucide.createIcons();
+          }
+        }
+
+        function fmtSize(bytes) {
+          if (bytes < 1024) return bytes + " B";
+          if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+          return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+        }
+
+        function renderCard(r, idx) {
+          const card = document.createElement("div");
+          card.className = "img-card";
+          const origURL = URL.createObjectURL(r.origBlob);
+          const outURL = URL.createObjectURL(r.outBlob);
+          const saved =
+            r.origBlob.size > 0
+              ? Math.round((1 - r.outBlob.size / r.origBlob.size) * 100)
+              : 0;
+          const ext =
+            fmtSel.value === "image/jpeg"
+              ? "jpg"
+              : fmtSel.value === "image/png"
+                ? "png"
+                : "webp";
+          const baseName = r.file.name.replace(/\.[^.]+$/, "");
+
+          card.innerHTML = `
+            <div class="img-card-preview">
+              <img src="${outURL}" alt="Processed ${r.file.name}" loading="lazy">
+            </div>
+            <div class="img-card-info">
+              <span class="fname">${r.file.name}</span>
+              <div class="stats">
+                <span class="stat">${r.outW}×${r.outH}</span>
+                <span>${fmtSize(r.origBlob.size)} → ${fmtSize(r.outBlob.size)}</span>
+                ${saved > 0 ? `<span class="saved">−${saved}%</span>` : saved < 0 ? `<span style="color:var(--accent-purple)">+${-saved}%</span>` : ""}
+              </div>
+            </div>
+            <div class="img-card-actions">
+              <button data-act="dl" title="Download processed image">
+                <i data-lucide="download"></i> ${ext.toUpperCase()}
+              </button>
+              <button data-act="orig" title="View original">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>`;
+          card
+            .querySelector('[data-act="dl"]')
+            .addEventListener("click", () => {
+              const a = document.createElement("a");
+              a.href = outURL;
+              a.download = `${baseName}-sbs.${ext}`;
+              a.click();
+            });
+          card
+            .querySelector('[data-act="orig"]')
+            .addEventListener("click", () => {
+              window.open(origURL, "_blank");
+            });
+          batch.appendChild(card);
+        }
+
+        function updateSummary() {
+          const totalBefore = results.reduce((s, r) => s + r.origBlob.size, 0);
+          const totalAfter = results.reduce((s, r) => s + r.outBlob.size, 0);
+          const savedPct =
+            totalBefore > 0
+              ? Math.round((1 - totalAfter / totalBefore) * 100)
+              : 0;
+          document.getElementById("sum-count").textContent = results.length;
+          document.getElementById("sum-before").textContent =
+            fmtSize(totalBefore);
+          document.getElementById("sum-after").textContent =
+            fmtSize(totalAfter);
+          document.getElementById("sum-saved").textContent =
+            savedPct >= 0
+              ? `Saved ${savedPct}%`
+              : `+${-savedPct}% (format change)`;
+        }
+
+        dlAllBtn.addEventListener("click", () => {
+          results.forEach((r, i) => {
+            setTimeout(() => {
+              const ext =
+                fmtSel.value === "image/jpeg"
+                  ? "jpg"
+                  : fmtSel.value === "image/png"
+                    ? "png"
+                    : "webp";
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(r.outBlob);
+              a.download = `${r.file.name.replace(/\.[^.]+$/, "")}-sbs.${ext}`;
+              a.click();
+            }, i * 250);
+          });
+        });
+
+        // re-process when settings change
+        [fmtSel, qSlider, maxW, maxH].forEach((el) =>
+          el.addEventListener("change", () => {
+            if (files.length) processAll();
+          }),
+        );
+
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      })();
+      document.getElementById("year")?.remove();
+    </script>
+
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

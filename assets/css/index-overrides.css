@@ -100,7 +100,7 @@ body::before {
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.5;
+  opacity: 0.35; /* quieter — background texture, not a competing layer */
   z-index: 0;
   pointer-events: none;
 }
@@ -120,6 +120,9 @@ body::before {
 #loading-screen.fl-has3d .fl-fallback {
   display: none; /* real 3D replaces the CSS orbital rings */
 }
+#loading-screen.fl-has3d #fl-matrix {
+  opacity: 0.18; /* even quieter once the molecule is live */
+}
 .fl-flash {
   position: absolute;
   inset: 0;
@@ -137,6 +140,66 @@ body::before {
 .fl-flash.on {
   opacity: 1;
   transition: opacity 0.18s ease-out;
+}
+
+/* boot block: single column below the molecule — % first (big), then
+   the label, then the bar. One visual anchor, no scattered layers. */
+.fl-boot {
+  position: absolute;
+  bottom: clamp(3rem, 10vh, 5.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-family: var(--font-mono);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+.fl-boot-line {
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  animation: fl-flicker 2s steps(12) infinite;
+  white-space: nowrap;
+}
+@keyframes fl-flicker {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  42% {
+    opacity: 1;
+  }
+  46% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.fl-pct {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.55);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.loading-bar-wrap {
+  width: min(320px, 70vw);
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.loading-bar {
+  height: 100%;
+  background: var(--grad-primary);
+  width: 0%;
+  transition: width 2s ease;
 }
 
 /* ── Site footer banner (homepage) ───────────────────────────── */
@@ -376,40 +439,7 @@ footer.site-footer .footer-social {
   background: #fbbf24;
   box-shadow: 0 0 14px #fbbf24;
 }
-.fl-boot {
-  margin-top: 2.2rem;
-  text-align: center;
-  font-family: var(--font-mono);
-}
-.fl-boot-line {
-  font-size: 0.68rem;
-  letter-spacing: 0.32em;
-  color: var(--text-muted);
-  animation: fl-flicker 2s steps(12) infinite;
-}
-@keyframes fl-flicker {
-  0%,
-  100% {
-    opacity: 0.65;
-  }
-  42% {
-    opacity: 1;
-  }
-  46% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-.fl-pct {
-  margin-top: 0.7rem;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent-cyan);
-  text-shadow: 0 0 18px rgba(34, 211, 238, 0.55);
-  font-variant-numeric: tabular-nums;
-}
+/* fl-boot / fl-pct / loading-bar styles live in the loader block above */
 
 /* ── Home cinematics ─────────────────────────────────────────── */
 .cur-dot,
@@ -814,7 +844,9 @@ body section.hero {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 6rem 4rem 4rem;
+  /* Unified nav clearance: 72px fixed nav + 24px breathing room.
+     Same rhythm on every viewport — no more ad-hoc per-breakpoint gaps. */
+  padding: calc(72px + 24px) 4rem 4rem;
   gap: 3rem;
   position: relative;
   overflow: hidden;
@@ -1569,7 +1601,7 @@ footer p {
 @media (max-width: 1024px) {
   body section.hero {
     grid-template-columns: 1fr;
-    padding: 5rem 2rem 3rem;
+    padding: calc(72px + 24px) 2rem 3rem;
     text-align: center;
   }
   .terminal-window {
@@ -1598,7 +1630,7 @@ footer p {
 }
 @media (max-width: 768px) {
   body section.hero {
-    padding: 4rem 1rem 2rem;
+    padding: calc(72px + 20px) 1rem 2rem;
     gap: 2rem;
   }
   .card-grid-2,
@@ -1668,7 +1700,7 @@ footer p {
 }
 @media (max-width: 480px) {
   body section.hero {
-    padding: 3.5rem 0.75rem 1.5rem;
+    padding: calc(72px + 16px) 0.75rem 1.5rem;
     gap: 1.5rem;
   }
   .section-title {
@@ -2189,7 +2221,9 @@ footer p {
 }
 
 .hero-kicker {
-  font: 600 0.8rem "JetBrains Mono", monospace;
+  font:
+    600 0.8rem "JetBrains Mono",
+    monospace;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent-cyan);
@@ -2252,7 +2286,9 @@ footer p {
 }
 
 .work-card {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 /* lift+glow is a clickability signal: only cards that actually contain a
@@ -2271,7 +2307,9 @@ a.work-card:hover,
 }
 
 .work-index {
-  font: 700 0.78rem "JetBrains Mono", monospace;
+  font:
+    700 0.78rem "JetBrains Mono",
+    monospace;
   color: var(--accent-cyan);
   opacity: 0.8;
 }
@@ -2332,7 +2370,9 @@ a.work-card:hover,
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.3);
   transition: border-color 0.2s ease;
 }
 
@@ -2341,7 +2381,9 @@ a.work-card:hover,
 }
 
 .cap-num {
-  font: 700 0.8rem "JetBrains Mono", monospace;
+  font:
+    700 0.8rem "JetBrains Mono",
+    monospace;
   color: var(--accent-cyan);
   opacity: 0.75;
 }
@@ -2409,7 +2451,9 @@ a.work-card:hover,
 }
 
 .giant-mail {
-  font: 600 clamp(1.05rem, 2vw, 1.5rem) "JetBrains Mono", monospace;
+  font:
+    600 clamp(1.05rem, 2vw, 1.5rem) "JetBrains Mono",
+    monospace;
   color: var(--accent-cyan);
   text-decoration: none;
   border-bottom: 2px solid transparent;

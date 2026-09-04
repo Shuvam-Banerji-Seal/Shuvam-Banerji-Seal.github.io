@@ -309,6 +309,20 @@ class AudioStudio {
       .getElementById("marker-btn")
       ?.addEventListener("click", () => this.addMarker());
 
+    // new edit tools (design scrutiny wave II)
+    document
+      .getElementById("reverse-btn")
+      ?.addEventListener("click", () => this.reverse());
+    document
+      .getElementById("stripsilence-btn")
+      ?.addEventListener("click", () => this.stripSilence());
+    const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
+    document.getElementById("speed-btn")?.addEventListener("click", () => {
+      const next =
+        SPEEDS[(SPEEDS.indexOf(this.playbackRate) + 1) % SPEEDS.length] ?? 1;
+      this.setSpeed(next);
+    });
+
     document.getElementById("master-volume")?.addEventListener("input", (e) => {
       const val = parseFloat(e.target.value) / 100;
       this.masterGain.gain.value = val;
@@ -1838,6 +1852,91 @@ class AudioStudio {
     this.saveHistory();
     this.drawTrackCanvases();
     this.notify("Normalized", "success");
+  }
+
+  // ── new: reverse / speed / silence-strip ────────────────────────────
+  reverse() {
+    if (!this.selectedTrack) return;
+    const track = this.selectedTrack;
+    for (let ch = 0; ch < track.buffer.numberOfChannels; ch++) {
+      const data = track.buffer.getChannelData(ch);
+      for (let i = 0; i < data.length / 2; i++) {
+        const j = data.length - 1 - i;
+        [data[i], data[j]] = [data[j], data[i]];
+      }
+    }
+    this.saveHistory();
+    this.drawTrackCanvases();
+    this.notify("Reversed", "success");
+  }
+
+  setSpeed(factor) {
+    if (!this.selectedTrack || !factor || factor <= 0) return;
+    this.playbackRate = factor;
+    this.notify(`Playback speed: ${factor}×`, "info");
+  }
+
+  stripSilence(thresholdDb = -50, minSilenceMs = 300) {
+    if (!this.selectedTrack) return;
+    const track = this.selectedTrack;
+    const sr = track.buffer.sampleRate;
+    const threshold = Math.pow(10, thresholdDb / 20);
+    const minSilence = Math.floor((minSilenceMs / 1000) * sr);
+    const chCount = track.buffer.numberOfChannels;
+
+    // find keep-ranges on channel 0
+    const data = track.buffer.getChannelData(0);
+    const ranges = [];
+    let start = -1;
+    let quiet = 0;
+    for (let i = 0; i < data.length; i++) {
+      const loud = Math.abs(data[i]) > threshold;
+      if (loud) {
+        if (start === -1) start = i;
+        quiet = 0;
+      } else if (start !== -1) {
+        quiet++;
+        if (quiet >= minSilence) {
+          ranges.push([start, i - quiet]);
+          start = -1;
+          quiet = 0;
+        }
+      }
+    }
+    if (start !== -1) ranges.push([start, data.length]);
+
+    if (!ranges.length) {
+      this.notify("No audible content found", "info");
+      return;
+    }
+
+    const totalLen = ranges.reduce((s, [a, b]) => s + (b - a), 0);
+    if (totalLen <= 0) return;
+
+    const newBuf = this.ctx.createBuffer(chCount, totalLen, sr);
+    for (let ch = 0; ch < chCount; ch++) {
+      const src = track.buffer.getChannelData(ch);
+      const dst = newBuf.getChannelData(ch);
+      let w = 0;
+      for (const [a, b] of ranges) {
+        for (let i = a; i < b; i++) dst[w++] = src[i];
+      }
+    }
+
+    track.buffer = newBuf;
+    this.saveHistory();
+    this.renderTracks();
+    this.drawTrackCanvases();
+    this.updateTimeDisplay();
+    this.notify(
+      `Silence stripped: ${fmtTimeLong(data.length - totalLen, sr)} removed`,
+      "success",
+    );
+
+    function fmtTimeLong(samples, rate) {
+      const s = samples / rate;
+      return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+    }
   }
 
   addMarker() {

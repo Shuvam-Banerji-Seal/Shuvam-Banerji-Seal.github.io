@@ -78,27 +78,8 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="hero-grid-bg"></div>
 
-    <!-- Loading Screen -->
+    <!-- Loading Screen — one focal composition: molecule center, boot line below -->
     <div id="loading-screen">
-      <svg class="fl-lattice" viewBox="0 0 600 600" aria-hidden="true">
-        <defs>
-          <pattern
-            id="hexes"
-            width="60"
-            height="52"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M30 0 L60 17 L60 51 L30 68 L0 51 L0 17 Z"
-              fill="none"
-              stroke="rgba(125,211,252,0.10)"
-              stroke-width="1"
-            />
-          </pattern>
-        </defs>
-        <rect width="600" height="600" fill="url(#hexes)" />
-      </svg>
-
       <canvas id="fl-matrix" aria-hidden="true"></canvas>
       <canvas id="fl3d-canvas" aria-hidden="true"></canvas>
 
@@ -110,18 +91,14 @@
       </div>
 
       <div class="fl-boot">
-        <div class="fl-boot-line">
-          I N I T I A L I S I N G&nbsp;&nbsp;M O L E C U L A R&nbsp;&nbsp;E N V
-          I R O N M E N T
-        </div>
         <div class="fl-pct" id="fl-pct">0%</div>
+        <div class="fl-boot-line">INITIALISING MOLECULAR ENVIRONMENT</div>
+        <div class="loading-bar-wrap">
+          <div class="loading-bar" id="loading-bar"></div>
+        </div>
       </div>
 
       <div class="fl-flash" id="fl-flash"></div>
-
-      <div class="loading-bar-wrap">
-        <div class="loading-bar" id="loading-bar"></div>
-      </div>
     </div>
 
     <!-- Navbar -->

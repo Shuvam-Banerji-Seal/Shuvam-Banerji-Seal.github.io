@@ -83,6 +83,13 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "headphones",
         },
         {
+          name: "Image Studio",
+          href: isHome
+            ? "pages/tools/image-studio.html"
+            : pathDepth + "pages/tools/image-studio.html",
+          icon: "image",
+        },
+        {
           name: "PDF Studio",
           href: isHome
             ? "pages/tools/pdf-studio.html"
@@ -494,12 +501,10 @@ function initDropdowns() {
     document
       .querySelectorAll(".dropdown-menu")
       .forEach((m) => m.classList.remove("show"));
-    document
-      .querySelectorAll(".dropdown-toggle")
-      .forEach((t) => {
-        t.classList.remove("active");
-        t.setAttribute("aria-expanded", "false");
-      });
+    document.querySelectorAll(".dropdown-toggle").forEach((t) => {
+      t.classList.remove("active");
+      t.setAttribute("aria-expanded", "false");
+    });
   });
 
   // Escape closes any open dropdown and restores focus to its toggle
