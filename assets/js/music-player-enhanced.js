@@ -298,33 +298,58 @@ class MusicPlayer {
 
       let data = null;
 
-      // Try GitHub Pages CDN first (faster when working)
+      // Try same-origin candidates first (faster when working). Each URL
+      // is resolved + de-duplicated so we never fetch the same path twice
+      // (previously `../music-library.json` and `/music-library.json`
+      // resolved identically from /pages/, doubling every 404).
+      // Candidates are ordered by environment so the first probe hits and
+      // no failed request is ever logged: `public/` is served as-is in
+      // local dev but flattened to site root in production builds.
       try {
         const fetchOptions = { cache: "no-store" };
-        let response = await fetch(
-          `../music-library.json${cacheBuster}`,
-          fetchOptions,
-        );
-        if (!response.ok) {
-          response = await fetch(
-            `/music-library.json${cacheBuster}`,
-            fetchOptions,
-          );
-        }
-        if (response.ok) {
+        const isLocalDev =
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1" ||
+          window.location.hostname === "";
+        const rawCandidates = isLocalDev
+          ? [
+              `/public/music-library.json${cacheBuster}`,
+              `../public/music-library.json${cacheBuster}`,
+              `/music-library.json${cacheBuster}`,
+            ]
+          : [
+              `../music-library.json${cacheBuster}`,
+              `/music-library.json${cacheBuster}`,
+            ];
+        const seen = new Set();
+        for (const raw of rawCandidates) {
+          const url = new URL(raw, window.location.href).href;
+          if (seen.has(url)) continue;
+          seen.add(url);
+          let response;
+          try {
+            response = await fetch(url, fetchOptions);
+          } catch (e) {
+            continue; // network-level failure → next candidate
+          }
+          if (!response.ok) continue;
           data = await response.json();
-          this.log(`GitHub Pages CDN returned: ${data.length} tracks`);
+          this.log(
+            `Same-origin manifest returned: ${data.length} tracks (${url})`,
+          );
 
           // Check if CDN data looks stale
           if (USE_JSDELIVR_FALLBACK && data.length < EXPECTED_MIN_TRACKS) {
             this.log(
-              `CDN returned only ${data.length} tracks (expected ${EXPECTED_MIN_TRACKS}+). Trying jsDelivr...`,
+              `Manifest returned only ${data.length} tracks (expected ${EXPECTED_MIN_TRACKS}+). Trying jsDelivr...`,
             );
             data = null; // Force fallback
+          } else {
+            break; // fresh data — stop probing further candidates
           }
         }
       } catch (e) {
-        this.log("GitHub Pages CDN fetch failed, trying jsDelivr...");
+        this.log("Same-origin manifest fetch failed, trying jsDelivr...");
       }
 
       // Fallback to jsDelivr CDN if GitHub Pages failed or returned stale data
@@ -619,6 +644,17 @@ class MusicPlayer {
   updateState(updates) {
     Object.assign(this.state, updates);
     this.updateControlsUI();
+    this.syncVisualizer();
+  }
+
+  // Show the floating visualizer only while audio is actually playing.
+  // Previously the rAF loop painted an opaque box 24/7, covering content.
+  syncVisualizer() {
+    const wrap = document.getElementById("visualizer-wrap");
+    if (!wrap) return;
+    const shouldShow = !!this.state.isPlaying;
+    wrap.classList.toggle("visible", shouldShow);
+    wrap.setAttribute("aria-hidden", shouldShow ? "false" : "true");
   }
 
   updateUI(track) {
@@ -704,18 +740,26 @@ window.toggleFavorite = () => {
     window.musicPlayer.toggleFavorite(track);
   }
 };
+// Rect-based pointer math: event.offsetX is relative to the event *target*
+// (the fill child when clicking near the knob), which mis-seeks. Using
+// getBoundingClientRect keeps math relative to the bar in all cases,
+// and Pointer Events unify mouse + touch.
+function pointerFraction(event, element) {
+  const rect = element.getBoundingClientRect();
+  if (rect.width <= 0) return 0;
+  const clientX =
+    event.clientX ??
+    (event.touches && event.touches[0] ? event.touches[0].clientX : null);
+  if (clientX == null) return 0;
+  return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+}
 window.seekTrack = (event) => {
   const progressBar = event.currentTarget;
-  const percent = event.offsetX / progressBar.offsetWidth;
-  window.musicPlayer.seek(percent);
+  window.musicPlayer.seek(pointerFraction(event, progressBar));
 };
 window.setVolume = (event) => {
   const slider = event.currentTarget;
-  const rect = slider.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const width = rect.width;
-  const volume = x / width;
-  window.musicPlayer.setVolume(volume);
+  window.musicPlayer.setVolume(pointerFraction(event, slider));
 };
 window.updateEqBand = (index, value) => {
   window.musicPlayer.setEqualizer(index, value);
@@ -729,8 +773,120 @@ window.resetEq = () => {
 window.saveCustomPreset = () => {
   window.musicPlayer.saveCustomPreset();
 };
+// ── Central modal manager: shared backdrop, Esc/outside-click close,
+// body scroll-lock, and focus handling for every dialog on the page ──
+const modalManager = (() => {
+  const backdrop = () => document.getElementById("modal-backdrop");
+  const openSet = new Set();
+  let lastOpener = null;
+  let escBound = false;
+
+  function showBackdrop() {
+    const bd = backdrop();
+    if (!bd) return;
+    bd.hidden = false;
+    // force reflow so the opacity transition runs
+    void bd.offsetWidth;
+    bd.classList.add("visible");
+  }
+
+  function hideBackdrop() {
+    const bd = backdrop();
+    if (!bd) return;
+    bd.classList.remove("visible");
+    setTimeout(() => {
+      if (openSet.size === 0) bd.hidden = true;
+    }, 220);
+  }
+
+  function lockScroll() {
+    if (openSet.size > 0) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+  }
+
+  function onKeyDown(e) {
+    if (e.key !== "Escape" || openSet.size === 0) return;
+    // close the most recently opened modal
+    const ids = [...openSet];
+    close(ids[ids.length - 1]);
+  }
+
+  function open(id) {
+    const modal = document.getElementById(id);
+    if (!modal || openSet.has(id)) return;
+    if (openSet.size === 0) {
+      lastOpener =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      showBackdrop();
+      if (!escBound) {
+        document.addEventListener("keydown", onKeyDown);
+        escBound = true;
+      }
+      backdrop()?.addEventListener("click", closeTop, { once: false });
+    }
+    openSet.add(id);
+    modal.style.display = "block";
+    modal.classList.remove("modal-opening");
+    void modal.offsetWidth;
+    modal.classList.add("modal-opening");
+    lockScroll();
+    // move focus inside the dialog for keyboard / screen-reader users
+    const focusTarget =
+      modal.querySelector(".close-btn, button, input, select, [tabindex]") ||
+      modal;
+    try {
+      if (!focusTarget.hasAttribute("tabindex")) {
+        focusTarget.setAttribute("tabindex", "-1");
+      }
+      focusTarget.focus({ preventScroll: true });
+    } catch (_) {
+      /* non-critical */
+    }
+  }
+
+  function closeTop() {
+    const ids = [...openSet];
+    if (ids.length) close(ids[ids.length - 1]);
+  }
+
+  function close(id) {
+    const modal = document.getElementById(id);
+    if (!modal || !openSet.has(id)) return;
+    openSet.delete(id);
+    modal.style.display = "none";
+    modal.classList.remove("modal-opening");
+    if (openSet.size === 0) {
+      hideBackdrop();
+      if (escBound) {
+        document.removeEventListener("keydown", onKeyDown);
+        escBound = false;
+      }
+      try {
+        lastOpener?.focus?.({ preventScroll: true });
+      } catch (_) {
+        /* non-critical */
+      }
+    }
+    lockScroll();
+  }
+
+  return {
+    open,
+    close,
+    closeTop,
+    get openCount() {
+      return openSet.size;
+    },
+  };
+})();
+
+window.openModal = (id) => modalManager.open(id);
+window.closeModal = (id) => modalManager.close(id);
+
 window.openEqModal = () => {
-  document.getElementById("eq-modal").style.display = "block";
+  modalManager.open("eq-modal");
   // Sync sliders and dB displays with current state
   const values = window.musicPlayer.state.eqValues;
   const bands = window.musicPlayer.eqBands;
@@ -747,7 +903,7 @@ window.openEqModal = () => {
   });
 };
 window.closeEqModal = () => {
-  document.getElementById("eq-modal").style.display = "none";
+  modalManager.close("eq-modal");
 };
 
 // Start loading when DOM is ready
@@ -768,14 +924,30 @@ document.addEventListener("DOMContentLoaded", () => {
     { once: true },
   );
 
-  // Start visualizer loop
+  // Start visualizer loop — draws ONLY while audio is playing and the
+  // panel is visible. When idle the canvas stays transparent (no opaque
+  // box covering content) and the loop yields instead of burning frames.
+  let idleFrames = 0;
   function drawVisualizer() {
     requestAnimationFrame(drawVisualizer);
 
-    if (!window.musicPlayer.analyser) return;
+    if (document.hidden || !window.musicPlayer.analyser) return;
 
+    const wrap = document.getElementById("visualizer-wrap");
     const canvas = document.getElementById("visualizer");
     if (!canvas) return;
+    const playing = !!window.musicPlayer.state.isPlaying;
+
+    if (!playing || (wrap && !wrap.classList.contains("visible"))) {
+      // clear once so no stale black frame lingers, then stand down
+      if (idleFrames === 0) {
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      idleFrames++;
+      return;
+    }
+    idleFrames = 0;
 
     const ctx = canvas.getContext("2d");
     const bufferLength = window.musicPlayer.analyser.frequencyBinCount;
@@ -783,8 +955,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.musicPlayer.analyser.getByteFrequencyData(dataArray);
 
-    ctx.fillStyle = "#121212"; // Background
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // flat signal (paused between tracks etc.) → transparent, no black box
+    let peak = 0;
+    for (let i = 0; i < bufferLength; i++) {
+      if (dataArray[i] > peak) peak = dataArray[i];
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (peak < 2) return;
 
     const barWidth = (canvas.width / bufferLength) * 2.5;
     let barHeight;
@@ -1000,14 +1177,14 @@ const PlaylistManager = {
 
 // Global functions for playlist management
 window.openProfileModal = () => {
-  document.getElementById("profile-modal").style.display = "block";
+  modalManager.open("profile-modal");
   PlaylistManager.renderPlaylists();
   PlaylistManager.renderStats();
-  lucide.createIcons();
+  if (typeof lucide !== "undefined") lucide.createIcons();
 };
 
 window.closeProfileModal = () => {
-  document.getElementById("profile-modal").style.display = "none";
+  modalManager.close("profile-modal");
 };
 
 window.createPlaylist = () => {
@@ -1062,25 +1239,38 @@ window.showAddToPlaylistModal = (trackIndex) => {
       .join("");
   }
 
-  modal.style.display = "block";
+  modalManager.open("add-to-playlist-modal");
 };
 
 window.closeAddToPlaylistModal = () => {
-  document.getElementById("add-to-playlist-modal").style.display = "none";
+  modalManager.close("add-to-playlist-modal");
   window.currentTrackToAdd = null;
 };
 
+// Non-blocking toast (replaces window.alert so playback never stalls)
+window.showMusicToast = (message, kind = "") => {
+  let toast = document.querySelector(".music-toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.className = "music-toast";
+    toast.setAttribute("role", "status");
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.className = `music-toast show ${kind}`.trim();
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+};
 window.addCurrentTrackToPlaylist = (playlistId) => {
   if (window.currentTrackToAdd) {
     const added = PlaylistManager.addTrack(
       playlistId,
       window.currentTrackToAdd,
     );
-    if (added) {
-      alert("Track added to playlist!");
-    } else {
-      alert("Track already in playlist.");
-    }
+    window.showMusicToast(
+      added ? "Track added to playlist!" : "Track already in playlist.",
+      added ? "success" : "",
+    );
   }
-  closeAddToPlaylistModal();
+  window.closeAddToPlaylistModal();
 };

@@ -1023,31 +1023,64 @@ body {
   justify-content: center;
 }
 
+/* Standard vertical range: writing-mode (not the deprecated
+   `appearance: slider-vertical`). `direction: rtl` keeps max at top,
+   matching classic mixer-fader behavior. */
 .eq-band input[type="range"] {
-  writing-mode: bt-lr;
-  /* IE */
-  -webkit-appearance: slider-vertical;
-  /* WebKit */
-  appearance: slider-vertical;
-  width: 8px;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
   height: 100%;
+  min-height: 140px;
   background: transparent;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
 }
 
 /* Custom Range Slider Styling (Webkit) */
 .eq-band input[type="range"]::-webkit-slider-runnable-track {
+  width: 8px;
+  height: 100%;
   background: #333;
   border-radius: 4px;
+  margin: 0 auto;
 }
 
 .eq-band input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background: #1db954;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: none;
   border-radius: 50%;
+  background: #1db954;
   box-shadow: 0 0 10px rgba(29, 185, 84, 0.5);
-  margin-left: -6px;
-  /* Adjust centering */
+  cursor: grab;
+}
+
+.eq-band input[type="range"]:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+
+/* Custom Range Slider Styling (Firefox) */
+.eq-band input[type="range"]::-moz-range-track {
+  width: 8px;
+  height: 100%;
+  background: #333;
+  border-radius: 4px;
+}
+
+.eq-band input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  background: #1db954;
+  box-shadow: 0 0 10px rgba(29, 185, 84, 0.5);
 }
 
 .band-label {
@@ -1097,29 +1130,160 @@ body {
   box-shadow: 0 4px 12px rgba(29, 185, 84, 0.4);
 }
 
-/* Mobile Responsive EQ */
+/* Mobile Responsive EQ — horizontal snap-scroll so all 10 bands fit */
 @media (max-width: 768px) {
   .eq-modal {
     min-width: 90%;
     width: 95%;
-    padding: 20px;
-    max-height: 80vh;
+    padding: 20px 16px;
+    max-height: 82vh;
     overflow-y: auto;
   }
 
+  .eq-presets-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
   .eq-sliders {
-    gap: 8px;
-    padding: 0;
+    gap: 0;
+    padding: 0 4px 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .eq-band {
+    flex: 0 0 56px;
+    min-width: 56px;
+    scroll-snap-align: start;
   }
 
   .eq-band input[type="range"] {
-    width: 20px;
+    width: 30px;
+    min-height: 150px;
     /* Wider touch target */
   }
 
   .band-label {
     font-size: 10px;
   }
+}
+
+/* ── Shared modal backdrop + open/close transitions ── */
+#modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 1900;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#modal-backdrop[hidden] {
+  display: none;
+}
+
+#modal-backdrop.visible {
+  opacity: 1;
+}
+
+.eq-modal,
+.profile-modal,
+.add-playlist-modal,
+#stats-modal {
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Entry animation when a modal opens via the modal manager */
+.modal-opening {
+  animation: modal-pop 0.22s ease-out;
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* ── Visualizer floating panel: only visible while playing ── */
+#visualizer-wrap {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  height: 100px;
+  z-index: 999;
+  pointer-events: none;
+  background: rgba(10, 10, 10, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+#visualizer-wrap.visible {
+  opacity: 0.9;
+  transform: translateY(0);
+}
+
+#visualizer {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  /* The player bar already shows progress; the floating box would
+     collide with the player + bottom nav on small screens */
+  #visualizer-wrap {
+    display: none;
+  }
+}
+
+/* ── Toast (replaces blocking alert()) ── */
+.music-toast {
+  position: fixed;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(20, 20, 20, 0.95);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 3000;
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  pointer-events: none;
+  max-width: min(90vw, 420px);
+  text-align: center;
+}
+
+.music-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.music-toast.success {
+  border-color: rgba(29, 185, 84, 0.5);
 }
 
 @keyframes slideIn {
@@ -2017,7 +2181,9 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   background: var(--mx-panel-2);
   border: 1px solid var(--mx-line);
   border-radius: 10px;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
 .search-bar:focus-within {
@@ -2080,7 +2246,9 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   border: 0;
   border-radius: 50%;
   box-shadow: 0 4px 16px rgba(34, 211, 238, 0.35);
-  transition: transform 0.12s ease, filter 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease;
 }
 
 .play-pause-btn:hover {
@@ -2094,7 +2262,9 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
 
 .control-btn {
   color: var(--mx-text-2);
-  transition: color 0.15s ease, transform 0.12s ease;
+  transition:
+    color 0.15s ease,
+    transform 0.12s ease;
 }
 
 .control-btn:hover {

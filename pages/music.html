@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var t = localStorage.getItem("theme") || "light";
+        // The player is a dark console by design (theme toggle is hidden
+        // on this page), so first-time visitors default to "dark" — not
+        // "light", which produced a mixed cream-navbar + dark-player look.
+        // An explicitly saved site-wide choice is always respected.
+        var t = localStorage.getItem("theme");
+        if (!t) {
+          t = "dark";
+          try {
+            localStorage.setItem("theme", t);
+          } catch (_) {
+            /* private mode — attribute-only fallback below */
+          }
+        }
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -46,6 +58,10 @@
       content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
     />
     <meta name="robots" content="index, follow" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231db954' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18V5l12-2v13'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Ccircle cx='18' cy='16' r='3'/%3E%3C/svg%3E"
+    />
     <title>Music - Shuvam Banerji Seal</title>
     <script
       defer
@@ -64,7 +80,7 @@
     <link rel="stylesheet" href="../assets/css/animations.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
-    <link rel="stylesheet" href="../assets/css/music-player.css" />
+    <link rel="stylesheet" href="../assets/css/music-player.css?v=2.1" />
     <style>
       /* Override navbar styles for music player */
       #navbar {
@@ -306,9 +322,7 @@
         </button>
         <button
           class="control-btn"
-          onclick="
-            document.getElementById('stats-modal').style.display = 'block'
-          "
+          onclick="openModal('stats-modal')"
           title="Stats for Nerds"
         >
           <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
@@ -322,10 +336,19 @@
       </div>
     </div>
 
+    <!-- Shared dimmed backdrop for all modals (managed by modalManager) -->
+    <div id="modal-backdrop" hidden></div>
+
     <!-- Advanced Equalizer Modal -->
-    <div id="eq-modal" class="eq-modal glassmorphic">
+    <div
+      id="eq-modal"
+      class="eq-modal glassmorphic"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="eq-modal-title"
+    >
       <div class="eq-header">
-        <h3>🎚️ Advanced Equalizer</h3>
+        <h3 id="eq-modal-title">🎚️ Advanced Equalizer</h3>
         <button class="close-btn" onclick="closeEqModal()">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
@@ -369,7 +392,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="31"
               oninput="updateEqBand(0, this.value)"
             />
@@ -385,7 +407,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="63"
               oninput="updateEqBand(1, this.value)"
             />
@@ -401,7 +422,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="125"
               oninput="updateEqBand(2, this.value)"
             />
@@ -417,7 +437,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="250"
               oninput="updateEqBand(3, this.value)"
             />
@@ -433,7 +452,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="500"
               oninput="updateEqBand(4, this.value)"
             />
@@ -449,7 +467,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="1000"
               oninput="updateEqBand(5, this.value)"
             />
@@ -465,7 +482,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="2000"
               oninput="updateEqBand(6, this.value)"
             />
@@ -481,7 +497,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="4000"
               oninput="updateEqBand(7, this.value)"
             />
@@ -497,7 +512,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="8000"
               oninput="updateEqBand(8, this.value)"
             />
@@ -513,7 +527,6 @@
               min="-12"
               max="12"
               value="0"
-              orient="vertical"
               data-band="16000"
               oninput="updateEqBand(9, this.value)"
             />
@@ -524,25 +537,17 @@
       </div>
     </div>
 
-    <!-- Visualizer Canvas (Absolute positioned behind content or somewhere visible) -->
-    <div
-      style="
-        position: fixed;
-        bottom: 90px;
-        right: 20px;
-        width: 300px;
-        height: 100px;
-        z-index: 999;
-        pointer-events: none;
-        opacity: 0.8;
-      "
-    >
+    <!-- Visualizer: floating panel shown only while audio is playing -->
+    <div id="visualizer-wrap" aria-hidden="true">
       <canvas id="visualizer" width="300" height="100"></canvas>
     </div>
 
     <!-- Stats for Nerds Modal -->
     <div
       id="stats-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="stats-modal-title"
       style="
         display: none;
         position: fixed;
@@ -566,11 +571,9 @@
           margin-bottom: 10px;
         "
       >
-        <h3>Stats for Nerds</h3>
+        <h3 id="stats-modal-title">Stats for Nerds</h3>
         <button
-          onclick="
-            document.getElementById('stats-modal').style.display = 'none'
-          "
+          onclick="closeModal('stats-modal')"
           style="background: none; border: none; color: #fff; cursor: pointer"
         >
           ✕
@@ -626,9 +629,15 @@
     </div>
 
     <!-- Profile Modal with Playlists -->
-    <div id="profile-modal" class="profile-modal glassmorphic">
+    <div
+      id="profile-modal"
+      class="profile-modal glassmorphic"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="profile-modal-title"
+    >
       <div class="profile-header">
-        <h3>👤 My Profile</h3>
+        <h3 id="profile-modal-title">👤 My Profile</h3>
         <button class="close-btn" onclick="closeProfileModal()">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
@@ -669,9 +678,15 @@
     </div>
 
     <!-- Add to Playlist Modal -->
-    <div id="add-to-playlist-modal" class="add-playlist-modal glassmorphic">
+    <div
+      id="add-to-playlist-modal"
+      class="add-playlist-modal glassmorphic"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-playlist-title"
+    >
       <div class="add-playlist-header">
-        <h4>Add to Playlist</h4>
+        <h4 id="add-playlist-title">Add to Playlist</h4>
         <button class="close-btn" onclick="closeAddToPlaylistModal()">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
@@ -805,7 +820,7 @@
     <!-- navbar.js already loaded in <head> (line ~76); duplicate removed -->
     <script
       type="module"
-      src="/assets/js/music-player-enhanced.js?v=3.7"
+      src="/assets/js/music-player-enhanced.js?v=3.9"
     ></script>
     <script>
       // Initialize Lucide icons (wait for deferred script to load)
@@ -917,7 +932,7 @@
                     `;
           })
           .join("");
-        lucide.createIcons();
+        if (typeof lucide !== "undefined") lucide.createIcons();
       }
 
       window.filterByFolder = function (folder) {
