@@ -5,11 +5,19 @@
 // instant and CPU-cheap. Everything runs locally; only the MediaPipe
 // model files come from a CDN, loaded lazily on first enable.
 //
-// Tracking model (v2):
+// Tracking model (v3):
 //  • all 5 fingertips of up to 2 hands (thumb..pinky), not just 2 fingers
 //  • per-tip exponential velocity smoothing → musical dynamics
 //  • down/up strum articulation (up-strums are brighter + softer)
 //  • sensitivity slider scales the pluck threshold
+//  • finger-picking: a fingertip TAPPING a string (dwell + lift) picks
+//    that single string — no full strum needed
+//  • palm-mute: flat-hand pose (tips near palm) muffles every pluck
+//    (heavily damped, short KS buffer + lowpass)
+//  • vibrato: a fingertip held on a ringing string with horizontal
+//    oscillation modulates the pitch of the last pluck via playbackRate
+//  • gesture chord-switch: hold up N fingers (2..5) briefly to jump to
+//    the N-th chord in the palette
 // Extras: 8 chords, metronome with BPM, session recording to WAV,
 // fingertip light-trails, chord flash, tracking indicator.
 
@@ -34,8 +42,15 @@ const CHORDS = {
   Em7: [82.41, 123.47, 164.81, 196.0, 246.94, 392.0],
 };
 
+// Chord palette for finger-count gestures (2..5 fingers → these chords).
+const GESTURE_CHORDS = ["Em", "G", "C", "D"];
+
 // All 5 fingertips per hand (thumb, index, middle, ring, pinky).
 const TIPS = [4, 8, 12, 16, 20];
+// Knuckle base indices matching TIPS (for extension tests).
+const TIP_BASES = [2, 5, 9, 13, 17];
+// Palm reference landmarks (wrist + MCP row).
+const PALM = [0, 5, 9, 13, 17];
 
 // MediaPipe hand skeleton connections (landmark index pairs).
 const HAND_CONNECTIONS = [
@@ -101,6 +116,12 @@ class AirGuitar {
     this.recorder = null;
     this.recChunks = [];
     this.recording = false;
+    // ── v3 gesture state ──
+    this.palmMute = false; // flat-hand pose active
+    this.ringingSources = []; // [{src, gain, stringIdx}] for vibrato/mute
+    this.pickState = new Map(); // "h:tip" -> {stringIdx, sinceMs, lifted}
+    this.gestureHold = { count: 0, sinceMs: 0 }; // finger-count chord switch
+    this.lastGestureChord = null;
   }
 
   // ── public API (called from webcam-tester.js) ─────────────────────────
@@ -180,6 +201,8 @@ class AirGuitar {
     this.stringBuffers = freqs.map((f) => this.ksBuffer(f));
     // up-strums: brighter (less damping) + shorter → articulation contrast
     this.stringBuffersUp = freqs.map((f) => this.ksBuffer(f, 1.6, 0.9985));
+    // palm-mute bank: very short + heavily damped → thuddy chug
+    this.stringBuffersMute = freqs.map((f) => this.ksBuffer(f, 0.35, 0.972));
   }
 
   // Numerically integrate the Karplus–Strong algorithm into a buffer.
@@ -209,7 +232,8 @@ class AirGuitar {
 
   pluck(stringIdx, velocity = 1, dir = "down") {
     if (!this.audioCtx) return;
-    const bank = dir === "up" ? this.stringBuffersUp : this.stringBuffers;
+    let bank = dir === "up" ? this.stringBuffersUp : this.stringBuffers;
+    if (this.palmMute && this.stringBuffersMute) bank = this.stringBuffersMute;
     const buf = bank[stringIdx] || this.stringBuffers[stringIdx];
     if (!buf) return;
     const src = this.audioCtx.createBufferSource();
@@ -217,13 +241,58 @@ class AirGuitar {
     src.playbackRate.value = 0.995 + Math.random() * 0.01; // human detune
     const g = this.audioCtx.createGain();
     const vol = Math.min(1, 0.3 + velocity * 0.7);
-    g.gain.value = vol;
+    g.gain.value = this.palmMute ? vol * 0.75 : vol;
     src.connect(g);
     g.connect(this.master);
     src.start();
 
-    this.pluckFx.push({ stringIdx, t0: performance.now(), dir });
+    // track the ringing voice for vibrato / palm-mute choke
+    this.ringingSources.push({ src, gain: g, stringIdx });
+    if (this.ringingSources.length > 24) this.ringingSources.shift();
+    src.onended = () => {
+      const i = this.ringingSources.findIndex((r) => r.src === src);
+      if (i >= 0) this.ringingSources.splice(i, 1);
+    };
+
+    this.pluckFx.push({
+      stringIdx,
+      t0: performance.now(),
+      dir,
+      muted: this.palmMute,
+    });
     if (navigator.vibrate) navigator.vibrate(8);
+  }
+
+  // Choke all ringing voices (palm-mute engage) — instant damp.
+  chokeAll() {
+    const t = this.audioCtx.currentTime;
+    this.ringingSources.forEach(({ src, gain }) => {
+      try {
+        gain.gain.cancelScheduledValues(t);
+        gain.gain.setValueAtTime(gain.gain.value, t);
+        gain.gain.linearRampToValueAtTime(0.0001, t + 0.06);
+        src.stop(t + 0.08);
+      } catch (e) {
+        /* already ended */
+      }
+    });
+    this.ringingSources.length = 0;
+  }
+
+  // Vibrato: modulate playbackRate of the most recent ringing voice on
+  // this string by ±cents around its current rate.
+  applyVibrato(stringIdx, cents) {
+    const r = [...this.ringingSources]
+      .reverse()
+      .find((v) => v.stringIdx === stringIdx);
+    if (!r) return;
+    const base = r.src.playbackRate.value;
+    const factor = Math.pow(2, cents / 1200);
+    // gentle clamp so vibrato never drifts the pitch permanently
+    r.src.playbackRate.value = Math.min(
+      base * 1.06,
+      Math.max(base * 0.94, base * factor),
+    );
   }
 
   // ── metronome ─────────────────────────────────────────────────────────
@@ -517,33 +586,134 @@ class AirGuitar {
     this.drawStrings(now);
   }
 
+  // ── v3 pose helpers ───────────────────────────────────────────────────
+  // Hand scale = wrist→middle-MCP distance (normalizes pose math to any
+  // distance from the camera). All thresholds are in hand-scale units.
+  handScale(lm) {
+    const w = lm[0];
+    const mcp = lm[9];
+    if (!w || !mcp) return 0.1;
+    return Math.max(0.02, Math.hypot(mcp.x - w.x, mcp.y - w.y));
+  }
+
+  // Finger extended = tip clearly farther from wrist than its knuckle.
+  extendedFingers(lm, s) {
+    const w = lm[0];
+    if (!w) return [];
+    const out = [];
+    TIPS.forEach((tip, i) => {
+      const t = lm[tip];
+      const base = lm[TIP_BASES[i]];
+      if (!t || !base) return;
+      const dTip = Math.hypot(t.x - w.x, t.y - w.y);
+      const dBase = Math.hypot(base.x - w.x, base.y - w.y);
+      if (dTip > dBase + s * 0.12) out.push(i); // 0..4 finger index
+    });
+    return out;
+  }
+
+  // Flat-hand (palm-mute): zero or one extended fingers AND tips near
+  // the palm plane → the classic mute pose.
+  isPalmFlat(lm, s) {
+    const ext = this.extendedFingers(lm, s);
+    if (ext.length > 1) return false;
+    // average tip distance to palm center
+    const cx = PALM.reduce((a, i) => a + (lm[i]?.x || 0), 0) / PALM.length;
+    const cy = PALM.reduce((a, i) => a + (lm[i]?.y || 0), 0) / PALM.length;
+    let sum = 0;
+    let n = 0;
+    for (const tip of TIPS) {
+      const p = lm[tip];
+      if (!p) continue;
+      sum += Math.hypot(p.x - cx, p.y - cy);
+      n++;
+    }
+    if (!n) return false;
+    return sum / n < s * 0.62;
+  }
+
+  // ── gesture pipeline: pose → mute / chord-switch, then plucks ────────
   detectPlucks(hands) {
     const canvasH = this.canvas.height;
+    const canvasW = this.canvas.width;
     const nowMs = performance.now();
 
-    // Tracking-gap teleport guard: if no hands were seen recently, any
-    // stored previous positions are stale — a re-entering hand would
-    // otherwise "teleport" and phantom-pluck every string it lands on.
+    // Tracking-gap teleport guard
     if (nowMs - (this._lastHandSeenMs || 0) > 250) {
       this.prevTipY.clear();
       this.tipVel.clear();
+      this.pickState.clear();
     }
     if (hands.length > 0) this._lastHandSeenMs = nowMs;
 
-    // sensitivity → minimum crossing speed (px/frame). Low sensitivity
-    // value = forgiving (small threshold); high = only fast strums.
     const minSpeed = 1.2 + this.sensitivity * 6;
 
-    // Per-STRING debounce: several fingertips sweep the same string
-    // within a few frames — that must sound ONCE, with the velocity of
-    // the fastest crossing tip. Direction (down/up) sets articulation.
+    // ── pose pass (palm-mute + finger-count chord switch) ──
+    let muteNow = false;
     for (let h = 0; h < hands.length; h++) {
       const lm = hands[h];
+      if (!lm || !lm[0]) continue;
+      const s = this.handScale(lm);
+
+      // palm-mute
+      if (this.isPalmFlat(lm, s)) {
+        muteNow = true;
+        break; // any flat hand mutes
+      }
+
+      // finger-count chord switch: hand raised (wrist in top 35%) with
+      // exactly 2..5 extended fingers, held ~500ms → jump chords.
+      const ext = this.extendedFingers(lm, s);
+      const wristY = lm[0].y;
+      if (wristY < 0.35 && ext.length >= 2 && ext.length <= 5) {
+        if (
+          this.gestureHold.count === ext.length &&
+          nowMs - this.gestureHold.sinceMs > 500
+        ) {
+          const chordName = GESTURE_CHORDS[ext.length - 2];
+          if (chordName && chordName !== this.lastGestureChord) {
+            this.lastGestureChord = chordName;
+            this.setChord(chordName);
+            // reflect in the UI buttons
+            document
+              .querySelectorAll(".chord-btn")
+              .forEach((b) =>
+                b.classList.toggle("active", b.dataset.chord === chordName),
+              );
+            const st = document.getElementById("guitar-status");
+            if (st)
+              st.textContent = `Gesture: ${ext.length} fingers → chord ${chordName}`;
+          }
+        } else if (this.gestureHold.count !== ext.length) {
+          this.gestureHold = { count: ext.length, sinceMs: nowMs };
+        }
+      } else {
+        this.gestureHold = { count: 0, sinceMs: 0 };
+      }
+    }
+
+    // engage/disengage palm-mute with hysteresis
+    if (muteNow && !this.palmMute) {
+      this.palmMute = true;
+      this.chokeAll();
+      const st = document.getElementById("guitar-status");
+      if (st) st.textContent = "Palm mute ON — chug away 🤘";
+    } else if (!muteNow && this.palmMute) {
+      this.palmMute = false;
+      const st = document.getElementById("guitar-status");
+      if (st) st.textContent = "Palm mute off";
+    }
+
+    // ── strum + pick pass ──
+    for (let h = 0; h < hands.length; h++) {
+      const lm = hands[h];
+      if (!lm) continue;
       const crossing = new Map(); // stringIdx -> {speed, dir}
       for (const tip of TIPS) {
         const p = lm[tip];
         if (!p || typeof p.y !== "number") continue;
         const y = p.y * canvasH;
+        const x = p.x * canvasW;
         const key = h + ":" + tip;
         const prev = this.prevTipY.get(key);
         this.prevTipY.set(key, y);
@@ -552,11 +722,67 @@ class AirGuitar {
         const vel = (this.tipVel.get(key) ?? 0) * 0.6 + inst * 0.4;
         this.tipVel.set(key, vel);
         if (prev === undefined) continue;
+
+        // nearest string for pick/vibrato logic
+        let nearSi = -1;
+        let nearD = 1e9;
+        this.stringYs.forEach((sy, si) => {
+          const d = Math.abs(y - sy);
+          if (d < nearD) {
+            nearD = d;
+            nearSi = si;
+          }
+        });
+        const s = this.handScale(lm);
+
+        // ── finger-pick: dwell ON a string then lift ──
+        const st = this.pickState.get(key);
+        if (nearD < s * canvasH * 0.035 && inst < 1.2) {
+          // resting on a string
+          if (!st || st.stringIdx !== nearSi) {
+            this.pickState.set(key, {
+              stringIdx: nearSi,
+              sinceMs: nowMs,
+              x,
+              lifted: false,
+            });
+          } else {
+            st.x = x; // track for vibrato
+            // vibrato: resting ≥250ms with horizontal wiggle
+            if (nowMs - st.sinceMs > 250) {
+              const dx = Math.abs(x - (st.lastX ?? x));
+              if (dx > 1.5) {
+                const cents = Math.max(
+                  -45,
+                  Math.min(45, (x - (st.lastX ?? x)) * 3),
+                );
+                this.applyVibrato(nearSi, cents);
+              }
+              st.lastX = x;
+            }
+          }
+        } else if (st && !st.lifted && inst >= 1.2) {
+          // lifted OFF the string → fire the pick
+          st.lifted = true;
+          const dwell = nowMs - st.sinceMs;
+          if (dwell > 60 && dwell < 900) {
+            const last = this.lastPluckByString.get(st.stringIdx) || 0;
+            if (nowMs - last > 90) {
+              this.lastPluckByString.set(st.stringIdx, nowMs);
+              this.pluck(st.stringIdx, 0.85, "pick");
+            }
+          }
+          this.pickState.delete(key);
+        } else if (st && nearD > s * canvasH * 0.08) {
+          this.pickState.delete(key);
+        }
+
+        // ── strum crossing (as before) ──
         this.stringYs.forEach((sy, si) => {
           const crossed = (prev < sy && y >= sy) || (prev > sy && y <= sy);
           if (!crossed) return;
           const speed = Math.max(inst, vel);
-          if (speed < minSpeed) return; // jitter/sensitivity guard
+          if (speed < minSpeed) return;
           const dir = y > prev ? "down" : "up";
           const cur = crossing.get(si);
           if (!cur || speed > cur.speed) crossing.set(si, { speed, dir });
@@ -567,7 +793,6 @@ class AirGuitar {
         const last = this.lastPluckByString.get(si) || 0;
         if (nowMs - last < 90) return;
         this.lastPluckByString.set(si, nowMs);
-        // up-strums play softer; velocity from smoothed speed
         const vel = Math.min(1, (speed / 22) * (dir === "up" ? 0.8 : 1));
         this.pluck(si, vel, dir);
       });
@@ -627,10 +852,14 @@ class AirGuitar {
       let amp = 0;
       if (fx) {
         const t = (nowMs - fx.t0) / 700; // 0→1
-        amp = Math.sin(t * Math.PI * 14) * (1 - t) * 7;
+        amp = Math.sin(t * Math.PI * 14) * (1 - t) * (fx.muted ? 3 : 7);
       }
       const grad = ctx.createLinearGradient(0, y - 8, 0, y + 8);
-      const hot = fx ? "rgba(34,211,238," : "rgba(167,139,250,";
+      const hot = fx
+        ? fx.muted
+          ? "rgba(248,113,113,"
+          : "rgba(34,211,238,"
+        : "rgba(167,139,250,";
       grad.addColorStop(0, hot + "0)");
       grad.addColorStop(0.5, hot + (fx ? 0.95 : 0.55) + ")");
       grad.addColorStop(1, hot + "0)");
@@ -638,7 +867,9 @@ class AirGuitar {
       ctx.fillRect(0, y - 8, W, 16);
 
       ctx.strokeStyle = fx
-        ? "rgba(125,252,238,0.95)"
+        ? fx.muted
+          ? "rgba(252,165,165,0.95)"
+          : "rgba(125,252,238,0.95)"
         : "rgba(255,255,255,0.75)";
       ctx.lineWidth = fx ? 2.4 : 1.4;
       ctx.beginPath();
@@ -679,6 +910,19 @@ class AirGuitar {
         ? "rgba(245,158,11,0.8)"
         : "rgba(100,116,139,0.6)";
     ctx.fill();
+
+    // palm-mute badge (top-left, mirrors-safe)
+    if (this.palmMute) {
+      this.drawLabel(
+        "PALM MUTE",
+        10,
+        22,
+        "700 12px 'JetBrains Mono', monospace",
+        "rgba(248,113,113,0.95)",
+      );
+      ctx.fillStyle = "rgba(248,113,113,0.14)";
+      ctx.fillRect(0, 0, W, 34);
+    }
   }
 
   drawHands(hands) {
