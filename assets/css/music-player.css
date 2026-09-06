@@ -1593,8 +1593,8 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   ):not([data-theme="dracula"])
   .play-pause-btn
   svg {
-  color: var(--music-play-btn-bg, #c97c3a) !important;
-  stroke: var(--music-play-btn-bg, #c97c3a) !important;
+  color: #000 !important;
+  stroke: #000 !important;
 }
 
 html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
@@ -1605,7 +1605,7 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   .play-pause-btn
   svg
   rect {
-  fill: var(--music-play-btn-bg, #c97c3a) !important;
+  fill: #000 !important;
 }
 
 html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
@@ -1616,7 +1616,7 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   .play-pause-btn
   svg
   polygon {
-  fill: var(--music-play-btn-bg, #c97c3a) !important;
+  fill: #000 !important;
 }
 
 html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
@@ -1627,7 +1627,7 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   .play-pause-btn
   svg
   path {
-  stroke: var(--music-play-btn-bg, #c97c3a) !important;
+  stroke: #000 !important;
 }
 
 html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
@@ -1713,7 +1713,7 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   ):not([data-theme="dracula"])
   .db-value {
   color: var(--music-accent, #c97c3a);
-  background: rgba(201, 124, 58, 0.15);
+  background: rgba(29, 185, 84, 0.15);
 }
 
 html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
@@ -1774,7 +1774,7 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
     [data-theme="forest"]
   ):not([data-theme="dracula"])
   .playlist-select-item:hover {
-  background: rgba(201, 124, 58, 0.2);
+  background: rgba(29, 185, 84, 0.2);
 }
 
 html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
@@ -2082,16 +2082,17 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   margin-top: 4px;
 }
 
-/* Light mode play-pause icon */
+/* Light mode play-pause icon — the console is forced dark in every
+   theme, so the icon stays black-on-white like the dark player */
 html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
     [data-theme="amber"]
   ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
     [data-theme="forest"]
   ):not([data-theme="dracula"])
   #play-pause-icon {
-  color: var(--music-play-btn-bg, #c97c3a);
-  stroke: var(--music-play-btn-bg, #c97c3a);
-  fill: var(--music-play-btn-bg, #c97c3a);
+  color: #000;
+  stroke: #000;
+  fill: #000;
 }
 
 /* Empty favorites message */
@@ -2356,6 +2357,51 @@ html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
   ):not([data-theme="dracula"]):not([data-theme="quantum"])
   .greeting {
   color: var(--mx-text);
+}
+
+/* ── Forced dark console: the player is a dark app in EVERY site theme
+   (like real music apps — Spotify et al never ship a cream player).
+   Scoping the dark --music-* tokens here beats maintaining parallel
+   light-override chains, and kills the light-theme patchwork (cream
+   bottom-nav + dark greeting on a dark console). Dark themes resolve
+   to identical values, so this is a no-op there. ── */
+body,
+.spotify-container,
+.player-bar,
+.mobile-bottom-nav,
+.eq-modal,
+.profile-modal,
+.add-playlist-modal,
+.music-toast,
+#stats-modal {
+  --music-bg: #000000;
+  --music-text: #ffffff;
+  --music-text-secondary: #b3b3b3;
+  --music-sidebar-bg: #000000;
+  --music-sidebar-border: #282828;
+  --music-hover-bg: #282828;
+  --music-card-bg: #181818;
+  --music-main-gradient: linear-gradient(
+    180deg,
+    rgba(30, 58, 138, 0.8) 0%,
+    #121212 350px
+  );
+  --music-search-bg: #282828;
+  --music-album-gradient: linear-gradient(135deg, #1db954, #191414);
+  --music-accent: #1db954;
+  --music-accent-hover: #1ed760;
+  --music-player-bg: rgba(24, 24, 24, 0.95);
+  --music-player-bg-hover: rgba(24, 24, 24, 0.98);
+  --music-player-border: rgba(255, 255, 255, 0.1);
+  --music-play-btn-bg: #ffffff;
+  --music-play-btn-icon: #000;
+  --music-progress-bg: #4d4d4d;
+  --music-volume-bg: #4d4d4d;
+  --music-nav-bg: #000000;
+  --music-nav-border: #282828;
+  --music-nav-text: #b3b3b3;
+  --music-nav-text-hover: #ffffff;
+  --music-nav-logo: #ffffff;
 }
 
 /* ── scrutiny fixes: touch targets + player-bar clearance ── */
