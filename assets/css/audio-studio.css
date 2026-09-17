@@ -605,9 +605,15 @@
 }
 
 .track-btn.delete svg,
-.track-btn.delete i {
+.track-btn.delete i,
+.track-btn.dup svg,
+.track-btn.dup i {
   width: 10px;
   height: 10px;
+}
+
+.track-btn.dup:hover {
+  color: var(--accent-cyan, #22d3ee);
 }
 
 .track-btn.height-btn {

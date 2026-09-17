@@ -470,3 +470,22 @@ User feedback addressed:
 | Audio Studio tools | Reverse (verified: ramp 0→1 becomes 1→0); Strip silence (−50dB, 300ms+); Speed cycle 0.5×→2× (verified 1→1.25) | live: all 3 buttons present |
 
 Suites: 11/11 · 539/539 · 108/108 · build ✓ · LIVE all green
+
+## Session 2026-09-17 — PDF STUDIO (IMAGES→PDF, METADATA) + AUDIO STUDIO (DUPLICATE, METRONOME) + PUBLIC APIS PAGES
+
+Uncommitted work found in tree (Public APIs generator + 49 pages + PDF/Audio additions); this session verified, fixed, and gated it.
+
+| Item | What | Verification |
+|------|------|--------------|
+| PDF Studio: Images to PDF | multi-image drag/drop, reorder/rm, fit/A4/Letter + orientation, JPEG quality, title | E2E on :8090: 3 imgs listed → rm middle → 2 → built "2 pages from 2 images", 4.8KB ✓ |
+| PDF Studio: Metadata | read/edit Title/Author/Subject/Keywords/Creator, save+download | E2E: loaded "Old Title/Author/Subject"; edited + saved; download blob re-parsed with pdf-lib → {title:"New Title", author:"Shuvam Tester", keywords:"test rigor", pages:1} ✓ |
+| Bug B58 (pdf-studio.html) | inline `onload="URL.revokeObjectURL(this.src)"` resolves URL→document.URL (string) → TypeError ×2/thumbnail; plus template-literal syntax error (missing backtick-comma) broke whole script | fixed via DOM-created img + addEventListener + repaired literal; all inline scripts parse (new Function) ✓; page 0 console errors |
+| Audio Studio: Duplicate Track | copy button per track header + `d` key; cloned buffer (not same-ref), inherits vol/pan/mute/solo/height, inserted after source, selected, history saved | E2E: 1→2 tracks "Track 1"/"Track 1 copy", cloned buffer ✓; `d` key fires ✓; aria-pressed/cleanup ✓ |
+| Audio Studio: Metronome | transport button + `t` key; accented downbeat (2k vs 1k Hz square), lookahead scheduler, BPM-tied | E2E: toggle on/off via button+key ✓, aria-pressed ✓, timer cleared ✓; beats advance while playing ✓ |
+| Bug B59 (audio-studio.js) | scheduler: after event-loop stall/background throttle, metroNext in past → negative setValueAtTime throws RangeError BEFORE metroNext advances → interval throws forever (8+ errors reproduced in test); non-negative past times would all fire at once (pile-up) | fix: resync to ctx.currentTime+0.03 when behind; verified in cache-cleared tab: ticking ✓, forced overdue → resynced ✓, 0 RangeErrors ✓ [VERIFIED: MDN setValueAtTime — negative→RangeError; non-negative past→immediate] |
+| Public APIs (carried over) | 48 category pages + hub, 835 no-auth APIs, vite entries, navbar/tools wiring | suites cover: 48 pages × head/meta/canonical/OG/module/defer/links/ids/a11y all ✓ |
+
+Env notes: vite dev (8080) cannot run — inotify ENOSPC on this host; python :8090 used for all verification. Chromium disk cache served stale audio-studio.js across reloads; fresh tab + Network.clearBrowserCache required to load new code (cost several false "fix failed" readings).
+
+Suites after final state: 11/11 · 1225/1225 · 206/206 · build ✓ · node --check ✓
+Open/deferred: B34 (ph-calculator out-of-range silent) still P-open; favicon 404 (env-only); metronome not audible-tested (headless — logic + scheduling verified programmatically only).

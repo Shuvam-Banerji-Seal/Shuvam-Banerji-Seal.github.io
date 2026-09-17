@@ -1,0 +1,1224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="google-site-verification"
+      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
+    />
+    <script>
+      (function () {
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="80 free Government APIs that need no API key: Bank Negara Malaysia Open Data, BCLaws, Bidledger, Brazil, Brazil Central Bank Open Data, and more." />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/apis/government.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Government APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta property="og:description" content="80 free Government APIs that need no API key: Bank Negara Malaysia Open Data, BCLaws, Bidledger, Brazil, Brazil Central Bank Open Data, and more." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/apis/government.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:title" content="Government APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="80 free Government APIs that need no API key: Bank Negara Malaysia Open Data, BCLaws, Bidledger, Brazil, Brazil Central Bank Open Data, and more." />
+    <meta name="robots" content="index, follow" />
+    <title>Government APIs (No Key Needed) - Shuvam Banerji Seal</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/animations.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../../assets/css/overrides.css" />
+    <style>
+      .apis-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .apis-hero h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+      }
+      .api-search {
+        width: 100%;
+        max-width: 560px;
+        margin: 1.25rem auto 0;
+        display: block;
+        padding: 0.7rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+      .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.25rem;
+        margin-top: 2rem;
+      }
+      .api-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .api-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+      }
+      .api-card h3 {
+        font-size: 1.05rem;
+        margin: 0;
+      }
+      .api-card h3 a {
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      .api-card h3 a:hover {
+        color: var(--accent-cyan);
+        text-decoration: underline;
+      }
+      .api-card p {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        flex: 1;
+      }
+      .api-badges {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .api-badge {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+      }
+      .api-badge.ok {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+      }
+      .api-badge.no {
+        opacity: 0.65;
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .cat-card {
+        padding: 1.1rem 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .cat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+        color: var(--text-primary);
+      }
+      .cat-card .count {
+        margin-left: auto;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        background: var(--bg-elevated);
+        border-radius: 999px;
+        padding: 0.1rem 0.6rem;
+        white-space: nowrap;
+      }
+      .crumb {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+      }
+      .crumb a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+      }
+      .attr-note {
+        margin-top: 2.5rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <div id="mobile-menu-backdrop"></div>
+
+    <main class="container">
+    <div class="apis-container">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="../apis.html">Public APIs</a> / Government
+        <span style="float:right"><a href="geocoding.html">← Geocoding</a> · <a href="health.html">Health →</a></span>
+      </nav>
+      <header class="apis-hero">
+        <h1 class="page-title">
+          <i data-lucide="layers" class="inline-block"></i>
+          Government APIs
+        </h1>
+        <p class="page-subtitle">
+          80 free APIs with <strong>no signup and no API
+          key</strong>. Data from
+          <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis</a>
+          (MIT).
+        </p>
+      </header>
+      <div class="api-grid">
+          <article class="api-card">
+            <h3>
+              <a href="https://apikijangportal.bnm.gov.my/" target="_blank" rel="noopener">Bank Negara Malaysia Open Data</a>
+            </h3>
+            <p>Malaysia Central Bank Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://apikijangportal.bnm.gov.my/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.bclaws.gov.bc.ca/civix/template/complete/api/index.html" target="_blank" rel="noopener">BCLaws</a>
+            </h3>
+            <p>Access to the laws of British Columbia</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.bclaws.gov.bc.ca/civix/template/complete/api/index.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://jaydemks.github.io/bidledger/api.html" target="_blank" rel="noopener">Bidledger</a>
+            </h3>
+            <p>Every open public tender in the European Union, rebuilt daily from the official TED data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://jaydemks.github.io/bidledger/api.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://brasilapi.com.br/" target="_blank" rel="noopener">Brazil</a>
+            </h3>
+            <p>Community driven API for Brazil Public Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://brasilapi.com.br/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://dadosabertos.bcb.gov.br/" target="_blank" rel="noopener">Brazil Central Bank Open Data</a>
+            </h3>
+            <p>Brazil Central Bank Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://dadosabertos.bcb.gov.br/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.receitaws.com.br/" target="_blank" rel="noopener">Brazil Receita WS</a>
+            </h3>
+            <p>Consult companies by CNPJ for Brazilian companies</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.receitaws.com.br/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://dadosabertos.camara.leg.br/swagger/api.html" target="_blank" rel="noopener">Brazilian Chamber of Deputies Open Data</a>
+            </h3>
+            <p>Provides legislative information in Apis XML and JSON, as well as files in various formats</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://dadosabertos.camara.leg.br/swagger/api.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.census.gov/data/developers/data-sets.html" target="_blank" rel="noopener">Census.gov</a>
+            </h3>
+            <p>The US Census Bureau provides various APIs and data sets on demographics and businesses</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.census.gov/data/developers/data-sets.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://daten.berlin.de/" target="_blank" rel="noopener">City, Berlin</a>
+            </h3>
+            <p>Berlin(DE) City Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://daten.berlin.de/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://ckan.multimediagdansk.pl/en" target="_blank" rel="noopener">City, Gdańsk</a>
+            </h3>
+            <p>Gdańsk (PL) City Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://ckan.multimediagdansk.pl/en" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://otwartedane.gdynia.pl/en/api_doc.html" target="_blank" rel="noopener">City, Gdynia</a>
+            </h3>
+            <p>Gdynia (PL) City Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://otwartedane.gdynia.pl/en/api_doc.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://hri.fi/en_gb/" target="_blank" rel="noopener">City, Helsinki</a>
+            </h3>
+            <p>Helsinki(FI) City Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://hri.fi/en_gb/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://opendata.city-adm.lviv.ua/" target="_blank" rel="noopener">City, Lviv</a>
+            </h3>
+            <p>Lviv(UA) City Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://opendata.city-adm.lviv.ua/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://opendata.cityofnewyork.us/" target="_blank" rel="noopener">City, New York Open Data</a>
+            </h3>
+            <p>New York (US) City Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://opendata.cityofnewyork.us/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://opendata.praha.eu/en" target="_blank" rel="noopener">City, Prague Open Data</a>
+            </h3>
+            <p>Prague(CZ) City Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://opendata.praha.eu/en" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://open.toronto.ca/" target="_blank" rel="noopener">City, Toronto Open Data</a>
+            </h3>
+            <p>Toronto (CA) City Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://open.toronto.ca/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.colorado.gov/" target="_blank" rel="noopener">Colorado Information Marketplace</a>
+            </h3>
+            <p>Colorado State Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.colorado.gov/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://datausa.io/about/api/" target="_blank" rel="noopener">Data USA</a>
+            </h3>
+            <p>US Public Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://datausa.io/about/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://explore.data.parliament.uk/?learnmore=Members" target="_blank" rel="noopener">Data.parliament.uk</a>
+            </h3>
+            <p>Contains live datasets including information about petitions, bills, MP votes, attendance and more</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://explore.data.parliament.uk/?learnmore=Members" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://opendata.dc.gov/pages/using-apis" target="_blank" rel="noopener">District of Columbia Open Data</a>
+            </h3>
+            <p>Contains D.C. government public datasets, including crime, GIS, financial data, and so on</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://opendata.dc.gov/pages/using-apis" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://editalmd.com/api/" target="_blank" rel="noopener">EditalMD</a>
+            </h3>
+            <p>Brazilian public procurement (PNCP) notices as Markdown with deadlines and requirements</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://editalmd.com/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.epa.gov/developers/data-data-products#apis" target="_blank" rel="noopener">EPA</a>
+            </h3>
+            <p>Web services and data sets from the US Environmental Protection Agency</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.epa.gov/developers/data-data-products#apis" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.fbi.gov/wanted/api" target="_blank" rel="noopener">FBI Wanted</a>
+            </h3>
+            <p>Access information on the FBI Wanted program</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.fbi.gov/wanted/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.federalregister.gov/reader-aids/developer-resources/rest-api" target="_blank" rel="noopener">Federal Register</a>
+            </h3>
+            <p>The Daily Journal of the United States Government</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.federalregister.gov/reader-aids/developer-resources/rest-api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://ratings.food.gov.uk/open-data/en-GB" target="_blank" rel="noopener">Food Standards Agency</a>
+            </h3>
+            <p>UK food hygiene rating data API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://ratings.food.gov.uk/open-data/en-GB" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://mandi-api.vercel.app/docs" target="_blank" rel="noopener">Indian Mandi Prices</a>
+            </h3>
+            <p>Free, keyless daily wholesale mandi prices for 5 Indian states, sourced from data.gov.in</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://mandi-api.vercel.app/docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://indianpincode.com/" target="_blank" rel="noopener">Indian Pincode</a>
+            </h3>
+            <p>Free India PIN code lookup with GPS coordinates, 165k+ post offices, state &amp; district data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://indianpincode.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://iinei.inei.gob.pe/microdatos/" target="_blank" rel="noopener">INEI</a>
+            </h3>
+            <p>Peruvian Statistical Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://iinei.inei.gob.pe/microdatos/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://interpol.api.bund.dev/" target="_blank" rel="noopener">Interpol Red Notices</a>
+            </h3>
+            <p>Access and search Interpol Red Notices</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://interpol.api.bund.dev/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.ibb.gov.tr" target="_blank" rel="noopener">Istanbul (İBB) Open Data</a>
+            </h3>
+            <p>Data sets from the İstanbul Metropolitan Municipality (İBB)</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.ibb.gov.tr" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://localgov.jp/" target="_blank" rel="noopener">LocalGov.jp</a>
+            </h3>
+            <p>Japan grants and subsidies (central J-Grants + 1,916 municipalities)</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://localgov.jp/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://neotimo.com/annuaire-dgfip" target="_blank" rel="noopener">Neotimo DGFiP Mirror</a>
+            </h3>
+            <p>French DGFiP registry of certified e-invoicing platforms (Plateformes Agréées), searchable by SIRET</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://neotimo.com/annuaire-dgfip" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.data.act.gov.au/" target="_blank" rel="noopener">Open Government, ACT</a>
+            </h3>
+            <p>Australian Capital Territory Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.data.act.gov.au/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://datos.gob.ar/" target="_blank" rel="noopener">Open Government, Argentina</a>
+            </h3>
+            <p>Argentina Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://datos.gob.ar/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.data.gov.au/" target="_blank" rel="noopener">Open Government, Australia</a>
+            </h3>
+            <p>Australian Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.data.gov.au/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.data.gv.at/" target="_blank" rel="noopener">Open Government, Austria</a>
+            </h3>
+            <p>Austria Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.data.gv.at/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.be/" target="_blank" rel="noopener">Open Government, Belgium</a>
+            </h3>
+            <p>Belgium Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.be/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://open.canada.ca/en" target="_blank" rel="noopener">Open Government, Canada</a>
+            </h3>
+            <p>Canadian Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://open.canada.ca/en" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.dane.gov.co/" target="_blank" rel="noopener">Open Government, Colombia</a>
+            </h3>
+            <p>Colombia Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.dane.gov.co/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.cy/?language=en" target="_blank" rel="noopener">Open Government, Cyprus</a>
+            </h3>
+            <p>Cyprus Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.cy/?language=en" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.cz/english/" target="_blank" rel="noopener">Open Government, Czech Republic</a>
+            </h3>
+            <p>Czech Republic Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.cz/english/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.opendata.dk/" target="_blank" rel="noopener">Open Government, Denmark</a>
+            </h3>
+            <p>Denmark Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.opendata.dk/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.avoindata.fi/en" target="_blank" rel="noopener">Open Government, Finland</a>
+            </h3>
+            <p>Finland Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.avoindata.fi/en" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.govdata.de/daten/-/details/govdata-metadatenkatalog" target="_blank" rel="noopener">Open Government, Germany</a>
+            </h3>
+            <p>Germany Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.govdata.de/daten/-/details/govdata-metadatenkatalog" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.go.id/" target="_blank" rel="noopener">Open Government, Indonesia</a>
+            </h3>
+            <p>Indonesian Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.go.id/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.ie/pages/developers" target="_blank" rel="noopener">Open Government, Ireland</a>
+            </h3>
+            <p>Ireland Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.ie/pages/developers" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.dati.gov.it/" target="_blank" rel="noopener">Open Government, Italy</a>
+            </h3>
+            <p>Italy Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.dati.gov.it/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.lt/public/api/1" target="_blank" rel="noopener">Open Government, Lithuania</a>
+            </h3>
+            <p>Lithuania Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.lt/public/api/1" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.inegi.org.mx/datos/" target="_blank" rel="noopener">Open Government, Mexico</a>
+            </h3>
+            <p>Mexican Statistical Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.inegi.org.mx/datos/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://datos.gob.mx/" target="_blank" rel="noopener">Open Government, Mexico</a>
+            </h3>
+            <p>Mexico Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://datos.gob.mx/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.overheid.nl/en/ondersteuning/data-publiceren/api" target="_blank" rel="noopener">Open Government, Netherlands</a>
+            </h3>
+            <p>Netherlands Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.overheid.nl/en/ondersteuning/data-publiceren/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.data.govt.nz/" target="_blank" rel="noopener">Open Government, New Zealand</a>
+            </h3>
+            <p>New Zealand Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.data.govt.nz/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.norge.no/dataservices" target="_blank" rel="noopener">Open Government, Norway</a>
+            </h3>
+            <p>Norwegian Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://data.norge.no/dataservices" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.datosabiertos.gob.pe/" target="_blank" rel="noopener">Open Government, Peru</a>
+            </h3>
+            <p>Peru Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.datosabiertos.gob.pe/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://dane.gov.pl/en" target="_blank" rel="noopener">Open Government, Poland</a>
+            </h3>
+            <p>Poland Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://dane.gov.pl/en" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://dados.gov.pt/en/docapi/" target="_blank" rel="noopener">Open Government, Portugal</a>
+            </h3>
+            <p>Portugal Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://dados.gov.pt/en/docapi/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.data.qld.gov.au/" target="_blank" rel="noopener">Open Government, Queensland Government</a>
+            </h3>
+            <p>Queensland Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.data.qld.gov.au/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://data.gov.ro/" target="_blank" rel="noopener">Open Government, Romania</a>
+            </h3>
+            <p>Romania Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://data.gov.ro/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.sa" target="_blank" rel="noopener">Open Government, Saudi Arabia</a>
+            </h3>
+            <p>Saudi Arabia Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.sa" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.sg/developer" target="_blank" rel="noopener">Open Government, Singapore</a>
+            </h3>
+            <p>Singapore Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.sg/developer" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.sk/en/" target="_blank" rel="noopener">Open Government, Slovakia</a>
+            </h3>
+            <p>Slovakia Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.sk/en/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://podatki.gov.si/" target="_blank" rel="noopener">Open Government, Slovenia</a>
+            </h3>
+            <p>Slovenia Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://podatki.gov.si/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.sa.gov.au/" target="_blank" rel="noopener">Open Government, South Australian Government</a>
+            </h3>
+            <p>South Australian Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.sa.gov.au/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://datos.gob.es/en" target="_blank" rel="noopener">Open Government, Spain</a>
+            </h3>
+            <p>Spain Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://datos.gob.es/en" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.dataportal.se/en/dataservice/91_29789/api-for-the-statistical-database" target="_blank" rel="noopener">Open Government, Sweden</a>
+            </h3>
+            <p>Sweden Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.dataportal.se/en/dataservice/91_29789/api-for-the-statistical-database" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://handbook.opendata.swiss/de/content/nutzen/api-nutzen.html" target="_blank" rel="noopener">Open Government, Switzerland</a>
+            </h3>
+            <p>Switzerland Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://handbook.opendata.swiss/de/content/nutzen/api-nutzen.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.tw/" target="_blank" rel="noopener">Open Government, Taiwan</a>
+            </h3>
+            <p>Taiwan Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.tw/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.gov.uk/" target="_blank" rel="noopener">Open Government, UK</a>
+            </h3>
+            <p>UK Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.gov.uk/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.data.gov/" target="_blank" rel="noopener">Open Government, USA</a>
+            </h3>
+            <p>United States Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.data.gov/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.data.vic.gov.au/" target="_blank" rel="noopener">Open Government, Victoria State Government</a>
+            </h3>
+            <p>Victoria State Government Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.data.vic.gov.au/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.wa.gov.au/" target="_blank" rel="noopener">Open Government, West Australia</a>
+            </h3>
+            <p>West Australia Open Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.wa.gov.au/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://openmercantil.es/api/documentacion" target="_blank" rel="noopener">OpenMercantil</a>
+            </h3>
+            <p>Spanish company public data and BORME event timelines</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://openmercantil.es/api/documentacion" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://api.whenisthenextboardexam.com/docs/" target="_blank" rel="noopener">PRC Exam Schedule</a>
+            </h3>
+            <p>Unofficial Philippine Professional Regulation Commission's examination schedule</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://api.whenisthenextboardexam.com/docs/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://radar-cnpj.com/api/" target="_blank" rel="noopener">Radar CNPJ</a>
+            </h3>
+            <p>Brazilian companies (CNPJ) lookup and search, with a market check by area and monitoring</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://radar-cnpj.com/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://represent.opennorth.ca/" target="_blank" rel="noopener">Represent by Open North</a>
+            </h3>
+            <p>Find Canadian Government Representatives</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://represent.opennorth.ca/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://api.tollmint.com" target="_blank" rel="noopener">Tollmint</a>
+            </h3>
+            <p>Advertising, subscription, AI-disclosure and accessibility rules across the US, EU and UK</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://api.tollmint.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://uselection.togatech.org/api/" target="_blank" rel="noopener">US Presidential Election Data by TogaTech</a>
+            </h3>
+            <p>Basic candidate data and live electoral vote counts for top two parties in US presidential election</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://uselection.togatech.org/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://government-data-api.onrender.com/docs" target="_blank" rel="noopener">US Federal Contracts &amp; Grants</a>
+            </h3>
+            <p>US federal contracts, grants, and agency spending data updated daily</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://government-data-api.onrender.com/docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://api.usaspending.gov/" target="_blank" rel="noopener">USAspending.gov</a>
+            </h3>
+            <p>US federal spending data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://api.usaspending.gov/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://wimberly.solutions/api/free-sanctions-check/" target="_blank" rel="noopener">Vett</a>
+            </h3>
+            <p>Screen names &amp; companies against OFAC, PEP, watchlists &amp; recalls</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://wimberly.solutions/api/free-sanctions-check/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+      </div>
+      <p class="attr-note">
+        <a href="../apis.html">← All categories</a> · HTTPS/CORS badges are
+        as listed upstream and may drift — the linked docs are authoritative.
+      </p>
+    </div>
+    </main>
+
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem">
+        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
+        Portfolio v3.0
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    </script>
+
+    <script type="module" src="../../assets/js/main.js"></script>
+    <script type="module" src="../../assets/js/enhanced.js"></script>
+  </body>
+</html>

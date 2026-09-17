@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="google-site-verification"
+      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
+    />
+    <script>
+      (function () {
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="35 free Open Data APIs that need no API key: 18F, 49 Gallery Historical Data, API Setu, Archive.org, BotsArchive, and more." />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/apis/open-data.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Open Data APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta property="og:description" content="35 free Open Data APIs that need no API key: 18F, 49 Gallery Historical Data, API Setu, Archive.org, BotsArchive, and more." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/apis/open-data.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:title" content="Open Data APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="35 free Open Data APIs that need no API key: 18F, 49 Gallery Historical Data, API Setu, Archive.org, BotsArchive, and more." />
+    <meta name="robots" content="index, follow" />
+    <title>Open Data APIs (No Key Needed) - Shuvam Banerji Seal</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/animations.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../../assets/css/overrides.css" />
+    <style>
+      .apis-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .apis-hero h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+      }
+      .api-search {
+        width: 100%;
+        max-width: 560px;
+        margin: 1.25rem auto 0;
+        display: block;
+        padding: 0.7rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+      .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.25rem;
+        margin-top: 2rem;
+      }
+      .api-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .api-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+      }
+      .api-card h3 {
+        font-size: 1.05rem;
+        margin: 0;
+      }
+      .api-card h3 a {
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      .api-card h3 a:hover {
+        color: var(--accent-cyan);
+        text-decoration: underline;
+      }
+      .api-card p {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        flex: 1;
+      }
+      .api-badges {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .api-badge {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+      }
+      .api-badge.ok {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+      }
+      .api-badge.no {
+        opacity: 0.65;
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .cat-card {
+        padding: 1.1rem 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .cat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+        color: var(--text-primary);
+      }
+      .cat-card .count {
+        margin-left: auto;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        background: var(--bg-elevated);
+        border-radius: 999px;
+        padding: 0.1rem 0.6rem;
+        white-space: nowrap;
+      }
+      .crumb {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+      }
+      .crumb a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+      }
+      .attr-note {
+        margin-top: 2.5rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <div id="mobile-menu-backdrop"></div>
+
+    <main class="container">
+    <div class="apis-container">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="../apis.html">Public APIs</a> / Open Data
+        <span style="float:right"><a href="news.html">← News</a> · <a href="open-source-projects.html">Open Source Projects →</a></span>
+      </nav>
+      <header class="apis-hero">
+        <h1 class="page-title">
+          <i data-lucide="layers" class="inline-block"></i>
+          Open Data APIs
+        </h1>
+        <p class="page-subtitle">
+          35 free APIs with <strong>no signup and no API
+          key</strong>. Data from
+          <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis</a>
+          (MIT).
+        </p>
+      </header>
+      <div class="api-grid">
+          <article class="api-card">
+            <h3>
+              <a href="http://18f.github.io/API-All-the-X/" target="_blank" rel="noopener">18F</a>
+            </h3>
+            <p>Unofficial US Federal Government API Development</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://18f.github.io/API-All-the-X/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://api.181649.com/docs" target="_blank" rel="noopener">49 Gallery Historical Data</a>
+            </h3>
+            <p>Normalized historical records and 25 daily-updated reference series</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://api.181649.com/docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.apisetu.gov.in/" target="_blank" rel="noopener">API Setu</a>
+            </h3>
+            <p>An Indian Government platform that provides a lot of APIS for KYC, business, education &amp; employment</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://www.apisetu.gov.in/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://archive.readme.io/docs" target="_blank" rel="noopener">Archive.org</a>
+            </h3>
+            <p>The Internet Archive</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://archive.readme.io/docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://botsarchive.com/docs.html" target="_blank" rel="noopener">BotsArchive</a>
+            </h3>
+            <p>JSON formatted details about Telegram Bots available in database</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://botsarchive.com/docs.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://btugraph.com/data/" target="_blank" rel="noopener">BTU Graph</a>
+            </h3>
+            <p>Source-reviewed energy company knowledge graph and directory exports</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://btugraph.com/data/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://callook.info" target="_blank" rel="noopener">Callook.info</a>
+            </h3>
+            <p>United States ham radio callsigns</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://callook.info" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://collegescorecard.ed.gov/data/" target="_blank" rel="noopener">CollegeScoreCard.ed.gov</a>
+            </h3>
+            <p>Data on higher education institutions in the United States</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://collegescorecard.ed.gov/data/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://cuttingtoolsai.eu/api" target="_blank" rel="noopener">CuttingToolsAI</a>
+            </h3>
+            <p>Cross-brand carbide insert grade equivalents by ISO application class</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://cuttingtoolsai.eu/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://eosl.ai/api/" target="_blank" rel="noopener">EOSL</a>
+            </h3>
+            <p>Hardware end-of-sale and end-of-service-life dates by part number, source-linked</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://eosl.ai/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://geo.api.gouv.fr/adresse" target="_blank" rel="noopener">French Address Search</a>
+            </h3>
+            <p>Address search via the French Government</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://geo.api.gouv.fr/adresse" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://i6eal.de/en/tools/data/" target="_blank" rel="noopener">i6eal Open AI Data</a>
+            </h3>
+            <p>Open datasets on AI policy, regulation and public-sector adoption in Germany and the EU</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://i6eal.de/en/tools/data/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://remo65588-boop.github.io/lottolens-ph-public-data/api/" target="_blank" rel="noopener">LottoLens PH</a>
+            </h3>
+            <p>Fixed Philippine PCSO historical results and normal draw schedules</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://remo65588-boop.github.io/lottolens-ph-public-data/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/0x0is1/lowy-index-api-docs" target="_blank" rel="noopener">Lowy Asia Power Index</a>
+            </h3>
+            <p>Get measure resources and influence to rank the relative power of states in Asia</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://github.com/0x0is1/lowy-index-api-docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://microlink.io" target="_blank" rel="noopener">Microlink.io</a>
+            </h3>
+            <p>Extract structured data from any website</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://microlink.io" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://mostexpensivewatches.net/api" target="_blank" rel="noopener">MostExpensiveWatches</a>
+            </h3>
+            <p>Documented luxury watch auction records, live listings, valuations and price indices</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://mostexpensivewatches.net/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://modelpartfinder.com/docs/api" target="_blank" rel="noopener">ModelPartFinder Error Codes</a>
+            </h3>
+            <p>Lookup appliance and equipment error codes by brand and code, with recommended replacement parts</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://modelpartfinder.com/docs/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.nobelprize.org/about/developer-zone-2/" target="_blank" rel="noopener">Nobel Prize</a>
+            </h3>
+            <p>Open data about nobel prizes and events</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://www.nobelprize.org/about/developer-zone-2/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://onyx-actions.onrender.com/bazaar" target="_blank" rel="noopener">Onyx Bazaar</a>
+            </h3>
+            <p>Free public leaderboard of x402 paid HTTP services indexed from Coinbase CDP discovery API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://onyx-actions.onrender.com/bazaar" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://opendata.minneapolismn.gov/" target="_blank" rel="noopener">Open Data Minneapolis</a>
+            </h3>
+            <p>Spatial (GIS) and non-spatial city data for Minneapolis</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://opendata.minneapolismn.gov/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://scholarships.grudged.io" target="_blank" rel="noopener">Open Scholarships</a>
+            </h3>
+            <p>Free, openly-licensed directory of US scholarships and student aid from official sources</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://scholarships.grudged.io" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://africaopendata.org/" target="_blank" rel="noopener">openAFRICA</a>
+            </h3>
+            <p>Large datasets repository of African open data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://africaopendata.org/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.opensanctions.org/docs/api/" target="_blank" rel="noopener">OpenSanctions</a>
+            </h3>
+            <p>Data on international sanctions, crime and politically exposed persons</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://www.opensanctions.org/docs/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://paycrunch.co/api.html" target="_blank" rel="noopener">PayCrunch</a>
+            </h3>
+            <p>US wages for 1,008 occupations and by state, from BLS OEWS May 2025, static JSON, CC BY 4.0</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://paycrunch.co/api.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://publicdatahub.org/api" target="_blank" rel="noopener">PublicDataHub</a>
+            </h3>
+            <p>US public schools, hospitals and federal agency budgets as JSON/CSV, with provenance</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://publicdatahub.org/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://statisticsoftheworld.com/api-docs" target="_blank" rel="noopener">Statistics of the World</a>
+            </h3>
+            <p>Economic data for 218 countries — GDP, population, inflation, and 440+ indicators from IMF and World Bank</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://statisticsoftheworld.com/api-docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://developers.teleport.org/" target="_blank" rel="noopener">Teleport</a>
+            </h3>
+            <p>Quality of Life Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://developers.teleport.org/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.tilth.uk/data" target="_blank" rel="noopener">Tilth</a>
+            </h3>
+            <p>Free daily UK fertiliser price index across nine grades, CC BY 4.0 licensed</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://www.tilth.uk/data" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://opendata.umea.se/api/" target="_blank" rel="noopener">Umeå Open Data</a>
+            </h3>
+            <p>Open data of the city Umeå in northen Sweden</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://opendata.umea.se/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/Hipo/university-domains-list" target="_blank" rel="noopener">Universities List</a>
+            </h3>
+            <p>University names, countries and domains</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://github.com/Hipo/university-domains-list" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.uio.no/" target="_blank" rel="noopener">University of Oslo</a>
+            </h3>
+            <p>Courses, lecture videos, detailed information for courses etc. for the University of Oslo (Norway)</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.uio.no/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://urbanobservatory.ac.uk" target="_blank" rel="noopener">Urban Observatory</a>
+            </h3>
+            <p>The largest set of publicly available real time urban data in the UK</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://urbanobservatory.ac.uk" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://voidly.ai/api-docs" target="_blank" rel="noopener">Voidly</a>
+            </h3>
+            <p>Internet censorship measurements, incidents, and ISP-level blocking data across 126 countries</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://voidly.ai/api-docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://warnely.com/developers" target="_blank" rel="noopener">Warnely</a>
+            </h3>
+            <p>Composite travel-safety scores for 180 countries (FCDO + US State + GPI + WGI + live incident wire), OpenAPI 3.1 spec, CC BY 4.0</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://warnely.com/developers" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.mediawiki.org/wiki/API:Main_page" target="_blank" rel="noopener">Wikipedia</a>
+            </h3>
+            <p>Mediawiki Encyclopedia</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.mediawiki.org/wiki/API:Main_page" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+      </div>
+      <p class="attr-note">
+        <a href="../apis.html">← All categories</a> · HTTPS/CORS badges are
+        as listed upstream and may drift — the linked docs are authoritative.
+      </p>
+    </div>
+    </main>
+
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem">
+        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
+        Portfolio v3.0
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    </script>
+
+    <script type="module" src="../../assets/js/main.js"></script>
+    <script type="module" src="../../assets/js/enhanced.js"></script>
+  </body>
+</html>

@@ -97,6 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "file-search",
         },
         {
+          name: "Public APIs",
+          href: isHome ? "pages/apis.html" : pathDepth + "pages/apis.html",
+          icon: "globe",
+        },
+        {
           name: "Mermaid Editor",
           href: isHome
             ? "pages/mermaid-tool.html"

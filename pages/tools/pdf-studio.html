@@ -650,6 +650,9 @@
             <button class="mode-btn" data-mode="tojpg">
               <i data-lucide="image"></i> To Images
             </button>
+            <button class="mode-btn" data-mode="img2pdf">
+              <i data-lucide="images"></i> Images to PDF
+            </button>
             <button class="mode-btn" data-mode="merge">
               <i data-lucide="git-merge"></i> Merge PDFs
             </button>
@@ -673,6 +676,9 @@
             </button>
             <button class="mode-btn" data-mode="pagenumbers">
               <i data-lucide="hash"></i> Page Numbers
+            </button>
+            <button class="mode-btn" data-mode="meta">
+              <i data-lucide="tag"></i> Metadata
             </button>
             <button class="mode-btn" data-mode="crop">
               <i data-lucide="crop"></i> Crop Pages
@@ -1882,6 +1888,210 @@
                     onclick="downloadOcrText()"
                   >
                     <i data-lucide="download"></i> Download as .txt
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ════════════════════ IMAGES TO PDF ════════════════════ -->
+            <div class="mode-pane" id="pane-img2pdf">
+              <div class="tool-card">
+                <div class="upload-zone" id="i2p-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop images or click to browse</p>
+                  <small
+                    >JPG · PNG · WebP · GIF · BMP — each becomes a page, in
+                    order</small
+                  >
+                  <input
+                    type="file"
+                    id="i2p-input"
+                    accept="image/*"
+                    multiple
+                    hidden
+                  />
+                </div>
+                <div id="i2p-list" style="margin-top: 1rem"></div>
+                <div class="opts-row" style="margin-top: 1.5rem">
+                  <div class="form-group">
+                    <label>Page Size</label>
+                    <select id="i2p-pagesize">
+                      <option value="fit" selected>Fit image</option>
+                      <option value="a4">A4</option>
+                      <option value="letter">US Letter</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Orientation</label>
+                    <select id="i2p-orient">
+                      <option value="auto" selected>Auto</option>
+                      <option value="portrait">Portrait</option>
+                      <option value="landscape">Landscape</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>JPEG Quality: <span id="i2p-q-val">85</span>%</label>
+                    <input
+                      type="range"
+                      id="i2p-quality"
+                      min="40"
+                      max="100"
+                      value="85"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>Title (optional)</label>
+                    <input
+                      type="text"
+                      id="i2p-title"
+                      placeholder="My photo album"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
+                <div class="btn-group" style="margin-top: 1.5rem">
+                  <button
+                    class="tool-btn tool-btn-primary"
+                    id="i2p-run-btn"
+                    disabled
+                    onclick="runImagesToPdf()"
+                  >
+                    <i data-lucide="file-output"></i> Build PDF
+                  </button>
+                  <button
+                    class="tool-btn tool-btn-secondary"
+                    onclick="clearImagesToPdf()"
+                  >
+                    <i data-lucide="trash-2"></i> Clear
+                  </button>
+                </div>
+                <div class="prog-wrap" id="i2p-prog">
+                  <div class="prog-bar">
+                    <div class="prog-fill" id="i2p-fill"></div>
+                  </div>
+                  <div class="prog-text" id="i2p-prog-text">Processing...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="i2p-result" style="display: none">
+                <h3
+                  style="
+                    margin-bottom: 1.25rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                  "
+                >
+                  <i data-lucide="check-circle"></i> PDF Ready
+                </h3>
+                <div class="alert alert-info">
+                  <i data-lucide="file-text"></i>
+                  <span id="i2p-summary">0 pages</span>
+                  <span style="margin-left: auto" id="i2p-size"></span>
+                </div>
+                <div class="btn-group" style="margin-top: 1.25rem">
+                  <button class="tool-btn tool-btn-primary" id="i2p-dl">
+                    <i data-lucide="download"></i> Download PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ════════════════════ METADATA ════════════════════ -->
+            <div class="mode-pane" id="pane-meta">
+              <div class="tool-card">
+                <div class="upload-zone" id="meta-drop">
+                  <i data-lucide="upload-cloud"></i>
+                  <p>Drag &amp; drop a PDF or click to browse</p>
+                  <small>View and edit document properties</small>
+                  <input
+                    type="file"
+                    id="meta-input"
+                    accept=".pdf,application/pdf"
+                    hidden
+                  />
+                </div>
+                <div id="meta-info" style="display: none; margin-top: 1.25rem">
+                  <div class="alert alert-info">
+                    <i data-lucide="file-text"></i>
+                    <span id="meta-fname">file.pdf</span>
+                    <span style="margin-left: auto" id="meta-pages"></span>
+                  </div>
+                  <div class="opts-row" style="margin-top: 1.25rem">
+                    <div class="form-group">
+                      <label>Title</label>
+                      <input type="text" id="meta-title" style="width: 100%" />
+                    </div>
+                    <div class="form-group">
+                      <label>Author</label>
+                      <input type="text" id="meta-author" style="width: 100%" />
+                    </div>
+                    <div class="form-group">
+                      <label>Subject</label>
+                      <input
+                        type="text"
+                        id="meta-subject"
+                        style="width: 100%"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Keywords (comma separated)</label>
+                      <input
+                        type="text"
+                        id="meta-keywords"
+                        style="width: 100%"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Creator</label>
+                      <input
+                        type="text"
+                        id="meta-creator"
+                        style="width: 100%"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Producer (read-only)</label>
+                      <input
+                        type="text"
+                        id="meta-producer"
+                        style="width: 100%"
+                        readonly
+                        disabled
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-group" style="margin-top: 1.5rem">
+                  <button
+                    class="tool-btn tool-btn-primary"
+                    id="meta-run-btn"
+                    disabled
+                    onclick="runMetadataSave()"
+                  >
+                    <i data-lucide="save"></i> Save Metadata
+                  </button>
+                </div>
+                <div class="prog-wrap" id="meta-prog">
+                  <div class="prog-bar">
+                    <div class="prog-fill" id="meta-fill"></div>
+                  </div>
+                  <div class="prog-text" id="meta-prog-text">Processing...</div>
+                </div>
+              </div>
+              <div class="tool-card" id="meta-result" style="display: none">
+                <h3
+                  style="
+                    margin-bottom: 1.25rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                  "
+                >
+                  <i data-lucide="check-circle"></i> Metadata Saved
+                </h3>
+                <div class="btn-group">
+                  <button class="tool-btn tool-btn-primary" id="meta-dl">
+                    <i data-lucide="download"></i> Download Updated PDF
                   </button>
                 </div>
               </div>
@@ -3566,6 +3776,325 @@
           ? ocrFile.name.replace(".pdf", "_ocr.txt")
           : "ocr_output.txt";
         a.click();
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── IMAGES TO PDF ─────────────────────────────────────────────────────────
+      let i2pFiles = [];
+      const i2pDrop = document.getElementById("i2p-drop");
+      const i2pInput = document.getElementById("i2p-input");
+      // Custom wiring (setupDropZone only accepts PDFs)
+      i2pDrop.addEventListener("click", () => i2pInput.click());
+      i2pInput.addEventListener("change", (e) => {
+        if (e.target.files.length) addI2pFiles(e.target.files);
+        e.target.value = "";
+      });
+      i2pDrop.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        i2pDrop.classList.add("dragover");
+      });
+      i2pDrop.addEventListener("dragleave", () =>
+        i2pDrop.classList.remove("dragover"),
+      );
+      i2pDrop.addEventListener("drop", (e) => {
+        e.preventDefault();
+        i2pDrop.classList.remove("dragover");
+        const fs = Array.from(e.dataTransfer.files).filter((f) =>
+          f.type.startsWith("image/"),
+        );
+        if (fs.length) addI2pFiles(fs);
+        else notify("No image files found in the drop.", "error");
+      });
+      document.getElementById("i2p-quality").addEventListener("input", (e) => {
+        document.getElementById("i2p-q-val").textContent = e.target.value;
+      });
+
+      function addI2pFiles(files) {
+        Array.from(files).forEach((f) => {
+          if (!f.type.startsWith("image/")) {
+            notify(`Skipping ${f.name} — not an image.`, "error");
+            return;
+          }
+          if (f.size > 50 * 1024 * 1024) {
+            notify(`Skipping ${f.name} — over 50 MB.`, "error");
+            return;
+          }
+          i2pFiles.push(f);
+        });
+        renderI2pList();
+      }
+
+      function renderI2pList() {
+        const list = document.getElementById("i2p-list");
+        list.innerHTML = "";
+        i2pFiles.forEach((f, i) => {
+          const item = document.createElement("div");
+          item.className = "file-item";
+          const thumb = URL.createObjectURL(f);
+          // NOTE: the thumbnail <img> is created via DOM (not innerHTML)
+          // so we can revoke the blob URL with a real load listener —
+          // an inline onload="" handler would resolve `URL` to
+          // document.URL (a string), not window.URL, and throw.
+          const thumbImg = document.createElement("img");
+          thumbImg.src = thumb;
+          thumbImg.alt = "";
+          thumbImg.style.cssText =
+            "width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;";
+          thumbImg.addEventListener("load", (e) => {
+            window.URL.revokeObjectURL(e.target.src);
+          });
+          item.appendChild(thumbImg);
+          item.insertAdjacentHTML(
+            "beforeend",
+            `<span class="fname">${f.name}</span>
+                <span class="fsize">${fmtSize(f.size)}</span>
+                <button class="rm-btn" data-act="up" aria-label="Move ${f.name} up"><i data-lucide="arrow-up" style="width:14px;height:14px;"></i></button>
+                <button class="rm-btn" data-act="down" aria-label="Move ${f.name} down"><i data-lucide="arrow-down" style="width:14px;height:14px;"></i></button>
+                <button class="rm-btn" data-act="rm" aria-label="Remove ${f.name}"><i data-lucide="x" style="width:14px;height:14px;"></i></button>`,
+          );
+          const [upBtn, downBtn, rmBtn] = item.querySelectorAll("button");
+          upBtn.onclick = () => {
+            if (i > 0) {
+              [i2pFiles[i - 1], i2pFiles[i]] = [i2pFiles[i], i2pFiles[i - 1]];
+              renderI2pList();
+            }
+          };
+          downBtn.onclick = () => {
+            if (i < i2pFiles.length - 1) {
+              [i2pFiles[i + 1], i2pFiles[i]] = [i2pFiles[i], i2pFiles[i + 1]];
+              renderI2pList();
+            }
+          };
+          rmBtn.onclick = () => {
+            i2pFiles.splice(i, 1);
+            renderI2pList();
+          };
+          list.appendChild(item);
+        });
+        document.getElementById("i2p-run-btn").disabled = i2pFiles.length === 0;
+        document.getElementById("i2p-result").style.display = "none";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }
+
+      function clearImagesToPdf() {
+        i2pFiles = [];
+        renderI2pList();
+      }
+
+      function loadImageBitmap(file) {
+        return new Promise((resolve, reject) => {
+          const url = URL.createObjectURL(file);
+          const img = new Image();
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(img);
+          };
+          img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error(`Could not decode image: ${file.name}`));
+          };
+          img.src = url;
+        });
+      }
+
+      async function runImagesToPdf() {
+        if (i2pFiles.length === 0) return;
+        const progWrap = document.getElementById("i2p-prog");
+        const progFill = document.getElementById("i2p-fill");
+        const progText = document.getElementById("i2p-prog-text");
+        document.getElementById("i2p-run-btn").disabled = true;
+        document.getElementById("i2p-result").style.display = "none";
+
+        try {
+          if (typeof PDFLib === "undefined")
+            throw new Error("pdf-lib failed to load. Please refresh.");
+          const { PDFDocument } = PDFLib;
+          const pdf = await PDFDocument.create();
+
+          const pageSize = document.getElementById("i2p-pagesize").value;
+          const orientOpt = document.getElementById("i2p-orient").value;
+          const quality =
+            parseInt(document.getElementById("i2p-quality").value, 10) / 100;
+          const title = document.getElementById("i2p-title").value.trim();
+          if (title) pdf.setTitle(title);
+
+          const SIZES = { a4: [595.28, 841.89], letter: [612, 792] };
+          const MARGIN = 36; // 0.5in
+          const MAX_DIM = 2500; // cap raster size for memory safety
+
+          for (let i = 0; i < i2pFiles.length; i++) {
+            setProgress(
+              progFill,
+              progText,
+              progWrap,
+              ((i + 1) / i2pFiles.length) * 100,
+              `Page ${i + 1} / ${i2pFiles.length} — ${i2pFiles[i].name}`,
+            );
+            const img = await loadImageBitmap(i2pFiles[i]);
+            let w = img.naturalWidth;
+            let h = img.naturalHeight;
+            const scaleDown = Math.min(1, MAX_DIM / Math.max(w, h));
+            w = Math.round(w * scaleDown);
+            h = Math.round(h * scaleDown);
+
+            const canvas = document.createElement("canvas");
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            // Flatten transparency onto white so JPEG output is correct
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+
+            const blob = await new Promise((res) =>
+              canvas.toBlob(res, "image/jpeg", quality),
+            );
+            if (!blob) throw new Error("Image encoding failed.");
+            const bytes = new Uint8Array(await blob.arrayBuffer());
+            const embedded = await pdf.embedJpg(bytes);
+            canvas.width = 0;
+            canvas.height = 0;
+
+            // Page geometry: fit image, preserve aspect
+            let pageW, pageH;
+            if (pageSize === "fit") {
+              const k = 72 / 96; // px → pt
+              pageW = Math.max(72, w * k);
+              pageH = Math.max(72, h * k);
+            } else {
+              let [pw, ph] = SIZES[pageSize];
+              const landscape =
+                orientOpt === "landscape" || (orientOpt === "auto" && w > h);
+              const portrait =
+                orientOpt === "portrait" || (orientOpt === "auto" && w <= h);
+              if (landscape && ph > pw) [pw, ph] = [ph, pw];
+              if (portrait && pw > ph) [pw, ph] = [ph, pw];
+              pageW = pw;
+              pageH = ph;
+            }
+            const page = pdf.addPage([pageW, pageH]);
+            const availW = pageW - 2 * MARGIN;
+            const availH = pageH - 2 * MARGIN;
+            const fit = Math.min(availW / w, availH / h, 1);
+            const dw = w * fit;
+            const dh = h * fit;
+            page.drawImage(embedded, {
+              x: (pageW - dw) / 2,
+              y: (pageH - dh) / 2,
+              width: dw,
+              height: dh,
+            });
+          }
+
+          const bytes = await pdf.save();
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("i2p-summary").textContent =
+            `${i2pFiles.length} page${i2pFiles.length > 1 ? "s" : ""} from ${i2pFiles.length} image${i2pFiles.length > 1 ? "s" : ""}`;
+          document.getElementById("i2p-size").textContent =
+            "Size: " + fmtSize(blob.size);
+          document.getElementById("i2p-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "images.pdf";
+            a.click();
+          };
+          document.getElementById("i2p-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+          notify(`PDF built with ${i2pFiles.length} pages.`, "success");
+        } catch (err) {
+          showNotification("Images-to-PDF error: " + err.message);
+        }
+
+        hideProgress(progWrap);
+        document.getElementById("i2p-run-btn").disabled = i2pFiles.length === 0;
+      }
+
+      // ══════════════════════════════════════════════════════════════════════════
+      // ── METADATA ──────────────────────────────────────────────────────────────
+      let metaFile = null;
+      const metaDrop = document.getElementById("meta-drop");
+      const metaInput = document.getElementById("meta-input");
+      setupDropZone(metaDrop, metaInput, false, (files) =>
+        loadMetaFile(files[0]),
+      );
+
+      async function loadMetaFile(file) {
+        if (file.size > MAX_PDF_SIZE) {
+          notify("File too large.", "error");
+          return;
+        }
+        metaFile = file;
+        try {
+          if (typeof PDFLib === "undefined")
+            throw new Error("pdf-lib failed to load. Please refresh.");
+          const { PDFDocument } = PDFLib;
+          const ab = await file.arrayBuffer();
+          const pdf = await PDFDocument.load(ab, { ignoreEncryption: true });
+          document.getElementById("meta-fname").textContent = file.name;
+          document.getElementById("meta-pages").textContent =
+            `${pdf.getPageCount()} pages · ${fmtSize(file.size)}`;
+          document.getElementById("meta-title").value = pdf.getTitle() || "";
+          document.getElementById("meta-author").value = pdf.getAuthor() || "";
+          document.getElementById("meta-subject").value =
+            pdf.getSubject() || "";
+          const kw = pdf.getKeywords();
+          document.getElementById("meta-keywords").value = Array.isArray(kw)
+            ? kw.join(", ")
+            : kw || "";
+          document.getElementById("meta-creator").value =
+            pdf.getCreator() || "";
+          document.getElementById("meta-producer").value =
+            pdf.getProducer() || "";
+          document.getElementById("meta-info").style.display = "block";
+          document.getElementById("meta-run-btn").disabled = false;
+          document.getElementById("meta-result").style.display = "none";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        } catch (e) {
+          notify("Could not read PDF metadata: " + e.message, "error");
+        }
+      }
+
+      async function runMetadataSave() {
+        if (!metaFile) return;
+        const progWrap = document.getElementById("meta-prog");
+        const progFill = document.getElementById("meta-fill");
+        const progText = document.getElementById("meta-prog-text");
+        document.getElementById("meta-run-btn").disabled = true;
+        document.getElementById("meta-result").style.display = "none";
+        setProgress(progFill, progText, progWrap, 30, "Writing metadata...");
+        try {
+          if (typeof PDFLib === "undefined")
+            throw new Error("pdf-lib failed to load. Please refresh.");
+          const { PDFDocument } = PDFLib;
+          const ab = await metaFile.arrayBuffer();
+          const pdf = await PDFDocument.load(ab, { ignoreEncryption: true });
+          const val = (id) => document.getElementById(id).value.trim();
+          pdf.setTitle(val("meta-title") || undefined);
+          pdf.setAuthor(val("meta-author") || undefined);
+          pdf.setSubject(val("meta-subject") || undefined);
+          pdf.setKeywords(
+            val("meta-keywords")
+              ? val("meta-keywords").split(/,\s*/)
+              : undefined,
+          );
+          pdf.setCreator(val("meta-creator") || undefined);
+          setProgress(progFill, progText, progWrap, 75, "Saving PDF...");
+          const bytes = await pdf.save();
+          const blob = new Blob([bytes], { type: "application/pdf" });
+          document.getElementById("meta-dl").onclick = () => {
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = metaFile.name.replace(/\.pdf$/i, "_metadata.pdf");
+            a.click();
+          };
+          document.getElementById("meta-result").style.display = "block";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+          notify("Metadata saved.", "success");
+        } catch (e) {
+          notify("Metadata error: " + e.message, "error");
+        }
+        hideProgress(progWrap);
+        document.getElementById("meta-run-btn").disabled = false;
       }
 
       // ── Init ──────────────────────────────────────────────────────────────────

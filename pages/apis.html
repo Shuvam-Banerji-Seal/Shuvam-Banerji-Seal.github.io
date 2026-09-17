@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="google-site-verification"
+      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
+    />
+    <script>
+      (function () {
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Browse 835 free public APIs that need no API key, across 48 categories. Curated from the public-apis directory." />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/apis.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Public APIs — No Key Needed - Shuvam Banerji Seal" />
+    <meta property="og:description" content="Browse 835 free public APIs that need no API key, across 48 categories. Curated from the public-apis directory." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/apis.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:title" content="Public APIs — No Key Needed - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="Browse 835 free public APIs that need no API key, across 48 categories. Curated from the public-apis directory." />
+    <meta name="robots" content="index, follow" />
+    <title>Public APIs — No Key Needed - Shuvam Banerji Seal</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/animations.css" />
+    <link rel="stylesheet" href="../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../assets/css/overrides.css" />
+    <style>
+      .apis-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .apis-hero h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+      }
+      .api-search {
+        width: 100%;
+        max-width: 560px;
+        margin: 1.25rem auto 0;
+        display: block;
+        padding: 0.7rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+      .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.25rem;
+        margin-top: 2rem;
+      }
+      .api-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .api-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+      }
+      .api-card h3 {
+        font-size: 1.05rem;
+        margin: 0;
+      }
+      .api-card h3 a {
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      .api-card h3 a:hover {
+        color: var(--accent-cyan);
+        text-decoration: underline;
+      }
+      .api-card p {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        flex: 1;
+      }
+      .api-badges {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .api-badge {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+      }
+      .api-badge.ok {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+      }
+      .api-badge.no {
+        opacity: 0.65;
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .cat-card {
+        padding: 1.1rem 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .cat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+        color: var(--text-primary);
+      }
+      .cat-card .count {
+        margin-left: auto;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        background: var(--bg-elevated);
+        border-radius: 999px;
+        padding: 0.1rem 0.6rem;
+        white-space: nowrap;
+      }
+      .crumb {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+      }
+      .crumb a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+      }
+      .attr-note {
+        margin-top: 2.5rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../assets/js/navbar.js"></script>
+
+    <div id="mobile-menu-backdrop"></div>
+
+    <main class="container">
+    <div class="apis-container">
+      <header class="apis-hero text-center animate-fade-in-up">
+        <h1 class="page-title">
+          <i data-lucide="globe" class="inline-block"></i>
+          Public APIs — No Key Needed
+        </h1>
+        <p class="page-subtitle">
+          835 free APIs across 48 categories that work
+          with <strong>no signup and no API key</strong> — curated from the
+          <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis</a>
+          directory. Perfect for prototypes, hackathons and learning.
+        </p>
+        <input
+          type="search"
+          id="api-search"
+          class="api-search"
+          placeholder="Search all 835 APIs… (e.g. weather, cats, NASA)"
+          aria-label="Search APIs"
+        />
+      </header>
+      <div id="search-results" class="api-grid" hidden></div>
+      <div id="cat-grid" class="cat-grid">
+        <a class="cat-card" href="apis/animals.html">
+          <i data-lucide="layers"></i>
+          <span>Animals</span>
+          <span class="count">20 free</span>
+        </a>
+        <a class="cat-card" href="apis/anime.html">
+          <i data-lucide="layers"></i>
+          <span>Anime</span>
+          <span class="count">10 free</span>
+        </a>
+        <a class="cat-card" href="apis/anti-malware.html">
+          <i data-lucide="layers"></i>
+          <span>Anti-Malware</span>
+          <span class="count">2 free</span>
+        </a>
+        <a class="cat-card" href="apis/art-and-design.html">
+          <i data-lucide="layers"></i>
+          <span>Art &amp; Design</span>
+          <span class="count">12 free</span>
+        </a>
+        <a class="cat-card" href="apis/blockchain.html">
+          <i data-lucide="layers"></i>
+          <span>Blockchain</span>
+          <span class="count">8 free</span>
+        </a>
+        <a class="cat-card" href="apis/books.html">
+          <i data-lucide="layers"></i>
+          <span>Books</span>
+          <span class="count">18 free</span>
+        </a>
+        <a class="cat-card" href="apis/business.html">
+          <i data-lucide="layers"></i>
+          <span>Business</span>
+          <span class="count">10 free</span>
+        </a>
+        <a class="cat-card" href="apis/calendar.html">
+          <i data-lucide="layers"></i>
+          <span>Calendar</span>
+          <span class="count">12 free</span>
+        </a>
+        <a class="cat-card" href="apis/cloud-storage-and-file-sharing.html">
+          <i data-lucide="layers"></i>
+          <span>Cloud Storage &amp; File Sharing</span>
+          <span class="count">4 free</span>
+        </a>
+        <a class="cat-card" href="apis/cryptocurrency.html">
+          <i data-lucide="layers"></i>
+          <span>Cryptocurrency</span>
+          <span class="count">32 free</span>
+        </a>
+        <a class="cat-card" href="apis/currency-exchange.html">
+          <i data-lucide="layers"></i>
+          <span>Currency Exchange</span>
+          <span class="count">12 free</span>
+        </a>
+        <a class="cat-card" href="apis/data-validation.html">
+          <i data-lucide="layers"></i>
+          <span>Data Validation</span>
+          <span class="count">2 free</span>
+        </a>
+        <a class="cat-card" href="apis/development.html">
+          <i data-lucide="layers"></i>
+          <span>Development</span>
+          <span class="count">74 free</span>
+        </a>
+        <a class="cat-card" href="apis/dictionaries.html">
+          <i data-lucide="layers"></i>
+          <span>Dictionaries</span>
+          <span class="count">5 free</span>
+        </a>
+        <a class="cat-card" href="apis/documents-and-productivity.html">
+          <i data-lucide="layers"></i>
+          <span>Documents &amp; Productivity</span>
+          <span class="count">3 free</span>
+        </a>
+        <a class="cat-card" href="apis/email.html">
+          <i data-lucide="layers"></i>
+          <span>Email</span>
+          <span class="count">9 free</span>
+        </a>
+        <a class="cat-card" href="apis/entertainment.html">
+          <i data-lucide="layers"></i>
+          <span>Entertainment</span>
+          <span class="count">15 free</span>
+        </a>
+        <a class="cat-card" href="apis/environment.html">
+          <i data-lucide="layers"></i>
+          <span>Environment</span>
+          <span class="count">13 free</span>
+        </a>
+        <a class="cat-card" href="apis/finance.html">
+          <i data-lucide="layers"></i>
+          <span>Finance</span>
+          <span class="count">18 free</span>
+        </a>
+        <a class="cat-card" href="apis/food-and-drink.html">
+          <i data-lucide="layers"></i>
+          <span>Food &amp; Drink</span>
+          <span class="count">11 free</span>
+        </a>
+        <a class="cat-card" href="apis/games-and-comics.html">
+          <i data-lucide="layers"></i>
+          <span>Games &amp; Comics</span>
+          <span class="count">69 free</span>
+        </a>
+        <a class="cat-card" href="apis/geocoding.html">
+          <i data-lucide="layers"></i>
+          <span>Geocoding</span>
+          <span class="count">48 free</span>
+        </a>
+        <a class="cat-card" href="apis/government.html">
+          <i data-lucide="layers"></i>
+          <span>Government</span>
+          <span class="count">80 free</span>
+        </a>
+        <a class="cat-card" href="apis/health.html">
+          <i data-lucide="layers"></i>
+          <span>Health</span>
+          <span class="count">29 free</span>
+        </a>
+        <a class="cat-card" href="apis/jobs.html">
+          <i data-lucide="layers"></i>
+          <span>Jobs</span>
+          <span class="count">8 free</span>
+        </a>
+        <a class="cat-card" href="apis/machine-learning.html">
+          <i data-lucide="layers"></i>
+          <span>Machine Learning</span>
+          <span class="count">9 free</span>
+        </a>
+        <a class="cat-card" href="apis/music.html">
+          <i data-lucide="layers"></i>
+          <span>Music</span>
+          <span class="count">11 free</span>
+        </a>
+        <a class="cat-card" href="apis/news.html">
+          <i data-lucide="layers"></i>
+          <span>News</span>
+          <span class="count">7 free</span>
+        </a>
+        <a class="cat-card" href="apis/open-data.html">
+          <i data-lucide="layers"></i>
+          <span>Open Data</span>
+          <span class="count">35 free</span>
+        </a>
+        <a class="cat-card" href="apis/open-source-projects.html">
+          <i data-lucide="layers"></i>
+          <span>Open Source Projects</span>
+          <span class="count">8 free</span>
+        </a>
+        <a class="cat-card" href="apis/patent.html">
+          <i data-lucide="layers"></i>
+          <span>Patent</span>
+          <span class="count">2 free</span>
+        </a>
+        <a class="cat-card" href="apis/personality.html">
+          <i data-lucide="layers"></i>
+          <span>Personality</span>
+          <span class="count">20 free</span>
+        </a>
+        <a class="cat-card" href="apis/phone.html">
+          <i data-lucide="layers"></i>
+          <span>Phone</span>
+          <span class="count">1 free</span>
+        </a>
+        <a class="cat-card" href="apis/photography.html">
+          <i data-lucide="layers"></i>
+          <span>Photography</span>
+          <span class="count">6 free</span>
+        </a>
+        <a class="cat-card" href="apis/programming.html">
+          <i data-lucide="layers"></i>
+          <span>Programming</span>
+          <span class="count">1 free</span>
+        </a>
+        <a class="cat-card" href="apis/science-and-math.html">
+          <i data-lucide="layers"></i>
+          <span>Science &amp; Math</span>
+          <span class="count">34 free</span>
+        </a>
+        <a class="cat-card" href="apis/security.html">
+          <i data-lucide="layers"></i>
+          <span>Security</span>
+          <span class="count">19 free</span>
+        </a>
+        <a class="cat-card" href="apis/shopping.html">
+          <i data-lucide="layers"></i>
+          <span>Shopping</span>
+          <span class="count">1 free</span>
+        </a>
+        <a class="cat-card" href="apis/social.html">
+          <i data-lucide="layers"></i>
+          <span>Social</span>
+          <span class="count">9 free</span>
+        </a>
+        <a class="cat-card" href="apis/sports-and-fitness.html">
+          <i data-lucide="layers"></i>
+          <span>Sports &amp; Fitness</span>
+          <span class="count">21 free</span>
+        </a>
+        <a class="cat-card" href="apis/test-data.html">
+          <i data-lucide="layers"></i>
+          <span>Test Data</span>
+          <span class="count">25 free</span>
+        </a>
+        <a class="cat-card" href="apis/text-analysis.html">
+          <i data-lucide="layers"></i>
+          <span>Text Analysis</span>
+          <span class="count">1 free</span>
+        </a>
+        <a class="cat-card" href="apis/tracking.html">
+          <i data-lucide="layers"></i>
+          <span>Tracking</span>
+          <span class="count">3 free</span>
+        </a>
+        <a class="cat-card" href="apis/transportation.html">
+          <i data-lucide="layers"></i>
+          <span>Transportation</span>
+          <span class="count">39 free</span>
+        </a>
+        <a class="cat-card" href="apis/url-shorteners.html">
+          <i data-lucide="layers"></i>
+          <span>URL Shorteners</span>
+          <span class="count">10 free</span>
+        </a>
+        <a class="cat-card" href="apis/vehicle.html">
+          <i data-lucide="layers"></i>
+          <span>Vehicle</span>
+          <span class="count">4 free</span>
+        </a>
+        <a class="cat-card" href="apis/video.html">
+          <i data-lucide="layers"></i>
+          <span>Video</span>
+          <span class="count">28 free</span>
+        </a>
+        <a class="cat-card" href="apis/weather.html">
+          <i data-lucide="layers"></i>
+          <span>Weather</span>
+          <span class="count">17 free</span>
+        </a>
+      </div>
+      <p class="attr-note">
+        Dataset: <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis/public-apis</a>
+        (MIT). "No auth" entries only — anything needing a key, OAuth or signup is excluded.
+        Statuses (HTTPS/CORS) are as listed upstream and may drift; the linked docs are authoritative.
+      </p>
+    </div>
+    <script>
+      (function () {
+        const input = document.getElementById("api-search");
+        const results = document.getElementById("search-results");
+        const grid = document.getElementById("cat-grid");
+        let data = null;
+        async function load() {
+          try {
+            const r = await fetch("../apis.json");
+            const j = await r.json();
+            data = j.categories;
+          } catch (e) {
+            return;
+          }
+        }
+        function escHtml(s) {
+          return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+        input.addEventListener("input", () => {
+          const q = input.value.trim().toLowerCase();
+          if (!q || !data) {
+            results.hidden = true;
+            results.innerHTML = "";
+            grid.style.display = "";
+            return;
+          }
+          const hits = [];
+          for (const c of data) {
+            for (const a of c.apis) {
+              if (
+                a.name.toLowerCase().includes(q) ||
+                a.desc.toLowerCase().includes(q) ||
+                c.name.toLowerCase().includes(q)
+              ) {
+                hits.push({ c, a });
+                if (hits.length >= 60) break;
+              }
+            }
+            if (hits.length >= 60) break;
+          }
+          grid.style.display = "none";
+          results.hidden = false;
+          results.innerHTML =
+            hits.length === 0
+              ? '<p style="color:var(--text-secondary)">No matches. Try another keyword.</p>'
+              : hits
+                  .map(
+                    (h) =>
+                      '<article class="api-card"><h3><a href="' +
+                      h.a.url +
+                      '" target="_blank" rel="noopener">' +
+                      escHtml(h.a.name) +
+                      '</a></h3><p>' +
+                      escHtml(h.a.desc) +
+                      '</p><div class="api-badges"><span class="api-badge">' +
+                      escHtml(h.c.name) +
+                      '</span><span class="api-badge ok">No auth</span></div></article>',
+                  )
+                  .join("");
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        });
+        load();
+      })();
+    </script>
+    </main>
+
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem">
+        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
+        Portfolio v3.0
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    </script>
+
+    <script type="module" src="../assets/js/main.js"></script>
+    <script type="module" src="../assets/js/enhanced.js"></script>
+  </body>
+</html>

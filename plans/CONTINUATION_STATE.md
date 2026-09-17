@@ -1,98 +1,28 @@
-# CONTINUATION STATE — 2026-08-25 (scrutiny follow-up + quarantine) — DEPLOYED 23d8581
+# CONTINUATION STATE — 2026-09-17 — PDF Studio + Audio Studio features verified (UNCOMMITTED)
 
 ## Session Summary
 | Field | Value |
 |-------|-------|
-| Session # | N+7 |
-| Phase | SCRUTINY POLISH → QUARANTINE → LIVE-VERIFY |
-| What I did | Fixed remaining scrutiny findings (resume quantum contrast, tools quantum vars, music touch targets), generated 1200x630 og-image.png (dark, claim + molecules) and updated meta, polished homepage (ATP idle timer, About layout, rhythm/gutter tokens), quarantined 68 stale hashed bundles (2.5MB) + 6 orphaned JS modules to .rigor-trash with INDEX entries |
-| What worked | Cross-agent scrutiny caught systemic theme bugs; og-image generated via Playwright screenshot |
-| What failed | Vite dev CSS cache returned empty (restart fixed); scrutiny agents flagged already-handled items (e.g., Tailwind gray compat shims were present) |
-| Errors remaining | none |
-| Next priorities | Optional: project save/load, TURN for Beam (STUN-only remains) |
+| Session # | N+8 |
+| Phase | VERIFY → FIX → GATE (no commit/deploy this session) |
+| What I did | Verified uncommitted wave: Public APIs (48 pages+hub, 835 no-auth APIs), PDF Studio Images-to-PDF + Metadata modes, Audio Studio Duplicate Track + Metronome. Fixed 2 real bugs found during verification. Updated 05-audit-log.md. |
+| What worked | E2E via python :8090 (vite 8080 dead: inotify ENOSPC). PDF img2pdf E2E ✓, metadata round-trip via intercepted download blob re-parsed with pdf-lib ✓. Audio duplicate (button+d key, cloned buffer) ✓, metronome toggle+ticking ✓ |
+| What failed | 1) pdf-studio inline onload resolved URL→document.URL → TypeError + a template-literal syntax error (B58, fixed). 2) metronome scheduler: past-time scheduling → RangeError loop after stalls (B59, fixed with resync). 3) Chromium disk cache served stale audio-studio.js across normal reloads — must use fresh tab + Network.clearBrowserCache; caused several false "fix failed" readings |
+| Errors remaining | favicon 404 (env-only, python server has no favicon) |
+| Next priorities | 1) git add + commit + push (style: feat: …) → poll gh run list → live-verify 2) after deploy, live-check pages/apis.html + pdf-studio + audio-studio 3) deferred: audible metronome check on real audio device; B34 ph-calculator still open |
 | Blockers | none |
-| Audit status | LIVE-VERIFIED: og-image 200, homepage no-yank, Beam codec, Apps dropdown on prod; axe 0 serious; 0 overflow @390/800/1440; suites 11/11 523/523 106/106 |
+| Audit status | Suites green 11/11 · 1225/1225 · 206/206 · build ✓ · E2E evidence in 05-audit-log.md session 2026-09-17 |
 
-## Deployed state
-- HEAD = 23d8581. Actions run success. 80 files changed (68 deletions, 12 modifications).
-- Suites: 11/11 · 523/523 · 106/106.
-- Live: site 200, og-image.png 200, no references to quarantined bundles.
-
-## Quarantine
-- .rigor-trash/20260825-110000-orphan-js/ (6 modules)
-- .rigor-trash/20260825-110500-stale-bundles/ (68 hashed bundles)
-- See .rigor-trash/INDEX.md for restore commands. Nothing hard-deleted.
-
----
-# CONTINUATION STATE — 2026-08-25 (night) — HOMEPAGE REDESIGN DEPLOYED
-
-## Session Summary
-| Field | Value |
-|-------|-------|
-| Session # | N+6 |
-| Phase | RESEARCH → SPEC (design.md) → IMPLEMENT → DEPLOY → LIVE-VERIFY |
-| What I did | Homepage redesigned per plans/design.md (Ricardo Chance-inspired, chemistry identity): claim hero + dual CTA, positioning paragraph, Featured Work (6 indexed cards incl. NEW Molecule3D/LAMMPS card w/ live link), Capabilities 01-06 grid, editorial band, giant-mail contact closer; constellation stars → real molecules (benzene/H2O/CH4/CO2/N2 as CPK atoms+bonds w/ cursor repulsion) |
-| What worked | design.md spec written before implementation; lucide fixture validator caught an invalid icon pre-deploy |
-| What failed | independent subagent dispatch failed twice (provider outage) → design.md authored in-session |
-| Errors remaining | none known |
-| Next priorities | backlog below |
-| Blockers | none |
-| Audit status | LIVE-VERIFIED (claim/CTAs/constellation/6 cards/LAMMPS link/caps/closer on prod; axe 0 serious; 0 overflow @390/800/1440) |
-
-## Deployed state
-- HEAD = beb0b82 (docs). Code HEAD = 6dafff3. Actions run success.
-- Suites: 11/11 · 523/523 · 106/106.
-
-## Key files this wave
-- plans/design.md — the spec (section-by-section, copy locked, migration plan, acceptance criteria)
-- index.html — hero claim, positioning, work grid, capabilities, band, closer
-- assets/css/index-overrides.css — new component styles (solid ink only)
-- assets/js/home-cinematics.js — molecule constellation (replaces star constellation)
-
-## Optional backlog
-- About section light polish (kept as-is this wave per spec §2.6)
-- Project save/load + clip editing (audio studio); TURN for Beam; chord sequencer (air guitar)
-- lucide ESM tree-shake, critical CSS, actions bump, orphan quarantine, Modal key rotation (owner)
+## File Manifest
+| File | Status | Note |
+|------|--------|------|
+| pages/tools/pdf-studio.html | modified | +Images-to-PDF, +Metadata panes/JS; B58 fixed |
+| assets/js/audio-studio.js | modified | +duplicateTrack, +metronome; B59 resync fix (comment corrected re: MDN semantics) |
+| assets/css/audio-studio.css | modified | .track-btn.dup styles |
+| pages/tools/audio-studio.html | modified | metro-btn in transport |
+| assets/js/navbar.js, pages/tools.html, vite.config.mjs | modified | Public APIs wiring |
+| pages/apis.html, pages/apis/ (48), public/apis.json, scripts/generate-apis-pages.js | new | Public APIs section |
+| plans/05-audit-log.md | updated | session 2026-09-17 entry |
 
 ## Continuation Prompt Hints
-Homepage now follows plans/design.md. If tweaks are wanted, edit the spec first, then the page — the spec is the source of truth for this design.
-
-
-# CONTINUATION STATE — 2026-08-25 — multi-page improvement wave DEPLOYED
-
-## Session Summary
-
-| Field            | Value                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Session #        | N+5                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Phase            | 7 workstreams: 2 bug fixes, 5 feature/design waves — all deployed                                                                                                                                                                                                                                                                                                                                        |
-| What I did       | (1) fixed homepage scroll-yank (terminal focus + smooth-scroll), (2) fixed Beam codec (inverted b64 padding — 1-in-4 codes dead), (3) air guitar v2 (5-finger tracking, dynamics, articulation, 8 chords, metronome, WAV recording, trails), (4) studio hover cut-cursor w/ snapped badge, (5) navbar Apps regroup, (6) music premium pass, (7) site-wide de-gradient + resume/projects/about refinement |
-| What worked      | reproduce-first debugging (scroll sampling caught the smooth-yank; padding table caught Beam); override-pass CSS for the complex music page                                                                                                                                                                                                                                                              |
-| What failed      | Vite stale cache again (restart); music gate needed real password (sessionStorage key check differs)                                                                                                                                                                                                                                                                                                     |
-| Errors remaining | none known                                                                                                                                                                                                                                                                                                                                                                                               |
-| Next priorities  | backlog below                                                                                                                                                                                                                                                                                                                                                                                            |
-| Blockers         | none                                                                                                                                                                                                                                                                                                                                                                                                     |
-| Audit status     | LIVE-VERIFIED (homepage no-yank, Beam codec, Apps dropdown on prod)                                                                                                                                                                                                                                                                                                                                      |
-
-## Deployed state
-
-- HEAD = 23da62a (docs). Code HEAD = 0ad8859. Actions run success.
-- Suites: 11/11 · 523/523 · 106/106.
-
-## Notes for future sessions
-
-- Beam P2P still STUN-only: symmetric-NAT pairs cannot connect (inherent to serverless; a TURN server would be the only upgrade).
-- Air guitar recording produces WAV via MediaRecorder(webm)→decode→PCM encode.
-- Music gate password is owner's; sessionStorage `sbs_music_auth`.
-- De-gradient: --grad-primary/--grad-green are now SOLID colors per theme — consumers automatically flat. Remaining gradients are intentional (light body wash, album-art placeholder, shimmer sheens, studio hardware bevels).
-
-## Optional backlog
-
-- Project save/load + clip-level editing (audio studio)
-- TURN server option for Beam (needs a hosted service)
-- Air guitar: chord-progression sequencer, palm-mute detection
-- Older: lucide ESM tree-shake, critical CSS, actions/\* bump, orphan quarantine, Modal key rotation (owner)
-
-## Continuation Prompt Hints
-
-All user-reported issues resolved + deployed. If new reports arrive, reproduce on LIVE first (this session's two bugs were both environment-timing or math errors invisible to static reading).
+Everything is verified locally and gated but NOT committed. Start with `git status --porcelain`, then commit + push + poll Actions + live-verify. Do not trust browser reload for cached JS — clear cache or new tab.

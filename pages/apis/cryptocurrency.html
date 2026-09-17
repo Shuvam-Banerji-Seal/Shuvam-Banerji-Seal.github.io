@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="google-site-verification"
+      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
+    />
+    <script>
+      (function () {
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="32 free Cryptocurrency APIs that need no API key: 0x, 1inch, Alpha (Mossland), Bitcambio, BitcoinCharts, and more." />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/apis/cryptocurrency.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cryptocurrency APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta property="og:description" content="32 free Cryptocurrency APIs that need no API key: 0x, 1inch, Alpha (Mossland), Bitcambio, BitcoinCharts, and more." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/apis/cryptocurrency.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:title" content="Cryptocurrency APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="32 free Cryptocurrency APIs that need no API key: 0x, 1inch, Alpha (Mossland), Bitcambio, BitcoinCharts, and more." />
+    <meta name="robots" content="index, follow" />
+    <title>Cryptocurrency APIs (No Key Needed) - Shuvam Banerji Seal</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/animations.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../../assets/css/overrides.css" />
+    <style>
+      .apis-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .apis-hero h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+      }
+      .api-search {
+        width: 100%;
+        max-width: 560px;
+        margin: 1.25rem auto 0;
+        display: block;
+        padding: 0.7rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+      .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.25rem;
+        margin-top: 2rem;
+      }
+      .api-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .api-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+      }
+      .api-card h3 {
+        font-size: 1.05rem;
+        margin: 0;
+      }
+      .api-card h3 a {
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      .api-card h3 a:hover {
+        color: var(--accent-cyan);
+        text-decoration: underline;
+      }
+      .api-card p {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        flex: 1;
+      }
+      .api-badges {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .api-badge {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+      }
+      .api-badge.ok {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+      }
+      .api-badge.no {
+        opacity: 0.65;
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .cat-card {
+        padding: 1.1rem 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .cat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+        color: var(--text-primary);
+      }
+      .cat-card .count {
+        margin-left: auto;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        background: var(--bg-elevated);
+        border-radius: 999px;
+        padding: 0.1rem 0.6rem;
+        white-space: nowrap;
+      }
+      .crumb {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+      }
+      .crumb a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+      }
+      .attr-note {
+        margin-top: 2.5rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <div id="mobile-menu-backdrop"></div>
+
+    <main class="container">
+    <div class="apis-container">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="../apis.html">Public APIs</a> / Cryptocurrency
+        <span style="float:right"><a href="cloud-storage-and-file-sharing.html">← Cloud Storage &amp; File Sharing</a> · <a href="currency-exchange.html">Currency Exchange →</a></span>
+      </nav>
+      <header class="apis-hero">
+        <h1 class="page-title">
+          <i data-lucide="layers" class="inline-block"></i>
+          Cryptocurrency APIs
+        </h1>
+        <p class="page-subtitle">
+          32 free APIs with <strong>no signup and no API
+          key</strong>. Data from
+          <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis</a>
+          (MIT).
+        </p>
+      </header>
+      <div class="api-grid">
+          <article class="api-card">
+            <h3>
+              <a href="https://0x.org/api" target="_blank" rel="noopener">0x</a>
+            </h3>
+            <p>API for querying token and pool stats across various liquidity pools</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://0x.org/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://1inch.io/api/" target="_blank" rel="noopener">1inch</a>
+            </h3>
+            <p>API for querying decentralize exchange</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://1inch.io/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://alpha.moss.land/developers" target="_blank" rel="noopener">Alpha (Mossland)</a>
+            </h3>
+            <p>Korean crypto channel stance + RAG Q&amp;A + canonical entity/topic/event store</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://alpha.moss.land/developers" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://nova.bitcambio.com.br/api/v3/docs#a-public" target="_blank" rel="noopener">Bitcambio</a>
+            </h3>
+            <p>Get the list of all traded assets in the exchange</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://nova.bitcambio.com.br/api/v3/docs#a-public" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://bitcoincharts.com/about/exchanges/" target="_blank" rel="noopener">BitcoinCharts</a>
+            </h3>
+            <p>Financial and Technical Data related to the Bitcoin Network</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://bitcoincharts.com/about/exchanges/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://why21million.com/halving-api/" target="_blank" rel="noopener">Bitcoin Halving</a>
+            </h3>
+            <p>Halving era, block reward, and schedule arithmetic for any Bitcoin block height</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://why21million.com/halving-api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://blazephoenix.xyz/api" target="_blank" rel="noopener">BlazePhoenix</a>
+            </h3>
+            <p>On-chain DEX aggregator quotes and route execution data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://blazephoenix.xyz/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://blocklottos.com/openapi.json" target="_blank" rel="noopener">Block Lottos</a>
+            </h3>
+            <p>On-chain lottery, draw history, jackpot and advertising endpoints</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://blocklottos.com/openapi.json" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://btcglobe.live/join#makers" target="_blank" rel="noopener">BTCGlobe</a>
+            </h3>
+            <p>Bitcoin height, fees, mempool and peer data served live from two self-hosted nodes</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://btcglobe.live/join#makers" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://btcnode.uk" target="_blank" rel="noopener">btcnode.uk</a>
+            </h3>
+            <p>Bitcoin blockchain data, fees, mempool, SEC insider trades, Reddit sentiment. x402 micropayments for paid endpoints.</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://btcnode.uk" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://docs.coincap.io/" target="_blank" rel="noopener">CoinCap</a>
+            </h3>
+            <p>Real time Cryptocurrency prices through a RESTful API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://docs.coincap.io/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://old.coindesk.com/coindesk-api/" target="_blank" rel="noopener">CoinDesk</a>
+            </h3>
+            <p>CoinDesk's Bitcoin Price Index (BPI) in multiple currencies</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://old.coindesk.com/coindesk-api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://www.coingecko.com/api" target="_blank" rel="noopener">CoinGecko</a>
+            </h3>
+            <p>Cryptocurrency Price, Market, and Developer/Social Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="http://www.coingecko.com/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://coinlobster.com/developers" target="_blank" rel="noopener">CoinLobster</a>
+            </h3>
+            <p>Live executed whale trades across 15 exchanges and on-chain DEX with an unusualness radar</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://coinlobster.com/developers" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.coinlore.com/cryptocurrency-data-api" target="_blank" rel="noopener">Coinlore</a>
+            </h3>
+            <p>Cryptocurrencies prices, volume and more</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.coinlore.com/cryptocurrency-data-api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://api.coinpaprika.com" target="_blank" rel="noopener">Coinpaprika</a>
+            </h3>
+            <p>Cryptocurrencies prices, volume and more</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://api.coinpaprika.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://documenter.getpostman.com/view/5734027/RzZ6Hzr3?version=latest" target="_blank" rel="noopener">CoinStats</a>
+            </h3>
+            <p>Crypto Tracker</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://documenter.getpostman.com/view/5734027/RzZ6Hzr3?version=latest" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://docs.cryptapi.io/" target="_blank" rel="noopener">CryptAPI</a>
+            </h3>
+            <p>Cryptocurrency Payment Processor</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://docs.cryptapi.io/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.cryptingup.com/apidoc/#introduction" target="_blank" rel="noopener">CryptingUp</a>
+            </h3>
+            <p>Cryptocurrency data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.cryptingup.com/apidoc/#introduction" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.cryptocompare.com/api#" target="_blank" rel="noopener">CryptoCompare</a>
+            </h3>
+            <p>Cryptocurrencies Comparison</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.cryptocompare.com/api#" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.cryptonator.com/api/" target="_blank" rel="noopener">Cryptonator</a>
+            </h3>
+            <p>Cryptocurrencies Exchange Rates</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.cryptonator.com/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://defillama.com/docs/api" target="_blank" rel="noopener">DefiLlama</a>
+            </h3>
+            <p>Open and transparent DeFi data, TVL, coin prices, volumes, and yields</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://defillama.com/docs/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://docs.gemini.com/rest-api/" target="_blank" rel="noopener">Gemini</a>
+            </h3>
+            <p>Cryptocurrencies Exchange</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://docs.gemini.com/rest-api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://localbitcoins.com/api-docs/" target="_blank" rel="noopener">Localbitcoins</a>
+            </h3>
+            <p>P2P platform to buy and sell Bitcoins</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://localbitcoins.com/api-docs/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://mempool.space/api" target="_blank" rel="noopener">Mempool</a>
+            </h3>
+            <p>Bitcoin API Service focusing on the transaction fee</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://mempool.space/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.mercadobitcoin.com.br/api-doc/" target="_blank" rel="noopener">MercadoBitcoin</a>
+            </h3>
+            <p>Brazilian Cryptocurrency Information</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.mercadobitcoin.com.br/api-doc/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://messari.io/api" target="_blank" rel="noopener">Messari</a>
+            </h3>
+            <p>Provides API endpoints for thousands of crypto assets</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://messari.io/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://monerometrics.net" target="_blank" rel="noopener">monerometrics</a>
+            </h3>
+            <p>Reorg-aware Monero (XMR) network metrics, mining-pool centralization and chain reorganizations</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://monerometrics.net" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://nexchange2.docs.apiary.io/" target="_blank" rel="noopener">Nexchange</a>
+            </h3>
+            <p>Automated cryptocurrency exchange service</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://nexchange2.docs.apiary.io/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://docs.solana.com/developing/clients/jsonrpc-api" target="_blank" rel="noopener">Solana JSON RPC</a>
+            </h3>
+            <p>Provides various endpoints to interact with the Solana Blockchain</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://docs.solana.com/developing/clients/jsonrpc-api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://zennet.cloud" target="_blank" rel="noopener">Zennet</a>
+            </h3>
+            <p>x402 pay-per-use APIs: Polymarket signals, CEX/DEX spreads, contract risk scores, gas oracle</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://zennet.cloud" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://zmok.io" target="_blank" rel="noopener">ZMOK</a>
+            </h3>
+            <p>Ethereum JSON RPC API and Web3 provider</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://zmok.io" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+      </div>
+      <p class="attr-note">
+        <a href="../apis.html">← All categories</a> · HTTPS/CORS badges are
+        as listed upstream and may drift — the linked docs are authoritative.
+      </p>
+    </div>
+    </main>
+
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem">
+        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
+        Portfolio v3.0
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    </script>
+
+    <script type="module" src="../../assets/js/main.js"></script>
+    <script type="module" src="../../assets/js/enhanced.js"></script>
+  </body>
+</html>

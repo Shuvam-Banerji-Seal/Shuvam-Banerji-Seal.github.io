@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="google-site-verification"
+      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
+    />
+    <script>
+      (function () {
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="74 free Development APIs that need no API key: 24 Pull Requests, Agify.io, API Grátis, ApicAgent, APIs.guru, and more." />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/apis/development.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Development APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta property="og:description" content="74 free Development APIs that need no API key: 24 Pull Requests, Agify.io, API Grátis, ApicAgent, APIs.guru, and more." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/apis/development.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:title" content="Development APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="74 free Development APIs that need no API key: 24 Pull Requests, Agify.io, API Grátis, ApicAgent, APIs.guru, and more." />
+    <meta name="robots" content="index, follow" />
+    <title>Development APIs (No Key Needed) - Shuvam Banerji Seal</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/animations.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../../assets/css/overrides.css" />
+    <style>
+      .apis-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .apis-hero h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+      }
+      .api-search {
+        width: 100%;
+        max-width: 560px;
+        margin: 1.25rem auto 0;
+        display: block;
+        padding: 0.7rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+      .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.25rem;
+        margin-top: 2rem;
+      }
+      .api-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .api-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+      }
+      .api-card h3 {
+        font-size: 1.05rem;
+        margin: 0;
+      }
+      .api-card h3 a {
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      .api-card h3 a:hover {
+        color: var(--accent-cyan);
+        text-decoration: underline;
+      }
+      .api-card p {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        flex: 1;
+      }
+      .api-badges {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .api-badge {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+      }
+      .api-badge.ok {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+      }
+      .api-badge.no {
+        opacity: 0.65;
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .cat-card {
+        padding: 1.1rem 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .cat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+        color: var(--text-primary);
+      }
+      .cat-card .count {
+        margin-left: auto;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        background: var(--bg-elevated);
+        border-radius: 999px;
+        padding: 0.1rem 0.6rem;
+        white-space: nowrap;
+      }
+      .crumb {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+      }
+      .crumb a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+      }
+      .attr-note {
+        margin-top: 2.5rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <div id="mobile-menu-backdrop"></div>
+
+    <main class="container">
+    <div class="apis-container">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="../apis.html">Public APIs</a> / Development
+        <span style="float:right"><a href="data-validation.html">← Data Validation</a> · <a href="dictionaries.html">Dictionaries →</a></span>
+      </nav>
+      <header class="apis-hero">
+        <h1 class="page-title">
+          <i data-lucide="layers" class="inline-block"></i>
+          Development APIs
+        </h1>
+        <p class="page-subtitle">
+          74 free APIs with <strong>no signup and no API
+          key</strong>. Data from
+          <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis</a>
+          (MIT).
+        </p>
+      </header>
+      <div class="api-grid">
+          <article class="api-card">
+            <h3>
+              <a href="https://24pullrequests.com/api" target="_blank" rel="noopener">24 Pull Requests</a>
+            </h3>
+            <p>Project to promote open source collaboration during December</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://24pullrequests.com/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://agify.io" target="_blank" rel="noopener">Agify.io</a>
+            </h3>
+            <p>Estimates the age from a first name</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://agify.io" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://apigratis.com.br/" target="_blank" rel="noopener">API Grátis</a>
+            </h3>
+            <p>Multiples services and public APIs</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://apigratis.com.br/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.apicagent.com" target="_blank" rel="noopener">ApicAgent</a>
+            </h3>
+            <p>Extract device details from user-agent string</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://www.apicagent.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://apis.guru/api-doc/" target="_blank" rel="noopener">APIs.guru</a>
+            </h3>
+            <p>Wikipedia for Web APIs, OpenAPI/Swagger specs for public APIs</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://apis.guru/api-doc/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://apizone.io/api-docs" target="_blank" rel="noopener">APIzone</a>
+            </h3>
+            <p>Independent uptime &amp; status monitoring for 200+ popular APIs</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://apizone.io/api-docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://docs.aquanode.io/docs/api/marketplace" target="_blank" rel="noopener">Aquanode</a>
+            </h3>
+            <p>Live GPU rental prices and availability across nine cloud providers</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://docs.aquanode.io/docs/api/marketplace" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://beeceptor.com/" target="_blank" rel="noopener">Beeceptor</a>
+            </h3>
+            <p>Build a mock Rest API endpoint in seconds</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://beeceptor.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://bored-api.appbrewery.com/" target="_blank" rel="noopener">Bored</a>
+            </h3>
+            <p>Find random activities to fight boredom</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://bored-api.appbrewery.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://brewpage.app" target="_blank" rel="noopener">BrewPage</a>
+            </h3>
+            <p>Free hosting for HTML, JSON, key-value, files, multi-file sites with short URLs and TTL retention</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://brewpage.app" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://api.cdnjs.com/libraries/jquery" target="_blank" rel="noopener">CDNJS</a>
+            </h3>
+            <p>Library info on CDNJS</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://api.cdnjs.com/libraries/jquery" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://changelogs.md" target="_blank" rel="noopener">Changelogs.md</a>
+            </h3>
+            <p>Structured changelog metadata from open source projects</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://changelogs.md" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/polarspetroll/ciprand" target="_blank" rel="noopener">Ciprand</a>
+            </h3>
+            <p>Secure random string generator</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://github.com/polarspetroll/ciprand" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/fawazahmed0/cloudflare-trace-api" target="_blank" rel="noopener">Cloudflare Trace</a>
+            </h3>
+            <p>Get IP Address, Timestamp, User Agent, Country Code, IATA, HTTP Version, TLS/SSL Version &amp; More</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://github.com/fawazahmed0/cloudflare-trace-api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/Jaagrav/CodeX" target="_blank" rel="noopener">Codex</a>
+            </h3>
+            <p>Online Compiler for Various Languages</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://github.com/Jaagrav/CodeX" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/burhanuday/cors-proxy" target="_blank" rel="noopener">CORS Proxy</a>
+            </h3>
+            <p>Get around the dreaded CORS error by using this proxy as a middle man</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://github.com/burhanuday/cors-proxy" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://countapi.xyz" target="_blank" rel="noopener">CountAPI</a>
+            </h3>
+            <p>Free and simple counting service. You can use it to track page hits and specific events</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://countapi.xyz" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://crates.io/data-access" target="_blank" rel="noopener">crates.io</a>
+            </h3>
+            <p>Rust crate versions, downloads and dependency metadata</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://crates.io/data-access" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://status.digitalocean.com/api" target="_blank" rel="noopener">DigitalOcean Status</a>
+            </h3>
+            <p>Status of all DigitalOcean services</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://status.digitalocean.com/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://digmyname.com/api" target="_blank" rel="noopener">DigMyName</a>
+            </h3>
+            <p>Domain availability and registrar pricing across 52 TLDs</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://digmyname.com/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://api.domainsdb.info/" target="_blank" rel="noopener">DomainDb Info</a>
+            </h3>
+            <p>Domain name search to find all domains containing particular words/phrases/etc</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://api.domainsdb.info/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://dotsweep.com/docs" target="_blank" rel="noopener">dotsweep</a>
+            </h3>
+            <p>Domain availability across 1200+ TLDs with registration and renewal prices</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://dotsweep.com/docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://isitdownstatus.com" target="_blank" rel="noopener">DownStatus</a>
+            </h3>
+            <p>Real-time status for GitHub, AWS, Discord and 90+ services</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://isitdownstatus.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://extendsclass.com/json-storage.html" target="_blank" rel="noopener">ExtendsClass JSON Storage</a>
+            </h3>
+            <p>A simple JSON store API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://extendsclass.com/json-storage.html" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://genderize.io" target="_blank" rel="noopener">Genderize.io</a>
+            </h3>
+            <p>Estimates a gender from a first name</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://genderize.io" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://host-t.com" target="_blank" rel="noopener">host-t.com</a>
+            </h3>
+            <p>Basic DNS query via HTTP GET request</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://host-t.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://http2.pro/doc/api" target="_blank" rel="noopener">HTTP2.Pro</a>
+            </h3>
+            <p>Test endpoints for client and server HTTP/2 protocol support</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://http2.pro/doc/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://httpbin.org/" target="_blank" rel="noopener">Httpbin</a>
+            </h3>
+            <p>A Simple HTTP Request &amp; Response Service</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://httpbin.org/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://cloudflare-quic.com/b/" target="_blank" rel="noopener">Httpbin Cloudflare</a>
+            </h3>
+            <p>A Simple HTTP Request &amp; Response Service with HTTP/3 Support by Cloudflare</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://cloudflare-quic.com/b/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://hipsum.co" target="_blank" rel="noopener">Hipsum</a>
+            </h3>
+            <p>Hipster-themed lorem ipsum generator for placeholder text</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://hipsum.co" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://icanhazepoch.com" target="_blank" rel="noopener">Icanhazepoch</a>
+            </h3>
+            <p>Get Epoch time</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://icanhazepoch.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://major.io/icanhazip-com-faq/" target="_blank" rel="noopener">Icanhazip</a>
+            </h3>
+            <p>IP Address API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://major.io/icanhazip-com-faq/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://platform.ifttt.com/docs/connect_api" target="_blank" rel="noopener">IFTTT</a>
+            </h3>
+            <p>IFTTT Connect API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://platform.ifttt.com/docs/connect_api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://documentation.image-charts.com/" target="_blank" rel="noopener">Image-Charts</a>
+            </h3>
+            <p>Generate charts, QR codes and graph images</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://documentation.image-charts.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://ip-fast.com/docs/" target="_blank" rel="noopener">ip-fast.com</a>
+            </h3>
+            <p>IP address, country and city</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://ip-fast.com/docs/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.ipify.org/" target="_blank" rel="noopener">IPify</a>
+            </h3>
+            <p>A simple IP Address API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.ipify.org/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://ipinfo.io/developers" target="_blank" rel="noopener">IPinfo</a>
+            </h3>
+            <p>Another simple IP Address API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://ipinfo.io/developers" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://isitdownstatus.com" target="_blank" rel="noopener">isitdownstatus</a>
+            </h3>
+            <p>Check if websites and online services are currently down</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://isitdownstatus.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/jsdelivr/data.jsdelivr.com" target="_blank" rel="noopener">jsDelivr</a>
+            </h3>
+            <p>Package info and download stats on jsDelivr CDN</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://github.com/jsdelivr/data.jsdelivr.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://json2jsonp.com/" target="_blank" rel="noopener">JSON 2 JSONP</a>
+            </h3>
+            <p>Convert JSON to JSONP (on-the-fly) for easy cross-domain data requests using client-side JavaScript</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://json2jsonp.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://jsonplaceholder.typicode.com" target="_blank" rel="noopener">JSONPlaceholder</a>
+            </h3>
+            <p>Fake REST API for testing and prototyping</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://jsonplaceholder.typicode.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://keyvalue.immanuel.co/" target="_blank" rel="noopener">Keyvalue</a>
+            </h3>
+            <p>Simple key-value storage REST API for quick prototyping</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://keyvalue.immanuel.co/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://kroki.io" target="_blank" rel="noopener">Kroki</a>
+            </h3>
+            <p>Creates diagrams from textual descriptions</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://kroki.io" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/cmccandless/license-api/blob/master/README.md" target="_blank" rel="noopener">License-API</a>
+            </h3>
+            <p>Unofficial REST API for choosealicense.com</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://github.com/cmccandless/license-api/blob/master/README.md" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://lua-decompiler.ferib.dev/" target="_blank" rel="noopener">Lua Decompiler</a>
+            </h3>
+            <p>Online Lua 5.1 Decompiler</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://lua-decompiler.ferib.dev/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://microenv.com/" target="_blank" rel="noopener">MicroENV</a>
+            </h3>
+            <p>Fake Rest API for developers</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://microenv.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://designer.mocky.io/" target="_blank" rel="noopener">Mocky</a>
+            </h3>
+            <p>Mock user defined test JSON for REST API endpoints</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://designer.mocky.io/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.myip.com/api-docs/" target="_blank" rel="noopener">MY IP</a>
+            </h3>
+            <p>Get IP address information</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.myip.com/api-docs/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://myiprightnow.com" target="_blank" rel="noopener">MyIPRightNow</a>
+            </h3>
+            <p>Public IP address with network, location, and connection details</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://myiprightnow.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://nationalize.io" target="_blank" rel="noopener">Nationalize.io</a>
+            </h3>
+            <p>Estimate the nationality of a first name</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://nationalize.io" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://networkcalc.com/api/docs" target="_blank" rel="noopener">NetworkCalc</a>
+            </h3>
+            <p>Network calculators, including subnets, DNS, binary, and security tools</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://networkcalc.com/api/docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md" target="_blank" rel="noopener">npm Registry</a>
+            </h3>
+            <p>Query information about your favorite Node.js libraries programatically</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://orcascan.com/guides/free-barcode-image-api-0e4a4fa6" target="_blank" rel="noopener">Orca Scan</a>
+            </h3>
+            <p>Generate barcode images (QR, Code 128, EAN, Data Matrix and more) in SVG, PNG, JPG or PDF</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://orcascan.com/guides/free-barcode-image-api-0e4a4fa6" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://outagedeck.com/developers/api" target="_blank" rel="noopener">OutageDeck</a>
+            </h3>
+            <p>Live status and incidents for 170+ cloud and SaaS providers from official feeds</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://outagedeck.com/developers/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://oyyi.xyz/docs/1.0" target="_blank" rel="noopener">oyyi</a>
+            </h3>
+            <p>API for Fake Data, image/video conversion, optimization, pdf optimization and thumbnail generation</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://oyyi.xyz/docs/1.0" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://packagist.org/apidoc" target="_blank" rel="noopener">Packagist</a>
+            </h3>
+            <p>PHP Composer package versions and dist metadata</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://packagist.org/apidoc" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://phone-specs-api-production.up.railway.app/docs" target="_blank" rel="noopener">Phone Specs</a>
+            </h3>
+            <p>Real-time smartphone specifications database for 263 devices</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://phone-specs-api-production.up.railway.app/docs" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://proxyforge.dev" target="_blank" rel="noopener">ProxyForge</a>
+            </h3>
+            <p>Free auto-updating list of live-tested proxies (HTTP/HTTPS/SOCKS4/SOCKS5), refreshed every 6 h</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://proxyforge.dev" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://solsigs.com/qrapi/" target="_blank" rel="noopener">QR &amp; Barcode</a>
+            </h3>
+            <p>QR codes and barcodes (Code 128, EAN-13, Data Matrix, PDF417 + more). SVG or PNG output</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://solsigs.com/qrapi/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.qrtag.net/api/" target="_blank" rel="noopener">QR code</a>
+            </h3>
+            <p>Create an easy to read QR code and URL shortener</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://www.qrtag.net/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://goqr.me/api/" target="_blank" rel="noopener">QR code</a>
+            </h3>
+            <p>Generate and decode / read QR code graphics</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://goqr.me/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://qrcodecrafter.com/qr-code-api" target="_blank" rel="noopener">QR Code Crafter</a>
+            </h3>
+            <p>Generate static QR codes in SVG, PNG, JPG, WebP, PDF, or EPS</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://qrcodecrafter.com/qr-code-api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.qrcode-monkey.com/qr-code-api-with-logo/" target="_blank" rel="noopener">Qrcode Monkey</a>
+            </h3>
+            <p>Integrate custom and unique looking QR codes into your system or workflow</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.qrcode-monkey.com/qr-code-api-with-logo/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://quickchart.io/" target="_blank" rel="noopener">QuickChart</a>
+            </h3>
+            <p>Generate chart and graph images</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://quickchart.io/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://reqres.in/" target="_blank" rel="noopener">ReqRes</a>
+            </h3>
+            <p>A hosted REST-API ready to respond to your AJAX requests</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://reqres.in/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://rss-to-json-serverless-api.vercel.app" target="_blank" rel="noopener">RSS feed to JSON</a>
+            </h3>
+            <p>Returns RSS feed in JSON format using feed URL</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://rss-to-json-serverless-api.vercel.app" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://guides.rubygems.org/rubygems-org-api/" target="_blank" rel="noopener">RubyGems</a>
+            </h3>
+            <p>Ruby gem metadata, versions, dependencies and search</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://guides.rubygems.org/rubygems-org-api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://color.serialif.com/" target="_blank" rel="noopener">Serialif Color</a>
+            </h3>
+            <p>Color conversion, complementary, grayscale and contrasted text</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://color.serialif.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://shoutcloud.io/" target="_blank" rel="noopener">SHOUTCLOUD</a>
+            </h3>
+            <p>ALL-CAPS AS A SERVICE</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://shoutcloud.io/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/Cgboal/SonarSearch" target="_blank" rel="noopener">Sonar</a>
+            </h3>
+            <p>Project Sonar DNS Enumeration API</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://github.com/Cgboal/SonarSearch" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://statically.io/" target="_blank" rel="noopener">Statically</a>
+            </h3>
+            <p>A free CDN for developers</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://statically.io/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.thunderclient.com/" target="_blank" rel="noopener">Thunder Client</a>
+            </h3>
+            <p>API testing tool</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://www.thunderclient.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://tinymind.eu/api/" target="_blank" rel="noopener">TinyMind Agent Tools</a>
+            </h3>
+            <p>Free APIs by an AI agent on a VPS: actor lookup, word-of-the-day, poems, jokes, ping</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://tinymind.eu/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/melpon/wandbox/blob/master/kennel2/API.rst" target="_blank" rel="noopener">Wandbox</a>
+            </h3>
+            <p>Code compiler supporting 35+ languages mentioned at wandbox.org</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://github.com/melpon/wandbox/blob/master/kennel2/API.rst" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+      </div>
+      <p class="attr-note">
+        <a href="../apis.html">← All categories</a> · HTTPS/CORS badges are
+        as listed upstream and may drift — the linked docs are authoritative.
+      </p>
+    </div>
+    </main>
+
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem">
+        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
+        Portfolio v3.0
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    </script>
+
+    <script type="module" src="../../assets/js/main.js"></script>
+    <script type="module" src="../../assets/js/enhanced.js"></script>
+  </body>
+</html>

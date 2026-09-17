@@ -51,6 +51,10 @@ class AudioStudio {
     this.pauseTime = 0;
     this.playbackRate = 1;
     this.isLooping = false;
+    this.metroOn = false;
+    this.metroTimer = null;
+    this.metroNext = 0;
+    this.metroBeat = 0;
     this.selection = { start: 0, end: 0 };
     this.hasSelection = false;
     this.isSelecting = false;
@@ -242,6 +246,9 @@ class AudioStudio {
     document
       .getElementById("loop-btn")
       ?.addEventListener("click", () => this.toggleLoop());
+    document
+      .getElementById("metro-btn")
+      ?.addEventListener("click", () => this.toggleMetronome());
 
     document
       .getElementById("zoom-in-btn")
@@ -612,6 +619,34 @@ class AudioStudio {
     }
   }
 
+  duplicateTrack(id) {
+    const src = this.tracks.find((t) => t.id === id);
+    if (!src) return;
+    const nid = this.nextTrackId++;
+    const track = new AudioTrack(
+      nid,
+      `${src.name} copy`,
+      this.cloneBuffer(src.buffer),
+      this.ctx,
+    );
+    track.volume = src.volume;
+    track.pan = src.pan;
+    track.height = src.height;
+    track.muted = src.muted;
+    track.soloed = src.soloed;
+    track.gainNode.gain.value = track.muted ? 0 : track.volume;
+    if (track.panNode.pan) track.panNode.pan.value = track.pan;
+    const at = this.tracks.indexOf(src);
+    this.tracks.splice(at + 1, 0, track);
+    this.selectedTrackId = nid;
+    this.saveHistory();
+    this.renderTracks();
+    this.renderMixer();
+    this.drawTrackCanvases();
+    this.updateTimeDisplay();
+    this.notify(`Duplicated: ${src.name}`, "success");
+  }
+
   removeTrack(id) {
     const idx = this.tracks.findIndex((t) => t.id === id);
     if (idx < 0) return;
@@ -683,6 +718,9 @@ class AudioStudio {
           <button class="track-btn mute${track.muted ? " active" : ""}" onclick="event.stopPropagation();window.studio.toggleMute(${track.id})" title="Mute">M</button>
           <button class="track-btn solo${track.soloed ? " active" : ""}" onclick="event.stopPropagation();window.studio.toggleSolo(${track.id})" title="Solo">S</button>
           <button class="track-btn height-btn" onclick="event.stopPropagation();window.studio.cycleTrackHeight(${track.id})" title="Lane height">${track.height}</button>
+          <button class="track-btn dup" onclick="event.stopPropagation();window.studio.duplicateTrack(${track.id})" title="Duplicate track (D)">
+            <i data-lucide="copy"></i>
+          </button>
           <button class="track-btn delete" onclick="event.stopPropagation();window.studio.removeTrack(${track.id})" title="Remove track">
             <i data-lucide="x"></i>
           </button>
@@ -1142,6 +1180,67 @@ class AudioStudio {
       btn.classList.toggle("active", this.isLooping);
       btn.setAttribute("aria-pressed", this.isLooping);
     }
+  }
+
+  toggleMetronome() {
+    this.metroOn = !this.metroOn;
+    const btn = document.getElementById("metro-btn");
+    if (btn) {
+      btn.classList.toggle("active", this.metroOn);
+      btn.setAttribute("aria-pressed", this.metroOn);
+    }
+    if (this.metroOn) {
+      if (this.ctx.state === "suspended") this.ctx.resume();
+      this.metroBeat = 0;
+      this.metroNext = this.ctx.currentTime + 0.06;
+      this.metroTimer = setInterval(() => this.scheduleMetro(), 25);
+      this.notify(`Metronome on (${this.bpm} BPM)`, "info");
+    } else {
+      this.stopMetroTimer();
+    }
+  }
+
+  stopMetroTimer() {
+    if (this.metroTimer) {
+      clearInterval(this.metroTimer);
+      this.metroTimer = null;
+    }
+  }
+
+  scheduleMetro() {
+    if (!this.metroOn || !this.isPlaying) {
+      // keep the clock fresh while paused so unpausing starts on time
+      if (this.ctx) this.metroNext = this.ctx.currentTime + 0.06;
+      return;
+    }
+    // If we fell behind (event-loop stall, background-tab throttling),
+    // resync instead of scheduling overdue beats. Negative times throw
+    // RangeError (the thrown error fires BEFORE metroNext advances, so
+    // the interval would retry and throw forever), and non-negative
+    // past times all fire immediately — an inaudible pile-up of clicks
+    // at one instant instead of a rhythm.
+    if (this.metroNext < this.ctx.currentTime) {
+      this.metroNext = this.ctx.currentTime + 0.03;
+    }
+    // 0.12s lookahead — immune to setInterval jitter
+    while (this.metroNext < this.ctx.currentTime + 0.12) {
+      this.clickMetro(this.metroNext, this.metroBeat % 4 === 0);
+      this.metroNext += 60 / (this.bpm || 120);
+      this.metroBeat++;
+    }
+  }
+
+  clickMetro(when, accent) {
+    const o = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    o.type = "square";
+    o.frequency.value = accent ? 2000 : 1000;
+    g.gain.setValueAtTime(accent ? 0.22 : 0.12, when);
+    g.gain.exponentialRampToValueAtTime(0.001, when + 0.05);
+    o.connect(g);
+    g.connect(this.masterGain);
+    o.start(when);
+    o.stop(when + 0.06);
   }
 
   toggleMute(id) {
@@ -2407,6 +2506,13 @@ class AudioStudio {
           break;
         case "m":
           this.addMarker();
+          break;
+        case "d":
+          if (this.selectedTrackId != null)
+            this.duplicateTrack(this.selectedTrackId);
+          break;
+        case "t":
+          this.toggleMetronome();
           break;
         case "=":
         case "+":

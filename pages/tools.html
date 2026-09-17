@@ -1233,6 +1233,36 @@
               </div>
             </div>
           </div>
+          <div class="tool-card" data-tool="public-apis">
+            <div class="tool-titlebar">
+              <div class="tool-dots">
+                <span class="tdot tdot-r"></span
+                ><span class="tdot tdot-y"></span
+                ><span class="tdot tdot-g"></span>
+              </div>
+              <span class="tool-label">public-apis.sh</span>
+            </div>
+            <div class="tool-body">
+              <div class="tool-icon-row">
+                <span class="tool-emoji">&#x1F310;</span
+                ><span class="tool-name">Public APIs</span>
+              </div>
+              <div class="tool-desc">
+                Browse 800+ free public APIs that need no key — weather, space,
+                books, science and more, across 48 categories.
+              </div>
+              <div class="tool-footer">
+                <div class="tool-tags">
+                  <span class="tool-tag">APIs</span
+                  ><span class="tool-tag">directory</span
+                  ><span class="tool-tag">no-auth</span>
+                </div>
+                <button class="tool-launch" onclick="openTool('public-apis')">
+                  launch &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
           <div class="tool-card" data-tool="unit-converter">
             <div class="tool-titlebar">
               <div class="tool-dots">
@@ -1343,6 +1373,7 @@
           "image-studio": "tools/image-studio.html",
           "webcam-tester": "tools/webcam-tester.html",
           "youtube-downloader": "tools/youtube-downloader.html",
+          "public-apis": "../apis.html",
         };
         const page = toolPages[toolId];
         if (page) window.location.href = page;

@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="google-site-verification"
+      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
+    />
+    <script>
+      (function () {
+        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="29 free Health APIs that need no API key: Clinical Trials Directory, Coronavirus, Coronavirus in the UK, Covid Tracking Project, Covid-19, and more." />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/apis/health.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Health APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta property="og:description" content="29 free Health APIs that need no API key: Clinical Trials Directory, Coronavirus, Coronavirus in the UK, Covid Tracking Project, Covid-19, and more." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/apis/health.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta name="twitter:title" content="Health APIs (No Key Needed) - Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="29 free Health APIs that need no API key: Clinical Trials Directory, Coronavirus, Coronavirus in the UK, Covid Tracking Project, Covid-19, and more." />
+    <meta name="robots" content="index, follow" />
+    <title>Health APIs (No Key Needed) - Shuvam Banerji Seal</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/animations.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
+    <!-- Overrides - Must be last -->
+    <link rel="stylesheet" href="../../assets/css/overrides.css" />
+    <style>
+      .apis-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .apis-hero h1 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+      }
+      .api-search {
+        width: 100%;
+        max-width: 560px;
+        margin: 1.25rem auto 0;
+        display: block;
+        padding: 0.7rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        background: var(--card-bg);
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+      .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.25rem;
+        margin-top: 2rem;
+      }
+      .api-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .api-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+      }
+      .api-card h3 {
+        font-size: 1.05rem;
+        margin: 0;
+      }
+      .api-card h3 a {
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      .api-card h3 a:hover {
+        color: var(--accent-cyan);
+        text-decoration: underline;
+      }
+      .api-card p {
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+        flex: 1;
+      }
+      .api-badges {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .api-badge {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+      }
+      .api-badge.ok {
+        border-color: var(--accent-green);
+        color: var(--accent-green);
+      }
+      .api-badge.no {
+        opacity: 0.65;
+      }
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .cat-card {
+        padding: 1.1rem 1.25rem;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        color: var(--text-primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .cat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+        color: var(--text-primary);
+      }
+      .cat-card .count {
+        margin-left: auto;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        background: var(--bg-elevated);
+        border-radius: 999px;
+        padding: 0.1rem 0.6rem;
+        white-space: nowrap;
+      }
+      .crumb {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+      }
+      .crumb a {
+        color: var(--accent-cyan);
+        text-decoration: none;
+      }
+      .attr-note {
+        margin-top: 2.5rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <div id="mobile-menu-backdrop"></div>
+
+    <main class="container">
+    <div class="apis-container">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="../apis.html">Public APIs</a> / Health
+        <span style="float:right"><a href="government.html">← Government</a> · <a href="jobs.html">Jobs →</a></span>
+      </nav>
+      <header class="apis-hero">
+        <h1 class="page-title">
+          <i data-lucide="layers" class="inline-block"></i>
+          Health APIs
+        </h1>
+        <p class="page-subtitle">
+          29 free APIs with <strong>no signup and no API
+          key</strong>. Data from
+          <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis</a>
+          (MIT).
+        </p>
+      </header>
+      <div class="api-grid">
+          <article class="api-card">
+            <h3>
+              <a href="https://trials.starfile.org/api" target="_blank" rel="noopener">Clinical Trials Directory</a>
+            </h3>
+            <p>Every clinical trial registered with ClinicalTrials.gov, indexed by condition and sponsor</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://trials.starfile.org/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://pipedream.com/@pravin/http-api-for-latest-wuhan-coronavirus-data-2019-ncov-p_G6CLVM/readme" target="_blank" rel="noopener">Coronavirus</a>
+            </h3>
+            <p>HTTP API for Latest Covid-19 Data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://pipedream.com/@pravin/http-api-for-latest-wuhan-coronavirus-data-2019-ncov-p_G6CLVM/readme" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://coronavirus.data.gov.uk/details/developers-guide" target="_blank" rel="noopener">Coronavirus in the UK</a>
+            </h3>
+            <p>UK Government coronavirus data, including deaths and cases by region</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://coronavirus.data.gov.uk/details/developers-guide" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://covidtracking.com/data/api/version-2" target="_blank" rel="noopener">Covid Tracking Project</a>
+            </h3>
+            <p>Covid-19 data for the US</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge no">No CORS</span>
+              <a class="api-badge" href="https://covidtracking.com/data/api/version-2" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://covid19api.com/" target="_blank" rel="noopener">Covid-19</a>
+            </h3>
+            <p>Covid 19 spread, infection and recovery</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://covid19api.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/M-Media-Group/Covid-19-API" target="_blank" rel="noopener">Covid-19</a>
+            </h3>
+            <p>Covid 19 cases, deaths and recovery per country</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://github.com/M-Media-Group/Covid-19-API" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com" target="_blank" rel="noopener">Covid-19 Datenhub</a>
+            </h3>
+            <p>Maps, datasets, applications and more in the context of COVID-19</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://npgeo-corona-npgeo-de.hub.arcgis.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://covidtracker.bsg.ox.ac.uk" target="_blank" rel="noopener">Covid-19 Government Response</a>
+            </h3>
+            <p>Government measures tracker to fight against the Covid-19 pandemic</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://covidtracker.bsg.ox.ac.uk" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.covid19india.org/" target="_blank" rel="noopener">Covid-19 India</a>
+            </h3>
+            <p>Covid 19 statistics state and district wise about cases, vaccinations, recovery within India</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.covid19india.org/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://nuttaphat.com/covid19-api/" target="_blank" rel="noopener">Covid-19 JHU CSSE</a>
+            </h3>
+            <p>Open-source API for exploring Covid19 cases based on JHU CSSE</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://nuttaphat.com/covid19-api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/mathdroid/covid-19-api" target="_blank" rel="noopener">Covid-19 Live Data</a>
+            </h3>
+            <p>Global and countrywise data of Covid 19 daily Summary, confirmed cases, recovered and deaths</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://github.com/mathdroid/covid-19-api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://github.com/Simperfy/Covid-19-API-Philippines-DOH" target="_blank" rel="noopener">Covid-19 Philippines</a>
+            </h3>
+            <p>Unofficial Covid-19 Web API for Philippines from data collected by DOH</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://github.com/Simperfy/Covid-19-API-Philippines-DOH" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://api.covid19tracker.ca/docs/1.0/overview" target="_blank" rel="noopener">COVID-19 Tracker Canada</a>
+            </h3>
+            <p>Details on Covid-19 cases across Canada</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://api.covid19tracker.ca/docs/1.0/overview" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.hpb.health.gov.lk/en/api-documentation" target="_blank" rel="noopener">COVID-19 Tracker Sri Lanka</a>
+            </h3>
+            <p>Provides situation of the COVID-19 patients reported in Sri Lanka</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.hpb.health.gov.lk/en/api-documentation" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.covid19.go.id/public/api/prov.json" target="_blank" rel="noopener">COVID-ID</a>
+            </h3>
+            <p>Indonesian government Covid data per province</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://data.covid19.go.id/public/api/prov.json" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://covid-19.dataflowkit.com" target="_blank" rel="noopener">Dataflow Kit COVID-19</a>
+            </h3>
+            <p>COVID-19 live statistics into sites per hour</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://covid-19.dataflowkit.com" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://findsaunaplunge.com/api/" target="_blank" rel="noopener">FindSaunaPlunge</a>
+            </h3>
+            <p>US cold plunge and sauna venues with dated, source-quoted temperatures and prices</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://findsaunaplunge.com/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.healthcare.gov/developers/" target="_blank" rel="noopener">Healthcare.gov</a>
+            </h3>
+            <p>Educational content about the US Health Insurance Marketplace</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.healthcare.gov/developers/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://data.humdata.org/" target="_blank" rel="noopener">Humanitarian Data Exchange</a>
+            </h3>
+            <p>Humanitarian Data Exchange (HDX) is open platform for sharing data across crises and organisations</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://data.humdata.org/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://cov-spectrum.ethz.ch/public" target="_blank" rel="noopener">LAPIS</a>
+            </h3>
+            <p>SARS-CoV-2 genomic sequences from public sources</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://cov-spectrum.ethz.ch/public" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://longevityworldcup.com/api/data/athletes" target="_blank" rel="noopener">Longevity World Cup</a>
+            </h3>
+            <p>Public biological age competition data with biomarkers and rankings</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://longevityworldcup.com/api/data/athletes" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="http://makeup-api.herokuapp.com/" target="_blank" rel="noopener">Makeup</a>
+            </h3>
+            <p>Makeup Information</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge no">HTTP</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="http://makeup-api.herokuapp.com/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://medlineplus.gov/about/developers/geneticsdatafilesapi/" target="_blank" rel="noopener">MedlinePlus Genetics</a>
+            </h3>
+            <p>Genetic conditions, genes, chromosomes and mtDNA data</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://medlineplus.gov/about/developers/geneticsdatafilesapi/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://documenter.getpostman.com/view/16605343/Tzm8GG7u" target="_blank" rel="noopener">MyVaccination</a>
+            </h3>
+            <p>Vaccination data for Malaysia</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://documenter.getpostman.com/view/16605343/Tzm8GG7u" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://npiregistry.cms.hhs.gov/registry/help-api" target="_blank" rel="noopener">NPPES</a>
+            </h3>
+            <p>National Plan &amp; Provider Enumeration System, info on healthcare providers registered in US</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://npiregistry.cms.hhs.gov/registry/help-api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://www.opendata.nhs.scot" target="_blank" rel="noopener">Open Data NHS Scotland</a>
+            </h3>
+            <p>Medical reference data and statistics by Public Health Scotland</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge">CORS ?</span>
+              <a class="api-badge" href="https://www.opendata.nhs.scot" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://disease.sh/" target="_blank" rel="noopener">Open Disease</a>
+            </h3>
+            <p>API for Current cases and more stuff about COVID-19 and Influenza</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://disease.sh/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://quarantine.country/coronavirus/api/" target="_blank" rel="noopener">Quarantine</a>
+            </h3>
+            <p>Coronavirus API with free COVID-19 live updates</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://quarantine.country/coronavirus/api/" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+          <article class="api-card">
+            <h3>
+              <a href="https://sante.handled.tools/api" target="_blank" rel="noopener">Urgences Québec</a>
+            </h3>
+            <p>Hourly emergency room occupancy, stretcher counts and wait times for every hospital in Quebec, Canada</p>
+            <div class="api-badges">
+              <span class="api-badge ok">No auth</span>
+              <span class="api-badge ok">HTTPS</span>
+              <span class="api-badge ok">CORS</span>
+              <a class="api-badge" href="https://sante.handled.tools/api" target="_blank" rel="noopener" style="text-decoration:none">Visit ↗</a>
+            </div>
+          </article>
+      </div>
+      <p class="attr-note">
+        <a href="../apis.html">← All categories</a> · HTTPS/CORS badges are
+        as listed upstream and may drift — the linked docs are authoritative.
+      </p>
+    </div>
+    </main>
+
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.75rem">
+        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
+        Portfolio v3.0
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    </script>
+
+    <script type="module" src="../../assets/js/main.js"></script>
+    <script type="module" src="../../assets/js/enhanced.js"></script>
+  </body>
+</html>
