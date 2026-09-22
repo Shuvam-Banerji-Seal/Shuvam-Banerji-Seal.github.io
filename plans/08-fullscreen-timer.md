@@ -65,15 +65,18 @@ Guarded: keys are ignored while typing in `input`/`textarea`.
 | `public/sitemap.xml`                | URL entry                                                        |
 | `tests/comprehensive-tests.js`      | Wiring assertions (page/js/css/navbar/vite/sitemap)              |
 
-## 5. Acceptance criteria
+## 5. Acceptance criteria — all verified 2026-09-18 (deployed 574a7d5)
 
-- [ ] Countdown 0:03 → 0:00 → `-0:01`… while `#ft-clock` carries `.is-overtime` and computed
-      colour equals `--ft-overtime`; no clamp, no pause.
-- [ ] Exactly one buzzer burst per zero-crossing (AudioContext instrumented in Playwright).
-- [ ] `Talk`/`Q&A` default segments; `N` advances label, index, duration; auto-advance option advances at zero.
-- [ ] Space/R/S/F/M keyboard paths verified; typing in inputs does not trigger shortcuts.
-- [ ] Fullscreen request is attempted and never throws when denied; state stays consistent.
-- [ ] 9 themes: overtime crimson resolves, no horizontal overflow at 390/800/1440.
-- [ ] Suites green: `npm test`, comprehensive, build + build-verification; page passes every
-      automated page check (meta, links, icons, a11y, duplicate IDs).
-- [ ] dist contains the page and its assets; live production URL returns 200 after deploy.
+- [x] Countdown 0:12 → 0:00 → `-00:03` while `#ft-clock` carries `.is-overtime`; computed colour equals
+      `--ft-overtime` (`#ff8fa3`; `#d94a63` on the light theme) — verified live on production.
+- [x] Exactly one buzzer burst per zero-crossing: engine-level counters show `timeUp = 1` and 6 tones
+      (3×880 Hz + 3×659.25 Hz); oscillator tallies were instrumentation noise (nested wrappers).
+- [x] Default `Talk 15:00 → Q&A 05:00`; `N` advances label/index/duration live; auto-advance moves at zero.
+- [x] Space/R/S/F/M verified; typing in an input does not trigger shortcuts; arrows edit the selected segment.
+- [x] Fullscreen request succeeds (or is caught when denied); exit restores title, scroll lock and setup view.
+- [x] 9 themes: overtime crimson resolves; primary control ≥ 5.79:1 contrast in every theme; no horizontal
+      overflow at 390/800/1440.
+- [x] Suites green: `npm test` 11/11, comprehensive 1247/1247 with 0 warnings, build 208/208; the page passes
+      every automated page check (meta, links, icons, a11y, duplicate IDs).
+- [x] dist + production contain the page and its assets; live URLs return 200; mermaid editor still renders
+      with the lazy engine; github-projects shows 109/109 valid links live.

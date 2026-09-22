@@ -1,4 +1,33 @@
-# Current checkpoint — 2026-09-18 — homepage UI wave verified (UNCOMMITTED)
+# Current checkpoint — 2026-09-18 — Fullscreen Timer deployed + live-verified (574a7d5)
+
+## Current Session Summary (supersedes the 2026-09-17 checkpoints below)
+
+| Field           | Value                                                                                                                                                                                                                                                                                                                                         |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Phase           | SHIPPED + LIVE VERIFIED                                                                                                                                                                                                                                                                                                                       |
+| Deployment      | `574a7d5` pushed to main; both Actions runs (`Deploy Portfolio…`, `pages build and deployment`) concluded `success`. Previous wave shipped as `0bcdfd4`.                                                                                                                                                                                      |
+| New app         | `pages/tools/fullscreen-timer.html` + `assets/{css,js}/fullscreen-timer.*` — negative overtime timer, Web-Audio buzzer, light-crimson overtime, Talk→Q&A sequences, presets, auto-advance, countdown/stopwatch, fullscreen, wake lock, persistence, keyboard map. Registered in navbar Apps, tools.html card + openTool, vite input, sitemap. |
+| Live evidence   | timer: `-00:00 → -00:03`, clock `rgb(255,143,163)`, `timeUp=1`, 10 ticks for 12 s, ticks stop at zero; Apps menu + tools card present; homepage hero/divider changes live; pdf-studio metadata passes strings; mermaid editor renders SVG live (engine lazy); github-projects 109/109 links valid. Zero page errors.                          |
+| Warnings        | **0 warnings** in comprehensive suite (was 5). Build chunk warning resolved by making mermaid a lazy import (entry chunk 880 → 253 kB) + documented `chunkSizeWarningLimit: 700` for the two third-party lazy engines.                                                                                                                        |
+| Gates           | npm test 11/11 · comprehensive 1247/1247 (0 warnings) · build 208/208 · `git diff --check` clean.                                                                                                                                                                                                                                             |
+| Method notes    | Never trust oscillator tallies for "how many times did it fire" — wrapping the engine's own methods twice compounded counts 2× and looked like a bug. Instrument engine-level counters with a guard. Verify reformat-only diffs by marker parity (old vs new counts) plus behaviour.                                                          |
+| Open            | Audible buzzer on real hardware (headless verified by synthesis graph only); B34 ph-calculator still open; plans docs commit pending.                                                                                                                                                                                                         |
+| Next candidates | Commit the plans updates; then optional polish waves: timer "presenter notes"/multi-window? (only if requested), B34 fix, editorial-band rhythm.                                                                                                                                                                                              |
+
+## File Manifest (this wave)
+
+| File                                                                                              | Status                                                 |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| assets/js/fullscreen-timer.js, assets/css/fullscreen-timer.css, pages/tools/fullscreen-timer.html | new, deployed                                          |
+| assets/js/navbar.js, pages/tools.html, vite.config.mjs, public/sitemap.xml                        | wiring, deployed                                       |
+| tests/comprehensive-tests.js                                                                      | +timer assertions, warning-free checks, self-nav guard |
+| pages/github-projects.html, src/mermaid-tool/components/Preview.jsx                               | warning fixes, deployed                                |
+| plans/08-fullscreen-timer.md, plans/03-steps.md Rev 5, plans/05-audit-log.md                      | spec + evidence                                        |
+| plans/scrutiny/timer-\*.png, plans/scrutiny/live-timer-setup.png                                  | visual evidence                                        |
+
+---
+
+# Historical checkpoint — 2026-09-18 — homepage UI wave verified (UNCOMMITTED)
 
 ## Current Session Summary (supersedes 2026-09-17 checkpoint below)
 
