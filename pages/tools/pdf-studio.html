@@ -4069,15 +4069,13 @@
           const ab = await metaFile.arrayBuffer();
           const pdf = await PDFDocument.load(ab, { ignoreEncryption: true });
           const val = (id) => document.getElementById(id).value.trim();
-          pdf.setTitle(val("meta-title") || undefined);
-          pdf.setAuthor(val("meta-author") || undefined);
-          pdf.setSubject(val("meta-subject") || undefined);
+          pdf.setTitle(val("meta-title"));
+          pdf.setAuthor(val("meta-author"));
+          pdf.setSubject(val("meta-subject"));
           pdf.setKeywords(
-            val("meta-keywords")
-              ? val("meta-keywords").split(/,\s*/)
-              : undefined,
+            val("meta-keywords") ? val("meta-keywords").split(/,\s*/) : [],
           );
-          pdf.setCreator(val("meta-creator") || undefined);
+          pdf.setCreator(val("meta-creator"));
           setProgress(progFill, progText, progWrap, 75, "Saving PDF...");
           const bytes = await pdf.save();
           const blob = new Blob([bytes], { type: "application/pdf" });

@@ -3,6 +3,28 @@
 Status: ACTIVE spec — written 2026-08-25. Reference: ricardochance.com (design-engineer portfolio).
 Note: intended to be authored by an independent agent; provider outage → authored in-session. Same content either way.
 
+## Rev 2026-09-18 — Focused hero typography and rhythm
+
+| Field              | Decision                                                                                                                                              |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Input              | Desktop and 390px production screenshots in plans/scrutiny/home-\*-before.png                                                                         |
+| Observation        | Identity wraps as one all-caps sentence; mobile is centered while panels are left aligned; claim bottom margin plus grid gap doubles panel separation |
+| Scope              | Root index.html identity markup and scoped rules in index-overrides.css only; preserve all copy, hrefs, panels, loader and other sections             |
+| Design             | Separate name from role, reduce letterspacing, left-align mobile, balanced headline, 32px desktop / 24px mobile CTA-to-panel gap                      |
+| Test               | Local before/after screenshots, measure gap, 390/800/1440 overflow, all nine themes, CTA hrefs, terminal input, basic and comprehensive suites        |
+| Risk               | Shared hero-kicker styles and mobile !important rules; scope changes under #main-content and inspect computed styles                                  |
+| External reference | MDN text-wrap retrieved this session: balance evens heading line lengths; ordinary wrapping remains fallback                                          |
+| Excluded           | PDF metadata changes retained untouched; no commit/push or homepage loader/viewer repair in this visual pass                                          |
+
+## Rev 2026-09-18b — Single-divider section headers
+
+| Field    | Decision                                                                                                                                                                                                                                           |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Defect   | Every `.section-header` rendered the legacy centered `.section-title::after` bar (main.css/theme.css) floating mid-title PLUS the redesign `.section-divider` block PLUS its infinite `div-sweep ::after` — three bars from two design generations |
+| Evidence | elementsFromPoint + getComputedStyle(::after): title::after 60×3 cyan centered; divider::after 18px cyan animation div-sweep running; only one `.section-divider` div in DOM                                                                       |
+| Fix      | index-overrides.css: `.section-header .section-title::after, .section-header .section-divider::after { content: none }` — content:none beats theme rules that only set background                                                                  |
+| Verified | 9/9 themes titleAfter=none divAfter=none, 60px divider left-aligned with title; 390/800/1440 no overflow; rule present minified in dist bundle; suites 11/11 · 1225/1225 · 206/206                                                                 |
+
 ## 0. Reference analysis (what makes ricardochance.com work)
 
 1. **One unforgettable sentence** in the hero — not a job title, a claim.

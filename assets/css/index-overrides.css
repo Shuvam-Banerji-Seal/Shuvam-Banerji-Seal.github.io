@@ -2179,6 +2179,18 @@ footer p {
   margin-top: 0.75rem;
 }
 
+/* Single-divider headers: the redesign aligns kicker/title/divider left and
+   uses the .section-divider block as the only bar. Neutralize two legacy
+   leftovers: (1) the centered .section-title::after bar from the pre-redesign
+   centered system (main.css/theme.css), which otherwise floats mid-title;
+   (2) the infinite div-sweep ::after on .section-divider (main.css), which
+   contradicts restrained motion. content:none beats higher-specificity theme
+   rules that only set background, since those never set content. */
+.section-header .section-title::after,
+.section-header .section-divider::after {
+  content: none;
+}
+
 /* Nav links: no resting underline noise (scrutiny Agent1 #12) */
 #navbar a {
   text-decoration: none;
@@ -2217,7 +2229,43 @@ footer p {
 .hero-claim {
   grid-column: 1 / -1;
   max-width: 900px;
-  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+  margin-bottom: 0;
+}
+
+/* One rhythm from identity to claim to the interactive lab panels. */
+body section#main-content.hero {
+  row-gap: clamp(1.5rem, 3vw, 2rem);
+  text-align: left;
+}
+
+#main-content .hero-kicker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  opacity: 1;
+}
+
+#main-content .hero-name {
+  color: var(--text-primary);
+  font:
+    600 1rem var(--font-body, Inter),
+    sans-serif;
+  line-height: 1.5;
+}
+
+#main-content .hero-role {
+  color: var(--text-secondary);
+  font: 500 clamp(0.7rem, 1vw, 0.8rem) var(--font-mono, monospace);
+  line-height: 1.6;
+  letter-spacing: 0.025em;
+}
+
+#main-content .hero-statement {
+  text-wrap: balance;
 }
 
 .hero-kicker {
@@ -2246,6 +2294,24 @@ footer p {
   display: flex;
   gap: 0.9rem;
   flex-wrap: wrap;
+}
+
+#main-content .hero-cta-row .btn:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  #main-content .hero-cta-row .btn-primary:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #main-content .hero-cta-row .btn {
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ── §2.2 Positioning ── */
