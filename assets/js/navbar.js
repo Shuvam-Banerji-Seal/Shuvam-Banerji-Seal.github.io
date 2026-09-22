@@ -97,6 +97,13 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "file-search",
         },
         {
+          name: "Fullscreen Timer",
+          href: isHome
+            ? "pages/tools/fullscreen-timer.html"
+            : pathDepth + "pages/tools/fullscreen-timer.html",
+          icon: "timer",
+        },
+        {
           name: "Public APIs",
           href: isHome ? "pages/apis.html" : pathDepth + "pages/apis.html",
           icon: "globe",

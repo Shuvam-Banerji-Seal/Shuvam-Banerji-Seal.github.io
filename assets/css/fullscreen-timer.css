@@ -1,0 +1,602 @@
+/* ================================================================
+   FULLSCREEN TIMER — presenter timer with overtime, buzzer and
+   labelled segment sequences (Talk → Q&A).
+   Spec: plans/08-fullscreen-timer.md
+   Solid colours only (no gradients). All 9 themes supported.
+   ================================================================ */
+
+:root {
+  /* Overtime = "light crimson"; warning = final stretch. Dark-safe. */
+  --ft-overtime: #ff8fa3;
+  --ft-warning: #ffc46b;
+  --ft-track: rgba(148, 163, 184, 0.22);
+  --ft-input-bg: var(--input-bg, rgba(148, 163, 184, 0.12));
+  /* Ink that stays legible on top of every theme accent (cyan/amber/purple). */
+  --ft-on-accent: #06121a;
+  --ft-radius: 12px;
+}
+
+/* Light (cream) theme: keep crimson legible on a pale surface. */
+html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
+    [data-theme="amber"]
+  ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
+    [data-theme="forest"]
+  ):not([data-theme="dracula"]):not([data-theme="quantum"]) {
+  --ft-overtime: #d94a63;
+  --ft-warning: #b26a12;
+  --ft-track: rgba(107, 66, 38, 0.2);
+}
+
+.ft-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Stage owns the viewport while running */
+body.ft-locked {
+  overflow: hidden;
+}
+
+/* ── Setup card ─────────────────────────────────────────────── */
+.ft-setup {
+  padding: 1.75rem;
+}
+
+.ft-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.ft-block-title {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  margin-bottom: 0.85rem;
+}
+
+.ft-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.ft-preset {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.76rem;
+  padding: 0.45rem 0.7rem;
+  color: var(--text-secondary);
+  background: var(--ft-input-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.ft-preset:hover {
+  color: var(--text-primary);
+  border-color: var(--border-glow, var(--accent-cyan));
+}
+
+.ft-preset:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+.ft-seg-head,
+.ft-seg-row {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 7.5rem auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ft-seg-actions {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+
+.ft-seg-head {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 0.15rem 0.4rem;
+}
+
+.ft-seg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.ft-seg-row {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--ft-radius);
+  background: var(--ft-input-bg);
+  transition: border-color 0.18s ease;
+}
+
+.ft-seg-row.is-selected {
+  border-color: var(--accent-cyan);
+}
+
+.ft-seg-chip {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.ft-seg-row.is-selected .ft-seg-chip {
+  color: var(--accent-cyan);
+}
+
+.ft-seg-row input {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 0.35rem 0.3rem;
+}
+
+.ft-seg-row input.ft-seg-time {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  text-align: center;
+}
+
+.ft-seg-row input:hover {
+  border-bottom-color: var(--border);
+}
+
+.ft-seg-row input:focus {
+  outline: none;
+  border-bottom-color: var(--accent-cyan);
+}
+
+.ft-seg-row input.is-invalid {
+  border-bottom-color: var(--ft-overtime);
+  color: var(--ft-overtime);
+}
+
+.ft-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.ft-icon-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--accent-cyan);
+}
+
+.ft-icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ft-icon-btn:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+.ft-icon-btn svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.ft-icon-btn.is-danger:hover {
+  color: var(--ft-overtime);
+  border-color: var(--ft-overtime);
+}
+
+.ft-add-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ft-help {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-top: 0.9rem;
+}
+
+.ft-help kbd {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text-secondary);
+}
+
+/* Options column */
+.ft-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--ft-radius);
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.ft-option:hover {
+  border-color: var(--border-glow, var(--accent-cyan));
+}
+
+.ft-option input {
+  margin-top: 0.25rem;
+  accent-color: var(--accent-cyan);
+}
+
+.ft-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ft-option-label {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.ft-option-hint {
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.ft-summary {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: 0.75rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--ft-radius);
+  margin: 0.9rem 0 1.1rem;
+}
+
+.ft-summary strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.ft-launch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.9rem 1.2rem;
+  color: var(--ft-on-accent);
+  background: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan);
+  border-radius: var(--ft-radius);
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.ft-launch:hover {
+  box-shadow: var(--glow-cyan, 0 0 20px rgba(34, 211, 238, 0.25));
+}
+
+.ft-launch:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+}
+
+.ft-status {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.65rem;
+  text-align: center;
+  min-height: 1.2em;
+}
+
+/* ── Stage (presenter display) ──────────────────────────────── */
+.ft-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 3vh, 2.5rem);
+  padding: clamp(1.25rem, 4vh, 3rem) clamp(1rem, 4vw, 3rem);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  text-align: center;
+  overflow: hidden;
+}
+
+.ft-stage[hidden] {
+  display: none;
+}
+
+.ft-stage-head {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ft-seg-name {
+  font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  max-width: 22ch;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.ft-seg-index {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.ft-clock-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 2vh, 1.5rem);
+  width: 100%;
+}
+
+.ft-clock {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(3.6rem, 19vw, 15rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  transition: color 0.25s ease;
+}
+
+.ft-clock.is-warning {
+  color: var(--ft-warning);
+}
+
+.ft-clock.is-overtime {
+  color: var(--ft-overtime);
+}
+
+.ft-progress {
+  width: min(900px, 88vw);
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ft-track);
+  overflow: hidden;
+}
+
+.ft-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--accent-cyan);
+  border-radius: 999px;
+  transition: background-color 0.25s ease;
+}
+
+.ft-stage.is-overtime .ft-progress-bar {
+  background: var(--ft-overtime);
+}
+
+.ft-next {
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: clamp(0.72rem, 1.6vw, 0.9rem);
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  min-height: 1.4em;
+}
+
+.ft-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--ft-input-bg);
+  transition: opacity 0.35s ease;
+}
+
+.ft-stage.is-chrome-hidden .ft-controls,
+.ft-stage.is-chrome-hidden .ft-next {
+  opacity: 0.12;
+}
+
+.ft-ctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 0.85rem;
+  padding: 0.55rem 0.95rem;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.ft-ctl:hover {
+  border-color: var(--accent-cyan);
+}
+
+.ft-ctl:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+.ft-ctl svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ft-ctl.is-primary {
+  color: var(--ft-on-accent);
+  background: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+/* Active toggles (mute/fullscreen) — must not repaint the primary pill,
+   which is already accent-filled: that produced cyan-on-cyan. */
+.ft-ctl[aria-pressed="true"]:not(.is-primary) {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+/* Time-up flash: solid ink, opacity-only animation */
+.ft-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--ft-overtime);
+}
+
+.ft-stage.is-flash::after {
+  animation: ft-flash 0.9s ease-out 1;
+}
+
+@keyframes ft-flash {
+  0% {
+    opacity: 0.32;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .ft-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ft-seg-head,
+  .ft-seg-row {
+    grid-template-columns: 1.6rem minmax(0, 1fr) 6rem auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .ft-setup {
+    padding: 1.1rem;
+  }
+
+  .ft-seg-head {
+    display: none;
+  }
+
+  .ft-seg-row {
+    grid-template-columns: minmax(0, 1fr) 5.5rem;
+    grid-template-areas:
+      "label time"
+      "actions actions";
+    row-gap: 0.4rem;
+  }
+
+  .ft-seg-row .ft-seg-chip {
+    display: none;
+  }
+
+  .ft-seg-row .ft-seg-label {
+    grid-area: label;
+  }
+
+  .ft-seg-row .ft-seg-time {
+    grid-area: time;
+  }
+
+  .ft-seg-row .ft-seg-actions {
+    grid-area: actions;
+    justify-content: flex-end;
+  }
+
+  .ft-ctl span {
+    display: none;
+  }
+
+  .ft-ctl {
+    padding: 0.6rem 0.75rem;
+  }
+}
+
+/* ── Motion preferences ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ft-clock,
+  .ft-progress-bar,
+  .ft-controls,
+  .ft-preset,
+  .ft-icon-btn,
+  .ft-launch,
+  .ft-ctl {
+    transition: none;
+  }
+
+  .ft-stage.is-flash::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  .ft-launch:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}

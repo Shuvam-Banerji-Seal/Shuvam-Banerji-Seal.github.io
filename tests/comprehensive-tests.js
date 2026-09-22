@@ -1378,7 +1378,13 @@ for (const htmlFile of htmlFiles) {
   const content = readFileSync(htmlFile, "utf8");
 
   test(`Images have alt text: ${relPath}`, () => {
-    const imgTags = content.match(/<img[^>]*>/g) || [];
+    // Scan markup with comments stripped: prose that *mentions* a tag
+    // (e.g. "the thumbnail <img> is created via DOM") is not a real image.
+    // Line-leading // only, so https:// in attributes is untouched.
+    const scannable = content
+      .replace(/<!--[\s\S]*?-->/g, "")
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+    const imgTags = scannable.match(/<img[^>]*>/g) || [];
     for (const img of imgTags) {
       if (!img.includes("alt=")) {
         warn(
@@ -1505,9 +1511,35 @@ test("All pages load navbar.js", () => {
       !content.includes("navbar.js") &&
       !content.includes("navbar-container")
     ) {
+      // Redirect stubs (meta refresh + location.replace) never render a UI,
+      // so there is nothing to navigate with.
+      const isStub =
+        /http-equiv=["']refresh["']/i.test(content) &&
+        /location\.replace\(/.test(content);
+      if (isStub) continue;
+      // Pages that ship their own navigation chrome instead of the shared
+      // navbar. Kept as an explicit, justified list — see the companion test
+      // below, which fails if the justification stops being true.
+      if (relPath === "pages/mermaid-tool.html") continue;
       warn(`${relPath}: May not be loading navbar.js`);
     }
   }
+});
+
+test("Self-navigating page still links home", () => {
+  // pages/mermaid-tool.html is exempt from the shared navbar because its own
+  // React header provides navigation. If that link disappears, the exemption
+  // is stale and the page would be a dead end — fail loudly instead.
+  const header = readFileSync(
+    join(ROOT, "src/mermaid-tool/components/Header.jsx"),
+    "utf8",
+  );
+  assert(
+    /href="[^"]*index\.html"/.test(header) ||
+      header.includes("navigateToHome") ||
+      header.includes("index.html"),
+    "mermaid-tool's own header no longer links home — re-add the shared navbar",
+  );
 });
 
 // ═══════════════════════════════════════════════════════════════
@@ -1536,6 +1568,85 @@ if (existsSync(toolsDir)) {
     });
   }
 }
+
+// ═══════════════════════════════════════════════════════════════
+// TEST 12: Fullscreen Timer wiring
+// ═══════════════════════════════════════════════════════════════
+console.log("\n--- Fullscreen Timer Tests ---");
+
+test("Fullscreen Timer page + assets exist", () => {
+  for (const file of [
+    "pages/tools/fullscreen-timer.html",
+    "assets/css/fullscreen-timer.css",
+    "assets/js/fullscreen-timer.js",
+  ]) {
+    assert(existsSync(join(ROOT, file)), `Missing ${file}`);
+  }
+});
+
+test("Fullscreen Timer is reachable and registered", () => {
+  const navbar = readFileSync(join(ROOT, "assets/js/navbar.js"), "utf8");
+  const tools = readFileSync(join(ROOT, "pages/tools.html"), "utf8");
+  const vite = readFileSync(join(ROOT, "vite.config.mjs"), "utf8");
+  const sitemap = readFileSync(join(ROOT, "public/sitemap.xml"), "utf8");
+  assert(
+    navbar.includes("pages/tools/fullscreen-timer.html"),
+    "Apps dropdown missing the timer link",
+  );
+  assert(
+    tools.includes("openTool('fullscreen-timer')") &&
+      tools.includes('"fullscreen-timer": "tools/fullscreen-timer.html"'),
+    "tools.html card/mapping missing",
+  );
+  assert(
+    vite.includes("pages/tools/fullscreen-timer.html"),
+    "vite.config.mjs rollup input missing (page would vanish from dist)",
+  );
+  assert(
+    sitemap.includes("/pages/tools/fullscreen-timer.html"),
+    "sitemap.xml entry missing",
+  );
+});
+
+test("Fullscreen Timer implements required features", () => {
+  const js = readFileSync(join(ROOT, "assets/js/fullscreen-timer.js"), "utf8");
+  const css = readFileSync(
+    join(ROOT, "assets/css/fullscreen-timer.css"),
+    "utf8",
+  );
+  const html = readFileSync(
+    join(ROOT, "pages/tools/fullscreen-timer.html"),
+    "utf8",
+  );
+  // negative overtime timer
+  assert(
+    js.includes("formatClock(Math.floor(-remaining))"),
+    "No negative-time display",
+  );
+  assert(js.includes("is-overtime"), "No overtime state");
+  // buzzer
+  assert(
+    js.includes("timeUp()") && js.includes("createOscillator"),
+    "No Web Audio buzzer",
+  );
+  // light crimson overtime colour
+  assert(css.includes("--ft-overtime"), "No overtime colour token");
+  assert(
+    /--ft-overtime:\s*#f/.test(css),
+    "Overtime colour is not a light crimson",
+  );
+  // labelled sequences (Talk -> Q&A)
+  assert(
+    js.includes('label: "Talk"') && js.includes('label: "Q&A"'),
+    "No Talk/Q&A preset",
+  );
+  assert(js.includes("autoAdvance"), "No sequence auto-advance");
+  // keyboard shortcuts documented and wired
+  for (const key of ['"Spacebar"', '"n"', '"b"', '"r"', '"s"', '"f"', '"m"']) {
+    assert(js.includes(`case ${key}:`), `Missing key handler ${key}`);
+  }
+  assert(html.includes("ft-live"), "No live region for announcements");
+});
 
 // ═══════════════════════════════════════════════════════════════
 // SUMMARY

@@ -661,7 +661,9 @@
         <div class="text-center github-hero-content">
           <div
             style="
-              font: 600 0.75rem 'JetBrains Mono', monospace;
+              font:
+                600 0.75rem &quot;JetBrains Mono&quot;,
+                monospace;
               letter-spacing: 0.2em;
               text-transform: uppercase;
               color: var(--accent-cyan);
@@ -1051,10 +1053,7 @@
 
           card.innerHTML = `
                     <div class="repo-header">
-                        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="repo-name">
-                            <i data-lucide="git-branch" class="w-5 h-5 mr-2"></i>
-                            ${repo.name}
-                        </a>
+                        <span data-slot="repo-name"></span>
                         <span class="repo-visibility visibility-${repo.private ? "private" : "public"}">
                             ${repo.private ? "Private" : "Public"}
                         </span>
@@ -1112,6 +1111,24 @@
                         </div>
                     </div>
                 `;
+
+          // Repo link built with DOM APIs (not interpolated into the HTML
+          // template): the URL and the repo name come from the GitHub API,
+          // so keeping them out of innerHTML avoids both attribute injection
+          // and a literal `${...}` href that static link checkers flag.
+          const nameLink = document.createElement("a");
+          nameLink.href = repo.html_url;
+          nameLink.target = "_blank";
+          nameLink.rel = "noopener noreferrer";
+          nameLink.className = "repo-name";
+          const nameIcon = document.createElement("i");
+          nameIcon.setAttribute("data-lucide", "git-branch");
+          nameIcon.className = "w-5 h-5 mr-2";
+          const nameText = document.createElement("span");
+          nameText.textContent = repo.name;
+          nameLink.append(nameIcon, nameText);
+          const slot = card.querySelector('[data-slot="repo-name"]');
+          if (slot) slot.replaceWith(nameLink);
 
           return card;
         }

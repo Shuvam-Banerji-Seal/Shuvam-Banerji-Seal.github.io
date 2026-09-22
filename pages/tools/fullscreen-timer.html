@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var DARK_THEMES = [
+          "dark",
+          "dark-coffee",
+          "amber",
+          "tokyo-night",
+          "absolute-dark",
+          "forest",
+          "dracula",
+        ];
+        var t =
+          localStorage.getItem("theme") ||
+          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Fullscreen presenter timer with overtime counting, a time-up buzzer and Talk / Q&A segment sequences."
+    />
+    <link
+      rel="canonical"
+      href="https://shuvam-banerji-seal.github.io/pages/tools/fullscreen-timer.html"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Fullscreen Timer - SBS Tools" />
+    <meta
+      property="og:description"
+      content="Presenter timer with negative overtime tracking, buzzer and Talk / Q&A sequences."
+    />
+    <meta
+      property="og:url"
+      content="https://shuvam-banerji-seal.github.io/pages/tools/fullscreen-timer.html"
+    />
+    <meta
+      property="og:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fullscreen Timer - SBS Tools" />
+    <meta
+      name="twitter:description"
+      content="Presenter timer with negative overtime tracking, buzzer and Talk / Q&A sequences."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
+    />
+    <meta name="robots" content="index, follow" />
+    <title>Fullscreen Timer - SBS Tools</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile.css" />
+    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
+    <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <link rel="stylesheet" href="../../assets/css/fullscreen-timer.css" />
+  </head>
+  <body>
+    <div id="navbar-container"></div>
+    <script type="module" src="../../assets/js/navbar.js"></script>
+
+    <main class="tool-page ft-page">
+      <div class="tool-container">
+        <div class="tool-header">
+          <h1><i data-lucide="timer"></i> Fullscreen Timer</h1>
+          <p>
+            Presenter timer with negative overtime, a time-up buzzer and
+            Talk&nbsp;&rarr;&nbsp;Q&amp;A sequences
+          </p>
+        </div>
+
+        <div class="tool-card ft-setup" id="ft-setup">
+          <div class="ft-grid">
+            <section aria-labelledby="ft-seq-title">
+              <h2 class="ft-block-title" id="ft-seq-title">Sequence</h2>
+              <div
+                class="ft-presets"
+                id="ft-presets"
+                role="group"
+                aria-label="Sequence presets"
+              ></div>
+
+              <div class="ft-seg-head" aria-hidden="true">
+                <span>#</span>
+                <span>Label</span>
+                <span>Duration</span>
+                <span>Actions</span>
+              </div>
+              <div class="ft-seg-list" id="ft-seg-list"></div>
+
+              <div class="ft-add-row">
+                <button
+                  class="tool-btn tool-btn-secondary"
+                  id="ft-add-seg"
+                  type="button"
+                  title="Add a segment"
+                >
+                  <i data-lucide="plus" aria-hidden="true"></i> Add segment
+                </button>
+              </div>
+
+              <p class="ft-help">
+                Durations accept <code>15</code> (minutes),
+                <code>15:00</code> or <code>0:06</code>. Keyboard:
+                <kbd>Space</kbd> start/pause, <kbd>N</kbd> next,
+                <kbd>B</kbd> previous, <kbd>R</kbd> reset,
+                <kbd>S</kbd> countdown/stopwatch, <kbd>F</kbd> fullscreen,
+                <kbd>M</kbd> mute, <kbd>&uarr;</kbd>/<kbd>&darr;</kbd> adjust
+                the selected segment (&plusmn;1&nbsp;min, <kbd>Shift</kbd> for
+                &plusmn;10&nbsp;s).
+              </p>
+            </section>
+
+            <aside aria-labelledby="ft-opts-title">
+              <h2 class="ft-block-title" id="ft-opts-title">Options</h2>
+
+              <label class="ft-option" for="ft-opt-sound">
+                <input type="checkbox" id="ft-opt-sound" checked />
+                <span class="ft-option-text">
+                  <span class="ft-option-label">Time-up buzzer</span>
+                  <span class="ft-option-hint"
+                    >Three-beep alarm when a segment hits zero (synth, no
+                    download).</span
+                  >
+                </span>
+              </label>
+
+              <label class="ft-option" for="ft-opt-ticks">
+                <input type="checkbox" id="ft-opt-ticks" checked />
+                <span class="ft-option-text">
+                  <span class="ft-option-label">Final 10-second ticks</span>
+                  <span class="ft-option-hint"
+                    >Quiet blips and an amber clock in the last 10
+                    seconds.</span
+                  >
+                </span>
+              </label>
+
+              <label class="ft-option" for="ft-opt-auto">
+                <input type="checkbox" id="ft-opt-auto" />
+                <span class="ft-option-text">
+                  <span class="ft-option-label">Auto-advance segments</span>
+                  <span class="ft-option-hint"
+                    >Jump to the next segment at zero. Leave off to keep
+                    displaying the negative overtime timer.</span
+                  >
+                </span>
+              </label>
+
+              <div class="ft-summary" id="ft-summary"></div>
+
+              <button class="ft-launch" id="ft-start" type="button">
+                <i data-lucide="play" aria-hidden="true"></i> Start timer
+              </button>
+              <p class="ft-status" id="ft-status"></p>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Presenter stage -->
+    <div class="ft-stage" id="ft-stage" hidden>
+      <div class="ft-stage-head">
+        <p class="ft-seg-name" id="ft-seg-name">Talk</p>
+        <p class="ft-seg-index" id="ft-seg-index">Segment 1 of 2</p>
+      </div>
+
+      <div class="ft-clock-wrap">
+        <div class="ft-clock" id="ft-clock" role="timer" aria-live="off">
+          15:00
+        </div>
+        <div
+          class="ft-progress"
+          role="progressbar"
+          aria-label="Segment progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <div class="ft-progress-bar" id="ft-progress-bar"></div>
+        </div>
+        <p class="ft-next" id="ft-next-label"></p>
+      </div>
+
+      <div class="ft-controls">
+        <button
+          class="ft-ctl is-primary"
+          id="ft-playpause"
+          type="button"
+          title="Pause (Space)"
+          aria-label="Pause (Space)"
+        >
+          <i data-lucide="pause" aria-hidden="true"></i><span>Pause</span>
+        </button>
+        <button
+          class="ft-ctl"
+          id="ft-prev-btn"
+          type="button"
+          title="Previous segment (B)"
+          aria-label="Previous segment (B)"
+        >
+          <i data-lucide="skip-back" aria-hidden="true"></i><span>Prev</span>
+        </button>
+        <button
+          class="ft-ctl"
+          id="ft-next-btn"
+          type="button"
+          title="Next segment (N)"
+          aria-label="Next segment (N)"
+        >
+          <i data-lucide="skip-forward" aria-hidden="true"></i><span>Next</span>
+        </button>
+        <button
+          class="ft-ctl"
+          id="ft-reset-btn"
+          type="button"
+          title="Reset segment (R)"
+          aria-label="Reset segment (R)"
+        >
+          <i data-lucide="rotate-ccw" aria-hidden="true"></i><span>Reset</span>
+        </button>
+        <button
+          class="ft-ctl"
+          id="ft-mode-btn"
+          type="button"
+          title="Countdown (S)"
+          aria-label="Countdown (S)"
+        >
+          <i data-lucide="timer" aria-hidden="true"></i><span>Countdown</span>
+        </button>
+        <button
+          class="ft-ctl"
+          id="ft-mute-btn"
+          type="button"
+          title="Mute (M)"
+          aria-label="Mute (M)"
+        >
+          <i data-lucide="volume-2" aria-hidden="true"></i><span>Sound</span>
+        </button>
+        <button
+          class="ft-ctl"
+          id="ft-fs-btn"
+          type="button"
+          title="Fullscreen (F)"
+          aria-label="Fullscreen (F)"
+        >
+          <i data-lucide="maximize" aria-hidden="true"></i
+          ><span>Fullscreen</span>
+        </button>
+        <button
+          class="ft-ctl"
+          id="ft-exit-btn"
+          type="button"
+          title="Exit the timer (Esc)"
+          aria-label="Exit the timer (Esc)"
+        >
+          <i data-lucide="x" aria-hidden="true"></i><span>Exit</span>
+        </button>
+      </div>
+
+      <p class="ft-sr" id="ft-live" aria-live="polite" role="status"></p>
+    </div>
+
+    <footer>
+      <div class="footer-social">
+        <a
+          href="https://github.com/Shuvam-Banerji-Seal"
+          target="_blank"
+          rel="noopener"
+          class="social-link"
+          aria-label="GitHub"
+        >
+          <i data-lucide="code-2" class="social-icon"></i>
+        </a>
+        <a
+          href="https://linkedin.com/in/mastersbs"
+          target="_blank"
+          rel="noopener"
+          class="social-link"
+          aria-label="LinkedIn"
+        >
+          <i data-lucide="briefcase" class="social-icon"></i>
+        </a>
+        <a
+          href="https://orcid.org/0009-0000-0714-569X"
+          target="_blank"
+          rel="noopener"
+          class="social-link"
+          aria-label="ORCID"
+        >
+          <i data-lucide="award" class="social-icon"></i>
+        </a>
+        <a
+          href="mailto:sbs22ms076@iiserkol.ac.in"
+          class="social-link"
+          aria-label="Email"
+        >
+          <i data-lucide="mail" class="social-icon"></i>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
+        Chemistry &amp; Code
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (typeof lucide !== "undefined") lucide.createIcons();
+    </script>
+    <script type="module" src="../../assets/js/fullscreen-timer.js"></script>
+  </body>
+</html>
