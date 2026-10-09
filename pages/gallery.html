@@ -8,7 +8,19 @@
     />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -38,7 +50,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <!-- Custom CSS loaded after Tailwind to ensure proper priority -->
@@ -53,201 +65,102 @@
     <link rel="stylesheet" href="../assets/css/overrides.css" />
 
     <style>
-      /* Gallery specific styles */
-      .gallery-item {
-        position: relative;
-        overflow: hidden;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
-        aspect-ratio: 1 / 1;
-      }
-
-      .gallery-item:hover {
-        transform: scale(1.05);
-        box-shadow: var(--glow-cyan, 0 0 20px rgba(201, 124, 58, 0.25));
-      }
-
-      .gallery-item img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-      }
-
-      .gallery-item:hover img {
-        transform: scale(1.1);
-      }
-
-      .gallery-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          to top,
-          var(--overlay-bg-end, rgba(0, 0, 0, 0.75)) 0%,
-          var(--overlay-bg-start, rgba(0, 0, 0, 0)) 60%
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        display: flex;
-        align-items: flex-end;
-        padding: 1rem;
-      }
-
-      .gallery-item:hover .gallery-overlay {
-        opacity: 1;
-      }
-
-      .gallery-overlay p {
-        color: var(--overlay-text-color, #ffffff);
-        font-size: 0.9rem;
-        transform: translateY(10px);
-        opacity: 0;
-        transition:
-          transform 0.3s ease 0.1s,
-          opacity 0.3s ease 0.1s;
-      }
-
-      .gallery-item:hover .gallery-overlay p {
-        transform: translateY(0);
-        opacity: 1;
-      }
-
-      /* Light mode gallery overrides */
-      :root .gallery-item:hover,
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .gallery-item:hover {
-        box-shadow: 0 10px 25px rgba(139, 101, 68, 0.2);
-      }
-
-      :root .gallery-overlay,
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .gallery-overlay {
-        background: linear-gradient(
-          to top,
-          rgba(44, 26, 14, 0.7) 0%,
-          rgba(44, 26, 14, 0) 60%
-        );
-      }
-
-      /* Lightbox Styles */
-      .lightbox {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: var(--lightbox-bg, rgba(0, 0, 0, 0.92));
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        cursor: pointer;
-      }
-
-      .lightbox.active {
-        display: flex;
-      }
-
-      .lightbox img {
-        max-width: 90%;
-        max-height: 85vh;
-        display: block;
-        margin: auto;
-        border-radius: 8px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-      }
-
-      .lightbox-caption {
-        color: var(--lightbox-caption-color, #cbd5e1);
-        text-align: center;
-        margin-top: 12px;
-        font-size: 0.9rem;
-      }
-
-      /* Mobile responsiveness for gallery grid */
-      @media (max-width: 767px) {
-        .gallery-grid {
-          grid-template-columns: 1fr !important;
-          gap: 1rem !important;
-        }
-
-        .gallery-item {
-          aspect-ratio: 4 / 3;
-        }
-
-        .gallery-item:hover {
-          transform: none;
-        }
-
-        .gallery-item:hover img {
-          transform: none;
-        }
-
-        .gallery-overlay {
-          opacity: 1;
-          background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.6) 0%,
-            rgba(0, 0, 0, 0) 50%
-          );
-        }
-
-        .gallery-overlay p {
-          transform: translateY(0);
-          opacity: 1;
-        }
-
-        .lightbox {
-          padding: 10px;
-        }
-
-        .lightbox img {
-          max-width: 95%;
-          max-height: 80vh;
-          border-radius: 4px;
-        }
-      }
-
-      @media (min-width: 768px) and (max-width: 1023px) {
-        .gallery-grid {
-          grid-template-columns: repeat(2, 1fr) !important;
-        }
-      }
-
-      /* Page title and subtitle theme-aware styling */
+      /* Gallery: flat image grid with captions under each image */
       .page-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 0.75rem;
-        color: var(--text-primary);
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 800;
+        font-size: 2.625rem;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin-bottom: 0.75rem;
       }
-
       .page-subtitle {
-        font-size: 1.125rem;
-        color: var(--text-secondary);
-        max-width: 600px;
-        margin: 0 auto;
+        font-size: 1.0625rem;
+        color: var(--graphite);
+        max-width: 68ch;
       }
-
-      html[data-theme="dark"] .page-title,
-html[data-theme="dark-coffee"] .page-title,
-html[data-theme="amber"] .page-title,
-html[data-theme="tokyo-night"] .page-title,
-html[data-theme="absolute-dark"] .page-title,
-html[data-theme="forest"] .page-title,
-html[data-theme="dracula"] .page-title {
-        background-image: var(--grad-primary);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+      .figure-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+        margin-top: 40px;
+      }
+      .figure-card {
+        margin: 0;
+        padding: 16px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
+      }
+      .figure-card canvas {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        touch-action: pan-y;
+        cursor: grab;
+      }
+      .figure-card canvas:active {
+        cursor: grabbing;
+      }
+      .figure-card canvas:focus-visible {
+        outline: 2px solid var(--nitrogen);
+        outline-offset: 2px;
+      }
+      .figure-card figcaption {
+        margin-top: 12px;
+      }
+      .figure-card h2 {
+        font-family: var(--font-body);
+        font-stretch: 100%;
+        font-size: 1.0625rem;
+        font-weight: 650;
+        line-height: 1.3;
+        color: var(--ink);
+      }
+      .figure-card h2 sub {
+        font-size: 0.72em;
+        line-height: 0;
+      }
+      .figure-card p {
+        margin-top: 4px;
+        color: var(--graphite);
+        font-size: 0.9375rem;
+        line-height: 1.5;
+      }
+      .figure-card .qn {
+        margin-left: 8px;
+        color: var(--graphite);
+        font-weight: 400;
+        font-variant-numeric: tabular-nums;
+      }
+      .figure-note {
+        margin-top: 32px;
+        color: var(--graphite);
+        font-size: 0.9375rem;
+        max-width: 68ch;
+      }
+      .figure-note a {
+        color: var(--nitrogen);
+        text-decoration: underline;
+        text-underline-offset: 0.18em;
+      }
+      @media (max-width: 1023px) {
+        .figure-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 640px) {
+        .figure-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
       }
     </style>
+    <link rel="stylesheet" href="../assets/css/element.css" />
   </head>
 
   <body class="">
@@ -255,150 +168,72 @@ html[data-theme="dracula"] .page-title {
     <script type="module" src="../assets/js/navbar.js"></script>
 
     <main class="container section">
-      <header class="text-center mb-16 animate-fade-in-up">
-        <h1 class="page-title">
-          <i data-lucide="image" class="mr-3"></i> Gallery
-        </h1>
+      <header>
+        <h1 class="page-title">Gallery</h1>
         <p class="page-subtitle">
-          A visual collection of interests: Chemistry, Anime, and more.
+          Figures drawn live in your browser by the same code as the
+          homepage. Drag any of them to rotate, or focus one and use the arrow
+          keys.
         </p>
       </header>
 
-      <div class="gallery-grid grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div
-          class="gallery-item animate-on-scroll"
-          data-src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz"
-          data-caption="Visualization of a complex molecule."
+      <div class="figure-grid">
+        <figure class="figure-card" data-orbital-root data-static data-orbital="1s">
+          <canvas data-orbital-canvas tabindex="0" role="img" aria-label="Hydrogen orbital"></canvas>
+          <figcaption>
+            <h2>1s orbital<span class="qn">n = 1, l = 0</span></h2>
+            <p>Spherical with no nodes. The radial probability peaks at one Bohr radius from the nucleus.</p>
+          </figcaption>
+        </figure>
+        <figure class="figure-card" data-orbital-root data-static data-orbital="2pz">
+          <canvas data-orbital-canvas tabindex="0" role="img" aria-label="Hydrogen orbital"></canvas>
+          <figcaption>
+            <h2>2p<sub>z</sub> orbital<span class="qn">n = 2, l = 1</span></h2>
+            <p>Two lobes of opposite sign along z, separated by the xy nodal plane.</p>
+          </figcaption>
+        </figure>
+        <figure class="figure-card" data-orbital-root data-static data-orbital="3dz2">
+          <canvas data-orbital-canvas tabindex="0" role="img" aria-label="Hydrogen orbital"></canvas>
+          <figcaption>
+            <h2>3d<sub>z²</sub> orbital<span class="qn">n = 3, l = 2</span></h2>
+            <p>Two lobes along z and a ring around the nucleus, of opposite sign, divided by two conical nodes.</p>
+          </figcaption>
+        </figure>
+        <figure class="figure-card" data-orbital-root data-static data-orbital="3dxy">
+          <canvas data-orbital-canvas tabindex="0" role="img" aria-label="Hydrogen orbital"></canvas>
+          <figcaption>
+            <h2>3d<sub>xy</sub> orbital<span class="qn">n = 3, l = 2</span></h2>
+            <p>Four lobes between the x and y axes. The xz and yz planes are nodes.</p>
+          </figcaption>
+        </figure>
+        <figure class="figure-card" data-orbital-root data-static data-orbital="4fxyz">
+          <canvas data-orbital-canvas tabindex="0" role="img" aria-label="Hydrogen orbital"></canvas>
+          <figcaption>
+            <h2>4f<sub>xyz</sub> orbital<span class="qn">n = 4, l = 3</span></h2>
+            <p>Eight lobes, one per octant, alternating in sign across the three coordinate planes.</p>
+          </figcaption>
+        </figure>
+        <figure
+          class="figure-card"
+          data-molecule-root
+          data-src="../assets/pdb/ATP.pdb"
         >
-          <img
-            src="https://placehold.co/600x400/0E7490/E0F2FE?text=Molecule+Viz"
-            alt="Chemistry Visualization"
-            loading="lazy"
-          />
-          <div class="gallery-overlay">
-            <p class="overlay-text">Molecular Dynamics Snapshot</p>
-          </div>
-        </div>
-
-        <div
-          class="gallery-item animate-on-scroll"
-          data-src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene"
-          data-caption="A scene from a favorite anime series."
-        >
-          <img
-            src="https://placehold.co/600x400/5B21B6/EDE9FE?text=Anime+Scene"
-            alt="Anime Scenery"
-            loading="lazy"
-          />
-          <div class="gallery-overlay">
-            <p class="overlay-text">Favorite Anime Moment</p>
-          </div>
-        </div>
-
-        <div
-          class="gallery-item animate-on-scroll"
-          data-src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work"
-          data-caption="Working on an experiment in the lab."
-        >
-          <img
-            src="https://placehold.co/600x400/166534/D1FAE5?text=Lab+Work"
-            alt="Lab Work"
-            loading="lazy"
-          />
-          <div class="gallery-overlay">
-            <p class="overlay-text">Computational Setup</p>
-          </div>
-        </div>
-
-        <div
-          class="gallery-item animate-on-scroll"
-          data-src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby"
-          data-caption="Engaging in a personal hobby (e.g., art, karate)."
-        >
-          <img
-            src="https://placehold.co/600x400/9D174D/FCE7F3?text=Hobby"
-            alt="Personal Hobby"
-            loading="lazy"
-          />
-          <div class="gallery-overlay">
-            <p class="overlay-text">Stroke Art Example</p>
-          </div>
-        </div>
-
-        <div
-          class="gallery-item animate-on-scroll"
-          data-src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel"
-          data-caption="A cool manga panel."
-        >
-          <img
-            src="https://placehold.co/600x400/6D28D9/F5F3FF?text=Manga+Panel"
-            alt="Manga Panel"
-            loading="lazy"
-          />
-          <div class="gallery-overlay">
-            <p class="overlay-text">Inspiring Manga Art</p>
-          </div>
-        </div>
-
-        <div
-          class="gallery-item animate-on-scroll"
-          data-src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot"
-          data-caption="Density Functional Theory calculation result plot."
-        >
-          <img
-            src="https://placehold.co/600x400/047857/A7F3D0?text=DFT+Plot"
-            alt="DFT Plot"
-            loading="lazy"
-          />
-          <div class="gallery-overlay">
-            <p class="overlay-text">Electron Density Plot</p>
-          </div>
-        </div>
-
-        <div
-          class="gallery-item animate-on-scroll"
-          data-src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference"
-          data-caption="Presenting at a conference or event."
-        >
-          <img
-            src="https://placehold.co/600x400/7C2D12/FEF3C7?text=Conference"
-            alt="Conference Presentation"
-            loading="lazy"
-          />
-          <div class="gallery-overlay">
-            <p class="overlay-text">Anicon 2.0 Event</p>
-          </div>
-        </div>
-
-        <div
-          class="gallery-item animate-on-scroll"
-          data-src="https://placehold.co/600x400/365314/ECFCCB?text=Nature"
-          data-caption="A photo from a nature walk or travel."
-        >
-          <img
-            src="https://placehold.co/600x400/365314/ECFCCB?text=Nature"
-            alt="Nature Photo"
-            loading="lazy"
-          />
-          <div class="gallery-overlay">
-            <p class="overlay-text">Campus Greenery</p>
-          </div>
-        </div>
+          <canvas data-molecule-canvas tabindex="0" role="img" aria-label="Ball-and-stick model of ATP, 44 atoms, coloured by element."></canvas>
+          <figcaption>
+            <h2>Adenosine triphosphate</h2>
+            <p data-molecule-atom>44 atoms read from ATP.pdb, in CPK colours. Point at an atom to name it.</p>
+          </figcaption>
+        </figure>
       </div>
+
+      <p class="figure-note">
+        Each orbital is 1,600 Monte Carlo samples of |ψ|²: red and blue mark
+        the two signs of the wavefunction. The radius is drawn exactly from its
+        Gamma distribution and the direction is rejection-sampled from the
+        angular part. Source:
+        <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io/blob/main/assets/js/orbital.js">orbital.js</a>.
+      </p>
     </main>
-
-    <div
-      id="lightbox"
-      class="lightbox"
-      onclick="closeLightbox()"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Image viewer"
-    >
-      <img id="lightbox-img" src="" alt="Lightbox Image" />
-      <div id="lightbox-caption" class="lightbox-caption"></div>
-    </div>
-
     <footer>
       <div class="footer-social">
         <a
@@ -434,12 +269,7 @@ html[data-theme="dracula"] .page-title {
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem">
-        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
-        Portfolio v3.0
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
 
@@ -452,47 +282,9 @@ html[data-theme="dracula"] .page-title {
     <!-- Enhanced features -->
     <script type="module" src="../assets/js/enhanced.js"></script>
     <script>
-      // Simple Lightbox Functionality
-      const lightbox = document.getElementById("lightbox");
-      const lightboxImg = document.getElementById("lightbox-img");
-      const lightboxCaption = document.getElementById("lightbox-caption");
-      const galleryItems = document.querySelectorAll(".gallery-item");
-
-      galleryItems.forEach((item) => {
-        item.addEventListener("click", () => {
-          const imgSrc = item.getAttribute("data-src");
-          const imgCaption = item.getAttribute("data-caption");
-          if (imgSrc && lightbox && lightboxImg && lightboxCaption) {
-            lightboxImg.src = imgSrc;
-            lightboxImg.alt = imgCaption || "Gallery image";
-            lightboxCaption.textContent = imgCaption || "";
-            lightbox.classList.add("active");
-            document.body.style.overflow = "hidden";
-          }
-        });
-      });
-
-      function closeLightbox() {
-        if (lightbox) {
-          lightbox.classList.remove("active");
-          document.body.style.overflow = "";
-          setTimeout(() => {
-            lightboxImg.src = "";
-            lightboxImg.alt = "Lightbox Image";
-            lightboxCaption.textContent = "";
-          }, 200);
-        }
-      }
-
-      // Close lightbox on escape key
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && lightbox.classList.contains("active")) {
-          closeLightbox();
-        }
-      });
-
-      // Initialize Lucide Icons
       if (typeof lucide !== "undefined") lucide.createIcons();
     </script>
+    <script type="module" src="../assets/js/orbital.js"></script>
+    <script type="module" src="../assets/js/molecule-figure.js"></script>
   </body>
 </html>

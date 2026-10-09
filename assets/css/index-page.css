@@ -1,24 +1,18 @@
 /* ================================================================
-   INDEX PAGE CSS ENTRY — single ordered bundle for index.html
-   ================================================================
-   Vite merges every locally-linked stylesheet into bundles whose
-   ORDER it decides itself (it merged our page overrides into the
-   middle of the stack — see plans/05-audit-log.md B48/B49). The one
-   order it preserves exactly is @import order WITHIN a file.
+   INDEX PAGE CSS ENTRY — single ordered bundle for index.html.
+   Vite reorders separately linked stylesheets in multi-page builds
+   (plans/05-audit-log.md B48/B49) but keeps @import order within a
+   file, so the homepage links only this file.
 
-   So index.html links only this file; everything is imported here
-   in the intended cascade order, with the page-specific overrides
-   guaranteed last:
-
-   1. theme.css      — global theme variables
-   2. main.css       — global components/layout
-   3. mobile-fixes.css — responsive patches
-   4. mobile.css     — mobile layout
-   5. index-overrides.css — INDEX PAGE-SPECIFIC STYLES (must win)
+   1. theme.css        tokens (Element, plans/design-element.md)
+   2. main.css         shared navbar + legacy base
+   3. mobile-fixes.css mobile menu sheet
+   4. home.css         homepage layout
+   5. element.css      shared components and guards (always last)
    ================================================================ */
 
 @import "./theme.css";
 @import "./main.css";
 @import "./mobile-fixes.css";
-@import "./mobile.css";
-@import "./index-overrides.css";
+@import "./home.css";
+@import "./element.css";

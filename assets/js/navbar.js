@@ -1,285 +1,181 @@
 /**
- * Dynamic Navbar Generator with Dropdown Menus
- * Modern responsive navigation with organized menu structure
+ * Shared site navigation (Element system, plans/design-element.md).
+ * Builds the top bar, the grouped Tools menu and the mobile sheet,
+ * and owns the light/dark preference for every page.
  */
+
+// ---------- Theme: two modes, system default, explicit choice wins ----------
+const DARK_ALIASES = [
+  "dark",
+  "quantum",
+  "dark-coffee",
+  "amber",
+  "tokyo-night",
+  "absolute-dark",
+  "forest",
+  "dracula",
+];
+
+function isDarkTheme(theme) {
+  return DARK_ALIASES.includes(theme);
+}
+
+function resolveTheme() {
+  let saved = null;
+  try {
+    saved = localStorage.getItem("theme");
+  } catch (_) {
+    /* storage blocked: fall through to system preference */
+  }
+  if (saved === "light") return "light";
+  if (saved && isDarkTheme(saved)) return "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+function setThemeAttr(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  if (document.body) document.body.setAttribute("data-theme", theme);
+  document.documentElement.style.colorScheme = theme;
+}
+
+// Apply as early as this module runs, before DOMContentLoaded work.
+setThemeAttr(resolveTheme());
 
 document.addEventListener("DOMContentLoaded", function () {
   const navbarContainer = document.getElementById("navbar-container");
   if (!navbarContainer) return;
 
-  // Determine current page and path depth dynamically
   const currentPath = window.location.pathname;
   const isHome =
     currentPath.endsWith("index.html") || currentPath.endsWith("/");
   const pathSegments = currentPath.split("/").filter(Boolean);
   const pathDepth = isHome ? "" : pathSegments.map(() => "../").join("");
+  const to = (p) => (isHome ? p : pathDepth + p);
+  const home = (hash) => (isHome ? hash : pathDepth + "index.html" + hash);
 
-  // Define navigation structure with dropdowns
-  const navStructure = [
+  // Tools grouped by what people use them for.
+  const toolGroups = [
     {
-      name: "About",
-      href: isHome ? "#about" : pathDepth + "index.html#about",
-      type: "link",
-    },
-    {
-      name: "Resume",
-      href: isHome ? "pages/resume.html" : pathDepth + "pages/resume.html",
-      type: "link",
-    },
-    {
-      name: "Projects",
-      href: isHome ? "#projects" : pathDepth + "index.html#projects",
-      type: "link",
-    },
-    {
-      name: "Resources",
-      type: "dropdown",
+      group: "Chemistry",
       items: [
-        {
-          name: "GitHub Projects",
-          href: isHome
-            ? "pages/github-projects.html"
-            : pathDepth + "pages/github-projects.html",
-          icon: "code-2",
-        },
-        {
-          name: "Gallery",
-          href: isHome
-            ? "pages/gallery.html"
-            : pathDepth + "pages/gallery.html",
-          icon: "image",
-        },
-        {
-          name: "Blog",
-          href: isHome ? "pages/blog.html" : pathDepth + "pages/blog.html",
-          icon: "book-open",
-        },
-        {
-          name: "Notes",
-          href: isHome ? "pages/notes.html" : pathDepth + "pages/notes.html",
-          icon: "file-text",
-        },
+        ["Periodic table", "pages/tools/periodic-table.html"],
+        ["Molecular weight", "pages/tools/mol-weight.html"],
+        ["Equation balancer", "pages/tools/equation-balancer.html"],
+        ["pH calculator", "pages/tools/ph-calculator.html"],
+        ["Molecule viewer", "pages/tools/molecule-viz.html"],
+        ["Thermodynamics", "pages/thermodynamics.html"],
+        ["Chemistry games", "pages/tools/games.html"],
       ],
     },
     {
-      name: "Apps",
-      type: "dropdown",
+      group: "Documents",
       items: [
-        {
-          name: "E-Reader",
-          href: isHome ? "pages/reader.html" : pathDepth + "pages/reader.html",
-          icon: "book",
-        },
-        {
-          name: "Music Player",
-          href: isHome ? "pages/music.html" : pathDepth + "pages/music.html",
-          icon: "music",
-        },
-        {
-          name: "Audio Studio",
-          href: isHome
-            ? "pages/tools/audio-studio.html"
-            : pathDepth + "pages/tools/audio-studio.html",
-          icon: "headphones",
-        },
-        {
-          name: "Image Studio",
-          href: isHome
-            ? "pages/tools/image-studio.html"
-            : pathDepth + "pages/tools/image-studio.html",
-          icon: "image",
-        },
-        {
-          name: "PDF Studio",
-          href: isHome
-            ? "pages/tools/pdf-studio.html"
-            : pathDepth + "pages/tools/pdf-studio.html",
-          icon: "file-search",
-        },
-        {
-          name: "Fullscreen Timer",
-          href: isHome
-            ? "pages/tools/fullscreen-timer.html"
-            : pathDepth + "pages/tools/fullscreen-timer.html",
-          icon: "timer",
-        },
-        {
-          name: "Public APIs",
-          href: isHome ? "pages/apis.html" : pathDepth + "pages/apis.html",
-          icon: "globe",
-        },
-        {
-          name: "Mermaid Editor",
-          href: isHome
-            ? "pages/mermaid-tool.html"
-            : pathDepth + "pages/mermaid-tool.html",
-          icon: "git-branch",
-        },
-        {
-          name: "Thermodynamics",
-          href: isHome
-            ? "pages/thermodynamics.html"
-            : pathDepth + "pages/thermodynamics.html",
-          icon: "thermometer",
-        },
+        ["PDF Studio", "pages/tools/pdf-studio.html"],
+        ["Reader", "pages/reader.html"],
+        ["Mermaid editor", "pages/mermaid-tool.html"],
+        ["Paper finder", "pages/tools/paper-finder.html"],
+        ["Unit converter", "pages/tools/unit-converter.html"],
       ],
     },
     {
-      name: "Tools",
-      type: "dropdown",
+      group: "Audio and image",
       items: [
-        {
-          name: "All Tools",
-          href: isHome ? "pages/tools.html" : pathDepth + "pages/tools.html",
-          icon: "wrench",
-          divider: true,
-        },
-        {
-          name: "LLM Chat",
-          href: isHome
-            ? "pages/tools/llm-chat.html"
-            : pathDepth + "pages/tools/llm-chat.html",
-          icon: "message-circle",
-        },
-        {
-          name: "Research Papers",
-          href: isHome
-            ? "pages/tools/paper-finder.html"
-            : pathDepth + "pages/tools/paper-finder.html",
-          icon: "search",
-        },
-        {
-          name: "Molecule 3D",
-          href: isHome
-            ? "pages/tools/molecule-viz.html"
-            : pathDepth + "pages/tools/molecule-viz.html",
-          icon: "atom",
-        },
-        {
-          name: "Periodic Table",
-          href: isHome
-            ? "pages/tools/periodic-table.html"
-            : pathDepth + "pages/tools/periodic-table.html",
-          icon: "table-2",
-        },
-        {
-          name: "Unit Converter",
-          href: isHome
-            ? "pages/tools/unit-converter.html"
-            : pathDepth + "pages/tools/unit-converter.html",
-          icon: "ruler",
-        },
-        {
-          name: "Mol. Weight Calc",
-          href: isHome
-            ? "pages/tools/mol-weight.html"
-            : pathDepth + "pages/tools/mol-weight.html",
-          icon: "calculator",
-        },
-        {
-          name: "Equation Balancer",
-          href: isHome
-            ? "pages/tools/equation-balancer.html"
-            : pathDepth + "pages/tools/equation-balancer.html",
-          icon: "scale",
-        },
-        {
-          name: "pH Calculator",
-          href: isHome
-            ? "pages/tools/ph-calculator.html"
-            : pathDepth + "pages/tools/ph-calculator.html",
-          icon: "droplet",
-        },
-        {
-          name: "LLM Studio",
-          href: isHome
-            ? "pages/tools/llm-studio.html"
-            : pathDepth + "pages/tools/llm-studio.html",
-          icon: "brain",
-        },
-        {
-          name: "Webcam Tester + Air Guitar",
-          href: isHome
-            ? "pages/tools/webcam-tester.html"
-            : pathDepth + "pages/tools/webcam-tester.html",
-          icon: "camera",
-        },
-        {
-          name: "HTML Playground",
-          href: isHome
-            ? "pages/tools/playground.html"
-            : pathDepth + "pages/tools/playground.html",
-          icon: "code-2",
-        },
-        {
-          name: "Beam File Sharing",
-          href: isHome
-            ? "pages/tools/file-share.html"
-            : pathDepth + "pages/tools/file-share.html",
-          icon: "zap",
-        },
-        {
-          name: "YouTube Downloader",
-          href: isHome
-            ? "pages/tools/youtube-downloader.html"
-            : pathDepth + "pages/tools/youtube-downloader.html",
-          icon: "video",
-        },
-        {
-          name: "Chemistry Games",
-          href: isHome
-            ? "pages/tools/games.html"
-            : pathDepth + "pages/tools/games.html",
-          icon: "gamepad-2",
-        },
+        ["Audio Studio", "pages/tools/audio-studio.html"],
+        ["Music player", "pages/music.html"],
+        ["Image Studio", "pages/tools/image-studio.html"],
+        ["Webcam and air guitar", "pages/tools/webcam-tester.html"],
+        ["YouTube downloader", "pages/tools/youtube-downloader.html"],
+      ],
+    },
+    {
+      group: "Language models and code",
+      items: [
+        ["LLM chat", "pages/tools/llm-chat.html"],
+        ["LLM Studio", "pages/tools/llm-studio.html"],
+        ["HTML playground", "pages/tools/playground.html"],
+        ["Public APIs", "pages/apis.html"],
+        ["File sharing", "pages/tools/file-share.html"],
+        ["Fullscreen timer", "pages/tools/fullscreen-timer.html"],
       ],
     },
   ];
 
-  // Build Navbar HTML
+  const navStructure = [
+    { name: "Research", href: home("#research"), type: "link" },
+    { name: "Software", href: home("#software"), type: "link" },
+    {
+      name: "Tools",
+      type: "dropdown",
+      wide: true,
+      groups: toolGroups,
+      footer: ["See all tools", "pages/tools.html"],
+    },
+    {
+      name: "Writing",
+      type: "dropdown",
+      groups: [
+        {
+          group: null,
+          items: [
+            ["Blog", "pages/blog.html"],
+            ["Notes", "pages/notes.html"],
+            ["GitHub projects", "pages/github-projects.html"],
+            ["Gallery", "pages/gallery.html"],
+          ],
+        },
+      ],
+    },
+    { name: "CV", href: to("pages/resume.html"), type: "link" },
+    { name: "Contact", href: home("#contact"), type: "link" },
+  ];
+
+  const renderGroups = (item) =>
+    item.groups
+      .map(
+        (g) => `
+          <div class="nav-group">
+            ${g.group ? `<p class="nav-group-title">${g.group}</p>` : ""}
+            ${g.items
+              .map(
+                ([name, href]) =>
+                  `<a href="${to(href)}" class="dropdown-item">${name}</a>`,
+              )
+              .join("")}
+          </div>`,
+      )
+      .join("");
+
   const navbarHTML = `
-    <nav id="navbar" class="${!isHome ? "scrolled" : ""}">
-        <div class="container nav-content glassmorphic">
-            <a href="${isHome ? "index.html" : pathDepth + "index.html"}" class="nav-logo">
-                <i data-lucide="atom" class="mr-2"></i>
-                <span>SBS</span>
-            </a>
+    <nav id="navbar" class="${!isHome ? "scrolled" : ""}" aria-label="Main">
+        <div class="container nav-content">
+            <a href="${to("index.html")}" class="nav-logo">Shuvam Banerji Seal</a>
             <div class="nav-links">
                 ${navStructure
                   .map((item) => {
                     if (item.type === "dropdown") {
                       return `
                         <div class="nav-dropdown">
-                            <button class="nav-link dropdown-toggle">
+                            <button class="nav-link dropdown-toggle" aria-expanded="false" aria-haspopup="true">
                                 ${item.name}
-                                <i data-lucide="chevron-down" class="dropdown-arrow"></i>
+                                <i data-lucide="chevron-down" class="dropdown-arrow" aria-hidden="true"></i>
                             </button>
-                            <div class="dropdown-menu">
-                                ${item.items
-                                  .map(
-                                    (subItem) => `
-                                    <a href="${subItem.href}" class="dropdown-item ${subItem.divider ? "has-divider" : ""}">
-                                        <i data-lucide="${subItem.icon}"></i>
-                                        <span>${subItem.name}</span>
-                                    </a>
-                                `,
-                                  )
-                                  .join("")}
+                            <div class="dropdown-menu${item.wide ? " dropdown-menu--wide" : ""}">
+                                <div class="nav-groups">${renderGroups(item)}</div>
+                                ${item.footer ? `<a class="nav-menu-footer" href="${to(item.footer[1])}">${item.footer[0]}</a>` : ""}
                             </div>
-                        </div>
-                        `;
-                    } else {
-                      return `<a href="${item.href}" class="nav-link ${isActive(item.href) ? "active" : ""}">${item.name}</a>`;
+                        </div>`;
                     }
+                    return `<a href="${item.href}" class="nav-link ${isActive(item.href) ? "active" : ""}">${item.name}</a>`;
                   })
                   .join("")}
-                <a href="${isHome ? "#contact" : pathDepth + "index.html#contact"}" class="btn btn-primary nav-contact-btn">Contact</a>
             </div>
             <div class="nav-actions">
-                <button data-theme-toggle class="theme-toggle-btn" aria-label="Toggle theme">
+                <button data-theme-toggle class="theme-toggle-btn" aria-label="Switch to dark mode">
                     <i data-lucide="moon" class="w-5 h-5"></i>
                 </button>
-                <button id="menu-btn" aria-label="Open mobile menu">
+                <button id="menu-btn" aria-label="Open menu">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
@@ -289,12 +185,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   navbarContainer.innerHTML = navbarHTML;
 
-  // Create Mobile Menu with accordion-style dropdowns
   const mobileMenuHTML = `
-    <div id="mobile-menu">
+    <div id="mobile-menu" aria-label="Menu">
         <div class="mobile-menu-header">
             <span class="mobile-menu-title">Menu</span>
-            <button id="close-menu-btn" aria-label="Close mobile menu">
+            <button id="close-menu-btn" aria-label="Close menu">
                 <i data-lucide="x" class="w-8 h-8"></i>
             </button>
         </div>
@@ -309,31 +204,25 @@ document.addEventListener("DOMContentLoaded", function () {
                             <i data-lucide="chevron-down" class="accordion-arrow"></i>
                         </button>
                         <div class="mobile-accordion-content">
-                            ${item.items
+                            ${item.groups
+                              .flatMap((g) => g.items)
                               .map(
-                                (subItem) => `
-                                <a href="${subItem.href}" class="mobile-menu-link mobile-submenu-link">
-                                    <i data-lucide="${subItem.icon}"></i>
-                                    <span>${subItem.name}</span>
-                                </a>
-                            `,
+                                ([name, href]) =>
+                                  `<a href="${to(href)}" class="mobile-menu-link mobile-submenu-link"><span>${name}</span></a>`,
                               )
                               .join("")}
+                            ${item.footer ? `<a href="${to(item.footer[1])}" class="mobile-menu-link mobile-submenu-link"><span>${item.footer[0]}</span></a>` : ""}
                         </div>
-                    </div>
-                    `;
-                } else {
-                  return `<a href="${item.href}" class="mobile-menu-link">${item.name}</a>`;
+                    </div>`;
                 }
+                return `<a href="${item.href}" class="mobile-menu-link">${item.name}</a>`;
               })
               .join("")}
-            <a href="${isHome ? "#contact" : pathDepth + "index.html#contact"}" class="btn btn-primary mobile-menu-link">Contact</a>
         </div>
     </div>
     <div id="mobile-menu-backdrop"></div>
     `;
 
-  // Remove existing mobile menu if any
   const existingMenu = document.getElementById("mobile-menu");
   if (existingMenu) existingMenu.remove();
   const existingBackdrop = document.getElementById("mobile-menu-backdrop");
@@ -341,122 +230,72 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.body.insertAdjacentHTML("beforeend", mobileMenuHTML);
 
-  // Re-initialize icons
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
 
-  // Initialize all navbar functionality
   initDropdowns();
   initMobileMenuLogic();
   initThemeToggle();
-  initScrollProgress();
 });
 
-// Site-wide scroll progress bar (#scroll-progress styles live in main.css).
-// The homepage's home-cinematics.js has its own instance that boots earlier;
-// the existence guard keeps exactly one bar regardless of execution order.
-function initScrollProgress() {
-  if (document.getElementById("scroll-progress")) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const bar = document.createElement("div");
-  bar.id = "scroll-progress";
-  document.body.appendChild(bar);
-  let ticking = false;
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const p = max > 0 ? window.scrollY / max : 0;
-        bar.style.transform = `scaleX(${p})`;
-        ticking = false;
-      });
-    },
-    { passive: true },
-  );
-}
-
-// All available dark themes
-const DARK_THEMES = [
-  "quantum",
-  "dark",
-  "dark-coffee",
-  "amber",
-  "tokyo-night",
-  "absolute-dark",
-  "forest",
-  "dracula",
-];
-
-function getRandomDarkTheme() {
-  return DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
-}
-
-function isDarkTheme(theme) {
-  return DARK_THEMES.includes(theme);
-}
-
 function initThemeToggle() {
-  // Apply saved theme if not already set by main.js / enhanced.js
-  var currentTheme = document.documentElement.getAttribute("data-theme");
-  if (!currentTheme) {
-    // Check if user has a saved preference
-    var savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      currentTheme = savedTheme;
-    } else {
-      // Randomly assign a dark theme on first visit
-      currentTheme = getRandomDarkTheme();
-    }
-    document.documentElement.setAttribute("data-theme", currentTheme);
-    document.body.setAttribute("data-theme", currentTheme);
-  }
-
-  function applyTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
-    document.body.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
+  function paintToggles(theme) {
     document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
-      var icon = btn.querySelector("i");
+      const dark = isDarkTheme(theme);
+      btn.setAttribute(
+        "aria-label",
+        dark ? "Switch to light mode" : "Switch to dark mode",
+      );
+      const icon = btn.querySelector("i, svg");
       if (icon) {
-        // Show sun for dark themes, moon for light
-        icon.setAttribute("data-lucide", isDarkTheme(theme) ? "sun" : "moon");
-        if (typeof lucide !== "undefined") lucide.createIcons();
+        const fresh = document.createElement("i");
+        fresh.setAttribute("data-lucide", dark ? "sun" : "moon");
+        fresh.className = "w-5 h-5";
+        icon.replaceWith(fresh);
       }
     });
+    if (typeof lucide !== "undefined") lucide.createIcons();
   }
 
-  // Update icons to reflect current theme
-  applyTheme(currentTheme);
+  function applyTheme(theme, persist) {
+    setThemeAttr(theme);
+    if (persist) {
+      try {
+        localStorage.setItem("theme", theme);
+      } catch (_) {
+        /* preference just won't persist */
+      }
+    }
+    paintToggles(theme);
+    document.dispatchEvent(
+      new CustomEvent("themechange", { detail: { theme } }),
+    );
+  }
 
-  // Wire click handlers on all toggle buttons
+  applyTheme(resolveTheme(), false);
+
   window.__themeToggleWired = true;
   document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
-    // Remove any existing listener by cloning (safe for navbar-injected btn)
-    var newBtn = btn.cloneNode(true);
-    btn.parentNode.replaceChild(newBtn, btn);
-    var lastDark = isDarkTheme(
-      document.documentElement.getAttribute("data-theme") || "quantum",
-    )
-      ? document.documentElement.getAttribute("data-theme")
-      : "quantum";
-    newBtn.addEventListener("click", function () {
-      var current =
+    const fresh = btn.cloneNode(true);
+    btn.parentNode.replaceChild(fresh, btn);
+    fresh.addEventListener("click", function () {
+      const current =
         document.documentElement.getAttribute("data-theme") || "light";
-      var next;
-      if (isDarkTheme(current)) {
-        // going light: remember which dark the user had (no slot machine)
-        lastDark = current;
-        next = "light";
-      } else {
-        next = lastDark || getRandomDarkTheme();
-      }
-      applyTheme(next);
+      applyTheme(isDarkTheme(current) ? "light" : "dark", true);
     });
   });
+
+  // Follow the system while the visitor has not chosen.
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", function () {
+      let saved = null;
+      try {
+        saved = localStorage.getItem("theme");
+      } catch (_) {}
+      if (!saved) applyTheme(resolveTheme(), false);
+    });
 }
 
 function initDropdowns() {
@@ -666,9 +505,9 @@ window.showNotification = function (message, type = "error") {
     document.body.appendChild(container);
   }
   const toast = document.createElement("div");
-  toast.style.cssText = `padding:12px 20px;border-radius:6px;color:#fff;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:opacity 0.3s,transform 0.3s;transform:translateY(20px);opacity:0;`;
+  toast.style.cssText = `padding:12px 16px;border-radius:8px;color:#fff;font-weight:500;box-shadow:var(--lift);transition:opacity 0.3s,transform 0.3s;transform:translateY(20px);opacity:0;`;
   toast.style.background =
-    type === "error" ? "#ef4444" : type === "success" ? "#10b981" : "#3b82f6";
+    type === "error" ? "#c92a39" : type === "success" ? "#1f7a4d" : "#2445c2";
   toast.textContent = message;
   container.appendChild(toast);
 

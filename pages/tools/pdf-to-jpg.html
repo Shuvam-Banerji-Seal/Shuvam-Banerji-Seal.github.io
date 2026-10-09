@@ -4,8 +4,21 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var t = localStorage.getItem("theme") || "dark";
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,13 +51,14 @@
         place-items: center;
         min-height: 100vh;
         margin: 0;
-        background: #0d1117;
-        color: #e6edf3;
+        background: var(--paper);
+        color: var(--ink);
       }
       a {
-        color: #58a6ff;
+        color: var(--nitrogen);
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div style="text-align: center">

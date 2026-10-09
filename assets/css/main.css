@@ -1,6 +1,7 @@
 /* Fonts are loaded via <link rel="stylesheet"> in each page's <head>
-   (Inter, JetBrains Mono, Source Code Pro) — a CSS @import here would
-   serialize the font CSS fetch after main.css and block first paint. */
+   (Archivo, IBM Plex Mono). A CSS @import here would serialize the font
+   CSS fetch after main.css and block first paint. Colours and type come
+   from the tokens in theme.css. */
 
 /* Base Styles */
 html {
@@ -13,12 +14,9 @@ body {
   /* reset UA default 8px margin — caused +8px horizontal overflow on
      pages whose sections are width:100% */
   margin: 0;
-  font-family: "Inter", sans-serif;
-  background: var(
-    --body-bg,
-    linear-gradient(135deg, #fef5e7 0%, #fdf8f3 50%, #fef5e7 100%)
-  );
-  color: var(--text-primary, #2d1810);
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
   transition:
     background 0.35s ease,
     color 0.35s ease;
@@ -26,127 +24,43 @@ body {
   width: 100%;
 }
 
-/* Dark Theme */
-html[data-theme="quantum"] body,
-html[data-theme="dark"] body,
-html[data-theme="quantum"] body,
-html[data-theme="dark-coffee"] body,
-html[data-theme="quantum"] body,
-html[data-theme="amber"] body,
-html[data-theme="quantum"] body,
-html[data-theme="tokyo-night"] body,
-html[data-theme="quantum"] body,
-html[data-theme="absolute-dark"] body,
-html[data-theme="quantum"] body,
-html[data-theme="forest"] body,
-html[data-theme="quantum"] body,
-html[data-theme="dracula"] body,
-html[data-theme="quantum"],
-html[data-theme="dark"],
-html[data-theme="quantum"],
-html[data-theme="dark-coffee"],
-html[data-theme="quantum"],
-html[data-theme="amber"],
-html[data-theme="quantum"],
-html[data-theme="tokyo-night"],
-html[data-theme="quantum"],
-html[data-theme="absolute-dark"],
-html[data-theme="quantum"],
-html[data-theme="forest"],
-html[data-theme="quantum"],
-html[data-theme="dracula"],
-[data-theme="quantum"],
-[data-theme="dark-coffee"],
-[data-theme="quantum"],
-[data-theme="amber"],
-[data-theme="quantum"],
-[data-theme="tokyo-night"],
-[data-theme="quantum"],
-[data-theme="absolute-dark"],
-[data-theme="quantum"],
-[data-theme="forest"],
-[data-theme="quantum"],
-[data-theme="dracula"] {
-  background: var(--body-bg, #060b18);
-  color: var(--text-primary, #e2e8f0);
-}
-
 /* Components */
 .glassmorphic {
-  /* Uses CSS variables from theme.css */
-  background: var(--glass-bg, rgba(254, 248, 243, 0.72));
-  border: 1px solid var(--glass-border, rgba(205, 180, 150, 0.3));
-  box-shadow: 0 4px 30px var(--glass-shadow, rgba(139, 101, 68, 0.1));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  box-shadow: none;
+  transition: border-color 0.15s ease;
 }
 
 #navbar.scrolled .glassmorphic {
-  background: var(--nav-bg, rgba(250, 243, 232, 0.92));
-  box-shadow: 0 8px 32px var(--glass-shadow, rgba(139, 101, 68, 0.15));
+  background: var(--nav-bg);
+  box-shadow: none;
 }
 
 .tech-tag {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 13px;
   font-weight: 500;
-  padding: 0.125rem 0.625rem;
-  border-radius: 9999px;
-  background-color: var(--bg-elevated);
-  color: var(--accent);
-  border: 1px solid var(--border);
+  line-height: 1.4;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--r-s);
+  background-color: var(--surface);
+  color: var(--graphite);
+  border: 1px solid var(--rule);
 }
 
 /* Section Title */
 .section-title {
-  position: relative;
-  padding-bottom: 1rem;
-  font-size: 2.25rem; /* text-4xl */
-  font-weight: 700; /* font-bold */
+  padding-bottom: 0;
+  font-family: var(--font-display);
+  font-stretch: var(--stretch-display);
+  font-size: 34px;
+  font-weight: 780;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
   text-align: center;
   margin-bottom: 2rem;
-}
-
-.section-title::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background-color: var(--accent);
-  border-radius: 9999px;
-}
-
-/* Scroll Animations */
-.animate-on-scroll {
-  opacity: 0;
-  transform: translateY(30px);
-  transition:
-    opacity 0.6s ease-out,
-    transform 0.6s ease-out;
-}
-
-.animate-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Fade-in Animation */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
+  color: var(--ink);
 }
 
 /* Canvas Background */
@@ -161,23 +75,6 @@ html[data-theme="dracula"],
   pointer-events: none;
 }
 
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="dark"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="dark-coffee"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="amber"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="tokyo-night"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="absolute-dark"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="forest"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="dracula"] #canvas-container {
-  opacity: 0.12;
-}
-
 /* Loading Screen */
 #loading-screen {
   position: fixed;
@@ -185,7 +82,8 @@ html[data-theme="dracula"] #canvas-container {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--bg-deep);
+  background: var(--paper);
+  color: var(--ink);
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -196,7 +94,7 @@ html[data-theme="dracula"] #canvas-container {
 
 .loading-content {
   text-align: center;
-  color: white;
+  color: var(--ink);
 }
 
 .loading-logo {
@@ -209,6 +107,7 @@ html[data-theme="dracula"] #canvas-container {
   gap: 1rem;
 }
 
+/* Real loading state: the spinner is kept because it reflects work in progress */
 .loading-icon {
   width: 3rem;
   height: 3rem;
@@ -227,16 +126,16 @@ html[data-theme="dracula"] #canvas-container {
 .loading-bar {
   width: 200px;
   height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
+  background: var(--rule);
+  border-radius: var(--r-s);
   margin: 0 auto 1rem;
   overflow: hidden;
 }
 
 .loading-progress {
   height: 100%;
-  background: white;
-  border-radius: 2px;
+  background: var(--ink);
+  border-radius: var(--r-s);
   width: 0%;
   animation: loading 2s ease-in-out;
 }
@@ -255,7 +154,7 @@ html[data-theme="dracula"] #canvas-container {
 
 .loading-text {
   font-size: 1.125rem;
-  opacity: 0.8;
+  color: var(--graphite);
 }
 
 #loading-screen.hide {
@@ -281,15 +180,15 @@ footer {
 /* General Layout & Spacing */
 .container {
   width: 100%;
-  max-width: 1280px; /* max-w-7xl */
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1.5rem; /* px-6 */
-  padding-right: 1.5rem; /* px-6 */
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 .section {
-  padding-top: 4rem; /* py-16 */
+  padding-top: 4rem;
   padding-bottom: 4rem;
 }
 
@@ -307,7 +206,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 4.5rem; /* h-18 */
+  height: 4.5rem;
 }
 
 .nav-logo {
@@ -316,7 +215,7 @@ footer {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: var(--nav-text, #2c1a0e);
+  color: var(--ink);
 }
 
 .nav-logo i {
@@ -339,7 +238,7 @@ footer {
   /* md: */
   .nav-links {
     display: flex;
-    gap: 1.5rem; /* space-x-6 */
+    gap: 1.5rem;
   }
 
   .md-hidden {
@@ -349,12 +248,12 @@ footer {
 
 .nav-link {
   font-weight: 500;
-  transition: color 0.3s ease;
-  color: var(--nav-text, #2c1a0e);
+  transition: color 0.15s ease;
+  color: var(--ink);
 }
 .nav-link:hover,
 .nav-link.active {
-  color: var(--nav-text-hover, #c97c3a);
+  color: var(--nitrogen);
 }
 
 /* Dropdown Menu Styles */
@@ -371,18 +270,20 @@ footer {
   cursor: pointer;
   font-size: inherit;
   font-family: inherit;
+  color: inherit;
 }
 
 .dropdown-arrow {
   width: 14px;
   height: 14px;
-  transition: transform 0.3s ease;
+  transition: transform 0.15s ease;
 }
 
 .dropdown-toggle.active .dropdown-arrow {
   transform: rotate(180deg);
 }
 
+/* Floating layer: the only element here that carries a shadow */
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -391,15 +292,18 @@ footer {
   min-width: 220px;
   max-height: calc(100vh - 80px);
   overflow-y: auto;
-  background: var(--bg-card, #fff8eb);
-  border: 1px solid var(--border, rgba(139, 101, 68, 0.2));
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-m);
   padding: 0.5rem;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s ease;
   z-index: 1000;
-  box-shadow: var(--shadow-card, 0 10px 40px rgba(0, 0, 0, 0.15));
+  box-shadow: var(--lift);
 }
 
 .dropdown-menu::-webkit-scrollbar {
@@ -411,12 +315,12 @@ footer {
 }
 
 .dropdown-menu::-webkit-scrollbar-thumb {
-  background: var(--border, rgba(139, 101, 68, 0.3));
-  border-radius: 3px;
+  background: var(--rule-strong);
+  border-radius: var(--r-s);
 }
 
 .dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background: var(--accent, #c97c3a);
+  background: var(--graphite);
 }
 
 .dropdown-menu.show {
@@ -430,16 +334,18 @@ footer {
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
-  color: var(--text-secondary, #6b4226);
+  border-radius: var(--r-m);
+  color: var(--graphite);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
   font-size: 0.95rem;
 }
 
 .dropdown-item:hover {
-  background: var(--bg-elevated, rgba(139, 101, 68, 0.08));
-  color: var(--accent, #c97c3a);
+  background: var(--surface-2);
+  color: var(--nitrogen);
 }
 
 .dropdown-item svg {
@@ -449,7 +355,7 @@ footer {
 }
 
 .dropdown-item.has-divider {
-  border-bottom: 1px solid var(--border, rgba(139, 101, 68, 0.2));
+  border-bottom: 1px solid var(--rule);
   margin-bottom: 0.5rem;
   padding-bottom: 1rem;
 }
@@ -472,11 +378,11 @@ footer {
   border: none;
   cursor: pointer;
   color: inherit;
-  transition: color 0.3s ease;
+  transition: color 0.15s ease;
 }
 
 #menu-btn:hover {
-  color: var(--accent);
+  color: var(--nitrogen);
 }
 
 @media (min-width: 768px) {
@@ -494,16 +400,16 @@ footer {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--nav-text, #2c1a0e);
+  color: var(--ink);
   transition:
-    color 0.3s ease,
-    background 0.3s ease;
-  border-radius: 0.375rem;
+    color 0.15s ease,
+    background-color 0.15s ease;
+  border-radius: var(--r-m);
 }
 
 .theme-toggle-btn:hover {
-  color: var(--nav-text-hover, #c97c3a);
-  background-color: rgba(128, 128, 128, 0.12);
+  color: var(--nitrogen);
+  background-color: var(--surface-2);
 }
 
 /* Hero Section */
@@ -518,13 +424,13 @@ footer {
 }
 
 .hero h1 {
-  font-size: 3.75rem; /* text-6xl */
-  font-weight: 700; /* font-bold */
+  font-size: 3.75rem;
+  font-weight: 780;
   margin-bottom: 1rem;
 }
 
 .hero p {
-  font-size: 1.25rem; /* text-xl */
+  font-size: 1.25rem;
   max-width: 600px;
   margin-bottom: 2rem;
 }
@@ -533,34 +439,38 @@ footer {
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  min-height: 40px;
+  border-radius: var(--r-m);
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .btn-primary {
-  background: var(--btn-primary-bg, #ad5f1d);
-  color: var(--btn-primary-text, #ffffff) !important;
-  border: none;
+  background: var(--nitrogen);
+  color: var(--on-nitrogen) !important;
+  border: 1px solid var(--nitrogen);
   transition:
-    background 0.25s ease,
-    transform 0.15s ease;
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 .btn-primary:hover {
-  background: var(--btn-primary-hover, #9e5417);
-  transform: translateY(-1px);
+  background: var(--nitrogen-hover);
+  border-color: var(--nitrogen-hover);
 }
 
 .btn-secondary {
-  background-color: transparent;
-  border: 1px solid var(--border, rgba(139, 101, 68, 0.25));
-  color: var(--text-secondary, #6b4226);
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  color: var(--ink);
 }
 .btn-secondary:hover {
-  background-color: var(--bg-elevated, rgba(139, 101, 68, 0.08));
-  border-color: var(--accent, #c97c3a);
-  color: var(--accent, #c97c3a);
+  background-color: var(--surface-2);
+  border-color: var(--rule-strong);
+  color: var(--ink);
 }
 
 /* Mobile menu backdrop — delegated to mobile-fixes.css */
@@ -569,33 +479,13 @@ footer {
 footer {
   padding: 2rem 0;
   text-align: center;
+  background: var(--surface-2);
+  border-top: 1px solid var(--rule);
+  color: var(--ink);
 }
 
-/* Footer legibility: inherited muted palette failed WCAG AA contrast
-   (e.g. 2.5:1 in dracula) — use the theme's primary text color, which is
-   guaranteed readable against every theme background. */
 footer p {
-  color: var(--text-primary);
-}
-/* Refined footer surface: deep panel + hairline top border. The old full
-   --grad-primary wash read as a loud blue banner; the accent now lives in
-   a 2px top hairline instead (see .footer-accent-line). */
-html[data-theme="quantum"] footer,
-html[data-theme="dark"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="dark-coffee"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="amber"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="tokyo-night"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="absolute-dark"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="forest"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="dracula"] footer {
-  background: var(--bg-dark);
-  border-top: 1px solid var(--border);
+  color: var(--ink);
 }
 
 /* Grid for sections */
@@ -616,12 +506,15 @@ html[data-theme="dracula"] footer {
 
 /* Card styles */
 .card {
-  border-radius: 0.75rem; /* rounded-xl */
+  border-radius: var(--r-m);
   padding: 1.5rem;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  box-shadow: none;
 }
 
 /* Project Card Specifics */
@@ -633,7 +526,7 @@ html[data-theme="dracula"] footer {
   align-items: center;
 }
 .project-title a {
-  color: var(--accent-cyan);
+  color: var(--nitrogen);
   text-decoration: none;
 }
 .project-title a:hover {
@@ -647,7 +540,7 @@ html[data-theme="dracula"] footer {
 
 .project-description {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--graphite);
   margin-bottom: 1rem;
   flex-grow: 1;
 }
@@ -663,8 +556,8 @@ html[data-theme="dracula"] footer {
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
+  color: var(--graphite);
+  border-top: 1px solid var(--rule);
   padding-top: 0.75rem;
   margin-top: auto;
 }
@@ -681,8 +574,8 @@ html[data-theme="dracula"] footer {
   left: 18px;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background-color: var(--border);
+  width: 1px;
+  background-color: var(--rule);
 }
 
 .timeline-item {
@@ -691,6 +584,7 @@ html[data-theme="dracula"] footer {
   margin-bottom: 2.5rem;
 }
 
+/* Round timeline node: a marker on the rule, not an icon tile */
 .timeline-icon {
   position: absolute;
   left: 0;
@@ -700,15 +594,16 @@ html[data-theme="dracula"] footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
-  background-color: var(--bg-card);
-  border: 2px solid var(--border);
+  border-radius: 50%;
+  background-color: var(--surface);
+  border: 1px solid var(--rule-strong);
+  color: var(--graphite);
 }
 
 .timeline-date {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--graphite);
   margin-bottom: 0.25rem;
 }
 
@@ -720,7 +615,7 @@ html[data-theme="dracula"] footer {
 
 .timeline-company {
   font-style: italic;
-  color: var(--text-secondary);
+  color: var(--graphite);
   margin-bottom: 0.5rem;
 }
 
@@ -730,13 +625,10 @@ html[data-theme="dracula"] footer {
 
 /* Blog Post Card */
 .blog-post-card {
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: border-color 0.15s ease;
 }
 .blog-post-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-card);
+  border-color: var(--rule-strong);
 }
 
 .blog-post-title {
@@ -746,41 +638,38 @@ html[data-theme="dracula"] footer {
 }
 .blog-post-excerpt {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--graphite);
   margin-bottom: 1rem;
 }
 .blog-post-date {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--graphite);
 }
 
 /* Gallery Item */
 .gallery-item {
   position: relative;
   overflow: hidden;
-  border-radius: 0.5rem;
+  border-radius: var(--r-m);
   aspect-ratio: 1 / 1;
 }
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
-}
-.gallery-item:hover img {
-  transform: scale(1.05);
 }
 
+/* Caption panel that reveals on hover or focus */
 .gallery-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+  background-color: var(--surface);
+  color: var(--ink);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.15s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -789,7 +678,7 @@ html[data-theme="dracula"] footer {
   padding: 1rem;
 }
 .gallery-item:hover .gallery-overlay {
-  opacity: 1;
+  opacity: 0.95;
 }
 .gallery-title {
   font-weight: 600;
@@ -805,16 +694,16 @@ html[data-theme="dracula"] footer {
   display: flex;
   align-items: center;
   padding: 1rem;
-  border-radius: 0.5rem;
-  transition: background-color 0.3s ease;
+  border-radius: var(--r-m);
+  transition: background-color 0.15s ease;
 }
 .music-item:hover {
-  background-color: var(--bg-elevated);
+  background-color: var(--surface-2);
 }
 .music-album-art {
   width: 64px;
   height: 64px;
-  border-radius: 0.25rem;
+  border-radius: var(--r-s);
   margin-right: 1rem;
   object-fit: cover;
 }
@@ -826,10 +715,10 @@ html[data-theme="dracula"] footer {
 }
 .music-artist {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--graphite);
 }
 .music-play-btn {
-  color: var(--accent);
+  color: var(--nitrogen);
 }
 
 /* Blog Post Content */
@@ -858,21 +747,21 @@ html[data-theme="dracula"] footer {
   margin-bottom: 1.5em;
 }
 .blog-content a {
-  color: var(--accent-cyan);
+  color: var(--nitrogen);
   text-decoration: underline;
 }
 .blog-content code {
-  font-family: "Source Code Pro", monospace;
-  background-color: var(--code-bg);
+  font-family: var(--font-mono);
+  background-color: var(--surface-2);
   padding: 0.2em 0.4em;
-  border-radius: 0.25rem;
+  border-radius: var(--r-s);
   font-size: 0.9em;
 }
 .blog-content pre {
-  background-color: var(--code-bg);
-  color: var(--text-primary);
+  background-color: var(--surface-2);
+  color: var(--ink);
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: var(--r-m);
   overflow-x: auto;
   margin-bottom: 1.5em;
 }
@@ -880,12 +769,12 @@ html[data-theme="dracula"] footer {
   background-color: transparent;
   padding: 0;
 }
+/* Long-form blockquote: a hairline rule is the one allowed side border */
 .blog-content blockquote {
-  border-left: 4px solid var(--border);
+  border-left: 2px solid var(--rule);
   padding-left: 1rem;
   margin-left: 0;
-  font-style: italic;
-  color: var(--text-secondary);
+  color: var(--graphite);
 }
 .blog-content ul,
 .blog-content ol {
@@ -934,13 +823,13 @@ html[data-theme="dracula"] footer {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .section-title {
-    font-size: 1.875rem; /* text-3xl */
+    font-size: 26px;
   }
   .hero h1 {
-    font-size: 2.25rem; /* text-4xl */
+    font-size: 2.25rem;
   }
   .hero p {
-    font-size: 1.125rem; /* text-lg */
+    font-size: 1.125rem;
   }
   .nav-content {
     padding-left: 1rem;
@@ -979,7 +868,7 @@ html[data-theme="dracula"] footer {
   grid-column: 1 / -1; /* Span all columns in a grid */
 }
 .error-text {
-  color: var(--text-primary);
+  color: var(--ink);
 }
 
 /* Contact Form Styles */
@@ -1086,7 +975,7 @@ html[data-theme="dracula"] footer {
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--ink);
   margin-bottom: 0.5rem;
 }
 
@@ -1096,38 +985,37 @@ html[data-theme="dracula"] footer {
   padding: 0.75rem 1rem;
   font-size: 1rem;
   line-height: 1.5;
-  color: var(--text-primary);
-  background-color: var(--input-bg);
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  transition:
-    border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
+  color: var(--ink);
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-m);
+  transition: border-color 0.15s ease-in-out;
 }
 
+/* Focus: 2px nitrogen ring, drawn outside the border */
 .form-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--glow-cyan);
+  outline: 2px solid var(--nitrogen);
+  outline-offset: 1px;
+  border-color: var(--nitrogen);
 }
 
 .form-input:invalid {
-  border-color: #ef4444;
+  border-color: var(--oxygen);
 }
 
 .form-input:invalid:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  outline-color: var(--oxygen);
+  border-color: var(--oxygen);
 }
 
 .form-input::placeholder {
-  color: var(--text-muted);
+  color: var(--graphite);
 }
 
 /* Form status messages */
 #form-status {
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: color 0.15s ease;
 }
 
 /* Social links styling */
@@ -1140,1027 +1028,80 @@ html[data-theme="dracula"] footer {
   margin-bottom: 1rem;
 }
 
+/* Round control: a social icon button */
 .social-link {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 9999px;
-  background-color: var(--bg-elevated);
-  color: var(--accent);
-  transition: all 0.3s ease;
+  border-radius: 50%;
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
   text-decoration: none;
 }
 
 .social-link:hover {
-  background-color: var(--accent);
-  color: var(--btn-primary-text);
-  transform: translateY(-2px);
+  background-color: var(--surface-2);
+  border-color: var(--rule-strong);
+  color: var(--nitrogen);
 }
 
 /* Text color utilities */
 .text-red-500 {
-  color: var(--text-primary);
+  color: var(--oxygen);
 }
 
 .text-cyan-400 {
-  color: var(--accent);
+  color: var(--nitrogen);
 }
 
 .text-purple-400 {
-  color: var(--accent-purple);
+  color: var(--nitrogen);
 }
 
 .text-gray-500 {
-  /* --text-muted was only ~3.2:1 on light parchment; --text-secondary passes AA */
-  color: var(--text-secondary);
+  color: var(--graphite);
 }
 
-/* Dark Theme Overrides */
-html[data-theme="quantum"],
-html[data-theme="dark"],
-html[data-theme="quantum"],
-html[data-theme="dark-coffee"],
-html[data-theme="quantum"],
-html[data-theme="amber"],
-html[data-theme="quantum"],
-html[data-theme="tokyo-night"],
-html[data-theme="quantum"],
-html[data-theme="absolute-dark"],
-html[data-theme="quantum"],
-html[data-theme="forest"],
-html[data-theme="quantum"],
-html[data-theme="dracula"],
-[data-theme="quantum"],
-[data-theme="dark-coffee"],
-[data-theme="quantum"],
-[data-theme="amber"],
-[data-theme="quantum"],
-[data-theme="tokyo-night"],
-[data-theme="quantum"],
-[data-theme="absolute-dark"],
-[data-theme="quantum"],
-[data-theme="forest"],
-[data-theme="quantum"],
-[data-theme="dracula"] {
-  background: var(--body-bg);
-  color: var(--text-primary);
+/* Hairline between stacked sections (static, no animation) */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: var(--rule);
+  overflow: visible;
 }
 
-html[data-theme="quantum"] .glassmorphic,
-html[data-theme="dark"] .glassmorphic,
-html[data-theme="quantum"] .glassmorphic,
-html[data-theme="dark-coffee"] .glassmorphic,
-html[data-theme="quantum"] .glassmorphic,
-html[data-theme="amber"] .glassmorphic,
-html[data-theme="quantum"] .glassmorphic,
-html[data-theme="tokyo-night"] .glassmorphic,
-html[data-theme="quantum"] .glassmorphic,
-html[data-theme="absolute-dark"] .glassmorphic,
-html[data-theme="quantum"] .glassmorphic,
-html[data-theme="forest"] .glassmorphic,
-html[data-theme="quantum"] .glassmorphic,
-html[data-theme="dracula"] .glassmorphic {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 10px 30px var(--glass-shadow);
-}
-
-html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
-html[data-theme="dark"] #navbar.scrolled .glassmorphic,
-html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
-html[data-theme="dark-coffee"] #navbar.scrolled .glassmorphic,
-html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
-html[data-theme="amber"] #navbar.scrolled .glassmorphic,
-html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
-html[data-theme="tokyo-night"] #navbar.scrolled .glassmorphic,
-html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
-html[data-theme="absolute-dark"] #navbar.scrolled .glassmorphic,
-html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
-html[data-theme="forest"] #navbar.scrolled .glassmorphic,
-html[data-theme="quantum"] #navbar.scrolled .glassmorphic,
-html[data-theme="dracula"] #navbar.scrolled .glassmorphic {
-  background: var(--nav-bg);
-  box-shadow: 0 10px 30px var(--glass-shadow);
-}
-
-/* Override common Tailwind utility colors when dark theme is active */
-/* Text colors */
-html[data-theme="quantum"] .text-gray-900,
-html[data-theme="dark"] .text-gray-900,
-html[data-theme="quantum"] .text-gray-900,
-html[data-theme="dark-coffee"] .text-gray-900,
-html[data-theme="quantum"] .text-gray-900,
-html[data-theme="amber"] .text-gray-900,
-html[data-theme="quantum"] .text-gray-900,
-html[data-theme="tokyo-night"] .text-gray-900,
-html[data-theme="quantum"] .text-gray-900,
-html[data-theme="absolute-dark"] .text-gray-900,
-html[data-theme="quantum"] .text-gray-900,
-html[data-theme="forest"] .text-gray-900,
-html[data-theme="quantum"] .text-gray-900,
-html[data-theme="dracula"] .text-gray-900 {
-  color: var(--text-primary) !important;
-}
-html[data-theme="quantum"] .text-gray-800,
-html[data-theme="dark"] .text-gray-800,
-html[data-theme="quantum"] .text-gray-800,
-html[data-theme="dark-coffee"] .text-gray-800,
-html[data-theme="quantum"] .text-gray-800,
-html[data-theme="amber"] .text-gray-800,
-html[data-theme="quantum"] .text-gray-800,
-html[data-theme="tokyo-night"] .text-gray-800,
-html[data-theme="quantum"] .text-gray-800,
-html[data-theme="absolute-dark"] .text-gray-800,
-html[data-theme="quantum"] .text-gray-800,
-html[data-theme="forest"] .text-gray-800,
-html[data-theme="quantum"] .text-gray-800,
-html[data-theme="dracula"] .text-gray-800 {
-  color: var(--text-primary) !important;
-}
-html[data-theme="quantum"] .text-gray-700,
-html[data-theme="dark"] .text-gray-700,
-html[data-theme="quantum"] .text-gray-700,
-html[data-theme="dark-coffee"] .text-gray-700,
-html[data-theme="quantum"] .text-gray-700,
-html[data-theme="amber"] .text-gray-700,
-html[data-theme="quantum"] .text-gray-700,
-html[data-theme="tokyo-night"] .text-gray-700,
-html[data-theme="quantum"] .text-gray-700,
-html[data-theme="absolute-dark"] .text-gray-700,
-html[data-theme="quantum"] .text-gray-700,
-html[data-theme="forest"] .text-gray-700,
-html[data-theme="quantum"] .text-gray-700,
-html[data-theme="dracula"] .text-gray-700 {
-  color: var(--text-secondary) !important;
-}
-html[data-theme="quantum"] .text-gray-600,
-html[data-theme="dark"] .text-gray-600,
-html[data-theme="quantum"] .text-gray-600,
-html[data-theme="dark-coffee"] .text-gray-600,
-html[data-theme="quantum"] .text-gray-600,
-html[data-theme="amber"] .text-gray-600,
-html[data-theme="quantum"] .text-gray-600,
-html[data-theme="tokyo-night"] .text-gray-600,
-html[data-theme="quantum"] .text-gray-600,
-html[data-theme="absolute-dark"] .text-gray-600,
-html[data-theme="quantum"] .text-gray-600,
-html[data-theme="forest"] .text-gray-600,
-html[data-theme="quantum"] .text-gray-600,
-html[data-theme="dracula"] .text-gray-600 {
-  color: var(--text-muted) !important;
-}
-
-/* Background utilities commonly used */
-html[data-theme="quantum"] .bg-gray-100,
-html[data-theme="dark"] .bg-gray-100,
-html[data-theme="quantum"] .bg-gray-100,
-html[data-theme="dark-coffee"] .bg-gray-100,
-html[data-theme="quantum"] .bg-gray-100,
-html[data-theme="amber"] .bg-gray-100,
-html[data-theme="quantum"] .bg-gray-100,
-html[data-theme="tokyo-night"] .bg-gray-100,
-html[data-theme="quantum"] .bg-gray-100,
-html[data-theme="absolute-dark"] .bg-gray-100,
-html[data-theme="quantum"] .bg-gray-100,
-html[data-theme="forest"] .bg-gray-100,
-html[data-theme="quantum"] .bg-gray-100,
-html[data-theme="dracula"] .bg-gray-100 {
-  background-color: var(--bg-deep) !important;
-}
-html[data-theme="quantum"] .bg-gray-200,
-html[data-theme="dark"] .bg-gray-200,
-html[data-theme="quantum"] .bg-gray-200,
-html[data-theme="dark-coffee"] .bg-gray-200,
-html[data-theme="quantum"] .bg-gray-200,
-html[data-theme="amber"] .bg-gray-200,
-html[data-theme="quantum"] .bg-gray-200,
-html[data-theme="tokyo-night"] .bg-gray-200,
-html[data-theme="quantum"] .bg-gray-200,
-html[data-theme="absolute-dark"] .bg-gray-200,
-html[data-theme="quantum"] .bg-gray-200,
-html[data-theme="forest"] .bg-gray-200,
-html[data-theme="quantum"] .bg-gray-200,
-html[data-theme="dracula"] .bg-gray-200 {
-  background-color: var(--bg-card) !important;
-}
-html[data-theme="quantum"] .bg-gray-100\/50,
-html[data-theme="dark"] .bg-gray-100\/50,
-html[data-theme="quantum"] .bg-gray-100\/50,
-html[data-theme="dark-coffee"] .bg-gray-100\/50,
-html[data-theme="quantum"] .bg-gray-100\/50,
-html[data-theme="amber"] .bg-gray-100\/50,
-html[data-theme="quantum"] .bg-gray-100\/50,
-html[data-theme="tokyo-night"] .bg-gray-100\/50,
-html[data-theme="quantum"] .bg-gray-100\/50,
-html[data-theme="absolute-dark"] .bg-gray-100\/50,
-html[data-theme="quantum"] .bg-gray-100\/50,
-html[data-theme="forest"] .bg-gray-100\/50,
-html[data-theme="quantum"] .bg-gray-100\/50,
-html[data-theme="dracula"] .bg-gray-100\/50 {
-  background-color: var(--bg-deep) !important;
-  opacity: 0.5;
-}
-html[data-theme="quantum"] .bg-gray-200\/50,
-html[data-theme="dark"] .bg-gray-200\/50,
-html[data-theme="quantum"] .bg-gray-200\/50,
-html[data-theme="dark-coffee"] .bg-gray-200\/50,
-html[data-theme="quantum"] .bg-gray-200\/50,
-html[data-theme="amber"] .bg-gray-200\/50,
-html[data-theme="quantum"] .bg-gray-200\/50,
-html[data-theme="tokyo-night"] .bg-gray-200\/50,
-html[data-theme="quantum"] .bg-gray-200\/50,
-html[data-theme="absolute-dark"] .bg-gray-200\/50,
-html[data-theme="quantum"] .bg-gray-200\/50,
-html[data-theme="forest"] .bg-gray-200\/50,
-html[data-theme="quantum"] .bg-gray-200\/50,
-html[data-theme="dracula"] .bg-gray-200\/50 {
-  background-color: var(--bg-card) !important;
-  opacity: 0.5;
-}
-html[data-theme="quantum"] .bg-gray-50,
-html[data-theme="dark"] .bg-gray-50,
-html[data-theme="quantum"] .bg-gray-50,
-html[data-theme="dark-coffee"] .bg-gray-50,
-html[data-theme="quantum"] .bg-gray-50,
-html[data-theme="amber"] .bg-gray-50,
-html[data-theme="quantum"] .bg-gray-50,
-html[data-theme="tokyo-night"] .bg-gray-50,
-html[data-theme="quantum"] .bg-gray-50,
-html[data-theme="absolute-dark"] .bg-gray-50,
-html[data-theme="quantum"] .bg-gray-50,
-html[data-theme="forest"] .bg-gray-50,
-html[data-theme="quantum"] .bg-gray-50,
-html[data-theme="dracula"] .bg-gray-50 {
-  background-color: var(--bg-card) !important;
-}
-
-/* Mobile menu gradient in dark theme */
-html[data-theme="quantum"] #mobile-menu,
-html[data-theme="dark"] #mobile-menu,
-html[data-theme="quantum"] #mobile-menu,
-html[data-theme="dark-coffee"] #mobile-menu,
-html[data-theme="quantum"] #mobile-menu,
-html[data-theme="amber"] #mobile-menu,
-html[data-theme="quantum"] #mobile-menu,
-html[data-theme="tokyo-night"] #mobile-menu,
-html[data-theme="quantum"] #mobile-menu,
-html[data-theme="absolute-dark"] #mobile-menu,
-html[data-theme="quantum"] #mobile-menu,
-html[data-theme="forest"] #mobile-menu,
-html[data-theme="quantum"] #mobile-menu,
-html[data-theme="dracula"] #mobile-menu {
-  background: var(--bg-card);
-}
-
-/* Ensure headers and cyan accents look good on dark */
-html[data-theme="quantum"] .text-cyan-400,
-html[data-theme="dark"] .text-cyan-400,
-html[data-theme="quantum"] .text-cyan-400,
-html[data-theme="dark-coffee"] .text-cyan-400,
-html[data-theme="quantum"] .text-cyan-400,
-html[data-theme="amber"] .text-cyan-400,
-html[data-theme="quantum"] .text-cyan-400,
-html[data-theme="tokyo-night"] .text-cyan-400,
-html[data-theme="quantum"] .text-cyan-400,
-html[data-theme="absolute-dark"] .text-cyan-400,
-html[data-theme="quantum"] .text-cyan-400,
-html[data-theme="forest"] .text-cyan-400,
-html[data-theme="quantum"] .text-cyan-400,
-html[data-theme="dracula"] .text-cyan-400 {
-  color: var(--accent) !important;
-}
-html[data-theme="quantum"] .text-cyan-300,
-html[data-theme="dark"] .text-cyan-300,
-html[data-theme="quantum"] .text-cyan-300,
-html[data-theme="dark-coffee"] .text-cyan-300,
-html[data-theme="quantum"] .text-cyan-300,
-html[data-theme="amber"] .text-cyan-300,
-html[data-theme="quantum"] .text-cyan-300,
-html[data-theme="tokyo-night"] .text-cyan-300,
-html[data-theme="quantum"] .text-cyan-300,
-html[data-theme="absolute-dark"] .text-cyan-300,
-html[data-theme="quantum"] .text-cyan-300,
-html[data-theme="forest"] .text-cyan-300,
-html[data-theme="quantum"] .text-cyan-300,
-html[data-theme="dracula"] .text-cyan-300 {
-  color: var(--accent) !important;
-}
-html[data-theme="quantum"] .border-cyan-400,
-html[data-theme="dark"] .border-cyan-400,
-html[data-theme="quantum"] .border-cyan-400,
-html[data-theme="dark-coffee"] .border-cyan-400,
-html[data-theme="quantum"] .border-cyan-400,
-html[data-theme="amber"] .border-cyan-400,
-html[data-theme="quantum"] .border-cyan-400,
-html[data-theme="tokyo-night"] .border-cyan-400,
-html[data-theme="quantum"] .border-cyan-400,
-html[data-theme="absolute-dark"] .border-cyan-400,
-html[data-theme="quantum"] .border-cyan-400,
-html[data-theme="forest"] .border-cyan-400,
-html[data-theme="quantum"] .border-cyan-400,
-html[data-theme="dracula"] .border-cyan-400 {
-  border-color: var(--accent) !important;
-}
-/* Gradient primary CTAs */
-html[data-theme="quantum"] .bg-cyan-500,
-html[data-theme="dark"] .bg-cyan-500,
-html[data-theme="quantum"] .bg-cyan-500,
-html[data-theme="dark-coffee"] .bg-cyan-500,
-html[data-theme="quantum"] .bg-cyan-500,
-html[data-theme="amber"] .bg-cyan-500,
-html[data-theme="quantum"] .bg-cyan-500,
-html[data-theme="tokyo-night"] .bg-cyan-500,
-html[data-theme="quantum"] .bg-cyan-500,
-html[data-theme="absolute-dark"] .bg-cyan-500,
-html[data-theme="quantum"] .bg-cyan-500,
-html[data-theme="forest"] .bg-cyan-500,
-html[data-theme="quantum"] .bg-cyan-500,
-html[data-theme="dracula"] .bg-cyan-500 {
-  background-image: var(--grad-primary) !important;
-  color: var(--text-primary) !important;
-}
-html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
-html[data-theme="dark"] .hover\:bg-cyan-600:hover,
-html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
-html[data-theme="dark-coffee"] .hover\:bg-cyan-600:hover,
-html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
-html[data-theme="amber"] .hover\:bg-cyan-600:hover,
-html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
-html[data-theme="tokyo-night"] .hover\:bg-cyan-600:hover,
-html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
-html[data-theme="absolute-dark"] .hover\:bg-cyan-600:hover,
-html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
-html[data-theme="forest"] .hover\:bg-cyan-600:hover,
-html[data-theme="quantum"] .hover\:bg-cyan-600:hover,
-html[data-theme="dracula"] .hover\:bg-cyan-600:hover {
-  background-color: var(--accent) !important;
-  color: var(--text-primary) !important;
-}
-
-/* Inputs and forms in dark theme */
-html[data-theme="quantum"] input,
-html[data-theme="dark"] input,
-html[data-theme="quantum"] input,
-html[data-theme="dark-coffee"] input,
-html[data-theme="quantum"] input,
-html[data-theme="amber"] input,
-html[data-theme="quantum"] input,
-html[data-theme="tokyo-night"] input,
-html[data-theme="quantum"] input,
-html[data-theme="absolute-dark"] input,
-html[data-theme="quantum"] input,
-html[data-theme="forest"] input,
-html[data-theme="quantum"] input,
-html[data-theme="dracula"] input,
-html[data-theme="quantum"] textarea,
-html[data-theme="dark"] textarea,
-html[data-theme="quantum"] textarea,
-html[data-theme="dark-coffee"] textarea,
-html[data-theme="quantum"] textarea,
-html[data-theme="amber"] textarea,
-html[data-theme="quantum"] textarea,
-html[data-theme="tokyo-night"] textarea,
-html[data-theme="quantum"] textarea,
-html[data-theme="absolute-dark"] textarea,
-html[data-theme="quantum"] textarea,
-html[data-theme="forest"] textarea,
-html[data-theme="quantum"] textarea,
-html[data-theme="dracula"] textarea,
-html[data-theme="quantum"] select,
-html[data-theme="dark"] select,
-html[data-theme="quantum"] select,
-html[data-theme="dark-coffee"] select,
-html[data-theme="quantum"] select,
-html[data-theme="amber"] select,
-html[data-theme="quantum"] select,
-html[data-theme="tokyo-night"] select,
-html[data-theme="quantum"] select,
-html[data-theme="absolute-dark"] select,
-html[data-theme="quantum"] select,
-html[data-theme="forest"] select,
-html[data-theme="quantum"] select,
-html[data-theme="dracula"] select {
-  color: var(--text-primary);
-  background-color: var(--input-bg);
-  border-color: var(--border);
-}
-
-/* Section surfaces (header/footer) with subtle gradients */
-html[data-theme="quantum"] header,
-html[data-theme="dark"] header,
-html[data-theme="quantum"] header,
-html[data-theme="dark-coffee"] header,
-html[data-theme="quantum"] header,
-html[data-theme="amber"] header,
-html[data-theme="quantum"] header,
-html[data-theme="tokyo-night"] header,
-html[data-theme="quantum"] header,
-html[data-theme="absolute-dark"] header,
-html[data-theme="quantum"] header,
-html[data-theme="forest"] header,
-html[data-theme="quantum"] header,
-html[data-theme="dracula"] header {
-  background-image: var(--grad-primary);
-  border-bottom: 1px solid var(--border);
-}
-/* Borders */
-html[data-theme="quantum"] .border-gray-200,
-html[data-theme="dark"] .border-gray-200,
-html[data-theme="quantum"] .border-gray-200,
-html[data-theme="dark-coffee"] .border-gray-200,
-html[data-theme="quantum"] .border-gray-200,
-html[data-theme="amber"] .border-gray-200,
-html[data-theme="quantum"] .border-gray-200,
-html[data-theme="tokyo-night"] .border-gray-200,
-html[data-theme="quantum"] .border-gray-200,
-html[data-theme="absolute-dark"] .border-gray-200,
-html[data-theme="quantum"] .border-gray-200,
-html[data-theme="forest"] .border-gray-200,
-html[data-theme="quantum"] .border-gray-200,
-html[data-theme="dracula"] .border-gray-200 {
-  border-color: var(--border) !important;
-}
-/* Compatibility styles for all dark themes */
-/* This ensures all dark themes get the same styles as the original dark theme */
-
-html[data-theme="quantum"] body,
-html[data-theme="dark-coffee"] body,
-html[data-theme="quantum"] body,
-html[data-theme="amber"] body,
-html[data-theme="quantum"] body,
-html[data-theme="tokyo-night"] body,
-html[data-theme="quantum"] body,
-html[data-theme="absolute-dark"] body,
-html[data-theme="quantum"] body,
-html[data-theme="forest"] body,
-html[data-theme="quantum"] body,
-html[data-theme="dracula"] body,
-html[data-theme="quantum"],
-html[data-theme="dark-coffee"],
-html[data-theme="quantum"],
-html[data-theme="amber"],
-html[data-theme="quantum"],
-html[data-theme="tokyo-night"],
-html[data-theme="quantum"],
-html[data-theme="absolute-dark"],
-html[data-theme="quantum"],
-html[data-theme="forest"],
-html[data-theme="quantum"],
-html[data-theme="dracula"] {
-  background: var(--body-bg);
-  color: var(--text-primary);
-}
-
-html[data-theme="quantum"] .tech-tag,
-html[data-theme="dark-coffee"] .tech-tag,
-html[data-theme="quantum"] .tech-tag,
-html[data-theme="amber"] .tech-tag,
-html[data-theme="quantum"] .tech-tag,
-html[data-theme="tokyo-night"] .tech-tag,
-html[data-theme="quantum"] .tech-tag,
-html[data-theme="absolute-dark"] .tech-tag,
-html[data-theme="quantum"] .tech-tag,
-html[data-theme="forest"] .tech-tag,
-html[data-theme="quantum"] .tech-tag,
-html[data-theme="dracula"] .tech-tag {
-  background: var(--bg-elevated);
-  color: var(--accent);
-  border: 1px solid var(--border);
-}
-
-html[data-theme="quantum"] .section-title,
-html[data-theme="dark-coffee"] .section-title,
-html[data-theme="quantum"] .section-title,
-html[data-theme="amber"] .section-title,
-html[data-theme="quantum"] .section-title,
-html[data-theme="tokyo-night"] .section-title,
-html[data-theme="quantum"] .section-title,
-html[data-theme="absolute-dark"] .section-title,
-html[data-theme="quantum"] .section-title,
-html[data-theme="forest"] .section-title,
-html[data-theme="quantum"] .section-title,
-html[data-theme="dracula"] .section-title {
-  background-image: var(--grad-primary);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-html[data-theme="quantum"] .section-title::after,
-html[data-theme="dark-coffee"] .section-title::after,
-html[data-theme="quantum"] .section-title::after,
-html[data-theme="amber"] .section-title::after,
-html[data-theme="quantum"] .section-title::after,
-html[data-theme="tokyo-night"] .section-title::after,
-html[data-theme="quantum"] .section-title::after,
-html[data-theme="absolute-dark"] .section-title::after,
-html[data-theme="quantum"] .section-title::after,
-html[data-theme="forest"] .section-title::after,
-html[data-theme="quantum"] .section-title::after,
-html[data-theme="dracula"] .section-title::after {
-  background: var(--grad-primary);
-}
-
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="dark-coffee"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="amber"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="tokyo-night"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="absolute-dark"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="forest"] #canvas-container,
-html[data-theme="quantum"] #canvas-container,
-html[data-theme="dracula"] #canvas-container {
-  background: transparent;
-}
-
-html[data-theme="quantum"] #loading-screen,
-html[data-theme="dark-coffee"] #loading-screen,
-html[data-theme="quantum"] #loading-screen,
-html[data-theme="amber"] #loading-screen,
-html[data-theme="quantum"] #loading-screen,
-html[data-theme="tokyo-night"] #loading-screen,
-html[data-theme="quantum"] #loading-screen,
-html[data-theme="absolute-dark"] #loading-screen,
-html[data-theme="quantum"] #loading-screen,
-html[data-theme="forest"] #loading-screen,
-html[data-theme="quantum"] #loading-screen,
-html[data-theme="dracula"] #loading-screen {
-  background: var(--bg-deep);
-  color: var(--text-primary);
-}
-
-html[data-theme="quantum"] #menu-btn:hover,
-html[data-theme="dark-coffee"] #menu-btn:hover,
-html[data-theme="quantum"] #menu-btn:hover,
-html[data-theme="amber"] #menu-btn:hover,
-html[data-theme="quantum"] #menu-btn:hover,
-html[data-theme="tokyo-night"] #menu-btn:hover,
-html[data-theme="quantum"] #menu-btn:hover,
-html[data-theme="absolute-dark"] #menu-btn:hover,
-html[data-theme="quantum"] #menu-btn:hover,
-html[data-theme="forest"] #menu-btn:hover,
-html[data-theme="quantum"] #menu-btn:hover,
-html[data-theme="dracula"] #menu-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-html[data-theme="quantum"] footer,
-html[data-theme="dark-coffee"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="amber"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="tokyo-night"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="absolute-dark"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="forest"] footer,
-html[data-theme="quantum"] footer,
-html[data-theme="dracula"] footer {
-  background: var(--bg-dark);
-  border-top: 1px solid var(--border);
-}
-
-html[data-theme="quantum"] .project-title a,
-html[data-theme="dark-coffee"] .project-title a,
-html[data-theme="quantum"] .project-title a,
-html[data-theme="amber"] .project-title a,
-html[data-theme="quantum"] .project-title a,
-html[data-theme="tokyo-night"] .project-title a,
-html[data-theme="quantum"] .project-title a,
-html[data-theme="absolute-dark"] .project-title a,
-html[data-theme="quantum"] .project-title a,
-html[data-theme="forest"] .project-title a,
-html[data-theme="quantum"] .project-title a,
-html[data-theme="dracula"] .project-title a {
-  color: var(--accent-cyan);
-}
-
-html[data-theme="quantum"] .project-description,
-html[data-theme="dark-coffee"] .project-description,
-html[data-theme="quantum"] .project-description,
-html[data-theme="amber"] .project-description,
-html[data-theme="quantum"] .project-description,
-html[data-theme="tokyo-night"] .project-description,
-html[data-theme="quantum"] .project-description,
-html[data-theme="absolute-dark"] .project-description,
-html[data-theme="quantum"] .project-description,
-html[data-theme="forest"] .project-description,
-html[data-theme="quantum"] .project-description,
-html[data-theme="dracula"] .project-description {
-  color: var(--text-secondary);
-}
-
-html[data-theme="quantum"] .project-stats,
-html[data-theme="dark-coffee"] .project-stats,
-html[data-theme="quantum"] .project-stats,
-html[data-theme="amber"] .project-stats,
-html[data-theme="quantum"] .project-stats,
-html[data-theme="tokyo-night"] .project-stats,
-html[data-theme="quantum"] .project-stats,
-html[data-theme="absolute-dark"] .project-stats,
-html[data-theme="quantum"] .project-stats,
-html[data-theme="forest"] .project-stats,
-html[data-theme="quantum"] .project-stats,
-html[data-theme="dracula"] .project-stats {
-  color: var(--text-muted);
-}
-
-html[data-theme="quantum"] .timeline::before,
-html[data-theme="dark-coffee"] .timeline::before,
-html[data-theme="quantum"] .timeline::before,
-html[data-theme="amber"] .timeline::before,
-html[data-theme="quantum"] .timeline::before,
-html[data-theme="tokyo-night"] .timeline::before,
-html[data-theme="quantum"] .timeline::before,
-html[data-theme="absolute-dark"] .timeline::before,
-html[data-theme="quantum"] .timeline::before,
-html[data-theme="forest"] .timeline::before,
-html[data-theme="quantum"] .timeline::before,
-html[data-theme="dracula"] .timeline::before {
-  background: var(--border);
-}
-
-html[data-theme="quantum"] .timeline-icon,
-html[data-theme="dark-coffee"] .timeline-icon,
-html[data-theme="quantum"] .timeline-icon,
-html[data-theme="amber"] .timeline-icon,
-html[data-theme="quantum"] .timeline-icon,
-html[data-theme="tokyo-night"] .timeline-icon,
-html[data-theme="quantum"] .timeline-icon,
-html[data-theme="absolute-dark"] .timeline-icon,
-html[data-theme="quantum"] .timeline-icon,
-html[data-theme="forest"] .timeline-icon,
-html[data-theme="quantum"] .timeline-icon,
-html[data-theme="dracula"] .timeline-icon {
-  background: var(--bg-card);
-  border: 2px solid var(--accent-cyan);
-  color: var(--accent-cyan);
-}
-
-html[data-theme="quantum"] .timeline-date,
-html[data-theme="dark-coffee"] .timeline-date,
-html[data-theme="quantum"] .timeline-date,
-html[data-theme="amber"] .timeline-date,
-html[data-theme="quantum"] .timeline-date,
-html[data-theme="tokyo-night"] .timeline-date,
-html[data-theme="quantum"] .timeline-date,
-html[data-theme="absolute-dark"] .timeline-date,
-html[data-theme="quantum"] .timeline-date,
-html[data-theme="forest"] .timeline-date,
-html[data-theme="quantum"] .timeline-date,
-html[data-theme="dracula"] .timeline-date {
-  color: var(--accent-cyan);
-}
-
-html[data-theme="quantum"] .timeline-company,
-html[data-theme="dark-coffee"] .timeline-company,
-html[data-theme="quantum"] .timeline-company,
-html[data-theme="amber"] .timeline-company,
-html[data-theme="quantum"] .timeline-company,
-html[data-theme="tokyo-night"] .timeline-company,
-html[data-theme="quantum"] .timeline-company,
-html[data-theme="absolute-dark"] .timeline-company,
-html[data-theme="quantum"] .timeline-company,
-html[data-theme="forest"] .timeline-company,
-html[data-theme="quantum"] .timeline-company,
-html[data-theme="dracula"] .timeline-company {
-  color: var(--text-secondary);
-}
-
-html[data-theme="quantum"] .blog-post-card:hover,
-html[data-theme="dark-coffee"] .blog-post-card:hover,
-html[data-theme="quantum"] .blog-post-card:hover,
-html[data-theme="amber"] .blog-post-card:hover,
-html[data-theme="quantum"] .blog-post-card:hover,
-html[data-theme="tokyo-night"] .blog-post-card:hover,
-html[data-theme="quantum"] .blog-post-card:hover,
-html[data-theme="absolute-dark"] .blog-post-card:hover,
-html[data-theme="quantum"] .blog-post-card:hover,
-html[data-theme="forest"] .blog-post-card:hover,
-html[data-theme="quantum"] .blog-post-card:hover,
-html[data-theme="dracula"] .blog-post-card:hover {
-  background: var(--bg-elevated);
-  border-color: var(--border-glow);
-}
-
-html[data-theme="quantum"] .blog-post-excerpt,
-html[data-theme="dark-coffee"] .blog-post-excerpt,
-html[data-theme="quantum"] .blog-post-excerpt,
-html[data-theme="amber"] .blog-post-excerpt,
-html[data-theme="quantum"] .blog-post-excerpt,
-html[data-theme="tokyo-night"] .blog-post-excerpt,
-html[data-theme="quantum"] .blog-post-excerpt,
-html[data-theme="absolute-dark"] .blog-post-excerpt,
-html[data-theme="quantum"] .blog-post-excerpt,
-html[data-theme="forest"] .blog-post-excerpt,
-html[data-theme="quantum"] .blog-post-excerpt,
-html[data-theme="dracula"] .blog-post-excerpt {
-  color: var(--text-secondary);
-}
-
-html[data-theme="quantum"] .blog-post-date,
-html[data-theme="dark-coffee"] .blog-post-date,
-html[data-theme="quantum"] .blog-post-date,
-html[data-theme="amber"] .blog-post-date,
-html[data-theme="quantum"] .blog-post-date,
-html[data-theme="tokyo-night"] .blog-post-date,
-html[data-theme="quantum"] .blog-post-date,
-html[data-theme="absolute-dark"] .blog-post-date,
-html[data-theme="quantum"] .blog-post-date,
-html[data-theme="forest"] .blog-post-date,
-html[data-theme="quantum"] .blog-post-date,
-html[data-theme="dracula"] .blog-post-date {
-  color: var(--text-muted);
-}
-
-html[data-theme="quantum"] .music-item:hover,
-html[data-theme="dark-coffee"] .music-item:hover,
-html[data-theme="quantum"] .music-item:hover,
-html[data-theme="amber"] .music-item:hover,
-html[data-theme="quantum"] .music-item:hover,
-html[data-theme="tokyo-night"] .music-item:hover,
-html[data-theme="quantum"] .music-item:hover,
-html[data-theme="absolute-dark"] .music-item:hover,
-html[data-theme="quantum"] .music-item:hover,
-html[data-theme="forest"] .music-item:hover,
-html[data-theme="quantum"] .music-item:hover,
-html[data-theme="dracula"] .music-item:hover {
-  background: var(--bg-elevated);
-}
-
-html[data-theme="quantum"] .skill-category,
-html[data-theme="dark-coffee"] .skill-category,
-html[data-theme="quantum"] .skill-category,
-html[data-theme="amber"] .skill-category,
-html[data-theme="quantum"] .skill-category,
-html[data-theme="tokyo-night"] .skill-category,
-html[data-theme="quantum"] .skill-category,
-html[data-theme="absolute-dark"] .skill-category,
-html[data-theme="quantum"] .skill-category,
-html[data-theme="forest"] .skill-category,
-html[data-theme="quantum"] .skill-category,
-html[data-theme="dracula"] .skill-category {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-}
-
-html[data-theme="quantum"] .skill-tag,
-html[data-theme="dark-coffee"] .skill-tag,
-html[data-theme="quantum"] .skill-tag,
-html[data-theme="amber"] .skill-tag,
-html[data-theme="quantum"] .skill-tag,
-html[data-theme="tokyo-night"] .skill-tag,
-html[data-theme="quantum"] .skill-tag,
-html[data-theme="absolute-dark"] .skill-tag,
-html[data-theme="quantum"] .skill-tag,
-html[data-theme="forest"] .skill-tag,
-html[data-theme="quantum"] .skill-tag,
-html[data-theme="dracula"] .skill-tag {
-  background: var(--bg-elevated);
-  color: var(--accent);
-  border: 1px solid var(--border);
-}
-
-html[data-theme="quantum"] .contact-form input,
-html[data-theme="dark-coffee"] .contact-form input,
-html[data-theme="quantum"] .contact-form textarea,
-html[data-theme="dark-coffee"] .contact-form textarea,
-html[data-theme="quantum"] .contact-form input,
-html[data-theme="amber"] .contact-form input,
-html[data-theme="quantum"] .contact-form textarea,
-html[data-theme="amber"] .contact-form textarea,
-html[data-theme="quantum"] .contact-form input,
-html[data-theme="tokyo-night"] .contact-form input,
-html[data-theme="quantum"] .contact-form textarea,
-html[data-theme="tokyo-night"] .contact-form textarea,
-html[data-theme="quantum"] .contact-form input,
-html[data-theme="absolute-dark"] .contact-form input,
-html[data-theme="quantum"] .contact-form textarea,
-html[data-theme="absolute-dark"] .contact-form textarea,
-html[data-theme="quantum"] .contact-form input,
-html[data-theme="forest"] .contact-form input,
-html[data-theme="quantum"] .contact-form textarea,
-html[data-theme="forest"] .contact-form textarea,
-html[data-theme="quantum"] .contact-form input,
-html[data-theme="dracula"] .contact-form input,
-html[data-theme="quantum"] .contact-form textarea,
-html[data-theme="dracula"] .contact-form textarea {
-  background: var(--input-bg);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-}
-
-html[data-theme="quantum"] .contact-form input:focus,
-html[data-theme="dark-coffee"] .contact-form input:focus,
-html[data-theme="quantum"] .contact-form textarea:focus,
-html[data-theme="dark-coffee"] .contact-form textarea:focus,
-html[data-theme="quantum"] .contact-form input:focus,
-html[data-theme="amber"] .contact-form input:focus,
-html[data-theme="quantum"] .contact-form textarea:focus,
-html[data-theme="amber"] .contact-form textarea:focus,
-html[data-theme="quantum"] .contact-form input:focus,
-html[data-theme="tokyo-night"] .contact-form input:focus,
-html[data-theme="quantum"] .contact-form textarea:focus,
-html[data-theme="tokyo-night"] .contact-form textarea:focus,
-html[data-theme="quantum"] .contact-form input:focus,
-html[data-theme="absolute-dark"] .contact-form input:focus,
-html[data-theme="quantum"] .contact-form textarea:focus,
-html[data-theme="absolute-dark"] .contact-form textarea:focus,
-html[data-theme="quantum"] .contact-form input:focus,
-html[data-theme="forest"] .contact-form input:focus,
-html[data-theme="quantum"] .contact-form textarea:focus,
-html[data-theme="forest"] .contact-form textarea:focus,
-html[data-theme="quantum"] .contact-form input:focus,
-html[data-theme="dracula"] .contact-form input:focus,
-html[data-theme="quantum"] .contact-form textarea:focus,
-html[data-theme="dracula"] .contact-form textarea:focus {
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
-}
-
-html[data-theme="quantum"] .submit-btn,
-html[data-theme="dark-coffee"] .submit-btn,
-html[data-theme="quantum"] .submit-btn,
-html[data-theme="amber"] .submit-btn,
-html[data-theme="quantum"] .submit-btn,
-html[data-theme="tokyo-night"] .submit-btn,
-html[data-theme="quantum"] .submit-btn,
-html[data-theme="absolute-dark"] .submit-btn,
-html[data-theme="quantum"] .submit-btn,
-html[data-theme="forest"] .submit-btn,
-html[data-theme="quantum"] .submit-btn,
-html[data-theme="dracula"] .submit-btn {
-  background: var(--grad-primary);
-  color: var(--btn-primary-text);
-  border: none;
-}
-
-html[data-theme="quantum"] .submit-btn:hover,
-html[data-theme="dark-coffee"] .submit-btn:hover,
-html[data-theme="quantum"] .submit-btn:hover,
-html[data-theme="amber"] .submit-btn:hover,
-html[data-theme="quantum"] .submit-btn:hover,
-html[data-theme="tokyo-night"] .submit-btn:hover,
-html[data-theme="quantum"] .submit-btn:hover,
-html[data-theme="absolute-dark"] .submit-btn:hover,
-html[data-theme="quantum"] .submit-btn:hover,
-html[data-theme="forest"] .submit-btn:hover,
-html[data-theme="quantum"] .submit-btn:hover,
-html[data-theme="dracula"] .submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--glow-cyan);
-}
-
-html[data-theme="quantum"] .social-link,
-html[data-theme="dark-coffee"] .social-link,
-html[data-theme="quantum"] .social-link,
-html[data-theme="amber"] .social-link,
-html[data-theme="quantum"] .social-link,
-html[data-theme="tokyo-night"] .social-link,
-html[data-theme="quantum"] .social-link,
-html[data-theme="absolute-dark"] .social-link,
-html[data-theme="quantum"] .social-link,
-html[data-theme="forest"] .social-link,
-html[data-theme="quantum"] .social-link,
-html[data-theme="dracula"] .social-link {
-  background: var(--bg-elevated);
-  color: var(--accent);
-}
-
-html[data-theme="quantum"] .social-link:hover,
-html[data-theme="dark-coffee"] .social-link:hover,
-html[data-theme="quantum"] .social-link:hover,
-html[data-theme="amber"] .social-link:hover,
-html[data-theme="quantum"] .social-link:hover,
-html[data-theme="tokyo-night"] .social-link:hover,
-html[data-theme="quantum"] .social-link:hover,
-html[data-theme="absolute-dark"] .social-link:hover,
-html[data-theme="quantum"] .social-link:hover,
-html[data-theme="forest"] .social-link:hover,
-html[data-theme="quantum"] .social-link:hover,
-html[data-theme="dracula"] .social-link:hover {
-  background: var(--accent);
-  color: var(--btn-primary-text);
-  transform: translateY(-3px);
-}
-
-html[data-theme="quantum"] .project-card,
-html[data-theme="dark-coffee"] .project-card,
-html[data-theme="quantum"] .project-card,
-html[data-theme="amber"] .project-card,
-html[data-theme="quantum"] .project-card,
-html[data-theme="tokyo-night"] .project-card,
-html[data-theme="quantum"] .project-card,
-html[data-theme="absolute-dark"] .project-card,
-html[data-theme="quantum"] .project-card,
-html[data-theme="forest"] .project-card,
-html[data-theme="quantum"] .project-card,
-html[data-theme="dracula"] .project-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-}
-
-html[data-theme="quantum"] .project-card:hover,
-html[data-theme="dark-coffee"] .project-card:hover,
-html[data-theme="quantum"] .project-card:hover,
-html[data-theme="amber"] .project-card:hover,
-html[data-theme="quantum"] .project-card:hover,
-html[data-theme="tokyo-night"] .project-card:hover,
-html[data-theme="quantum"] .project-card:hover,
-html[data-theme="absolute-dark"] .project-card:hover,
-html[data-theme="quantum"] .project-card:hover,
-html[data-theme="forest"] .project-card:hover,
-html[data-theme="quantum"] .project-card:hover,
-html[data-theme="dracula"] .project-card:hover {
-  border-color: var(--border-glow);
-  box-shadow: var(--shadow-card);
-}
-
-html[data-theme="quantum"] .blog-post-card,
-html[data-theme="dark-coffee"] .blog-post-card,
-html[data-theme="quantum"] .blog-post-card,
-html[data-theme="amber"] .blog-post-card,
-html[data-theme="quantum"] .blog-post-card,
-html[data-theme="tokyo-night"] .blog-post-card,
-html[data-theme="quantum"] .blog-post-card,
-html[data-theme="absolute-dark"] .blog-post-card,
-html[data-theme="quantum"] .blog-post-card,
-html[data-theme="forest"] .blog-post-card,
-html[data-theme="quantum"] .blog-post-card,
-html[data-theme="dracula"] .blog-post-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-}
-
-html[data-theme="quantum"] .music-item,
-html[data-theme="dark-coffee"] .music-item,
-html[data-theme="quantum"] .music-item,
-html[data-theme="amber"] .music-item,
-html[data-theme="quantum"] .music-item,
-html[data-theme="tokyo-night"] .music-item,
-html[data-theme="quantum"] .music-item,
-html[data-theme="absolute-dark"] .music-item,
-html[data-theme="quantum"] .music-item,
-html[data-theme="forest"] .music-item,
-html[data-theme="quantum"] .music-item,
-html[data-theme="dracula"] .music-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-}
-
-html[data-theme="quantum"] .skill-category:hover,
-html[data-theme="dark-coffee"] .skill-category:hover,
-html[data-theme="quantum"] .skill-category:hover,
-html[data-theme="amber"] .skill-category:hover,
-html[data-theme="quantum"] .skill-category:hover,
-html[data-theme="tokyo-night"] .skill-category:hover,
-html[data-theme="quantum"] .skill-category:hover,
-html[data-theme="absolute-dark"] .skill-category:hover,
-html[data-theme="quantum"] .skill-category:hover,
-html[data-theme="forest"] .skill-category:hover,
-html[data-theme="quantum"] .skill-category:hover,
-html[data-theme="dracula"] .skill-category:hover {
-  border-color: var(--border-glow);
-  box-shadow: var(--shadow-card);
-}
-
-/* ── Design system: site-wide selection / scrollbars / progress / grain / focus ── */
-/* Themed text selection */
+/* Site-wide selection */
 ::selection {
-  background: rgba(34, 211, 238, 0.28);
-  color: #eaf6ff;
+  background: var(--sulfur);
+  color: var(--ink);
 }
 
-/* Themed scrollbars (WebKit + thin Firefox) */
+/* Scrollbars: flat, token coloured */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-deep);
+  background: var(--paper);
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(34, 211, 238, 0.45),
-    rgba(167, 139, 250, 0.45)
-  );
-  border-radius: 99px;
-  border: 2px solid var(--bg-deep);
+  background: var(--rule-strong);
+  border-radius: var(--r-s);
+  border: 2px solid var(--paper);
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(34, 211, 238, 0.5) var(--bg-deep);
+  scrollbar-color: var(--rule-strong) var(--paper);
 }
 
-/* Scroll progress bar */
+/* Scroll progress bar: a plain 2px solid nitrogen line showing page position */
 #scroll-progress {
   position: fixed;
   top: 0;
@@ -2169,84 +1110,28 @@ html[data-theme="dracula"] .skill-category:hover {
   width: 100%;
   transform-origin: 0 50%;
   transform: scaleX(0);
-  background: var(--grad-primary);
+  background: var(--nitrogen);
   z-index: 10001;
   pointer-events: none;
 }
 
-/* Quantum card hover: gradient border glow instead of flat border */
+/* Cards: flat, the border changes on hover instead of lifting */
 .card,
 .glassmorphic {
   position: relative;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
-}
-.card:hover,
-.glassmorphic:hover {
-  border-color: rgba(34, 211, 238, 0.4);
-  box-shadow:
-    0 0 0 1px rgba(34, 211, 238, 0.18),
-    0 12px 40px rgba(2, 8, 20, 0.55);
-}
-
-/* Section divider hairline with animated accent sweep (solid — no gradient) */
-.section-divider {
-  position: relative;
-  height: 1px;
-  background: var(--border);
-  overflow: visible;
-}
-.section-divider::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: 30%;
-  background: var(--accent-cyan);
-  opacity: 0.85;
-  border-radius: 1px;
-  animation: div-sweep 3.2s ease-in-out infinite;
-}
-@keyframes div-sweep {
-  0% {
-    transform: translateX(-110%);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(380%);
-    opacity: 0;
-  }
-}
-
-/* Subtle film grain for depth */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 9990;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
 }
 
 /* Accessible focus rings in the accent color */
 :focus-visible {
-  outline: 2px solid var(--accent-cyan);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline: 2px solid var(--nitrogen);
+  outline-offset: 2px;
+  border-radius: var(--r-s);
 }
 
-/* Display face for headings across the whole site */
+/* Headings across the whole site */
 h1,
 h2,
 h3 {
-  font-family: "Space Grotesk", "Inter", sans-serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
 }

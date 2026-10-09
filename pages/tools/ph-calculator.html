@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -63,7 +64,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -71,6 +72,7 @@
     <link rel="stylesheet" href="../../assets/css/mobile.css" />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
     <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -208,7 +210,7 @@
           <h3><i data-lucide="beaker"></i> Common Substances pH Reference</h3>
           <p
             style="
-              color: var(--text-secondary);
+              color: var(--graphite);
               font-size: 0.85rem;
               margin-bottom: 1rem;
             "
@@ -375,27 +377,27 @@
         flex: 1;
         min-width: 120px;
         padding: 0.75rem 1rem;
-        background: var(--bg-secondary);
-        border: 2px solid transparent;
-        border-radius: 8px;
-        color: var(--text-secondary);
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        color: var(--graphite);
         font-size: 0.9rem;
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: border-color 150ms, background-color 150ms;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
       }
       .tab:hover {
-        background: var(--bg-tertiary);
-        color: var(--text-primary);
+        border-color: var(--nitrogen);
+        color: var(--ink);
       }
       .tab.active {
-        background: var(--accent-color);
-        color: white;
-        border-color: var(--accent-color);
+        background: var(--nitrogen-wash);
+        color: var(--ink);
+        border-color: var(--nitrogen);
       }
       .form-group {
         margin-bottom: 1rem;
@@ -406,36 +408,36 @@
         gap: 0.5rem;
         margin-bottom: 0.5rem;
         font-weight: 500;
-        color: var(--text-primary);
+        color: var(--ink);
       }
       .input-wrapper {
         display: flex;
         align-items: center;
-        background: var(--bg-secondary);
-        border: 2px solid var(--border-color);
-        border-radius: 8px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
         overflow: hidden;
-        transition:
-          border-color 0.3s ease,
-          box-shadow 0.3s ease;
+        transition: border-color 150ms;
       }
       .input-wrapper:focus-within {
-        border-color: var(--accent-color);
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        border-color: var(--nitrogen);
+        outline: 2px solid var(--nitrogen);
+        outline-offset: 2px;
       }
       .input-prefix,
       .input-suffix {
         padding: 0.75rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-weight: 500;
-        background: var(--bg-tertiary);
+        background: var(--surface-2);
       }
       .input-wrapper input {
         flex: 1;
         padding: 0.75rem;
         border: none;
         background: transparent;
-        color: var(--text-primary);
+        color: var(--ink);
+        font-family: var(--font-mono);
         font-size: 1rem;
         outline: none;
         min-width: 0;
@@ -443,7 +445,7 @@
       .input-hint {
         display: block;
         margin-top: 0.5rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.8rem;
       }
       .input-actions {
@@ -460,8 +462,8 @@
       }
       .scale-bar {
         height: 30px;
-        border-radius: 15px;
-        background: linear-gradient(
+        border-radius: var(--r-s);
+        background: linear-gradient( /* data */
           to right,
           #ff0000 0%,
           #ff8800 21%,
@@ -472,20 +474,18 @@
           #8800ff 100%
         );
         position: relative;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
       }
       .scale-indicator {
         position: absolute;
         width: 4px;
         height: 40px;
-        background: white;
-        border: 2px solid var(--bg-primary);
-        border-radius: 4px;
+        background: var(--surface);
+        border: 2px solid var(--ink);
+        border-radius: var(--r-s);
         top: -5px;
         left: 50%;
         transform: translateX(-50%);
         transition: left 0.5s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         z-index: 2;
       }
       .scale-acidic-label,
@@ -494,8 +494,7 @@
         position: absolute;
         font-size: 0.7rem;
         font-weight: 600;
-        color: white;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        color: var(--ink);
         display: flex;
         align-items: center;
         gap: 2px;
@@ -517,7 +516,7 @@
         display: flex;
         justify-content: space-between;
         margin-top: 2.5rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.85rem;
         font-weight: 600;
       }
@@ -535,26 +534,23 @@
       }
       .copy-btn {
         padding: 0.5rem 1rem;
-        background: var(--bg-tertiary);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        color: var(--text-secondary);
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        color: var(--ink);
         font-size: 0.85rem;
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 0.4rem;
-        transition: all 0.2s ease;
+        transition: border-color 150ms;
       }
       .copy-btn:hover {
-        background: var(--accent-color);
-        color: white;
-        border-color: var(--accent-color);
+        border-color: var(--nitrogen);
       }
       .copy-btn.copied {
-        background: #22c55e;
-        color: white;
-        border-color: #22c55e;
+        color: var(--nitrogen);
+        border-color: var(--nitrogen);
       }
       .results-grid {
         display: grid;
@@ -565,27 +561,20 @@
       .result-item {
         text-align: center;
         padding: 1.5rem;
-        background: var(--bg-secondary);
-        border-radius: 12px;
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-      .result-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background: var(--surface-2);
+        border-radius: var(--r-m);
       }
       .result-label {
         display: block;
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.9rem;
         margin-bottom: 0.5rem;
       }
       .result-value {
         font-size: 1.5rem;
         font-weight: 700;
-        font-family: "Courier New", monospace;
-        color: var(--accent-color);
+        font-family: var(--font-mono);
+        color: var(--ink);
       }
       .solution-type {
         text-align: center;
@@ -599,32 +588,31 @@
         justify-content: center;
         gap: 0.5rem;
       }
-      .solution-type.acidic {
-        background: rgba(255, 107, 107, 0.15);
-        color: #ff6b6b;
-        border: 1px solid rgba(255, 107, 107, 0.3);
+      .solution-type {
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        background: var(--surface-2);
+        color: var(--ink);
       }
-      .solution-type.neutral {
-        background: rgba(56, 217, 169, 0.15);
-        color: #38d9a9;
-        border: 1px solid rgba(56, 217, 169, 0.3);
+      .solution-type.acidic {
+        color: var(--oxygen);
+        border-color: var(--oxygen);
       }
       .solution-type.basic {
-        background: rgba(116, 143, 252, 0.15);
-        color: #748ffc;
-        border: 1px solid rgba(116, 143, 252, 0.3);
+        color: var(--nitrogen);
+        border-color: var(--nitrogen);
       }
       .result-explanation {
         margin-top: 1rem;
         padding: 1rem;
-        background: var(--bg-secondary);
-        border-radius: 8px;
+        background: var(--surface-2);
+        border-radius: var(--r-m);
         font-size: 0.9rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
         line-height: 1.6;
       }
       .result-explanation strong {
-        color: var(--text-primary);
+        color: var(--ink);
       }
       .substances-grid {
         display: grid;
@@ -637,32 +625,29 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.75rem;
-        background: var(--bg-secondary);
-        border-radius: 8px;
+        background: var(--surface);
+        border-radius: var(--r-m);
         cursor: pointer;
         font-size: 0.85rem;
-        transition: all 0.3s ease;
-        border: 1px solid transparent;
+        transition: border-color 150ms;
+        border: 1px solid var(--rule);
       }
       .substance:hover {
-        background: var(--bg-tertiary);
-        transform: translateX(4px);
-        border-color: var(--accent-color);
+        border-color: var(--nitrogen);
       }
       .substance span.ph-dot {
         width: 12px;
         height: 12px;
         border-radius: 50%;
         flex-shrink: 0;
-        box-shadow: 0 0 8px currentColor;
       }
       .substance .substance-name {
         flex: 1;
         font-weight: 500;
-        color: var(--text-primary);
+        color: var(--ink);
       }
       .substance .substance-ph {
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.75rem;
       }
       .formulas {
@@ -674,20 +659,20 @@
       .formula-item {
         text-align: center;
         padding: 1.5rem;
-        background: var(--bg-secondary);
-        border-radius: 12px;
+        background: var(--surface-2);
+        border-radius: var(--r-m);
       }
       .formula {
         display: block;
-        font-family: "Courier New", monospace;
+        font-family: var(--font-mono);
         font-size: 1.1rem;
-        color: var(--accent-color);
+        color: var(--ink);
         font-weight: 600;
       }
       .formula-item small {
         display: block;
         margin-top: 0.5rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.8rem;
       }
       @media (max-width: 600px) {
@@ -806,12 +791,12 @@
       // a stale result on screen.
       function showInputError(message) {
         const inputEl = document.getElementById("input-value");
-        inputEl.style.borderColor = "#ff6b6b";
+        inputEl.style.borderColor = "var(--oxygen)";
         document.getElementById("results-card").style.display = "none";
         const hint = document.getElementById("input-hint");
         if (hint) {
           hint.textContent = message;
-          hint.style.color = "#ff6b6b";
+          hint.style.color = "var(--oxygen)";
         }
       }
 
@@ -1042,8 +1027,7 @@ Calculated with SBS Tools`;
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>

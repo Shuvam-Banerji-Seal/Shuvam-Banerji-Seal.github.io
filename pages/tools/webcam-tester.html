@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -23,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Test your webcam in the browser: device picker, live resolution and FPS readout, mirror, grid overlay, snapshots — plus an air guitar you play by strumming your hand through the camera (MediaPipe hand tracking)."
+      content="Test your webcam in the browser: device picker, live resolution and FPS readout, mirror, grid overlay, snapshots. Also an air guitar you play by strumming your hand through the camera (MediaPipe hand tracking)."
     />
     <link
       rel="canonical"
@@ -65,7 +66,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -89,9 +90,11 @@
         margin-bottom: 1.25rem;
       }
       .wc-title {
-        font-family: var(--font-mono);
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 780;
+        font-size: 2.125rem;
+        line-height: 1.05;
         display: flex;
         align-items: center;
         gap: 0.6rem;
@@ -100,51 +103,46 @@
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background: #ef4444;
-        box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
-        opacity: 0.25;
-        transition: opacity 0.2s ease;
+        background: var(--rule-strong);
+        transition: background 0.2s ease;
       }
       .wc-title .cam-dot.live {
-        opacity: 1;
-        animation: wc-pulse 1.4s infinite;
-      }
-      @keyframes wc-pulse {
-        50% {
-          box-shadow: 0 0 18px rgba(239, 68, 68, 1);
-        }
+        background: var(--oxygen);
       }
       .wc-modes {
         display: flex;
         gap: 0.4rem;
-        background: var(--bg-elevated);
-        border: 1px solid var(--border);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
         padding: 0.3rem;
       }
       .wc-mode-btn {
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        font-weight: 600;
         padding: 0.45rem 1rem;
         border: none;
         background: transparent;
-        color: var(--text-secondary);
+        color: var(--graphite);
         cursor: pointer;
-        border-radius: 7px;
-        transition: all 0.15s ease;
+        border-radius: var(--r-s);
+        transition: background 0.15s ease, color 0.15s ease;
+      }
+      .wc-mode-btn:hover {
+        color: var(--ink);
       }
       .wc-mode-btn.active {
-        background: var(--btn-primary-bg);
-        color: var(--btn-primary-text);
+        background: var(--nitrogen);
+        color: var(--on-nitrogen);
       }
       .wc-stage {
         position: relative;
-        background: #000;
-        border-radius: 14px;
+        background: var(--surface-2);
+        border-radius: var(--r-l);
         overflow: hidden;
         aspect-ratio: 16 / 9;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-card);
+        border: 1px solid var(--rule);
       }
       .wc-stage video,
       .wc-stage canvas.overlay {
@@ -170,16 +168,16 @@
       }
       .hud-chip {
         font-family: var(--font-mono);
-        font-size: 0.72rem;
+        font-size: 0.75rem;
         padding: 0.25rem 0.55rem;
-        border-radius: 6px;
-        background: rgba(0, 0, 0, 0.65);
-        color: #7dd3fc;
-        border: 1px solid rgba(125, 211, 252, 0.25);
+        border-radius: var(--r-s);
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule);
       }
       .hud-chip.rec {
-        color: #fca5a5;
-        border-color: rgba(252, 165, 165, 0.35);
+        color: var(--oxygen);
+        border-color: var(--oxygen);
       }
       .wc-controls {
         display: flex;
@@ -189,42 +187,46 @@
         margin: 1rem 0;
       }
       .wc-select {
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
-        padding: 0.55rem 0.8rem;
-        background: var(--bg-card);
-        color: var(--text-primary);
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        padding: 0.5rem 0.8rem;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
         max-width: 280px;
       }
       .wc-btn {
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
-        padding: 0.55rem 0.95rem;
-        background: var(--bg-card);
-        color: var(--text-primary);
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        min-height: 40px;
+        padding: 0.5rem 0.95rem;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
       }
       .wc-btn:hover {
-        border-color: var(--accent);
-        color: var(--accent);
+        border-color: var(--ink);
       }
       .wc-btn.primary {
-        background: var(--btn-primary-bg);
-        color: var(--btn-primary-text);
-        border-color: transparent;
+        background: var(--nitrogen);
+        color: var(--on-nitrogen);
+        border-color: var(--nitrogen);
+      }
+      .wc-btn.primary:hover {
+        background: var(--nitrogen-hover);
+        border-color: var(--nitrogen-hover);
       }
       .wc-btn.toggled {
-        border-color: var(--accent);
-        color: var(--accent);
-        box-shadow: inset 0 0 0 1px var(--accent);
+        border-color: var(--nitrogen);
+        color: var(--nitrogen);
       }
       .wc-btn svg {
         width: 16px;
@@ -237,31 +239,28 @@
         margin: 1rem 0;
       }
       .stat-box {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
         padding: 0.7rem 0.9rem;
       }
       .stat-box .k {
-        font-family: var(--font-mono);
-        font-size: 0.66rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--text-muted);
+        font-size: 0.8125rem;
+        color: var(--graphite);
       }
       .stat-box .v {
         font-family: var(--font-mono);
         font-size: 1.05rem;
-        font-weight: 600;
-        color: var(--text-primary);
+        font-weight: 500;
+        color: var(--ink);
         margin-top: 0.2rem;
       }
       .wc-error {
         display: none;
-        background: rgba(239, 68, 68, 0.08);
-        border: 1px solid rgba(239, 68, 68, 0.35);
-        color: var(--text-primary);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--oxygen);
+        color: var(--ink);
+        border-radius: var(--r-l);
         padding: 1.2rem 1.4rem;
         margin: 1rem 0;
         line-height: 1.6;
@@ -270,7 +269,7 @@
         display: block;
       }
       .wc-error strong {
-        color: #f87171;
+        color: var(--oxygen);
       }
       /* guitar */
       .guitar-bar {
@@ -283,47 +282,47 @@
       .guitar-bar.show {
         display: flex;
       }
+      .guitar-label {
+        font-size: 0.8125rem;
+        color: var(--graphite);
+      }
       .chord-btn {
         font-family: var(--font-mono);
-        font-weight: 700;
+        font-weight: 500;
         font-size: 1rem;
         width: 52px;
         height: 44px;
-        border-radius: 9px;
-        border: 1px solid var(--border);
-        background: var(--bg-card);
-        color: var(--text-primary);
+        border-radius: var(--r-m);
+        border: 1px solid var(--rule-strong);
+        background: var(--surface);
+        color: var(--ink);
         cursor: pointer;
-        transition: all 0.12s ease;
+        transition: background 0.12s ease, border-color 0.12s ease;
       }
       .chord-btn:hover {
-        transform: translateY(-2px);
-        border-color: var(--accent);
+        border-color: var(--ink);
       }
       .chord-btn.active {
-        background: linear-gradient(135deg, #22d3ee, #a78bfa);
-        color: #0b1020;
-        border-color: transparent;
-        box-shadow: 0 4px 18px rgba(34, 211, 238, 0.35);
+        background: var(--nitrogen);
+        color: var(--on-nitrogen);
+        border-color: var(--nitrogen);
       }
       .guitar-slider {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--text-secondary);
+        font-size: 0.8125rem;
+        color: var(--graphite);
       }
       .guitar-status {
-        font-family: var(--font-mono);
-        font-size: 0.78rem;
-        color: var(--text-muted);
+        font-size: 0.9375rem;
+        color: var(--ink);
         min-height: 1.2em;
         margin: 0.4rem 0;
       }
       .guitar-status small {
-        font-size: 0.68rem;
-        opacity: 0.75;
+        font-size: 0.8125rem;
+        color: var(--graphite);
         line-height: 1.5;
       }
       .snaps {
@@ -334,9 +333,9 @@
       }
       .snap-item {
         position: relative;
-        border-radius: 8px;
+        border-radius: var(--r-m);
         overflow: hidden;
-        border: 1px solid var(--border);
+        border: 1px solid var(--rule);
       }
       .snap-item img {
         width: 100%;
@@ -346,17 +345,17 @@
         position: absolute;
         right: 4px;
         bottom: 4px;
-        font-family: var(--font-mono);
-        font-size: 0.62rem;
-        background: rgba(0, 0, 0, 0.7);
-        color: #7dd3fc;
+        font-size: 0.8125rem;
+        background: var(--surface);
+        color: var(--nitrogen);
         padding: 0.2rem 0.45rem;
-        border-radius: 5px;
-        text-decoration: none;
+        border-radius: var(--r-s);
+        text-decoration: underline;
+        text-underline-offset: 0.18em;
       }
       .wc-note {
-        font-size: 0.82rem;
-        color: var(--text-muted);
+        font-size: 0.875rem;
+        color: var(--graphite);
         line-height: 1.6;
         margin-top: 1.4rem;
       }
@@ -369,6 +368,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -379,14 +379,14 @@
         <div class="wc-head">
           <h1 class="wc-title">
             <span class="cam-dot" id="live-dot"></span>
-            WEBCAM TESTER
+            Webcam tester
           </h1>
           <div class="wc-modes" role="tablist">
             <button class="wc-mode-btn active" data-wcmode="tester" role="tab">
-              CAMERA TEST
+              Camera test
             </button>
             <button class="wc-mode-btn" data-wcmode="guitar" role="tab">
-              AIR GUITAR &#127928;
+              Air guitar
             </button>
           </div>
         </div>
@@ -440,19 +440,19 @@
           <div class="wc-stats">
             <div class="stat-box">
               <div class="k">Resolution</div>
-              <div class="v" id="stat-res">&mdash;</div>
+              <div class="v" id="stat-res">&ndash;</div>
             </div>
             <div class="stat-box">
               <div class="k">Frame rate</div>
-              <div class="v" id="stat-fps">&mdash;</div>
+              <div class="v" id="stat-fps">&ndash;</div>
             </div>
             <div class="stat-box">
               <div class="k">Aspect</div>
-              <div class="v" id="stat-aspect">&mdash;</div>
+              <div class="v" id="stat-aspect">&ndash;</div>
             </div>
             <div class="stat-box">
               <div class="k">Device</div>
-              <div class="v" id="stat-device">&mdash;</div>
+              <div class="v" id="stat-device">&ndash;</div>
             </div>
           </div>
 
@@ -464,14 +464,7 @@
         <!-- guitar controls -->
         <div id="guitar-controls" style="display: none">
           <div class="guitar-bar show">
-            <span
-              style="
-                font-family: var(--font-mono);
-                font-size: 0.75rem;
-                color: var(--text-muted);
-              "
-              >CHORD</span
-            >
+            <span class="guitar-label">Chord</span>
             <button class="chord-btn" data-chord="Em">Em</button>
             <button class="chord-btn active" data-chord="G">G</button>
             <button class="chord-btn" data-chord="C">C</button>
@@ -481,7 +474,7 @@
             <button class="chord-btn" data-chord="Dm">Dm</button>
             <button class="chord-btn" data-chord="Em7">Em7</button>
             <div class="guitar-slider">
-              VOLUME
+              Volume
               <input
                 type="range"
                 id="guitar-vol"
@@ -491,7 +484,7 @@
               />
             </div>
             <div class="guitar-slider">
-              SENSITIVITY
+              Sensitivity
               <input
                 type="range"
                 id="guitar-sens"
@@ -528,7 +521,7 @@
               id="record-session-btn"
               title="Record your session to a WAV file"
             >
-              <i data-lucide="disc-3"></i> Record Session
+              <i data-lucide="disc-3"></i> Record session
             </button>
           </div>
           <div class="guitar-status" id="guitar-status">
@@ -542,7 +535,7 @@
         </div>
 
         <p class="wc-note">
-          Everything runs locally in your browser &mdash; no video ever leaves
+          Everything runs locally in your browser. No video ever leaves
           this page. The air-guitar mode loads Google's MediaPipe Hands model
           from a CDN only when you enable it. Camera access requires HTTPS.
         </p>
@@ -561,8 +554,7 @@
           "
         ></div>
         <p>
-          &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-          Chemistry &amp; Code
+          &copy; <span id="year"></span> Shuvam Banerji Seal
         </p>
       </div>
     </footer>

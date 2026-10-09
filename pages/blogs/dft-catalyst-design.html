@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -33,7 +45,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
@@ -44,82 +56,177 @@
     <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
     <style>
       .blog-post {
-        max-width: 800px;
+        width: var(--container);
         margin: 0 auto;
-        padding: 2rem 1rem;
+        padding: 6rem 0 3rem;
       }
       .blog-header {
-        margin-bottom: 3rem;
+        max-width: 68ch;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--rule);
       }
       .blog-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        line-height: 1.2;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 800;
+        font-size: 2.75rem;
+        line-height: 1.04;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin-bottom: 0.75rem;
+        text-wrap: balance;
+      }
+      @media (max-width: 600px) {
+        .blog-title {
+          font-size: 2.125rem;
+        }
       }
       .blog-meta {
-        color: var(--text-secondary);
-        font-size: 0.95rem;
-        margin-bottom: 2rem;
+        color: var(--graphite);
+        font-size: 0.9375rem;
       }
-      .blog-content {
-        line-height: 1.8;
-        font-size: 1.1rem;
+      .blog-header .tag {
+        margin-bottom: 0.5rem;
       }
-      .blog-content h2 {
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin-top: 2.5rem;
+      .blog-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.375rem;
         margin-bottom: 1rem;
       }
+      .blog-tag {
+        padding: 0.1rem 0.45rem;
+        border: 1px solid var(--rule);
+        border-radius: var(--r-s);
+        color: var(--graphite);
+        font: 500 0.8125rem/1.5 var(--font-body);
+      }
+      /* Long-form reading */
+      .blog-content {
+        max-width: 68ch;
+        font-size: 18px;
+        line-height: 1.65;
+        color: var(--ink);
+      }
+      .blog-content h2,
       .blog-content h3 {
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin-top: 2rem;
-        margin-bottom: 0.75rem;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 760;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+      }
+      .blog-content h2 {
+        font-size: 26px;
+        margin: 2em 0 0.6em;
+      }
+      .blog-content h3 {
+        font-size: 21px;
+        margin: 1.6em 0 0.5em;
       }
       .blog-content p {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.2em;
+      }
+      .blog-content ul,
+      .blog-content ol {
+        margin: 0 0 1.2em 1.5em;
+      }
+      .blog-content li {
+        margin-bottom: 0.35em;
+      }
+      .blog-content strong {
+        font-weight: 650;
+      }
+      .blog-content a {
+        color: var(--nitrogen);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+      }
+      .blog-content a:hover {
+        text-decoration-thickness: 2px;
       }
       .blog-content code {
-        background: var(--code-bg);
-        padding: 0.2rem 0.4rem;
-        border-radius: 4px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 0.9em;
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        background: var(--surface-2);
+        padding: 0.1em 0.35em;
+        border-radius: var(--r-s);
       }
       .blog-content pre {
-        background: var(--code-bg);
-        padding: 1rem;
-        border-radius: 8px;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        line-height: 1.55;
+        background: var(--surface-2);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        padding: 1rem 1.25rem;
         overflow-x: auto;
-        margin: 1.5rem 0;
+        margin: 0 0 1.4em;
       }
-      :root {
-        --code-bg: rgba(205, 180, 150, 0.2);
+      .blog-content pre code {
+        background: none;
+        padding: 0;
+        font-size: inherit;
       }
-      [data-theme="dark"],
-[data-theme="dark-coffee"],
-[data-theme="amber"],
-[data-theme="tokyo-night"],
-[data-theme="absolute-dark"],
-[data-theme="forest"],
-[data-theme="dracula"] {
-        --code-bg: rgba(255, 255, 255, 0.05);
+      .blog-author {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--rule);
+        color: var(--graphite);
+        font-size: 0.9375rem;
+      }
+      .back-row {
+        max-width: 68ch;
+        margin-top: 3rem;
+      }
+      .back-row .btn i {
+        margin-right: 0.25rem;
+      }
+      footer {
+        border-top: 1px solid var(--rule);
+        padding: 3rem var(--gutter);
+        text-align: center;
+        color: var(--graphite);
+        font-size: 0.9375rem;
+      }
+      .footer-social {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--r-m);
+        border: 1px solid var(--rule);
+        color: var(--ink);
+        text-decoration: none;
+        transition: border-color 0.15s ease;
+      }
+      .social-link:hover {
+        border-color: var(--ink);
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
     <script type="module" src="../../assets/js/navbar.js"></script>
 
-    <main class="container">
-      <article class="blog-post glassmorphic card">
+    <main class="blog-post">
+      <article class="blog-article">
         <header class="blog-header">
-          <div style="margin-bottom: 1rem">
-            <span class="tech-tag">Computational Chemistry</span>
-            <span class="tech-tag">DFT</span>
-            <span class="tech-tag">Catalysis</span>
+          <div class="blog-tags">
+            <span class="blog-tag">Computational Chemistry</span>
+            <span class="blog-tag">DFT</span>
+            <span class="blog-tag">Catalysis</span>
           </div>
           <h1 class="blog-title">
             Understanding DFT Methods in Catalyst Design
@@ -131,8 +238,7 @@
 
         <div class="blog-content">
           <p>
-            Density Functional Theory (DFT) has revolutionized the field of
-            computational chemistry, particularly in the design and optimization
+            Density Functional Theory (DFT) has become central to computational chemistry, particularly in the design and optimization
             of catalysts. As someone who has worked extensively with DFT
             calculations using Gaussian for catalyst modeling, I'd like to share
             insights into how these methods are applied in real-world research.
@@ -150,8 +256,7 @@
           <p>
             The fundamental principle behind DFT is the Hohenberg-Kohn theorem,
             which states that the ground state properties of a many-electron
-            system are uniquely determined by its electron density. This elegant
-            reduction in complexity allows us to study systems with dozens or
+            system are uniquely determined by its electron density. This reduction in complexity allows us to study systems with dozens or
             even hundreds of atoms.
           </p>
 
@@ -166,18 +271,18 @@
 
           <h3>Key Applications in My Research</h3>
 
-          <p><strong>1. Molecular Orbital Energy Calculations</strong></p>
+          <p><strong>Molecular Orbital Energy Calculations</strong></p>
           <p>
             Understanding the energy levels of molecular orbitals is crucial for
             predicting reactivity. Using DFT, we can calculate:
           </p>
-          <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+          <ul>
             <li>HOMO (Highest Occupied Molecular Orbital) energies</li>
             <li>LUMO (Lowest Unoccupied Molecular Orbital) energies</li>
             <li>The HOMO-LUMO gap, which indicates chemical stability</li>
           </ul>
 
-          <p><strong>2. Electronic Structure Analysis</strong></p>
+          <p><strong>Electronic Structure Analysis</strong></p>
           <p>
             For the vanadium-based catalyst [VO(SALIEP)(DTP)], DFT calculations
             revealed critical information about electron distribution and
@@ -185,12 +290,11 @@
             facilitates water reduction through electron transfer mechanisms.
           </p>
 
-          <p><strong>3. Transition State Theory Applications</strong></p>
+          <p><strong>Transition State Theory Applications</strong></p>
           <p>
-            One of the most powerful applications of DFT is in studying reaction
-            mechanisms. By calculating transition states, we can:
+            One of the most common uses of DFT is studying reaction mechanisms. By calculating transition states, we can:
           </p>
-          <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+          <ul>
             <li>Determine activation energies</li>
             <li>Identify rate-limiting steps</li>
             <li>Predict reaction pathways</li>
@@ -203,9 +307,7 @@
             follow this workflow:
           </p>
 
-          <ol
-            style="margin-left: 2rem; margin-bottom: 1.5rem; line-height: 1.8"
-          >
+          <ol>
             <li>
               <strong>Geometry Optimization:</strong> Start with an initial
               structure and optimize to find the minimum energy configuration
@@ -232,7 +334,7 @@
             While B3LYP is widely used, it's not always the best choice. Some
             considerations:
           </p>
-          <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+          <ul>
             <li>B3LYP can struggle with dispersion interactions</li>
             <li>
               M06 family functionals often perform better for transition metals
@@ -248,7 +350,7 @@
             The basis set determines the quality of the calculation. For my
             catalyst studies, I've used:
           </p>
-          <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+          <ul>
             <li>6-31G(d,p) for initial optimizations</li>
             <li>6-311++G(d,p) for more accurate energetics</li>
             <li>
@@ -261,7 +363,7 @@
             The insights from DFT calculations directly inform experimental
             design. In my water reduction catalyst project, DFT revealed:
           </p>
-          <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+          <ul>
             <li>
               The preferred coordination geometry around the vanadium center
             </li>
@@ -277,9 +379,9 @@
           <h2>Future Directions</h2>
           <p>
             As computational power increases and methods improve, DFT continues
-            to evolve. Exciting developments include:
+            to evolve. Current developments include:
           </p>
-          <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+          <ul>
             <li>Machine learning potentials trained on DFT data</li>
             <li>More accurate functionals for complex systems</li>
             <li>
@@ -295,7 +397,7 @@
             structure and reactivity, DFT bridges the gap between fundamental
             understanding and practical application. Whether you're studying
             water reduction, CO₂ activation, or any other catalytic process, DFT
-            offers a powerful computational microscope to guide your research.
+            offers a computational microscope to guide your research.
           </p>
 
           <p>
@@ -306,13 +408,7 @@
             forward.
           </p>
 
-          <div
-            style="
-              margin-top: 3rem;
-              padding-top: 2rem;
-              border-top: 2px solid var(--border-color);
-            "
-          >
+          <div class="blog-author">
             <p>
               <strong>About the Author:</strong> Shuvam Banerji Seal is a BS-MS
               student at IISER Kolkata, specializing in computational chemistry
@@ -324,10 +420,9 @@
         </div>
       </article>
 
-      <div style="text-align: center; margin: 3rem 0">
+      <div class="back-row">
         <a href="../blog.html" class="btn btn-secondary">
-          <i data-lucide="arrow-left" class="inline-block mr-2"></i> Back to
-          Blog
+          <i data-lucide="arrow-left"></i> Back to blog
         </a>
       </div>
     </main>
@@ -367,12 +462,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem">
-        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
-        Portfolio v3.0
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
 

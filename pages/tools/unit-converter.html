@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -31,7 +43,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -39,6 +51,7 @@
     <link rel="stylesheet" href="../../assets/css/mobile.css" />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
     <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -47,7 +60,7 @@
     <main class="tool-page">
       <div class="tool-container">
         <div class="tool-header">
-          <h1><i data-lucide="repeat"></i> Scientific Unit Converter</h1>
+          <h1><i data-lucide="repeat"></i> Scientific unit converter</h1>
           <p>Convert between common scientific units</p>
         </div>
 
@@ -142,14 +155,14 @@
         </div>
 
         <div class="tool-card">
-          <h3><i data-lucide="history"></i> Conversion History</h3>
+          <h3><i data-lucide="history"></i> Conversion history</h3>
           <div class="history-list" id="history-list">
             <p class="history-empty">No conversions yet</p>
           </div>
         </div>
 
         <div class="tool-card">
-          <h3><i data-lucide="calculator"></i> Quick Conversions</h3>
+          <h3><i data-lucide="calculator"></i> Quick conversions</h3>
           <div class="quick-conversions" id="quick-conversions"></div>
         </div>
       </div>
@@ -173,55 +186,85 @@
         align-items: center;
         padding-bottom: 0.5rem;
       }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+      .tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.4rem 0.8rem;
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        background: transparent;
+        color: var(--ink);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease,
+          border-color 0.15s ease;
+      }
+      .tab:hover {
+        border-color: var(--ink);
+      }
+      .tab.active {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--paper);
+      }
       .swap-btn {
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        border: 2px solid var(--border-color);
-        background: var(--bg-secondary);
-        color: var(--text-primary);
+        border: 1px solid var(--rule-strong);
+        background: var(--surface);
+        color: var(--ink);
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease;
       }
       .swap-btn:hover {
-        background: var(--accent-color);
-        border-color: var(--accent-color);
-        color: white;
-        transform: rotate(180deg);
+        background: var(--surface-2);
+        border-color: var(--ink);
       }
       .formula-display {
         margin-top: 1.5rem;
         padding: 1rem;
-        background: var(--bg-secondary);
-        border-radius: 8px;
+        background: var(--surface-2);
+        border-radius: var(--r-m);
         text-align: center;
-        font-family: "Courier New", monospace;
-        color: var(--accent-color);
+        font-family: var(--font-mono);
+        color: var(--ink);
         font-size: 0.95rem;
       }
       .quick-conversions {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1rem;
-        margin-top: 1rem;
+        grid-template-columns: 1fr;
+        margin-top: 0.5rem;
       }
       .quick-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem;
-        background: var(--bg-secondary);
-        border-radius: 8px;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--rule);
         font-size: 0.9rem;
       }
       .quick-item .from {
-        color: var(--text-secondary);
+        color: var(--graphite);
       }
       .quick-item .equals {
-        color: var(--accent-color);
+        color: var(--graphite);
         margin: 0 0.5rem;
       }
       .quick-item .to {
@@ -233,7 +276,7 @@
         overflow-y: auto;
       }
       .history-empty {
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.9rem;
         text-align: center;
         padding: 1rem;
@@ -242,22 +285,20 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.75rem;
-        background: var(--bg-secondary);
-        border-radius: 8px;
-        margin-bottom: 0.5rem;
-        font-size: 0.85rem;
+        padding: 0.6rem 0.25rem;
+        border-bottom: 1px solid var(--rule);
+        font-size: 0.875rem;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: background 0.15s ease;
       }
       .history-item:hover {
-        background: var(--border-color);
+        background: var(--surface-2);
       }
       .history-item .conversion {
-        color: var(--text-secondary);
+        color: var(--graphite);
       }
       .history-item .result {
-        color: var(--accent-color);
+        color: var(--ink);
         font-weight: 600;
       }
       .input-with-actions {
@@ -271,20 +312,21 @@
       .action-btn {
         width: 44px;
         height: 44px;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background: var(--bg-secondary);
-        color: var(--text-primary);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        background: var(--surface);
+        color: var(--ink);
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.2s;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease;
       }
       .action-btn:hover {
-        background: var(--accent-color);
-        border-color: var(--accent-color);
-        color: white;
+        background: var(--surface-2);
+        border-color: var(--ink);
       }
       .tab-icon {
         width: 16px;
@@ -300,14 +342,6 @@
         }
         .swap-btn {
           transform: rotate(90deg);
-        }
-        .swap-btn:hover {
-          transform: rotate(270deg);
-        }
-        .tabs {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
         }
         .tab {
           padding: 0.5rem 0.75rem;
@@ -547,7 +581,7 @@
         if (!el) {
           el = document.createElement("div");
           el.id = "uc-toast";
-          el.style.cssText = "position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--bg-secondary,#1e1e2e);color:var(--text-primary,#fff);padding:.75rem 1.5rem;border-radius:8px;border:1px solid var(--border-color,#333);z-index:9999;font-size:.9rem;opacity:0;transition:opacity .3s;pointer-events:none";
+          el.style.cssText = "position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--surface);color:var(--ink);padding:.75rem 1.5rem;border-radius:var(--r-m);border:1px solid var(--rule);box-shadow:var(--lift);z-index:9999;font-size:.9rem;opacity:0;transition:opacity .3s;pointer-events:none";
           document.body.appendChild(el);
         }
         el.textContent = msg;
@@ -851,8 +885,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>

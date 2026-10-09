@@ -153,10 +153,12 @@ function App() {
         const saved = localStorage.getItem('sbs-mermaid-code');
         return saved || DEFAULT_CODE;
     });
-    const [theme, setTheme] = useState(() => {
-        const saved = localStorage.getItem('sbs-mermaid-theme');
-        return saved || 'dark';
-    });
+    // Start from the site-wide theme the pre-paint script resolved
+    // (saved choice, else the system setting), so the editor matches the site.
+    const [theme, setTheme] = useState(() =>
+        document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+    );
+    const themeTouched = useRef(false);
     const [diagramTheme, setDiagramTheme] = useState(() => {
         const saved = localStorage.getItem('sbs-mermaid-diagram-theme');
         return saved || 'default';
@@ -190,8 +192,13 @@ function App() {
     }, [code]);
 
     useEffect(() => {
-        localStorage.setItem('sbs-mermaid-theme', theme);
         document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme;
+        // Persist only an explicit toggle, using the same key as the rest of the site.
+        if (themeTouched.current) {
+            try { localStorage.setItem('theme', theme); } catch { /* not persisted */ }
+        }
+        themeTouched.current = true;
     }, [theme]);
 
     useEffect(() => {

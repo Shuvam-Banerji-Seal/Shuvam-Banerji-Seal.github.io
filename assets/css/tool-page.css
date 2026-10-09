@@ -13,39 +13,38 @@
     padding: 2rem;
 }
 
+/* Tool title: left aligned like every other page, no boxed banner, no
+   decorative icon. The h1 is the page's one display-type moment. */
 .tool-header {
-    text-align: center;
+    text-align: left;
     margin-bottom: 2rem;
-    padding: 2rem;
-    background: var(--bg-card);
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-card);
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
 }
 
 .tool-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-stretch: 68%;
+    font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.01em;
     margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    background: var(--grad-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    display: block;
+    color: var(--ink);
 }
 
-.tool-header h1 svg {
-    width: 40px;
-    height: 40px;
-    stroke: var(--accent);
+.tool-header h1 svg,
+.tool-header h1 i[data-lucide] {
+    display: none;
 }
 
 .tool-header p {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
+    color: var(--graphite);
+    font-size: 1.0625rem;
+    max-width: 62ch;
 }
 
 /* Tool Main Content */
@@ -56,16 +55,14 @@
 
 .tool-card {
     background: var(--bg-card);
-    border-radius: 16px;
+    border-radius: var(--r-l);
     border: 1px solid var(--border);
     padding: 2rem;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-card);
+    transition: border-color 150ms ease;
 }
 
 .tool-card:hover {
     border-color: var(--accent);
-    box-shadow: var(--glow-cyan);
 }
 
 /* Form Styles */
@@ -86,11 +83,11 @@
     width: 100%;
     padding: 0.875rem 1rem;
     border: 2px solid var(--border);
-    border-radius: 10px;
+    border-radius: var(--r-m);
     background: var(--input-bg);
     color: var(--text-primary);
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: border-color 150ms ease;
 }
 
 .form-group input:focus,
@@ -98,7 +95,6 @@
 .form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: var(--glow-cyan);
 }
 
 .form-group small {
@@ -135,8 +131,7 @@
 }
 
 .tool-btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--glow-cyan);
+    background: var(--nitrogen-hover);
 }
 
 .tool-btn-secondary {
@@ -151,12 +146,13 @@
 }
 
 .tool-btn-danger {
-    background: var(--danger-color, #ff4757);
-    color: white;
+    background: var(--oxygen);
+    color: var(--on-nitrogen);
 }
 
 .tool-btn-danger:hover {
-    background: var(--danger-color, #ff6b81);
+    background: var(--oxygen);
+    opacity: 0.85;
 }
 
 .btn-group {
@@ -184,7 +180,7 @@
 }
 
 .result-content {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     background: var(--code-bg);
     padding: 1rem;
     border-radius: 8px;
@@ -276,9 +272,9 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: rgba(255, 71, 87, 0.9);
+    background: var(--oxygen);
     border: none;
-    color: white;
+    color: var(--on-nitrogen);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -432,27 +428,27 @@
 }
 
 .alert-info {
-    background: rgba(6, 182, 212, 0.1);
-    border: 1px solid rgba(6, 182, 212, 0.3);
-    color: var(--accent);
+    background: var(--nitrogen-wash);
+    border: 1px solid var(--rule);
+    color: var(--ink);
 }
 
 .alert-success {
-    background: rgba(46, 213, 115, 0.1);
-    border: 1px solid rgba(46, 213, 115, 0.3);
-    color: var(--accent-green);
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    color: var(--ink);
 }
 
 .alert-warning {
-    background: rgba(255, 193, 7, 0.1);
-    border: 1px solid rgba(255, 193, 7, 0.3);
-    color: #ffc107;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    color: var(--ink);
 }
 
 .alert-error {
-    background: rgba(255, 71, 87, 0.1);
-    border: 1px solid rgba(255, 71, 87, 0.3);
-    color: var(--danger-color, #ff4757);
+    background: var(--oxygen-wash);
+    border: 1px solid var(--oxygen);
+    color: var(--oxygen);
 }
 
 /* Progress Bar */
@@ -467,7 +463,7 @@
 
 .progress-fill {
     height: 100%;
-    background: var(--grad-primary);
+    background: var(--nitrogen);
     border-radius: 4px;
     transition: width 0.3s ease;
 }
@@ -491,9 +487,9 @@
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     color: var(--text-primary);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--lift);
 }
 
 .tooltip:hover::after {
@@ -523,7 +519,6 @@
 }
 
 .element-cell:hover {
-    transform: scale(1.05);
     border-color: var(--accent);
     z-index: 10;
 }
@@ -551,7 +546,7 @@
     }
     
     .tool-header h1 {
-        font-size: 1.75rem;
+        font-size: 2rem;
     }
     
     .form-row {
@@ -567,10 +562,10 @@
     }
 }
 
-/* Quantum identity: display face + gradient titles on tool pages */
+/* Display face for tool page headings */
 .tool-page h1,
 .tool-page h2,
 .tool-page-title {
-  font-family: "Space Grotesk", "Inter", sans-serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
 }

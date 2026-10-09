@@ -784,7 +784,7 @@ class FullscreenTimer {
     if (this.opts.sound) this.audio.timeUp();
     window.setTimeout(() => this.el.stage.classList.remove("is-flash"), 1000);
     const segment = this.currentSegment();
-    this.announce(`${segment.label} finished — over time`);
+    this.announce(`${segment.label} finished. Now over time.`);
     if (this.opts.autoAdvance && this.index < this.segments.length - 1) {
       this.advance(1, { manual: false });
     }
@@ -997,7 +997,7 @@ class FullscreenTimer {
     this.el.stage.classList.toggle("is-overtime", display.overtime);
 
     if (this.phase === "running") {
-      document.title = `${display.text} · ${segment.label || "Timer"} — Fullscreen Timer`;
+      document.title = `${display.text} ${segment.label || "Timer"} | Fullscreen timer`;
     }
   }
 

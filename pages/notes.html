@@ -8,7 +8,19 @@
     />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -35,7 +47,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css" />
@@ -48,163 +60,185 @@
     <link rel="stylesheet" href="../assets/css/overrides.css" />
 
     <style>
+      /* Element: flat rows and panels. Overrides the shared glass styles above. */
       .notes-container {
-        max-width: 1200px;
+        width: var(--container);
+        max-width: none;
         margin: 0 auto;
-        padding: 2rem 1rem;
+        padding: 6rem 0 4rem;
       }
-
-      .notes-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
+      .notes-container .page-title {
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 800;
+        font-size: clamp(2.125rem, 5vw, 2.75rem);
+        line-height: 1;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        background: none;
+        -webkit-text-fill-color: currentColor;
+        text-align: left;
       }
-
-      .note-card {
-        padding: 1.5rem;
-        border-radius: 12px;
-        background: var(--card-bg);
-        border: 2px solid var(--border-color);
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
+      .notes-container .page-subtitle {
+        color: var(--graphite);
+        font-size: 1.0625rem;
+        margin-top: 0.75rem;
       }
-
-      .note-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-card);
+      .notes-container .notes-header {
+        text-align: left;
+        margin-bottom: 2.5rem;
       }
-
-      .note-title {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: var(--accent-color);
+      .notes-container .glassmorphic {
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        text-align: left;
       }
-
-      .note-description {
-        color: var(--text-secondary);
-        margin-bottom: 1rem;
-        line-height: 1.6;
+      .notes-container .glassmorphic p,
+      .notes-container .glassmorphic h2,
+      .notes-container .glassmorphic h3 {
+        color: var(--ink);
       }
-
-      .note-meta {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-        color: var(--text-secondary);
+      .notes-container .glassmorphic p {
+        color: var(--graphite);
       }
-
+      .notes-container .glassmorphic h2,
+      .notes-container .glassmorphic h3 {
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-stretch: 68%;
+      }
+      .notes-container .glassmorphic h2 {
+        font-size: 1.3125rem;
+        font-weight: 720;
+      }
+      .notes-container .glassmorphic h3 {
+        font-size: 1.125rem;
+        font-weight: 720;
+      }
       .github-link {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        margin-top: 2rem;
-        padding: 1rem 2rem;
-        background: var(--accent);
-        color: var(--btn-primary-text);
-        border-radius: 8px;
+        margin-top: 1.5rem;
+        min-height: 40px;
+        padding: 0.5rem 1rem;
+        background: var(--nitrogen);
+        color: var(--on-nitrogen);
+        border-radius: var(--r-m);
         text-decoration: none;
         font-weight: 600;
-        transition: transform 0.3s ease;
+        transition: background 0.15s ease;
       }
-
       .github-link:hover {
-        transform: scale(1.05);
+        background: var(--nitrogen-hover);
+        transform: none;
       }
-
       .featured-notes-title {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        text-align: center;
-        color: var(--text-primary);
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 760;
+        font-size: 2.125rem;
+        line-height: 1.04;
+        margin: 3rem 0 0;
+        text-align: left;
+        color: var(--ink);
       }
-
+      .notes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+      .note-card {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
+        box-shadow: none;
+        transition: border-color 0.15s ease;
+      }
+      .note-card:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: var(--rule-strong);
+      }
+      .note-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 720;
+        font-size: 1.3125rem;
+        line-height: 1.2;
+        margin-bottom: 0.5rem;
+        color: var(--ink);
+      }
+      .note-description {
+        color: var(--graphite);
+        margin-bottom: 1rem;
+        line-height: 1.6;
+        font-size: 0.9375rem;
+      }
+      .note-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        color: var(--graphite);
+      }
       .note-icon {
         width: 20px;
         height: 20px;
         display: inline-block;
         vertical-align: middle;
-        color: var(--accent);
+        color: var(--nitrogen);
+        flex: none;
       }
-
       .note-meta-icon {
         width: 16px;
         height: 16px;
-        color: var(--text-muted);
+        color: var(--graphite);
       }
-
       .note-download-btn {
         width: 100%;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        margin-top: auto;
       }
-
       .notes-usage-list {
         list-style: disc;
-        margin-left: 2rem;
-        line-height: 2;
-        color: var(--text-secondary);
+        margin-left: 1.5rem;
+        line-height: 1.7;
+        color: var(--graphite);
       }
-
-      /* Mobile Responsiveness */
       @media (max-width: 767px) {
-        .notes-container {
-          padding: 1rem 0.5rem;
-        }
-
         .notes-grid {
           grid-template-columns: 1fr;
           gap: 1rem;
         }
-
         .note-card {
           padding: 1.25rem;
         }
-
-        .featured-notes-title {
-          font-size: 1.5rem;
-        }
-
-        .page-title {
-          font-size: 1.75rem;
-        }
-
-        .page-subtitle {
-          font-size: 1rem;
-        }
-
         .notes-usage-list {
           margin-left: 1.25rem;
-          line-height: 1.8;
         }
       }
-
       @media (min-width: 768px) and (max-width: 1023px) {
         .notes-grid {
           grid-template-columns: repeat(2, 1fr);
         }
       }
-
-      /* Light mode overrides for any dark-mode-only styles */
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not([data-theme="amber"]):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not([data-theme="forest"]):not([data-theme="dracula"]) .note-card:hover {
-        box-shadow: 0 8px 16px rgba(44, 26, 14, 0.12);
-      }
-
-      html[data-theme="dark"] .note-card:hover,
-html[data-theme="dark-coffee"] .note-card:hover,
-html[data-theme="amber"] .note-card:hover,
-html[data-theme="tokyo-night"] .note-card:hover,
-html[data-theme="absolute-dark"] .note-card:hover,
-html[data-theme="forest"] .note-card:hover,
-html[data-theme="dracula"] .note-card:hover {
-        box-shadow: 0 8px 16px rgba(0, 212, 255, 0.15);
-      }
     </style>
+    <link rel="stylesheet" href="../assets/css/element.css" />
   </head>
 
   <body>
@@ -215,7 +249,7 @@ html[data-theme="dracula"] .note-card:hover {
 
     <main class="container">
       <div class="notes-container">
-        <header class="text-center mb-16 animate-fade-in-up">
+        <header class="notes-header">
           <h1 class="page-title">
             <i data-lucide="notebook-text" class="inline-block"></i>
             My Notes & Resources
@@ -225,7 +259,7 @@ html[data-theme="dracula"] .note-card:hover {
           </p>
         </header>
 
-        <div class="glassmorphic card text-center p-8 mb-8">
+        <div class="glassmorphic card p-8 mb-8">
           <h2 class="text-2xl font-semibold mb-4">Access Full Repository</h2>
           <p class="text-lg mb-6">
             All my notes are hosted on GitHub for easy access, version control,
@@ -271,7 +305,7 @@ html[data-theme="dracula"] .note-card:hover {
               target="_blank"
               class="btn btn-secondary note-download-btn"
             >
-              <i data-lucide="download"></i> Download
+              <i data-lucide="external-link"></i> Open on GitHub
             </a>
           </div>
 
@@ -299,7 +333,7 @@ html[data-theme="dracula"] .note-card:hover {
               target="_blank"
               class="btn btn-secondary note-download-btn"
             >
-              <i data-lucide="download"></i> Download
+              <i data-lucide="external-link"></i> Open on GitHub
             </a>
           </div>
 
@@ -327,7 +361,7 @@ html[data-theme="dracula"] .note-card:hover {
               target="_blank"
               class="btn btn-secondary note-download-btn"
             >
-              <i data-lucide="download"></i> Download
+              <i data-lucide="external-link"></i> Open on GitHub
             </a>
           </div>
 
@@ -355,7 +389,7 @@ html[data-theme="dracula"] .note-card:hover {
               target="_blank"
               class="btn btn-secondary note-download-btn"
             >
-              <i data-lucide="download"></i> Download
+              <i data-lucide="external-link"></i> Open on GitHub
             </a>
           </div>
 
@@ -383,7 +417,7 @@ html[data-theme="dracula"] .note-card:hover {
               target="_blank"
               class="btn btn-secondary note-download-btn"
             >
-              <i data-lucide="download"></i> Download
+              <i data-lucide="external-link"></i> Open on GitHub
             </a>
           </div>
 
@@ -411,7 +445,7 @@ html[data-theme="dracula"] .note-card:hover {
               target="_blank"
               class="btn btn-secondary note-download-btn"
             >
-              <i data-lucide="download"></i> Download
+              <i data-lucide="external-link"></i> Open on GitHub
             </a>
           </div>
         </div>
@@ -475,12 +509,7 @@ html[data-theme="dracula"] .note-card:hover {
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem">
-        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
-        Portfolio v3.0
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
 

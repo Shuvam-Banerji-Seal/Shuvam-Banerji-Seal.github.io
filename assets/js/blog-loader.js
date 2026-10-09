@@ -40,7 +40,7 @@ async function loadBlogList() {
         posts.length + " post" + (posts.length !== 1 ? "s" : "");
 
     if (posts.length === 0) {
-      container.innerHTML = '<div class="blog-empty">// no posts found</div>';
+      container.innerHTML = '<div class="blog-empty">No posts yet.</div>';
       return;
     }
 
@@ -79,7 +79,7 @@ async function loadBlogList() {
     renderCards(posts);
   } catch (error) {
     console.error("Error loading blog list:", error);
-    container.innerHTML = `<div class="blog-empty">// error loading posts<br><span style="color:var(--text-muted);font-size:.8rem">${error.message}</span></div>`;
+    container.innerHTML = `<div class="blog-empty">Could not load posts.<br><span class="blog-error-detail">${error.message}</span></div>`;
   }
 }
 
@@ -106,7 +106,7 @@ function renderCards(posts) {
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = '<div class="blog-empty">// no matching posts</div>';
+    container.innerHTML = '<div class="blog-empty">No matching posts.</div>';
     return;
   }
 
@@ -125,21 +125,13 @@ function renderCards(posts) {
     const filename = post.filename || "";
     html += `
             <article class="blog-card">
-                <div class="card-titlebar">
-                    <div class="card-dots">
-                        <span class="cdot cdot-r"></span>
-                        <span class="cdot cdot-y"></span>
-                        <span class="cdot cdot-g"></span>
-                    </div>
-                    <span class="card-file">${filename.replace(".md", "")}.md</span>
-                </div>
                 <div class="card-body">
                     <div class="card-tags">${tags}</div>
                     <a href="?post=${filename}" class="card-title">${post.title}</a>
-                    <div class="card-excerpt">${post.description || "Click to read more..."}</div>
+                    <div class="card-excerpt">${post.description || "Read the post."}</div>
                     <div class="card-footer">
                         <span class="card-date">${dateStr}</span>
-                        <a href="?post=${filename}" class="card-read">read <span class="card-read-arrow">&rarr;</span></a>
+                        <a href="?post=${filename}" class="card-read">Read <span class="card-read-arrow">&rarr;</span></a>
                     </div>
                 </div>
             </article>`;
@@ -152,8 +144,7 @@ async function loadBlogPost(filename) {
   const container = document.getElementById("blog-content");
   if (!container) return;
 
-  container.innerHTML =
-    '<div class="blog-loading"><span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span><span style="margin-left:.5rem;">loading post&hellip;</span></div>';
+  container.innerHTML = '<div class="blog-loading">Loading post&hellip;</div>';
 
   try {
     let response;
@@ -234,30 +225,19 @@ async function loadBlogPost(filename) {
     const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
     const pageHtml = `
-            <a href="blog.html" class="post-back-link">&larr; back to blog</a>
+            <a href="blog.html" class="post-back-link">&larr; Back to blog</a>
             <div class="post-container">
-                <div class="post-terminal">
-                    <div class="post-titlebar">
-                        <div class="titlebar-dots" style="display:flex;gap:5px;">
-                            <span style="width:11px;height:11px;border-radius:50%;background:#ff5f57;display:inline-block;"></span>
-                            <span style="width:11px;height:11px;border-radius:50%;background:#febc2e;display:inline-block;"></span>
-                            <span style="width:11px;height:11px;border-radius:50%;background:#28c840;display:inline-block;"></span>
-                        </div>
-                        <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);">${filename}</span>
-                        <span style="font-family:var(--font-mono);font-size:.72rem;color:var(--text-muted);">${readTime} min read</span>
+                <div class="post-header">
+                    <div class="post-tags">${tags}</div>
+                    <h1 class="post-title">${title}</h1>
+                    <div class="post-meta">
+                        <span>${dateStr}</span>
+                        <span>~${readTime} min read</span>
+                        <span>${wordCount} words</span>
                     </div>
-                    <div class="post-header">
-                        <div class="post-tags">${tags}</div>
-                        <h1 class="post-title">${title}</h1>
-                        <div class="post-meta">
-                            <span>${dateStr}</span>
-                            <span>&bull; ~${readTime} min read</span>
-                            <span>&bull; ${wordCount} words</span>
-                        </div>
-                    </div>
-                    <div class="post-body">
-                        <div class="prose">${htmlContent}</div>
-                    </div>
+                </div>
+                <div class="post-body">
+                    <div class="prose">${htmlContent}</div>
                 </div>
             </div>`;
 
@@ -272,7 +252,7 @@ async function loadBlogPost(filename) {
     }
   } catch (error) {
     console.error("Error loading blog post:", error);
-    container.innerHTML = `<div class="blog-empty">// error loading post<br><span style="font-size:.8rem;color:var(--text-muted)">${error.message}</span></div>`;
+    container.innerHTML = `<div class="blog-empty">Could not load this post.<br><span class="blog-error-detail">${error.message}</span></div>`;
   }
 }
 

@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -31,7 +43,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -39,6 +51,7 @@
     <link rel="stylesheet" href="../../assets/css/mobile.css" />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
     <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -180,17 +193,17 @@
       .search-box i {
         position: absolute;
         left: 12px;
-        color: var(--text-secondary);
+        color: var(--graphite);
         width: 18px;
         height: 18px;
       }
       .search-box input {
         width: 100%;
         padding: 0.6rem 0.6rem 0.6rem 2.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background: var(--bg-secondary);
-        color: var(--text-primary);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        background: var(--surface);
+        color: var(--ink);
         font-size: 0.9rem;
       }
       .pt-filters {
@@ -199,21 +212,21 @@
       }
       .pt-filters select {
         padding: 0.6rem 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background: var(--bg-secondary);
-        color: var(--text-primary);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        background: var(--surface);
+        color: var(--ink);
         font-size: 0.9rem;
         cursor: pointer;
       }
       .element-popup {
         position: fixed;
-        background: var(--bg-primary);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         padding: 1rem;
         z-index: 1000;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        box-shadow: var(--lift);
         min-width: 180px;
         display: none;
         animation: popIn 0.2s ease;
@@ -234,12 +247,12 @@
         gap: 0.75rem;
         margin-bottom: 0.75rem;
         padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--rule);
       }
       .popup-symbol {
         width: 40px;
         height: 40px;
-        border-radius: 8px;
+        border-radius: var(--r-s);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -253,11 +266,11 @@
       }
       .popup-info span {
         font-size: 0.75rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
       }
       .popup-details {
         font-size: 0.8rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
       }
       .popup-details div {
         display: flex;
@@ -265,7 +278,7 @@
         margin: 0.3rem 0;
       }
       .popup-details strong {
-        color: var(--text-primary);
+        color: var(--ink);
         font-weight: 500;
       }
       .legend {
@@ -277,39 +290,108 @@
       }
       .legend-item {
         padding: 0.3rem 0.6rem;
-        border-radius: 4px;
+        border-radius: var(--r-s);
         font-size: 0.75rem;
-        color: white;
       }
-      .legend-item.alkali {
+      /* Category fills are functional data colours (element categories). */
+      .legend-item.alkali,
+      .element.alkali-metal,
+      .popup-symbol.alkali-metal,
+      .comp-symbol.alkali-metal,
+      .element-symbol-large.alkali-metal,
+      .element-list-item.alkali-metal {
         background: #ff6b6b;
+        color: #FFFFFF;
       }
-      .legend-item.alkaline {
+      .legend-item.alkaline,
+      .element.alkaline-earth,
+      .popup-symbol.alkaline-earth,
+      .comp-symbol.alkaline-earth,
+      .element-symbol-large.alkaline-earth,
+      .element-list-item.alkaline-earth {
         background: #ffa94d;
+        color: #FFFFFF;
       }
-      .legend-item.transition {
+      .legend-item.transition,
+      .element.transition-metal,
+      .popup-symbol.transition-metal,
+      .comp-symbol.transition-metal,
+      .element-symbol-large.transition-metal,
+      .element-list-item.transition-metal {
         background: #ffd43b;
+        color: #333;
       }
-      .legend-item.post-transition {
+      .legend-item.post-transition,
+      .element.post-transition,
+      .popup-symbol.post-transition,
+      .comp-symbol.post-transition,
+      .element-symbol-large.post-transition,
+      .element-list-item.post-transition {
         background: #69db7c;
+        color: #333;
       }
-      .legend-item.metalloid {
+      .legend-item.metalloid,
+      .element.metalloid,
+      .popup-symbol.metalloid,
+      .comp-symbol.metalloid,
+      .element-symbol-large.metalloid,
+      .element-list-item.metalloid {
         background: #38d9a9;
+        color: #333;
       }
-      .legend-item.nonmetal {
+      .legend-item.nonmetal,
+      .element.nonmetal,
+      .popup-symbol.nonmetal,
+      .comp-symbol.nonmetal,
+      .element-symbol-large.nonmetal,
+      .element-list-item.nonmetal {
         background: #4dabf7;
+        color: #FFFFFF;
       }
-      .legend-item.halogen {
+      .legend-item.halogen,
+      .element.halogen,
+      .popup-symbol.halogen,
+      .comp-symbol.halogen,
+      .element-symbol-large.halogen,
+      .element-list-item.halogen {
         background: #748ffc;
+        color: #FFFFFF;
       }
-      .legend-item.noble {
+      .legend-item.noble,
+      .element.noble-gas,
+      .popup-symbol.noble-gas,
+      .comp-symbol.noble-gas,
+      .element-symbol-large.noble-gas,
+      .element-list-item.noble-gas {
         background: #da77f2;
+        color: #FFFFFF;
       }
-      .legend-item.lanthanide {
+      .legend-item.lanthanide,
+      .element.lanthanide,
+      .popup-symbol.lanthanide,
+      .comp-symbol.lanthanide,
+      .element-symbol-large.lanthanide,
+      .element-list-item.lanthanide {
         background: #f783ac;
+        color: #FFFFFF;
       }
-      .legend-item.actinide {
+      .legend-item.actinide,
+      .element.actinide,
+      .popup-symbol.actinide,
+      .comp-symbol.actinide,
+      .element-symbol-large.actinide,
+      .element-list-item.actinide {
         background: #e599f7;
+        color: #FFFFFF;
+      }
+      .legend-item.unknown,
+      .element.unknown,
+      .popup-symbol.unknown,
+      .comp-symbol.unknown,
+      .element-symbol-large.unknown,
+      .element-list-item.unknown {
+        background: #868e96;
+        color: #FFFFFF;
       }
 
       .periodic-table {
@@ -319,18 +401,18 @@
         overflow-x: auto;
         padding: 1rem 0;
         scrollbar-width: thin;
-        scrollbar-color: var(--accent-color) var(--bg-secondary);
+        scrollbar-color: var(--rule-strong) var(--surface-2);
       }
       .periodic-table::-webkit-scrollbar {
         height: 8px;
       }
       .periodic-table::-webkit-scrollbar-track {
-        background: var(--bg-secondary);
-        border-radius: 4px;
+        background: var(--surface-2);
+        border-radius: var(--r-s);
       }
       .periodic-table::-webkit-scrollbar-thumb {
-        background: var(--accent-color);
-        border-radius: 4px;
+        background: var(--rule-strong);
+        border-radius: var(--r-s);
       }
       .element {
         aspect-ratio: 1;
@@ -339,26 +421,24 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        border-radius: 6px;
+        border-radius: var(--r-s);
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: opacity 150ms, outline-color 150ms;
         position: relative;
         color: white;
         font-weight: 500;
       }
       .element:hover {
-        transform: scale(1.15);
         z-index: 10;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        outline: 2px solid var(--ink);
+        outline-offset: 1px;
       }
       .element.dimmed {
         opacity: 0.15;
       }
       .element.selected {
-        box-shadow:
-          0 0 0 3px var(--accent-color),
-          0 4px 20px rgba(0, 0, 0, 0.3);
-        transform: scale(1.05);
+        outline: 3px solid var(--nitrogen);
+        outline-offset: 1px;
       }
       .element .mass {
         font-size: 0.4rem;
@@ -387,43 +467,6 @@
         background: transparent;
         pointer-events: none;
       }
-      .element.alkali-metal {
-        background: #ff6b6b;
-      }
-      .element.alkaline-earth {
-        background: #ffa94d;
-      }
-      .element.transition-metal {
-        background: #ffd43b;
-        color: #333;
-      }
-      .element.post-transition {
-        background: #69db7c;
-        color: #333;
-      }
-      .element.metalloid {
-        background: #38d9a9;
-        color: #333;
-      }
-      .element.nonmetal {
-        background: #4dabf7;
-      }
-      .element.halogen {
-        background: #748ffc;
-      }
-      .element.noble-gas {
-        background: #da77f2;
-      }
-      .element.lanthanide {
-        background: #f783ac;
-      }
-      .element.actinide {
-        background: #e599f7;
-      }
-      .element.unknown {
-        background: #868e96;
-      }
-
       .element-detail-header {
         display: flex;
         align-items: center;
@@ -438,13 +481,9 @@
         justify-content: center;
         font-size: 3rem;
         font-weight: 700;
-        border-radius: 16px;
-        background: linear-gradient(
-          135deg,
-          var(--accent-color),
-          var(--secondary-accent)
-        );
-        color: white;
+        border-radius: var(--r-l);
+        background: var(--surface-2);
+        color: var(--ink);
       }
       .element-info-main h2 {
         margin: 0;
@@ -452,7 +491,7 @@
       }
       .element-info-main p {
         margin: 0.25rem 0 0;
-        color: var(--text-secondary);
+        color: var(--graphite);
       }
       .element-properties {
         display: grid;
@@ -462,17 +501,17 @@
       }
       .prop-item {
         padding: 0.75rem 1rem;
-        background: var(--bg-secondary);
-        border-radius: 8px;
+        background: var(--surface-2);
+        border-radius: var(--r-m);
         font-size: 0.9rem;
       }
       .prop-item strong {
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-weight: 500;
       }
       .element-summary {
         line-height: 1.7;
-        color: var(--text-secondary);
+        color: var(--graphite);
       }
 
       .mobile-list-toggle {
@@ -513,10 +552,10 @@
       }
       .clear-btn {
         padding: 0.5rem 1rem;
-        background: var(--bg-secondary);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        color: var(--text-secondary);
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        color: var(--ink);
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -528,8 +567,8 @@
         gap: 1rem;
       }
       .comparison-item {
-        background: var(--bg-secondary);
-        border-radius: 12px;
+        background: var(--surface-2);
+        border-radius: var(--r-m);
         padding: 1rem;
       }
       .comp-symbol {
@@ -537,7 +576,7 @@
         font-weight: 700;
         text-align: center;
         padding: 1rem;
-        border-radius: 12px;
+        border-radius: var(--r-m);
         color: white;
         margin-bottom: 1rem;
       }
@@ -549,7 +588,7 @@
       }
       .comp-number {
         text-align: center;
-        color: var(--text-secondary);
+        color: var(--graphite);
         margin-bottom: 1rem;
       }
       .comp-props {
@@ -560,22 +599,22 @@
       }
       .comp-props div {
         padding: 0.3rem;
-        background: var(--bg-primary);
-        border-radius: 4px;
+        background: var(--surface);
+        border-radius: var(--r-s);
       }
       .comp-props strong {
         display: block;
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.7rem;
         font-weight: 500;
       }
       .select-instructions {
         text-align: center;
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.9rem;
         padding: 1rem;
-        background: var(--bg-secondary);
-        border-radius: 8px;
+        background: var(--surface-2);
+        border-radius: var(--r-m);
       }
 
       @media (max-width: 900px) {
@@ -603,10 +642,10 @@
           width: 100%;
           padding: 0.75rem;
           margin-top: 1rem;
-          background: var(--bg-secondary);
-          border: 1px solid var(--border-color);
-          border-radius: 8px;
-          color: var(--text-primary);
+          background: var(--surface);
+          border: 1px solid var(--rule);
+          border-radius: var(--r-m);
+          color: var(--ink);
           font-size: 0.9rem;
           cursor: pointer;
           align-items: center;
@@ -2551,12 +2590,12 @@
             } else if (z === -1) {
               cell.classList.add("empty");
               cell.innerHTML =
-                '<span style="font-size:0.6rem;color:var(--text-secondary)">57-71</span>';
+                '<span style="font-size:0.6rem;color:var(--graphite)">57-71</span>';
               cell.style.pointerEvents = "auto";
             } else if (z === -2) {
               cell.classList.add("empty");
               cell.innerHTML =
-                '<span style="font-size:0.6rem;color:var(--text-secondary)">89-103</span>';
+                '<span style="font-size:0.6rem;color:var(--graphite)">89-103</span>';
               cell.style.pointerEvents = "auto";
             } else {
               const el = elements.find((e) => e.z === z);
@@ -2727,8 +2766,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>

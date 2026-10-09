@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -23,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="LLM Studio — Chat with AI models including GLM-5, GPT-4o, Claude, Gemini and more, using your own API keys"
+      content="LLM Studio: chat with AI models including GLM-5, GPT-4o, Claude, Gemini and more, using your own API keys"
     />
     <link
       rel="canonical"
@@ -67,7 +68,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -94,42 +95,22 @@
         max-height: 60vh;
       }
       .chat-message pre {
-        background: var(--code-bg, #1e1e1e);
+        background: var(--surface-2);
         padding: 1rem;
         border-radius: 8px;
         overflow-x: auto;
         margin: 0.5rem 0;
       }
       .chat-message code {
-        font-family: "Source Code Pro", monospace;
+        font-family: var(--font-mono);
       }
       .typing-indicator {
         display: flex;
-        gap: 4px;
-        padding: 1rem;
-      }
-      .typing-indicator span {
-        width: 8px;
-        height: 8px;
-        background: var(--accent-color);
-        border-radius: 50%;
-        animation: bounce 1.4s infinite ease-in-out both;
-      }
-      .typing-indicator span:nth-child(1) {
-        animation-delay: -0.32s;
-      }
-      .typing-indicator span:nth-child(2) {
-        animation-delay: -0.16s;
-      }
-      @keyframes bounce {
-        0%,
-        80%,
-        100% {
-          transform: scale(0);
-        }
-        40% {
-          transform: scale(1);
-        }
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.75rem 1rem;
+        color: var(--graphite);
+        font-size: 0.9rem;
       }
       .preset-badge {
         display: inline-flex;
@@ -137,10 +118,10 @@
         gap: 0.35rem;
         font-size: 0.75rem;
         padding: 0.25rem 0.6rem;
-        border-radius: 20px;
-        background: rgba(201, 124, 58, 0.15);
-        color: var(--accent-cyan, #c97c3a);
-        border: 1px solid rgba(201, 124, 58, 0.3);
+        border-radius: var(--r-s);
+        background: var(--nitrogen-wash);
+        color: var(--nitrogen);
+        border: 1px solid var(--rule);
         font-weight: 600;
         margin-top: 0.35rem;
       }
@@ -170,6 +151,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -180,7 +162,7 @@
         <div class="tool-header">
           <h1><i data-lucide="bot"></i> LLM Studio</h1>
           <p>
-            Chat with AI models — GLM-5, GPT-4o, Claude, Gemini, Groq and more
+            Chat with AI models: GLM-5, GPT-4o, Claude, Gemini, Groq and more
           </p>
         </div>
 
@@ -204,7 +186,7 @@
             <div class="form-group">
               <label for="provider">AI Provider</label>
               <select id="provider" onchange="onProviderChange()">
-                <option value="modal">Modal — GLM-5 (Free)</option>
+                <option value="modal">Modal: GLM-5 (Free)</option>
                 <option value="openai">OpenAI</option>
                 <option value="groq">Groq</option>
                 <option value="anthropic">Anthropic</option>
@@ -373,7 +355,7 @@
 
       const providers = {
         modal: {
-          name: "Modal — GLM-5",
+          name: "Modal: GLM-5",
           baseUrl: "https://api.us-west-2.modal.direct/v1/chat/completions",
           corsProxy: "https://corsproxy.io/?",
           models: ["zai-org/GLM-5-FP8"],
@@ -605,7 +587,7 @@
         const typing = document.createElement("div");
         typing.className = "chat-message assistant typing-indicator";
         typing.id = "typing-indicator";
-        typing.innerHTML = "<span></span><span></span><span></span>";
+        typing.innerHTML = `<thinking-orb size="20" label="Generating reply"></thinking-orb><span class="typing-label">Thinking</span>`;
         messagesDiv.appendChild(typing);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
       }
@@ -799,7 +781,7 @@
       function showNotification(msg) {
         const n = document.createElement("div");
         n.style.cssText =
-          "position:fixed;top:80px;right:20px;padding:1rem 1.5rem;background:var(--accent-color,#00ff88);color:#000;border-radius:8px;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);";
+          "position:fixed;top:80px;right:20px;padding:1rem 1.5rem;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:8px;font-weight:600;z-index:9999;box-shadow:var(--lift);";
         n.textContent = msg;
         document.body.appendChild(n);
         setTimeout(() => n.remove(), 3000);
@@ -874,12 +856,12 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
     </script>
+    <script type="module" src="../../assets/js/thinking-orb.js"></script>
   </body>
 </html>

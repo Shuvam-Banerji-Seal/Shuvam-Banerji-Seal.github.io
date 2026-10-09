@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -32,7 +44,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -40,6 +52,7 @@
     <link rel="stylesheet" href="../../assets/css/mobile.css" />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
     <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -117,7 +130,7 @@
             <div class="form-group">
               <label>Background</label>
               <select id="bg-select" onchange="updateBackground()">
-                <option value="#1a1a2e">Dark Blue</option>
+                <option value="#1B1E23">Dark</option>
                 <option value="#0f0f0f">Black</option>
                 <option value="#ffffff">White</option>
                 <option value="#1e3a5f">Navy</option>
@@ -198,31 +211,25 @@
         width: 100%;
         height: 600px;
         position: relative;
-        background: #1a1a2e;
-        border-radius: 16px;
+        background: #1B1E23;
+        border-radius: var(--r-l);
       }
       .molecule-info {
         padding: 1rem 1.5rem;
-        background: var(--bg-secondary);
-        border-top: 1px solid var(--border-color);
+        background: var(--surface);
+        border-top: 1px solid var(--rule);
       }
       .molecule-info h4 {
         margin: 0 0 0.5rem 0;
         font-size: 1.1rem;
-        background: linear-gradient(
-          135deg,
-          var(--accent-color),
-          var(--secondary-accent)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: var(--ink);
       }
       .info-grid {
         display: flex;
         flex-wrap: wrap;
         gap: 1.5rem;
         font-size: 0.9rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
       }
       .molecule-quick-list {
         display: flex;
@@ -231,24 +238,24 @@
       }
       .molecule-quick-list button {
         padding: 0.4rem 0.8rem;
-        background: var(--bg-secondary);
-        border: 1px solid var(--border-color);
-        border-radius: 20px;
-        color: var(--text-secondary);
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-s);
+        color: var(--ink);
         font-size: 0.85rem;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: border-color 150ms, background-color 150ms;
       }
       .molecule-quick-list button:hover {
-        background: var(--accent-color);
-        border-color: var(--accent-color);
-        color: white;
+        background: var(--nitrogen-wash);
+        border-color: var(--nitrogen);
+        color: var(--ink);
       }
       .range-labels {
         display: flex;
         justify-content: space-between;
         font-size: 0.7rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
         margin-top: 0.25rem;
       }
       input[type="range"] {
@@ -257,7 +264,7 @@
       }
       .divider {
         height: 1px;
-        background: var(--border-color);
+        background: var(--rule);
         margin: 1.5rem 0;
       }
       @media (max-width: 1024px) {
@@ -281,7 +288,7 @@
 
         if (typeof $3Dmol === "undefined") {
           document.getElementById("viewer-3d").innerHTML =
-            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);padding:2rem;text-align:center;">' +
+            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--graphite);padding:2rem;text-align:center;">' +
             "<div><p style='font-size:1.1rem;margin-bottom:0.5rem;'>3D viewer library failed to load.</p>" +
             "<p>Refresh the page or check your internet connection.</p></div></div>";
           return;
@@ -301,12 +308,12 @@
         const container = document.getElementById("viewer-3d");
         try {
           viewer = $3Dmol.createViewer(container, {
-            backgroundColor: "#1a1a2e",
+            backgroundColor: "#1B1E23",
             antialias: true,
           });
         } catch (e) {
           container.innerHTML =
-            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);">Failed to initialize 3D viewer.</div>';
+            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--graphite);">Failed to initialize 3D viewer.</div>';
         }
       }
 
@@ -392,7 +399,7 @@
             document.getElementById("info-formula").textContent =
               props.MolecularFormula;
             document.getElementById("info-mw").textContent =
-              props.MolecularWeight.toFixed(2) + " g/mol";
+              Number(props.MolecularWeight).toFixed(2) + " g/mol";
             document.getElementById("info-cid").textContent = cid;
             document.getElementById("molecule-info").style.display = "block";
           }
@@ -501,7 +508,7 @@
         toast.className = "notification-toast";
         toast.textContent = message;
         toast.style.cssText =
-          "position:fixed;bottom:20px;right:20px;background:var(--accent-color);color:white;padding:12px 24px;border-radius:8px;z-index:9999;animation:fadeIn 0.3s ease";
+          "position:fixed;bottom:20px;right:20px;background:var(--surface);color:var(--ink);border:1px solid var(--rule);padding:12px 24px;border-radius:var(--r-m);box-shadow:var(--lift);z-index:9999;animation:fadeIn 0.3s ease";
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
       }
@@ -541,8 +548,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>

@@ -25,18 +25,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function isDarkTheme(theme) {
     return DARK_THEMES.includes(theme);
   }
+  // Two modes only (plans/design-element.md); legacy dark names map to "dark".
   function getRandomDarkTheme() {
-    return DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+    return "dark";
   }
 
   const themeToggleButtons = document.querySelectorAll("[data-theme-toggle]");
 
   // Function to apply the saved theme or system preference
-  function applyTheme(theme) {
+  function applyTheme(theme, persist) {
+    theme = isDarkTheme(theme) ? "dark" : "light";
     // Set on <html> for CSS variable cascade AND on <body> for legacy selectors
     document.documentElement.setAttribute("data-theme", theme);
     document.body.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
+    if (persist) localStorage.setItem("theme", theme);
     updateToggleIcons(theme);
   }
 
@@ -62,15 +64,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextTheme = isDarkTheme(currentTheme)
       ? "light"
       : getRandomDarkTheme();
-    applyTheme(nextTheme);
+    applyTheme(nextTheme, true);
   }
 
   // Set initial theme — respect the early FOUC script's choice (e.g. the
   // homepage's signature quantum theme) instead of re-rolling a random one.
-  const savedTheme = localStorage.getItem("theme");
+  // navbar.js has already resolved saved choice vs. system preference.
   const htmlTheme = document.documentElement.getAttribute("data-theme");
-  const initialTheme = savedTheme || htmlTheme || getRandomDarkTheme();
-  applyTheme(initialTheme);
+  const initialTheme =
+    htmlTheme ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light");
+  applyTheme(initialTheme, false);
 
   // Add click listeners to all theme toggle buttons (only if navbar.js hasn't already)
   if (!window.__themeToggleWired) {

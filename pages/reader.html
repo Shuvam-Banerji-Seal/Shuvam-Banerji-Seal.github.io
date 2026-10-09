@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var t = localStorage.getItem("theme") || "light";
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -51,7 +63,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Merriweather:wght@300;400;700&family=Lora:wght@400;500;600;700&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <!-- Marked.js for Markdown parsing -->
@@ -88,270 +100,274 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <style>
-      :root {
-        --reader-bg: #f5f5f0;
-        --reader-content-bg: #ffffff;
-        --reader-text: #2d2d2d;
-        --reader-accent: #8b4513;
-      }
-
-      body[data-theme="dark"] {
-        --reader-bg: #1a1a1a;
-        --reader-content-bg: #2d2d2d;
-        --reader-text: #e5e5e5;
-      }
-
-      body {
-        background: var(--reader-bg);
-        color: var(--reader-text);
-      }
-
       .reader-wrapper {
-        max-width: 1200px;
+        width: var(--container);
         margin: 0 auto;
-        padding: 100px 20px 40px;
+        padding: 6rem 0 3rem;
       }
-
       .reader-controls {
-        background: var(--reader-content-bg);
-        padding: 24px;
-        border-radius: 16px;
-        margin-bottom: 24px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
       }
-
       .control-row {
         display: flex;
-        gap: 16px;
+        gap: 0.75rem 1rem;
         align-items: center;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
         flex-wrap: wrap;
       }
-
       .control-row:last-child {
         margin-bottom: 0;
       }
-
       .control-label {
         font-weight: 600;
         min-width: 120px;
-        color: var(--reader-accent);
+        color: var(--ink);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
       }
-
       .book-select,
       .chapter-select {
         flex: 1;
         min-width: 200px;
-        padding: 12px 16px;
-        border: 2px solid var(--reader-accent);
-        border-radius: 8px;
-        background: var(--reader-content-bg);
-        color: var(--reader-text);
-        font-size: 16px;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        background: var(--surface);
+        color: var(--ink);
+        font: 400 1rem/1.4 var(--font-body);
         cursor: pointer;
-        transition: all 0.3s ease;
       }
-
-      .book-select:hover,
-      .chapter-select:hover {
-        border-color: #a0522d;
-        transform: translateY(-2px);
+      .book-select:disabled,
+      .chapter-select:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
-
+      .book-select:focus,
       .chapter-select:focus,
-      .book-select:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.2);
+      .setting-btn:focus-visible,
+      .pagination-btn:focus-visible {
+        outline: 2px solid var(--nitrogen);
+        outline-offset: 2px;
       }
-
       .reader-settings {
         display: flex;
-        gap: 16px;
+        gap: 1rem;
         flex-wrap: wrap;
+        align-items: center;
       }
-
       .setting-group {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 0.5rem;
       }
-
       .setting-btn {
-        padding: 8px 16px;
-        border: 2px solid var(--reader-accent);
-        background: transparent;
-        color: var(--reader-text);
-        border-radius: 8px;
+        min-width: 40px;
+        min-height: 40px;
+        padding: 0.4rem 0.75rem;
+        border: 1px solid var(--rule-strong);
+        background: var(--surface);
+        color: var(--ink);
+        border-radius: var(--r-m);
         cursor: pointer;
-        font-size: 18px;
-        transition: all 0.2s;
+        font: 600 1rem/1 var(--font-body);
+        transition: border-color 0.15s ease;
       }
-
       .setting-btn:hover {
-        background: var(--reader-accent);
-        color: white;
+        border-color: var(--ink);
       }
-
       .font-size-display {
-        min-width: 60px;
+        min-width: 56px;
         text-align: center;
         font-weight: 600;
+        color: var(--graphite);
       }
-
       .reader-content {
-        background: var(--reader-content-bg);
-        padding: 60px 80px;
-        border-radius: 16px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
+        padding: 3.5rem clamp(1.25rem, 5vw, 4.5rem);
         min-height: 600px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        font-family: "Lora", "Merriweather", serif;
-        line-height: 1.8;
+        font-family: var(--font-body);
         font-size: var(--font-size, 18px);
+        line-height: 1.65;
+        color: var(--ink);
       }
-
+      .reader-content > * {
+        max-width: 68ch;
+      }
       .reader-content h1,
       .reader-content h2,
       .reader-content h3 {
-        color: var(--reader-accent);
-        margin-top: 2em;
-        margin-bottom: 0.8em;
-        font-weight: 700;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 760;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin: 1.8em 0 0.6em;
       }
-
       .reader-content h1 {
-        font-size: 2.5em;
-        border-bottom: 3px solid var(--reader-accent);
-        padding-bottom: 0.3em;
+        font-size: 2.125rem;
       }
-
       .reader-content h2 {
-        font-size: 2em;
+        font-size: 1.625rem;
       }
-
       .reader-content h3 {
-        font-size: 1.5em;
+        font-size: 1.3125rem;
       }
-
       .reader-content p {
-        margin-bottom: 1.5em;
-        text-align: justify;
+        margin-bottom: 1.2em;
       }
-
+      .reader-content a {
+        color: var(--nitrogen);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+      }
       .reader-content code {
-        background: rgba(139, 69, 19, 0.1);
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 0.9em;
+        background: var(--surface-2);
+        padding: 0.1em 0.35em;
+        border-radius: var(--r-s);
+        font-family: var(--font-mono);
+        font-size: 0.875em;
       }
-
       .reader-content pre {
-        background: rgba(139, 69, 19, 0.05);
-        padding: 20px;
-        border-radius: 8px;
+        background: var(--surface-2);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        padding: 1rem 1.25rem;
         overflow-x: auto;
-        margin: 20px 0;
+        margin: 1.4em 0;
+        font-size: 14px;
+        line-height: 1.55;
       }
-
       .reader-content pre code {
         background: none;
         padding: 0;
+        font-size: inherit;
       }
-
       .reader-content blockquote {
-        border-left: 4px solid var(--reader-accent);
-        padding-left: 20px;
-        margin: 20px 0;
-        font-style: italic;
-        color: #666;
+        border-left: 2px solid var(--rule);
+        padding-left: 1.25rem;
+        margin: 1.4em 0;
+        color: var(--graphite);
       }
-
-      body[data-theme="dark"] .reader-content blockquote {
-        color: #aaa;
+      .reader-content hr {
+        border: none;
+        border-top: 1px solid var(--rule);
+        margin: 2em 0;
       }
-
+      .chapter-header {
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--rule);
+      }
+      .chapter-book {
+        color: var(--graphite);
+        font-size: 0.9375rem;
+        margin-bottom: 0.75rem;
+      }
+      .chapter-title-main {
+        font-size: 2.75rem;
+        margin: 0 0 0.5rem;
+      }
+      .chapter-subtitle {
+        font-size: 1.3125rem;
+        font-weight: 500;
+        font-stretch: 100%;
+        font-family: var(--font-body);
+        color: var(--graphite);
+        margin: 0;
+      }
+      .reader-status {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--graphite);
+      }
+      .reader-status-error {
+        color: var(--oxygen);
+      }
       .empty-state {
         text-align: center;
-        padding: 60px 20px;
-        color: #999;
+        padding: 4rem 1rem;
+        color: var(--graphite);
       }
-
+      .empty-state h2 {
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-size: 1.625rem;
+        color: var(--ink);
+        margin: 0.75rem 0 0.5rem;
+      }
       .empty-state i {
-        font-size: 64px;
-        margin-bottom: 24px;
-        opacity: 0.3;
+        opacity: 0.5;
       }
-
       .pagination {
         display: flex;
         justify-content: space-between;
-        margin-top: 32px;
-        padding-top: 24px;
-        border-top: 2px solid rgba(139, 69, 19, 0.2);
+        gap: 1rem;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--rule);
       }
-
       .pagination-btn {
-        padding: 12px 24px;
-        background: var(--reader-accent);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s;
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 0.5rem;
+        min-height: 40px;
+        padding: 0.5rem 1rem;
+        background: var(--nitrogen);
+        color: var(--on-nitrogen);
+        border: 1px solid var(--nitrogen);
+        border-radius: var(--r-m);
+        cursor: pointer;
+        font: 600 0.9375rem/1.2 var(--font-body);
+        transition: background 0.15s ease;
       }
-
       .pagination-btn:hover:not(:disabled) {
-        background: #a0522d;
-        transform: translateY(-2px);
+        background: var(--nitrogen-hover);
+        border-color: var(--nitrogen-hover);
       }
-
       .pagination-btn:disabled {
         opacity: 0.4;
         cursor: not-allowed;
       }
-
-      /* Mobile Responsive */
       @media (max-width: 768px) {
         .reader-wrapper {
-          padding: 90px 12px 20px;
+          padding: 5.5rem 0 1.5rem;
         }
-
         .reader-content {
-          padding: 32px 24px;
+          padding: 2rem 1.25rem;
         }
-
         .control-row {
           flex-direction: column;
           align-items: stretch;
         }
-
         .control-label {
           min-width: auto;
         }
-
         .reader-settings {
           justify-content: center;
         }
       }
-
-      /* Print Styles */
       @media print {
         .reader-controls,
         .pagination,
         #navbar-container {
           display: none !important;
         }
-
         .reader-content {
-          box-shadow: none;
+          border: none;
           padding: 0;
         }
       }
     </style>
+    <link rel="stylesheet" href="../assets/css/element.css" />
   </head>
 
   <body>
@@ -365,8 +381,8 @@
             <i data-lucide="book-open" class="inline w-5 h-5"></i> Book
           </span>
           <select class="book-select" id="book-select">
-            <option value="">Select a book...</option>
-            <option value="sample">Sample Book</option>
+            <option value="">Select a book</option>
+            <option value="sample">Sample book</option>
           </select>
         </div>
 
@@ -375,7 +391,7 @@
             <i data-lucide="bookmark" class="inline w-5 h-5"></i> Chapter
           </span>
           <select class="chapter-select" id="chapter-select" disabled>
-            <option value="">Select a chapter...</option>
+            <option value="">Select a chapter</option>
           </select>
         </div>
 
@@ -421,7 +437,7 @@
             ></i>
           </div>
           <h2>Welcome to E-Reader</h2>
-          <p>Select a book from the dropdown above to start reading</p>
+          <p>Select a book from the dropdown above to start reading.</p>
         </div>
       </div>
     </div>
@@ -450,9 +466,14 @@
       }
 
       function toggleTheme() {
-        const body = document.body;
-        const currentTheme = body.getAttribute("data-theme");
-        body.setAttribute("data-theme", currentTheme === "dark" ? "" : "dark");
+        const root = document.documentElement;
+        const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        document.body.setAttribute("data-theme", next);
+        root.style.colorScheme = next;
+        try {
+          localStorage.setItem("theme", next);
+        } catch (e) {}
       }
 
       // Initialize
@@ -469,7 +490,7 @@ This is a sample book to demonstrate the E-Reader functionality.
 
 ## Introduction
 
-The E-Reader provides a beautiful, distraction-free reading experience with:
+The E-Reader shows chapters as formatted text with:
 
 - Clean, book-like typography
 - Adjustable font sizes
@@ -489,7 +510,7 @@ def hello_world():
 
 ### Mathematics
 
-When you add KaTeX support, you can render beautiful math like:
+KaTeX renders equations such as:
 $$E = mc^2$$
 
 > "The best way to predict the future is to invent it." - Alan Kay

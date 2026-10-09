@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        // The player is a dark console by design (theme toggle is hidden
-        // on this page), so first-time visitors default to "dark" — not
-        // "light", which produced a mixed cream-navbar + dark-player look.
-        // An explicitly saved site-wide choice is always respected.
-        var t = localStorage.getItem("theme");
-        if (!t) {
-          t = "dark";
-          try {
-            localStorage.setItem("theme", t);
-          } catch (_) {
-            /* private mode — attribute-only fallback below */
-          }
-        }
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -27,7 +27,7 @@
     />
     <meta
       name="description"
-      content="Favorite music of Shuvam Banerji Seal - Spotify-style music player"
+      content="Favorite music of Shuvam Banerji Seal, with a browser music player and playlists"
     />
     <link
       rel="canonical"
@@ -60,7 +60,7 @@
     <meta name="robots" content="index, follow" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231db954' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18V5l12-2v13'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Ccircle cx='18' cy='16' r='3'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232445c2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18V5l12-2v13'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Ccircle cx='18' cy='16' r='3'/%3E%3C/svg%3E"
     />
     <title>Music - Shuvam Banerji Seal</title>
     <script
@@ -70,7 +70,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <!-- Custom CSS -->
@@ -82,10 +82,10 @@
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
     <link rel="stylesheet" href="../assets/css/music-player.css?v=2.2" />
     <style>
-      /* Override navbar styles for music player */
+      /* Navbar colours come from the music tokens so light and dark both work */
       #navbar {
-        background: #000000 !important;
-        border-bottom: 1px solid #282828;
+        background: var(--music-nav-bg) !important;
+        border-bottom: 1px solid var(--music-nav-border);
         padding: 10px 0 !important;
       }
 
@@ -99,23 +99,19 @@
       }
 
       .nav-link {
-        color: #b3b3b3 !important;
+        color: var(--music-nav-text) !important;
       }
 
       .nav-link:hover,
       .nav-link.active {
-        color: #ffffff !important;
+        color: var(--music-nav-text-hover) !important;
       }
 
       .nav-logo span {
-        color: #ffffff !important;
-      }
-
-      .theme-toggle-btn {
-        display: none !important;
-        /* Hide theme toggle on music page as it's always dark */
+        color: var(--music-nav-logo) !important;
       }
     </style>
+    <link rel="stylesheet" href="../assets/css/element.css" />
   </head>
 
   <body>
@@ -126,7 +122,7 @@
     ></div>
     <script type="module" src="../assets/js/navbar.js?v=1.0"></script>
 
-    <!-- Spotify-style Container -->
+    <!-- Player layout -->
     <div class="spotify-container">
       <!-- Sidebar -->
       <aside class="sidebar" id="sidebar">
@@ -162,7 +158,7 @@
           </li>
           <li class="sidebar-nav-item">
             <i data-lucide="library" class="w-5 h-5"></i>
-            <span>Your Library</span>
+            <span>Your library</span>
           </li>
           <li
             class="sidebar-nav-item"
@@ -182,7 +178,7 @@
             "
           >
             <i data-lucide="user" class="w-5 h-5"></i>
-            <span>My Playlists</span>
+            <span>My playlists</span>
           </li>
         </ul>
 
@@ -206,7 +202,7 @@
       <!-- Main Content -->
       <main class="main-content">
         <header class="main-header">
-          <h1 class="greeting" id="greeting">Good Evening</h1>
+          <h1 class="greeting" id="greeting">Good evening</h1>
           <div style="position: relative">
             <i data-lucide="search" class="search-icon"></i>
             <input
@@ -219,7 +215,7 @@
         </header>
 
         <section class="content-section">
-          <h2 class="section-title" id="section-title">All Songs</h2>
+          <h2 class="section-title" id="section-title">All songs</h2>
           <div class="song-grid" id="song-grid">
             <div class="loading-spinner" style="margin: 40px auto"></div>
           </div>
@@ -278,7 +274,6 @@
               data-lucide="play"
               class="w-5 h-5"
               id="play-pause-icon"
-              style="color: #000; stroke: #000; fill: #000"
             ></i>
           </button>
           <button class="control-btn" onclick="nextTrack()" title="Next">
@@ -323,7 +318,7 @@
         <button
           class="control-btn"
           onclick="openModal('stats-modal')"
-          title="Stats for Nerds"
+          title="Playback stats"
         >
           <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
         </button>
@@ -342,13 +337,13 @@
     <!-- Advanced Equalizer Modal -->
     <div
       id="eq-modal"
-      class="eq-modal glassmorphic"
+      class="eq-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="eq-modal-title"
     >
       <div class="eq-header">
-        <h3 id="eq-modal-title">🎚️ Advanced Equalizer</h3>
+        <h3 id="eq-modal-title">Advanced equalizer</h3>
         <button class="close-btn" onclick="closeEqModal()">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
@@ -378,7 +373,7 @@
           onclick="saveCustomPreset()"
           title="Save current settings"
         >
-          💾 Save
+          Save
         </button>
       </div>
 
@@ -542,59 +537,32 @@
       <canvas id="visualizer" width="300" height="100"></canvas>
     </div>
 
-    <!-- Stats for Nerds Modal -->
+    <!-- Playback stats modal -->
     <div
       id="stats-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="stats-modal-title"
-      style="
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.9);
-        padding: 20px;
-        border: 1px solid #333;
-        border-radius: 8px;
-        z-index: 2000;
-        color: #0f0;
-        font-family: monospace;
-        min-width: 300px;
-      "
     >
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 10px;
-        "
-      >
-        <h3 id="stats-modal-title">Stats for Nerds</h3>
+      <div class="stats-head">
+        <h3 id="stats-modal-title">Playback stats</h3>
         <button
+          class="stats-close-btn"
           onclick="closeModal('stats-modal')"
-          style="background: none; border: none; color: #fff; cursor: pointer"
+          aria-label="Close"
         >
           ✕
         </button>
       </div>
       <div id="stats-content">
-        <div>Audio Context: <span id="stat-ctx">Running</span></div>
-        <div>Sample Rate: <span id="stat-sr">44100</span> Hz</div>
-        <div>Channels: <span id="stat-ch">2</span></div>
-        <div>Buffer Size: <span id="stat-buf">256</span></div>
-        <div>Current Time: <span id="stat-time">0.00</span></div>
-        <div>Volume: <span id="stat-vol">100%</span></div>
-        <div
-          style="
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 250px;
-          "
-        >
-          Source: <span id="stat-src" style="font-size: 10px">-</span>
+        <div class="stats-row">Audio context: <span id="stat-ctx">Running</span></div>
+        <div class="stats-row">Sample rate: <span id="stat-sr">44100</span> Hz</div>
+        <div class="stats-row">Channels: <span id="stat-ch">2</span></div>
+        <div class="stats-row">Buffer size: <span id="stat-buf">256</span></div>
+        <div class="stats-row">Current time: <span id="stat-time">0.00</span></div>
+        <div class="stats-row">Volume: <span id="stat-vol">100%</span></div>
+        <div class="stats-row stats-source">
+          Source: <span id="stat-src">-</span>
         </div>
       </div>
     </div>
@@ -631,20 +599,20 @@
     <!-- Profile Modal with Playlists -->
     <div
       id="profile-modal"
-      class="profile-modal glassmorphic"
+      class="profile-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="profile-modal-title"
     >
       <div class="profile-header">
-        <h3 id="profile-modal-title">👤 My Profile</h3>
+        <h3 id="profile-modal-title">My profile</h3>
         <button class="close-btn" onclick="closeProfileModal()">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
       <div class="profile-section">
-        <h4>🎵 My Playlists</h4>
+        <h4>My playlists</h4>
         <div class="create-playlist-container">
           <input
             type="text"
@@ -663,15 +631,15 @@
       </div>
 
       <div class="profile-section">
-        <h4>⏱️ Listening Stats</h4>
+        <h4>Listening stats</h4>
         <div class="stats-grid">
           <div class="stat-item">
             <span class="stat-value" id="stat-tracks-played">0</span>
-            <span class="stat-label">Tracks Played</span>
+            <span class="stat-label">Tracks played</span>
           </div>
           <div class="stat-item">
             <span class="stat-value" id="stat-total-time">0m</span>
-            <span class="stat-label">Total Time</span>
+            <span class="stat-label">Total time</span>
           </div>
         </div>
       </div>
@@ -680,13 +648,13 @@
     <!-- Add to Playlist Modal -->
     <div
       id="add-to-playlist-modal"
-      class="add-playlist-modal glassmorphic"
+      class="add-playlist-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="add-playlist-title"
     >
       <div class="add-playlist-header">
-        <h4 id="add-playlist-title">Add to Playlist</h4>
+        <h4 id="add-playlist-title">Add to playlist</h4>
         <button class="close-btn" onclick="closeAddToPlaylistModal()">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
@@ -697,27 +665,11 @@
     </div>
 
     <!-- Password Protection Modal -->
-    <div
-      id="password-modal"
-      style="
-        position: fixed;
-        inset: 0;
-        background: #000;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-family: &quot;Inter&quot;, sans-serif;
-      "
-    >
-      <div style="text-align: center; max-width: 400px; padding: 2rem">
-        <i
-          data-lucide="lock"
-          style="width: 48px; height: 48px; color: #1db954; margin-bottom: 1rem"
-        ></i>
-        <h2 style="color: white; margin-bottom: 1rem">Restricted Access</h2>
-        <p style="color: #b3b3b3; margin-bottom: 2rem">
+    <div id="password-modal">
+      <div class="password-modal-content">
+        <i data-lucide="lock" class="password-lock-icon"></i>
+        <h2 class="password-title">Restricted access</h2>
+        <p class="password-description">
           This music player is password protected. Please enter the password to
           continue.
         </p>
@@ -731,39 +683,14 @@
           <input
             type="password"
             id="password-input"
+            class="password-input"
             placeholder="Enter password"
-            style="
-              background: #333;
-              border: 1px solid #444;
-              color: white;
-              padding: 0.75rem 1rem;
-              border-radius: 4px;
-              width: 100%;
-              margin-bottom: 1rem;
-              font-size: 1rem;
-            "
           />
-          <button
-            type="submit"
-            style="
-              background: #1db954;
-              color: black;
-              border: none;
-              padding: 0.75rem 2rem;
-              border-radius: 50px;
-              font-weight: bold;
-              cursor: pointer;
-              font-size: 1rem;
-              width: 100%;
-            "
-          >
-            Unlock Player
+          <button type="submit" class="password-submit-btn">
+            Open player
           </button>
         </form>
-        <p
-          id="password-error"
-          style="color: #ff4444; margin-top: 1rem; display: none"
-        >
+        <p id="password-error" class="password-error">
           Incorrect password
         </p>
       </div>
@@ -861,19 +788,19 @@
       const hour = new Date().getHours();
       const greetingEl = document.getElementById("greeting");
       let timeOfDay = "morning";
-      let greetingText = "Good Morning";
+      let greetingText = "Good morning";
 
       if (hour >= 12 && hour < 18) {
         timeOfDay = "afternoon";
-        greetingText = "Good Afternoon";
+        greetingText = "Good afternoon";
       } else if (hour >= 18) {
         timeOfDay = "evening";
-        greetingText = "Good Evening";
+        greetingText = "Good evening";
       }
 
       const randomQuote =
         quotes[timeOfDay][Math.floor(Math.random() * quotes[timeOfDay].length)];
-      greetingEl.innerHTML = `${greetingText}<br><span style="font-size: 14px; font-weight: 400; color: #b3b3b3; display: block; margin-top: 4px;">${randomQuote}</span>`;
+      greetingEl.innerHTML = `${greetingText}<br><span class="greeting-quote">${randomQuote}</span>`;
 
       // Listen for library loaded event from MusicPlayer
       document.addEventListener("libraryLoaded", (e) => {
@@ -946,7 +873,7 @@
         document.getElementById("section-title").textContent = "Favorites";
         if (favorites.length === 0) {
           document.getElementById("song-grid").innerHTML =
-            '<div style="color: #b3b3b3; grid-column: 1/-1; text-align: center; padding: 40px;">No favorites yet. Click the heart icon to add songs!</div>';
+            '<div class="empty-favorites-message">No favorites yet. Click the heart icon to add songs!</div>';
         } else {
           renderSongs(favorites);
         }
@@ -957,7 +884,7 @@
         const query = e.target.value.toLowerCase();
         if (!query) {
           renderSongs(window.musicLibrary);
-          document.getElementById("section-title").textContent = "All Songs";
+          document.getElementById("section-title").textContent = "All songs";
           return;
         }
 

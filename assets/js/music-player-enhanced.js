@@ -248,7 +248,7 @@ class MusicPlayer {
     if (btn) {
       const originalText = btn.innerHTML;
       btn.innerHTML = "✓ Saved!";
-      btn.style.background = "#10b981";
+      btn.style.background = "var(--music-accent)";
       setTimeout(() => {
         btn.innerHTML = originalText;
         btn.style.background = "";
@@ -671,9 +671,11 @@ class MusicPlayer {
       const icon = heartBtn.querySelector("svg") || heartBtn.querySelector("i");
       if (icon) {
         if (isFav) {
-          icon.setAttribute("fill", "#1db954");
-          icon.setAttribute("stroke", "#1db954");
+          icon.style.fill = "var(--music-accent)";
+          icon.style.stroke = "var(--music-accent)";
         } else {
+          icon.style.fill = "";
+          icon.style.stroke = "";
           icon.setAttribute("fill", "none");
           icon.setAttribute("stroke", "currentColor");
         }
@@ -694,7 +696,7 @@ class MusicPlayer {
     if (playBtn) {
       // Re-create the element to ensure Lucide picks it up
       const iconName = this.state.isPlaying ? "pause" : "play";
-      playBtn.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5" id="play-pause-icon" style="color: #000;"></i>`;
+      playBtn.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5" id="play-pause-icon"></i>`;
     }
 
     // Shuffle Button
@@ -967,15 +969,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let barHeight;
     let x = 0;
 
+    // Solid accent bars read from the theme token (the bars are data)
+    ctx.fillStyle = getComputedStyle(document.documentElement)
+      .getPropertyValue("--music-accent")
+      .trim();
+
     for (let i = 0; i < bufferLength; i++) {
       barHeight = dataArray[i] / 2;
 
-      // Gradient fill
-      const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-      gradient.addColorStop(0, "#1db954");
-      gradient.addColorStop(1, "#1ed760");
-
-      ctx.fillStyle = gradient;
       ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
 
       x += barWidth + 1;

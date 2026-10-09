@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -63,7 +64,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -83,8 +84,8 @@
         margin-bottom: 2rem;
       }
       .yt-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
+        font-size: 2.125rem;
+        font-weight: 780;
         margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
@@ -92,11 +93,11 @@
         gap: 0.5rem;
       }
       .yt-header h1 i {
-        color: #ff0000;
+        color: var(--ink);
       }
       .yt-header p {
-        color: var(--text-muted, #888);
-        font-size: 0.95rem;
+        color: var(--graphite);
+        font-size: 1rem;
       }
 
       /* Tabs */
@@ -104,7 +105,7 @@
         display: flex;
         gap: 0.25rem;
         margin-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border, #333);
+        border-bottom: 1px solid var(--rule);
         padding-bottom: 0;
       }
       .yt-tab {
@@ -113,27 +114,27 @@
         border: none;
         border-bottom: 2px solid transparent;
         cursor: pointer;
-        color: var(--text-muted, #888);
-        font-size: 0.9rem;
+        color: var(--graphite);
+        font-size: 0.9375rem;
         font-weight: 500;
-        transition: all 0.2s;
+        transition: color 0.15s ease, border-color 0.15s ease;
         display: flex;
         align-items: center;
         gap: 0.4rem;
       }
       .yt-tab:hover {
-        color: var(--text-primary, #fff);
+        color: var(--ink);
       }
       .yt-tab.active {
-        color: var(--accent-cyan, #c97c3a);
-        border-bottom-color: var(--accent-cyan, #c97c3a);
+        color: var(--nitrogen);
+        border-bottom-color: var(--nitrogen);
       }
 
       /* Input area */
       .yt-input-area {
-        background: var(--bg-card, #1a1a2e);
-        border: 1px solid var(--border, #333);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
       }
@@ -143,52 +144,55 @@
       }
       .yt-input-row input {
         flex: 1;
-        padding: 0.85rem 1rem;
-        background: var(--bg-primary, #0d0d1a);
-        border: 1px solid var(--border, #333);
-        border-radius: 8px;
-        color: var(--text-primary, #fff);
-        font-size: 0.95rem;
+        padding: 0.8rem 1rem;
+        background: var(--surface);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        color: var(--ink);
+        font-size: 1rem;
         font-family: inherit;
         outline: none;
-        transition: border-color 0.2s;
+        transition: border-color 0.15s ease;
       }
       .yt-input-row input:focus {
-        border-color: var(--accent-cyan, #c97c3a);
+        border-color: var(--nitrogen);
+        box-shadow: 0 0 0 1px var(--nitrogen);
       }
       .yt-input-row input::placeholder {
-        color: var(--text-muted, #666);
+        color: var(--graphite);
       }
       .yt-btn {
-        padding: 0.85rem 1.5rem;
-        background: var(--accent-cyan, #c97c3a);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        font-size: 0.95rem;
+        padding: 0.8rem 1.4rem;
+        min-height: 44px;
+        background: var(--nitrogen);
+        color: var(--on-nitrogen);
+        border: 1px solid var(--nitrogen);
+        border-radius: var(--r-m);
+        font-size: 0.9375rem;
         font-weight: 600;
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 0.4rem;
-        transition: all 0.2s;
+        transition: background 0.15s ease, border-color 0.15s ease;
         white-space: nowrap;
       }
       .yt-btn:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
+        background: var(--nitrogen-hover);
+        border-color: var(--nitrogen-hover);
       }
       .yt-btn:disabled {
         opacity: 0.5;
         cursor: not-allowed;
-        transform: none;
       }
       .yt-btn.secondary {
-        background: var(--bg-primary, #0d0d1a);
-        border: 1px solid var(--border, #333);
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule-strong);
       }
       .yt-btn.secondary:hover {
-        border-color: var(--accent-cyan, #c97c3a);
+        background: var(--surface);
+        border-color: var(--ink);
       }
 
       /* Batch textarea */
@@ -198,31 +202,31 @@
       .yt-batch-area textarea {
         width: 100%;
         min-height: 120px;
-        padding: 0.85rem 1rem;
-        background: var(--bg-primary, #0d0d1a);
-        border: 1px solid var(--border, #333);
-        border-radius: 8px;
-        color: var(--text-primary, #fff);
-        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+        background: var(--surface);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        color: var(--ink);
+        font-size: 0.9375rem;
         font-family: inherit;
         resize: vertical;
         outline: none;
       }
       .yt-batch-area textarea:focus {
-        border-color: var(--accent-cyan, #c97c3a);
+        border-color: var(--nitrogen);
       }
       .yt-batch-hint {
-        font-size: 0.8rem;
-        color: var(--text-muted, #666);
+        font-size: 0.875rem;
+        color: var(--graphite);
         margin-top: 0.5rem;
       }
 
       /* Format options */
       .yt-options {
         display: none;
-        background: var(--bg-card, #1a1a2e);
-        border: 1px solid var(--border, #333);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
       }
@@ -230,12 +234,18 @@
         display: block;
       }
       .yt-options h3 {
-        font-size: 1rem;
-        font-weight: 600;
+        font-size: 1.0625rem;
+        font-weight: 650;
         margin-bottom: 1rem;
         display: flex;
         align-items: center;
         gap: 0.4rem;
+      }
+      .yt-group-label {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--graphite);
       }
       .yt-format-grid {
         display: grid;
@@ -244,36 +254,36 @@
       }
       .yt-format-card {
         padding: 0.85rem;
-        background: var(--bg-primary, #0d0d1a);
-        border: 2px solid var(--border, #333);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
         cursor: pointer;
-        transition: all 0.2s;
+        transition: border-color 0.15s ease, background 0.15s ease;
         text-align: center;
       }
       .yt-format-card:hover {
-        border-color: var(--accent-cyan, #c97c3a);
+        border-color: var(--ink);
       }
       .yt-format-card.selected {
-        border-color: var(--accent-cyan, #c97c3a);
-        background: rgba(201, 124, 58, 0.1);
+        border: 1.5px solid var(--nitrogen);
+        background: var(--nitrogen-wash);
       }
       .yt-format-card .format-label {
         font-weight: 600;
-        font-size: 0.95rem;
+        font-size: 0.9375rem;
         margin-bottom: 0.25rem;
       }
       .yt-format-card .format-desc {
-        font-size: 0.78rem;
-        color: var(--text-muted, #888);
+        font-size: 0.8125rem;
+        color: var(--graphite);
       }
 
       /* Video info card */
       .yt-video-info {
         display: none;
-        background: var(--bg-card, #1a1a2e);
-        border: 1px solid var(--border, #333);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         overflow: hidden;
         margin-bottom: 1.5rem;
       }
@@ -286,7 +296,7 @@
         min-width: 320px;
         aspect-ratio: 16/9;
         overflow: hidden;
-        background: #000;
+        background: var(--surface-2);
       }
       .yt-thumb-container img {
         width: 100%;
@@ -298,19 +308,19 @@
         bottom: 8px;
         right: 8px;
         padding: 0.35rem 0.6rem;
-        background: rgba(0, 0, 0, 0.75);
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        font-size: 0.75rem;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-s);
+        font-size: 0.8125rem;
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 0.3rem;
-        transition: background 0.2s;
+        transition: border-color 0.15s ease;
       }
       .yt-thumb-download:hover {
-        background: rgba(0, 0, 0, 0.9);
+        border-color: var(--ink);
       }
       .yt-video-details {
         padding: 1.25rem;
@@ -328,8 +338,8 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.75rem;
-        font-size: 0.82rem;
-        color: var(--text-muted, #888);
+        font-size: 0.875rem;
+        color: var(--graphite);
       }
       .yt-video-meta span {
         display: flex;
@@ -337,8 +347,8 @@
         gap: 0.3rem;
       }
       .yt-video-desc {
-        font-size: 0.85rem;
-        color: var(--text-secondary, #aaa);
+        font-size: 0.9rem;
+        color: var(--graphite);
         line-height: 1.5;
         max-height: 60px;
         overflow: hidden;
@@ -351,7 +361,7 @@
         position: fixed;
         inset: 0;
         z-index: 9999;
-        background: rgba(0, 0, 0, 0.8);
+        background: color-mix(in srgb, var(--ink) 60%, transparent);
         align-items: center;
         justify-content: center;
         padding: 2rem;
@@ -360,9 +370,10 @@
         display: flex;
       }
       .yt-thumb-modal-content {
-        background: var(--bg-card, #1a1a2e);
-        border: 1px solid var(--border, #333);
-        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
+        box-shadow: var(--lift);
         padding: 1.5rem;
         max-width: 700px;
         width: 100%;
@@ -376,9 +387,12 @@
       .yt-thumb-modal-content h3 button {
         background: none;
         border: none;
-        color: var(--text-muted, #888);
+        color: var(--graphite);
         cursor: pointer;
         font-size: 1.2rem;
+      }
+      .yt-thumb-modal-content h3 button:hover {
+        color: var(--ink);
       }
       .yt-thumb-grid {
         display: grid;
@@ -386,14 +400,14 @@
         gap: 1rem;
       }
       .yt-thumb-option {
-        border: 2px solid var(--border, #333);
-        border-radius: 10px;
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
         overflow: hidden;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: border-color 0.15s ease;
       }
       .yt-thumb-option:hover {
-        border-color: var(--accent-cyan, #c97c3a);
+        border-color: var(--nitrogen);
       }
       .yt-thumb-option img {
         width: 100%;
@@ -404,17 +418,17 @@
       .yt-thumb-option .thumb-label {
         padding: 0.5rem;
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.875rem;
         font-weight: 500;
-        background: var(--bg-primary, #0d0d1a);
+        background: var(--surface);
       }
 
       /* Playlist items */
       .yt-playlist-items {
         display: none;
-        background: var(--bg-card, #1a1a2e);
-        border: 1px solid var(--border, #333);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
       }
@@ -428,8 +442,8 @@
         margin-bottom: 1rem;
       }
       .yt-playlist-header h3 {
-        font-size: 1rem;
-        font-weight: 600;
+        font-size: 1.0625rem;
+        font-weight: 650;
       }
       .yt-playlist-actions {
         display: flex;
@@ -447,16 +461,16 @@
         align-items: center;
         gap: 0.75rem;
         padding: 0.65rem;
-        background: var(--bg-primary, #0d0d1a);
-        border: 1px solid var(--border, #333);
-        border-radius: 8px;
-        transition: border-color 0.2s;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        transition: border-color 0.15s ease;
       }
       .yt-playlist-item:hover {
-        border-color: var(--accent-cyan, #c97c3a);
+        border-color: var(--ink);
       }
       .yt-playlist-item input[type="checkbox"] {
-        accent-color: var(--accent-cyan, #c97c3a);
+        accent-color: var(--nitrogen);
         width: 18px;
         height: 18px;
         cursor: pointer;
@@ -465,9 +479,9 @@
         width: 80px;
         min-width: 80px;
         aspect-ratio: 16/9;
-        border-radius: 6px;
+        border-radius: var(--r-s);
         overflow: hidden;
-        background: #000;
+        background: var(--surface-2);
       }
       .yt-playlist-item .item-thumb img {
         width: 100%;
@@ -479,23 +493,23 @@
         min-width: 0;
       }
       .yt-playlist-item .item-title {
-        font-size: 0.88rem;
+        font-size: 0.9375rem;
         font-weight: 500;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .yt-playlist-item .item-duration {
-        font-size: 0.75rem;
-        color: var(--text-muted, #888);
+        font-size: 0.8125rem;
+        color: var(--graphite);
       }
 
       /* Download action bar */
       .yt-action-bar {
         display: none;
-        background: var(--bg-card, #1a1a2e);
-        border: 1px solid var(--border, #333);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         padding: 1.25rem 1.5rem;
         margin-bottom: 1.5rem;
         align-items: center;
@@ -505,20 +519,23 @@
         display: flex;
       }
       .yt-action-info {
-        font-size: 0.9rem;
-        color: var(--text-secondary, #aaa);
+        font-size: 0.9375rem;
+        color: var(--graphite);
       }
       .yt-action-info strong {
-        color: var(--text-primary, #fff);
+        color: var(--ink);
       }
 
-      /* Status messages */
+      /* Status messages. Each state has a colour and a text label. */
       .yt-status {
         display: none;
-        padding: 1rem 1.25rem;
-        border-radius: 10px;
+        padding: 0.9rem 1.1rem;
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        background: var(--surface);
+        color: var(--ink);
         margin-bottom: 1rem;
-        font-size: 0.9rem;
+        font-size: 0.9375rem;
         align-items: center;
         gap: 0.5rem;
       }
@@ -526,36 +543,38 @@
         display: flex;
       }
       .yt-status.loading {
-        background: rgba(59, 130, 246, 0.1);
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        color: #60a5fa;
+        color: var(--ink);
       }
       .yt-status.success {
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        color: #34d399;
+        border-color: var(--success);
+        color: var(--success);
       }
       .yt-status.error {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        color: #f87171;
+        background: var(--oxygen-wash);
+        border-color: var(--oxygen);
+        color: var(--oxygen);
       }
 
       /* Fallback services */
       .yt-fallback {
-        background: var(--bg-card, #1a1a2e);
-        border: 1px solid var(--border, #333);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
       }
       .yt-fallback h3 {
-        font-size: 1rem;
-        font-weight: 600;
+        font-size: 1.0625rem;
+        font-weight: 650;
         margin-bottom: 1rem;
         display: flex;
         align-items: center;
         gap: 0.4rem;
+      }
+      .yt-fallback-note {
+        font-size: 0.9rem;
+        color: var(--graphite);
+        margin-bottom: 1rem;
       }
       .yt-fallback-grid {
         display: grid;
@@ -564,28 +583,27 @@
       }
       .yt-fallback-card {
         padding: 1rem;
-        background: var(--bg-primary, #0d0d1a);
-        border: 1px solid var(--border, #333);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
         text-align: center;
         text-decoration: none;
-        color: var(--text-primary, #fff);
-        transition: all 0.2s;
+        color: var(--ink);
+        transition: border-color 0.15s ease;
       }
       .yt-fallback-card:hover {
-        border-color: var(--accent-cyan, #c97c3a);
-        transform: translateY(-2px);
+        border-color: var(--ink);
       }
       .yt-fallback-card .fb-name {
         font-weight: 600;
         margin-bottom: 0.25rem;
       }
       .yt-fallback-card .fb-desc {
-        font-size: 0.78rem;
-        color: var(--text-muted, #888);
+        font-size: 0.8125rem;
+        color: var(--graphite);
       }
 
-      /* Loading spinner */
+      /* Loading spinner (shows a real request in progress) */
       .spin {
         animation: spin 1s linear infinite;
       }
@@ -619,15 +637,15 @@
 
       /* Info section */
       .yt-info-section {
-        background: var(--bg-card, #1a1a2e);
-        border: 1px solid var(--border, #333);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         padding: 1.5rem;
         margin-top: 2rem;
       }
       .yt-info-section h3 {
-        font-size: 1rem;
-        font-weight: 600;
+        font-size: 1.0625rem;
+        font-weight: 650;
         margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
@@ -641,15 +659,15 @@
         gap: 0.5rem;
       }
       .yt-info-section li {
-        font-size: 0.88rem;
-        color: var(--text-secondary, #aaa);
+        font-size: 0.9375rem;
+        color: var(--graphite);
         display: flex;
         align-items: flex-start;
         gap: 0.5rem;
         line-height: 1.5;
       }
       .yt-info-section li i {
-        color: var(--accent-cyan, #c97c3a);
+        color: var(--nitrogen);
         flex-shrink: 0;
         margin-top: 2px;
       }
@@ -661,7 +679,7 @@
       .download-links-modal h3 {
         margin: 0 0 1rem 0;
         font-size: 1.1rem;
-        color: var(--text-primary, #e2e8f0);
+        color: var(--ink);
       }
       .download-links-list {
         display: flex;
@@ -673,18 +691,18 @@
         align-items: center;
         gap: 0.75rem;
         padding: 0.75rem 1rem;
-        background: var(--bg-elevated, #1e293b);
-        border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
-        border-radius: 8px;
-        color: var(--text-primary, #e2e8f0);
+        background: var(--surface);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        color: var(--ink);
         text-decoration: none;
         font-weight: 500;
-        transition: all 0.2s;
+        transition: border-color 0.15s ease, background 0.15s ease;
       }
       .download-link-btn:hover {
-        background: var(--accent-cyan, #06b6d4);
-        color: var(--bg-deep, #0a0a12);
-        border-color: var(--accent-cyan, #06b6d4);
+        background: var(--nitrogen-wash);
+        color: var(--ink);
+        border-color: var(--nitrogen);
       }
       .download-link-btn i {
         width: 18px;
@@ -692,10 +710,11 @@
       }
       .download-note {
         margin-top: 1rem;
-        font-size: 0.85rem;
-        color: var(--text-muted, #64748b);
+        font-size: 0.875rem;
+        color: var(--graphite);
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -704,17 +723,17 @@
     <main class="tool-page">
       <div class="yt-downloader">
         <div class="yt-header">
-          <h1><i data-lucide="video"></i> YouTube Downloader</h1>
+          <h1><i data-lucide="video"></i> YouTube downloader</h1>
           <p>Download videos, audio, and thumbnails from YouTube</p>
         </div>
 
         <!-- Tabs -->
         <div class="yt-tabs">
           <button class="yt-tab active" data-tab="single">
-            <i data-lucide="link"></i> Single Video
+            <i data-lucide="link"></i> Single video
           </button>
           <button class="yt-tab" data-tab="batch">
-            <i data-lucide="layers"></i> Batch Download
+            <i data-lucide="layers"></i> Batch download
           </button>
           <button class="yt-tab" data-tab="playlist">
             <i data-lucide="list"></i> Playlist
@@ -793,7 +812,7 @@
         <div class="yt-playlist-items" id="playlist-items">
           <div class="yt-playlist-header">
             <h3>
-              <i data-lucide="list"></i> Playlist Videos (<span
+              <i data-lucide="list"></i> Playlist videos (<span
                 id="playlist-count"
                 >0</span
               >)
@@ -820,20 +839,10 @@
 
         <!-- Format Options -->
         <div class="yt-options" id="format-options">
-          <h3><i data-lucide="settings"></i> Download Options</h3>
+          <h3><i data-lucide="settings"></i> Download options</h3>
 
           <div style="margin-bottom: 1rem">
-            <div
-              style="
-                font-size: 0.85rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                color: var(--text-muted, #888);
-                letter-spacing: 0.05em;
-              "
-            >
-              VIDEO FORMATS
-            </div>
+            <div class="yt-group-label">Video formats</div>
             <div class="yt-format-grid" id="video-formats">
               <div class="yt-format-card" data-format="mp4" data-quality="360">
                 <div class="format-label">MP4 360p</div>
@@ -867,17 +876,7 @@
           </div>
 
           <div>
-            <div
-              style="
-                font-size: 0.85rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                color: var(--text-muted, #888);
-                letter-spacing: 0.05em;
-              "
-            >
-              AUDIO ONLY
-            </div>
+            <div class="yt-group-label">Audio only</div>
             <div class="yt-format-grid" id="audio-formats">
               <div class="yt-format-card" data-format="mp3" data-quality="128">
                 <div class="format-label">MP3 128kbps</div>
@@ -916,15 +915,9 @@
         <!-- Fallback Services -->
         <div class="yt-fallback">
           <h3>
-            <i data-lucide="external-link"></i> Alternative Download Services
+            <i data-lucide="external-link"></i> Alternative download services
           </h3>
-          <p
-            style="
-              font-size: 0.85rem;
-              color: var(--text-muted, #888);
-              margin-bottom: 1rem;
-            "
-          >
+          <p class="yt-fallback-note">
             If the built-in downloader is unavailable, try these services
             directly:
           </p>
@@ -970,7 +963,7 @@
 
         <!-- Info Section -->
         <div class="yt-info-section">
-          <h3><i data-lucide="info"></i> How It Works</h3>
+          <h3><i data-lucide="info"></i> How it works</h3>
           <ul>
             <li>
               <i data-lucide="check" style="width: 16px; height: 16px"></i>
@@ -1010,7 +1003,7 @@
     <div class="yt-thumb-modal" id="thumb-modal">
       <div class="yt-thumb-modal-content">
         <h3>
-          <span><i data-lucide="image"></i> Download Thumbnail</span>
+          <span><i data-lucide="image"></i> Download thumbnail</span>
           <button id="thumb-modal-close"><i data-lucide="x"></i></button>
         </h3>
         <div class="yt-thumb-grid" id="thumb-grid"></div>
@@ -1587,8 +1580,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>

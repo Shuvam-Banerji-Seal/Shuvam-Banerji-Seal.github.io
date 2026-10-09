@@ -1,3 +1,18 @@
+# Current checkpoint — 2026-10-09 — Element redesign (UNCOMMITTED)
+
+| Field | Value |
+| --- | --- |
+| Phase | BUILT + LOCALLY VERIFIED, not committed or deployed |
+| Spec | plans/design-element.md (CPK palette, Archivo + IBM Plex Mono, two modes, banned-pattern list). Agent brief: plans/element-agent-brief.md |
+| Gate | `node scripts/lint-design.js` (new): 529 errors before, 0 after across 117 files; 14 allowed warnings (loading spinners, record light, terminal caret) |
+| Homepage | Rebuilt: orbital hero (assets/js/orbital.js, Monte Carlo samples of real hydrogen orbitals), research/software/roles/tools/writing/contact lists, live ATP figure (assets/js/molecule-figure.js). Loader, terminal, ATP three.js viewer and index-overrides.css retired to .rigor-trash/20261009-old-homepage-assets |
+| Shared | theme.css rewritten (2 modes, legacy names aliased), element.css (components + guards, loaded last on every page), navbar.js (new IA, grouped Tools menu, system-following theme), thinking-orb.js (LLM "thinking" indicator, MIT port of thinking-orbs) |
+| Pages | 12 haiku agents migrated every page; lead fixed gallery (real figures instead of placehold.co), thermodynamics (no 3-card grid), tool headers, mermaid theme, enhanced.js effects, footer taglines |
+| Tests | basic 11/11, comprehensive 0 failed / 0 warnings, build-verification 208/208 (loader test replaced by orbital-figure test), vite build clean |
+| Open | scripts/fixtures/public-apis-readme.md is missing, so `generate-apis-pages.js --no-fetch` needs `--source`; resume skill bars still show self-rated percentages; molecule-viz default 3D background is dark in both modes |
+
+---
+
 # Current checkpoint — 2026-09-18 — Fullscreen Timer deployed + live-verified (574a7d5)
 
 ## Current Session Summary (supersedes the 2026-09-17 checkpoints below)

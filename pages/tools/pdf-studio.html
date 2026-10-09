@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -23,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Unified PDF Studio — Compress, Convert, Merge, Split, Rotate, Watermark, Protect, Extract, OCR PDFs in your browser"
+      content="Unified PDF Studio: Compress, Convert, Merge, Split, Rotate, Watermark, Protect, Extract, OCR PDFs in your browser"
     />
     <link
       rel="canonical"
@@ -80,7 +81,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -102,8 +103,8 @@
         }
       }
       .mode-panel {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
+        background: var(--surface);
+        border: 1px solid var(--rule);
         border-radius: 14px;
         overflow: hidden;
         position: sticky;
@@ -111,11 +112,9 @@
       }
       .mode-panel h3 {
         padding: 1.1rem 1.25rem;
-        font-size: 0.78rem;
-        letter-spacing: 0.12em;
-        color: var(--text-muted);
-        border-bottom: 1px solid var(--border);
-        font-family: var(--font-mono, monospace);
+        font-size: 0.9375rem;
+        color: var(--graphite);
+        border-bottom: 1px solid var(--rule);
       }
       .mode-btn {
         width: 100%;
@@ -125,24 +124,25 @@
         padding: 0.9rem 1.25rem;
         background: none;
         border: none;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--rule);
         cursor: pointer;
-        color: var(--text-secondary);
+        color: var(--ink);
         font-size: 0.92rem;
         font-weight: 500;
         text-align: left;
-        transition: all 0.2s;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
       }
       .mode-btn:last-child {
         border-bottom: none;
       }
       .mode-btn:hover {
-        background: rgba(0, 0, 0, 0.04);
-        color: var(--text-primary);
+        background: var(--surface-2);
       }
       .mode-btn.active {
-        background: var(--accent-cyan, #c97c3a);
-        color: #fff;
+        background: var(--ink);
+        color: var(--paper);
       }
       .mode-btn i {
         width: 18px;
@@ -167,19 +167,21 @@
 
       /* ── Upload zone ── */
       .upload-zone {
-        border: 2px dashed var(--border);
-        border-radius: 12px;
+        border: 2px dashed var(--rule-strong);
+        border-radius: var(--r-l);
         padding: 2.5rem;
         text-align: center;
         cursor: pointer;
-        transition: all 0.25s;
-        color: var(--text-secondary);
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease;
+        color: var(--graphite);
       }
       .upload-zone:hover,
       .upload-zone.dragover {
-        border-color: var(--accent-cyan, #c97c3a);
-        background: rgba(201, 124, 58, 0.04);
-        color: var(--text-primary);
+        border-color: var(--nitrogen);
+        background: var(--nitrogen-wash);
+        color: var(--ink);
       }
       .upload-zone i {
         width: 40px;
@@ -193,7 +195,7 @@
       }
       .upload-zone small {
         font-size: 0.78rem;
-        color: var(--text-muted);
+        color: var(--graphite);
       }
 
       /* ── File list (merge/split) ── */
@@ -207,21 +209,21 @@
         align-items: center;
         gap: 0.75rem;
         padding: 0.75rem 1rem;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
+        background: var(--surface);
+        border: 1px solid var(--rule);
         border-radius: 10px;
         font-size: 0.88rem;
       }
       .file-item .fname {
         flex: 1;
         font-weight: 500;
-        color: var(--text-primary);
+        color: var(--ink);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
       .file-item .fsize {
-        color: var(--text-muted);
+        color: var(--graphite);
         font-size: 0.78rem;
         white-space: nowrap;
       }
@@ -229,13 +231,13 @@
         background: none;
         border: none;
         cursor: pointer;
-        color: var(--text-muted);
+        color: var(--graphite);
         padding: 0.25rem;
         transition: color 0.2s;
         flex-shrink: 0;
       }
       .file-item .rm-btn:hover {
-        color: #ff4757;
+        color: var(--oxygen);
       }
 
       /* ── Options row ── */
@@ -256,20 +258,20 @@
       }
       .prog-bar {
         height: 6px;
-        background: var(--border);
+        background: var(--rule);
         border-radius: 3px;
         overflow: hidden;
         margin-bottom: 0.5rem;
       }
       .prog-fill {
         height: 100%;
-        background: var(--accent-cyan, #c97c3a);
+        background: var(--nitrogen); /* progress value */
         transition: width 0.3s;
         width: 0%;
       }
       .prog-text {
         font-size: 0.82rem;
-        color: var(--text-muted);
+        color: var(--graphite);
       }
 
       /* ── Result stats ── */
@@ -287,29 +289,23 @@
       .stat-block {
         text-align: center;
         padding: 1.25rem;
-        background: var(--bg-card);
+        background: var(--surface);
         border-radius: 10px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--rule);
       }
       .stat-label {
         display: block;
-        font-size: 0.8rem;
-        color: var(--text-muted);
+        font-size: 0.8125rem;
+        color: var(--graphite);
         margin-bottom: 0.4rem;
       }
       .stat-value {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: var(--text-primary);
+        font-size: 1.0625rem;
+        font-weight: 600;
+        color: var(--ink);
       }
       .stat-block.highlight .stat-value {
-        background: var(
-          --grad-primary,
-          linear-gradient(135deg, #c97c3a, #7c3aed)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: var(--nitrogen);
       }
 
       /* ── Image preview grid ── */
@@ -319,33 +315,21 @@
         gap: 1rem;
       }
       .img-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
         overflow: hidden;
-        transition:
-          transform 0.2s,
-          border-color 0.2s;
+        transition: border-color 0.15s ease;
       }
       .img-card:hover {
-        transform: translateY(-3px);
-        border-color: var(--accent-cyan, #c97c3a);
+        border-color: var(--ink);
       }
       .img-card img {
         width: 100%;
         height: 200px;
         object-fit: contain;
-        background: #f5f0e8;
+        background: var(--surface-2);
         display: block;
-      }
-      html[data-theme="dark"] .img-card img,
-      html[data-theme="dark-coffee"] .img-card img,
-      html[data-theme="amber"] .img-card img,
-      html[data-theme="tokyo-night"] .img-card img,
-      html[data-theme="absolute-dark"] .img-card img,
-      html[data-theme="forest"] .img-card img,
-      html[data-theme="dracula"] .img-card img {
-        background: #0d1526;
       }
       .img-card-footer {
         padding: 0.6rem 0.75rem;
@@ -355,7 +339,7 @@
       }
       .img-card-footer span {
         font-size: 0.78rem;
-        color: var(--text-muted);
+        color: var(--graphite);
       }
 
       /* ── Range selector (split) ── */
@@ -372,7 +356,7 @@
       }
       .split-row label {
         font-size: 0.88rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
         white-space: nowrap;
       }
       .split-row input[type="number"] {
@@ -403,33 +387,35 @@
         align-items: center;
         gap: 0.5rem;
         padding: 1.2rem;
-        border: 2px solid var(--border);
-        border-radius: 12px;
-        transition: all 0.2s;
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease;
         text-align: center;
       }
       .comp-card i {
         width: 28px;
         height: 28px;
-        color: var(--text-muted);
+        color: var(--graphite);
       }
       .comp-card strong {
         font-size: 0.9rem;
-        color: var(--text-primary);
+        color: var(--ink);
       }
       .comp-card small {
-        font-size: 0.78rem;
-        color: var(--text-muted);
+        font-size: 0.8125rem;
+        color: var(--graphite);
       }
       .comp-opt input:checked + .comp-card {
-        border-color: var(--accent-cyan, #c97c3a);
-        background: rgba(201, 124, 58, 0.07);
+        border-color: var(--nitrogen);
+        background: var(--nitrogen-wash);
       }
       .comp-opt input:checked + .comp-card i {
-        color: var(--accent-cyan, #c97c3a);
+        color: var(--nitrogen);
       }
       .comp-opt:hover .comp-card {
-        border-color: var(--accent-cyan, #c97c3a);
+        border-color: var(--ink);
       }
 
       /* ── Page thumbnail grid for reorder/extract/rotate ── */
@@ -439,30 +425,26 @@
         gap: 1rem;
       }
       .page-thumb {
-        background: var(--bg-card);
-        border: 2px solid var(--border);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 2px solid var(--rule);
+        border-radius: var(--r-m);
         overflow: hidden;
         cursor: grab;
-        transition:
-          transform 0.2s,
-          border-color 0.2s;
+        transition: border-color 0.15s ease;
         position: relative;
       }
       .page-thumb:active {
         cursor: grabbing;
       }
       .page-thumb:hover {
-        border-color: var(--accent-cyan, #c97c3a);
-        transform: translateY(-2px);
+        border-color: var(--ink);
       }
       .page-thumb.dragging {
         opacity: 0.4;
-        transform: scale(0.95);
       }
       .page-thumb.drag-over {
-        border-color: var(--accent-cyan, #c97c3a);
-        background: rgba(201, 124, 58, 0.08);
+        border-color: var(--nitrogen);
+        background: var(--nitrogen-wash);
       }
       .page-thumb canvas,
       .page-thumb img {
@@ -470,23 +452,7 @@
         height: 160px;
         object-fit: contain;
         display: block;
-        background: #f5f0e8;
-      }
-      html[data-theme="dark"] .page-thumb canvas,
-      html[data-theme="dark"] .page-thumb img,
-      html[data-theme="dark-coffee"] .page-thumb canvas,
-      html[data-theme="dark-coffee"] .page-thumb img,
-      html[data-theme="amber"] .page-thumb canvas,
-      html[data-theme="amber"] .page-thumb img,
-      html[data-theme="tokyo-night"] .page-thumb canvas,
-      html[data-theme="tokyo-night"] .page-thumb img,
-      html[data-theme="absolute-dark"] .page-thumb canvas,
-      html[data-theme="absolute-dark"] .page-thumb img,
-      html[data-theme="forest"] .page-thumb canvas,
-      html[data-theme="forest"] .page-thumb img,
-      html[data-theme="dracula"] .page-thumb canvas,
-      html[data-theme="dracula"] .page-thumb img {
-        background: #0d1526;
+        background: var(--surface-2);
       }
       .page-thumb-footer {
         padding: 0.4rem 0.6rem;
@@ -494,7 +460,7 @@
         align-items: center;
         justify-content: space-between;
         font-size: 0.78rem;
-        color: var(--text-muted);
+        color: var(--graphite);
       }
       .page-thumb .select-check {
         position: absolute;
@@ -503,21 +469,23 @@
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        border: 2px solid var(--border);
-        background: var(--bg-card);
+        border: 2px solid var(--rule);
+        background: var(--surface);
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.2s;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease;
       }
       .page-thumb .select-check.checked {
-        background: var(--accent-cyan, #c97c3a);
-        border-color: var(--accent-cyan, #c97c3a);
+        background: var(--nitrogen);
+        border-color: var(--nitrogen);
       }
       .page-thumb .select-check.checked::after {
         content: "✓";
-        color: #fff;
+        color: var(--on-nitrogen);
         font-size: 12px;
         font-weight: 700;
       }
@@ -525,11 +493,11 @@
         position: absolute;
         top: 6px;
         right: 6px;
-        background: rgba(0, 0, 0, 0.6);
-        color: #fff;
+        background: var(--ink);
+        color: var(--paper);
         font-size: 0.7rem;
         padding: 2px 6px;
-        border-radius: 4px;
+        border-radius: var(--r-s);
         display: none;
       }
 
@@ -540,9 +508,9 @@
         max-width: 500px;
         margin: 1rem auto;
         aspect-ratio: 8.5/11;
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 6px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-s);
         overflow: hidden;
         display: flex;
         align-items: center;
@@ -551,24 +519,15 @@
       .wm-preview-wrap .wm-text {
         font-size: 2rem;
         font-weight: 700;
-        color: rgba(0, 0, 0, 0.15);
+        color: var(--rule-strong);
         pointer-events: none;
         white-space: nowrap;
-      }
-      html[data-theme="dark"] .wm-preview-wrap,
-      html[data-theme="dark-coffee"] .wm-preview-wrap,
-      html[data-theme="amber"] .wm-preview-wrap,
-      html[data-theme="tokyo-night"] .wm-preview-wrap,
-      html[data-theme="absolute-dark"] .wm-preview-wrap,
-      html[data-theme="forest"] .wm-preview-wrap,
-      html[data-theme="dracula"] .wm-preview-wrap {
-        background: #1a1a2e;
       }
 
       /* ── Reorder helpers ── */
       .reorder-hint {
         font-size: 0.82rem;
-        color: var(--text-muted);
+        color: var(--graphite);
         text-align: center;
         margin-bottom: 0.75rem;
       }
@@ -590,8 +549,8 @@
         flex: 1;
         min-width: 120px;
         aspect-ratio: 8.5/11;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
+        background: var(--surface);
+        border: 1px solid var(--rule);
         border-radius: 8px;
         position: relative;
         display: flex;
@@ -599,7 +558,7 @@
         justify-content: center;
         padding-bottom: 1.5rem;
         font-size: 0.75rem;
-        color: var(--text-muted);
+        color: var(--graphite);
       }
 
       /* ── Crop preview ── */
@@ -608,8 +567,8 @@
         max-width: 500px;
         margin: 1rem auto;
         aspect-ratio: 8.5/11;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
+        background: var(--surface);
+        border: 1px solid var(--rule);
         border-radius: 6px;
         position: relative;
         overflow: hidden;
@@ -621,10 +580,10 @@
       }
       .crop-inner {
         position: absolute;
-        border: 2px dashed var(--accent-cyan, #c97c3a);
-        background: rgba(201, 124, 58, 0.05);
+        border: 2px dashed var(--nitrogen);
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -635,7 +594,7 @@
         <div class="tool-header">
           <h1><i data-lucide="file-cog"></i> PDF Studio</h1>
           <p>
-            Compress · Convert to Images · Merge · Split — all in one place,
+            Compress · Convert to images · Merge · Split. All in one place,
             locally in your browser
           </p>
         </div>
@@ -643,12 +602,12 @@
         <div class="studio-shell">
           <!-- ── Mode sidebar ── -->
           <aside class="mode-panel">
-            <h3>// PDF TOOLS</h3>
+            <h3>Tools</h3>
             <button class="mode-btn active" data-mode="compress">
               <i data-lucide="minimize-2"></i> Compress
             </button>
             <button class="mode-btn" data-mode="tojpg">
-              <i data-lucide="image"></i> To Images
+              <i data-lucide="image"></i> To images
             </button>
             <button class="mode-btn" data-mode="img2pdf">
               <i data-lucide="images"></i> Images to PDF
@@ -663,25 +622,25 @@
               <i data-lucide="rotate-cw"></i> Rotate PDF
             </button>
             <button class="mode-btn" data-mode="reorder">
-              <i data-lucide="move"></i> Reorder Pages
+              <i data-lucide="move"></i> Reorder pages
             </button>
             <button class="mode-btn" data-mode="watermark">
               <i data-lucide="stamp"></i> Watermark
             </button>
             <button class="mode-btn" data-mode="protect">
-              <i data-lucide="lock"></i> Password Protect
+              <i data-lucide="lock"></i> Password protect
             </button>
             <button class="mode-btn" data-mode="extract">
-              <i data-lucide="file-output"></i> Extract Pages
+              <i data-lucide="file-output"></i> Extract pages
             </button>
             <button class="mode-btn" data-mode="pagenumbers">
-              <i data-lucide="hash"></i> Page Numbers
+              <i data-lucide="hash"></i> Page numbers
             </button>
             <button class="mode-btn" data-mode="meta">
               <i data-lucide="tag"></i> Metadata
             </button>
             <button class="mode-btn" data-mode="crop">
-              <i data-lucide="crop"></i> Crop Pages
+              <i data-lucide="crop"></i> Crop pages
             </button>
             <button class="mode-btn" data-mode="ocr">
               <i data-lucide="scan-text"></i> OCR
@@ -784,7 +743,7 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Compression Complete
+                  <i data-lucide="check-circle"></i> Compression complete
                 </h3>
                 <div class="result-stats">
                   <div class="stat-block">
@@ -805,7 +764,7 @@
                   id="cmp-dl"
                   style="width: 100%"
                 >
-                  <i data-lucide="download"></i> Download Compressed PDF
+                  <i data-lucide="download"></i> Download compressed PDF
                 </button>
               </div>
             </div>
@@ -838,7 +797,7 @@
                       <option value="1">Low (72 dpi)</option>
                       <option value="1.5">Medium (108 dpi)</option>
                       <option value="2" selected>High (144 dpi)</option>
-                      <option value="3">Very High (216 dpi)</option>
+                      <option value="3">Very high (216 dpi)</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -867,7 +826,7 @@
                     disabled
                     onclick="runToImages()"
                   >
-                    <i data-lucide="image"></i> Convert to Images
+                    <i data-lucide="image"></i> Convert to images
                   </button>
                   <button
                     class="tool-btn tool-btn-secondary"
@@ -875,7 +834,7 @@
                     disabled
                     onclick="downloadAllImages()"
                   >
-                    <i data-lucide="download"></i> Download All (ZIP)
+                    <i data-lucide="download"></i> Download all (ZIP)
                   </button>
                 </div>
                 <div class="prog-wrap" id="img-prog">
@@ -894,7 +853,7 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="images"></i> Converted Pages
+                  <i data-lucide="images"></i> Converted pages
                 </h3>
                 <div class="img-grid" id="img-grid"></div>
               </div>
@@ -906,7 +865,7 @@
                 <div class="upload-zone" id="mrg-drop">
                   <i data-lucide="upload-cloud"></i>
                   <p>Drag &amp; drop PDFs here or click to browse</p>
-                  <small>Select multiple PDFs — order matters</small>
+                  <small>Select multiple PDFs. Order matters.</small>
                   <input
                     type="file"
                     id="mrg-input"
@@ -933,7 +892,7 @@
                     class="tool-btn tool-btn-secondary"
                     onclick="clearMerge()"
                   >
-                    <i data-lucide="trash-2"></i> Clear All
+                    <i data-lucide="trash-2"></i> Clear all
                   </button>
                 </div>
                 <div class="prog-wrap" id="mrg-prog">
@@ -952,18 +911,18 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Merge Complete
+                  <i data-lucide="check-circle"></i> Merge complete
                 </h3>
                 <div
                   class="result-stats"
                   style="grid-template-columns: 1fr 1fr"
                 >
                   <div class="stat-block">
-                    <span class="stat-label">Files Merged</span
+                    <span class="stat-label">Files merged</span
                     ><span class="stat-value" id="mrg-count">–</span>
                   </div>
                   <div class="stat-block highlight">
-                    <span class="stat-label">Total Pages</span
+                    <span class="stat-label">Total pages</span
                     ><span class="stat-value" id="mrg-pages">–</span>
                   </div>
                 </div>
@@ -972,7 +931,7 @@
                   id="mrg-dl"
                   style="width: 100%; margin-top: 1rem"
                 >
-                  <i data-lucide="download"></i> Download Merged PDF
+                  <i data-lucide="download"></i> Download merged PDF
                 </button>
               </div>
             </div>
@@ -1006,11 +965,11 @@
                   id="spl-controls"
                 >
                   <div class="form-group">
-                    <label>Split Mode</label>
+                    <label>Split mode</label>
                     <select id="spl-mode" onchange="updateSplitMode()">
-                      <option value="range">Extract Page Range</option>
+                      <option value="range">Extract page range</option>
                       <option value="all">Split into Individual Pages</option>
-                      <option value="every">Split Every N Pages</option>
+                      <option value="every">Split every N pages</option>
                     </select>
                   </div>
                   <div id="spl-range-opts">
@@ -1074,7 +1033,7 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Split Complete
+                  <i data-lucide="check-circle"></i> Split complete
                 </h3>
                 <div id="spl-dl-list" class="file-list"></div>
               </div>
@@ -1116,8 +1075,8 @@
                     <div class="form-group">
                       <label>Apply to</label>
                       <select id="rot-scope" onchange="toggleRotScope()">
-                        <option value="all">All Pages</option>
-                        <option value="selected">Selected Pages</option>
+                        <option value="all">All pages</option>
+                        <option value="selected">Selected pages</option>
                       </select>
                     </div>
                   </div>
@@ -1157,14 +1116,14 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Rotation Complete
+                  <i data-lucide="check-circle"></i> Rotation complete
                 </h3>
                 <button
                   class="tool-btn tool-btn-primary"
                   id="rot-dl"
                   style="width: 100%"
                 >
-                  <i data-lucide="download"></i> Download Rotated PDF
+                  <i data-lucide="download"></i> Download rotated PDF
                 </button>
               </div>
             </div>
@@ -1205,7 +1164,7 @@
                     disabled
                     onclick="runReorder()"
                   >
-                    <i data-lucide="move"></i> Save Reordered PDF
+                    <i data-lucide="move"></i> Save reordered PDF
                   </button>
                 </div>
                 <div class="prog-wrap" id="reod-prog">
@@ -1224,14 +1183,14 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Reorder Complete
+                  <i data-lucide="check-circle"></i> Reorder complete
                 </h3>
                 <button
                   class="tool-btn tool-btn-primary"
                   id="reod-dl"
                   style="width: 100%"
                 >
-                  <i data-lucide="download"></i> Download Reordered PDF
+                  <i data-lucide="download"></i> Download reordered PDF
                 </button>
               </div>
             </div>
@@ -1258,15 +1217,15 @@
                 </div>
                 <div style="margin-top: 1.5rem">
                   <div class="form-group">
-                    <label>Watermark Type</label>
+                    <label>Watermark type</label>
                     <select id="wm-type" onchange="toggleWmType()">
-                      <option value="text">Text Watermark</option>
-                      <option value="image">Image Watermark</option>
+                      <option value="text">Text watermark</option>
+                      <option value="image">Image watermark</option>
                     </select>
                   </div>
                   <div id="wm-text-opts">
                     <div class="form-group" style="margin-top: 1rem">
-                      <label>Watermark Text</label>
+                      <label>Watermark text</label>
                       <input
                         type="text"
                         id="wm-text"
@@ -1276,7 +1235,7 @@
                     </div>
                     <div class="opts-row" style="margin-top: 1rem">
                       <div class="form-group">
-                        <label>Font Size</label>
+                        <label>Font size</label>
                         <input
                           type="range"
                           id="wm-fontsize"
@@ -1339,10 +1298,10 @@
                     <label>Position</label>
                     <select id="wm-position">
                       <option value="center">Center</option>
-                      <option value="top-left">Top Left</option>
-                      <option value="top-right">Top Right</option>
-                      <option value="bottom-left">Bottom Left</option>
-                      <option value="bottom-right">Bottom Right</option>
+                      <option value="top-left">Top left</option>
+                      <option value="top-right">Top right</option>
+                      <option value="bottom-left">Bottom left</option>
+                      <option value="bottom-right">Bottom right</option>
                     </select>
                   </div>
                 </div>
@@ -1353,7 +1312,7 @@
                     disabled
                     onclick="runWatermark()"
                   >
-                    <i data-lucide="stamp"></i> Add Watermark
+                    <i data-lucide="stamp"></i> Add watermark
                   </button>
                 </div>
                 <div class="prog-wrap" id="wm-prog">
@@ -1374,14 +1333,14 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Watermark Added
+                  <i data-lucide="check-circle"></i> Watermark added
                 </h3>
                 <button
                   class="tool-btn tool-btn-primary"
                   id="wm-dl"
                   style="width: 100%"
                 >
-                  <i data-lucide="download"></i> Download Watermarked PDF
+                  <i data-lucide="download"></i> Download watermarked PDF
                 </button>
               </div>
             </div>
@@ -1408,7 +1367,7 @@
                 </div>
                 <div class="pw-section" style="margin-top: 1.5rem">
                   <div class="form-group">
-                    <label>User Password (required to open)</label>
+                    <label>User password (required to open)</label>
                     <input
                       type="password"
                       id="prot-user-pw"
@@ -1417,7 +1376,7 @@
                     />
                   </div>
                   <div class="form-group">
-                    <label>Owner Password (required to edit)</label>
+                    <label>Owner password (required to edit)</label>
                     <input
                       type="password"
                       id="prot-owner-pw"
@@ -1462,14 +1421,14 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> PDF Encrypted
+                  <i data-lucide="check-circle"></i> PDF encrypted
                 </h3>
                 <button
                   class="tool-btn tool-btn-primary"
                   id="prot-dl"
                   style="width: 100%"
                 >
-                  <i data-lucide="download"></i> Download Encrypted PDF
+                  <i data-lucide="download"></i> Download encrypted PDF
                 </button>
               </div>
             </div>
@@ -1512,7 +1471,7 @@
                     disabled
                     onclick="runExtract()"
                   >
-                    <i data-lucide="file-output"></i> Extract Selected Pages
+                    <i data-lucide="file-output"></i> Extract selected pages
                   </button>
                 </div>
                 <div class="prog-wrap" id="ext-prog">
@@ -1531,14 +1490,14 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Extraction Complete
+                  <i data-lucide="check-circle"></i> Extraction complete
                 </h3>
                 <button
                   class="tool-btn tool-btn-primary"
                   id="ext-dl"
                   style="width: 100%"
                 >
-                  <i data-lucide="download"></i> Download Extracted PDF
+                  <i data-lucide="download"></i> Download extracted PDF
                 </button>
               </div>
             </div>
@@ -1569,12 +1528,12 @@
                     <div class="form-group">
                       <label>Position</label>
                       <select id="pn-pos">
-                        <option value="bottom-center">Bottom Center</option>
-                        <option value="bottom-left">Bottom Left</option>
-                        <option value="bottom-right">Bottom Right</option>
-                        <option value="top-center">Top Center</option>
-                        <option value="top-left">Top Left</option>
-                        <option value="top-right">Top Right</option>
+                        <option value="bottom-center">Bottom center</option>
+                        <option value="bottom-left">Bottom left</option>
+                        <option value="bottom-right">Bottom right</option>
+                        <option value="top-center">Top center</option>
+                        <option value="top-left">Top left</option>
+                        <option value="top-right">Top right</option>
                       </select>
                     </div>
                     <div class="form-group">
@@ -1590,7 +1549,7 @@
                   </div>
                   <div class="opts-row" style="margin-top: 1rem">
                     <div class="form-group">
-                      <label>Font Size</label>
+                      <label>Font size</label>
                       <input
                         type="range"
                         id="pn-fontsize"
@@ -1601,7 +1560,7 @@
                       <span id="pn-fontsize-val">12</span>pt
                     </div>
                     <div class="form-group">
-                      <label>Start From</label>
+                      <label>Start from</label>
                       <input
                         type="number"
                         id="pn-start"
@@ -1612,7 +1571,7 @@
                       />
                     </div>
                     <div class="form-group">
-                      <label>Skip First</label>
+                      <label>Skip first</label>
                       <input
                         type="number"
                         id="pn-skip"
@@ -1621,7 +1580,7 @@
                         class="form-control"
                         style="width: 80px"
                       />
-                      <span style="font-size: 0.78rem; color: var(--text-muted)"
+                      <span style="font-size: 0.78rem; color: var(--graphite)"
                         >pages</span
                       >
                     </div>
@@ -1634,7 +1593,7 @@
                     disabled
                     onclick="runPageNumbers()"
                   >
-                    <i data-lucide="hash"></i> Add Page Numbers
+                    <i data-lucide="hash"></i> Add page numbers
                   </button>
                 </div>
                 <div class="prog-wrap" id="pn-prog">
@@ -1655,14 +1614,14 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Page Numbers Added
+                  <i data-lucide="check-circle"></i> Page numbers added
                 </h3>
                 <button
                   class="tool-btn tool-btn-primary"
                   id="pn-dl"
                   style="width: 100%"
                 >
-                  <i data-lucide="download"></i> Download PDF with Page Numbers
+                  <i data-lucide="download"></i> Download PDF with page numbers
                 </button>
               </div>
             </div>
@@ -1764,14 +1723,14 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Crop Complete
+                  <i data-lucide="check-circle"></i> Crop complete
                 </h3>
                 <button
                   class="tool-btn tool-btn-primary"
                   id="crop-dl"
                   style="width: 100%"
                 >
-                  <i data-lucide="download"></i> Download Cropped PDF
+                  <i data-lucide="download"></i> Download cropped PDF
                 </button>
               </div>
             </div>
@@ -1834,7 +1793,7 @@
                     disabled
                     onclick="runOCR()"
                   >
-                    <i data-lucide="scan-text"></i> Extract Text (OCR)
+                    <i data-lucide="scan-text"></i> Extract text (OCR)
                   </button>
                 </div>
                 <div class="prog-wrap" id="ocr-prog">
@@ -1855,10 +1814,10 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> OCR Complete
+                  <i data-lucide="check-circle"></i> OCR complete
                 </h3>
                 <div class="form-group">
-                  <label>Extracted Text</label>
+                  <label>Extracted text</label>
                   <textarea
                     id="ocr-output"
                     style="
@@ -1867,10 +1826,10 @@
                       font-family: var(--font-mono, monospace);
                       font-size: 0.88rem;
                       padding: 1rem;
-                      border: 1px solid var(--border);
+                      border: 1px solid var(--rule);
                       border-radius: 8px;
-                      background: var(--bg-card);
-                      color: var(--text-primary);
+                      background: var(--surface);
+                      color: var(--ink);
                       resize: vertical;
                     "
                     readonly
@@ -1881,7 +1840,7 @@
                     class="tool-btn tool-btn-primary"
                     onclick="copyOcrText()"
                   >
-                    <i data-lucide="copy"></i> Copy Text
+                    <i data-lucide="copy"></i> Copy text
                   </button>
                   <button
                     class="tool-btn tool-btn-secondary"
@@ -1900,7 +1859,7 @@
                   <i data-lucide="upload-cloud"></i>
                   <p>Drag &amp; drop images or click to browse</p>
                   <small
-                    >JPG · PNG · WebP · GIF · BMP — each becomes a page, in
+                    >JPG, PNG, WebP, GIF or BMP. Each becomes a page, in
                     order</small
                   >
                   <input
@@ -1914,7 +1873,7 @@
                 <div id="i2p-list" style="margin-top: 1rem"></div>
                 <div class="opts-row" style="margin-top: 1.5rem">
                   <div class="form-group">
-                    <label>Page Size</label>
+                    <label>Page size</label>
                     <select id="i2p-pagesize">
                       <option value="fit" selected>Fit image</option>
                       <option value="a4">A4</option>
@@ -1981,7 +1940,7 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> PDF Ready
+                  <i data-lucide="check-circle"></i> PDF ready
                 </h3>
                 <div class="alert alert-info">
                   <i data-lucide="file-text"></i>
@@ -2068,7 +2027,7 @@
                     disabled
                     onclick="runMetadataSave()"
                   >
-                    <i data-lucide="save"></i> Save Metadata
+                    <i data-lucide="save"></i> Save metadata
                   </button>
                 </div>
                 <div class="prog-wrap" id="meta-prog">
@@ -2087,11 +2046,11 @@
                     gap: 0.5rem;
                   "
                 >
-                  <i data-lucide="check-circle"></i> Metadata Saved
+                  <i data-lucide="check-circle"></i> Metadata saved
                 </h3>
                 <div class="btn-group">
                   <button class="tool-btn tool-btn-primary" id="meta-dl">
-                    <i data-lucide="download"></i> Download Updated PDF
+                    <i data-lucide="download"></i> Download updated PDF
                   </button>
                 </div>
               </div>
@@ -2111,7 +2070,7 @@
             var m = document.querySelector("main");
             if (m)
               m.innerHTML =
-                '<div style="text-align:center;padding:3rem"><h2>Browser Not Supported</h2><p>Please use a modern browser to use PDF Studio.</p></div>';
+                '<div style="text-align:center;padding:3rem"><h2>Browser not supported</h2><p>Please use a modern browser to use PDF Studio.</p></div>';
           });
         }
       })();
@@ -2179,14 +2138,9 @@
       function notify(msg, type) {
         var n = document.createElement("div");
         n.style.cssText =
-          "position:fixed;top:1rem;right:1rem;z-index:9999;padding:0.75rem 1.25rem;border-radius:8px;font-size:0.9rem;max-width:400px;animation:fadeIn 0.3s";
-        n.style.background =
-          type === "error"
-            ? "rgba(239,68,68,0.95)"
-            : type === "success"
-              ? "rgba(34,197,94,0.95)"
-              : "rgba(59,130,246,0.95)";
-        n.style.color = "#fff";
+          "position:fixed;top:1rem;right:1rem;z-index:9999;padding:0.75rem 1.25rem;border-radius:var(--r-m);font-size:0.9rem;max-width:400px;animation:fadeIn 0.3s;box-shadow:var(--lift);border:1px solid var(--rule);";
+        n.style.background = "var(--surface)";
+        n.style.color = type === "error" ? "var(--oxygen)" : "var(--ink)";
         n.textContent = msg;
         document.body.appendChild(n);
         setTimeout(function () {
@@ -2308,8 +2262,8 @@
           const heading = document.getElementById("cmp-result-heading");
           if (heading) {
             heading.innerHTML = actuallySmaller
-              ? '<i data-lucide="check-circle"></i> Compression Complete'
-              : '<i data-lucide="info"></i> Already Optimized — Nothing to Reduce';
+              ? '<i data-lucide="check-circle"></i> Compression complete'
+              : '<i data-lucide="info"></i> Already optimized. Nothing to reduce.';
           }
           if (!actuallySmaller) {
             notify(
@@ -2320,8 +2274,8 @@
 
           const dlBtn = document.getElementById("cmp-dl");
           dlBtn.innerHTML = actuallySmaller
-            ? '<i data-lucide="download"></i> Download Compressed PDF'
-            : '<i data-lucide="download"></i> Download Original PDF';
+            ? '<i data-lucide="download"></i> Download compressed PDF'
+            : '<i data-lucide="download"></i> Download original PDF';
           dlBtn.onclick = () => {
             const a = document.createElement("a");
             a.href = URL.createObjectURL(actuallySmaller ? cmpBlob : cmpFile);
@@ -3303,7 +3257,7 @@
           }
           if (!hasEncrypt) {
             throw new Error(
-              "Encryption could not be applied — no password was set on the output. Nothing was downloaded.",
+              "Encryption could not be applied. No password was set on the output. Nothing was downloaded.",
             );
           }
           const blob = new Blob([bytes], { type: "application/pdf" });
@@ -3812,11 +3766,11 @@
       function addI2pFiles(files) {
         Array.from(files).forEach((f) => {
           if (!f.type.startsWith("image/")) {
-            notify(`Skipping ${f.name} — not an image.`, "error");
+            notify(`Skipping ${f.name}: not an image.`, "error");
             return;
           }
           if (f.size > 50 * 1024 * 1024) {
-            notify(`Skipping ${f.name} — over 50 MB.`, "error");
+            notify(`Skipping ${f.name}: over 50 MB.`, "error");
             return;
           }
           i2pFiles.push(f);
@@ -3928,7 +3882,7 @@
               progText,
               progWrap,
               ((i + 1) / i2pFiles.length) * 100,
-              `Page ${i + 1} / ${i2pFiles.length} — ${i2pFiles[i].name}`,
+              `Page ${i + 1} of ${i2pFiles.length}: ${i2pFiles[i].name}`,
             );
             const img = await loadImageBitmap(i2pFiles[i]);
             let w = img.naturalWidth;
@@ -4135,8 +4089,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>

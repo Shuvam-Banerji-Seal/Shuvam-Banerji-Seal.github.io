@@ -1,0 +1,298 @@
+/* ================================================================
+   ELEMENT — shared components and guards.
+   Load LAST on every page. Tokens live in theme.css.
+   Spec: plans/design-element.md
+   ================================================================ */
+
+/* ---------- Guards: patterns the system does not use ---------- */
+*,
+*::before,
+*::after {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+.section-title,
+.gradient-text,
+.text-gradient {
+  background-image: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: none !important;
+}
+
+/* ---------- Type ---------- */
+:where(body) {
+  font-family: var(--font-body);
+  font-optical-sizing: auto;
+}
+
+:where(h1, h2) {
+  font-family: var(--font-display);
+  font-stretch: var(--stretch-display, 68%);
+  font-weight: 780;
+  letter-spacing: -0.01em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+:where(h3, h4) {
+  font-family: var(--font-body);
+  font-stretch: 100%;
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+:where(p, li) {
+  text-wrap: pretty;
+}
+
+:where(code, kbd, samp, pre) {
+  font-family: var(--font-mono);
+}
+
+/* Component defaults use :where() so page-level variants (.btn-danger,
+   .form-input, ...) still win. Guards above stay at full strength. */
+
+/* Content links */
+:where(.prose a, .el-link) {
+  color: var(--nitrogen);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+:where(.prose a, .el-link):hover {
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Buttons ---------- */
+:where(.btn, .el-btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+  border-radius: var(--r-m);
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font: 600 0.9375rem/1.2 var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: none;
+  transform: none;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+:where(.btn, .el-btn):hover {
+  border-color: var(--ink);
+  transform: none;
+  box-shadow: none;
+}
+:where(.btn-primary, .el-btn--primary) {
+  background: var(--nitrogen);
+  border-color: var(--nitrogen);
+  color: var(--on-nitrogen);
+}
+:where(.btn-primary, .el-btn--primary):hover {
+  background: var(--nitrogen-hover);
+  border-color: var(--nitrogen-hover);
+}
+:where(.btn, .el-btn):disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Inputs ---------- */
+:where(
+    input[type="text"],
+    input[type="email"],
+    input[type="search"],
+    input[type="url"],
+    input[type="number"],
+    input[type="password"],
+    textarea,
+    select
+  ) {
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-m);
+}
+:where(input, textarea)::placeholder {
+  color: var(--graphite);
+  opacity: 0.85;
+}
+
+/* ---------- Containers ---------- */
+:where(.panel, .el-panel) {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-l);
+  box-shadow: none;
+}
+
+:where(.tag, .el-tag) {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-s);
+  color: var(--graphite);
+  background: transparent;
+  font: 500 0.8125rem/1.5 var(--font-body);
+}
+
+:where(.el-container) {
+  width: var(--container);
+  margin-inline: auto;
+}
+
+/* ---------- Thinking orb (assets/js/thinking-orb.js) ---------- */
+.thinking-orb {
+  display: inline-block;
+  vertical-align: middle;
+  flex: none;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Navbar (markup: assets/js/navbar.js) ---------- */
+#navbar {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  box-shadow: none;
+}
+#navbar .nav-content {
+  position: relative;
+  width: var(--container);
+  max-width: none;
+  height: 60px;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+#navbar .nav-logo {
+  font-family: var(--font-display);
+  font-stretch: 72%;
+  font-weight: 760;
+  font-size: 1.1875rem;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+#navbar .nav-links {
+  gap: 2px;
+}
+#navbar .nav-link {
+  font: 500 0.9375rem/1 var(--font-body);
+  padding: 8px 10px;
+  border-radius: var(--r-m);
+  color: var(--ink);
+  text-decoration: none;
+}
+#navbar .nav-link:hover,
+#navbar .nav-link.active,
+#navbar .dropdown-toggle.active {
+  color: var(--nitrogen);
+}
+#navbar .dropdown-menu {
+  top: calc(100% + 6px);
+  min-width: 220px;
+  padding: 12px;
+  border-radius: var(--r-l);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  box-shadow: var(--lift);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s;
+}
+#navbar .nav-dropdown:has(> .dropdown-menu--wide) {
+  position: static;
+}
+#navbar .dropdown-menu--wide {
+  left: auto;
+  right: 0;
+  width: min(900px, 100%);
+  transform: translateY(6px);
+}
+#navbar .dropdown-menu--wide.show {
+  transform: translateY(0);
+}
+#navbar .nav-groups {
+  display: grid;
+  gap: 4px 24px;
+}
+#navbar .dropdown-menu--wide .nav-groups {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+#navbar .nav-group-title {
+  margin: 4px 8px 6px;
+  font: 600 0.8125rem/1.4 var(--font-body);
+  color: var(--graphite);
+}
+#navbar .dropdown-item {
+  display: block;
+  padding: 6px 8px;
+  border-radius: var(--r-s);
+  font: 400 0.9375rem/1.35 var(--font-body);
+  color: var(--ink);
+}
+#navbar .dropdown-item:hover {
+  background: var(--surface-2);
+  color: var(--nitrogen);
+}
+#navbar .nav-menu-footer {
+  display: block;
+  margin: 12px 8px 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  color: var(--nitrogen);
+  font: 600 0.9375rem/1.3 var(--font-body);
+  text-decoration: none;
+}
+#navbar .nav-menu-footer:hover {
+  text-decoration: underline;
+}
+#navbar .theme-toggle-btn,
+#navbar #menu-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-m);
+  color: var(--ink);
+}
+#mobile-menu .mobile-menu-link,
+#mobile-menu .mobile-accordion-toggle {
+  font-family: var(--font-body);
+}
+@media (max-width: 1023px) {
+  #navbar .dropdown-menu--wide .nav-groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

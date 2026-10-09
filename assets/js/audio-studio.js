@@ -16,6 +16,16 @@ const TRACK_COLORS = [
   "#84cc16",
 ];
 
+// Read a theme token for canvas chrome (grid, backgrounds) so drawings follow light and dark mode.
+function studioToken(name, fallback) {
+  try {
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  } catch (_) {
+    return fallback;
+  }
+}
+
 class AudioTrack {
   constructor(id, name, audioBuffer, ctx) {
     this.id = id;
@@ -927,10 +937,10 @@ class AudioStudio {
     const sr = track.buffer.sampleRate;
     ctx.clearRect(0, 0, w, h);
 
-    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    ctx.fillStyle = studioToken("--surface-2", "#eef0f3");
     ctx.fillRect(0, 0, w, h);
 
-    ctx.strokeStyle = "rgba(255,255,255,0.05)";
+    ctx.strokeStyle = studioToken("--rule", "#dadde3");
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, h / 2);
@@ -977,7 +987,7 @@ class AudioStudio {
 
     // time-0 marker when scrolled
     if (scrollT <= 0) {
-      ctx.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx.strokeStyle = studioToken("--rule-strong", "#b9bec7");
       ctx.beginPath();
       ctx.moveTo(-this.scrollLeft, 0);
       ctx.lineTo(-this.scrollLeft, h);
@@ -1334,7 +1344,7 @@ class AudioStudio {
     if (sr)
       sr.textContent = this.tracks.length
         ? (this.tracks[0].buffer.sampleRate / 1000).toFixed(1) + " kHz"
-        : "— kHz";
+        : "no audio";
     const tc = document.getElementById("status-tracks");
     if (tc)
       tc.textContent =
@@ -1435,11 +1445,11 @@ class AudioStudio {
     ctx.clearRect(0, 0, w, h);
 
     // Background
-    ctx.fillStyle = "rgba(239, 68, 68, 0.03)";
+    ctx.fillStyle = studioToken("--surface-2", "#eef0f3");
     ctx.fillRect(0, 0, w, h);
 
     // Center line
-    ctx.strokeStyle = "rgba(239, 68, 68, 0.1)";
+    ctx.strokeStyle = studioToken("--rule", "#dadde3");
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, h / 2);
@@ -1448,9 +1458,8 @@ class AudioStudio {
 
     // Live waveform
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "#ef4444";
-    ctx.shadowColor = "rgba(239, 68, 68, 0.5)";
-    ctx.shadowBlur = 4;
+    const recColor = studioToken("--oxygen", "#c92a39");
+    ctx.strokeStyle = recColor;
     ctx.beginPath();
 
     const sliceW = w / data.length;
@@ -1461,12 +1470,11 @@ class AudioStudio {
       else ctx.lineTo(x, y);
     }
     ctx.stroke();
-    ctx.shadowBlur = 0;
 
     // Recording time indicator
     const elapsed = (Date.now() - this.recordingStartTime) / 1000;
-    ctx.fillStyle = "#ef4444";
-    ctx.font = "12px JetBrains Mono, monospace";
+    ctx.fillStyle = recColor;
+    ctx.font = "12px IBM Plex Mono, monospace";
     ctx.textAlign = "right";
     ctx.fillText("REC " + this.fmtTime(elapsed, true), w - 8, 16);
 
@@ -1597,9 +1605,9 @@ class AudioStudio {
     const w = this.vizCanvas.width / (window.devicePixelRatio || 1);
     const h = this.vizCanvas.height / (window.devicePixelRatio || 1);
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = "rgba(255,255,255,0.03)";
+    ctx.fillStyle = studioToken("--surface-2", "#eef0f3");
     ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = "rgba(255,255,255,0.1)";
+    ctx.strokeStyle = studioToken("--rule", "#dadde3");
     ctx.lineWidth = 1;
     for (let i = 0; i < 5; i++) {
       ctx.beginPath();
@@ -1621,7 +1629,7 @@ class AudioStudio {
     const h = this.eqCanvas.height / (window.devicePixelRatio || 1);
     ctx.clearRect(0, 0, w, h);
 
-    ctx.strokeStyle = "rgba(255,255,255,0.05)";
+    ctx.strokeStyle = studioToken("--rule", "#dadde3");
     ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
       ctx.beginPath();
@@ -1630,7 +1638,7 @@ class AudioStudio {
       ctx.stroke();
     }
 
-    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.strokeStyle = studioToken("--rule-strong", "#b9bec7");
     ctx.beginPath();
     ctx.moveTo(0, h / 2);
     ctx.lineTo(w, h / 2);
@@ -2186,7 +2194,7 @@ class AudioStudio {
           ext = format;
         } catch (err) {
           this.notify(
-            `${format.toUpperCase()} is not supported by this browser — exported MP3 instead`,
+            `${format.toUpperCase()} is not supported by this browser. Exported MP3 instead.`,
             "info",
           );
           blob = await this.encodeMP3(rendered);
@@ -2594,7 +2602,7 @@ document.addEventListener("DOMContentLoaded", () => {
         effects: ["Effects", "sparkles"],
         export: ["Export", "download"],
         visualizer: ["Analyzer", "activity"],
-        "edit-tools": ["Edit Tools", "scissors"],
+        "edit-tools": ["Edit tools", "scissors"],
       };
       const [title, icon] = titles[id] || [id, null];
       panels[id] = { title, icon, el };

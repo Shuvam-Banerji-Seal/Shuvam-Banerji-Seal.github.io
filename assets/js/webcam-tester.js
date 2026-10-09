@@ -65,7 +65,7 @@ class WebcamTester {
     document.getElementById("live-dot").classList.remove("live");
     this.stopFps();
     ["stat-res", "stat-fps", "stat-aspect", "stat-device"].forEach((id) => {
-      document.getElementById(id).textContent = "\u2014";
+      document.getElementById(id).textContent = "\u2013";
     });
   }
 
@@ -212,7 +212,7 @@ class WebcamTester {
     snaps.prepend(item);
     while (snaps.children.length > 6) snaps.lastChild.remove();
 
-    // auto-download as well — a tester's purpose is to prove saving works
+    // auto-download as well. A tester's purpose is to prove saving works
     const a = document.createElement("a");
     a.href = url;
     a.download = name;
@@ -261,7 +261,7 @@ class WebcamTester {
       ctx.stroke();
     }
     // center crosshair
-    ctx.strokeStyle = "rgba(125,211,252,0.9)";
+    ctx.strokeStyle = "rgba(255,255,255,0.9)";
     ctx.beginPath();
     ctx.arc(g.width / 2, g.height / 2, 12, 0, Math.PI * 2);
     ctx.stroke();
@@ -285,8 +285,9 @@ class WebcamTester {
     t.textContent = msg;
     t.style.cssText =
       "position:fixed;bottom:24px;left:50%;transform:translateX(-50%);" +
-      "background:#0f172a;color:#e2e8f0;padding:.6rem 1rem;border-radius:8px;" +
-      "font-family:var(--font-mono);font-size:.82rem;z-index:99999;border:1px solid #334155";
+      "background:var(--surface);color:var(--ink);padding:.6rem 1rem;border-radius:var(--r-m);" +
+      "font-family:var(--font-body);font-size:.9375rem;z-index:99999;border:1px solid var(--rule);" +
+      "box-shadow:var(--lift)";
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 2600);
   }

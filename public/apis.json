@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-08",
+ "updated": "2026-10-08",
  "source": "https://github.com/public-apis/public-apis (master)",
  "filter": "auth == No (no API key, no OAuth, no signup)",
  "total": 835,
@@ -502,7 +502,7 @@
     {
      "name": "Runyankole Bible",
      "url": "https://runyankole-bible-api.vercel.app",
-     "desc": "Free REST API for the Runyankore-Rukiga Bible — 66 books, 31106 verses",
+     "desc": "Free REST API for the Runyankore-Rukiga Bible: 66 books, 31106 verses",
      "https": "Yes",
      "cors": "Yes"
     },
@@ -4240,7 +4240,7 @@
     {
      "name": "Statistics of the World",
      "url": "https://statisticsoftheworld.com/api-docs",
-     "desc": "Economic data for 218 countries — GDP, population, inflation, and 440+ indicators from IMF and World Bank",
+     "desc": "Economic data for 218 countries: GDP, population, inflation, and 440+ indicators from IMF and World Bank",
      "https": "Yes",
      "cors": "Yes"
     },

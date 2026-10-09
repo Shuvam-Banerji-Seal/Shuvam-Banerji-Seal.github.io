@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -63,7 +64,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -71,6 +72,7 @@
     <link rel="stylesheet" href="../../assets/css/mobile.css" />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
     <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -169,21 +171,17 @@
 
     <style>
       .paper-card {
-        padding: 1.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-        background: var(--bg-secondary);
+        padding: 1.25rem 0;
+        border-top: 1px solid var(--rule);
       }
-      .paper-card:hover {
-        border-color: var(--accent-color);
-        transform: translateX(4px);
+      .paper-card:first-child {
+        border-top: none;
+        padding-top: 0;
       }
       .paper-title {
         font-size: 1.2rem;
         font-weight: 600;
-        color: var(--accent-color);
+        color: var(--nitrogen);
         margin-bottom: 0.5rem;
         cursor: pointer;
       }
@@ -234,51 +232,37 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.5rem 1rem;
-        border-radius: 6px;
+        border-radius: var(--r-m);
         font-size: 0.9rem;
         text-decoration: none;
-        transition: all 0.2s ease;
+        transition:
+          border-color 0.15s ease,
+          color 0.15s ease;
       }
       .paper-actions a {
-        background: var(--card-bg);
-        color: var(--text-primary);
-        border: 1px solid var(--border-color);
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule-strong);
       }
       .paper-actions a:hover {
-        border-color: var(--accent-color);
-        color: var(--accent-color);
+        border-color: var(--ink);
+        color: var(--ink);
       }
       .source-badge {
         display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-      }
-      .source-badge.semantic {
-        background: rgba(255, 107, 107, 0.15);
-        color: #ff6b6b;
-      }
-      .source-badge.arxiv {
-        background: rgba(178, 34, 34, 0.15);
-        color: #b22222;
-      }
-      .source-badge.openalex {
-        background: rgba(166, 87, 252, 0.15);
-        color: #a657fc;
-      }
-      .source-badge.crossref {
-        background: rgba(0, 150, 199, 0.15);
-        color: #0096c7;
-      }
-      .source-badge.pubmed {
-        background: rgba(66, 156, 96, 0.15);
-        color: #429c60;
+        padding: 0.1rem 0.45rem;
+        border: 1px solid var(--rule);
+        border-radius: var(--r-s);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--graphite);
+        background: transparent;
+        white-space: nowrap;
       }
       .toggle-abstract {
         background: none;
         border: none;
-        color: var(--accent-color);
+        color: var(--nitrogen);
         cursor: pointer;
         font-size: 0.9rem;
         padding: 0;
@@ -293,10 +277,10 @@
       .loading-spinner {
         width: 24px;
         height: 24px;
-        border: 3px solid var(--border-color);
-        border-top-color: var(--accent-color);
+        border: 3px solid var(--rule);
+        border-top-color: var(--nitrogen);
         border-radius: 50%;
-        animation: pf-spin 0.8s linear infinite;
+        animation: pf-spin 0.8s linear infinite; /* real loading spinner */
       }
       @keyframes pf-spin {
         to {
@@ -345,7 +329,7 @@
           el = document.createElement("div");
           el.id = "pf-toast";
           el.style.cssText =
-            "position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--bg-secondary,#1e1e2e);color:var(--text-primary,#fff);padding:.75rem 1.5rem;border-radius:8px;border:1px solid var(--border-color,#333);z-index:9999;font-size:.9rem;opacity:0;transition:opacity .3s;pointer-events:none";
+            "position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--surface);color:var(--ink);padding:.75rem 1.5rem;border-radius:var(--r-m);border:1px solid var(--rule);box-shadow:var(--lift);z-index:9999;font-size:.9rem;opacity:0;transition:opacity .3s;pointer-events:none";
           document.body.appendChild(el);
         }
         el.textContent = msg;
@@ -784,8 +768,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>

@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -23,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Compress and convert images in your browser — JPG, PNG, WebP. Quality control, resize, batch processing. No uploads, everything local."
+      content="Compress and convert images in your browser: JPG, PNG, WebP. Quality control, resize, batch processing. No uploads, everything local."
     />
     <link
       rel="canonical"
@@ -33,7 +34,7 @@
     <meta property="og:title" content="Image Studio - SBS Tools" />
     <meta
       property="og:description"
-      content="Compress and convert images locally — JPG, PNG, WebP. Quality control, resize, batch processing."
+      content="Compress and convert images locally: JPG, PNG, WebP. Quality control, resize, batch processing."
     />
     <meta
       property="og:url"
@@ -47,7 +48,7 @@
     <meta name="twitter:title" content="Image Studio - SBS Tools" />
     <meta
       name="twitter:description"
-      content="Compress and convert images locally — JPG, PNG, WebP."
+      content="Compress and convert images locally: JPG, PNG, WebP."
     />
     <meta
       name="twitter:image"
@@ -63,7 +64,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -78,97 +79,88 @@
         margin: 0 auto;
         padding: 1.5rem 1rem 3rem;
       }
-
       .img-studio-header {
-        text-align: center;
+        text-align: left;
         margin-bottom: 2rem;
       }
-
       .img-studio-header h1 {
-        font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
-        font-size: 1.8rem;
-        letter-spacing: -0.02em;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-size: 2.125rem;
+        line-height: 1.05;
+        letter-spacing: -0.01em;
         margin-bottom: 0.4rem;
       }
-
       .img-studio-header p {
-        color: var(--text-muted);
-        font-size: 0.9rem;
+        color: var(--graphite);
+        font-size: 1rem;
       }
-
       .img-drop-zone {
-        border: 2px dashed var(--border-glow);
-        border-radius: 12px;
+        border: 1.5px dashed var(--rule-strong);
+        border-radius: var(--r-l);
         padding: 3rem 2rem;
         text-align: center;
         cursor: pointer;
-        transition: all 0.2s ease;
-        background: var(--bg-card);
+        transition: border-color 0.15s ease;
+        background: var(--surface);
       }
-
       .img-drop-zone:hover,
       .img-drop-zone.dragover {
-        border-color: var(--accent-cyan);
-        background: rgba(34, 211, 238, 0.04);
+        border-color: var(--nitrogen);
       }
-
       .img-drop-zone svg,
       .img-drop-zone i {
-        width: 48px;
-        height: 48px;
-        color: var(--accent-cyan);
-        opacity: 0.7;
+        width: 40px;
+        height: 40px;
+        color: var(--graphite);
         margin-bottom: 0.8rem;
       }
-
       .img-drop-zone p {
         font-weight: 500;
-        color: var(--text-secondary);
+        color: var(--ink);
         margin-bottom: 0.3rem;
       }
-
       .img-drop-zone small {
-        color: var(--text-muted);
-        font-size: 0.8rem;
+        color: var(--graphite);
+        font-size: 0.875rem;
       }
-
       .img-controls {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
         margin-top: 1.5rem;
         padding: 1.25rem;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
       }
 
       .img-controls label {
         display: block;
-        font: 600 0.78rem var(--font-body, Inter);
-        letter-spacing: 0.04em;
-        color: var(--text-muted);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--graphite);
         margin-bottom: 0.4rem;
       }
 
-      .img-controls select,
-      .img-controls input[type="range"] {
+      .img-controls select {
         width: 100%;
         padding: 0.5rem;
-        background: var(--input-bg, rgba(10, 16, 32, 0.8));
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        color: var(--text-primary);
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
+        background: var(--surface);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
       }
 
       .img-controls input[type="range"] {
+        width: 100%;
         padding: 0;
         height: 4px;
         -webkit-appearance: none;
         appearance: none;
-        background: var(--border);
+        background: var(--rule);
         border-radius: 2px;
         cursor: pointer;
       }
@@ -178,7 +170,7 @@
         width: 14px;
         height: 14px;
         border-radius: 50%;
-        background: var(--accent-cyan);
+        background: var(--nitrogen);
         cursor: pointer;
       }
 
@@ -186,7 +178,7 @@
         width: 14px;
         height: 14px;
         border-radius: 50%;
-        background: var(--accent-cyan);
+        background: var(--nitrogen);
         border: none;
         cursor: pointer;
       }
@@ -199,22 +191,22 @@
       }
 
       .img-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
         overflow: hidden;
-        transition: border-color 0.2s ease;
+        transition: border-color 0.15s ease;
       }
 
       .img-card:hover {
-        border-color: var(--border-glow);
+        border-color: var(--rule-strong);
       }
 
       .img-card-preview {
         position: relative;
-        background: repeating-conic-gradient(
-            var(--bg-deep) 0% 25%,
-            var(--bg-card) 0% 50%
+        background: repeating-conic-gradient( /* data */
+            var(--surface-2) 0% 25%,
+            var(--surface) 0% 50%
           )
           50% / 16px 16px;
         aspect-ratio: 4/3;
@@ -231,16 +223,15 @@
 
       .img-card-info {
         padding: 0.75rem;
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: var(--text-muted);
+        font-size: 0.8125rem;
+        color: var(--graphite);
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
       }
 
       .img-card-info .fname {
-        color: var(--text-secondary);
+        color: var(--ink);
         font-weight: 600;
         white-space: nowrap;
         overflow: hidden;
@@ -251,14 +242,20 @@
         display: flex;
         gap: 0.6rem;
         flex-wrap: wrap;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
       }
 
       .img-card-info .stat {
-        color: var(--accent-cyan);
+        color: var(--ink);
       }
 
       .img-card-info .saved {
-        color: var(--accent-green);
+        color: var(--success);
+      }
+
+      .img-card-info .grew {
+        color: var(--oxygen);
       }
 
       .img-card-actions {
@@ -270,13 +267,13 @@
       .img-card-actions button {
         flex: 1;
         padding: 0.45rem;
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        background: transparent;
-        color: var(--text-secondary);
-        font: 600 0.72rem var(--font-body, Inter);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        background: var(--surface);
+        color: var(--ink);
+        font: 600 0.8125rem/1.2 var(--font-body);
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition: border-color 0.15s ease;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -284,8 +281,7 @@
       }
 
       .img-card-actions button:hover {
-        border-color: var(--accent-cyan);
-        color: var(--accent-cyan);
+        border-color: var(--ink);
       }
 
       .img-card-actions button svg,
@@ -297,43 +293,43 @@
       .img-summary {
         margin-top: 1.5rem;
         padding: 1rem 1.25rem;
-        background: rgba(34, 211, 238, 0.06);
-        border: 1px solid rgba(34, 211, 238, 0.25);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         display: flex;
         align-items: center;
         gap: 1rem;
-        font-family: var(--font-mono);
-        font-size: 0.82rem;
-        color: var(--text-secondary);
+        font-size: 0.9375rem;
+        color: var(--graphite);
       }
 
       .img-summary strong {
-        color: var(--accent-cyan);
+        color: var(--ink);
       }
 
       .img-summary .total-saved {
-        color: var(--accent-green);
-        font-weight: 700;
+        color: var(--success);
+        font-weight: 600;
       }
 
       .btn-dl-all {
         margin-left: auto;
         padding: 0.5rem 1rem;
-        border: 1px solid var(--accent-green);
-        border-radius: 7px;
-        background: rgba(52, 211, 153, 0.08);
-        color: var(--accent-green);
-        font: 600 0.8rem var(--font-body, Inter);
+        min-height: 40px;
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        background: var(--surface);
+        color: var(--ink);
+        font: 600 0.9375rem/1.2 var(--font-body);
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition: border-color 0.15s ease;
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
       }
 
       .btn-dl-all:hover {
-        background: rgba(52, 211, 153, 0.15);
+        border-color: var(--ink);
       }
 
       .btn-dl-all svg,
@@ -355,12 +351,12 @@
       .resize-row input[type="number"] {
         width: 100%;
         padding: 0.5rem;
-        background: var(--input-bg, rgba(10, 16, 32, 0.8));
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        color: var(--text-primary);
+        background: var(--surface);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        color: var(--ink);
         font-family: var(--font-mono);
-        font-size: 0.85rem;
+        font-size: 0.9375rem;
       }
 
       @media (max-width: 640px) {
@@ -377,6 +373,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -387,7 +384,7 @@
         <header class="img-studio-header">
           <h1>Image Studio</h1>
           <p>
-            Compress &amp; convert images locally — JPG, PNG, WebP. Nothing
+            Compress and convert images locally: JPG, PNG, WebP. Nothing
             leaves your browser.
           </p>
         </header>
@@ -402,14 +399,14 @@
         >
           <i data-lucide="image-plus"></i>
           <p>Drag &amp; drop images or click to browse</p>
-          <small>JPG · PNG · WebP · GIF · BMP — batch supported</small>
+          <small>JPG · PNG · WebP · GIF · BMP. Batch supported.</small>
           <input type="file" id="img-input" accept="image/*" multiple hidden />
         </div>
 
         <!-- Controls -->
         <div class="img-controls" id="img-controls" style="display: none">
           <div class="form-group">
-            <label>Output Format</label>
+            <label>Output format</label>
             <select id="out-format">
               <option value="image/jpeg">JPEG</option>
               <option value="image/png">PNG</option>
@@ -426,11 +423,11 @@
             <input type="range" id="quality" min="10" max="100" value="80" />
           </div>
           <div class="form-group">
-            <label>Max Width (px, 0 = keep)</label>
+            <label>Max width (px, 0 = keep)</label>
             <input type="number" id="max-w" value="0" min="0" step="100" />
           </div>
           <div class="form-group">
-            <label>Max Height (px, 0 = keep)</label>
+            <label>Max height (px, 0 = keep)</label>
             <input type="number" id="max-h" value="0" min="0" step="100" />
           </div>
         </div>
@@ -600,7 +597,7 @@
               <div class="stats">
                 <span class="stat">${r.outW}×${r.outH}</span>
                 <span>${fmtSize(r.origBlob.size)} → ${fmtSize(r.outBlob.size)}</span>
-                ${saved > 0 ? `<span class="saved">−${saved}%</span>` : saved < 0 ? `<span style="color:var(--accent-purple)">+${-saved}%</span>` : ""}
+                ${saved > 0 ? `<span class="saved">−${saved}%</span>` : saved < 0 ? `<span class="grew">+${-saved}%</span>` : ""}
               </div>
             </div>
             <div class="img-card-actions">
@@ -701,8 +698,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>

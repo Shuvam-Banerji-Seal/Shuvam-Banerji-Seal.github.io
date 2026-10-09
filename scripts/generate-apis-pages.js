@@ -71,6 +71,7 @@ function esc(s) {
 
 function cleanMd(s) {
   return String(s)
+    .replace(/\s*—\s*/g, ": ")
     .replace(/`/g, "")
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
     .replace(/\*\*?([^*]*)\*\*?/g, "$1")
@@ -149,7 +150,19 @@ const HEAD = (o) => `<!doctype html>
     />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -173,7 +186,7 @@ const HEAD = (o) => `<!doctype html>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="${o.css}/mobile-fixes.css" />
@@ -182,7 +195,6 @@ const HEAD = (o) => `<!doctype html>
     <link rel="stylesheet" href="${o.css}/animations.css" />
     <link rel="stylesheet" href="${o.css}/mobile.css" />
     <link rel="stylesheet" href="${o.css}/chemistry-theme.css" />
-    <!-- Overrides - Must be last -->
     <link rel="stylesheet" href="${o.css}/overrides.css" />
     <style>
       .apis-container {
@@ -199,50 +211,35 @@ const HEAD = (o) => `<!doctype html>
         margin: 1.25rem auto 0;
         display: block;
         padding: 0.7rem 1rem;
-        border-radius: 10px;
-        border: 1px solid var(--border-color);
-        background: var(--card-bg);
-        color: var(--text-primary);
+        border-radius: var(--r-m);
+        border: 1px solid var(--rule);
+        background: var(--surface);
+        color: var(--ink);
         font-size: 1rem;
       }
       .api-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.25rem;
+        grid-template-columns: 1fr;
         margin-top: 2rem;
       }
       .api-card {
-        padding: 1.25rem;
-        border-radius: 12px;
-        background: var(--card-bg);
-        border: 2px solid var(--border-color);
+        padding: 1rem 0;
+        border-top: 1px solid var(--rule);
         display: flex;
         flex-direction: column;
-        gap: 0.6rem;
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-      .api-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-card);
+        gap: 0.5rem;
       }
       .api-card h3 {
         font-size: 1.05rem;
         margin: 0;
       }
       .api-card h3 a {
-        color: var(--text-primary);
-        text-decoration: none;
-      }
-      .api-card h3 a:hover {
-        color: var(--accent-cyan);
-        text-decoration: underline;
+        color: var(--nitrogen);
       }
       .api-card p {
-        color: var(--text-secondary);
+        color: var(--graphite);
         font-size: 0.92rem;
-        flex: 1;
+        margin: 0;
       }
       .api-badges {
         display: flex;
@@ -250,71 +247,58 @@ const HEAD = (o) => `<!doctype html>
         flex-wrap: wrap;
       }
       .api-badge {
-        font-family: var(--font-mono);
-        font-size: 0.68rem;
-        padding: 0.15rem 0.5rem;
-        border-radius: 999px;
-        border: 1px solid var(--border-color);
-        color: var(--text-secondary);
+        font-size: 0.8125rem;
+        padding: 0.1rem 0.5rem;
+        border-radius: var(--r-s);
+        border: 1px solid var(--rule);
+        color: var(--graphite);
       }
       .api-badge.ok {
-        border-color: var(--accent-green);
-        color: var(--accent-green);
+        border-color: var(--rule-strong);
+        color: var(--ink);
       }
       .api-badge.no {
         opacity: 0.65;
       }
       .cat-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1rem;
+        grid-template-columns: 1fr;
         margin-top: 2rem;
       }
       .cat-card {
-        padding: 1.1rem 1.25rem;
-        border-radius: 12px;
-        background: var(--card-bg);
-        border: 2px solid var(--border-color);
-        color: var(--text-primary);
+        padding: 0.85rem 0;
+        border-top: 1px solid var(--rule);
+        color: var(--ink);
         text-decoration: none;
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
       }
       .cat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-card);
-        color: var(--text-primary);
+        color: var(--ink);
+        border-top-color: var(--graphite);
       }
       .cat-card .count {
         margin-left: auto;
-        font-family: var(--font-mono);
-        font-size: 0.8rem;
-        color: var(--text-secondary);
-        background: var(--bg-elevated);
-        border-radius: 999px;
-        padding: 0.1rem 0.6rem;
+        font-size: 0.8125rem;
+        color: var(--graphite);
+        background: var(--surface-2);
+        border-radius: var(--r-s);
+        padding: 0.1rem 0.5rem;
         white-space: nowrap;
       }
       .crumb {
-        font-family: var(--font-mono);
-        font-size: 0.82rem;
-        color: var(--text-secondary);
+        font-size: 0.875rem;
+        color: var(--graphite);
         margin-bottom: 1rem;
-      }
-      .crumb a {
-        color: var(--accent-cyan);
-        text-decoration: none;
       }
       .attr-note {
         margin-top: 2.5rem;
         font-size: 0.85rem;
-        color: var(--text-secondary);
+        color: var(--graphite);
       }
     </style>
+    <link rel="stylesheet" href="${o.css}/element.css" />
   </head>
 
   <body>
@@ -363,12 +347,7 @@ const FOOT = (js) => `    </main>
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem">
-        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
-        Portfolio v3.0
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
 
@@ -425,23 +404,23 @@ function hubPage(categories, total) {
     .map((c) => ({ ...c, q: (c.name + " apis").toLowerCase() }));
   return (
     HEAD({
-      title: "Public APIs — No Key Needed - Shuvam Banerji Seal",
+      title: "Public APIs (No Key Needed) - Shuvam Banerji Seal",
       desc: `Browse ${total} free public APIs that need no API key, across ${categories.length} categories. Curated from the public-apis directory.`,
       path: "/pages/apis.html",
       css: "../assets/css",
       js: "../assets/js",
     }) +
     `    <div class="apis-container">
-      <header class="apis-hero text-center animate-fade-in-up">
+      <header class="apis-hero">
         <h1 class="page-title">
           <i data-lucide="globe" class="inline-block"></i>
-          Public APIs — No Key Needed
+          Public APIs, no key needed
         </h1>
         <p class="page-subtitle">
           ${total} free APIs across ${categories.length} categories that work
-          with <strong>no signup and no API key</strong> — curated from the
+          with <strong>no signup and no API key</strong>. Curated from the
           <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis</a>
-          directory. Perfect for prototypes, hackathons and learning.
+          directory, useful for prototypes, hackathons and learning.
         </p>
         <input
           type="search"
@@ -457,8 +436,8 @@ ${cards}
       </div>
       <p class="attr-note">
         Dataset: <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis/public-apis</a>
-        (MIT). "No auth" entries only — anything needing a key, OAuth or signup is excluded.
-        Statuses (HTTPS/CORS) are as listed upstream and may drift; the linked docs are authoritative.
+        (MIT). Only "no auth" entries are listed: anything that needs a key, OAuth or signup is excluded.
+        Statuses (HTTPS/CORS) are as listed upstream and may drift. The linked docs are authoritative.
       </p>
     </div>
     <script>
@@ -505,7 +484,7 @@ ${cards}
           results.hidden = false;
           results.innerHTML =
             hits.length === 0
-              ? '<p style="color:var(--text-secondary)">No matches. Try another keyword.</p>'
+              ? '<p style="color:var(--graphite)">No matches. Try another keyword.</p>'
               : hits
                   .map(
                     (h) =>
@@ -579,7 +558,7 @@ ${cards}
       </div>
       <p class="attr-note">
         <a href="../apis.html">← All categories</a> · HTTPS/CORS badges are
-        as listed upstream and may drift — the linked docs are authoritative.
+        as listed upstream and may drift. The linked docs are authoritative.
       </p>
     </div>
 ` +

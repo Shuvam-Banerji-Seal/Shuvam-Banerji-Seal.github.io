@@ -256,42 +256,42 @@ class StudioDock {
 .dock-sizer.h{cursor:col-resize;margin:0 3px;width:6px}
 .dock-sizer.v{cursor:row-resize;margin:3px 0;height:6px}
 .dock-sizer::after{content:"";display:block;width:100%;height:100%;border-radius:3px;background:transparent;transition:background .15s}
-.dock-sizer:hover::after,.dock-sizer.active::after{background:var(--accent-cyan,#22d3ee)}
+.dock-sizer:hover::after,.dock-sizer.active::after{background:var(--nitrogen)}
 .dock-tabs{display:flex;flex-direction:column;min-width:0;min-height:0}
-.dock-tabbar{display:flex;align-items:stretch;gap:1px;background:rgba(0,0,0,.35);border-bottom:1px solid var(--border,#1e2a45);overflow-x:auto;scrollbar-width:none}
+.dock-tabbar{display:flex;align-items:stretch;gap:1px;background:var(--surface-2);border-bottom:1px solid var(--rule);overflow-x:auto;scrollbar-width:none}
 .dock-tabbar::-webkit-scrollbar{display:none}
-.dock-tab{display:flex;align-items:center;gap:6px;padding:8px 12px 7px;font:600 10.5px/1 var(--font-body,Inter);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted,#8b9bb4);background:transparent;border:0;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
-.dock-tab:hover{color:var(--text-secondary,#c7d2e4)}
-.dock-tab.active{color:var(--accent-cyan,#22d3ee);border-bottom-color:var(--accent-cyan,#22d3ee);background:rgba(34,211,238,.06)}
+.dock-tab{display:flex;align-items:center;gap:6px;padding:8px 12px 7px;font:600 13px/1 var(--font-body);color:var(--graphite);background:transparent;border:0;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.dock-tab:hover{color:var(--ink)}
+.dock-tab.active{color:var(--nitrogen);border-bottom-color:var(--nitrogen);background:var(--surface)}
 .dock-tab svg{width:12px;height:12px}
 .dock-tab-content{flex:1;display:flex;min-height:0;min-width:0}
 .dock-tab-content>.dock-panel{flex:1}
-.dock-panel{display:flex;flex-direction:column;min-width:200px;min-height:72px;background:var(--bg-card,#0c1122);border:1px solid var(--border,#1e2a45);border-radius:8px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.35)}
-.dock-panel-header{display:flex;align-items:center;gap:8px;padding:6px 8px 6px 10px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(0,0,0,.12));border-bottom:1px solid var(--border,#1e2a45);cursor:grab;user-select:none;flex:0 0 auto;touch-action:none}
+.dock-panel{display:flex;flex-direction:column;min-width:200px;min-height:72px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-l);overflow:hidden}
+.dock-panel-header{display:flex;align-items:center;gap:8px;padding:6px 8px 6px 10px;background:var(--surface-2);border-bottom:1px solid var(--rule);cursor:grab;user-select:none;flex:0 0 auto;touch-action:none}
 .dock-panel-header:active{cursor:grabbing}
 .dock-grip{display:grid;grid-template-columns:repeat(2,2px);gap:2px;opacity:.4;flex:0 0 auto}
-.dock-grip i{width:2px;height:2px;border-radius:50%;background:var(--text-muted,#8b9bb4)}
-.dock-title{display:flex;align-items:center;gap:7px;font:700 10.5px/1 var(--font-body,Inter);letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary,#c7d2e4);flex:1;pointer-events:none;white-space:nowrap;overflow:hidden}
-.dock-title svg{width:13px;height:13px;color:var(--accent-cyan,#22d3ee);flex:0 0 auto}
+.dock-grip i{width:2px;height:2px;border-radius:50%;background:var(--graphite)}
+.dock-title{display:flex;align-items:center;gap:7px;font:600 13px/1 var(--font-body);color:var(--ink);flex:1;pointer-events:none;white-space:nowrap;overflow:hidden}
+.dock-title svg{width:13px;height:13px;color:var(--nitrogen);flex:0 0 auto}
 .dock-panel-header .dock-actions{display:flex;gap:2px}
-.dock-btn{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:5px;background:transparent;color:var(--text-muted,#8b9bb4);cursor:pointer}
-.dock-btn:hover{background:rgba(255,255,255,.07);color:var(--text-primary,#e6edf7)}
+.dock-btn{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:var(--r-s);background:transparent;color:var(--graphite);cursor:pointer}
+.dock-btn:hover{background:var(--surface-2);color:var(--ink)}
 .dock-btn svg{width:12px;height:12px}
 .dock-panel-body{flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden}
 .dock-panel.collapsed .dock-panel-body{display:none}
 .dock-panel.collapsed{min-height:0}
 .dock-float-layer{position:fixed;inset:0;pointer-events:none;z-index:3000}
-.dock-float{position:fixed;display:flex;flex-direction:column;min-width:260px;min-height:140px;background:var(--bg-card,#0c1122);border:1px solid rgba(34,211,238,.35);border-radius:10px;box-shadow:0 18px 60px rgba(0,0,0,.6);overflow:hidden;pointer-events:auto}
+.dock-float{position:fixed;display:flex;flex-direction:column;min-width:260px;min-height:140px;background:var(--surface);border:1px solid var(--nitrogen);border-radius:var(--r-l);box-shadow:var(--lift);overflow:hidden;pointer-events:auto}
 .dock-float-resize{position:absolute;right:2px;bottom:2px;width:14px;height:14px;cursor:nwse-resize;z-index:5}
-.dock-float-resize::after{content:"";position:absolute;right:3px;bottom:3px;width:7px;height:7px;border-right:2px solid var(--text-muted,#8b9bb4);border-bottom:2px solid var(--text-muted,#8b9bb4);border-radius:1px}
-.dock-drop-bar{position:fixed;z-index:4000;pointer-events:none;background:rgba(34,211,238,.25);border:2px solid var(--accent-cyan,#22d3ee);border-radius:6px;box-shadow:0 0 18px rgba(34,211,238,.35);display:none}
-.dock-drop-tab{position:fixed;z-index:4000;pointer-events:none;background:rgba(34,211,238,.12);border:2px dashed var(--accent-cyan,#22d3ee);border-radius:8px;display:none}
-.dock-drag-ghost{position:fixed;z-index:5000;pointer-events:none;display:flex;align-items:center;gap:7px;padding:6px 12px;background:rgba(10,14,26,.92);border:1px solid rgba(34,211,238,.5);border-radius:7px;font:700 10.5px/1 var(--font-body,Inter);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-cyan,#22d3ee);box-shadow:0 10px 30px rgba(0,0,0,.5)}
-.dock-context-menu{position:fixed;z-index:6000;min-width:180px;background:var(--bg-elevated,#111832);border:1px solid var(--border,#1e2a45);border-radius:8px;padding:5px;box-shadow:0 14px 40px rgba(0,0,0,.55)}
-.dock-context-menu button{display:flex;align-items:center;gap:9px;width:100%;padding:7px 10px;border:0;border-radius:5px;background:transparent;color:var(--text-secondary,#c7d2e4);font:500 12px var(--font-body,Inter);cursor:pointer;text-align:left}
-.dock-context-menu button:hover{background:rgba(34,211,238,.1);color:var(--text-primary,#e6edf7)}
-.dock-context-menu button.danger{color:#f87171}
-.dock-context-menu button.danger:hover{background:rgba(239,68,68,.12)}
+.dock-float-resize::after{content:"";position:absolute;right:3px;bottom:3px;width:7px;height:7px;border-right:2px solid var(--graphite);border-bottom:2px solid var(--graphite);border-radius:1px}
+.dock-drop-bar{position:fixed;z-index:4000;pointer-events:none;background:color-mix(in srgb,var(--nitrogen) 14%,transparent);border:2px solid var(--nitrogen);border-radius:var(--r-s);display:none}
+.dock-drop-tab{position:fixed;z-index:4000;pointer-events:none;background:color-mix(in srgb,var(--nitrogen) 8%,transparent);border:2px dashed var(--nitrogen);border-radius:var(--r-m);display:none}
+.dock-drag-ghost{position:fixed;z-index:5000;pointer-events:none;display:flex;align-items:center;gap:7px;padding:6px 12px;background:var(--surface);border:1px solid var(--nitrogen);border-radius:var(--r-m);font:600 13px/1 var(--font-body);color:var(--nitrogen);box-shadow:var(--lift)}
+.dock-context-menu{position:fixed;z-index:6000;min-width:180px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r-m);padding:5px;box-shadow:var(--lift)}
+.dock-context-menu button{display:flex;align-items:center;gap:9px;width:100%;padding:7px 10px;border:0;border-radius:var(--r-s);background:transparent;color:var(--graphite);font:500 13px var(--font-body);cursor:pointer;text-align:left}
+.dock-context-menu button:hover{background:var(--nitrogen-wash);color:var(--ink)}
+.dock-context-menu button.danger{color:var(--oxygen)}
+.dock-context-menu button.danger:hover{background:var(--oxygen-wash)}
 .dock-context-menu svg{width:13px;height:13px;opacity:.75}
 @media (max-width: 900px){
   .dock-root{display:flex !important;flex-direction:column;overflow:visible}

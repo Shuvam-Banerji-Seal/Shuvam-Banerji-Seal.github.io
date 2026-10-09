@@ -3,7 +3,19 @@
   <head>
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -34,7 +46,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
@@ -45,57 +57,165 @@
     <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
     <style>
       .blog-post {
-        max-width: 800px;
+        width: var(--container);
         margin: 0 auto;
-        padding: 2rem 1rem;
+        padding: 6rem 0 3rem;
       }
       .blog-header {
-        margin-bottom: 3rem;
+        max-width: 68ch;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--rule);
       }
       .blog-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        line-height: 1.2;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 800;
+        font-size: 2.75rem;
+        line-height: 1.04;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin-bottom: 0.75rem;
+        text-wrap: balance;
+      }
+      @media (max-width: 600px) {
+        .blog-title {
+          font-size: 2.125rem;
+        }
       }
       .blog-meta {
-        color: var(--text-secondary);
-        font-size: 0.95rem;
-        margin-bottom: 2rem;
+        color: var(--graphite);
+        font-size: 0.9375rem;
       }
+      .blog-header .tag {
+        margin-bottom: 0.5rem;
+      }
+      .blog-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.375rem;
+        margin-bottom: 1rem;
+      }
+      .blog-tag {
+        padding: 0.1rem 0.45rem;
+        border: 1px solid var(--rule);
+        border-radius: var(--r-s);
+        color: var(--graphite);
+        font: 500 0.8125rem/1.5 var(--font-body);
+      }
+      /* Long-form reading */
       .blog-content {
-        line-height: 1.8;
-        font-size: 1.1rem;
+        max-width: 68ch;
+        font-size: 18px;
+        line-height: 1.65;
+        color: var(--ink);
+      }
+      .blog-content h2,
+      .blog-content h3 {
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 760;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        color: var(--ink);
       }
       .blog-content h2 {
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin-top: 2.5rem;
-        margin-bottom: 1rem;
+        font-size: 26px;
+        margin: 2em 0 0.6em;
       }
       .blog-content h3 {
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+        font-size: 21px;
+        margin: 1.6em 0 0.5em;
       }
       .blog-content p {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.2em;
+      }
+      .blog-content ul,
+      .blog-content ol {
+        margin: 0 0 1.2em 1.5em;
+      }
+      .blog-content li {
+        margin-bottom: 0.35em;
+      }
+      .blog-content strong {
+        font-weight: 650;
+      }
+      .blog-content a {
+        color: var(--nitrogen);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+      }
+      .blog-content a:hover {
+        text-decoration-thickness: 2px;
       }
       .blog-content code {
-        background: var(--accent-color-alpha);
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-        font-family: "Source Code Pro", monospace;
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        background: var(--surface-2);
+        padding: 0.1em 0.35em;
+        border-radius: var(--r-s);
       }
       .blog-content pre {
-        background: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: 8px;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        line-height: 1.55;
+        background: var(--surface-2);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        padding: 1rem 1.25rem;
         overflow-x: auto;
-        margin: 1.5rem 0;
+        margin: 0 0 1.4em;
+      }
+      .blog-content pre code {
+        background: none;
+        padding: 0;
+        font-size: inherit;
+      }
+      .blog-author {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--rule);
+        color: var(--graphite);
+        font-size: 0.9375rem;
+      }
+      .back-row {
+        max-width: 68ch;
+        margin-top: 3rem;
+      }
+      .back-row .btn i {
+        margin-right: 0.25rem;
+      }
+      footer {
+        border-top: 1px solid var(--rule);
+        padding: 3rem var(--gutter);
+        text-align: center;
+        color: var(--graphite);
+        font-size: 0.9375rem;
+      }
+      .footer-social {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--r-m);
+        border: 1px solid var(--rule);
+        color: var(--ink);
+        text-decoration: none;
+        transition: border-color 0.15s ease;
+      }
+      .social-link:hover {
+        border-color: var(--ink);
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -103,10 +223,10 @@
 
     <main class="blog-post">
       <header class="blog-header">
-        <div class="mb-4">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">Computational Chemistry</span>
-          <span class="tech-tag">Programming</span>
+        <div class="blog-tags">
+          <span class="blog-tag">Python</span>
+          <span class="blog-tag">Computational Chemistry</span>
+          <span class="blog-tag">Programming</span>
         </div>
         <h1 class="blog-title">
           Essential Python Libraries for Computational Chemistry
@@ -116,7 +236,7 @@
         </p>
       </header>
 
-      <article class="blog-content glassmorphic card">
+      <article class="blog-content">
         <h2>Introduction</h2>
         <p>
           Python has become the de facto language for computational chemistry,
@@ -126,12 +246,12 @@
           should know.
         </p>
 
-        <h2>1. RDKit: Swiss Army Knife for Cheminformatics</h2>
+        <h2>1. RDKit: general-purpose cheminformatics</h2>
         <p>
           RDKit is arguably the most important library for cheminformatics work.
           It provides tools for:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>Reading and writing molecular file formats (SMILES, MOL, SDF)</li>
           <li>Computing molecular descriptors and fingerprints</li>
           <li>Substructure searching</li>
@@ -157,7 +277,7 @@ print(f"LogP: {logp:.2f}")</code></pre>
           ASE is a Python library for working with atoms. It provides a unified
           interface to various quantum chemistry and molecular dynamics codes:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>Structure optimization</li>
           <li>Molecular dynamics simulations</li>
           <li>Interface to calculators (Gaussian, VASP, GPAW, etc.)</li>
@@ -183,23 +303,23 @@ opt.run(fmax=0.01)</code></pre>
 
         <h2>3. PySCF: Python-based Simulations of Chemistry Framework</h2>
         <p>
-          PySCF is a powerful quantum chemistry package implemented entirely in
+          PySCF is a quantum chemistry package implemented entirely in
           Python. It supports:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>Hartree-Fock and DFT calculations</li>
           <li>Post-HF methods (MP2, CCSD, CASSCF)</li>
           <li>Excited state calculations</li>
           <li>Periodic boundary conditions</li>
         </ul>
 
-        <h2>4. MDAnalysis: Trajectory Analysis Made Easy</h2>
+        <h2>4. MDAnalysis: trajectory analysis</h2>
         <p>
-          For molecular dynamics simulations, MDAnalysis is invaluable. It can
+          For molecular dynamics simulations, MDAnalysis is useful here. It can
           read trajectories from virtually any MD package and provides tools
           for:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>RMSD calculations</li>
           <li>Distance analysis</li>
           <li>Hydrogen bonding analysis</li>
@@ -225,11 +345,11 @@ print(R.results.rmsd)</code></pre>
           Py3Dmol brings interactive molecular visualization to Jupyter
           notebooks:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>Multiple visualization styles (stick, sphere, cartoon)</li>
           <li>Surface rendering</li>
           <li>Animation support</li>
-          <li>Easy integration with RDKit and other libraries</li>
+          <li>Integrates with RDKit and other libraries</li>
         </ul>
 
         <h2>6. SciPy and NumPy: The Foundation</h2>
@@ -237,7 +357,7 @@ print(R.results.rmsd)</code></pre>
           While not chemistry-specific, these are essential for any
           computational work:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li><strong>NumPy:</strong> Fast array operations, linear algebra</li>
           <li>
             <strong>SciPy:</strong> Optimization, curve fitting, statistical
@@ -246,7 +366,7 @@ print(R.results.rmsd)</code></pre>
         </ul>
 
         <h2>7. Pandas: Data Management</h2>
-        <p>Perfect for managing molecular properties and screening results:</p>
+        <p>Useful for managing molecular properties and screening results:</p>
         <pre><code>import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Descriptors
@@ -272,7 +392,7 @@ print(df)</code></pre>
           Here's how these libraries work together in a typical computational
           chemistry workflow:
         </p>
-        <ol style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ol>
           <li>
             <strong>Data Preparation:</strong> Use RDKit to read and standardize
             molecular structures
@@ -300,18 +420,16 @@ print(df)</code></pre>
         </ol>
 
         <h2>Tips for Getting Started</h2>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>
             <strong>Environment Management:</strong> Use conda to manage
             dependencies
           </li>
           <li>
-            <strong>Jupyter Notebooks:</strong> Perfect for interactive
-            development
+            <strong>Jupyter Notebooks:</strong> Suited to interactive development
           </li>
           <li>
-            <strong>Documentation:</strong> Each library has excellent docs -
-            use them!
+            <strong>Documentation:</strong> Each library documents its API. Read the docs first.
           </li>
           <li>
             <strong>Community:</strong> Join chemistry-focused Python
@@ -332,17 +450,16 @@ pip install pandas numpy scipy matplotlib</code></pre>
 
         <h2>Conclusion</h2>
         <p>
-          The Python ecosystem for computational chemistry is mature and
-          powerful. By mastering these libraries, you'll be equipped to tackle a
+          The Python ecosystem for computational chemistry is mature. By mastering these libraries, you'll be equipped to tackle a
           wide range of problems from drug design to materials science. Start
           with RDKit and NumPy, then expand based on your specific needs.
         </p>
         <p>Happy computing!</p>
       </article>
 
-      <div class="mt-12 text-center">
+      <div class="back-row">
         <a href="../blog.html" class="btn btn-secondary">
-          <i data-lucide="arrow-left"></i> Back to Blog
+          <i data-lucide="arrow-left"></i> Back to blog
         </a>
       </div>
     </main>
@@ -382,12 +499,7 @@ pip install pandas numpy scipy matplotlib</code></pre>
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem">
-        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
-        Portfolio v3.0
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
 

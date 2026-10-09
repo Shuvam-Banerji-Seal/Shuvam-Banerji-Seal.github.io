@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -12,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Building Effective RAG Architectures: A Comprehensive Guide"
+      content="Building RAG architectures: a practical guide"
     />
     <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/blogs/rag-architecture-explained.html" />
     <meta property="og:type" content="article" />
@@ -25,13 +37,13 @@
     <meta name="twitter:description" content="Guide to building retrieval-augmented generation systems." />
     <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
     <meta name="robots" content="index, follow" />
-    <title>Building Effective RAG Architectures - Shuvam Banerji Seal</title>
+    <title>Building RAG architectures: a practical guide - Shuvam Banerji Seal</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
@@ -42,57 +54,165 @@
     <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
     <style>
       .blog-post {
-        max-width: 800px;
+        width: var(--container);
         margin: 0 auto;
-        padding: 2rem 1rem;
+        padding: 6rem 0 3rem;
       }
       .blog-header {
-        margin-bottom: 3rem;
+        max-width: 68ch;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--rule);
       }
       .blog-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        line-height: 1.2;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 800;
+        font-size: 2.75rem;
+        line-height: 1.04;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin-bottom: 0.75rem;
+        text-wrap: balance;
+      }
+      @media (max-width: 600px) {
+        .blog-title {
+          font-size: 2.125rem;
+        }
       }
       .blog-meta {
-        color: var(--text-secondary);
-        font-size: 0.95rem;
-        margin-bottom: 2rem;
+        color: var(--graphite);
+        font-size: 0.9375rem;
       }
+      .blog-header .tag {
+        margin-bottom: 0.5rem;
+      }
+      .blog-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.375rem;
+        margin-bottom: 1rem;
+      }
+      .blog-tag {
+        padding: 0.1rem 0.45rem;
+        border: 1px solid var(--rule);
+        border-radius: var(--r-s);
+        color: var(--graphite);
+        font: 500 0.8125rem/1.5 var(--font-body);
+      }
+      /* Long-form reading */
       .blog-content {
-        line-height: 1.8;
-        font-size: 1.1rem;
+        max-width: 68ch;
+        font-size: 18px;
+        line-height: 1.65;
+        color: var(--ink);
+      }
+      .blog-content h2,
+      .blog-content h3 {
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 760;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        color: var(--ink);
       }
       .blog-content h2 {
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin-top: 2.5rem;
-        margin-bottom: 1rem;
+        font-size: 26px;
+        margin: 2em 0 0.6em;
       }
       .blog-content h3 {
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+        font-size: 21px;
+        margin: 1.6em 0 0.5em;
       }
       .blog-content p {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.2em;
+      }
+      .blog-content ul,
+      .blog-content ol {
+        margin: 0 0 1.2em 1.5em;
+      }
+      .blog-content li {
+        margin-bottom: 0.35em;
+      }
+      .blog-content strong {
+        font-weight: 650;
+      }
+      .blog-content a {
+        color: var(--nitrogen);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+      }
+      .blog-content a:hover {
+        text-decoration-thickness: 2px;
       }
       .blog-content code {
-        background: var(--accent-color-alpha);
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-        font-family: "Source Code Pro", monospace;
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        background: var(--surface-2);
+        padding: 0.1em 0.35em;
+        border-radius: var(--r-s);
       }
       .blog-content pre {
-        background: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: 8px;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        line-height: 1.55;
+        background: var(--surface-2);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
+        padding: 1rem 1.25rem;
         overflow-x: auto;
-        margin: 1.5rem 0;
+        margin: 0 0 1.4em;
+      }
+      .blog-content pre code {
+        background: none;
+        padding: 0;
+        font-size: inherit;
+      }
+      .blog-author {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--rule);
+        color: var(--graphite);
+        font-size: 0.9375rem;
+      }
+      .back-row {
+        max-width: 68ch;
+        margin-top: 3rem;
+      }
+      .back-row .btn i {
+        margin-right: 0.25rem;
+      }
+      footer {
+        border-top: 1px solid var(--rule);
+        padding: 3rem var(--gutter);
+        text-align: center;
+        color: var(--graphite);
+        font-size: 0.9375rem;
+      }
+      .footer-social {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--r-m);
+        border: 1px solid var(--rule);
+        color: var(--ink);
+        text-decoration: none;
+        transition: border-color 0.15s ease;
+      }
+      .social-link:hover {
+        border-color: var(--ink);
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -100,32 +220,31 @@
 
     <main class="blog-post">
       <header class="blog-header">
-        <div class="mb-4">
-          <span class="tech-tag">RAG</span>
-          <span class="tech-tag">AI</span>
-          <span class="tech-tag">Information Retrieval</span>
+        <div class="blog-tags">
+          <span class="blog-tag">RAG</span>
+          <span class="blog-tag">AI</span>
+          <span class="blog-tag">Information Retrieval</span>
         </div>
         <h1 class="blog-title">
-          Building Effective RAG Architectures: A Comprehensive Guide
+          Building RAG architectures: a practical guide
         </h1>
         <p class="blog-meta">
           Published on: October 31, 2025 • By Shuvam Banerji Seal
         </p>
       </header>
 
-      <article class="blog-content glassmorphic card">
+      <article class="blog-content">
         <h2>Introduction</h2>
         <p>
-          Retrieval-Augmented Generation (RAG) has emerged as a powerful
-          paradigm for building AI systems that can provide accurate, verifiable
+          Retrieval-Augmented Generation (RAG) has emerged as a practical paradigm for building AI systems that can provide accurate, verifiable
           answers by combining information retrieval with large language models.
-          In this post, I'll share insights from building a comprehensive RAG
+          In this post, I'll share insights from building a full RAG
           system for the IISER-K intranet.
         </p>
 
         <h2>Understanding RAG Architecture</h2>
         <p>At its core, RAG consists of three main components:</p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>
             <strong>Data Acquisition & Processing:</strong> Collecting and
             preprocessing documents
@@ -146,14 +265,14 @@
           project, we built an automated scraping system that extracts content
           from the intranet. Key considerations include:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>Handling different content formats (PDF, HTML, images)</li>
           <li>OCR processing for scanned documents</li>
           <li>Maintaining document metadata for attribution</li>
           <li>Regular updates and synchronization</li>
         </ul>
 
-        <h3>2. Hybrid Search: The Best of Both Worlds</h3>
+        <h3>2. Hybrid search: dense and sparse retrieval combined</h3>
         <p>
           One of our key innovations was implementing hybrid search that
           combines:
@@ -174,11 +293,11 @@
 
         <h3>3. LLM Integration and Answer Synthesis</h3>
         <p>
-          We use Qwen3-4B, a compact but powerful model that balances
+          We use Qwen3-4B, a compact model that balances
           performance with resource constraints. The key is crafting effective
           prompts that:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>Instruct the model to ground answers in retrieved context</li>
           <li>Avoid hallucination by citing sources</li>
           <li>Maintain consistency in formatting and tone</li>
@@ -191,7 +310,7 @@
           Document chunking is critical for retrieval quality. We experimented
           with different approaches:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>
             <strong>Fixed-size chunks:</strong> Simple but can break context
           </li>
@@ -205,7 +324,7 @@
 
         <h3>Evaluation Metrics</h3>
         <p>Measuring RAG performance requires multiple metrics:</p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>
             <strong>Retrieval Recall:</strong> Are relevant documents being
             retrieved?
@@ -226,7 +345,7 @@
 
         <h3>Challenge 1: Context Window Limitations</h3>
         <p>LLMs have limited context windows. We addressed this by:</p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>
             Implementing intelligent re-ranking to prioritize most relevant
             chunks
@@ -237,7 +356,7 @@
 
         <h3>Challenge 2: Keeping Information Current</h3>
         <p>Information changes. Our solution includes:</p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>Scheduled re-indexing pipelines</li>
           <li>Version tracking for documents</li>
           <li>Incremental updates rather than full rebuilds</li>
@@ -249,7 +368,7 @@
           providing quick access to institutional knowledge with high accuracy.
           Key takeaways:
         </p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>
             Hybrid search significantly outperforms single-method approaches
           </li>
@@ -263,7 +382,7 @@
 
         <h2>Future Directions</h2>
         <p>We're exploring several enhancements:</p>
-        <ul style="margin-left: 2rem; margin-bottom: 1.5rem">
+        <ul>
           <li>Multi-modal retrieval incorporating images and tables</li>
           <li>Query expansion using local LLMs</li>
           <li>Personalization based on user context</li>
@@ -283,9 +402,9 @@
         </p>
       </article>
 
-      <div class="mt-12 text-center">
+      <div class="back-row">
         <a href="../blog.html" class="btn btn-secondary">
-          <i data-lucide="arrow-left"></i> Back to Blog
+          <i data-lucide="arrow-left"></i> Back to blog
         </a>
       </div>
     </main>
@@ -325,12 +444,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem">
-        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
-        Portfolio v3.0
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
 

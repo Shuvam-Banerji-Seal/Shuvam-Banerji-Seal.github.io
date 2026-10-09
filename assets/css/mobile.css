@@ -141,7 +141,7 @@
     font-size: 16px;
     /* Prevents zoom on iOS */
     padding: 1rem;
-    border-radius: 0.75rem;
+    border-radius: var(--r-m);
   }
 
   .form-label {
@@ -158,7 +158,7 @@
     width: 100%;
     padding: 1.25rem 2rem;
     font-size: 1.1rem;
-    border-radius: 0.75rem;
+    border-radius: var(--r-m);
     margin-top: 1rem;
   }
 }
@@ -168,7 +168,7 @@
   .mobile-card-stack .card {
     margin-bottom: 1rem;
     padding: 1.5rem;
-    border-radius: 1rem;
+    border-radius: var(--r-m);
   }
 
   .mobile-card-compact .card {
@@ -213,14 +213,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  /* Touch feedback */
-  .btn:active,
-  .card:active,
-  .social-link:active {
-    transform: scale(0.95);
-    transition: transform 0.1s ease;
   }
 
   /* Prevent text selection on touch */
@@ -333,49 +325,14 @@
     object-fit: cover;
   }
 
-  /* Lazy loading indicator */
+  /* Lazy-load placeholder: a flat fill, no shimmer */
   .lazy-load {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-  }
-}
-
-/* Dark mode mobile optimizations */
-@media (max-width: 767px) {
-html[data-theme="quantum"] .mobile-nav-full,
-html[data-theme="dark"] .mobile-nav-full,
-html[data-theme="quantum"] .mobile-nav-full,
-html[data-theme="dark-coffee"] .mobile-nav-full,
-html[data-theme="quantum"] .mobile-nav-full,
-html[data-theme="amber"] .mobile-nav-full,
-html[data-theme="quantum"] .mobile-nav-full,
-html[data-theme="tokyo-night"] .mobile-nav-full,
-html[data-theme="quantum"] .mobile-nav-full,
-html[data-theme="absolute-dark"] .mobile-nav-full,
-html[data-theme="quantum"] .mobile-nav-full,
-html[data-theme="forest"] .mobile-nav-full,
-html[data-theme="quantum"] .mobile-nav-full,
-html[data-theme="dracula"] .mobile-nav-full {
-    background: rgba(17, 24, 39, 0.95);
+    background: var(--surface-2);
   }
 
-html[data-theme="quantum"] .lazy-load,
-html[data-theme="dark"] .lazy-load,
-html[data-theme="quantum"] .lazy-load,
-html[data-theme="dark-coffee"] .lazy-load,
-html[data-theme="quantum"] .lazy-load,
-html[data-theme="amber"] .lazy-load,
-html[data-theme="quantum"] .lazy-load,
-html[data-theme="tokyo-night"] .lazy-load,
-html[data-theme="quantum"] .lazy-load,
-html[data-theme="absolute-dark"] .lazy-load,
-html[data-theme="quantum"] .lazy-load,
-html[data-theme="forest"] .lazy-load,
-html[data-theme="quantum"] .lazy-load,
-html[data-theme="dracula"] .lazy-load {
-    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
-    background-size: 200% 100%;
+  /* Full-screen mobile navigation panel */
+  .mobile-nav-full {
+    background: var(--surface);
   }
 }
 

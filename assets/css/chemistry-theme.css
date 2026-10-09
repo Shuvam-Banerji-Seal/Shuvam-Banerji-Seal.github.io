@@ -1,309 +1,51 @@
-/* Chemistry Theme Enhancements */
+/* Chemistry theme: plain surfaces. The glows, gradient text, orbiting atoms
+   and sheen effects were removed in the Element migration. Class names stay. */
 
-/* Hero section enhancements */
+/* Hero section */
 .hero {
   position: relative;
-  overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent-cyan) 5%, transparent) 0%,
-    color-mix(in srgb, var(--accent-green) 5%, transparent) 50%,
-    color-mix(in srgb, var(--accent-purple) 5%, transparent) 100%
-  );
-}
-
-html[data-theme="dark"] .hero,
-html[data-theme="dark-coffee"] .hero,
-html[data-theme="amber"] .hero,
-html[data-theme="tokyo-night"] .hero,
-html[data-theme="absolute-dark"] .hero,
-html[data-theme="forest"] .hero,
-html[data-theme="dracula"] .hero {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent-cyan) 10%, transparent) 0%,
-    color-mix(in srgb, var(--accent-green) 10%, transparent) 50%,
-    color-mix(in srgb, var(--accent-purple) 10%, transparent) 100%
-  );
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle at center,
-    color-mix(in srgb, var(--accent-cyan) 10%, transparent) 0%,
-    transparent 50%
-  );
-  animation: pulse-glow 8s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.6;
-    transform: scale(1.1);
-  }
+  background: var(--paper);
 }
 
 .hero h1 {
-  background: var(--grad-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 0 40px color-mix(in srgb, var(--accent-cyan) 30%, transparent);
-  animation: gradient-shift 5s ease infinite;
-  background-size: 200% 200%;
+  color: var(--ink);
 }
 
-html[data-theme="dark"] .hero h1,
-html[data-theme="dark-coffee"] .hero h1,
-html[data-theme="amber"] .hero h1,
-html[data-theme="tokyo-night"] .hero h1,
-html[data-theme="absolute-dark"] .hero h1,
-html[data-theme="forest"] .hero h1,
-html[data-theme="dracula"] .hero h1 {
-  text-shadow: 0 0 40px color-mix(in srgb, var(--accent-cyan) 50%, transparent);
-}
-
-@keyframes gradient-shift {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.subtitle {
-  position: relative;
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-.subtitle::before,
-.subtitle::after {
-  content: "⚛️";
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.5rem;
-  opacity: 0.6;
-}
-
-.subtitle::before {
-  left: 0;
-  animation: rotate-atom 4s linear infinite;
-}
-
-.subtitle::after {
-  right: 0;
-  animation: rotate-atom 4s linear infinite reverse;
-}
-
-@keyframes rotate-atom {
-  from {
-    transform: translateY(-50%) rotate(0deg);
-  }
-
-  to {
-    transform: translateY(-50%) rotate(360deg);
-  }
-}
-
-/* Enhanced Cards */
+/* Enhanced cards */
 .card {
   position: relative;
-  overflow: hidden;
 }
 
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, var(--accent-cyan) 10%, transparent)
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-.card:hover::before {
-  left: 100%;
-}
-
-/* Molecule icon animations */
-@keyframes float-molecule {
-  0%,
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-20px) rotate(180deg);
-  }
-}
-
-.tool-icon,
-.project-title i {
-  animation: float-molecule 6s ease-in-out infinite;
-}
-
-/* Enhanced tech tags with chemistry elements */
+/* Tech tags */
 .tech-tag {
-  position: relative;
-  transition: all 0.3s ease;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-s);
+  transition: border-color 150ms ease;
 }
 
 .tech-tag:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-cyan) 30%, transparent);
+  border-color: var(--nitrogen);
 }
 
-.tech-tag::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: var(--grad-primary);
-  border-radius: 9999px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-  filter: blur(4px);
-}
-
-.tech-tag:hover::before {
-  opacity: 0.3;
-}
-
-/* Periodic table style for project cards */
+/* Project cards */
 .project-card {
-  border-left: 4px solid transparent;
-  transition: all 0.3s ease;
+  border: 1px solid var(--rule);
+  transition: border-color 150ms ease;
 }
 
-.project-card:nth-child(4n + 1) {
-  border-left-color: var(--accent-cyan);
-  /* Blue - like Hydrogen */
-}
-
-.project-card:nth-child(4n + 2) {
-  border-left-color: var(--accent-green);
-  /* Green - like Carbon */
-}
-
-.project-card:nth-child(4n + 3) {
-  border-left-color: var(--accent-cyan);
-  /* Amber - like Oxygen */
-}
-
-.project-card:nth-child(4n + 4) {
-  border-left-color: var(--accent-purple);
-  /* Purple - like Nitrogen */
-}
-
-/* Chemistry-themed section dividers */
-.section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--accent-cyan),
-    var(--accent-green),
-    var(--accent-purple),
-    transparent
-  );
-}
-
-/* Molecular orbital visualizations on scroll */
-@keyframes orbital-rotation {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.glassmorphic::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--accent-cyan) 10%, transparent) 0%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: orbital-rotation 20s linear infinite;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.glassmorphic:hover::after {
-  opacity: 1;
-}
-
-/* Enhanced form inputs with chemistry theme */
+/* Enhanced form inputs */
 .form-input:focus {
-  border-color: var(--accent-cyan);
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--accent-cyan) 10%, transparent),
-    0 0 20px color-mix(in srgb, var(--accent-cyan) 20%, transparent);
+  border-color: var(--nitrogen);
 }
 
-html[data-theme="dark"] .form-input:focus,
-html[data-theme="dark-coffee"] .form-input:focus,
-html[data-theme="amber"] .form-input:focus,
-html[data-theme="tokyo-night"] .form-input:focus,
-html[data-theme="absolute-dark"] .form-input:focus,
-html[data-theme="forest"] .form-input:focus,
-html[data-theme="dracula"] .form-input:focus {
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--accent-cyan) 20%, transparent),
-    0 0 20px color-mix(in srgb, var(--accent-cyan) 40%, transparent);
-}
-
-/* Animated chemical bonds on page transitions */
+/* Page transition bar (one-shot, runs once on navigation) */
 .page-transition-bond {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 4px;
-  background: var(--grad-primary);
+  background: var(--nitrogen);
   transform: scaleX(0);
   transform-origin: left;
   z-index: 9999;
@@ -316,7 +58,7 @@ html[data-theme="dracula"] .form-input:focus {
   }
 }
 
-/* Chemistry equation style for navigation links */
+/* Navigation link underline */
 .nav-link {
   position: relative;
 }
@@ -328,8 +70,8 @@ html[data-theme="dracula"] .form-input:focus {
   left: 50%;
   transform: translateX(-50%);
   width: 0;
-  height: 2px;
-  background: var(--grad-green);
+  height: 1px;
+  background: var(--nitrogen);
   transition: width 0.3s ease;
 }
 
@@ -338,86 +80,25 @@ html[data-theme="dracula"] .form-input:focus {
   width: 100%;
 }
 
-/* Electron cloud effect on buttons */
-.btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition:
-    width 0.6s ease,
-    height 0.6s ease;
-}
-
-.btn:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-.btn:active::before {
-  width: 0;
-  height: 0;
-  transition:
-    width 0s,
-    height 0s;
-}
-
-/* Periodic table hover effect for grid items - NO BLUR */
+/* Grid items: border change on hover */
 .grid > * {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.grid:hover > * {
-  opacity: 0.7;
-  /* Removed blur */
+  transition: border-color 150ms ease;
 }
 
 .grid > *:hover {
-  opacity: 1;
-  /* Removed blur */
-  transform: scale(1.05);
-  z-index: 10;
+  border-color: var(--nitrogen);
 }
 
-/* Molecular formula style for code blocks */
+/* Inline code */
 code {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent-cyan) 10%, transparent),
-    color-mix(in srgb, var(--accent-purple) 10%, transparent)
-  );
+  background: var(--surface-2);
   padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-family: "Source Code Pro", monospace;
-  border: 1px solid color-mix(in srgb, var(--accent-cyan) 20%, transparent);
+  border-radius: var(--r-s);
+  font-family: var(--font-mono);
+  border: 1px solid var(--rule);
 }
 
-html[data-theme="dark"] code,
-html[data-theme="dark-coffee"] code,
-html[data-theme="amber"] code,
-html[data-theme="tokyo-night"] code,
-html[data-theme="absolute-dark"] code,
-html[data-theme="forest"] code,
-html[data-theme="dracula"] code {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--accent-cyan) 20%, transparent),
-    color-mix(in srgb, var(--accent-purple) 20%, transparent)
-  );
-  border-color: color-mix(in srgb, var(--accent-cyan) 30%, transparent);
-}
-
-/* Atomic number labels for list items */
+/* Numbered list items */
 ol {
   counter-reset: atomic-number;
 }
@@ -433,96 +114,24 @@ ol li::before {
   position: absolute;
   left: 0;
   top: 0;
-  width: 2rem;
-  height: 2rem;
-  background: var(--grad-primary);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
+  color: var(--graphite);
+  font-weight: 500;
   font-size: 0.875rem;
 }
 
-/* Chemical structure wireframe background for sections */
-.section {
-  position: relative;
-}
-
-.section:nth-child(even)::before {
-  content: "";
-  position: absolute;
-  top: 20%;
-  right: 5%;
-  width: 200px;
-  height: 200px;
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--accent-cyan) 12%, transparent) 1px, transparent 1px)
-    linear-gradient(90deg, color-mix(in srgb, var(--accent-cyan) 12%, transparent) 1px, transparent 1px);
-  background-size: 40px 40px;
-  transform: rotate(45deg);
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-html[data-theme="dark"] .section:nth-child(even)::before,
-html[data-theme="dark-coffee"] .section:nth-child(even)::before,
-html[data-theme="amber"] .section:nth-child(even)::before,
-html[data-theme="tokyo-night"] .section:nth-child(even)::before,
-html[data-theme="absolute-dark"] .section:nth-child(even)::before,
-html[data-theme="forest"] .section:nth-child(even)::before,
-html[data-theme="dracula"] .section:nth-child(even)::before {
-  opacity: 0.5;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .subtitle::before,
-  .subtitle::after {
-    font-size: 1rem;
-  }
-
-  .hero::before {
-    display: none;
-  }
-}
-
-/* Animation for loading states */
+/* Loading state: a monochrome ring spinner */
 .loading-molecule {
   display: inline-block;
   width: 40px;
   height: 40px;
-  position: relative;
-}
-
-.loading-molecule::before,
-.loading-molecule::after {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 10px;
+  border: 3px solid var(--rule);
+  border-top-color: var(--ink);
   border-radius: 50%;
-  background: var(--accent-cyan);
-  animation: molecule-bounce 1.5s ease-in-out infinite;
+  animation: loading-spin 1s linear infinite;
 }
 
-.loading-molecule::before {
-  left: 0;
-}
-
-.loading-molecule::after {
-  right: 0;
-  animation-delay: 0.75s;
-}
-
-@keyframes molecule-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-20px);
+@keyframes loading-spin {
+  to {
+    transform: rotate(360deg);
   }
 }

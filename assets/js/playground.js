@@ -5,7 +5,7 @@
 
 const DEFAULT_HTML = `<div class="card">
   <h1>Hello \u{1F44B}</h1>
-  <p>Edit the code &mdash; this preview updates live.</p>
+  <p>Edit the code. This preview updates live.</p>
   <button id="go">Click me</button>
 </div>`;
 
@@ -13,18 +13,18 @@ const DEFAULT_CSS = `body {
   font-family: system-ui, sans-serif;
   display: grid; place-items: center;
   min-height: 100vh; margin: 0;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background: #f7f8fa;
+  color: #1a1d22;
 }
 .card {
-  background: rgba(255,255,255,.12);
-  padding: 2rem 3rem; border-radius: 16px;
-  text-align: center; backdrop-filter: blur(8px);
+  background: #ffffff;
+  padding: 2rem 3rem; border: 1px solid #dadde3; border-radius: 14px;
+  text-align: center;
 }
 button {
-  padding: .6rem 1.4rem; border: none; border-radius: 8px;
-  background: white; color: #5b21b6;
-  font-weight: 700; cursor: pointer;
+  padding: .6rem 1.4rem; border: 1px solid #2445c2; border-radius: 8px;
+  background: #2445c2; color: #ffffff;
+  font-weight: 600; cursor: pointer;
 }`;
 
 const DEFAULT_JS = `document.getElementById("go").addEventListener("click", () => {

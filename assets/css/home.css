@@ -1,0 +1,759 @@
+/* ================================================================
+   HOME — index.html only. Element system (plans/design-element.md).
+   Page rhythm: a two-column grid everywhere. The left column holds
+   headings, dates and categories; the right column holds content.
+   ================================================================ */
+
+body.home {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.0625rem/1.6 var(--font-body);
+}
+
+.home main {
+  padding: 60px 0 0;
+}
+
+/* The container token owns the gutters; legacy main/section padding
+   from main.css and mobile.css must not stack on top of it. */
+.home main > section {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.home a {
+  color: inherit;
+}
+
+.home :where(h1, h2, h3, p, ul, ol, dl, figure) {
+  margin: 0;
+}
+
+.home .anchor-alias {
+  display: block;
+  scroll-margin-top: 72px;
+}
+
+/* Shared two-column grid */
+.home .block-head,
+.home .dated > li,
+.home .index-group,
+.home .prizes,
+.home .contact .about,
+.home .contact-form,
+.home .block-foot,
+.home .feature {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  column-gap: clamp(24px, 4vw, 56px);
+}
+
+/* ---------------------------------------------------------------
+   HERO
+   --------------------------------------------------------------- */
+.hero-el {
+  width: var(--container);
+  margin-inline: auto;
+  min-height: min(860px, calc(100svh - 60px));
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 56px);
+  padding-block: clamp(32px, 5vw, 56px);
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-stretch: 64%;
+  font-weight: 820;
+  font-size: clamp(3.5rem, 7.6vw, 7.25rem);
+  line-height: 0.9;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  text-wrap: initial;
+}
+.hero-name span {
+  display: block;
+}
+
+.hero-lead {
+  margin-top: 28px;
+  max-width: 34em;
+  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  line-height: 1.55;
+}
+.hero-now {
+  margin-top: 14px;
+  max-width: 34em;
+  color: var(--graphite);
+  font-size: 1rem;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+/* Load sequence: the name inks in while the orbital's samples
+   accumulate. One moment, then everything is still. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-name span {
+    animation: ink-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero-name span + span {
+    animation-delay: 0.12s;
+  }
+  .hero-lead,
+  .hero-now,
+  .hero-actions {
+    animation: settle 0.6s ease-out 0.5s both;
+  }
+}
+@keyframes ink-in {
+  from {
+    font-weight: 160;
+    font-stretch: 62%;
+    opacity: 0.25;
+  }
+  to {
+    font-weight: 820;
+    font-stretch: 64%;
+    opacity: 1;
+  }
+}
+@keyframes settle {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Orbital figure */
+.orbital {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.orbital-canvas {
+  display: block;
+  width: min(100%, 600px, 64svh);
+  aspect-ratio: 1 / 1;
+  touch-action: pan-y;
+  cursor: grab;
+  border-radius: var(--r-l);
+}
+.orbital-canvas:active {
+  cursor: grabbing;
+}
+.orbital-canvas:focus-visible {
+  outline: 2px solid var(--nitrogen);
+  outline-offset: 4px;
+}
+.orbital-caption {
+  width: min(100%, 600px);
+  margin-top: 8px;
+}
+.orbital-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.orbital-picker button {
+  min-width: 52px;
+  min-height: 36px;
+  padding: 4px 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-m);
+  background: transparent;
+  color: var(--ink);
+  font: 600 0.9375rem/1 var(--font-body);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.orbital-picker button:hover {
+  border-color: var(--ink);
+}
+.orbital-picker button[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.orbital-picker sub,
+.orbital-title sub {
+  font-size: 0.72em;
+  line-height: 0;
+}
+.orbital-title {
+  margin-top: 14px;
+  font-weight: 650;
+}
+.orbital-qn {
+  margin-left: 10px;
+  color: var(--graphite);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.orbital-note {
+  margin-top: 4px;
+  max-width: 54ch;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.orbital-note [data-orbital-count] {
+  font-variant-numeric: tabular-nums;
+}
+.phase {
+  font-weight: 650;
+}
+.phase-plus {
+  color: var(--oxygen);
+}
+.phase-minus {
+  color: var(--nitrogen);
+}
+
+/* ---------------------------------------------------------------
+   BLOCKS
+   --------------------------------------------------------------- */
+.block {
+  width: var(--container);
+  margin-inline: auto;
+  padding-top: clamp(72px, 10vw, 128px);
+  scroll-margin-top: 40px;
+}
+
+.block-head {
+  align-items: baseline;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+.block-head h2 {
+  font-family: var(--font-display);
+  font-stretch: 66%;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.012em;
+}
+.block-head p {
+  grid-column: 2;
+  max-width: 60ch;
+  color: var(--graphite);
+  font-size: 1.0625rem;
+}
+
+/* Title links: ink with a quiet underline that turns nitrogen */
+.dated h3 a,
+.index-group a,
+.tool-index a,
+.posts a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 0.15s ease;
+}
+.dated h3 a:hover,
+.index-group a:hover,
+.tool-index a:hover,
+.posts a:hover {
+  text-decoration-color: var(--nitrogen);
+  text-decoration-thickness: 2px;
+}
+
+.links a,
+.block-foot a,
+.elsewhere a,
+.mail a,
+.site-foot a {
+  color: var(--nitrogen);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.links a:hover,
+.block-foot a:hover,
+.elsewhere a:hover,
+.mail a:hover,
+.site-foot a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Dated lists: research, roles */
+.dated {
+  list-style: none;
+  padding: 0;
+}
+.dated > li {
+  padding-block: 18px;
+}
+.dated > li + li {
+  margin-top: 6px;
+}
+.when {
+  padding-top: 2px;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.dated h3 {
+  font-size: 1.1875rem;
+  font-weight: 650;
+  line-height: 1.3;
+  max-width: 40em;
+}
+.dated p {
+  margin-top: 6px;
+  max-width: 62ch;
+  color: var(--graphite);
+}
+.dated p.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* Feature: Molecule3D with a live ATP figure */
+.feature {
+  align-items: center;
+  margin-bottom: clamp(48px, 7vw, 88px);
+}
+.molecule {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+.molecule-canvas {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+  touch-action: pan-y;
+  cursor: grab;
+  border-radius: var(--r-l);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+.molecule-canvas:active {
+  cursor: grabbing;
+}
+.molecule-canvas:focus-visible {
+  outline: 2px solid var(--nitrogen);
+  outline-offset: 3px;
+}
+.molecule figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  max-width: 420px;
+  margin-top: 10px;
+  color: var(--graphite);
+  font-size: 0.875rem;
+}
+.molecule-readout {
+  min-height: 1.4em;
+}
+.cpk-key {
+  display: inline-flex;
+  gap: 10px;
+}
+.cpk-key > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+.cpk {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--rule-strong);
+}
+.cpk-c {
+  background: var(--graphite);
+}
+.cpk-h {
+  background: var(--surface);
+}
+.cpk-n {
+  background: var(--nitrogen);
+}
+.cpk-o {
+  background: var(--oxygen);
+}
+.cpk-p {
+  background: #d9731a;
+}
+[data-theme="dark"] .cpk-p {
+  background: #f59a4a;
+}
+.feature-text {
+  grid-column: 2;
+  grid-row: 1;
+}
+.feature-text h3 {
+  font-family: var(--font-display);
+  font-stretch: 70%;
+  font-weight: 780;
+  font-size: clamp(1.75rem, 3vw, 2.375rem);
+  line-height: 1;
+}
+.feature-text > p {
+  margin-top: 12px;
+  max-width: 58ch;
+  font-size: 1.125rem;
+}
+.feature-text .feature-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+.feature-text .feature-note {
+  margin-top: 20px;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+}
+.feature-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, auto));
+  justify-content: start;
+  gap: 8px 32px;
+  margin-top: 20px;
+}
+.feature-facts dt {
+  color: var(--graphite);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.feature-facts dd {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+/* Software index */
+.index {
+  display: grid;
+  gap: 28px;
+}
+.index-group h3 {
+  padding-top: 2px;
+  font-size: 1rem;
+  font-weight: 650;
+}
+.index-group ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.index-group li {
+  max-width: 64ch;
+}
+.index-group li a {
+  font-weight: 600;
+}
+.index-group li span {
+  color: var(--graphite);
+}
+.index-group li span::before {
+  content: " ";
+}
+
+.block-foot {
+  margin-top: 36px;
+}
+.block-foot > * {
+  grid-column: 2;
+}
+.block-foot p {
+  color: var(--graphite);
+}
+
+/* Prizes */
+.prizes {
+  margin-top: 40px;
+}
+.sub-h {
+  padding-top: 2px;
+  font-size: 1rem;
+  font-weight: 650;
+}
+.plain {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.plain strong {
+  font-weight: 600;
+}
+
+/* Tools directory: four columns, a different rhythm on purpose */
+.tool-index {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px clamp(20px, 3vw, 40px);
+}
+.tool-index h3 {
+  font-size: 1rem;
+  font-weight: 650;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.tool-index ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.tool-index li {
+  display: grid;
+  line-height: 1.35;
+}
+.tool-index li a {
+  font-weight: 600;
+  justify-self: start;
+}
+.tool-index li span {
+  color: var(--graphite);
+  font-size: 0.9375rem;
+}
+
+/* Writing */
+.posts {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.posts li {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  column-gap: clamp(24px, 4vw, 56px);
+  align-items: baseline;
+}
+.posts time {
+  grid-column: 1;
+  grid-row: 1;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+.posts a {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* About + contact */
+.contact {
+  padding-bottom: clamp(72px, 10vw, 120px);
+}
+.contact .about {
+  align-items: start;
+}
+.contact .about img {
+  width: min(100%, 300px);
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--r-s);
+  background: var(--surface-2);
+}
+.contact .about h2 {
+  font-family: var(--font-display);
+  font-stretch: 66%;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 0.95;
+}
+.contact .about p {
+  margin-top: 16px;
+  max-width: 60ch;
+}
+.contact .about .mail {
+  margin-top: 24px;
+  font-family: var(--font-display);
+  font-stretch: 80%;
+  font-weight: 700;
+  font-size: clamp(1.375rem, 2.6vw, 2rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.elsewhere {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+.contact-form {
+  margin-top: clamp(48px, 6vw, 72px);
+  row-gap: 16px;
+}
+.contact-form > * {
+  grid-column: 2;
+}
+.contact-form h3 {
+  font-size: 1.1875rem;
+  font-weight: 650;
+}
+.contact-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.contact-form .field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 10px 12px;
+  font: 400 1rem/1.4 var(--font-body);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-m);
+}
+.contact-form textarea {
+  resize: vertical;
+}
+.form-foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+#form-status {
+  margin: 0;
+  color: var(--graphite);
+  font-size: 0.9375rem;
+}
+#form-status.is-error {
+  color: var(--oxygen);
+}
+
+/* Footer */
+.site-foot {
+  text-align: left;
+  width: var(--container);
+  margin-inline: auto;
+  padding-block: 28px 40px;
+  border-top: 1px solid var(--rule);
+  color: var(--graphite);
+  font-size: 0.875rem;
+}
+.site-foot p + p {
+  margin-top: 4px;
+}
+
+/* ---------------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .tool-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .hero-el {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding-top: 32px;
+  }
+  .orbital {
+    align-items: stretch;
+  }
+  .orbital-canvas {
+    width: min(100%, 520px);
+    align-self: center;
+  }
+  .orbital-caption {
+    width: 100%;
+  }
+
+  .home .block-head,
+  .home .dated > li,
+  .home .index-group,
+  .home .prizes,
+  .home .block-foot,
+  .home .contact .about,
+  .home .contact-form,
+  .home .feature,
+  .posts li {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 6px;
+  }
+  .block-head p,
+  .feature-text,
+  .molecule,
+  .contact-form > *,
+  .posts a,
+  .posts time {
+    grid-column: 1;
+  }
+  .molecule {
+    grid-row: 2;
+    margin-top: 24px;
+  }
+  .feature-text {
+    grid-row: 1;
+  }
+  .feature-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .posts a {
+    grid-row: 2;
+  }
+  .block-head p {
+    margin-top: 12px;
+  }
+  .block-foot > * {
+    grid-column: 1;
+  }
+  .contact .about img {
+    width: 160px;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .tool-index {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .contact-form .field-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero-actions .btn {
+    flex: 1 1 auto;
+  }
+}

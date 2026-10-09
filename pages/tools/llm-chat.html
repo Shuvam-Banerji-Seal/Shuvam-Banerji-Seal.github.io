@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -32,7 +44,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -40,6 +52,7 @@
     <link rel="stylesheet" href="../../assets/css/mobile.css" />
     <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
     <link rel="stylesheet" href="../../assets/css/tool-page.css" />
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -178,24 +191,12 @@
 
     <style>
       :root {
-        --user-bubble: var(--accent-color, #3b82f6);
-        --user-bubble-text: #fff;
-        --ai-bubble: var(--card-bg, #f8fafc);
-        --ai-bubble-text: var(--text-primary, #1e293b);
-        --chat-bg: var(--bg-secondary, #f1f5f9);
-        --border-color: var(--border-color, #e2e8f0);
-      }
-
-      [data-theme="dark"],
-[data-theme="dark-coffee"],
-[data-theme="amber"],
-[data-theme="tokyo-night"],
-[data-theme="absolute-dark"],
-[data-theme="forest"],
-[data-theme="dracula"] {
-        --chat-bg: #1e293b;
-        --ai-bubble: #334155;
-        --ai-bubble-text: #f1f5f9;
+        --user-bubble: var(--nitrogen-wash);
+        --user-bubble-text: var(--ink);
+        --ai-bubble: var(--surface);
+        --ai-bubble-text: var(--ink);
+        --chat-bg: var(--paper);
+        --border-color: var(--rule);
       }
 
       .config-sidebar {
@@ -298,13 +299,7 @@
 
       .message-role {
         font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.65rem;
-        letter-spacing: 0.5px;
-      }
-
-      .chat-message.user .message-role {
-        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.75rem;
       }
 
       .message-time {
@@ -336,7 +331,7 @@
       }
 
       .message-content code {
-        font-family: "Source Code Pro", monospace;
+        font-family: var(--font-mono);
         font-size: 0.9em;
       }
 
@@ -344,17 +339,6 @@
         background: var(--code-bg, #1e1e1e);
         padding: 0.2rem 0.4rem;
         border-radius: 4px;
-        color: #e06c75;
-      }
-
-      [data-theme="dark"] .message-content :not(pre) > code,
-[data-theme="dark-coffee"] .message-content :not(pre) > code,
-[data-theme="amber"] .message-content :not(pre) > code,
-[data-theme="tokyo-night"] .message-content :not(pre) > code,
-[data-theme="absolute-dark"] .message-content :not(pre) > code,
-[data-theme="forest"] .message-content :not(pre) > code,
-[data-theme="dracula"] .message-content :not(pre) > code {
-        color: #c678dd;
       }
 
       .message-actions {
@@ -387,51 +371,26 @@
       }
 
       .action-btn.copied {
-        color: #22c55e;
+        color: var(--nitrogen);
       }
 
       .typing-indicator {
         display: flex;
-        gap: 4px;
-        padding: 1rem 1.5rem;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.75rem 1rem;
         background: var(--ai-bubble);
+        border: 1px solid var(--border-color);
         border-radius: 1rem;
         border-bottom-left-radius: 0.25rem;
         width: fit-content;
-        border: 1px solid var(--border-color);
-      }
-
-      .typing-indicator span {
-        width: 8px;
-        height: 8px;
-        background: var(--text-secondary);
-        border-radius: 50%;
-        animation: typingBounce 1.4s infinite ease-in-out both;
-      }
-
-      .typing-indicator span:nth-child(1) {
-        animation-delay: -0.32s;
-      }
-      .typing-indicator span:nth-child(2) {
-        animation-delay: -0.16s;
-      }
-
-      @keyframes typingBounce {
-        0%,
-        80%,
-        100% {
-          transform: scale(0.6);
-          opacity: 0.5;
-        }
-        40% {
-          transform: scale(1);
-          opacity: 1;
-        }
+        color: var(--graphite);
+        font-size: 0.9rem;
       }
 
       .chat-input-area {
         padding: 1rem;
-        background: var(--card-bg);
+        background: var(--surface);
         border-top: 1px solid var(--border-color);
       }
 
@@ -444,23 +403,21 @@
       .chat-input {
         flex: 1;
         padding: 0.75rem 1rem;
-        border: 2px solid var(--border-color);
-        border-radius: 1rem;
-        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--r-m);
+        background: var(--surface);
         color: var(--text-primary);
         font-family: inherit;
         font-size: 0.95rem;
         resize: none;
         max-height: 150px;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
+        transition: border-color 0.15s;
       }
 
       .chat-input:focus {
-        outline: none;
-        border-color: var(--accent-color);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        outline: 2px solid var(--nitrogen);
+        outline-offset: 1px;
+        border-color: var(--nitrogen);
       }
 
       .chat-input::placeholder {
@@ -469,7 +426,7 @@
 
       .send-btn {
         padding: 0.75rem 1rem;
-        border-radius: 1rem;
+        border-radius: var(--r-m);
         flex-shrink: 0;
       }
 
@@ -784,7 +741,8 @@
         typing.id = "typing";
         typing.innerHTML = `
           <div class="typing-indicator">
-            <span></span><span></span><span></span>
+            <thinking-orb size="20" label="Generating reply"></thinking-orb>
+            <span class="typing-label">Thinking</span>
           </div>
         `;
         messagesDiv.appendChild(typing);
@@ -813,11 +771,11 @@
           position: fixed;
           top: 100px;
           right: 20px;
-          background: var(--card-bg);
+          background: var(--surface);
           border: 1px solid var(--border-color);
           padding: 1rem 1.5rem;
           border-radius: 8px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          box-shadow: var(--lift);
           z-index: 1000;
           animation: slideIn 0.3s ease;
         `;
@@ -1125,12 +1083,12 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
     </script>
+    <script type="module" src="../../assets/js/thinking-orb.js"></script>
   </body>
 </html>

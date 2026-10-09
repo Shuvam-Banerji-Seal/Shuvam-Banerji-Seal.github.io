@@ -141,10 +141,13 @@ test("dist/index.html has theme script", () => {
   );
 });
 
-test("dist/index.html has loading screen", () => {
+// The Element redesign (plans/design-element.md) removed the full-screen
+// loader; the hero orbital figure renders immediately instead.
+test("dist/index.html has the hero orbital figure", () => {
   assert(
-    distIndex.includes("loading-screen") || distIndex.includes("loading-bar"),
-    "Missing loading screen",
+    distIndex.includes("data-orbital-root") &&
+      distIndex.includes("data-orbital-canvas"),
+    "Missing hero orbital figure",
   );
 });
 

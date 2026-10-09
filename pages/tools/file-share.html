@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -23,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Share files between devices peer-to-peer over an encrypted WebRTC channel — no server, no upload, no size limits. Connect by exchanging a short code."
+      content="Share files between devices peer-to-peer over an encrypted WebRTC channel. No server, no upload, no size limits. Connect by exchanging a short code."
     />
     <link
       rel="canonical"
@@ -37,7 +38,7 @@
       property="og:description"
       content="Device-to-device file transfer over encrypted WebRTC. No backend, no accounts, no size caps."
     />
-    <title>Beam — File Sharing - SBS Tools</title>
+    <title>Beam: file sharing - SBS Tools</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <script
       defer
@@ -46,7 +47,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -62,17 +63,30 @@
         padding-bottom: 2rem;
       }
       .fs-title {
-        font-family: var(--font-mono);
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-family: var(--font-display);
+        font-stretch: 68%;
+        font-weight: 780;
+        font-size: 2.125rem;
+        line-height: 1.05;
         display: flex;
-        align-items: center;
+        flex-wrap: wrap;
+        align-items: baseline;
         gap: 0.6rem;
         margin-bottom: 0.4rem;
       }
+      .fs-title i {
+        align-self: center;
+      }
+      .fs-title-sub {
+        font-family: var(--font-body);
+        font-stretch: 100%;
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--graphite);
+      }
       .fs-sub {
-        color: var(--text-secondary);
-        font-size: 0.92rem;
+        color: var(--graphite);
+        font-size: 1rem;
         line-height: 1.6;
         margin-bottom: 1.4rem;
       }
@@ -80,32 +94,25 @@
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
-        font-family: var(--font-mono);
-        font-size: 0.78rem;
-        padding: 0.35rem 0.8rem;
-        border-radius: 99px;
-        border: 1px solid var(--border);
-        background: var(--bg-card);
-        color: var(--text-muted);
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 0.3rem 0.7rem;
+        border-radius: var(--r-s);
+        border: 1px solid var(--rule);
+        background: var(--surface);
+        color: var(--graphite);
       }
       .conn-badge .dot {
         width: 9px;
         height: 9px;
         border-radius: 50%;
-        background: #6b7280;
+        background: var(--graphite);
       }
-      .conn-badge.connecting .dot {
-        background: #f0b72f;
-        animation: fs-pulse 1s infinite;
+      .conn-badge.open {
+        color: var(--ink);
       }
       .conn-badge.open .dot {
-        background: #22c55e;
-        box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
-      }
-      @keyframes fs-pulse {
-        50% {
-          opacity: 0.4;
-        }
+        background: var(--success);
       }
       .steps {
         display: grid;
@@ -118,28 +125,26 @@
         }
       }
       .step-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         padding: 1.1rem 1.2rem;
       }
       .step-card h3 {
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
+        font-size: 1rem;
         margin: 0 0 0.7rem;
-        color: var(--accent);
-        letter-spacing: 0.05em;
+        color: var(--ink);
       }
       .code-area {
         width: 100%;
         min-height: 110px;
         resize: vertical;
-        background: var(--code-bg, #0b1020);
-        color: var(--text-primary);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        font-family: "Source Code Pro", monospace;
-        font-size: 0.68rem;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
         line-height: 1.5;
         padding: 0.6rem;
         word-break: break-all;
@@ -148,25 +153,36 @@
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        font-family: var(--font-mono);
-        font-size: 0.82rem;
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        min-height: 40px;
         padding: 0.5rem 0.95rem;
-        background: var(--bg-card);
-        color: var(--text-primary);
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease,
+          color 0.15s ease;
         margin-top: 0.6rem;
       }
       .fs-btn:hover:not(:disabled) {
-        border-color: var(--accent);
-        color: var(--accent);
+        border-color: var(--ink);
+        text-decoration: underline;
+        text-underline-offset: 0.18em;
       }
       .fs-btn.primary {
-        background: var(--btn-primary-bg);
-        color: var(--btn-primary-text);
-        border-color: transparent;
+        background: var(--nitrogen);
+        color: var(--on-nitrogen);
+        border-color: var(--nitrogen);
+      }
+      .fs-btn.primary:hover:not(:disabled) {
+        background: var(--nitrogen-hover);
+        border-color: var(--nitrogen-hover);
+        text-decoration: none;
       }
       .fs-btn:disabled {
         opacity: 0.45;
@@ -184,21 +200,20 @@
         display: block;
       }
       .dropzone {
-        border: 2px dashed var(--border);
-        border-radius: 12px;
+        border: 1.5px dashed var(--rule-strong);
+        border-radius: var(--r-l);
+        background: var(--surface);
         padding: 2.2rem 1rem;
         text-align: center;
-        color: var(--text-secondary);
+        color: var(--graphite);
         cursor: pointer;
-        transition: all 0.2s ease;
-        font-family: var(--font-mono);
-        font-size: 0.88rem;
+        transition: border-color 0.15s ease, color 0.15s ease;
+        font-size: 0.9375rem;
       }
       .dropzone:hover,
       .dropzone.dragover {
-        border-color: var(--accent);
-        color: var(--accent);
-        background: rgba(125, 211, 252, 0.04);
+        border-color: var(--nitrogen);
+        color: var(--ink);
       }
       .xfer-list {
         margin-top: 0.9rem;
@@ -207,15 +222,14 @@
         gap: 0.55rem;
       }
       .xfer-item {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-m);
         padding: 0.75rem 0.95rem;
         display: flex;
         align-items: center;
         gap: 0.8rem;
-        font-family: var(--font-mono);
-        font-size: 0.8rem;
+        font-size: 0.875rem;
       }
       .xfer-item .fi {
         flex-shrink: 0;
@@ -230,47 +244,47 @@
         text-overflow: ellipsis;
       }
       .xfer-item .size {
-        color: var(--text-muted);
-        font-size: 0.72rem;
+        color: var(--graphite);
+        font-size: 0.8125rem;
       }
       .bar {
         height: 6px;
-        background: var(--bg-elevated);
-        border-radius: 99px;
+        background: var(--surface-2);
+        border-radius: var(--r-s);
         overflow: hidden;
         margin-top: 0.35rem;
       }
       .bar > div {
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, #22d3ee, #a78bfa);
+        background: var(--nitrogen);
         transition: width 0.25s ease;
       }
       .xfer-item.done .bar > div {
-        background: #22c55e;
+        background: var(--success);
       }
       .xfer-item a.dl {
-        color: #7dd3fc;
-        text-decoration: none;
-        font-size: 0.72rem;
-        border: 1px solid rgba(125, 211, 252, 0.35);
-        padding: 0.28rem 0.6rem;
-        border-radius: 6px;
+        color: var(--nitrogen);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+        font-size: 0.8125rem;
+        white-space: nowrap;
       }
       .fs-note {
-        font-size: 0.78rem;
-        color: var(--text-muted);
+        font-size: 0.875rem;
+        color: var(--graphite);
         line-height: 1.65;
         margin-top: 1.4rem;
       }
       .err-line {
-        color: #f87171;
-        font-family: var(--font-mono);
-        font-size: 0.8rem;
+        color: var(--oxygen);
+        font-size: 0.875rem;
         margin-top: 0.5rem;
         min-height: 1em;
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -279,14 +293,12 @@
     <main class="tool-page">
       <div class="fs-wrap">
         <h1 class="fs-title">
-          <i data-lucide="zap"></i> BEAM
-          <span style="font-size: 0.85rem; color: var(--text-muted)"
-            >— serverless file sharing</span
-          >
+          <i data-lucide="zap"></i> Beam
+          <span class="fs-title-sub">Serverless file sharing</span>
         </h1>
         <p class="fs-sub">
           Files travel <strong>directly device-to-device</strong> through an
-          encrypted WebRTC channel. Nothing is uploaded anywhere — this page
+          encrypted WebRTC channel. Nothing is uploaded anywhere. This page
           only helps the two devices find each other by trading a short code.
           Both devices must have this page open at the same time.
         </p>
@@ -298,7 +310,7 @@
 
         <div class="steps" style="margin-top: 1.2rem">
           <div class="step-card">
-            <h3>STEP 1 — YOUR CODE</h3>
+            <h3>Step 1: your code</h3>
             <button class="fs-btn primary" id="create-btn">
               <i data-lucide="radio"></i> Create connection code
             </button>
@@ -317,7 +329,7 @@
             </button>
           </div>
           <div class="step-card">
-            <h3>STEP 2 — THEIR REPLY CODE</h3>
+            <h3>Step 2: their reply code</h3>
             <textarea
               class="code-area"
               id="remote-code"
@@ -339,7 +351,7 @@
             tabindex="0"
             aria-label="Drop files here or click to choose"
           >
-            Drop files here or click to choose — they are sent instantly
+            Drop files here or click to choose. They are sent instantly.
           </div>
           <input type="file" id="file-input" multiple hidden />
           <div class="xfer-list" id="xfer-list"></div>
@@ -347,10 +359,10 @@
 
         <p class="fs-note">
           <strong>How it connects:</strong> both devices exchange handshake
-          codes manually (chat, email — anything), then negotiate a direct path
+          codes manually (chat, email, anything else), then negotiate a direct path
           using public STUN servers. Traffic is DTLS-encrypted end to end and
           never touches any server. Devices behind very restrictive corporate
-          NATs may fail to connect — try a home or mobile network.
+          NATs may fail to connect. Try a home or mobile network.
         </p>
       </div>
     </main>
@@ -358,15 +370,14 @@
     <footer>
       <div class="container">
         <p>
-          &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-          Chemistry &amp; Code
+          &copy; <span id="year"></span> Shuvam Banerji Seal
         </p>
       </div>
     </footer>
 
     <script>
       // ══════════════════════════════════════════════════════════════════
-      // Beam — serverless P2P file transfer over WebRTC DataChannel.
+      // Beam: serverless P2P file transfer over WebRTC DataChannel.
       // Signaling = manual copy/paste of a compressed SDP exchange.
       // ══════════════════════════════════════════════════════════════════
       const ICE_CONFIG = {
@@ -391,7 +402,7 @@
         badge.className = "conn-badge " + state;
         $("conn-text").textContent =
           state === "open"
-            ? "connected — P2P"
+            ? "connected, P2P"
             : state === "connecting"
               ? "negotiating\u2026"
               : "disconnected";
@@ -498,7 +509,7 @@
       $("join-toggle-btn").addEventListener("click", () => {
         $("local-code").value = "";
         $("local-code").placeholder =
-          "Skip STEP 1 — paste the other device's code below, then send them YOUR reply code.";
+          "Skip step 1: paste the other device's code below, then send them YOUR reply code.";
         $("create-btn").disabled = true;
         $("join-toggle-btn").disabled = true;
         $("remote-code").focus();

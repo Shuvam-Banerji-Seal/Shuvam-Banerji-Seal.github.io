@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -23,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Live HTML/CSS/JS playground: paste code, see it render instantly in a sandboxed iframe. Console capture, auto-run, layout presets, download, shareable links — all local."
+      content="Live HTML/CSS/JS playground: paste code, see it render instantly in a sandboxed iframe. Console capture, auto-run, layout presets, download, shareable links, all local."
     />
     <link
       rel="canonical"
@@ -45,7 +46,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../assets/css/theme.css" />
@@ -69,9 +70,7 @@
         margin-bottom: 1rem;
       }
       .pg-title {
-        font-family: var(--font-mono);
-        font-size: 1.4rem;
-        font-weight: 700;
+        font-size: 1.625rem;
       }
       .pg-actions {
         display: flex;
@@ -82,19 +81,20 @@
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        font-family: var(--font-mono);
-        font-size: 0.82rem;
+        font-size: 0.875rem;
         padding: 0.5rem 0.9rem;
-        background: var(--bg-card);
-        color: var(--text-primary);
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--rule-strong);
+        border-radius: var(--r-m);
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease;
       }
       .pg-btn:hover {
-        border-color: var(--accent);
-        color: var(--accent);
+        border-color: var(--ink);
+        background: var(--surface-2);
       }
       .pg-btn.primary {
         background: var(--btn-primary-bg);
@@ -132,18 +132,17 @@
         border: 1px solid var(--border);
         border-radius: 10px;
         overflow: hidden;
-        background: var(--code-bg, #0d1117);
+        background: var(--surface);
       }
       .editor-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0.45rem 0.8rem;
-        background: var(--bg-elevated);
+        background: var(--surface-2);
         border-bottom: 1px solid var(--border);
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: var(--text-secondary);
+        font-size: 0.8125rem;
+        color: var(--graphite);
       }
       .editor-head .lang-dot {
         display: inline-block;
@@ -159,7 +158,7 @@
         resize: vertical;
         background: transparent;
         color: var(--text-primary);
-        font-family: "Source Code Pro", var(--font-mono);
+        font-family: var(--font-mono);
         font-size: 0.84rem;
         line-height: 1.55;
         border: none;
@@ -173,15 +172,14 @@
         align-items: center;
         justify-content: space-between;
         padding: 0.45rem 0.8rem;
-        background: var(--bg-elevated);
+        background: var(--surface-2);
         border-bottom: 1px solid var(--border);
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: var(--text-secondary);
+        font-size: 0.8125rem;
+        color: var(--graphite);
       }
       .preview-frame-box {
         position: relative;
-        background: #fff;
+        background: var(--surface);
         border-radius: 0 0 10px 10px;
         overflow: hidden;
         border: 1px solid var(--border);
@@ -192,22 +190,21 @@
         width: 100%;
         height: 520px;
         border: none;
-        background: #fff;
+        background: #fff; /* rendered page canvas: user HTML expects a white page */
         display: block;
       }
       .console-box {
         margin-top: 0.6rem;
         border: 1px solid var(--border);
         border-radius: 10px;
-        background: #0b1020;
+        background: var(--surface);
         overflow: hidden;
       }
       .console-box .console-head {
         padding: 0.4rem 0.8rem;
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: #8b949e;
-        border-bottom: 1px solid #21262d;
+        font-size: 0.8125rem;
+        color: var(--graphite);
+        border-bottom: 1px solid var(--rule);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -216,40 +213,40 @@
         max-height: 160px;
         overflow-y: auto;
         padding: 0.5rem 0.8rem;
-        font-family: "Source Code Pro", monospace;
+        font-family: var(--font-mono);
         font-size: 0.78rem;
       }
       #pg-console .line {
         padding: 0.12rem 0;
-        border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+        border-bottom: 1px dashed var(--rule);
         word-break: break-word;
         white-space: pre-wrap;
       }
       #pg-console .l-log {
-        color: #c9d1d9;
+        color: var(--ink);
       }
       #pg-console .l-warn {
-        color: #f0b72f;
+        color: var(--ink);
+        font-weight: 600;
       }
       #pg-console .l-err {
-        color: #ff7b72;
+        color: var(--oxygen);
       }
       #pg-console .l-sys {
-        color: #58a6ff;
+        color: var(--graphite);
       }
       .status-chip {
-        font-family: var(--font-mono);
-        font-size: 0.68rem;
-        padding: 0.15rem 0.5rem;
-        border-radius: 99px;
-        background: rgba(63, 185, 80, 0.15);
-        color: #3fb950;
-        border: 1px solid rgba(63, 185, 80, 0.35);
+        font-size: 0.8125rem;
+        padding: 0.1rem 0.5rem;
+        border-radius: var(--r-s);
+        background: transparent;
+        color: var(--graphite);
+        border: 1px solid var(--rule);
       }
       .status-chip.dirty {
-        background: rgba(240, 183, 47, 0.12);
-        color: #f0b72f;
-        border-color: rgba(240, 183, 47, 0.35);
+        background: var(--nitrogen-wash);
+        color: var(--nitrogen);
+        border-color: var(--nitrogen);
       }
       @media (max-width: 900px) {
         .pg-grid {
@@ -261,6 +258,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="../../assets/css/element.css" />
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -269,7 +267,7 @@
     <main class="tool-page">
       <div class="pg-wrap">
         <div class="pg-head">
-          <h1 class="pg-title">&lt;/&gt; HTML PLAYGROUND</h1>
+          <h1 class="pg-title">HTML playground</h1>
           <div class="pg-actions">
             <button
               class="pg-btn"
@@ -342,8 +340,8 @@
           <div class="pg-preview-wrap">
             <div class="preview-frame-box">
               <div class="preview-head">
-                <span>PREVIEW (sandboxed)</span>
-                <span id="render-info">—</span>
+                <span>Preview (sandboxed)</span>
+                <span id="render-info">Not run yet</span>
               </div>
               <iframe
                 id="pg-frame"
@@ -353,13 +351,13 @@
             </div>
             <div class="console-box">
               <div class="console-head">
-                <span>CONSOLE</span>
+                <span>Console</span>
                 <button
                   class="pg-btn"
                   id="console-clear-btn"
-                  style="padding: 0.2rem 0.55rem; font-size: 0.68rem"
+                  style="padding: 0.2rem 0.55rem; font-size: 0.8125rem"
                 >
-                  clear
+                  Clear
                 </button>
               </div>
               <div id="pg-console">
@@ -374,8 +372,7 @@
     <footer>
       <div class="container">
         <p>
-          &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-          Chemistry &amp; Code
+          &copy; <span id="year"></span> Shuvam Banerji Seal
         </p>
       </div>
     </footer>

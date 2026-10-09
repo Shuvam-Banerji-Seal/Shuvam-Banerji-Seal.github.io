@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES=["dark","dark-coffee","amber","tokyo-night","absolute-dark","forest","dracula"];var t=localStorage.getItem("theme")||DARK_THEMES[Math.floor(Math.random()*DARK_THEMES.length)];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var t =
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -31,7 +43,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/mobile-fixes.css" />
@@ -44,308 +56,85 @@
     <link rel="stylesheet" href="../assets/css/overrides.css" />
 
     <style>
-      .thermo-container {
-        max-width: 1200px;
+      /* Two-column rhythm shared with the homepage: headings left, content right. */
+      .thermo {
+        width: var(--container);
         margin: 0 auto;
-        padding: 2rem 1rem;
+        padding: 112px 0 96px;
       }
-
-      .hero-section {
-        text-align: center;
-        padding: 3rem 0;
+      .thermo-head h1 {
+        font-family: var(--font-display);
+        font-stretch: 66%;
+        font-weight: 800;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.012em;
+        color: var(--ink);
       }
-
-      .hero-section h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        background: var(--grad-primary);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+      .thermo-head p {
+        margin-top: 16px;
+        max-width: 60ch;
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: var(--ink);
       }
-
-      .content-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        margin-top: 3rem;
-      }
-
-      .info-card {
-        padding: 2rem;
-        border-radius: 12px;
-        background: var(--card-bg);
-        border: 2px solid var(--border-color);
-        transition: transform 0.3s ease;
-      }
-
-      .info-card:hover {
-        transform: translateY(-5px);
-      }
-
-      .info-card h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: var(--accent-color);
-      }
-
-      .feature-list {
-        list-style: none;
-        padding: 0;
-      }
-
-      .feature-list li {
-        padding: 0.75rem 0;
-        border-bottom: 1px solid var(--border-color);
+      .thermo-actions {
         display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .feature-list li:last-child {
-        border-bottom: none;
-      }
-
-      .cta-section {
-        text-align: center;
-        margin: 4rem 0;
-      }
-
-      .github-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 1.25rem 2.5rem;
-        background: var(--grad-primary);
-        color: var(--btn-primary-text);
-        border-radius: 12px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
-        box-shadow: var(--shadow-card);
-      }
-
-      .github-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-      }
-
-      .topics-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-top: 2rem;
-      }
-
-      .topic-tag {
-        padding: 1rem;
-        background: var(--accent-color-alpha);
-        border: 2px solid var(--accent);
-        border-radius: 8px;
-        text-align: center;
-        font-weight: 500;
-        color: var(--accent);
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-
-      .topic-tag:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--glow-cyan);
-      }
-
-      .thermo-icon {
-        width: 3rem;
-        height: 3rem;
-        display: inline-block;
-        vertical-align: middle;
-      }
-
-      .thermo-icon-sm {
-        width: 1.5rem;
-        height: 1.5rem;
-        display: inline-block;
-        vertical-align: middle;
-      }
-
-      .thermo-icon-xs {
-        width: 1rem;
-        height: 1rem;
-        color: var(--accent);
-      }
-
-      .thermo-subtitle {
-        font-size: 1.3rem;
-        color: var(--text-secondary);
-        max-width: 800px;
-        margin: 0 auto;
-      }
-
-      .thermo-card-text {
-        line-height: 1.8;
-        color: var(--text-secondary);
-      }
-
-      .thermo-section {
-        padding: 2rem;
-        margin-top: 3rem;
-      }
-
-      .thermo-section-compact {
-        padding: 2rem;
-        margin-top: 2rem;
-      }
-
-      .thermo-section-title {
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-        text-align: center;
-      }
-
-      .thermo-content-wrapper {
-        max-width: 800px;
-        margin: 0 auto;
-      }
-
-      .thermo-list {
-        list-style: decimal;
-        margin-left: 2rem;
-        line-height: 2;
-        font-size: 1.1rem;
-      }
-
-      .thermo-license-box {
-        margin-top: 2rem;
-        padding: 1.5rem;
-        background: var(--accent-color-alpha);
-        border-radius: 8px;
-        border: 2px solid var(--accent);
-      }
-
-      .thermo-license-title {
-        margin-bottom: 0.5rem;
-        font-size: 1.2rem;
-      }
-
-      .thermo-contribute-section {
-        text-align: center;
-        margin: 4rem 0;
-      }
-
-      .thermo-contribute-title {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-      }
-
-      .thermo-contribute-text {
-        font-size: 1.1rem;
-        color: var(--text-secondary);
-        margin-bottom: 2rem;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .thermo-contribute-actions {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
         flex-wrap: wrap;
+        gap: 12px;
       }
-
-      /* Mobile Responsiveness */
-      @media (max-width: 767px) {
-        .hero-section h1 {
-          font-size: 2rem;
-        }
-
-        .thermo-icon {
-          width: 2rem;
-          height: 2rem;
-        }
-
-        .thermo-subtitle {
-          font-size: 1.1rem;
-        }
-
-        .content-grid {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
-        }
-
-        .info-card {
-          padding: 1.5rem;
-        }
-
-        .github-btn {
-          padding: 1rem 2rem;
-          font-size: 1.1rem;
-        }
-
-        .topics-grid {
-          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-          gap: 0.75rem;
-        }
-
-        .topic-tag {
-          padding: 0.75rem;
-          font-size: 0.9rem;
-        }
-
-        .thermo-section,
-        .thermo-section-compact {
-          padding: 1.5rem;
-          margin-top: 2rem;
-        }
-
-        .thermo-section-title {
-          font-size: 1.5rem;
-        }
-
-        .thermo-list {
-          font-size: 1rem;
-          margin-left: 1.5rem;
-        }
-
-        .thermo-contribute-title {
-          font-size: 1.5rem;
-        }
-
-        .thermo-contribute-text {
-          font-size: 1rem;
-        }
-
-        .thermo-contribute-actions {
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .thermo-contribute-actions .btn {
-          width: 100%;
-          max-width: 280px;
-          justify-content: center;
-        }
+      .thermo-row {
+        display: grid;
+        grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+        column-gap: clamp(24px, 4vw, 56px);
+        margin-top: 56px;
       }
-
-      @media (max-width: 480px) {
-        .hero-section h1 {
-          font-size: 1.75rem;
+      .thermo-row h2 {
+        font-family: var(--font-body);
+        font-stretch: 100%;
+        font-size: 1.0625rem;
+        font-weight: 650;
+        line-height: 1.4;
+        color: var(--ink);
+      }
+      .thermo-row p,
+      .thermo-row li {
+        max-width: 62ch;
+        color: var(--graphite);
+        line-height: 1.6;
+      }
+      .thermo-row ol {
+        margin: 0;
+        padding-left: 1.25rem;
+        display: grid;
+        gap: 6px;
+      }
+      .thermo-topics {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px 24px;
+      }
+      .thermo-topics li {
+        color: var(--ink);
+      }
+      @media (max-width: 760px) {
+        .thermo {
+          padding-top: 88px;
         }
-
-        .topics-grid {
-          grid-template-columns: 1fr 1fr;
+        .thermo-row {
+          grid-template-columns: minmax(0, 1fr);
+          row-gap: 8px;
+          margin-top: 40px;
         }
-
-        .thermo-section,
-        .thermo-section-compact {
-          padding: 1rem;
+        .thermo-topics {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
     </style>
+    <link rel="stylesheet" href="../assets/css/element.css" />
   </head>
 
   <body>
@@ -354,165 +143,69 @@
 
     <div id="mobile-menu-backdrop"></div>
 
-    <main class="container">
-      <div class="thermo-container">
-        <div class="hero-section">
-          <h1>
-            <i data-lucide="flame" class="thermo-icon"></i>
-            Thermodynamics Open Source
-          </h1>
-          <p class="thermo-subtitle">
-            A comprehensive, open-source resource for learning and teaching
-            thermodynamics. Written in LaTeX, freely available for students and
-            educators worldwide.
+    <main class="thermo">
+      <header class="thermo-head">
+        <h1>Thermodynamics, open source</h1>
+        <p>
+          A thermodynamics textbook written in LaTeX that anyone can read,
+          print or adapt. It covers classical and statistical thermodynamics,
+          from basic concepts to partition functions.
+        </p>
+        <p class="thermo-actions">
+          <a class="btn btn-primary" href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+          <a class="btn" href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
+          <a class="btn" href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source/fork" target="_blank" rel="noopener noreferrer">Fork the project</a>
+        </p>
+      </header>
+
+      <section class="thermo-row" aria-labelledby="t-what">
+        <h2 id="t-what">What's in it</h2>
+        <div>
+          <p>
+            Explanations and derivations written out in full, worked examples
+            and problems, and figures. The LaTeX source is part of the
+            repository, so instructors can change chapters to suit their
+            course and students can rebuild the PDF themselves.
           </p>
         </div>
+      </section>
 
-        <div class="cta-section">
-          <a
-            href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="github-btn"
-          >
-            <i data-lucide="code-2" class="thermo-icon-sm"></i>
-            View on GitHub
-          </a>
-        </div>
+      <section class="thermo-row" aria-labelledby="t-topics">
+        <h2 id="t-topics">Topics</h2>
+        <ul class="thermo-topics">
+          <li>Basic concepts</li>
+          <li>First law</li>
+          <li>Second law</li>
+          <li>Entropy</li>
+          <li>Free energy</li>
+          <li>Chemical potential</li>
+          <li>Phase equilibria</li>
+          <li>Mixtures</li>
+          <li>Statistical mechanics</li>
+          <li>Ensembles</li>
+          <li>Partition functions</li>
+          <li>Applications</li>
+        </ul>
+      </section>
 
-        <div class="content-grid">
-          <div class="info-card glassmorphic">
-            <h2>
-              <i data-lucide="book-open" class="thermo-icon-sm"></i>
-              About the Project
-            </h2>
-            <p class="thermo-card-text">
-              This project aims to provide a complete, high-quality
-              thermodynamics textbook that is freely accessible to everyone.
-              Written in LaTeX with detailed explanations, derivations, and
-              examples, it covers classical and statistical thermodynamics from
-              fundamental principles to advanced applications.
-            </p>
-          </div>
+      <section class="thermo-row" aria-labelledby="t-use">
+        <h2 id="t-use">How to use it</h2>
+        <ol>
+          <li>Open the GitHub repository to see the full source.</li>
+          <li>Download the PDF to read or print.</li>
+          <li>Clone the repository to compile it from the LaTeX source.</li>
+          <li>Open an issue for errors or suggestions.</li>
+          <li>Send improvements as pull requests.</li>
+        </ol>
+      </section>
 
-          <div class="info-card glassmorphic">
-            <h2>
-              <i data-lucide="star" class="thermo-icon-sm"></i>
-              Key Features
-            </h2>
-            <ul class="feature-list">
-              <li>
-                <i data-lucide="check-circle" class="thermo-icon-xs"></i>
-                Complete LaTeX source code
-              </li>
-              <li>
-                <i data-lucide="check-circle" class="thermo-icon-xs"></i>
-                Comprehensive coverage of topics
-              </li>
-              <li>
-                <i data-lucide="check-circle" class="thermo-icon-xs"></i>
-                Worked examples and problems
-              </li>
-              <li>
-                <i data-lucide="check-circle" class="thermo-icon-xs"></i>
-                Figures and diagrams
-              </li>
-              <li>
-                <i data-lucide="check-circle" class="thermo-icon-xs"></i>
-                Open for contributions
-              </li>
-            </ul>
-          </div>
-
-          <div class="info-card glassmorphic">
-            <h2>
-              <i data-lucide="users" class="thermo-icon-sm"></i>
-              For Educators & Students
-            </h2>
-            <p class="thermo-card-text">
-              Whether you're teaching thermodynamics or learning it for the
-              first time, this resource is designed to be both rigorous and
-              accessible. The LaTeX source allows instructors to modify and
-              adapt the content for their courses, while students benefit from
-              clear explanations and extensive problem sets.
-            </p>
-          </div>
-        </div>
-
-        <div class="glassmorphic card thermo-section">
-          <h2 class="thermo-section-title">
-            <i data-lucide="book-marked" class="inline-block"></i>
-            Topics Covered
-          </h2>
-          <div class="topics-grid">
-            <div class="topic-tag">Basic Concepts</div>
-            <div class="topic-tag">First Law</div>
-            <div class="topic-tag">Second Law</div>
-            <div class="topic-tag">Entropy</div>
-            <div class="topic-tag">Free Energy</div>
-            <div class="topic-tag">Chemical Potential</div>
-            <div class="topic-tag">Phase Equilibria</div>
-            <div class="topic-tag">Mixtures</div>
-            <div class="topic-tag">Statistical Mechanics</div>
-            <div class="topic-tag">Ensembles</div>
-            <div class="topic-tag">Partition Functions</div>
-            <div class="topic-tag">Applications</div>
-          </div>
-        </div>
-
-        <div class="glassmorphic card thermo-section-compact">
-          <h2 class="thermo-section-title">
-            <i data-lucide="download" class="inline-block"></i>
-            How to Use
-          </h2>
-          <div class="thermo-content-wrapper">
-            <ol class="thermo-list">
-              <li>
-                Visit the GitHub repository to access the full source code
-              </li>
-              <li>Download the PDF version for reading or printing</li>
-              <li>Clone the repository to compile from LaTeX source</li>
-              <li>Submit issues for errors or suggestions</li>
-              <li>Contribute improvements via pull requests</li>
-            </ol>
-
-            <div class="thermo-license-box">
-              <h4 class="thermo-license-title">License</h4>
-              <p style="margin: 0; color: var(--text-secondary)">
-                This project is open source and available under a Creative
-                Commons license, allowing free use, modification, and
-                distribution for educational purposes.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="thermo-contribute-section">
-          <h2 class="thermo-contribute-title">Contribute to the Project</h2>
-          <p class="thermo-contribute-text">
-            Help improve this resource by reporting issues, suggesting
-            improvements, or contributing new content.
-          </p>
-          <div class="thermo-contribute-actions">
-            <a
-              href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source/issues"
-              target="_blank"
-              class="btn btn-secondary"
-            >
-              <i data-lucide="alert-circle"></i>
-              Report Issue
-            </a>
-            <a
-              href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source/fork"
-              target="_blank"
-              class="btn btn-secondary"
-            >
-              <i data-lucide="git-fork"></i>
-              Fork Project
-            </a>
-          </div>
-        </div>
-      </div>
+      <section class="thermo-row" aria-labelledby="t-licence">
+        <h2 id="t-licence">Licence</h2>
+        <p>
+          Released under a Creative Commons licence that allows free use,
+          modification and distribution for teaching.
+        </p>
+      </section>
     </main>
 
     <footer>
@@ -550,12 +243,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem">
-        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
-        Portfolio v3.0
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
 

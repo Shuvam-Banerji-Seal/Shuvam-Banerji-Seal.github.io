@@ -411,7 +411,7 @@ class AirGuitar {
       const btn = document.getElementById("record-session-btn");
       if (btn) {
         btn.classList.remove("recording");
-        btn.innerHTML = '<i data-lucide="disc-3"></i> Record Session';
+        btn.innerHTML = '<i data-lucide="disc-3"></i> Record session';
         if (typeof lucide !== "undefined") lucide.createIcons();
       }
     }
@@ -697,7 +697,7 @@ class AirGuitar {
       this.palmMute = true;
       this.chokeAll();
       const st = document.getElementById("guitar-status");
-      if (st) st.textContent = "Palm mute ON — chug away 🤘";
+      if (st) st.textContent = "Palm mute on. Chug away 🤘";
     } else if (!muteNow && this.palmMute) {
       this.palmMute = false;
       const st = document.getElementById("guitar-status");
@@ -811,10 +811,10 @@ class AirGuitar {
         this._lastStatus = "idle";
       }
     } else if (this._lastStatus !== "tracking") {
-      el.textContent = `Tracking ${handCount} hand${handCount > 1 ? "s" : ""} \u2014 strum!`;
+      el.textContent = `Tracking ${handCount} hand${handCount > 1 ? "s" : ""}. Strum!`;
       this._lastStatus = "tracking";
     } else if (handCount !== this._lastCount) {
-      el.textContent = `Tracking ${handCount} hand${handCount > 1 ? "s" : ""} \u2014 strum!`;
+      el.textContent = `Tracking ${handCount} hand${handCount > 1 ? "s" : ""}. Strum!`;
     }
     this._lastCount = handCount;
   }
@@ -847,6 +847,7 @@ class AirGuitar {
     // prune finished ripples
     this.pluckFx = this.pluckFx.filter((f) => nowMs - f.t0 < 700);
 
+    const P = palette();
     this.stringYs.forEach((y, i) => {
       const fx = this.pluckFx.find((f) => f.stringIdx === i);
       let amp = 0;
@@ -857,9 +858,9 @@ class AirGuitar {
       const grad = ctx.createLinearGradient(0, y - 8, 0, y + 8);
       const hot = fx
         ? fx.muted
-          ? "rgba(248,113,113,"
-          : "rgba(34,211,238,"
-        : "rgba(167,139,250,";
+          ? `rgba(${P.danger},`
+          : `rgba(${P.accent},`
+        : "rgba(255,255,255,";
       grad.addColorStop(0, hot + "0)");
       grad.addColorStop(0.5, hot + (fx ? 0.95 : 0.55) + ")");
       grad.addColorStop(1, hot + "0)");
@@ -868,8 +869,8 @@ class AirGuitar {
 
       ctx.strokeStyle = fx
         ? fx.muted
-          ? "rgba(252,165,165,0.95)"
-          : "rgba(125,252,238,0.95)"
+          ? `rgba(${P.danger},0.95)`
+          : `rgba(${P.accent},0.95)`
         : "rgba(255,255,255,0.75)";
       ctx.lineWidth = fx ? 2.4 : 1.4;
       ctx.beginPath();
@@ -885,7 +886,7 @@ class AirGuitar {
         STRINGS[i].name,
         8,
         y - 6,
-        "10px 'JetBrains Mono', monospace",
+        "10px 'IBM Plex Mono', monospace",
         "rgba(255,255,255,0.5)",
       );
     });
@@ -896,8 +897,8 @@ class AirGuitar {
       this.chord,
       W - 74,
       this.stringYs[0] - 26,
-      `700 ${22 + flash * 6}px 'JetBrains Mono', monospace`,
-      `rgba(34,211,238,${0.75 + flash * 0.25})`,
+      `700 ${22 + flash * 6}px 'IBM Plex Mono', monospace`,
+      `rgba(${P.accent},${0.75 + flash * 0.25})`,
     );
 
     // tracking indicator dot
@@ -914,26 +915,27 @@ class AirGuitar {
     // palm-mute badge (top-left, mirrors-safe)
     if (this.palmMute) {
       this.drawLabel(
-        "PALM MUTE",
+        "Palm mute",
         10,
         22,
-        "700 12px 'JetBrains Mono', monospace",
-        "rgba(248,113,113,0.95)",
+        "700 12px 'IBM Plex Mono', monospace",
+        `rgba(${P.danger},0.95)`,
       );
-      ctx.fillStyle = "rgba(248,113,113,0.14)";
+      ctx.fillStyle = `rgba(${P.danger},0.14)`;
       ctx.fillRect(0, 0, W, 34);
     }
   }
 
   drawHands(hands) {
     const ctx = this.ctx2d;
+    const P = palette();
     const W = this.canvas.width;
     const H = this.canvas.height;
     const nowMs = performance.now();
     for (let h = 0; h < hands.length; h++) {
       const lm = hands[h];
       // skeleton
-      ctx.strokeStyle = "rgba(34,211,238,0.75)";
+      ctx.strokeStyle = `rgba(${P.accent},0.75)`;
       ctx.lineWidth = 2;
       for (const [a, b] of HAND_CONNECTIONS) {
         if (!lm[a] || !lm[b]) continue;
@@ -956,7 +958,7 @@ class AirGuitar {
         if (!p) continue;
         const x = p.x * W;
         const y = p.y * H;
-        ctx.fillStyle = "rgba(253,224,71,0.95)";
+        ctx.fillStyle = `rgba(${P.sulfur},0.95)`;
         ctx.beginPath();
         ctx.arc(x, y, 6, 0, Math.PI * 2);
         ctx.fill();
@@ -979,6 +981,7 @@ class AirGuitar {
   drawTrails(nowMs) {
     const ctx = this.ctx2d;
     const LIFE = 320; // ms
+    const P = palette();
     this.trails.forEach((trail) => {
       trail.pts = trail.pts.filter((p) => nowMs - p.t < LIFE);
       if (trail.pts.length < 2) return;
@@ -988,7 +991,7 @@ class AirGuitar {
         const a = trail.pts[i - 1];
         const b = trail.pts[i];
         const age = (nowMs - b.t) / LIFE;
-        ctx.strokeStyle = `rgba(253,224,71,${(1 - age) * 0.55})`;
+        ctx.strokeStyle = `rgba(${P.sulfur},${(1 - age) * 0.55})`;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
@@ -996,6 +999,24 @@ class AirGuitar {
       }
     });
   }
+}
+
+// Overlay colours come from the Element tokens, so they follow light and dark.
+// Returns "r,g,b" strings for building rgba() values on the canvas.
+function palette() {
+  const cs = getComputedStyle(document.documentElement);
+  const rgb = (name, fallback) => {
+    const hex = cs.getPropertyValue(name).trim();
+    const m = /^#([0-9a-f]{6})$/i.exec(hex);
+    if (!m) return fallback;
+    const n = parseInt(m[1], 16);
+    return [n >> 16, (n >> 8) & 255, n & 255].join(",");
+  };
+  return {
+    accent: rgb("--nitrogen", "143,164,255"),
+    danger: rgb("--oxygen", "255,97,112"),
+    sulfur: rgb("--sulfur", "233,197,71"),
+  };
 }
 
 window.AirGuitar = new AirGuitar();

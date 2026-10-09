@@ -3,6 +3,10 @@
 Status: ACTIVE spec — written 2026-08-25. Reference: ricardochance.com (design-engineer portfolio).
 Note: intended to be authored by an independent agent; provider outage → authored in-session. Same content either way.
 
+## Rev 2026-10-09 — Superseded by Element
+
+This spec (Ricardo Chance-inspired, 01–06 numbered cards, mono kickers, Inter) is retired. The current system is plans/design-element.md.
+
 ## Rev 2026-09-18 — Focused hero typography and rhythm
 
 | Field              | Decision                                                                                                                                              |

@@ -1,30 +1,22 @@
 /* ================================================================
-   FULLSCREEN TIMER — presenter timer with overtime, buzzer and
-   labelled segment sequences (Talk → Q&A).
-   Spec: plans/08-fullscreen-timer.md
-   Solid colours only (no gradients). All 9 themes supported.
+   FULLSCREEN TIMER: presenter timer with overtime, buzzer and
+   labelled segment sequences (Talk, then Q&A).
+   Solid Element tokens only (no gradients, no glow).
    ================================================================ */
 
 :root {
-  /* Overtime = "light crimson"; warning = final stretch. Dark-safe. */
-  --ft-overtime: #ff8fa3;
-  --ft-warning: #ffc46b;
-  --ft-track: rgba(148, 163, 184, 0.22);
-  --ft-input-bg: var(--input-bg, rgba(148, 163, 184, 0.12));
-  /* Ink that stays legible on top of every theme accent (cyan/amber/purple). */
-  --ft-on-accent: #06121a;
-  --ft-radius: 12px;
+  /* State colours: overtime is a light crimson (large digits, so 3:1 is
+     enough on paper); warning is the final-stretch amber. Both are
+     lightened for dark mode below. */
+  --ft-overtime: #f04c5f;
+  --ft-warning: #b26a12;
+  --ft-track: var(--rule);
+  --ft-radius: var(--r-m);
 }
 
-/* Light (cream) theme: keep crimson legible on a pale surface. */
-html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-    [data-theme="amber"]
-  ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-    [data-theme="forest"]
-  ):not([data-theme="dracula"]):not([data-theme="quantum"]) {
-  --ft-overtime: #d94a63;
-  --ft-warning: #b26a12;
-  --ft-track: rgba(107, 66, 38, 0.2);
+:root[data-theme="dark"] {
+  --ft-overtime: #ff8fa3;
+  --ft-warning: #ffc46b;
 }
 
 .ft-sr {
@@ -57,11 +49,10 @@ body.ft-locked {
 }
 
 .ft-block-title {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent-cyan);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
   margin-bottom: 0.85rem;
 }
 
@@ -73,26 +64,27 @@ body.ft-locked {
 }
 
 .ft-preset {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
-  font-size: 0.76rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
   padding: 0.45rem 0.7rem;
-  color: var(--text-secondary);
-  background: var(--ft-input-bg);
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  color: var(--graphite);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-s);
   cursor: pointer;
   transition:
-    border-color 0.18s ease,
-    color 0.18s ease;
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .ft-preset:hover {
-  color: var(--text-primary);
-  border-color: var(--border-glow, var(--accent-cyan));
+  color: var(--ink);
+  border-color: var(--rule-strong);
 }
 
 .ft-preset:focus-visible {
-  outline: 2px solid var(--accent-cyan);
+  outline: 2px solid var(--nitrogen);
   outline-offset: 2px;
 }
 
@@ -111,11 +103,10 @@ body.ft-locked {
 }
 
 .ft-seg-head {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--graphite);
   padding: 0 0.15rem 0.4rem;
 }
 
@@ -128,56 +119,57 @@ body.ft-locked {
 
 .ft-seg-row {
   padding: 0.5rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--rule);
   border-radius: var(--ft-radius);
-  background: var(--ft-input-bg);
-  transition: border-color 0.18s ease;
+  background: var(--surface);
+  transition: border-color 0.15s ease;
 }
 
 .ft-seg-row.is-selected {
-  border-color: var(--accent-cyan);
+  border-color: var(--nitrogen);
 }
 
 .ft-seg-chip {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--graphite);
   text-align: center;
 }
 
 .ft-seg-row.is-selected .ft-seg-chip {
-  color: var(--accent-cyan);
+  color: var(--nitrogen);
 }
 
 .ft-seg-row input {
   width: 100%;
   min-width: 0;
-  font-family: var(--font-body, Inter, sans-serif);
-  font-size: 0.92rem;
-  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
   background: transparent;
   border: 0;
   border-bottom: 1px solid transparent;
   padding: 0.35rem 0.3rem;
 }
 
+/* Duration is numeric input: mono keeps the digits aligned */
 .ft-seg-row input.ft-seg-time {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-family: var(--font-mono);
   text-align: center;
 }
 
 .ft-seg-row input:hover {
-  border-bottom-color: var(--border);
+  border-bottom-color: var(--rule);
 }
 
 .ft-seg-row input:focus {
   outline: none;
-  border-bottom-color: var(--accent-cyan);
+  border-bottom-color: var(--nitrogen);
 }
 
 .ft-seg-row input.is-invalid {
-  border-bottom-color: var(--ft-overtime);
-  color: var(--ft-overtime);
+  border-bottom-color: var(--oxygen);
+  color: var(--oxygen);
 }
 
 .ft-icon-btn {
@@ -186,19 +178,19 @@ body.ft-locked {
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  color: var(--text-secondary);
+  color: var(--graphite);
   background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 9px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-m);
   cursor: pointer;
   transition:
-    color 0.18s ease,
-    border-color 0.18s ease;
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .ft-icon-btn:hover:not(:disabled) {
-  color: var(--text-primary);
-  border-color: var(--accent-cyan);
+  color: var(--ink);
+  border-color: var(--rule-strong);
 }
 
 .ft-icon-btn:disabled {
@@ -207,7 +199,7 @@ body.ft-locked {
 }
 
 .ft-icon-btn:focus-visible {
-  outline: 2px solid var(--accent-cyan);
+  outline: 2px solid var(--nitrogen);
   outline-offset: 2px;
 }
 
@@ -228,19 +220,19 @@ body.ft-locked {
 }
 
 .ft-help {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   line-height: 1.6;
-  color: var(--text-muted);
+  color: var(--graphite);
   margin-top: 0.9rem;
 }
 
 .ft-help kbd {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
-  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
   padding: 0.1rem 0.35rem;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  color: var(--text-secondary);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-s);
+  color: var(--ink);
 }
 
 /* Options column */
@@ -249,19 +241,19 @@ body.ft-locked {
   align-items: flex-start;
   gap: 0.65rem;
   padding: 0.7rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--rule);
   border-radius: var(--ft-radius);
   cursor: pointer;
   margin-bottom: 0.5rem;
 }
 
 .ft-option:hover {
-  border-color: var(--border-glow, var(--accent-cyan));
+  border-color: var(--rule-strong);
 }
 
 .ft-option input {
   margin-top: 0.25rem;
-  accent-color: var(--accent-cyan);
+  accent-color: var(--nitrogen);
 }
 
 .ft-option-text {
@@ -271,28 +263,28 @@ body.ft-locked {
 }
 
 .ft-option-label {
-  font-size: 0.9rem;
-  color: var(--text-primary);
+  font-size: 0.95rem;
+  color: var(--ink);
 }
 
 .ft-option-hint {
-  font-size: 0.76rem;
+  font-size: 0.85rem;
   line-height: 1.5;
-  color: var(--text-muted);
+  color: var(--graphite);
 }
 
 .ft-summary {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--graphite);
   padding: 0.75rem;
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--rule);
   border-radius: var(--ft-radius);
   margin: 0.9rem 0 1.1rem;
 }
 
 .ft-summary strong {
-  color: var(--text-primary);
+  color: var(--ink);
   font-weight: 600;
 }
 
@@ -302,32 +294,31 @@ body.ft-locked {
   justify-content: center;
   gap: 0.6rem;
   width: 100%;
-  font-family: var(--font-body, Inter, sans-serif);
+  min-height: 2.75rem;
+  font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 600;
-  padding: 0.9rem 1.2rem;
-  color: var(--ft-on-accent);
-  background: var(--accent-cyan);
-  border: 1px solid var(--accent-cyan);
-  border-radius: var(--ft-radius);
+  padding: 0.7rem 1.2rem;
+  color: var(--on-nitrogen);
+  background: var(--nitrogen);
+  border: 1px solid var(--nitrogen);
+  border-radius: var(--r-m);
   cursor: pointer;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
+  transition: opacity 0.15s ease;
 }
 
 .ft-launch:hover {
-  box-shadow: var(--glow-cyan, 0 0 20px rgba(34, 211, 238, 0.25));
+  opacity: 0.88;
 }
 
 .ft-launch:focus-visible {
-  outline: 2px solid var(--text-primary);
+  outline: 2px solid var(--nitrogen);
   outline-offset: 3px;
 }
 
 .ft-status {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  font-size: 0.85rem;
+  color: var(--graphite);
   margin-top: 0.65rem;
   text-align: center;
   min-height: 1.2em;
@@ -344,8 +335,8 @@ body.ft-locked {
   justify-content: space-between;
   gap: clamp(1rem, 3vh, 2.5rem);
   padding: clamp(1.25rem, 4vh, 3rem) clamp(1rem, 4vw, 3rem);
-  background: var(--bg-deep);
-  color: var(--text-primary);
+  background: var(--paper);
+  color: var(--ink);
   text-align: center;
   overflow: hidden;
 }
@@ -364,22 +355,21 @@ body.ft-locked {
 }
 
 .ft-seg-name {
-  font-family: "Space Grotesk", var(--font-body, Inter), sans-serif;
+  font-family: var(--font-display);
   font-size: clamp(1.4rem, 4vw, 2.6rem);
-  font-weight: 600;
+  font-weight: 790;
+  font-stretch: 68%;
   letter-spacing: -0.01em;
-  line-height: 1.15;
+  line-height: 1.05;
   max-width: 22ch;
   overflow-wrap: anywhere;
   text-wrap: balance;
 }
 
 .ft-seg-index {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
-  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+  color: var(--graphite);
 }
 
 .ft-clock-wrap {
@@ -390,14 +380,16 @@ body.ft-locked {
   width: 100%;
 }
 
+/* The countdown digits are the tool itself: keep them huge. */
 .ft-clock {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-family: var(--font-display);
+  font-stretch: 68%;
   font-variant-numeric: tabular-nums;
   font-size: clamp(3.6rem, 19vw, 15rem);
-  font-weight: 600;
+  font-weight: 790;
   line-height: 0.95;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  color: var(--ink);
   transition: color 0.25s ease;
 }
 
@@ -412,7 +404,7 @@ body.ft-locked {
 .ft-progress {
   width: min(900px, 88vw);
   height: 6px;
-  border-radius: 999px;
+  border-radius: var(--r-s);
   background: var(--ft-track);
   overflow: hidden;
 }
@@ -420,8 +412,8 @@ body.ft-locked {
 .ft-progress-bar {
   height: 100%;
   width: 100%;
-  background: var(--accent-cyan);
-  border-radius: 999px;
+  background: var(--nitrogen);
+  border-radius: var(--r-s);
   transition: background-color 0.25s ease;
 }
 
@@ -430,10 +422,9 @@ body.ft-locked {
 }
 
 .ft-next {
-  font-family: var(--font-mono, "JetBrains Mono", monospace);
-  font-size: clamp(0.72rem, 1.6vw, 0.9rem);
-  color: var(--text-secondary);
-  letter-spacing: 0.04em;
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  color: var(--graphite);
   min-height: 1.4em;
 }
 
@@ -444,9 +435,9 @@ body.ft-locked {
   justify-content: center;
   gap: 0.6rem;
   padding: 0.6rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--ft-input-bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-l);
+  background: var(--surface);
   transition: opacity 0.35s ease;
 }
 
@@ -459,25 +450,27 @@ body.ft-locked {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-family: var(--font-body, Inter, sans-serif);
-  font-size: 0.85rem;
-  padding: 0.55rem 0.95rem;
-  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.95rem;
+  color: var(--ink);
   background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-m);
   cursor: pointer;
   transition:
-    border-color 0.18s ease,
-    color 0.18s ease;
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .ft-ctl:hover {
-  border-color: var(--accent-cyan);
+  border-color: var(--rule-strong);
 }
 
 .ft-ctl:focus-visible {
-  outline: 2px solid var(--accent-cyan);
+  outline: 2px solid var(--nitrogen);
   outline-offset: 2px;
 }
 
@@ -487,20 +480,20 @@ body.ft-locked {
 }
 
 .ft-ctl.is-primary {
-  color: var(--ft-on-accent);
-  background: var(--accent-cyan);
-  border-color: var(--accent-cyan);
+  color: var(--on-nitrogen);
+  background: var(--nitrogen);
+  border-color: var(--nitrogen);
   font-weight: 600;
 }
 
-/* Active toggles (mute/fullscreen) — must not repaint the primary pill,
-   which is already accent-filled: that produced cyan-on-cyan. */
+/* Active toggles (mute/fullscreen). The primary button is already
+   nitrogen-filled, so the toggle state only changes its border and text. */
 .ft-ctl[aria-pressed="true"]:not(.is-primary) {
-  border-color: var(--accent-cyan);
-  color: var(--accent-cyan);
+  border-color: var(--nitrogen);
+  color: var(--nitrogen);
 }
 
-/* Time-up flash: solid ink, opacity-only animation */
+/* Time-up flash: solid colour, opacity-only, plays once on an event */
 .ft-stage::after {
   content: "";
   position: absolute;
@@ -593,10 +586,5 @@ body.ft-locked {
   .ft-stage.is-flash::after {
     animation: none;
     opacity: 0;
-  }
-
-  .ft-launch:hover {
-    transform: none;
-    box-shadow: none;
   }
 }

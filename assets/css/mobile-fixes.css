@@ -61,7 +61,6 @@ dd {
   }
   .hero-kicker {
     font-size: 0.68rem !important;
-    letter-spacing: 0.12em !important;
     line-height: 1.5 !important;
   }
   .hero-statement {
@@ -316,7 +315,7 @@ dd {
 #mobile-menu-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
@@ -374,12 +373,11 @@ dd {
    wrapped below their text, and all accordions were permanently expanded
    (no collapsed state). See plans/05-audit-log.md B51. */
 
-/* Opaque backing: pages may override --bg-card with translucent
-   glassmorphism (index does, at 0.85 alpha) — the slide-out panel must
-   never let page content bleed through. Gradient tint over opaque base. */
+/* Opaque surface: the slide-out panel must never let page content bleed
+   through, so it uses a solid token and no transparency. */
 #mobile-menu {
-  background-image: linear-gradient(var(--bg-card), var(--bg-card));
-  background-color: #ffffff;
+  background: var(--surface);
+  color: var(--ink);
 }
 
 .mobile-menu-link {

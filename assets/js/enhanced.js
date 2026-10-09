@@ -62,8 +62,9 @@ class AnimationController {
     }, delay);
   }
 
+  // Element system (plans/design-element.md): no scroll parallax.
   initParallaxElements() {
-    if (window.innerWidth <= 768) return; // Skip on mobile for performance
+    return;
 
     const parallaxElements = document.querySelectorAll(".parallax-element");
 
@@ -76,7 +77,9 @@ class AnimationController {
     });
   }
 
+  // Element system: no cursor-following "magnetic" buttons.
   initMagneticElements() {
+    return;
     const magneticElements = document.querySelectorAll(".magnetic");
 
     magneticElements.forEach((element) => {
@@ -104,7 +107,7 @@ class AnimationController {
       const speed = element.dataset.speed || 50;
 
       element.textContent = "";
-      element.style.borderRight = "2px solid #06b6d4";
+      element.style.borderRight = "2px solid var(--nitrogen)";
       element.style.animation = "blink 1s infinite";
 
       let i = 0;
@@ -136,15 +139,8 @@ class AnimationController {
         ".btn, .card, .social-link",
       );
 
-      interactiveElements.forEach((element) => {
-        element.addEventListener("touchstart", () => {
-          element.style.transform = "scale(0.95)";
-        });
-
-        element.addEventListener("touchend", () => {
-          element.style.transform = "scale(1)";
-        });
-      });
+      // Touch feedback comes from :active colour changes in CSS, not scaling.
+      void interactiveElements;
     }
   }
 }
@@ -386,19 +382,18 @@ class ThemeController {
       "forest",
       "dracula",
     ];
-    const savedTheme = localStorage.getItem("theme");
-    // Respect the early FOUC script's choice (e.g. homepage quantum)
+    // navbar.js resolves saved choice vs. system preference first.
     this.currentTheme =
-      savedTheme ||
       document.documentElement.getAttribute("data-theme") ||
-      this.getRandomDarkTheme();
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light");
     this.init();
   }
 
+  // Two modes only (plans/design-element.md).
   getRandomDarkTheme() {
-    return this.DARK_THEMES[
-      Math.floor(Math.random() * this.DARK_THEMES.length)
-    ];
+    return "dark";
   }
 
   isDarkTheme(theme) {
@@ -406,17 +401,18 @@ class ThemeController {
   }
 
   init() {
-    this.applyTheme(this.currentTheme);
+    this.applyTheme(this.currentTheme, false);
     this.bindEvents();
     this.detectSystemTheme();
   }
 
-  applyTheme(theme) {
+  applyTheme(theme, persist) {
+    theme = this.isDarkTheme(theme) ? "dark" : "light";
     // Set on <html> for CSS variable cascade AND on <body> for legacy selectors
     document.documentElement.setAttribute("data-theme", theme);
     document.body.setAttribute("data-theme", theme);
     this.currentTheme = theme;
-    localStorage.setItem("theme", theme);
+    if (persist) localStorage.setItem("theme", theme);
 
     // Update theme toggle icons
     const themeButtons = document.querySelectorAll("[data-theme-toggle]");
@@ -447,16 +443,8 @@ class ThemeController {
     const newTheme = this.isDarkTheme(this.currentTheme)
       ? "light"
       : this.getRandomDarkTheme();
-    this.applyTheme(newTheme);
+    this.applyTheme(newTheme, true);
 
-    // Add visual feedback
-    const themeButtons = document.querySelectorAll("[data-theme-toggle]");
-    themeButtons.forEach((btn) => {
-      btn.style.transform = "scale(0.9)";
-      setTimeout(() => {
-        btn.style.transform = "scale(1)";
-      }, 150);
-    });
   }
 
   detectSystemTheme() {
@@ -464,14 +452,12 @@ class ThemeController {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
       if (!localStorage.getItem("theme")) {
-        this.applyTheme(
-          mediaQuery.matches ? this.getRandomDarkTheme() : "light",
-        );
+        this.applyTheme(mediaQuery.matches ? "dark" : "light", false);
       }
 
       mediaQuery.addEventListener("change", (e) => {
         if (!localStorage.getItem("theme-manual")) {
-          this.applyTheme(e.matches ? this.getRandomDarkTheme() : "light");
+          this.applyTheme(e.matches ? "dark" : "light", false);
         }
       });
     }
@@ -513,26 +499,8 @@ document.addEventListener("DOMContentLoaded", () => {
     lucide.createIcons();
   }
 
-  // Add stagger animation to main sections
-  const sections = document.querySelectorAll("section");
-  sections.forEach((section, index) => {
-    section.setAttribute("data-animate", "fade-in");
-    section.setAttribute("data-delay", index * 200);
-  });
-
-  // Enhanced scroll behavior - CSS classes handle opacity/transform, no need for inline styles
-
-  // Add enhanced hover effects to cards
-  const cards = document.querySelectorAll(".card");
-  cards.forEach((card) => {
-    card.classList.add("advanced-hover", "float-on-hover");
-  });
-
-  // Add magnetic effect to buttons
-  const buttons = document.querySelectorAll(".btn");
-  buttons.forEach((btn) => {
-    btn.classList.add("magnetic", "pulse-on-hover");
-  });
+  // Element system: sections are not staggered in on scroll, cards do not
+  // float, buttons are not magnetic. Hover states live in CSS.
 });
 
 // Viewport height fix for mobile browsers
@@ -576,8 +544,8 @@ const debouncedScrollHandler = debounce(() => {
   if (window.innerWidth > 768) {
     const parallaxElements = document.querySelectorAll(".parallax-element");
     parallaxElements.forEach((element) => {
-      const rate = scrollY * -0.3;
-      element.style.transform = `translateY(${rate}px)`;
+      void scrollY;
+      element.style.transform = "none";
     });
   }
 }, 10);
@@ -613,19 +581,6 @@ class ContactFormEnhancer {
         this.clearValidationState(e.target);
       });
 
-      // Hover effects
-      input.addEventListener("mouseenter", (e) => {
-        if (document.activeElement !== e.target) {
-          e.target.style.transform = "translateY(-2px)";
-        }
-      });
-
-      input.addEventListener("mouseleave", (e) => {
-        if (document.activeElement !== e.target) {
-          e.target.style.transform = "translateY(0)";
-        }
-      });
-
       // Real-time validation
       input.addEventListener("input", (e) => {
         this.clearValidationState(e.target);
@@ -655,7 +610,7 @@ class ContactFormEnhancer {
             height: ${size}px;
             left: ${x}px;
             top: ${y}px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+            background: var(--nitrogen-wash);
             border-radius: 50%;
             transform: scale(0);
             animation: ripple 0.6s ease-out;
@@ -750,16 +705,16 @@ class ContactFormEnhancer {
 
   showSuccess() {
     this.submitButton.innerHTML = "✓ Sent Successfully!";
-    this.submitButton.style.background =
-      "linear-gradient(135deg, #10b981, #059669)";
+    this.submitButton.style.background = "var(--nitrogen)";
+    this.submitButton.style.color = "var(--on-nitrogen)";
     this.statusElement.textContent = "Thank you! Your message has been sent.";
     this.statusElement.className = "text-center text-sm mt-4 text-green-400";
   }
 
   showError() {
     this.submitButton.innerHTML = "✗ Error Occurred";
-    this.submitButton.style.background =
-      "linear-gradient(135deg, #ef4444, #dc2626)";
+    this.submitButton.style.background = "var(--oxygen)";
+    this.submitButton.style.color = "var(--on-nitrogen)";
     this.statusElement.textContent =
       "Sorry, there was an error sending your message. Please try again.";
     this.statusElement.className = "text-center text-sm mt-4 text-red-400";
@@ -770,6 +725,7 @@ class ContactFormEnhancer {
     this.submitButton.disabled = false;
     this.submitButton.innerHTML = originalText;
     this.submitButton.style.background = "";
+    this.submitButton.style.color = "";
     this.form.reset();
     this.statusElement.textContent = "";
 

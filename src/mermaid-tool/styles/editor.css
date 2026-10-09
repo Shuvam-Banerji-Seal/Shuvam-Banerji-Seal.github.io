@@ -2,55 +2,38 @@
    SBS's Mermaid Editor - VS Code Style Theme
    ============================================ */
 
-/* CSS Variables - Dark Theme (Default) */
+/* Colours come from the Element tokens in theme.css, so light and dark
+   follow data-theme on <html> (set by App.jsx) without separate blocks. */
 :root {
-    --bg-primary: #1e1e1e;
-    --bg-secondary: #252526;
-    --bg-tertiary: #2d2d30;
-    --bg-hover: #3c3c3c;
-    --bg-active: #094771;
-    --border-color: #3c3c3c;
-    --text-primary: #cccccc;
-    --text-secondary: #858585;
-    --text-muted: #6e6e6e;
-    --accent-primary: #0e639c;
-    --accent-hover: #1177bb;
-    --accent-text: #3794ff;
-    --success: #89d185;
-    --error: #f48771;
-    --warning: #cca700;
-    --scrollbar-bg: #1e1e1e;
-    --scrollbar-thumb: #424242;
-    --scrollbar-thumb-hover: #4f4f4f;
-    --panel-header-bg: #252526;
-    --status-bar-bg: #007acc;
+    --bg-primary: var(--paper);
+    --bg-secondary: var(--surface);
+    --bg-tertiary: var(--surface-2);
+    --bg-hover: var(--surface-2);
+    --bg-active: var(--nitrogen-wash);
+    --border-color: var(--rule);
+    --text-primary: var(--ink);
+    --text-secondary: var(--graphite);
+    --text-muted: var(--graphite);
+    --accent-primary: var(--nitrogen);
+    --accent-hover: color-mix(in srgb, var(--nitrogen) 85%, var(--ink));
+    --accent-text: var(--nitrogen);
+    /* Status colours for save/compile messages (not chrome) */
+    --success: #2e7d32;
+    --error: var(--oxygen);
+    --warning: #8a5a00;
+    --scrollbar-bg: var(--paper);
+    --scrollbar-thumb: var(--rule-strong);
+    --scrollbar-thumb-hover: var(--graphite);
+    --panel-header-bg: var(--surface-2);
+    --status-bar-bg: var(--surface-2);
     --sidebar-width: 280px;
     --header-height: 52px;
     --status-height: 24px;
 }
 
-/* Light Theme */
-[data-theme="light"], .light {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f3f3f3;
-    --bg-tertiary: #e8e8e8;
-    --bg-hover: #e4e4e4;
-    --bg-active: #cce5ff;
-    --border-color: #e0e0e0;
-    --text-primary: #333333;
-    --text-secondary: #616161;
-    --text-muted: #999999;
-    --accent-primary: #0066b8;
-    --accent-hover: #0078d4;
-    --accent-text: #0066b8;
-    --success: #388a34;
-    --error: #d32f2f;
-    --warning: #bf8803;
-    --scrollbar-bg: #f3f3f3;
-    --scrollbar-thumb: #c1c1c1;
-    --scrollbar-thumb-hover: #a8a8a8;
-    --panel-header-bg: #f3f3f3;
-    --status-bar-bg: #007acc;
+[data-theme="dark"] {
+    --success: #89d185;
+    --warning: #e0b341;
 }
 
 /* Base Styles */
@@ -67,7 +50,7 @@ html, body, #root {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-body);
     font-size: 13px;
     line-height: 1.5;
     background: var(--bg-primary);
@@ -202,7 +185,7 @@ body {
 
 .mode-btn.active {
     background: var(--accent-primary);
-    color: white;
+    color: var(--on-nitrogen);
 }
 
 .nav-link {
@@ -235,7 +218,7 @@ body {
     background: var(--accent-primary);
     border: none;
     border-radius: 6px;
-    color: white;
+    color: var(--on-nitrogen);
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
@@ -260,7 +243,7 @@ body {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--lift);
     overflow: hidden;
     z-index: 100;
     animation: slideDown 0.15s ease;
@@ -435,7 +418,7 @@ body {
 }
 
 .template-item.active .template-icon {
-    background: rgba(55, 148, 255, 0.2);
+    background: var(--nitrogen-wash);
     color: var(--accent-text);
 }
 
@@ -624,7 +607,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     z-index: 10;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--lift);
 }
 
 .zoom-controls button {
@@ -667,9 +650,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: 
-        radial-gradient(circle, var(--border-color) 1px, transparent 1px);
-    background-size: 20px 20px;
     position: relative;
 }
 
@@ -716,10 +696,10 @@ body {
 .error-message {
     max-width: 400px;
     padding: 12px 16px;
-    background: rgba(244, 135, 113, 0.1);
+    background: var(--oxygen-wash);
     border: 1px solid var(--error);
     border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     color: var(--error);
     text-align: left;
@@ -747,7 +727,7 @@ body {
     height: var(--status-height);
     padding: 0 12px;
     background: var(--status-bar-bg);
-    color: white;
+    color: var(--text-primary);
     font-size: 12px;
     flex-shrink: 0;
 }
@@ -938,8 +918,8 @@ a:focus-visible {
 
 /* Selection */
 ::selection {
-    background: var(--accent-primary);
-    color: white;
+    background: var(--sulfur);
+    color: var(--ink);
 }
 
 /* Print styles */
@@ -996,9 +976,8 @@ a:focus-visible {
 
 .dropdown-header {
     padding: 8px 14px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    text-transform: uppercase;
     color: var(--text-muted);
     border-bottom: 1px solid var(--border-color);
 }
@@ -1060,7 +1039,7 @@ a:focus-visible {
 }
 
 .dropdown-menu kbd {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 10px;
     padding: 2px 6px;
     background: var(--bg-tertiary);
@@ -1093,7 +1072,7 @@ a:focus-visible {
     padding: 2px 6px;
     background: var(--accent-primary);
     border-radius: 4px;
-    color: white;
+    color: var(--on-nitrogen);
     text-transform: capitalize;
     margin-left: 8px;
 }
@@ -1108,7 +1087,7 @@ a:focus-visible {
 
 .status-brand {
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
 }
 
 /* ============================================
@@ -1126,7 +1105,7 @@ a:focus-visible {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--lift);
     color: var(--text-primary);
     font-size: 13px;
     z-index: 1000;
@@ -1240,7 +1219,7 @@ a:focus-visible {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--lift);
     z-index: 100;
     min-width: 150px;
 }
@@ -1288,7 +1267,7 @@ a:focus-visible {
 }
 
 .vb-clear-btn:hover {
-    background: rgba(244, 135, 113, 0.1);
+    background: var(--oxygen-wash);
     border-color: var(--error);
 }
 
@@ -1308,7 +1287,7 @@ a:focus-visible {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--lift);
     z-index: 50;
     overflow: hidden;
 }
@@ -1391,7 +1370,7 @@ a:focus-visible {
 }
 
 .vb-color-swatch:hover {
-    transform: scale(1.1);
+    border-color: var(--rule-strong);
 }
 
 .vb-color-swatch.active {
@@ -1431,7 +1410,7 @@ a:focus-visible {
 }
 
 .vb-delete-btn:hover {
-    background: rgba(244, 135, 113, 0.1);
+    background: var(--oxygen-wash);
     border-color: var(--error);
 }
 
@@ -1458,17 +1437,12 @@ a:focus-visible {
     padding: 10px 20px;
     background: var(--accent-primary);
     border-radius: 20px;
-    color: white;
+    color: var(--on-nitrogen);
     font-size: 12px;
     font-weight: 500;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    animation: pulse 2s infinite;
+    box-shadow: var(--lift);
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
 
 .vb-empty-state {
     position: absolute;
@@ -1516,7 +1490,7 @@ a:focus-visible {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--lift);
     overflow: hidden;
     z-index: 100;
     min-width: 160px;
@@ -1529,9 +1503,8 @@ a:focus-visible {
 .vb-context-label {
     display: block;
     padding: 6px 12px;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
-    text-transform: uppercase;
     color: var(--text-muted);
 }
 

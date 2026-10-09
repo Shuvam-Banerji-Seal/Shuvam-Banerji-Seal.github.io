@@ -135,7 +135,7 @@ class EReader {
         const chapter = this.currentBook.chapters[chapterIndex];
 
         const contentArea = document.getElementById('reader-content');
-        contentArea.innerHTML = '<div class="loading" style="text-align:center; padding: 2rem;">Loading chapter...</div>';
+        contentArea.innerHTML = '<div class="reader-status">Loading chapter&hellip;</div>';
 
         // Update select value
         document.getElementById('chapter-select').value = chapterIndex;
@@ -155,17 +155,17 @@ class EReader {
                 }
             } catch (e) {
                 console.warn('Could not load chapter file, using placeholder', e);
-                markdown = `# ${chapter.title}\n\n*Content for this chapter is currently being written. Please check back later.*\n\n> The journey continues...`;
+                markdown = `# ${chapter.title}\n\n*Content for this chapter is still being written. Check back later.*\n\n> The journey continues...`;
             }
 
             const html = this.renderMarkdown(markdown);
 
             contentArea.innerHTML = `
                 <div class="chapter-content">
-                    <div class="chapter-header" style="text-align: center; margin-bottom: 3rem; border-bottom: 1px solid var(--reader-accent); padding-bottom: 2rem;">
-                        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 1rem;">${this.currentBook.title}</p>
-                        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Chapter ${chapter.number}</h1>
-                        <h2 style="font-size: 1.5rem; font-weight: 400; font-style: italic;">${chapter.title}</h2>
+                    <div class="chapter-header">
+                        <p class="chapter-book">${this.currentBook.title}</p>
+                        <h1 class="chapter-title-main">Chapter ${chapter.number}</h1>
+                        <h2 class="chapter-subtitle">${chapter.title}</h2>
                     </div>
                     ${html}
                     
@@ -196,7 +196,7 @@ class EReader {
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
         } catch (error) {
-            contentArea.innerHTML = `<div class="error" style="color: red; text-align: center;">Error loading chapter: ${error.message}</div>`;
+            contentArea.innerHTML = `<div class="reader-status reader-status-error">Could not load this chapter: ${error.message}</div>`;
         }
     }
 

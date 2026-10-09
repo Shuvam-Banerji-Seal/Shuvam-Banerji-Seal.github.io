@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        var DARK_THEMES = [
-          "dark",
-          "dark-coffee",
-          "amber",
-          "tokyo-night",
-          "absolute-dark",
-          "forest",
-          "dracula",
-        ];
+        // Element theme: saved choice wins, else follow the system.
+        var s = null;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
         var t =
-          localStorage.getItem("theme") ||
-          DARK_THEMES[Math.floor(Math.random() * DARK_THEMES.length)];
+          s === "light"
+            ? "light"
+            : s
+              ? "dark"
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
@@ -62,7 +63,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Code+Pro:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/theme.css" />
@@ -75,57 +76,6 @@
       src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
     ></script>
     <style>
-      /* Tools page CSS variables — dark mode (default) */
-      :root {
-        --tools-titlebar-bg: #0d1526;
-        --tools-titlebar-border: rgba(0, 212, 255, 0.1);
-        --tools-card-bg: rgba(255, 255, 255, 0.03);
-        --tools-footer-border: rgba(255, 255, 255, 0.06);
-        --tools-glow: rgba(0, 212, 255, 0.12);
-        --tools-launch-hover-bg: var(--accent-cyan);
-        --tools-launch-hover-text: #0a1020;
-      }
-      html[data-theme="dark"],
-      html[data-theme="dark-coffee"],
-      html[data-theme="amber"],
-      html[data-theme="tokyo-night"],
-      html[data-theme="absolute-dark"],
-      html[data-theme="forest"],
-      html[data-theme="dracula"],
-      [data-theme="dark-coffee"],
-      [data-theme="amber"],
-      [data-theme="tokyo-night"],
-      [data-theme="absolute-dark"],
-      [data-theme="forest"],
-      [data-theme="dracula"] {
-        --tools-titlebar-bg: #0d1526;
-        --tools-titlebar-border: rgba(0, 212, 255, 0.1);
-        --tools-card-bg: rgba(255, 255, 255, 0.03);
-        --tools-footer-border: rgba(255, 255, 255, 0.06);
-        --tools-glow: rgba(0, 212, 255, 0.12);
-        --tools-launch-hover-bg: var(--accent-cyan);
-        --tools-launch-hover-text: #0a1020;
-      }
-      html[data-theme="quantum"],
-      [data-theme="quantum"] {
-        --tools-titlebar-bg: #0d1526;
-        --tools-card-bg: rgba(255, 255, 255, 0.03);
-        --tools-glow: rgba(34, 211, 238, 0.12);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"]) {
-        --tools-titlebar-bg: #e8d5b0;
-        --tools-titlebar-border: rgba(139, 101, 68, 0.2);
-        --tools-card-bg: rgba(255, 255, 255, 0.7);
-        --tools-footer-border: rgba(139, 101, 68, 0.15);
-        --tools-glow: rgba(201, 124, 58, 0.15);
-        --tools-launch-hover-bg: var(--btn-primary-hover, #9e5417);
-        --tools-launch-hover-text: var(--btn-primary-text, #fff);
-      }
-
       * {
         box-sizing: border-box;
         margin: 0;
@@ -136,538 +86,168 @@
         overflow-x: hidden;
       }
       body {
-        font-family: var(--font-body, "Inter", sans-serif);
-        background: var(--bg-deep);
-        color: var(--text-primary);
-        line-height: 1.7;
+        font-family: var(--font-body);
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
         overflow-x: hidden;
-      }
-      body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(0, 0, 0, 0.025) 2px,
-          rgba(0, 0, 0, 0.025) 4px
-        );
-        pointer-events: none;
-        z-index: 9999;
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        body::before {
-        opacity: 0.4;
-      }
-      .page-grid-bg {
-        position: fixed;
-        inset: 0;
-        background-image:
-          linear-gradient(rgba(0, 212, 255, 0.025) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0, 212, 255, 0.025) 1px, transparent 1px);
-        background-size: 60px 60px;
-        z-index: 0;
-        pointer-events: none;
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .page-grid-bg {
-        background-image:
-          linear-gradient(rgba(139, 101, 68, 0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(139, 101, 68, 0.035) 1px, transparent 1px);
       }
       main {
         position: relative;
-        z-index: 1;
-        max-width: 1320px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 6rem 2rem 4rem;
+        padding: 7rem clamp(16px, 4vw, 48px) 4rem;
       }
-      .header-terminal {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow:
-          0 0 20px var(--tools-glow),
-          var(--shadow-card);
+      .tools-intro {
         margin-bottom: 3rem;
-      }
-      .header-titlebar {
-        background: var(--tools-titlebar-bg);
-        padding: 0.55rem 1.1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid var(--tools-titlebar-border);
-        font-family: var(--font-mono);
-        font-size: 0.73rem;
-      }
-      .titlebar-dots {
-        display: flex;
-        gap: 0.4rem;
-      }
-      .dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-      }
-      .dot-r {
-        background: #ff5f57;
-      }
-      .dot-y {
-        background: #febc2e;
-      }
-      .dot-g {
-        background: #28c840;
-      }
-      .titlebar-path {
-        color: var(--accent-cyan);
-        font-family: var(--font-mono);
-        display: flex;
-        gap: 0.35rem;
-      }
-      .path-host {
-        color: var(--accent-green);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .titlebar-path {
-        color: #8b4513;
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .path-host {
-        color: #2f5517;
-      }
-      .titlebar-right {
-        color: var(--text-muted);
-        font-family: var(--font-mono);
-        font-size: 0.73rem;
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .titlebar-right {
-        /* light theme: muted #9c7a5a was 2.7:1 on the parchment bar */
-        color: #6b4226;
-      }
-      .header-body {
-        padding: 2rem 2.5rem;
       }
       .tools-page-title {
-        font-size: 2rem;
+        font-family: var(--font-display);
+        font-stretch: 68%;
         font-weight: 800;
-        background: var(--grad-primary);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 0.4rem;
-        font-family: var(--font-mono);
+        font-size: 2.625rem;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin-bottom: 0.75rem;
       }
       .tools-page-sub {
-        color: var(--text-secondary);
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
-      }
-      .tools-stats {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        font-family: var(--font-mono);
-        font-size: 0.8rem;
-      }
-      .stat-key {
-        color: var(--accent-cyan);
-      }
-      .stat-val {
-        color: var(--text-secondary);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .stat-key {
-        color: #8b4513;
+        color: var(--graphite);
+        font-size: 1.0625rem;
+        max-width: 68ch;
       }
       .tools-section {
-        margin-bottom: 3rem;
-      }
-      .section-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
-        font-family: var(--font-mono);
-      }
-      .section-label {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        border-left: 2px solid var(--accent-cyan);
-        padding-left: 0.75rem;
+        margin-bottom: 3.5rem;
       }
       .section-title {
-        font-size: 1.05rem;
+        font-size: 1.3125rem;
         font-weight: 700;
-        color: var(--accent-cyan);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .section-label {
-        border-color: #8b4513;
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .section-title {
-        color: #8b4513;
+        color: var(--ink);
+        margin-bottom: 1.25rem;
       }
       .tools-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.4rem;
+        gap: 1rem;
       }
       .tool-card {
-        background: var(--tools-card-bg);
-        border: 1px solid var(--border);
-        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--rule);
+        border-radius: var(--r-l);
         overflow: hidden;
-        transition:
-          transform 0.25s,
-          box-shadow 0.25s,
-          border-color 0.25s;
         display: flex;
         flex-direction: column;
+        transition: border-color 150ms;
       }
       .tool-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px var(--tools-glow);
-        border-color: var(--accent-cyan);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .tool-card:hover {
-        box-shadow: 0 12px 40px rgba(201, 124, 58, 0.15);
-        border-color: #8b4513;
-      }
-      .tool-card.featured {
-        border-color: rgba(0, 212, 255, 0.35);
-        background: rgba(0, 212, 255, 0.04);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .tool-card.featured {
-        border-color: rgba(139, 101, 68, 0.45);
-        background: rgba(139, 101, 68, 0.06);
-      }
-      .tool-titlebar {
-        background: var(--tools-titlebar-bg);
-        padding: 0.42rem 0.9rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid var(--tools-titlebar-border);
-        font-family: var(--font-mono);
-        font-size: 0.68rem;
-        color: var(--text-muted);
-      }
-      .tool-dots {
-        display: flex;
-        gap: 5px;
-      }
-      .tdot {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-      }
-      .tdot-r {
-        background: #ff5f57;
-      }
-      .tdot-y {
-        background: #febc2e;
-      }
-      .tdot-g {
-        background: #28c840;
-      }
-      .tool-label {
-        color: var(--accent-cyan);
-        font-family: var(--font-mono);
-      }
-      .tool-featured-badge {
-        background: rgba(0, 212, 255, 0.15);
-        color: var(--accent-cyan);
-        padding: 0.1rem 0.5rem;
-        border-radius: 10px;
-        font-size: 0.65rem;
-        border: 1px solid rgba(0, 212, 255, 0.3);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .tool-label {
-        color: #8b4513;
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .tool-featured-badge {
-        background: rgba(139, 101, 68, 0.12);
-        color: #6f3710;
-        border-color: rgba(139, 101, 68, 0.3);
+        border-color: var(--ink);
       }
       .tool-body {
-        padding: 1.3rem 1.4rem;
+        padding: 1.25rem 1.375rem;
         flex: 1;
         display: flex;
         flex-direction: column;
       }
-      .tool-icon-row {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 0.85rem;
-      }
-      .tool-emoji {
-        font-size: 1.75rem;
-        line-height: 1;
+      .tool-featured {
+        font-size: 0.8125rem;
+        color: var(--graphite);
+        margin-bottom: 0.25rem;
       }
       .tool-name {
         font-weight: 700;
-        font-size: 1rem;
-        color: var(--text-primary);
+        font-size: 1.0625rem;
+        line-height: 1.3;
+        color: var(--ink);
+        margin-bottom: 0.5rem;
       }
       .tool-desc {
-        font-size: 0.858rem;
-        color: var(--text-secondary);
-        line-height: 1.65;
+        font-size: 0.9375rem;
+        color: var(--graphite);
+        line-height: 1.6;
         flex: 1;
-        margin-bottom: 1.1rem;
+        margin-bottom: 1rem;
       }
       .tool-footer {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-top: 0.85rem;
-        border-top: 1px solid var(--tools-footer-border);
+        gap: 0.75rem;
+        padding-top: 0.875rem;
+        border-top: 1px solid var(--rule);
       }
       .tool-tags {
         display: flex;
-        gap: 0.35rem;
+        gap: 0.375rem;
         flex-wrap: wrap;
       }
       .tool-tag {
-        padding: 0.15rem 0.5rem;
-        border-radius: 20px;
-        background: rgba(0, 212, 255, 0.06);
-        border: 1px solid rgba(0, 212, 255, 0.15);
-        color: var(--text-muted);
-        font-family: var(--font-mono);
-        font-size: 0.67rem;
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .tool-tag {
-        background: rgba(139, 101, 68, 0.06);
-        border-color: rgba(139, 101, 68, 0.2);
+        padding: 0.125rem 0.5rem;
+        border-radius: var(--r-s);
+        border: 1px solid var(--rule);
+        color: var(--graphite);
+        font-size: 0.8125rem;
       }
       .tool-launch {
         display: inline-flex;
         align-items: center;
-        gap: 0.3rem;
-        padding: 0.35rem 0.85rem;
-        border-radius: 7px;
+        padding: 0.4rem 0.875rem;
+        border-radius: var(--r-m);
         background: transparent;
-        border: 1px solid var(--accent-cyan);
-        color: var(--accent-cyan);
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        font-weight: 600;
+        border: 1px solid var(--rule);
+        color: var(--ink);
+        font: 600 0.875rem/1.2 var(--font-body);
         cursor: pointer;
-        text-decoration: none;
-        transition: all 0.2s;
         white-space: nowrap;
-        min-height: 36px;
+        min-height: 40px;
+        transition: border-color 150ms, color 150ms;
       }
       .tool-launch:hover {
-        background: var(--tools-launch-hover-bg);
-        color: var(--tools-launch-hover-text);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .tool-launch {
-        border-color: #8b4513;
-        color: #8b4513;
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .tool-launch:hover {
-        background: #8b4513;
-        color: #fff;
+        border-color: var(--nitrogen);
+        color: var(--nitrogen);
       }
       footer {
         position: relative;
-        z-index: 1;
-        background: var(--bg-dark);
-        border-top: 1px solid var(--border);
-        padding: 2.5rem 2rem;
+        border-top: 1px solid var(--rule);
+        padding: 2.5rem clamp(16px, 4vw, 48px);
         text-align: center;
-        font-family: var(--font-mono);
-        font-size: 0.78rem;
-        color: var(--text-muted);
+        font-size: 0.875rem;
+        color: var(--graphite);
       }
       .footer-social {
         display: flex;
         justify-content: center;
-        gap: 1.25rem;
+        gap: 1rem;
         margin-bottom: 1rem;
       }
       .social-link {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        color: var(--text-secondary);
-        transition: all 0.2s;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--r-m);
+        border: 1px solid var(--rule);
+        color: var(--graphite);
+        transition: border-color 150ms, color 150ms;
         text-decoration: none;
       }
       .social-link:hover {
-        border-color: var(--accent-cyan);
-        color: var(--accent-cyan);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .social-link:hover {
-        border-color: #8b4513;
-        color: #8b4513;
-      }
-      .tools-theme-btn {
-        background: transparent;
-        border: 1px solid var(--border);
-        color: var(--text-secondary);
-        border-radius: 6px;
-        padding: 0.35rem 0.9rem;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        min-height: 36px;
-      }
-      .tools-theme-btn:hover {
-        border-color: var(--accent-cyan);
-        color: var(--accent-cyan);
-      }
-      html:not([data-theme="dark"]):not([data-theme="dark-coffee"]):not(
-          [data-theme="amber"]
-        ):not([data-theme="tokyo-night"]):not([data-theme="absolute-dark"]):not(
-          [data-theme="forest"]
-        ):not([data-theme="dracula"]):not([data-theme="quantum"])
-        .tools-theme-btn:hover {
-        border-color: #8b4513;
-        color: #8b4513;
+        border-color: var(--ink);
+        color: var(--ink);
       }
 
-      /* Mobile responsive */
       @media (max-width: 768px) {
         main {
-          padding: 5rem 1rem 3rem;
-        }
-        .header-body {
-          padding: 1.5rem 1.25rem;
-        }
-        .tools-page-title {
-          font-size: 1.5rem;
-        }
-        .tools-page-sub {
-          font-size: 0.85rem;
-        }
-        .tools-stats {
-          gap: 1rem;
-          font-size: 0.75rem;
+          padding: 6rem 16px 3rem;
         }
         .tools-grid {
           grid-template-columns: 1fr;
-          gap: 1rem;
         }
         .tools-section {
-          margin-bottom: 2rem;
-        }
-        .section-header {
-          margin-bottom: 1rem;
-        }
-        .section-title {
-          font-size: 0.95rem;
-        }
-        .section-label {
-          font-size: 0.7rem;
-        }
-        .tool-body {
-          padding: 1rem 1.1rem;
-        }
-        .tool-desc {
-          font-size: 0.82rem;
+          margin-bottom: 2.5rem;
         }
         .tool-launch {
           min-height: 44px;
-          padding: 0.5rem 1rem;
-          font-size: 0.8rem;
-        }
-        .tool-tag {
-          font-size: 0.62rem;
-          padding: 0.2rem 0.45rem;
-        }
-        .header-titlebar,
-        .tool-titlebar {
-          padding: 0.45rem 0.75rem;
         }
         .social-link {
           width: 44px;
@@ -675,225 +255,99 @@
         }
       }
       @media (max-width: 425px) {
-        main {
-          padding: 4.5rem 0.75rem 2.5rem;
-        }
-        .header-terminal {
-          border-radius: 10px;
-          margin-bottom: 2rem;
-        }
-        .header-body {
-          padding: 1.25rem 1rem;
-        }
         .tools-page-title {
-          font-size: 1.3rem;
-        }
-        .tools-stats {
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-        .tool-icon-row {
-          gap: 0.5rem;
-        }
-        .tool-emoji {
-          font-size: 1.4rem;
-        }
-        .tool-name {
-          font-size: 0.9rem;
+          font-size: 2rem;
         }
         .tool-footer {
           flex-direction: column;
           gap: 0.75rem;
           align-items: flex-start;
         }
-        .tool-tags {
-          order: 2;
-        }
         .tool-launch {
-          order: 1;
           align-self: flex-end;
         }
         footer {
-          padding: 2rem 1rem;
+          padding: 2rem 16px;
         }
       }
     </style>
+    <link rel="stylesheet" href="../assets/css/element.css" />
   </head>
   <body>
-    <div class="page-grid-bg"></div>
     <div id="navbar-container"></div>
     <main>
-      <div class="header-terminal">
-        <div class="header-titlebar">
-          <div class="titlebar-dots">
-            <span class="dot dot-r"></span><span class="dot dot-y"></span
-            ><span class="dot dot-g"></span>
-          </div>
-          <div class="titlebar-path">
-            <span class="path-host">shuvam@archbox</span><span>&#9656;</span
-            ><span>~/portfolio/tools</span>
-          </div>
-          <div class="titlebar-right">tools.sh</div>
-        </div>
-        <div class="header-body">
-          <div class="tools-page-title">// tools</div>
-          <div class="tools-page-sub">
-            Browser-based utilities for research, chemistry, productivity, and
-            fun. No install needed.
-          </div>
-          <div class="tools-stats">
-            <span
-              ><span class="stat-key">count:</span>&nbsp;<span class="stat-val"
-                >13 tools</span
-              ></span
-            >
-            <span
-              ><span class="stat-key">stack:</span>&nbsp;<span class="stat-val"
-                >HTML &middot; JS &middot; WebAssembly</span
-              ></span
-            >
-            <span
-              ><span class="stat-key">status:</span>&nbsp;<span
-                class="stat-val"
-                style="color: var(--accent-green)"
-                >&#9679; all operational</span
-              ></span
-            >
-          </div>
-        </div>
+      <div class="tools-intro">
+        <h1 class="tools-page-title">Tools</h1>
+        <p class="tools-page-sub">
+          Browser-based utilities for research, chemistry, productivity, and
+          fun. No install needed.
+        </p>
       </div>
       <div class="tools-section">
-        <div class="section-header">
-          <div>
-            <div class="section-label">category_01</div>
-            <div class="section-title">AI &amp; Research</div>
-          </div>
-        </div>
+        <h2 class="section-title">AI &amp; Research</h2>
         <div class="tools-grid">
           <div class="tool-card featured" data-tool="llm-studio">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">llm-studio.sh</span
-              ><span class="tool-featured-badge">featured</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F916;</span
-                ><span class="tool-name">LLM Studio</span>
-              </div>
+              <span class="tool-featured">Featured</span>
+              <h3 class="tool-name">LLM Studio</h3>
               <div class="tool-desc">
-                Chat with GLM-5 (pre-configured, free!), GPT-4o, Claude, Gemini,
-                Groq and OpenRouter — all in one place with full conversation
-                history.
+                Chat with GLM-5 (pre-configured, free!), GPT-4o, Claude, Gemini, Groq and OpenRouter, all in one place with full conversation history.
               </div>
               <div class="tool-footer">
                 <div class="tool-tags">
-                  <span class="tool-tag">AI</span
-                  ><span class="tool-tag">GLM-5</span
-                  ><span class="tool-tag">chat</span
-                  ><span class="tool-tag">API</span>
+                  <span class="tool-tag">AI</span>
+                  <span class="tool-tag">GLM-5</span>
+                  <span class="tool-tag">chat</span>
+                  <span class="tool-tag">API</span>
                 </div>
-                <button class="tool-launch" onclick="openTool('llm-studio')">
-                  launch &rarr;
-                </button>
+                <button class="tool-launch" onclick="openTool('llm-studio')">Open tool</button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="paper-finder">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">paper-finder.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F50D;</span
-                ><span class="tool-name">Research Paper Finder</span>
-              </div>
+              <h3 class="tool-name">Research Paper Finder</h3>
               <div class="tool-desc">
-                Search and discover research papers via Semantic Scholar and
-                arXiv APIs. Filter by field, year, and citation count.
+                Search and discover research papers via Semantic Scholar and arXiv APIs. Filter by field, year, and citation count.
               </div>
               <div class="tool-footer">
                 <div class="tool-tags">
-                  <span class="tool-tag">research</span
-                  ><span class="tool-tag">arXiv</span>
+                  <span class="tool-tag">research</span>
+                  <span class="tool-tag">arXiv</span>
                 </div>
-                <button class="tool-launch" onclick="openTool('paper-finder')">
-                  launch &rarr;
-                </button>
+                <button class="tool-launch" onclick="openTool('paper-finder')">Open tool</button>
               </div>
             </div>
           </div>
           <div class="tool-card featured" data-tool="mermaid-editor">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">mermaid.sh</span
-              ><span class="tool-featured-badge">featured</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F4CA;</span
-                ><span class="tool-name">Mermaid Diagram Editor</span>
-              </div>
+              <span class="tool-featured">Featured</span>
+              <h3 class="tool-name">Mermaid Diagram Editor</h3>
               <div class="tool-desc">
-                Full-featured diagram editor with live preview, VS Code-style
-                editing, syntax highlighting, and multi-format SVG/PNG export.
+                Full-featured diagram editor with live preview, VS Code-style editing, syntax highlighting, and multi-format SVG/PNG export.
               </div>
               <div class="tool-footer">
                 <div class="tool-tags">
-                  <span class="tool-tag">diagrams</span
-                  ><span class="tool-tag">SVG</span>
+                  <span class="tool-tag">diagrams</span>
+                  <span class="tool-tag">SVG</span>
                 </div>
-                <button
-                  class="tool-launch"
-                  onclick="openTool('mermaid-editor')"
-                >
-                  launch &rarr;
-                </button>
+                <button class="tool-launch" onclick="openTool('mermaid-editor')">Open tool</button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="tools-section">
-        <div class="section-header">
-          <div>
-            <div class="section-label">category_02</div>
-            <div class="section-title">PDF &amp; Media</div>
-          </div>
-        </div>
+        <h2 class="section-title">PDF &amp; Media</h2>
         <div class="tools-grid">
           <div class="tool-card featured" data-tool="pdf-studio">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">pdf-studio.sh</span
-              ><span class="tool-featured-badge">featured</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F4C4;</span
-                ><span class="tool-name">PDF Studio</span>
-              </div>
+              <span class="tool-featured">Featured</span>
+              <h3 class="tool-name">PDF Studio</h3>
               <div class="tool-desc">
                 Compress, convert to images, merge multiple PDFs, and split by
-                page range — all in one unified interface, runs entirely in your
-                browser.
+                page range, all in one unified interface that runs entirely in
+                your browser.
               </div>
               <div class="tool-footer">
                 <div class="tool-tags">
@@ -903,25 +357,14 @@
                   ><span class="tool-tag">split</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('pdf-studio')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="audio-studio">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">audio-studio.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F3A4;</span
-                ><span class="tool-name">Audio Studio</span>
-              </div>
+              <h3 class="tool-name">Audio Studio</h3>
               <div class="tool-desc">
                 Browser-based audio recording, editing, and processing with
                 effects, filters, and a guitar tuner.
@@ -932,27 +375,16 @@
                   ><span class="tool-tag">recording</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('audio-studio')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="image-studio">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">image-studio.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F5BC;</span
-                ><span class="tool-name">Image Studio</span>
-              </div>
+              <h3 class="tool-name">Image Studio</h3>
               <div class="tool-desc">
-                Compress and convert images — JPG, PNG, WebP. Quality control,
+                Compress and convert images (JPG, PNG, WebP). Quality control,
                 resize, batch processing. All local.
               </div>
               <div class="tool-footer">
@@ -961,28 +393,16 @@
                   ><span class="tool-tag">compression</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('image-studio')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="webcam-tester">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">webcam-tester.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F4F7;</span
-                ><span class="tool-name">Webcam Tester + Air Guitar</span>
-              </div>
+              <h3 class="tool-name">Webcam Tester + Air Guitar</h3>
               <div class="tool-desc">
-                Camera diagnostics with live resolution/FPS stats and snapshots
-                &mdash; plus an air guitar you strum through the webcam
+                Camera diagnostics with live resolution/FPS stats and snapshots, plus an air guitar you strum through the webcam
                 (MediaPipe hand tracking).
               </div>
               <div class="tool-footer">
@@ -992,25 +412,14 @@
                   ><span class="tool-tag">fun</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('webcam-tester')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="youtube-downloader">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">yt-downloader.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F4FA;</span
-                ><span class="tool-name">YouTube Downloader</span>
-              </div>
+              <h3 class="tool-name">YouTube Downloader</h3>
               <div class="tool-desc">
                 Download YouTube videos and audio in multiple formats (MP4, MP3,
                 WEBM, WAV, FLAC) and qualities up to 4K. Supports playlists and
@@ -1026,7 +435,7 @@
                   class="tool-launch"
                   onclick="openTool('youtube-downloader')"
                 >
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
@@ -1034,27 +443,11 @@
         </div>
       </div>
       <div class="tools-section">
-        <div class="section-header">
-          <div>
-            <div class="section-label">category_03</div>
-            <div class="section-title">Chemistry</div>
-          </div>
-        </div>
+        <h2 class="section-title">Chemistry</h2>
         <div class="tools-grid">
           <div class="tool-card" data-tool="molecule-viz">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">mol-viz.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x269B;&#xFE0F;</span
-                ><span class="tool-name">Molecule Visualizer</span>
-              </div>
+              <h3 class="tool-name">Molecule Visualizer</h3>
               <div class="tool-desc">
                 Interactive 3D visualization of chemical molecules from PDB and
                 SDF files using WebGL.
@@ -1066,25 +459,14 @@
                   ><span class="tool-tag">WebGL</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('molecule-viz')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="periodic-table">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">periodic-table.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F52C;</span
-                ><span class="tool-name">Interactive Periodic Table</span>
-              </div>
+              <h3 class="tool-name">Interactive Periodic Table</h3>
               <div class="tool-desc">
                 Explore elements with detailed properties, electron
                 configurations, isotopes, and spectral data.
@@ -1098,25 +480,14 @@
                   class="tool-launch"
                   onclick="openTool('periodic-table')"
                 >
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="equation-balancer">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">eq-balancer.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x2696;&#xFE0F;</span
-                ><span class="tool-name">Equation Balancer</span>
-              </div>
+              <h3 class="tool-name">Equation Balancer</h3>
               <div class="tool-desc">
                 Balance chemical equations automatically with step-by-step
                 matrix algebra explanations and stoichiometry.
@@ -1130,25 +501,14 @@
                   class="tool-launch"
                   onclick="openTool('equation-balancer')"
                 >
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="ph-calculator">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">ph-calc.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F9EA;</span
-                ><span class="tool-name">pH Calculator</span>
-              </div>
+              <h3 class="tool-name">pH Calculator</h3>
               <div class="tool-desc">
                 Calculate pH, pOH, and concentrations for strong/weak acids and
                 bases, including buffer solutions.
@@ -1160,25 +520,14 @@
                   ><span class="tool-tag">bases</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('ph-calculator')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="mol-weight">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">mol-weight.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x2696;&#xFE0F;</span
-                ><span class="tool-name">Molecular Weight Calc</span>
-              </div>
+              <h3 class="tool-name">Molecular Weight Calc</h3>
               <div class="tool-desc">
                 Calculate molecular weight from chemical formulas with
                 per-element breakdown and molar mass reference.
@@ -1189,7 +538,7 @@
                   ><span class="tool-tag">formula</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('mol-weight')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
@@ -1197,27 +546,11 @@
         </div>
       </div>
       <div class="tools-section">
-        <div class="section-header">
-          <div>
-            <div class="section-label">category_04</div>
-            <div class="section-title">Games &amp; Misc</div>
-          </div>
-        </div>
+        <h2 class="section-title">Games &amp; Misc</h2>
         <div class="tools-grid">
           <div class="tool-card" data-tool="games">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">games.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F3AE;</span
-                ><span class="tool-name">Chemistry Games</span>
-              </div>
+              <h3 class="tool-name">Chemistry Games</h3>
               <div class="tool-desc">
                 Fun chemistry-themed browser games, element quizzes, and
                 reaction simulators to learn while playing.
@@ -1228,27 +561,16 @@
                   ><span class="tool-tag">quiz</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('games')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="public-apis">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">public-apis.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F310;</span
-                ><span class="tool-name">Public APIs</span>
-              </div>
+              <h3 class="tool-name">Public APIs</h3>
               <div class="tool-desc">
-                Browse 800+ free public APIs that need no key — weather, space,
+                Browse 800+ free public APIs that need no key: weather, space,
                 books, science and more, across 48 categories.
               </div>
               <div class="tool-footer">
@@ -1258,25 +580,14 @@
                   ><span class="tool-tag">no-auth</span>
                 </div>
                 <button class="tool-launch" onclick="openTool('public-apis')">
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="fullscreen-timer">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">timer.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x23F1;&#xFE0F;</span
-                ><span class="tool-name">Fullscreen Timer</span>
-              </div>
+              <h3 class="tool-name">Fullscreen Timer</h3>
               <div class="tool-desc">
                 Presenter timer with negative overtime counting, a time-up
                 buzzer, and Talk &rarr; Q&amp;A segment sequences that run one
@@ -1292,25 +603,14 @@
                   class="tool-launch"
                   onclick="openTool('fullscreen-timer')"
                 >
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
           </div>
           <div class="tool-card" data-tool="unit-converter">
-            <div class="tool-titlebar">
-              <div class="tool-dots">
-                <span class="tdot tdot-r"></span
-                ><span class="tdot tdot-y"></span
-                ><span class="tdot tdot-g"></span>
-              </div>
-              <span class="tool-label">unit-conv.sh</span>
-            </div>
             <div class="tool-body">
-              <div class="tool-icon-row">
-                <span class="tool-emoji">&#x1F4D0;</span
-                ><span class="tool-name">Unit Converter</span>
-              </div>
+              <h3 class="tool-name">Unit Converter</h3>
               <div class="tool-desc">
                 Convert between scientific units: length, mass, temperature,
                 energy, pressure, and more with high precision.
@@ -1325,7 +625,7 @@
                   class="tool-launch"
                   onclick="openTool('unit-converter')"
                 >
-                  launch &rarr;
+                  Open tool
                 </button>
               </div>
             </div>
@@ -1369,12 +669,7 @@
         </a>
       </div>
       <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal &middot; Built with
-        Chemistry &amp; Code
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem">
-        IISER Kolkata &middot; Computational Chemistry Lab &middot; SBS
-        Portfolio v3.0
+        &copy; <span id="year"></span> Shuvam Banerji Seal
       </p>
     </footer>
     <script>
