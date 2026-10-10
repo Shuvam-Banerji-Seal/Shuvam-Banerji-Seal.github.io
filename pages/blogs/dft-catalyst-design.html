@@ -60,8 +60,11 @@
         margin: 0 auto;
         padding: 6rem 0 3rem;
       }
+      /* Header and body share one centred reading column. A rem width, not
+         ch: ch follows each element's own font size, so the edges drifted. */
       .blog-header {
-        max-width: 68ch;
+        max-width: 40rem;
+        margin-inline: auto;
         margin-bottom: 2.5rem;
         padding-bottom: 1.5rem;
         border-bottom: 1px solid var(--rule);
@@ -104,7 +107,8 @@
       }
       /* Long-form reading */
       .blog-content {
-        max-width: 68ch;
+        max-width: 40rem;
+        margin-inline: auto;
         font-size: 18px;
         line-height: 1.65;
         color: var(--ink);

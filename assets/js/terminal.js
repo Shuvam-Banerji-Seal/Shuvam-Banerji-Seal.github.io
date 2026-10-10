@@ -11,6 +11,11 @@
   const termBody = document.getElementById("term-body");
   if (!termBody) return;
 
+  // Output lines are written as HTML, so anything the visitor typed is
+  // escaped before it is echoed back.
+  const esc = (t) =>
+    String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
   // ── Command registry ────────────────────────────────────────────────────
   const COMMANDS = {
     help: () => [
@@ -33,6 +38,7 @@
       '  <span class="term-help-cmd">neofetch           </span>  system info, arch-style',
       '  <span class="term-help-cmd">history            </span>  recent commands',
       '  <span class="term-help-cmd">echo &lt;text&gt;        </span>  say it back',
+      '  <span class="term-help-cmd">orbital &lt;name&gt;     </span>  redraw the figure: 1s 2p 3dz2 3dxy 4f',
       '  <span class="term-help-cmd">./run-research.sh </span>  show research pipeline',
       '  <span class="term-help-cmd">clear             </span>  clear terminal',
       '  <span class="term-help-cmd">exit              </span>  close terminal',
@@ -139,7 +145,7 @@
             .reverse()
             .map((h, i) => `  ${(i + 1).toString().padStart(3)}  ${h}`)
         : ["(no history yet)"],
-    echo: (...args) => [args.join(" ") || ""],
+    echo: (...args) => [esc(args.join(" "))],
     neofetch: () => {
       const cur =
         document.documentElement.getAttribute("data-theme") || "dark";
@@ -154,6 +160,29 @@
         '  <span class="term-nf-key">Theme</span>    ' + cur,
         '  <span class="term-nf-key">Uptime</span>   since 2022 @ IISER Kolkata',
       ];
+    },
+    // Drives the orbital figure beside the terminal (orbital.js listens).
+    orbital: (arg) => {
+      const names = {
+        "1s": ["1s", "1s", 1, 0],
+        "2p": ["2pz", "2p z", 2, 1],
+        "2pz": ["2pz", "2p z", 2, 1],
+        "3d": ["3dz2", "3d z²", 3, 2],
+        "3dz2": ["3dz2", "3d z²", 3, 2],
+        dz2: ["3dz2", "3d z²", 3, 2],
+        "3dxy": ["3dxy", "3d xy", 3, 2],
+        dxy: ["3dxy", "3d xy", 3, 2],
+        "4f": ["4fxyz", "4f xyz", 4, 3],
+        "4fxyz": ["4fxyz", "4f xyz", 4, 3],
+      };
+      if (!arg)
+        return ["usage: orbital &lt;name&gt;   (1s, 2p, 3dz2, 3dxy or 4f)"];
+      const hit = names[arg.toLowerCase().replace(/[\s_²]/g, (c) => (c === "²" ? "2" : ""))];
+      if (!hit) return [`orbital: no orbital called '${esc(arg)}'  (try 1s, 2p, 3dz2, 3dxy, 4f)`];
+      document.dispatchEvent(
+        new CustomEvent("orbital:select", { detail: { id: hit[0] } }),
+      );
+      return [`Drawing the ${hit[1]} orbital: n = ${hit[2]}, l = ${hit[3]}. Watch the figure.`];
     },
     open: (arg) => {
       const routes = {
@@ -176,11 +205,11 @@
         music: "pages/music.html",
       };
       if (!arg)
-        return ["usage: open <tool>   (try 'tools' for the list)"];
+        return ["usage: open &lt;tool&gt;   (try 'tools' for the list)"];
       const route = routes[arg];
-      if (!route) return [`open: unknown tool '${arg}'  (try 'tools')`];
+      if (!route) return [`open: unknown tool '${esc(arg)}'  (try 'tools')`];
       setTimeout(() => (window.location.href = route), 450);
-      return [`Launching ${arg}\u2026`];
+      return [`Launching ${esc(arg)}\u2026`];
     },
     exit: () => [
       '<span class="term-error">Nice try. This terminal is load-bearing. Reload the page to reset it.</span>',
@@ -244,19 +273,32 @@
   }
 
   // click-to-skip: flush the intro instantly (the boot runs about 7s)
-  termBody.addEventListener("click", function skipIntro() {
-    if (li >= lines.length) return;
-    termBody.removeEventListener("click", skipIntro);
+  // The typewriter runs on chained timeouts; skipping must stop the chain,
+  // or the pending type() call spawns a second input row.
+  let skipped = false;
+  // Focus the prompt only after the visitor has touched the terminal:
+  // auto-focusing on load steals keyboard focus and can raise the
+  // on-screen keyboard on phones.
+  let engaged = false;
+  termBody.addEventListener("pointerdown", () => (engaged = true));
+  function flushIntro() {
+    skipped = true;
     termBody.innerHTML = "";
     lines.forEach((l) => {
       const el = mkLine(l);
-      el.innerHTML = l.type === "cmd" ? l.text : l.text;
+      el.innerHTML = l.text;
     });
     li = lines.length;
     spawnInput();
+  }
+  termBody.addEventListener("click", function skipIntro() {
+    if (li >= lines.length) return;
+    termBody.removeEventListener("click", skipIntro);
+    flushIntro();
   });
 
   function type() {
+    if (skipped) return;
     if (li >= lines.length) {
       spawnInput();
       return;
@@ -282,6 +324,11 @@
 
   // ── Interactive input ────────────────────────────────────────────────────
   function spawnInput() {
+    const existing = termBody.querySelector(".term-input");
+    if (existing) {
+      if (engaged) existing.focus({ preventScroll: true });
+      return;
+    }
     const row = document.createElement("div");
     row.className = "term-input-row";
     row.innerHTML =
@@ -317,7 +364,7 @@
     );
     // preventScroll: without it, this focus yanks the user back to
     // the hero mid-read (global scroll-behavior:smooth animates it).
-    inp.focus({ preventScroll: true });
+    if (engaged) inp.focus({ preventScroll: true });
     placeCaret();
     termBody.addEventListener("click", () =>
       inp.focus({ preventScroll: true }),
@@ -352,7 +399,7 @@
           const sp = cmd.indexOf(" ");
           if (sp > -1) {
             const base = cmd.slice(0, sp);
-            if (base === "echo" || base === "open") {
+            if (base === "echo" || base === "open" || base === "orbital") {
               fn = COMMANDS[base];
               args = [cmd.slice(sp + 1)];
             }
@@ -406,5 +453,8 @@
     });
   }
 
-  setTimeout(type, 400);
+  // Typing is motion: with reduced motion the boot text appears at once.
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+    flushIntro();
+  else setTimeout(type, 400);
 })();

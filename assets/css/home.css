@@ -1,3 +1,21 @@
+/* Accent hue per orbital: the homepage's colour follows the orbital on
+   show. Light values carry white text, dark values carry dark ink (both
+   pass WCAG AA). orbital.js eases --accent-now between them. */
+:root {
+  --orb-1s: #c8371f;
+  --orb-2pz: #00776f;
+  --orb-3dz2: #995700;
+  --orb-3dxy: #2d55c4;
+  --orb-4fxyz: #b02e66;
+}
+html[data-theme="dark"] {
+  --orb-1s: #ff7458;
+  --orb-2pz: #3ccfc4;
+  --orb-3dz2: #f2c94c;
+  --orb-3dxy: #93aaff;
+  --orb-4fxyz: #ff7fab;
+}
+
 /* ================================================================
    HOME: index.html only. Element system (plans/design-element.md).
    Page rhythm: a two-column grid everywhere. The left column holds

@@ -80,22 +80,13 @@
     <link rel="stylesheet" href="../assets/css/animations.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
-    <link rel="stylesheet" href="../assets/css/music-player.css?v=2.2" />
+    <link rel="stylesheet" href="../assets/css/music-player.css?v=2.3" />
     <style>
       /* Navbar colours come from the music tokens so light and dark both work */
+      /* Same 60px bar as every other page; the player layout clears it. */
       #navbar {
         background: var(--music-nav-bg) !important;
         border-bottom: 1px solid var(--music-nav-border);
-        padding: 10px 0 !important;
-      }
-
-      .nav-content {
-        background: transparent !important;
-        backdrop-filter: none !important;
-        border: none !important;
-        box-shadow: none !important;
-        max-width: 100% !important;
-        padding: 0 24px !important;
       }
 
       .nav-link {
@@ -747,7 +738,7 @@
     <!-- navbar.js already loaded in <head> (line ~76); duplicate removed -->
     <script
       type="module"
-      src="/assets/js/music-player-enhanced.js?v=3.9"
+      src="/assets/js/music-player-enhanced.js?v=4.0"
     ></script>
     <script>
       // Initialize Lucide icons (wait for deferred script to load)

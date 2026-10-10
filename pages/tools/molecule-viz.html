@@ -130,6 +130,7 @@
             <div class="form-group">
               <label>Background</label>
               <select id="bg-select" onchange="updateBackground()">
+                <option value="page" selected>Match page</option>
                 <option value="#1B1E23">Dark</option>
                 <option value="#0f0f0f">Black</option>
                 <option value="#ffffff">White</option>
@@ -211,7 +212,7 @@
         width: 100%;
         height: 600px;
         position: relative;
-        background: #1B1E23;
+        background: var(--surface);
         border-radius: var(--r-l);
       }
       .molecule-info {
@@ -275,6 +276,18 @@
           height: 400px;
         }
       }
+          .viewer-message {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 2rem;
+        text-align: center;
+        color: var(--graphite);
+      }
+      .viewer-message p + p {
+        margin-top: 0.5rem;
+      }
     </style>
 
     <script>
@@ -294,8 +307,25 @@
           return;
         }
 
+        if (!hasWebGL()) {
+          document.getElementById("viewer-3d").innerHTML =
+            '<div class="viewer-message"><div><p>The 3D viewer needs WebGL, which this browser has turned off.</p>' +
+            "<p>Turn on hardware acceleration in your browser settings, then reload the page.</p></div></div>";
+          return;
+        }
+
         initViewer();
         loadMolecule("caffeine");
+
+        // "Match page" follows the light/dark theme.
+        const followTheme = () => {
+          if (document.getElementById("bg-select").value === "page") updateBackground();
+        };
+        document.addEventListener("themechange", followTheme);
+        new MutationObserver(followTheme).observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-theme"],
+        });
 
         document
           .getElementById("molecule-input")
@@ -304,11 +334,34 @@
           });
       });
 
+      function hasWebGL() {
+        try {
+          const c = document.createElement("canvas");
+          return !!(
+            window.WebGLRenderingContext &&
+            (c.getContext("webgl") || c.getContext("experimental-webgl"))
+          );
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function resolveBackground(value) {
+        if (value !== "page") return value;
+        return (
+          getComputedStyle(document.documentElement)
+            .getPropertyValue("--surface")
+            .trim() || "#132120"
+        );
+      }
+
       function initViewer() {
         const container = document.getElementById("viewer-3d");
         try {
           viewer = $3Dmol.createViewer(container, {
-            backgroundColor: "#1B1E23",
+            backgroundColor: resolveBackground(
+              document.getElementById("bg-select").value,
+            ),
             antialias: true,
           });
         } catch (e) {
@@ -453,7 +506,8 @@
 
       function updateBackground() {
         if (!viewer) return;
-        const bg = document.getElementById("bg-select").value;
+        if (!viewer) return;
+        const bg = resolveBackground(document.getElementById("bg-select").value);
         viewer.setBackgroundColor(bg);
       }
 

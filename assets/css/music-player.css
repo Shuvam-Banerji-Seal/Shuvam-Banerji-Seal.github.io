@@ -19,7 +19,7 @@ body {
 .spotify-container {
   display: flex;
   height: 100vh;
-  padding-top: 70px; /* space for the navbar */
+  padding-top: 60px; /* clears the 60px navbar */
 }
 
 /* ---------- Sidebar ---------- */
@@ -662,7 +662,7 @@ body {
 @media (max-width: 768px) {
   .spotify-container {
     flex-direction: column;
-    padding-top: 80px;
+    padding-top: 60px;
     padding-bottom: 160px;
     min-height: 100vh;
     height: calc(100vh - 140px);

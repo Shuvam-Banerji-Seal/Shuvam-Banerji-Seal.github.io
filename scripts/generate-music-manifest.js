@@ -70,11 +70,13 @@ function inferArtist(folder, title) {
     if (folder.includes('Kuraki')) return 'Mai Kuraki';
     if (folder.includes('See')) return 'See & Feel';
 
-    // Try to extract from title
+    // Try to extract from title ("Artist - Song"). Most files are named
+    // "052 - Song", where the prefix is a track number, not an artist:
+    // only use the prefix when it contains a letter.
     if (title.includes('-')) {
-        const parts = title.split('-');
-        if (parts.length > 1) {
-            return parts[0].trim();
+        const prefix = title.split('-')[0].trim();
+        if (/\p{L}/u.test(prefix)) {
+            return prefix;
         }
     }
 

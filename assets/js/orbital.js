@@ -8,7 +8,7 @@
  * the direction is rejection-sampled from the real angular part |Y|².
  * Dot colour is the sign of ψ: oxygen (vermilion) for +, nitrogen (teal) for −.
  * On a figure marked data-accent (the homepage), the page accent
- * --accent-now eases to the mix of the two lobe colours for the orbital.
+ * --accent-now eases to the active orbital's own hue (--orb-<id>).
  *
  * The depth painter (dot size and ink fall off with distance), the absolute
  * clock and the offscreen/hidden-tab pausing follow thinking-orbs by Jakub
@@ -150,9 +150,11 @@ const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 const clamp01 = (t) => (t < 0 ? 0 : t > 1 ? 1 : t);
 
 // ---------- homepage accent ----------
-// --accent-now takes the lobe colours: nitrogen (teal) for the negative lobes,
-// oxygen (vermilion) for the positive ones, weighted by the share of negative
-// samples. Mixing is done in OKLab so the midpoint stays clean, not muddy.
+// Each orbital has its own accent hue (--orb-<id> in home.css, per theme).
+// --accent-now eases between them in OKLCH along the shorter hue arc, so the
+// colour stays saturated through the change. (Mixing the two lobe colours
+// directly passed through grey-brown, because teal and vermilion are close to
+// complementary.)
 const ACCENT_MS = 600;
 
 function parseRGB(value) {
@@ -200,9 +202,18 @@ function fromOklab([L, A, B]) {
 }
 
 function mixRGB(a, b, t) {
-  const A = toOklab(a);
-  const B = toOklab(b);
-  return fromOklab(A.map((v, k) => v + (B[k] - v) * t));
+  const [L1, a1, b1] = toOklab(a);
+  const [L2, a2, b2] = toOklab(b);
+  const C1 = Math.hypot(a1, b1);
+  const C2 = Math.hypot(a2, b2);
+  const h1 = Math.atan2(b1, a1);
+  let dh = Math.atan2(b2, a2) - h1;
+  if (dh > Math.PI) dh -= 2 * Math.PI;
+  if (dh < -Math.PI) dh += 2 * Math.PI;
+  const L = L1 + (L2 - L1) * t;
+  const C = C1 + (C2 - C1) * t;
+  const h = h1 + dh * t;
+  return fromOklab([L, C * Math.cos(h), C * Math.sin(h)]);
 }
 
 function readColors() {
@@ -288,8 +299,7 @@ export function initOrbital(root) {
     );
   }
 
-  // Homepage accent: eases between lobe colours over ACCENT_MS.
-  const minusShare = {};
+  // Homepage accent: eases between the orbitals' hues over ACCENT_MS.
   let accentNow = null;
   let accentFrom = null;
   let accentTo = null;
@@ -297,15 +307,10 @@ export function initOrbital(root) {
   let accentRaf = 0;
 
   function accentFor(id) {
-    if (!(id in minusShare)) {
-      const sg = get(id).sign;
-      let neg = 0;
-      for (let i = 0; i < sg.length; i++) if (sg[i] < 0) neg++;
-      minusShare[id] = neg / sg.length;
-    }
-    const plus = parseRGB(colors.plus) || [224, 67, 42];
-    const minus = parseRGB(colors.minus) || [0, 119, 111];
-    return mixRGB(plus, minus, minusShare[id]);
+    const v = getComputedStyle(document.documentElement)
+      .getPropertyValue(`--orb-${id}`)
+      .trim();
+    return parseRGB(v) || parseRGB(colors.minus) || [0, 119, 111];
   }
 
   function applyAccent(rgb) {
@@ -585,6 +590,11 @@ export function initOrbital(root) {
   buttons.forEach((b) =>
     b.addEventListener("click", () => select(b.dataset.orbital, true)),
   );
+  // The homepage terminal's `orbital <name>` command.
+  if (ACCENT)
+    document.addEventListener("orbital:select", (e) =>
+      select(e.detail && e.detail.id, true),
+    );
 
   const onTheme = () => {
     colors = readColors();

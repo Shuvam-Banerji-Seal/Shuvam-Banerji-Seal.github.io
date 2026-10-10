@@ -58,7 +58,7 @@ body {
   font-weight: 780;
   letter-spacing: -0.01em;
   line-height: 1.05;
-  text-align: center;
+  text-align: left;
   margin-bottom: 2rem;
   color: var(--ink);
 }
@@ -479,13 +479,13 @@ footer {
 footer {
   padding: 2rem 0;
   text-align: center;
-  background: var(--surface-2);
+  background: none;
   border-top: 1px solid var(--rule);
-  color: var(--ink);
+  color: var(--graphite);
 }
 
 footer p {
-  color: var(--ink);
+  color: var(--graphite);
 }
 
 /* Grid for sections */

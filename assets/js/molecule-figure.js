@@ -201,6 +201,9 @@ export async function initMolecule(root) {
   let dpr = 1;
   let projected = [];
   const defaultReadout = readout ? readout.textContent : "";
+  // The atom under the pointer gets a ring, so the name below the figure
+  // visibly belongs to an atom.
+  let hoveredAtom = null;
 
   function resize() {
     const r = canvas.getBoundingClientRect();
@@ -281,6 +284,16 @@ export async function initMolecule(root) {
         p.r = r;
       }
     }
+    if (hoveredAtom) {
+      const h = projected.find((q) => q.a === hoveredAtom);
+      if (h && h.r) {
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = colors.ink;
+        ctx.beginPath();
+        ctx.arc(h.x, h.y, h.r + 3, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
   }
 
   let raf = 0;
@@ -353,6 +366,11 @@ export async function initMolecule(root) {
     readout.textContent = best
       ? `${best.a.name}, ${ELEMENT_NAMES[best.a.el] || best.a.el}`
       : defaultReadout;
+    const next = best ? best.a : null;
+    if (next !== hoveredAtom) {
+      hoveredAtom = next;
+      if (!running) draw();
+    }
   });
   const end = () => {
     dragging = false;
@@ -362,6 +380,10 @@ export async function initMolecule(root) {
   canvas.addEventListener("pointercancel", end);
   canvas.addEventListener("pointerleave", () => {
     if (readout && !dragging) readout.textContent = defaultReadout;
+    if (hoveredAtom) {
+      hoveredAtom = null;
+      if (!running) draw();
+    }
   });
   canvas.addEventListener("keydown", (e) => {
     const k = { ArrowLeft: [-0.12, 0], ArrowRight: [0.12, 0], ArrowUp: [0, -0.08], ArrowDown: [0, 0.08] }[e.key];
