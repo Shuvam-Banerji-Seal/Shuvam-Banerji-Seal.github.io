@@ -80,7 +80,7 @@
     <link rel="stylesheet" href="../assets/css/animations.css" />
     <link rel="stylesheet" href="../assets/css/mobile.css" />
     <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
-    <link rel="stylesheet" href="../assets/css/music-player.css?v=2.3" />
+    <link rel="stylesheet" href="../assets/css/music-player.css?v=2.4" />
     <style>
       /* Navbar colours come from the music tokens so light and dark both work */
       /* Same 60px bar as every other page; the player layout clears it. */
@@ -319,6 +319,11 @@
         <div class="volume-slider" onclick="setVolume(event)">
           <div class="volume-fill" style="width: 100%"></div>
         </div>
+        <!-- Spectrum: docked in the player bar, shown only while playing,
+             so it never sits on top of the track list. -->
+        <div id="visualizer-wrap" aria-hidden="true">
+          <canvas id="visualizer" width="280" height="72"></canvas>
+        </div>
       </div>
     </div>
 
@@ -523,10 +528,6 @@
       </div>
     </div>
 
-    <!-- Visualizer: floating panel shown only while audio is playing -->
-    <div id="visualizer-wrap" aria-hidden="true">
-      <canvas id="visualizer" width="300" height="100"></canvas>
-    </div>
 
     <!-- Playback stats modal -->
     <div
@@ -738,7 +739,7 @@
     <!-- navbar.js already loaded in <head> (line ~76); duplicate removed -->
     <script
       type="module"
-      src="/assets/js/music-player-enhanced.js?v=4.0"
+      src="/assets/js/music-player-enhanced.js?v=4.1"
     ></script>
     <script>
       // Initialize Lucide icons (wait for deferred script to load)

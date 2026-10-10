@@ -889,27 +889,17 @@ body {
 /* ---------- Visualizer (floating, only while playing) ---------- */
 
 #visualizer-wrap {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 300px;
-  height: 100px;
-  z-index: 999;
+  flex: none;
+  width: 140px;
+  height: 36px;
+  margin-left: 8px;
   pointer-events: none;
-  background: var(--music-card-bg);
-  border: 1px solid var(--music-sidebar-border);
-  border-radius: var(--r-m);
-  overflow: hidden;
   opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 300ms ease,
-    transform 300ms ease;
+  transition: opacity 0.2s ease;
 }
 
 #visualizer-wrap.visible {
   opacity: 1;
-  transform: translateY(0);
 }
 
 #visualizer {
@@ -919,8 +909,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* The player bar already shows progress; this box would collide
-     with the player and the bottom nav on small screens. */
+  /* No room in the phone player bar; progress already shows playback. */
   #visualizer-wrap {
     display: none;
   }

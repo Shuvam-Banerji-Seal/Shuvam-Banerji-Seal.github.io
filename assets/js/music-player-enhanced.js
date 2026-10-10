@@ -961,8 +961,13 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (peak < 2) return;
 
-    const barWidth = (canvas.width / bufferLength) * 2.5;
-    let barHeight;
+    // Only the lower ~60% of bins carry audible energy; spread those
+    // across the canvas and scale each bar to the canvas height so the
+    // loudest bin never clips at the top edge.
+    const usable = Math.floor(bufferLength * 0.6);
+    const bars = 28; // each bar is the peak of a group of bins
+    const gap = 3;
+    const barWidth = (canvas.width - gap * (bars - 1)) / bars;
     let x = 0;
 
     // Solid accent bars read from the theme token (the bars are data)
@@ -970,12 +975,14 @@ document.addEventListener("DOMContentLoaded", () => {
       .getPropertyValue("--music-accent")
       .trim();
 
-    for (let i = 0; i < bufferLength; i++) {
-      barHeight = dataArray[i] / 2;
-
+    for (let b = 0; b < bars; b++) {
+      const from = Math.floor((b * usable) / bars);
+      const to = Math.max(from + 1, Math.floor(((b + 1) * usable) / bars));
+      let v = 0;
+      for (let i = from; i < to; i++) if (dataArray[i] > v) v = dataArray[i];
+      const barHeight = Math.max(2, (v / 255) * canvas.height);
       ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-
-      x += barWidth + 1;
+      x += barWidth + gap;
     }
 
     // Update Stats
