@@ -245,12 +245,18 @@ h4,
 #navbar .dropdown-menu--wide.show {
   transform: translateY(0);
 }
+#navbar .dropdown-menu--narrow {
+  width: min(480px, calc(100vw - 32px));
+}
 #navbar .nav-groups {
   display: grid;
   gap: 4px 24px;
 }
 #navbar .dropdown-menu--wide .nav-groups {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+#navbar .dropdown-menu--narrow .nav-groups {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 #navbar .nav-group-title {
   margin: 4px 8px 6px;

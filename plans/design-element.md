@@ -139,3 +139,32 @@ Default follows `prefers-color-scheme`; the navbar toggle flips and saves.
    except where JS injects banned styles or copy.
 6. Run `node scripts/lint-design.js <your files>` until it reports 0 errors,
    then `node tests/basic-tests.js` and `node tests/comprehensive-tests.js`.
+
+## Rev 2026-10-11: palette and type v2 (supersedes the CPK colours and Archivo above)
+
+The CPK palette and Archivo read as stale. v2 keeps the chemistry idea (a lab bench,
+two signs of a wavefunction) but the colours are chosen for this site, not for a
+viewer.
+
+| Token | Light | Dark | Job |
+| --- | --- | --- | --- |
+| `--paper` | `#F1F4EE` | `#0B1311` | page: lab-bench green-grey |
+| `--surface` | `#FBFCF9` | `#132120` | panels, inputs |
+| `--surface-2` | `#E4EAE2` | `#1B2D2A` | fills, code, hover |
+| `--ink` | `#0F1B18` | `#E7F0EB` | text |
+| `--graphite` | `#4D5F58` | `#9AAEA5` | secondary text |
+| `--rule` / `--rule-strong` | `#D2DBD3` / `#A9B8AE` | `#2A3D39` / `#4A605A` | lines |
+| `--nitrogen` | `#00776F` (teal) | `#3CCFC4` | links, primary actions, focus |
+| `--oxygen` | `#E0432A` (vermilion) | `#FF7458` | the + lobe, alerts, record |
+| `--sulfur` | `#FFC93C` | `#F2C94C` | selection, one highlight |
+
+Dynamic colour: the homepage accent takes the colour of the orbital's active lobes
+(teal for the negative sign, vermilion for the positive), and it eases between them
+when the orbital changes. Other pages use the static tokens above.
+
+Type v2:
+- Display: **Newsreader** (roman, never italic), 500 to 700, optical size on. Large
+  headings and the name only.
+- Body: **Hanken Grotesk** 400/500/600, 17px / 1.6.
+- Terminal and code only: **Martian Mono**. Never for labels or captions.
+- Sentence case everywhere. No all-caps tracking.

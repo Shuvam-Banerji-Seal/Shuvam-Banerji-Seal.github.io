@@ -51,11 +51,53 @@ document.addEventListener("DOMContentLoaded", function () {
   const isHome =
     currentPath.endsWith("index.html") || currentPath.endsWith("/");
   const pathSegments = currentPath.split("/").filter(Boolean);
-  const pathDepth = isHome ? "" : pathSegments.map(() => "../").join("");
+  // One "../" per folder above the page (the filename does not count).
+  const pathDepth = isHome
+    ? ""
+    : pathSegments
+        .slice(0, -1)
+        .map(() => "../")
+        .join("");
   const to = (p) => (isHome ? p : pathDepth + p);
   const home = (hash) => (isHome ? hash : pathDepth + "index.html" + hash);
 
-  // Tools grouped by what people use them for.
+  // Apps: things you use or play with.
+  const appGroups = [
+    {
+      group: "Play",
+      items: [
+        ["Music player", "pages/music.html"],
+        ["E-Reader", "pages/reader.html"],
+        ["Chemistry games", "pages/tools/games.html"],
+        ["Webcam and air guitar", "pages/tools/webcam-tester.html"],
+      ],
+    },
+    {
+      group: "Make",
+      items: [
+        ["Audio Studio", "pages/tools/audio-studio.html"],
+        ["HTML playground", "pages/tools/playground.html"],
+        ["Mermaid editor", "pages/mermaid-tool.html"],
+        ["Fullscreen timer", "pages/tools/fullscreen-timer.html"],
+      ],
+    },
+    {
+      group: "Talk to models",
+      items: [
+        ["LLM chat", "pages/tools/llm-chat.html"],
+        ["LLM Studio", "pages/tools/llm-studio.html"],
+      ],
+    },
+    {
+      group: "Files and video",
+      items: [
+        ["Beam file sharing", "pages/tools/file-share.html"],
+        ["YouTube downloader", "pages/tools/youtube-downloader.html"],
+      ],
+    },
+  ];
+
+  // Tools: calculators, converters and documents.
   const toolGroups = [
     {
       group: "Chemistry",
@@ -64,40 +106,23 @@ document.addEventListener("DOMContentLoaded", function () {
         ["Molecular weight", "pages/tools/mol-weight.html"],
         ["Equation balancer", "pages/tools/equation-balancer.html"],
         ["pH calculator", "pages/tools/ph-calculator.html"],
-        ["Molecule viewer", "pages/tools/molecule-viz.html"],
+        ["Molecule viz", "pages/tools/molecule-viz.html"],
         ["Thermodynamics", "pages/thermodynamics.html"],
-        ["Chemistry games", "pages/tools/games.html"],
       ],
     },
     {
       group: "Documents",
       items: [
         ["PDF Studio", "pages/tools/pdf-studio.html"],
-        ["Reader", "pages/reader.html"],
-        ["Mermaid editor", "pages/mermaid-tool.html"],
         ["Paper finder", "pages/tools/paper-finder.html"],
-        ["Unit converter", "pages/tools/unit-converter.html"],
       ],
     },
     {
-      group: "Audio and image",
+      group: "Data and media",
       items: [
-        ["Audio Studio", "pages/tools/audio-studio.html"],
-        ["Music player", "pages/music.html"],
         ["Image Studio", "pages/tools/image-studio.html"],
-        ["Webcam and air guitar", "pages/tools/webcam-tester.html"],
-        ["YouTube downloader", "pages/tools/youtube-downloader.html"],
-      ],
-    },
-    {
-      group: "Language models and code",
-      items: [
-        ["LLM chat", "pages/tools/llm-chat.html"],
-        ["LLM Studio", "pages/tools/llm-studio.html"],
-        ["HTML playground", "pages/tools/playground.html"],
+        ["Unit converter", "pages/tools/unit-converter.html"],
         ["Public APIs", "pages/apis.html"],
-        ["File sharing", "pages/tools/file-share.html"],
-        ["Fullscreen timer", "pages/tools/fullscreen-timer.html"],
       ],
     },
   ];
@@ -105,6 +130,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const navStructure = [
     { name: "Research", href: home("#research"), type: "link" },
     { name: "Software", href: home("#software"), type: "link" },
+    {
+      name: "Apps",
+      type: "dropdown",
+      narrow: true,
+      groups: appGroups,
+    },
     {
       name: "Tools",
       type: "dropdown",
@@ -161,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 ${item.name}
                                 <i data-lucide="chevron-down" class="dropdown-arrow" aria-hidden="true"></i>
                             </button>
-                            <div class="dropdown-menu${item.wide ? " dropdown-menu--wide" : ""}">
+                            <div class="dropdown-menu${item.wide ? " dropdown-menu--wide" : item.narrow ? " dropdown-menu--narrow" : ""}">
                                 <div class="nav-groups">${renderGroups(item)}</div>
                                 ${item.footer ? `<a class="nav-menu-footer" href="${to(item.footer[1])}">${item.footer[0]}</a>` : ""}
                             </div>

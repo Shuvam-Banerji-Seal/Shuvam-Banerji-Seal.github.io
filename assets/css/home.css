@@ -1,5 +1,5 @@
 /* ================================================================
-   HOME — index.html only. Element system (plans/design-element.md).
+   HOME: index.html only. Element system (plans/design-element.md).
    Page rhythm: a two-column grid everywhere. The left column holds
    headings, dates and categories; the right column holds content.
    ================================================================ */
@@ -50,44 +50,45 @@ body.home {
 }
 
 /* ---------------------------------------------------------------
-   HERO
+   HERO: name, one-line statement, then the terminal and the orbital
+   side by side (stacked on phones). Newsreader is the display face;
+   Martian Mono appears only inside the terminal.
    --------------------------------------------------------------- */
 .hero-el {
   width: var(--container);
   margin-inline: auto;
-  min-height: min(860px, calc(100svh - 60px));
+  padding-block: clamp(32px, 6vw, 72px) clamp(48px, 7vw, 88px);
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  align-items: center;
-  gap: clamp(24px, 4vw, 56px);
-  padding-block: clamp(32px, 5vw, 56px);
+  gap: clamp(32px, 5vw, 56px);
 }
 
 .hero-name {
+  margin: 0;
   font-family: var(--font-display);
-  font-stretch: 64%;
-  font-weight: 820;
-  font-size: clamp(3.5rem, 7.6vw, 7.25rem);
-  line-height: 0.9;
-  letter-spacing: -0.018em;
+  font-weight: 600;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
   color: var(--ink);
-  text-wrap: initial;
 }
 .hero-name span {
-  display: block;
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent-now, var(--nitrogen));
+  text-decoration-thickness: 0.04em;
+  text-underline-offset: 0.1em;
+}
+@media (min-width: 640px) {
+  .hero-name span {
+    display: block;
+  }
 }
 
-.hero-lead {
-  margin-top: 28px;
-  max-width: 34em;
-  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
-  line-height: 1.55;
-}
-.hero-now {
-  margin-top: 14px;
-  max-width: 34em;
-  color: var(--graphite);
-  font-size: 1rem;
+.hero-statement {
+  margin-top: clamp(16px, 2vw, 24px);
+  max-width: 36em;
+  color: var(--ink);
+  font-size: clamp(1.1875rem, 2.2vw, 1.5rem);
+  line-height: 1.4;
 }
 .hero-actions {
   display: flex;
@@ -95,44 +96,183 @@ body.home {
   gap: 12px;
   margin-top: 28px;
 }
-
-/* Load sequence: the name inks in while the orbital's samples
-   accumulate. One moment, then everything is still. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero-name span {
-    animation: ink-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  }
-  .hero-name span + span {
-    animation-delay: 0.12s;
-  }
-  .hero-lead,
-  .hero-now,
-  .hero-actions {
-    animation: settle 0.6s ease-out 0.5s both;
-  }
+.hero-actions .btn-primary {
+  background: var(--accent-now, var(--nitrogen));
+  border-color: var(--accent-now, var(--nitrogen));
 }
-@keyframes ink-in {
-  from {
-    font-weight: 160;
-    font-stretch: 62%;
-    opacity: 0.25;
-  }
-  to {
-    font-weight: 820;
-    font-stretch: 64%;
-    opacity: 1;
-  }
-}
-@keyframes settle {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.hero-actions .btn-primary:hover {
+  background: var(--accent-now, var(--nitrogen));
+  border-color: var(--accent-now, var(--nitrogen));
+  text-decoration: underline;
 }
 
-/* Orbital figure */
+.hero-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(24px, 3vw, 40px);
+}
+.hero-stage > * {
+  min-width: 0;
+}
+
+.hero-about {
+  display: grid;
+  gap: 14px;
+  max-width: 62ch;
+}
+.hero-lead {
+  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  line-height: 1.6;
+}
+.hero-now {
+  color: var(--graphite);
+  font-size: 1rem;
+}
+
+/* ---- Terminal (assets/js/terminal.js). Tokens only: no glow, no pills. */
+.terminal-window {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-l);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-stretch: 87.5%;
+}
+.terminal-window:focus-within {
+  border-color: var(--rule-strong);
+}
+.term-titlebar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface-2);
+  color: var(--graphite);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+.path-host {
+  color: var(--ink);
+}
+.path-sep {
+  color: var(--graphite);
+  margin-inline: 0.4em;
+}
+.path-dir {
+  color: var(--nitrogen);
+}
+.term-meta {
+  color: var(--graphite);
+}
+.term-body {
+  height: min(440px, 58svh);
+  overflow-y: auto;
+  padding: 16px 18px;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  cursor: text;
+}
+.term-output {
+  color: var(--ink);
+}
+.term-output.highlight,
+.term-output.title-line {
+  font-weight: 600;
+}
+.term-hint,
+.term-comment,
+.term-skill-comp,
+.term-skill-ai,
+.term-skill-prog,
+.term-skill-tools,
+.term-status-wait,
+.term-contact-label,
+.term-contact-gh,
+.term-contact-li,
+.term-contact-orcid {
+  color: var(--graphite);
+}
+.term-hint {
+  margin-top: 0.5em;
+}
+.term-prompt,
+.term-arrow,
+.term-help-cmd,
+.term-dir,
+.term-project,
+.term-status-ok,
+.term-commit,
+.term-nf-head,
+.term-nf-key {
+  color: var(--nitrogen);
+}
+.term-help-title,
+.term-code {
+  color: var(--ink);
+  font-weight: 600;
+}
+.term-error {
+  color: var(--oxygen);
+}
+.term-input-row {
+  display: flex;
+  align-items: baseline;
+  margin-top: 0.25em;
+}
+.term-input-row .term-prompt {
+  flex: none;
+  white-space: pre;
+}
+.term-field {
+  position: relative;
+  flex: 1 1 12ch;
+  min-width: 0;
+  min-height: 1.7em;
+}
+.term-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  caret-color: transparent;
+}
+.term-measure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  white-space: pre;
+  font: inherit;
+}
+/* Steady bar caret, placed by terminal.js. Shown only while focused. */
+.term-caret {
+  position: absolute;
+  top: 0.2em;
+  left: 0;
+  width: 2px;
+  height: 1.3em;
+  background: var(--nitrogen);
+  visibility: hidden;
+  pointer-events: none;
+}
+.term-field:focus-within .term-caret {
+  visibility: visible;
+}
+
+/* ---- Orbital figure */
 .orbital {
   display: flex;
   flex-direction: column;
@@ -174,7 +314,6 @@ body.home {
   font: 600 0.9375rem/1 var(--font-body);
   cursor: pointer;
   transition:
-    background 0.15s ease,
     color 0.15s ease,
     border-color 0.15s ease;
 }
@@ -182,9 +321,9 @@ body.home {
   border-color: var(--ink);
 }
 .orbital-picker button[aria-pressed="true"] {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
+  background: var(--accent-now, var(--nitrogen));
+  border-color: var(--accent-now, var(--nitrogen));
+  color: var(--on-nitrogen);
 }
 .orbital-picker sub,
 .orbital-title sub {
@@ -193,7 +332,7 @@ body.home {
 }
 .orbital-title {
   margin-top: 14px;
-  font-weight: 650;
+  font-weight: 600;
 }
 .orbital-qn {
   margin-left: 10px;
@@ -213,13 +352,40 @@ body.home {
   font-variant-numeric: tabular-nums;
 }
 .phase {
-  font-weight: 650;
+  font-weight: 600;
 }
 .phase-plus {
   color: var(--oxygen);
 }
 .phase-minus {
   color: var(--nitrogen);
+}
+
+@media (max-width: 860px) {
+  .hero-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .orbital-canvas {
+    width: min(100%, 520px);
+    align-self: center;
+  }
+  .orbital-caption {
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .term-body {
+    height: min(360px, 60svh);
+    padding: 12px 14px;
+    font-size: 0.75rem;
+  }
+  .term-titlebar {
+    padding: 8px 12px;
+  }
+  .hero-actions .btn {
+    flex: 1 1 auto;
+  }
 }
 
 /* ---------------------------------------------------------------
@@ -238,10 +404,9 @@ body.home {
 }
 .block-head h2 {
   font-family: var(--font-display);
-  font-stretch: 66%;
-  font-weight: 800;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 0.95;
+  font-weight: 500;
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  line-height: 1;
   letter-spacing: -0.012em;
 }
 .block-head p {
@@ -408,10 +573,9 @@ body.home {
 }
 .feature-text h3 {
   font-family: var(--font-display);
-  font-stretch: 70%;
-  font-weight: 780;
+  font-weight: 500;
   font-size: clamp(1.75rem, 3vw, 2.375rem);
-  line-height: 1;
+  line-height: 1.05;
 }
 .feature-text > p {
   margin-top: 12px;
@@ -581,10 +745,9 @@ body.home {
 }
 .contact .about h2 {
   font-family: var(--font-display);
-  font-stretch: 66%;
-  font-weight: 800;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 0.95;
+  font-weight: 500;
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  line-height: 1;
 }
 .contact .about p {
   margin-top: 16px;
@@ -592,9 +755,8 @@ body.home {
 }
 .contact .about .mail {
   margin-top: 24px;
-  font-family: var(--font-display);
-  font-stretch: 80%;
-  font-weight: 700;
+  font-family: var(--font-body);
+  font-weight: 600;
   font-size: clamp(1.375rem, 2.6vw, 2rem);
   line-height: 1.2;
   overflow-wrap: anywhere;

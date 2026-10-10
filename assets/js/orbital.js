@@ -6,7 +6,9 @@
  * (1s, 2p, 3d, 4f, i.e. l = n − 1) the radial density r²R(r)² is a Gamma
  * distribution with shape 2l + 3 and scale n / 2, so r is drawn directly;
  * the direction is rejection-sampled from the real angular part |Y|².
- * Dot colour is the sign of ψ: oxygen red for +, nitrogen blue for −.
+ * Dot colour is the sign of ψ: oxygen (vermilion) for +, nitrogen (teal) for −.
+ * On a figure marked data-accent (the homepage), the page accent
+ * --accent-now eases to the mix of the two lobe colours for the orbital.
  *
  * The depth painter (dot size and ink fall off with distance), the absolute
  * clock and the offscreen/hidden-tab pausing follow thinking-orbs by Jakub
@@ -147,6 +149,62 @@ const easeInOut = (t) =>
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 const clamp01 = (t) => (t < 0 ? 0 : t > 1 ? 1 : t);
 
+// ---------- homepage accent ----------
+// --accent-now takes the lobe colours: nitrogen (teal) for the negative lobes,
+// oxygen (vermilion) for the positive ones, weighted by the share of negative
+// samples. Mixing is done in OKLab so the midpoint stays clean, not muddy.
+const ACCENT_MS = 600;
+
+function parseRGB(value) {
+  const hex = /^#?([0-9a-f]{6})$/i.exec(value.trim());
+  if (hex) {
+    const n = parseInt(hex[1], 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+  const fn = /rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i.exec(value);
+  return fn ? [Number(fn[1]), Number(fn[2]), Number(fn[3])] : null;
+}
+
+const toLinear = (c) => {
+  const v = c / 255;
+  return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+};
+const fromLinear = (v) => {
+  const c = v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
+  return Math.round(clamp01(c) * 255);
+};
+
+function toOklab([r, g, b]) {
+  const R = toLinear(r);
+  const G = toLinear(g);
+  const B = toLinear(b);
+  const l = Math.cbrt(0.4122214708 * R + 0.5363325363 * G + 0.0514459929 * B);
+  const m = Math.cbrt(0.2119034982 * R + 0.6806995451 * G + 0.1073969566 * B);
+  const s = Math.cbrt(0.0883024619 * R + 0.2817188376 * G + 0.6299787005 * B);
+  return [
+    0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+    1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+    0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+  ];
+}
+
+function fromOklab([L, A, B]) {
+  const l = (L + 0.3963377774 * A + 0.2158037573 * B) ** 3;
+  const m = (L - 0.1055613458 * A - 0.0638541728 * B) ** 3;
+  const s = (L - 0.0894841775 * A - 1.291485548 * B) ** 3;
+  return [
+    fromLinear(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
+    fromLinear(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+    fromLinear(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s),
+  ];
+}
+
+function mixRGB(a, b, t) {
+  const A = toOklab(a);
+  const B = toOklab(b);
+  return fromOklab(A.map((v, k) => v + (B[k] - v) * t));
+}
+
 function readColors() {
   const cs = getComputedStyle(document.documentElement);
   const get = (name, fallback) => cs.getPropertyValue(name).trim() || fallback;
@@ -171,6 +229,8 @@ export function initOrbital(root) {
   // several figures share a page, e.g. the gallery.
   const STATIC = root.hasAttribute("data-static");
   const still = () => REDUCED.matches || STATIC;
+  // data-accent: this figure drives the page accent (--accent-now).
+  const ACCENT = root.hasAttribute("data-accent");
 
   const N = STATIC ? 1600 : window.innerWidth < 640 ? 1500 : 2400;
   const rand = mulberry32(20221122);
@@ -228,6 +288,56 @@ export function initOrbital(root) {
     );
   }
 
+  // Homepage accent: eases between lobe colours over ACCENT_MS.
+  const minusShare = {};
+  let accentNow = null;
+  let accentFrom = null;
+  let accentTo = null;
+  let accentT0 = 0;
+  let accentRaf = 0;
+
+  function accentFor(id) {
+    if (!(id in minusShare)) {
+      const sg = get(id).sign;
+      let neg = 0;
+      for (let i = 0; i < sg.length; i++) if (sg[i] < 0) neg++;
+      minusShare[id] = neg / sg.length;
+    }
+    const plus = parseRGB(colors.plus) || [224, 67, 42];
+    const minus = parseRGB(colors.minus) || [0, 119, 111];
+    return mixRGB(plus, minus, minusShare[id]);
+  }
+
+  function applyAccent(rgb) {
+    document.documentElement.style.setProperty(
+      "--accent-now",
+      `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+    );
+  }
+
+  function stepAccent(now) {
+    const t = clamp01((now - accentT0) / ACCENT_MS);
+    accentNow = mixRGB(accentFrom, accentTo, easeInOut(t));
+    applyAccent(accentNow);
+    accentRaf = t < 1 ? requestAnimationFrame(stepAccent) : 0;
+  }
+
+  // Retargets from the colour on screen now, so a fast click never jumps.
+  function tweenAccent(target, animate) {
+    if (!ACCENT) return;
+    cancelAnimationFrame(accentRaf);
+    accentRaf = 0;
+    if (!animate || !accentNow || still()) {
+      accentNow = target;
+      applyAccent(target);
+      return;
+    }
+    accentFrom = accentNow;
+    accentTo = target;
+    accentT0 = performance.now();
+    accentRaf = requestAnimationFrame(stepAccent);
+  }
+
   function select(id, byUser) {
     if (!ORBITALS[id] || id === current) return;
     if (byUser) userTouched = true;
@@ -239,6 +349,7 @@ export function initOrbital(root) {
     morphStart = still() ? -Infinity : now;
     if (still()) from = to;
     updateCaption(id);
+    tweenAccent(accentFor(id), true);
     kick();
   }
 
@@ -287,7 +398,7 @@ export function initOrbital(root) {
     ctx.lineWidth = 1;
     ctx.strokeStyle = colors.axis;
     ctx.fillStyle = colors.label;
-    ctx.font = "500 12px Archivo, system-ui, sans-serif";
+    ctx.font = '500 12px "Hanken Grotesk", system-ui, sans-serif';
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     const L = 1.12;
@@ -477,6 +588,7 @@ export function initOrbital(root) {
 
   const onTheme = () => {
     colors = readColors();
+    tweenAccent(accentFor(current), false);
     draw(performance.now());
   };
   document.addEventListener("themechange", onTheme);
@@ -492,6 +604,7 @@ export function initOrbital(root) {
 
   new ResizeObserver(resize).observe(canvas);
   updateCaption(current);
+  tweenAccent(accentFor(current), false);
   resize();
   introStart = performance.now();
   kick();

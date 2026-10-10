@@ -33,27 +33,27 @@ html[data-theme="light"],
   color-scheme: light;
 
   /* Element tokens */
-  --paper: #f7f8fa;
-  --surface: #ffffff;
-  --surface-2: #eef0f3;
-  --ink: #1a1d22;
-  --graphite: #59606a;
-  --rule: #dadde3;
-  --rule-strong: #b9bec7;
-  --nitrogen: #2445c2;
-  --nitrogen-hover: #1a3496;
-  --nitrogen-wash: #e6eafb;
-  --oxygen: #c92a39;
-  --oxygen-wash: #fbe7e9;
-  --sulfur: #f2c94c;
-  --on-nitrogen: #ffffff;
+  --paper: #F1F4EE;
+  --surface: #FBFCF9;
+  --surface-2: #E4EAE2;
+  --ink: #0F1B18;
+  --graphite: #4D5F58;
+  --rule: #D2DBD3;
+  --rule-strong: #A9B8AE;
+  --nitrogen: #00776F;
+  --nitrogen-hover: #005A54;
+  --nitrogen-wash: #D5EEEA;
+  --oxygen: #E0432A;
+  --oxygen-wash: #FBE2DC;
+  --sulfur: #FFC93C;
+  --on-nitrogen: #FFFFFF;
   --lift: 0 1px 2px rgba(26, 29, 34, 0.08), 0 10px 28px rgba(26, 29, 34, 0.12);
 
   /* Type, shape, space */
-  --font-body: "Archivo", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
-  --stretch-display: 68%;
+  --font-body: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Newsreader", Georgia, serif;
+  --font-mono: "Martian Mono", ui-monospace, "SFMono-Regular", monospace;
+  --stretch-display: 100%;
   --r-s: 4px;
   --r-m: 8px;
   --r-l: 14px;
@@ -154,20 +154,20 @@ html[data-theme="dark"],
   color-scheme: dark;
 
   /* Element tokens */
-  --paper: #1b1e23;
-  --surface: #24282e;
-  --surface-2: #2b3037;
-  --ink: #eceef1;
-  --graphite: #a2a9b3;
-  --rule: #363c44;
-  --rule-strong: #4a515b;
-  --nitrogen: #8fa4ff;
-  --nitrogen-hover: #b3c1ff;
-  --nitrogen-wash: #262f4d;
-  --oxygen: #ff6170;
-  --oxygen-wash: #4a2328;
-  --sulfur: #e9c547;
-  --on-nitrogen: #10152b;
+  --paper: #0B1311;
+  --surface: #132120;
+  --surface-2: #1B2D2A;
+  --ink: #E7F0EB;
+  --graphite: #9AAEA5;
+  --rule: #2A3D39;
+  --rule-strong: #4A605A;
+  --nitrogen: #3CCFC4;
+  --nitrogen-hover: #7BE3DB;
+  --nitrogen-wash: #153B38;
+  --oxygen: #FF7458;
+  --oxygen-wash: #3D1E19;
+  --sulfur: #F2C94C;
+  --on-nitrogen: #04201D;
   --lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.4);
 
   /* Legacy names → tokens (repeated so this block is self-contained) */
@@ -249,8 +249,8 @@ html[data-theme="dark"],
   --music-nav-logo: var(--ink);
 
   /* Font stacks (same as light) */
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
-  --font-body: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-body: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ----------------------------------------------------------------

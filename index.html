@@ -62,7 +62,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap"
       rel="stylesheet"
     />
 
@@ -84,10 +84,87 @@
     <main id="main-content">
       <!-- ========== HERO ========== -->
       <section class="hero-el" aria-labelledby="hero-name">
-        <div class="hero-text">
+        <div class="hero-intro">
           <h1 id="hero-name" class="hero-name">
             <span>Shuvam</span> <span>Banerji Seal</span>
           </h1>
+          <p class="hero-statement">
+            Computational chemist and AI researcher at IISER Kolkata.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="pages/resume.html">Read my CV</a>
+            <a class="btn" href="mailto:sbs22ms076@iiserkol.ac.in">Email me</a>
+          </div>
+        </div>
+
+        <div class="hero-stage">
+          <div
+            class="terminal-window"
+            id="hero-terminal"
+            role="region"
+            aria-label="Interactive terminal"
+          >
+            <div class="term-titlebar">
+              <span class="term-path">
+                <span class="path-host">shuvam@archbox</span>
+                <span class="path-sep" aria-hidden="true">&#9656;</span>
+                <span class="path-dir">~/portfolio</span>
+              </span>
+              <span class="term-meta">branch main, zsh</span>
+            </div>
+            <div class="term-body" id="term-body"></div>
+          </div>
+
+          <figure class="orbital" data-orbital-root data-accent>
+            <canvas
+              class="orbital-canvas"
+              data-orbital-canvas
+              tabindex="0"
+              role="img"
+              aria-label="Dot-density plot of a hydrogen orbital. Drag or use arrow keys to rotate."
+            ></canvas>
+            <figcaption class="orbital-caption">
+              <div
+                class="orbital-picker"
+                role="group"
+                aria-label="Choose an orbital"
+              >
+                <button type="button" data-orbital="1s" aria-pressed="false">
+                  1s
+                </button>
+                <button type="button" data-orbital="2pz" aria-pressed="false">
+                  2p<sub>z</sub>
+                </button>
+                <button type="button" data-orbital="3dz2" aria-pressed="true">
+                  3d<sub>z²</sub>
+                </button>
+                <button type="button" data-orbital="3dxy" aria-pressed="false">
+                  3d<sub>xy</sub>
+                </button>
+                <button type="button" data-orbital="4fxyz" aria-pressed="false">
+                  4f<sub>xyz</sub>
+                </button>
+              </div>
+              <p class="orbital-title">
+                <span data-orbital-name>3d<sub>z²</sub></span> orbital of
+                hydrogen
+                <span class="orbital-qn" data-orbital-qn
+                  >n = 3, l = 2, m = 0</span
+                >
+              </p>
+              <p class="orbital-note">
+                Each of the <span data-orbital-count>2,400</span> dots is a
+                Monte Carlo sample of |ψ|², a place the electron is likely to
+                be.
+                <span class="phase phase-plus">Vermilion</span> and
+                <span class="phase phase-minus">teal</span> are the two signs of
+                ψ. Drag to rotate.
+              </p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="hero-about">
           <p class="hero-lead">
             I'm a fifth-year BS-MS student at IISER Kolkata, majoring in
             chemistry with a minor in computer science. I work on information
@@ -98,58 +175,7 @@
             This year I'm co-organising the SycoLex track at FIRE 2026 and
             building two companies, iFiNN and UnderWater AI.
           </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="pages/resume.html">Read my CV</a>
-            <a class="btn" href="mailto:sbs22ms076@iiserkol.ac.in">Email me</a>
-          </div>
         </div>
-
-        <figure class="orbital" data-orbital-root>
-          <canvas
-            class="orbital-canvas"
-            data-orbital-canvas
-            tabindex="0"
-            role="img"
-            aria-label="Dot-density plot of a hydrogen orbital. Drag or use arrow keys to rotate."
-          ></canvas>
-          <figcaption class="orbital-caption">
-            <div
-              class="orbital-picker"
-              role="group"
-              aria-label="Choose an orbital"
-            >
-              <button type="button" data-orbital="1s" aria-pressed="false">
-                1s
-              </button>
-              <button type="button" data-orbital="2pz" aria-pressed="false">
-                2p<sub>z</sub>
-              </button>
-              <button type="button" data-orbital="3dz2" aria-pressed="true">
-                3d<sub>z²</sub>
-              </button>
-              <button type="button" data-orbital="3dxy" aria-pressed="false">
-                3d<sub>xy</sub>
-              </button>
-              <button type="button" data-orbital="4fxyz" aria-pressed="false">
-                4f<sub>xyz</sub>
-              </button>
-            </div>
-            <p class="orbital-title">
-              <span data-orbital-name>3d<sub>z²</sub></span> orbital of
-              hydrogen
-              <span class="orbital-qn" data-orbital-qn
-                >n = 3, l = 2, m = 0</span
-              >
-            </p>
-            <p class="orbital-note">
-              Each of the <span data-orbital-count>2,400</span> dots is a Monte
-              Carlo sample of |ψ|², a place the electron is likely to be.
-              <span class="phase phase-plus">Red</span> and
-              <span class="phase phase-minus">blue</span> are the two signs of
-              ψ. Drag to rotate.
-            </p>
-          </figcaption>
-        </figure>
       </section>
 
       <!-- ========== RESEARCH ========== -->
@@ -348,8 +374,8 @@
               >
             </p>
             <p class="feature-note">
-              The colours on this site come from the same CPK scheme: nitrogen
-              blue for links, oxygen red for the orbital's positive lobes.
+              Teal marks links and the orbital's negative lobes. Vermilion
+              marks its positive lobes.
             </p>
           </div>
         </article>
@@ -796,6 +822,7 @@
         });
       })();
     </script>
+    <script type="module" src="assets/js/terminal.js"></script>
     <script type="module" src="assets/js/orbital.js"></script>
     <script type="module" src="assets/js/molecule-figure.js"></script>
   </body>

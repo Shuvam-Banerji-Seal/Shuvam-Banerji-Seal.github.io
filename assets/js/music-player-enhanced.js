@@ -682,12 +682,8 @@ class MusicPlayer {
       }
     }
 
-    // Update Active Track in List
-    document.querySelectorAll(".song-card").forEach((card) => {
-      card.classList.remove("playing");
-    });
-    // This assumes we can find the card by some ID or index.
-    // We might need to add IDs to the cards in the HTML generation.
+    // Update Active Track in List (rows are rendered by the page script)
+    if (typeof window.markActiveRow === "function") window.markActiveRow(track);
   }
 
   updateControlsUI() {
