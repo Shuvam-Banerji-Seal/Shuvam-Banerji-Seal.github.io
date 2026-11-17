@@ -7,7 +7,7 @@ description: A guide to modern web architecture, focusing on performance, scalab
 
 # Building Scalable Web Apps
 
-In the modern web ecosystem, "scalability" isn't just a buzzword—it's a necessity. Whether you're building a personal portfolio or a complex SaaS platform, the architecture you choose defines your success.
+In the modern web ecosystem, "scalability" isn't just a buzzword, it's a necessity. Whether you're building a personal portfolio or a complex SaaS platform, the architecture you choose defines your success.
 
 ## The Modern Stack
 
@@ -16,7 +16,7 @@ Gone are the days of the monolithic LAMP stack. Today, we embrace decoupled, com
 ### 1. The Frontend: Component-Driven
 Frameworks like **React**, **Vue**, and **Svelte** have standardized the component model. This promotes reusability and testability.
 
-But the real game-changer is **Meta-frameworks** like Next.js and Nuxt. They bring:
+But the bigger shift is **Meta-frameworks** like Next.js and Nuxt. They bring:
 - **Server-Side Rendering (SSR)** for SEO.
 - **Static Site Generation (SSG)** for speed.
 - **Edge Middleware** for low-latency logic.

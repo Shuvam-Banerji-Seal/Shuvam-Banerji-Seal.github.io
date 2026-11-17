@@ -144,6 +144,8 @@ function visibleTextLines(html) {
   return html
     .replace(/<script\b[\s\S]*?<\/script>/gi, blank)
     .replace(/<style\b[\s\S]*?<\/style>/gi, blank)
+    // code blocks are code, not copy
+    .replace(/<pre\b[\s\S]*?<\/pre>/gi, blank)
     .replace(/<!--[\s\S]*?-->/g, blank)
     .replace(/<[^>]*>/g, (m) => {
       // keep alt/title/aria-label/placeholder text as visible copy

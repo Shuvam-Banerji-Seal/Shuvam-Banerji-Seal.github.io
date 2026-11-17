@@ -1,0 +1,104 @@
+{
+  "source": "My-CV repository, Shuvam_Banerji_Seal_CV.tex (checked 2026-11-17)",
+  "publications": [
+    {
+      "id": "agriir-ecir-2026",
+      "title": "AgriIR: A Scalable Framework for Domain-Specific Knowledge Retrieval",
+      "venue": "ECIR 2026",
+      "venueLong": "European Conference on Information Retrieval (ECIR 2026), Springer LNCS",
+      "year": 2026,
+      "status": "published",
+      "authors": ["Shuvam Banerji Seal", "Aheli Poddar", "Alok Mishra", "Dwaipayan Roy"],
+      "summary": "A configurable six-stage retrieval-augmented generation framework for agricultural questions, with deterministic citations, released with a 15,247-entry open dataset.",
+      "doi": "10.1007/978-3-032-21324-2_37",
+      "links": {
+        "Paper": "https://doi.org/10.1007/978-3-032-21324-2_37",
+        "arXiv": "https://arxiv.org/abs/2604.16353",
+        "Code": "https://github.com/Shuvam-Banerji-Seal/AgriIR",
+        "Dataset": "https://huggingface.co/datasets/ShuvBan/AgriIR_dataset"
+      }
+    },
+    {
+      "id": "sycolex-cikm-2026",
+      "title": "SycoLex: A Cross-Jurisdictional Benchmark for Detecting Sycophancy in Legal Case Reasoning",
+      "venue": "CIKM 2026 resource track, under review",
+      "venueLong": "ACM CIKM 2026, resource track (under review)",
+      "year": 2026,
+      "status": "under review",
+      "authors": ["Shuvam Banerji Seal", "collaborators at IISER Kolkata"],
+      "summary": "1,954 legal cases from the US Supreme Court, the Supreme Court of India and Indian consumer courts, six sycophancy-inducing prompt variants, responses from five LLMs, and LLM-as-judge plus human-expert annotations. The evaluation data for the FIRE 2026 shared task.",
+      "links": {
+        "Dataset": "https://huggingface.co/datasets/ShuvBan/SycoLex",
+        "Shared task": "https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/"
+      }
+    },
+    {
+      "id": "fire-2025-opinion",
+      "title": "Hierarchical Opinion Classification using Large Language Models",
+      "venue": "FIRE 2025",
+      "venueLong": "Forum for Information Retrieval Evaluation (FIRE 2025), CEUR-WS vol. 4173",
+      "year": 2025,
+      "status": "published",
+      "authors": ["Shuvam Banerji Seal", "Alok Mishra", "Utkarsha Ghosh"],
+      "summary": "Parameter-efficient fine-tuning of Gemma with a two-layer classification head and class-weighted loss; three-level opinion labels recast as an eight-class flat scheme.",
+      "links": {
+        "Paper": "https://ceur-ws.org/Vol-4173/T10-3.pdf",
+        "Code": "https://github.com/Shuvam-Banerji-Seal/FIRE_2025_Hierarchical_Opinion_Classification_using_Large_Language_Models"
+      }
+    },
+    {
+      "id": "trec-2024-tot",
+      "title": "IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items",
+      "venue": "TREC 2024",
+      "venueLong": "Text REtrieval Conference (TREC 2024) proceedings, NIST",
+      "year": 2024,
+      "status": "published",
+      "authors": ["Shuvam Banerji Seal", "Subinay Adhikary", "Soumyadeep Sar", "Dwaipayan Roy"],
+      "note": "Joint first authors: Shuvam Banerji Seal and Subinay Adhikary.",
+      "summary": "Known-item search for half-remembered books and films: four-step LLM query reformulation followed by two-layer BM25 retrieval, reaching recall@1000 of 0.8067.",
+      "links": {
+        "Paper": "https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf",
+        "Code": "https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR"
+      }
+    },
+    {
+      "id": "vo-saliep-dft",
+      "title": "Computational Modelling of [VO(SALIEP)(DTP)] as a Water-Reducing Catalyst",
+      "venue": "In preparation",
+      "venueLong": "Manuscript in preparation",
+      "year": 2025,
+      "status": "in preparation",
+      "authors": ["Shuvam Banerji Seal", "Soumyajit Roy"],
+      "summary": "DFT (B3LYP, Gaussian) study of a vanadium complex: molecular-orbital energies, electronic structure and reaction pathways for water reduction.",
+      "links": {}
+    }
+  ],
+  "thesis": [
+    {
+      "title": "Gray-code and Karnaugh-map structure of nucleic-acid and protein sequences, formalised in Lean 4",
+      "period": "2026 to now",
+      "summary": "Encoding DNA, RNA and protein sequences as binary codewords on Gray-code orderings and Karnaugh maps, so that neighbours in the map differ by one mutation, with every theorem machine-checked in Lean 4 and Mathlib."
+    },
+    {
+      "title": "A transformer mixture-of-experts model for RNA structure prediction",
+      "period": "2026 to now",
+      "summary": "A sparse mixture-of-experts transformer for RNA secondary and tertiary structure, with experts routed by structural motif, trained with distributed mixed-precision training."
+    }
+  ],
+  "datasets": [
+    {
+      "name": "SycoLex",
+      "url": "https://huggingface.co/datasets/ShuvBan/SycoLex",
+      "summary": "Sycophancy in legal case reasoning: 1,954 cases, three jurisdictions, CC-BY-4.0."
+    },
+    {
+      "name": "AgriIR_dataset",
+      "url": "https://huggingface.co/datasets/ShuvBan/AgriIR_dataset",
+      "summary": "15,247 curated Indian agricultural knowledge entries with quality scores, CC-BY-4.0."
+    }
+  ],
+  "service": [
+    "Peer reviewer for AAAI and ICWSM",
+    "Co-organiser, FIRE 2026 shared task on statute prediction and sycophancy in legal LLMs"
+  ]
+}

@@ -1598,8 +1598,13 @@ test("Fullscreen Timer is reachable and registered", () => {
       tools.includes('"fullscreen-timer": "tools/fullscreen-timer.html"'),
     "tools.html card/mapping missing",
   );
+  // Rollup inputs are either listed by path or discovered from pages/ by
+  // htmlEntries(); either way the timer page must end up as a build entry.
   assert(
-    vite.includes("pages/tools/fullscreen-timer.html"),
+    vite.includes("pages/tools/fullscreen-timer.html") ||
+      (/input:\s*htmlEntries\(\)/.test(vite) &&
+        /walk\(resolve\(__dirname,\s*"pages"\)\)/.test(vite) &&
+        existsSync(join(ROOT, "pages/tools/fullscreen-timer.html"))),
     "vite.config.mjs rollup input missing (page would vanish from dist)",
   );
   assert(

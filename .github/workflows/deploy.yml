@@ -35,6 +35,13 @@ jobs:
       - name: Install Dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Refresh GitHub repository snapshot
+        # Keeps the committed snapshot if the API is unavailable.
+        run: node scripts/generate-github-data.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Generate Manifests
         run: |
           echo "🎵 Generating Music Manifest..."

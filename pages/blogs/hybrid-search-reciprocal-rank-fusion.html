@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var s = null;
+        try { s = localStorage.getItem("theme"); } catch (e) {}
+        var t = s === "light" ? "light" : s ? "dark" : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Hybrid search with BM25, dense embeddings and reciprocal rank fusion | Shuvam Banerji Seal</title>
+    <meta name="description" content="Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores." />
+    <meta name="author" content="Shuvam Banerji Seal" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title="Shuvam Banerji Seal, blog" href="https://shuvam-banerji-seal.github.io/feed.xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Shuvam Banerji Seal" />
+    <meta property="og:title" content="Hybrid search with BM25, dense embeddings and reciprocal rank fusion" />
+    <meta property="og:description" content="Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <meta property="article:published_time" content="2026-11-17" />
+    <meta property="article:modified_time" content="2026-11-17" />
+    <meta property="article:author" content="https://shuvam-banerji-seal.github.io/" />
+    <meta property="article:tag" content="Information retrieval" />
+    <meta property="article:tag" content="RAG" />
+    <meta property="article:tag" content="Hybrid search" />
+    <meta property="article:tag" content="Reciprocal rank fusion" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hybrid search with BM25, dense embeddings and reciprocal rank fusion" />
+    <meta name="twitter:description" content="Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores." />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BlogPosting","@id":"https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html#article","headline":"Hybrid search with BM25, dense embeddings and reciprocal rank fusion","description":"Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.","datePublished":"2026-11-17","dateModified":"2026-11-17","inLanguage":"en","keywords":"Information retrieval, RAG, Hybrid search, Reciprocal rank fusion","wordCount":1860,"url":"https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html","mainEntityOfPage":"https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html","image":"https://shuvam-banerji-seal.github.io/assets/img/og-image.png","author":{"@type":"Person","@id":"https://shuvam-banerji-seal.github.io/#person","name":"Shuvam Banerji Seal","url":"https://shuvam-banerji-seal.github.io/"},"publisher":{"@type":"Person","@id":"https://shuvam-banerji-seal.github.io/#person","name":"Shuvam Banerji Seal"},"isPartOf":{"@type":"Blog","@id":"https://shuvam-banerji-seal.github.io/pages/blog.html#blog","name":"Shuvam Banerji Seal, blog"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://shuvam-banerji-seal.github.io/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://shuvam-banerji-seal.github.io/pages/blog.html"},{"@type":"ListItem","position":3,"name":"Hybrid search with BM25, dense embeddings and reciprocal rank fusion","item":"https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html"}]}]}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/assets/css/article.css" />
+  </head>
+  <body class="article-page">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="navbar-container"></div>
+    <script type="module" src="/assets/js/navbar.js"></script>
+    <main id="main-content" class="wrap art-layout">
+      <article class="art" aria-labelledby="art-title">
+        <header class="art-head">
+          <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/pages/blog.html">Blog</a></nav>
+          <h1 id="art-title">Hybrid search with BM25, dense embeddings and reciprocal rank fusion</h1>
+          <p class="art-desc">Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.</p>
+          <p class="art-meta"><span>Shuvam Banerji Seal</span> <span aria-hidden="true">·</span> <time datetime="2026-11-17">17 Nov 2026</time> <span aria-hidden="true">·</span> <span>8 min read</span></p>
+          <p class="art-tags"><span class="tag">Information retrieval</span> <span class="tag">RAG</span> <span class="tag">Hybrid search</span> <span class="tag">Reciprocal rank fusion</span></p>
+        </header>
+        <nav class="toc" aria-labelledby="toc-h"><details open><summary id="toc-h">Contents</summary><ol><li><a href="#the-pipeline-in-one-pass">The pipeline in one pass</a></li><li><a href="#two-retrievers-two-kinds-of-failure">Two retrievers, two kinds of failure</a></li><li><a href="#why-adding-the-scores-does-not-work">Why adding the scores does not work</a></li><li><a href="#reciprocal-rank-fusion">Reciprocal rank fusion</a></li><li><a href="#the-same-example-fused-with-rrf">The same example, fused with RRF</a></li><li><a href="#refining-the-query-with-a-hypothetical-answer">Refining the query with a hypothetical answer</a></li><li><a href="#citations-as-part-of-the-design">Citations as part of the design</a></li><li><a href="#related-work-on-this-site">Related work on this site</a></li><li><a href="#references">References</a></li></ol></details></nav>
+        <div class="prose">
+<p>In July 2025, working with Dr. Dwaipayan Roy at IISER Kolkata, I built a retrieval-augmented generation (RAG) pipeline over the institute&#39;s intranet documents. Its retrieval step does not trust a single search method. It runs a keyword search (BM25) and an embedding search side by side, then merges the two ranked lists with reciprocal rank fusion (RRF). This article explains why two retrievers are better than one, why the merge should use ranks rather than scores, and works through a fusion example with numbers you can check.</p>
+<h2 id="the-pipeline-in-one-pass"><a class="h-anchor" href="#the-pipeline-in-one-pass" aria-hidden="true" tabindex="-1">#</a>The pipeline in one pass</h2>
+<p>A RAG system answers a question by first retrieving relevant passages and then asking a language model to write an answer from them [5]. The pipeline had these stages:</p>
+<ol>
+<li><strong>Acquisition.</strong> Intranet pages and documents were collected automatically with Selenium, which drives a real browser and so can reach pages that a plain HTTP fetch cannot.</li>
+<li><strong>Text extraction.</strong> Documents were converted to text with PyMuPDF, a PDF library, and EasyOCR, an optical character recognition library, so that scanned material could be searched along with born-digital files.</li>
+<li><strong>Chunking.</strong> Text was split into context-aware chunks, and the chunks were enriched with metadata.</li>
+<li><strong>Indexing.</strong> Chunks were embedded with Qwen3-4B and stored in a FAISS index [3] for dense search, alongside a BM25 index for keyword search.</li>
+<li><strong>Query refinement.</strong> Before retrieval, the query was refined with a hypothetical answer (more on this below).</li>
+<li><strong>Hybrid retrieval.</strong> BM25 and dense search each returned a ranked list, and RRF fused them.</li>
+<li><strong>Answering.</strong> The language model wrote an answer with inline citations pointing back to the retrieved chunks, shown in a Streamlit app.</li>
+</ol>
+<p>Most of the rest of this article is about stages 5 and 6.</p>
+<h2 id="two-retrievers-two-kinds-of-failure"><a class="h-anchor" href="#two-retrievers-two-kinds-of-failure" aria-hidden="true" tabindex="-1">#</a>Two retrievers, two kinds of failure</h2>
+<p>BM25, explained in detail in <a href="./bm25-explained.html">the first article of this series</a>, scores a chunk by exact word overlap with the query, weighted by how rare each word is [2]. It is very good at names, codes, numbers and rare technical terms, because those are exactly the words with high IDF. Its weakness is vocabulary mismatch: if the question says &quot;fee waiver&quot; and the document says &quot;tuition remission&quot;, BM25 sees nothing in common.</p>
+<p>Dense retrieval maps the query and each chunk to vectors with a neural encoder and ranks chunks by vector similarity, usually cosine similarity or an inner product. FAISS is a library for doing that nearest-neighbour search quickly over many vectors [3]. Dense retrieval handles paraphrase well, because sentences with similar meaning end up close together. Its weakness is the mirror image of BM25&#39;s: an exact identifier, such as a form number or a course code, may not be represented sharply enough in the vector to be matched reliably.</p>
+<p>Because the two methods fail on different queries, a document that one of them misses is often found by the other. The question is how to combine their outputs.</p>
+<h2 id="why-adding-the-scores-does-not-work"><a class="h-anchor" href="#why-adding-the-scores-does-not-work" aria-hidden="true" tabindex="-1">#</a>Why adding the scores does not work</h2>
+<p>Suppose, for one query, the two retrievers return these top five chunks. The scores are made up for illustration.</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>BM25</th>
+<th>BM25 score</th>
+<th>Dense</th>
+<th>Cosine</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>A</td>
+<td>18.4</td>
+<td>C</td>
+<td>0.83</td>
+</tr>
+<tr>
+<td>2</td>
+<td>B</td>
+<td>17.9</td>
+<td>F</td>
+<td>0.81</td>
+</tr>
+<tr>
+<td>3</td>
+<td>C</td>
+<td>12.1</td>
+<td>B</td>
+<td>0.80</td>
+</tr>
+<tr>
+<td>4</td>
+<td>D</td>
+<td>9.0</td>
+<td>G</td>
+<td>0.78</td>
+</tr>
+<tr>
+<td>5</td>
+<td>E</td>
+<td>8.7</td>
+<td>A</td>
+<td>0.74</td>
+</tr>
+</tbody></table>
+</div><p><strong>Raw sum.</strong> BM25 scores are unbounded and depend on the query&#39;s length and the rarity of its words. Cosine similarities live between <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>. Adding them gives A 19.14, B 18.70, C 12.93, D 9.00, E 8.70, F 0.81, G 0.78. That is exactly the BM25 order with the dense-only chunks appended at the bottom. The dense retriever has been silently switched off.</p>
+<p><strong>Min–max normalisation.</strong> A common fix is to rescale each list to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0, 1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> using its own minimum and maximum, then add. That gives B 1.615, C 1.351, A 1.000, F 0.778, G 0.444, D 0.031, E 0.000. It looks reasonable, but the result depends on where each list happens to end. Ask the dense retriever for one more result, a chunk H with cosine 0.52, and the dense list&#39;s minimum moves from 0.74 to 0.52. A&#39;s normalised dense score jumps from 0 to 0.71, and A climbs from third to second, although nothing about A has changed. The last item in each list always gets a normalised score of exactly 0 even though it was retrieved, and a single outlier at the top compresses everything below it.</p>
+<p>The underlying problem is calibration: the two numbers measure different things on different scales, and turning them into one common scale needs either training data or assumptions that may not hold for the next query.</p>
+<h2 id="reciprocal-rank-fusion"><a class="h-anchor" href="#reciprocal-rank-fusion" aria-hidden="true" tabindex="-1">#</a>Reciprocal rank fusion</h2>
+<p>Cormack, Clarke and Büttcher proposed RRF at SIGIR 2009 as a simple unsupervised baseline, and found that it almost always improved on the best of the rankings it combined [1]. Given a set of rankings <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span></span></span></span>, each document <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> gets</p>
+<div class="math-display" tabindex="0"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mi mathvariant="normal">R</mi><mi mathvariant="normal">R</mi><mi mathvariant="normal">F</mi></mrow><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">)</mo><mo>=</mo><munder><mo>∑</mo><mrow><mi>r</mi><mo>∈</mo><mi>R</mi></mrow></munder><mfrac><mn>1</mn><mrow><mi>k</mi><mo>+</mo><mi>r</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\mathrm{RRF}(d) = \sum_{r \in R} \frac{1}{k + r(d)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathrm">RRF</span></span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.6431em;vertical-align:-1.3217em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8557em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span><span class="mrel mtight">∈</span><span class="mord mathnormal mtight" style="margin-right:0.0077em;">R</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.3217em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div>
+<p>where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">r(d)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mclose">)</span></span></span></span> is the position of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> in ranking <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span></span></span></span>, counting from 1, and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> is a constant. A document missing from a ranking gets nothing from it, which is the usual convention when each retriever returns only its top results. In the paper, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>60</mn></mrow><annotation encoding="application/x-tex">k = 60</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">60</span></span></span></span> &quot;was fixed during a pilot investigation and not altered during subsequent validation&quot;, and the pilot results indicated that 60 was near-optimal but that the choice was not critical [1]. The authors explain the shape of the formula this way: highly ranked documents matter more, but the importance of lower-ranked documents does not vanish as it would with, say, an exponential decay, and the constant <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> limits the effect of one outlier system ranking a document very high [1]. In their pilot and TREC experiments, RRF beat Condorcet Fuse, CombMNZ and the best individual system by 4% to 5% on average [1].</p>
+<p>RRF avoids calibration entirely because it never looks at a score. Only positions enter the formula. Any strictly increasing transformation of a retriever&#39;s scores, whether squaring BM25 scores or rescaling cosine similarities to a range of 0 to 100, leaves its ranking and therefore its RRF contribution unchanged.</p>
+<h2 id="the-same-example-fused-with-rrf"><a class="h-anchor" href="#the-same-example-fused-with-rrf" aria-hidden="true" tabindex="-1">#</a>The same example, fused with RRF</h2>
+<p>With <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>60</mn></mrow><annotation encoding="application/x-tex">k = 60</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">60</span></span></span></span>:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Chunk</th>
+<th>BM25 rank</th>
+<th>Dense rank</th>
+<th>BM25 term</th>
+<th>Dense term</th>
+<th>RRF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C</td>
+<td>3</td>
+<td>1</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>63</mn><mo>=</mo><mn>0.015873</mn></mrow><annotation encoding="application/x-tex">1/63 = 0.015873</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/63</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.015873</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>61</mn><mo>=</mo><mn>0.016393</mn></mrow><annotation encoding="application/x-tex">1/61 = 0.016393</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/61</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.016393</span></span></span></span></td>
+<td><strong>0.032266</strong></td>
+</tr>
+<tr>
+<td>B</td>
+<td>2</td>
+<td>3</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>62</mn><mo>=</mo><mn>0.016129</mn></mrow><annotation encoding="application/x-tex">1/62 = 0.016129</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/62</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.016129</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>63</mn><mo>=</mo><mn>0.015873</mn></mrow><annotation encoding="application/x-tex">1/63 = 0.015873</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/63</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.015873</span></span></span></span></td>
+<td>0.032002</td>
+</tr>
+<tr>
+<td>A</td>
+<td>1</td>
+<td>5</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>61</mn><mo>=</mo><mn>0.016393</mn></mrow><annotation encoding="application/x-tex">1/61 = 0.016393</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/61</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.016393</span></span></span></span></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>65</mn><mo>=</mo><mn>0.015385</mn></mrow><annotation encoding="application/x-tex">1/65 = 0.015385</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/65</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.015385</span></span></span></span></td>
+<td>0.031778</td>
+</tr>
+<tr>
+<td>F</td>
+<td>–</td>
+<td>2</td>
+<td>0</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>62</mn><mo>=</mo><mn>0.016129</mn></mrow><annotation encoding="application/x-tex">1/62 = 0.016129</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/62</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.016129</span></span></span></span></td>
+<td>0.016129</td>
+</tr>
+<tr>
+<td>D</td>
+<td>4</td>
+<td>–</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>64</mn><mo>=</mo><mn>0.015625</mn></mrow><annotation encoding="application/x-tex">1/64 = 0.015625</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/64</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.015625</span></span></span></span></td>
+<td>0</td>
+<td>0.015625</td>
+</tr>
+<tr>
+<td>G</td>
+<td>–</td>
+<td>4</td>
+<td>0</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>64</mn><mo>=</mo><mn>0.015625</mn></mrow><annotation encoding="application/x-tex">1/64 = 0.015625</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/64</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.015625</span></span></span></span></td>
+<td>0.015625</td>
+</tr>
+<tr>
+<td>E</td>
+<td>5</td>
+<td>–</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>65</mn><mo>=</mo><mn>0.015385</mn></mrow><annotation encoding="application/x-tex">1/65 = 0.015385</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/65</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.015385</span></span></span></span></td>
+<td>0</td>
+<td>0.015385</td>
+</tr>
+</tbody></table>
+</div><p>Several things are visible here:</p>
+<ul>
+<li><strong>Agreement wins.</strong> The three chunks that both retrievers found (C, B, A) score about twice as much as any chunk found by only one. C comes first: it was only third for BM25, but it was first for dense search and ranked well in both.</li>
+<li><strong>Positions near the top are close together.</strong> With <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>60</mn></mrow><annotation encoding="application/x-tex">k = 60</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">60</span></span></span></span>, first place is worth <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>61</mn></mrow><annotation encoding="application/x-tex">1/61</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/61</span></span></span></span> and second place <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>62</mn></mrow><annotation encoding="application/x-tex">1/62</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/62</span></span></span></span>, a difference of about 0.00026. In this example, being present in a second list adds at least <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>65</mn><mo>≈</mo><mn>0.0154</mn></mrow><annotation encoding="application/x-tex">1/65 \approx 0.0154</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/65</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.0154</span></span></span></span>. So RRF mainly rewards consensus between retrievers, and only then fine position.</li>
+<li><strong>Ties are possible.</strong> D and G both score exactly <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>64</mn></mrow><annotation encoding="application/x-tex">1/64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/64</span></span></span></span>, because each appears once at rank 4. Any fixed tie-breaking rule will do.</li>
+<li><strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> matters at the extremes.</strong> With <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">k = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>, first place is worth 1 and second place 0.5, so a single first-place finish dominates. The order becomes C 1.333, A 1.200, B 0.833, and A, which BM25 alone put first, now overtakes B. A large <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> flattens the curve and makes agreement count for more.</li>
+<li><strong>List depth does not move existing scores.</strong> Adding chunk H at dense rank 6 gives H its own small score, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>66</mn></mrow><annotation encoding="application/x-tex">1/66</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/66</span></span></span></span>, and changes nothing for A, unlike min–max normalisation.</li>
+</ul>
+<p>The fusion step is a few lines of Python:</p>
+<pre tabindex="0"><code class="language-python">from collections import defaultdict
+
+def rrf(rankings, k=60):
+    &quot;&quot;&quot;rankings: list of ranked lists of document ids, best first.&quot;&quot;&quot;
+    scores = defaultdict(float)
+    for ranking in rankings:
+        for rank, doc in enumerate(ranking, start=1):
+            scores[doc] += 1.0 / (k + rank)
+    return sorted(scores.items(), key=lambda item: item[1], reverse=True)
+
+bm25_ranking = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;]
+dense_ranking = [&quot;C&quot;, &quot;F&quot;, &quot;B&quot;, &quot;G&quot;, &quot;A&quot;]
+
+for doc, score in rrf([bm25_ranking, dense_ranking]):
+    print(doc, f&quot;{score:.6f}&quot;)
+# C 0.032266
+# B 0.032002
+# A 0.031778
+# F 0.016129
+# D 0.015625
+# G 0.015625
+# E 0.015385
+</code></pre>
+<h2 id="refining-the-query-with-a-hypothetical-answer"><a class="h-anchor" href="#refining-the-query-with-a-hypothetical-answer" aria-hidden="true" tabindex="-1">#</a>Refining the query with a hypothetical answer</h2>
+<p>A user&#39;s question and the passage that answers it often look quite different: one is a short question, the other a paragraph of statements. The pipeline narrowed that gap by refining the query with a hypothetical answer. The idea was introduced as HyDE by Gao, Ma, Lin and Callan [4]: ask a language model to write a plausible answer document, then use that text for dense retrieval. The generated answer may contain wrong details, but it is written in the same register as real answers, so its embedding tends to land near them. In HyDE the hypothetical text is used only to search; the real passages it retrieves are what the answer is then built from.</p>
+<h2 id="citations-as-part-of-the-design"><a class="h-anchor" href="#citations-as-part-of-the-design" aria-hidden="true" tabindex="-1">#</a>Citations as part of the design</h2>
+<p>RRF returns a short list of chunks, and the language model writes its answer from those, citing them inline. For a citation to be checkable, each chunk has to keep a record of the document it came from, so that the reader can follow a citation back to the original. This changes how the system is used: a reader does not have to trust the model, only to check the cited passage. It also makes retrieval failures visible, since an answer whose citations do not support it points to a problem in retrieval or generation rather than hiding it.</p>
+<h2 id="related-work-on-this-site"><a class="h-anchor" href="#related-work-on-this-site" aria-hidden="true" tabindex="-1">#</a>Related work on this site</h2>
+<p>Retrieval from more than one source, small open-weight models and checkable citations also run through <a href="./agriir-domain-specific-rag.html">AgriIR</a>, our ECIR 2026 framework for agricultural question answering, whose code is at <a href="https://github.com/Shuvam-Banerji-Seal/AgriIR">github.com/Shuvam-Banerji-Seal/AgriIR</a>. For reusable RAG scripts and pipelines, see <a href="https://shuvam-banerji-seal.github.io/LLM-Whisperer/">LLM-Whisperer</a>.</p>
+<h2 id="references"><a class="h-anchor" href="#references" aria-hidden="true" tabindex="-1">#</a>References</h2>
+<ol>
+<li>Gordon V. Cormack, Charles L. A. Clarke and Stefan Büttcher. 2009. Reciprocal rank fusion outperforms Condorcet and individual rank learning methods. In <em>Proceedings of the 32nd International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR &#39;09)</em>, 758–759. <a href="https://doi.org/10.1145/1571941.1572114">https://doi.org/10.1145/1571941.1572114</a></li>
+<li>Stephen Robertson and Hugo Zaragoza. 2009. The Probabilistic Relevance Framework: BM25 and Beyond. <em>Foundations and Trends in Information Retrieval</em> 3(4), 333–389. <a href="https://doi.org/10.1561/1500000019">https://doi.org/10.1561/1500000019</a></li>
+<li>Jeff Johnson, Matthijs Douze and Hervé Jégou. 2021. Billion-scale similarity search with GPUs. <em>IEEE Transactions on Big Data</em> 7(3), 535–547. <a href="https://doi.org/10.1109/TBDATA.2019.2921572">https://doi.org/10.1109/TBDATA.2019.2921572</a></li>
+<li>Luyu Gao, Xueguang Ma, Jimmy Lin and Jamie Callan. 2023. Precise Zero-Shot Dense Retrieval without Relevance Labels. In <em>Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)</em>, 1762–1777. <a href="https://doi.org/10.18653/v1/2023.acl-long.99">https://doi.org/10.18653/v1/2023.acl-long.99</a></li>
+<li>Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich Küttler, Mike Lewis, Wen-tau Yih, Tim Rocktäschel, Sebastian Riedel and Douwe Kiela. 2020. Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. In <em>Advances in Neural Information Processing Systems 33 (NeurIPS 2020)</em>. <a href="https://arxiv.org/abs/2005.11401">https://arxiv.org/abs/2005.11401</a></li>
+</ol>
+
+        </div>
+        <footer class="art-foot">
+          <div class="byline">
+            <img src="/assets/img/sbs_001.webp" alt="" width="64" height="64" loading="lazy" />
+            <p><b>Shuvam Banerji Seal</b> is a BS-MS student at IISER Kolkata working on information retrieval, language-model evaluation and computational chemistry. <a href="/">More about me</a>, or write to <a href="mailto:sbs22ms076@iiserkol.ac.in">sbs22ms076@iiserkol.ac.in</a>.</p>
+          </div>
+          <section aria-labelledby="rel-h"><h2 id="rel-h">Read next</h2><ul class="post-list"><li data-tags="Retrieval"><a href="/pages/blogs/agriir-domain-specific-rag.html">AgriIR, a configurable RAG pipeline for agricultural questions</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated.</p></li><li data-tags="Retrieval"><a href="/pages/blogs/bm25-explained.html">BM25, explained through this site&#39;s search box</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How BM25 scores a document, term by term: saturation with k1, length normalisation with b, a never-negative IDF, and a worked example by hand.</p></li><li data-tags="Retrieval|Language models"><a href="/pages/blogs/tip-of-the-tongue-trec-2024.html">Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067.</p></li></ul></section>
+        </footer>
+      </article>
+    </main>
+    <footer class="site-foot">
+      <div class="wrap">
+        <p>© <span data-year>2026</span> Shuvam Banerji Seal. Source on <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io">GitHub</a>.</p>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/">Home</a><a href="/pages/research.html">Research</a><a href="/pages/projects.html">Projects</a><a href="/pages/tools.html">Tools</a><a href="/pages/blog.html">Blog</a><a href="/feed.xml">RSS</a>
+        </nav>
+      </div>
+    </footer>
+    <script>document.querySelectorAll("[data-year]").forEach(function (e) { e.textContent = new Date().getFullYear(); });</script>
+  </body>
+</html>

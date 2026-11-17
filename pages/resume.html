@@ -55,6 +55,16 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
     <link rel="stylesheet" href="../assets/css/element.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://shuvam-banerji-seal.github.io/" },
+          { "@type": "ListItem", "position": 2, "name": "CV", "item": "https://shuvam-banerji-seal.github.io/pages/resume.html" }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="navbar-container"></div>
@@ -165,15 +175,54 @@
         <h2 id="publications-heading">Publications</h2>
         <div class="cv-entries">
           <article class="cv-row">
+            <p class="cv-date">2026</p>
+            <div>
+              <h3 class="cv-title">AgriIR: a scalable framework for domain-specific knowledge retrieval</h3>
+              <p class="cv-meta">Published &middot; ECIR 2026 &middot; With Aheli Poddar, Alok Mishra and Dr. Dwaipayan Roy</p>
+              <p class="cv-desc">
+                A scalable retrieval framework for agricultural domain knowledge,
+                with algorithms tuned to domain-specific terminology, to make
+                agricultural knowledge more accessible in developing regions.
+                Available as <a href="https://doi.org/10.1007/978-3-032-21324-2_37" target="_blank" rel="noopener">DOI 10.1007/978-3-032-21324-2_37</a>
+                and <a href="https://arxiv.org/abs/2604.16353" target="_blank" rel="noopener">arXiv:2604.16353</a>.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">RAG</li>
+                <li class="tag">Hybrid retrieval</li>
+                <li class="tag">Agriculture</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2026</p>
+            <div>
+              <h3 class="cv-title">SycoLex: a cross-jurisdictional benchmark for detecting sycophancy in legal case reasoning</h3>
+              <p class="cv-meta">Under review &middot; CIKM 2026 resource track &middot; With collaborators, IISER Kolkata</p>
+              <p class="cv-desc">
+                A 1,954-case benchmark across US Supreme Court, Indian Supreme
+                Court and Indian Consumer Courts, with six sycophancy-inducing
+                prompt variants, responses from five LLMs, and paired
+                LLM-as-Judge and human-expert annotations. Dataset on
+                <a href="https://huggingface.co/datasets/ShuvBan/SycoLex" target="_blank" rel="noopener">Hugging Face</a>.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Sycophancy</li>
+                <li class="tag">LLM-as-a-Judge</li>
+                <li class="tag">Legal AI</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
             <p class="cv-date">FIRE 2025</p>
             <div>
-              <h3 class="cv-title">Hierarchical Opinion Classification with Large Language Models</h3>
-              <p class="cv-meta">Submitted &middot; NLP and LLMs &middot; With Alok Mishra and Utkarsha Ghosh</p>
+              <h3 class="cv-title">Hierarchical opinion classification using large language models</h3>
+              <p class="cv-meta">Published &middot; NLP and LLMs &middot; With Alok Mishra and Utkarsha Ghosh</p>
               <p class="cv-desc">
                 Parameter-efficient fine-tuning of Gemma-1B for hierarchical
                 opinion classification: lightweight two-layer head, selective
                 transformer block updates, 8-class reformulation with
                 class-weighted loss for minority-class performance.
+                Proceedings paper at <a href="https://ceur-ws.org/Vol-4173/T10-3.pdf" target="_blank" rel="noopener">ceur-ws.org/Vol-4173/T10-3.pdf</a>.
               </p>
               <ul class="cv-tags">
                 <li class="tag">Gemma-1B</li>
@@ -185,17 +234,167 @@
           <article class="cv-row">
             <p class="cv-date">2024</p>
             <div>
-              <h3 class="cv-title">IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items</h3>
-              <p class="cv-meta">Information retrieval &middot; TREC 2024 &middot; With Subinay Adhikary, Soumyadeep Sar and Dr. Dwaipayan Roy</p>
+              <h3 class="cv-title">IISERK@ToT_2024: query reformulation and layered retrieval for tip-of-tongue items</h3>
+              <p class="cv-meta">Information retrieval &middot; TREC 2024 &middot; Joint first author with Subinay Adhikary, with Soumyadeep Sar and Dr. Dwaipayan Roy</p>
               <p class="cv-desc">
-                Four-step query reformulation + two-layer retrieval (BM25 +
-                LLM), achieving best NDCG metrics for the TREC 2024
-                Tip-of-the-Tongue track.
+                Four-step query reformulation with an LLM, then two-layer BM25
+                retrieval. Our best run, the two-layer approach, reached
+                Recall@1000 of 0.8067. Paper at
+                <a href="https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf" target="_blank" rel="noopener">trec.nist.gov</a>
+                and code at
+                <a href="https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR" target="_blank" rel="noopener">GitHub</a>.
               </p>
               <ul class="cv-tags">
                 <li class="tag">BM25</li>
                 <li class="tag">NDCG</li>
                 <li class="tag">TREC 2024</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2024&ndash;25</p>
+            <div>
+              <h3 class="cv-title">Computational modeling of [VO(SALIEP)(DTP)] as water reducing catalyst</h3>
+              <p class="cv-meta">To be submitted &middot; Guided by Dr. Soumyajit Roy, IISER Kolkata</p>
+              <p class="cv-desc">
+                DFT (B3LYP) calculations of molecular orbital energies and
+                electronic structure in Gaussian, with transition state and
+                reaction pathway analysis for water reduction.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">DFT</li>
+                <li class="tag">Gaussian</li>
+                <li class="tag">B3LYP</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="thesis-heading">
+        <h2 id="thesis-heading">Master's thesis (ongoing)</h2>
+        <div class="cv-entries">
+          <article class="cv-row">
+            <p class="cv-date">2026 to present</p>
+            <div>
+              <h3 class="cv-title">Gray-code and Karnaugh-map structure of DNA, RNA and protein sequences, formalized in Lean 4</h3>
+              <p class="cv-meta">BS-MS thesis &middot; IISER Kolkata</p>
+              <p class="cv-desc">
+                Encodes nucleic-acid and protein sequences in binary sequence
+                space, organized on Gray-code orderings and Karnaugh maps so that
+                adjacency in the map matches a single-symbol mutation. Every
+                theorem is machine-checked in Lean 4 with Mathlib.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Lean 4</li>
+                <li class="tag">Gray code</li>
+                <li class="tag">Formal verification</li>
+                <li class="tag">Bioinformatics</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2026 to present</p>
+            <div>
+              <h3 class="cv-title">Transformer mixture-of-experts model for RNA structure prediction</h3>
+              <p class="cv-meta">BS-MS thesis &middot; IISER Kolkata</p>
+              <p class="cv-desc">
+                A mixture-of-experts transformer for RNA secondary and tertiary
+                structure prediction. Sparse expert routing lets specialized
+                experts handle structural motifs such as helices, loops and
+                pseudoknots at a fixed inference budget.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Transformers</li>
+                <li class="tag">Mixture-of-experts</li>
+                <li class="tag">PyTorch</li>
+                <li class="tag">RNA</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="datasets-heading">
+        <h2 id="datasets-heading">Open datasets</h2>
+        <div class="cv-entries">
+          <article class="cv-row">
+            <p class="cv-date">2026</p>
+            <div>
+              <h3 class="cv-title">SycoLex</h3>
+              <p class="cv-meta">Hugging Face &middot; CC-BY-4.0 &middot; Text classification and text generation</p>
+              <p class="cv-desc">
+                Benchmark for detecting sycophancy in legal case reasoning, with
+                1,954 real legal cases across three jurisdictions (US Supreme
+                Court 300, Indian Supreme Court 1,500, Indian Consumer Courts
+                154), six prompt variants, and LLM-as-Judge and human expert
+                annotations. Dataset:
+                <a href="https://huggingface.co/datasets/ShuvBan/SycoLex" target="_blank" rel="noopener">huggingface.co/datasets/ShuvBan/SycoLex</a>.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Legal NLP</li>
+                <li class="tag">Sycophancy</li>
+                <li class="tag">CC-BY-4.0</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">ECIR 2026</p>
+            <div>
+              <h3 class="cv-title">AgriIR_dataset</h3>
+              <p class="cv-meta">Hugging Face &middot; CC-BY-4.0 &middot; Released with the AgriIR paper</p>
+              <p class="cv-desc">
+                15,247 curated Indian agricultural knowledge entries with quality
+                scores and domain metadata covering crops, soils, regions and
+                farming practices. Dataset:
+                <a href="https://huggingface.co/datasets/ShuvBan/AgriIR_dataset" target="_blank" rel="noopener">huggingface.co/datasets/ShuvBan/AgriIR_dataset</a>.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Agriculture</li>
+                <li class="tag">Retrieval</li>
+                <li class="tag">CC-BY-4.0</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="companies-heading">
+        <h2 id="companies-heading">Companies</h2>
+        <div class="cv-entries">
+          <article class="cv-row">
+            <p class="cv-date">2025 to present</p>
+            <div>
+              <h3 class="cv-title">iFiNN</h3>
+              <p class="cv-meta">Co-founder and lead developer &middot; Incubated at RISE Foundation, IISER Kolkata</p>
+              <p class="cv-desc">
+                An AI-driven fintech startup building a simple platform that
+                brings ML and AI tools to automated trading alerts across stocks,
+                crypto and mutual funds. Funded by MeitY Startup Hub through the
+                GENESIS program.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Fintech</li>
+                <li class="tag">Machine learning</li>
+                <li class="tag">MeitY GENESIS</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2025 to present</p>
+            <div>
+              <h3 class="cv-title">UnderWater AI</h3>
+              <p class="cv-meta">Co-founder and CTO &middot; Incubated at RISE Foundation, IISER Kolkata</p>
+              <p class="cv-desc">
+                A deeptech startup building software that improves underwater
+                image quality with deep neural networks and early fusion
+                learning, for marine species identification. Funded by MeitY
+                Startup Hub through the GENESIS program.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Deep learning</li>
+                <li class="tag">Computer vision</li>
+                <li class="tag">MeitY GENESIS</li>
               </ul>
             </div>
           </article>
@@ -206,10 +405,158 @@
         <h2 id="projects-heading">Projects</h2>
         <div class="cv-entries">
           <article class="cv-row">
+            <p class="cv-date">2026 to present</p>
+            <div>
+              <h3 class="cv-title">Molecule3D / LAMMPS Web GUI: browser-native molecular simulation workbench</h3>
+              <p class="cv-meta">Free for education and non-commercial research &middot; <a href="https://shuvam-banerji-seal.github.io/lammps-web-gui/" target="_blank" rel="noopener">Live app</a></p>
+              <p class="cv-desc">
+                A browser-native LAMMPS workbench with a visual Script Builder
+                over 185 LAMMPS commands, a Compiler Helper with 46 CMake options
+                and 71 packages, and an MD Notebook that runs LAMMPS input in the
+                browser. 702 of 894 LAMMPS example scripts run, checked against
+                native LAMMPS on 2,736 parity cases, and a 3D structure viewer
+                adds RDF and MSD analysis, backed by 3000+ tests.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">LAMMPS</li>
+                <li class="tag">TypeScript</li>
+                <li class="tag">React</li>
+                <li class="tag">Three.js</li>
+                <li class="tag">WebGL</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2026 to present</p>
+            <div>
+              <h3 class="cv-title">IISERKonnect: campus super-app for IISER Kolkata</h3>
+              <p class="cv-meta">Sole developer &middot; Native Android and web client &middot; In campus-wide testing with 2,000+ users</p>
+              <p class="cv-desc">
+                One app for the IISER Kolkata intranet, covering WeLearn courses,
+                mess transactions, the library catalogue, grade cards, notices and
+                a network health dashboard. Campus Chat runs over end-to-end
+                encrypted WebRTC data channels, and credentials stay on the device.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Kotlin</li>
+                <li class="tag">Jetpack Compose</li>
+                <li class="tag">WebRTC</li>
+                <li class="tag">JavaScript</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2025 to 2026</p>
+            <div>
+              <h3 class="cv-title">AgriIR: configurable RAG framework for domain-specific retrieval</h3>
+              <p class="cv-meta">Reference implementation of the ECIR 2026 paper &middot; <a href="https://github.com/Shuvam-Banerji-Seal/AgriIR" target="_blank" rel="noopener">Source code</a></p>
+              <p class="cv-desc">
+                A six-stage configurable RAG pipeline with deterministic citations
+                and domain-specific agents, built on FAISS, Ollama-served
+                open-weight LLMs and hybrid BM25 plus dense retrieval. Ships with
+                the 15k-entry open dataset and a reproducible evaluation harness.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">RAG</li>
+                <li class="tag">FAISS</li>
+                <li class="tag">Ollama</li>
+                <li class="tag">BM25</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2026</p>
+            <div>
+              <h3 class="cv-title">Introduction to molecular simulation</h3>
+              <p class="cv-meta">Open talk and hands-on companion &middot; <a href="https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation" target="_blank" rel="noopener">Most-starred public repository</a></p>
+              <p class="cv-desc">
+                A beginner-to-running-simulation course covering statistical
+                mechanics, force fields, MD integrators and thermostats against
+                Monte Carlo, the NVE, NVT and NPT ensembles, and observables such
+                as RDF, MSD, VACF and free energy. Reproducible LAMMPS runs serve
+                as the demo trajectories for Molecule3D.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Molecular dynamics</li>
+                <li class="tag">LAMMPS</li>
+                <li class="tag">Statistical mechanics</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2026</p>
+            <div>
+              <h3 class="cv-title">DFT notes: open knowledge base on density functional theory</h3>
+              <p class="cv-meta">Open educational resource</p>
+              <p class="cv-desc">
+                Progressive chapters from the Schr&ouml;dinger and many-body
+                problem through Hartree-Fock, the Hohenberg-Kohn theorems, the
+                Kohn-Sham equations and exchange-correlation functionals, each with
+                runnable Python and generated plots.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">DFT</li>
+                <li class="tag">Kohn-Sham</li>
+                <li class="tag">Python</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2026</p>
+            <div>
+              <h3 class="cv-title">Shaders for beginners</h3>
+              <p class="cv-meta">Open-source curriculum with an interactive WebGL editor</p>
+              <p class="cv-desc">
+                Eleven progressive lessons on GPU shader programming, from OpenGL,
+                GLSL and the graphics pipeline to an introduction to Vulkan and
+                audio-reactive shaders, with 15+ worked shaders and C/C++ host
+                implementations.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">GLSL</li>
+                <li class="tag">WebGL</li>
+                <li class="tag">Vulkan</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2025</p>
+            <div>
+              <h3 class="cv-title">Complete C programming course</h3>
+              <p class="cv-meta">Open-source curriculum</p>
+              <p class="cv-desc">
+                A 20-module C curriculum from fundamentals to advanced topics,
+                including network programming, machine learning and GUI development
+                with GTK4.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">C</li>
+                <li class="tag">GTK4</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2025</p>
+            <div>
+              <h3 class="cv-title">Python course for beginners</h3>
+              <p class="cv-meta">Open-source curriculum</p>
+              <p class="cv-desc">
+                A progressive Python learning resource from core concepts to local
+                LLM deployment, with interactive notebooks, real-world project
+                implementations and database integration.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Python</li>
+                <li class="tag">Notebooks</li>
+                <li class="tag">Local LLMs</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
             <p class="cv-date">Aug 2025</p>
             <div>
               <h3 class="cv-title">IndicAgri: AI platform for Indian agriculture</h3>
-              <p class="cv-meta">Hackathon &middot; Capital One Launchpad 2025 &middot; Top 14 / 5000+ Teams</p>
+              <p class="cv-meta">Hackathon &middot; Capital One Launchpad 2025 &middot; Top 14 of 5,073 teams</p>
               <p class="cv-desc">
                 Multi-modal (text+voice) RAG chatbot for 20+ Indian languages
                 with Gemma/DeepSeek LLMs; agentic pipeline for 15k+ document
@@ -220,22 +567,6 @@
                 <li class="tag">Gemma</li>
                 <li class="tag">DeepSeek</li>
                 <li class="tag">Indic NLP</li>
-              </ul>
-            </div>
-          </article>
-          <article class="cv-row">
-            <p class="cv-date">2025</p>
-            <div>
-              <h3 class="cv-title">Automated WhatsApp Bulk Messenger with Google Sheets Integration</h3>
-              <p class="cv-meta">Independent &middot; Automation</p>
-              <p class="cv-desc">
-                Python + Selenium bulk messaging with CSV/Google Sheets API,
-                Unicode, session persistence, and error handling.
-              </p>
-              <ul class="cv-tags">
-                <li class="tag">Python</li>
-                <li class="tag">Selenium</li>
-                <li class="tag">Google Sheets API</li>
               </ul>
             </div>
           </article>
@@ -274,11 +605,12 @@
           <article class="cv-row">
             <p class="cv-date">2024</p>
             <div>
-              <h3 class="cv-title">GTK4 Full-Stack Application in C</h3>
-              <p class="cv-meta">Academic &middot; Systems programming &middot; Supervised by Dr. Kripabandhu Ghosh</p>
+              <h3 class="cv-title">Full-stack e-commerce GUI in C</h3>
+              <p class="cv-meta">Academic &middot; Systems programming &middot; Under Dr. Kripabandhu Ghosh</p>
               <p class="cv-desc">
-                Complete GUI with GTK4 / Glade, SQLite3 backend, and BM25-based
-                NLP chatbot retrieval.
+                Full-stack e-commerce GUI in C with GTK4 and SQLite3, and a static
+                context chatbot using optimized BM25 retrieval for customer
+                interaction.
               </p>
               <ul class="cv-tags">
                 <li class="tag">C</li>
@@ -310,6 +642,85 @@
       <section class="cv-section" aria-labelledby="leadership-heading">
         <h2 id="leadership-heading">Professional and leadership</h2>
         <div class="cv-entries">
+          <article class="cv-row">
+            <p class="cv-date">Aug 2025 to present</p>
+            <div>
+              <h3 class="cv-title">President, Slashdot programming and design club, IISER Kolkata</h3>
+              <p class="cv-meta">Elected with 99% approval of the club membership &middot; <a href="https://slashdot-iiserk.github.io/" target="_blank" rel="noopener">Club website</a></p>
+              <p class="cv-desc">
+                Directing the club's technical programme of workshops, hackathons,
+                machine-learning and local-LLM sessions, and its open-source and
+                web presence.
+              </p>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2024 to 2025</p>
+            <div>
+              <h3 class="cv-title">Freelance web developer, ChemActiva Innovations</h3>
+              <p class="cv-meta">Nanocellulose deeptech startup &middot; <a href="https://chemactiva.com" target="_blank" rel="noopener">chemactiva.com</a></p>
+              <p class="cv-desc">
+                Designed and built the company's public website end to end,
+                covering information architecture, responsive layout, product and
+                technology pages, and deployment.
+              </p>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">May 2025 to July 2025</p>
+            <div>
+              <h3 class="cv-title">Research intern, HistoXai (Astroloop Technologies)</h3>
+              <p class="cv-meta">Bangalore</p>
+              <p class="cv-desc">
+                Compared more than 30 open-source tools for digital histopathology
+                slide quality assessment, reviewing their architectures, datasets,
+                metrics and limitations for future model integration.
+              </p>
+              <ul class="cv-tags">
+                <li class="tag">Python</li>
+                <li class="tag">OpenCV</li>
+                <li class="tag">PyTorch</li>
+                <li class="tag">Scikit-learn</li>
+              </ul>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">Present</p>
+            <div>
+              <h3 class="cv-title">Peer reviewer, AAAI and ICWSM</h3>
+              <p class="cv-meta">Program committee reviewer</p>
+              <p class="cv-desc">
+                Reviewing submissions for the AAAI Conference on Artificial
+                Intelligence and the International AAAI Conference on Web and
+                Social Media (ICWSM).
+              </p>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">2026</p>
+            <div>
+              <h3 class="cv-title">Track co-organizer, FIRE 2026 SYCOPHANCY shared task</h3>
+              <p class="cv-meta">Explainable AI in legal reasoning</p>
+              <p class="cv-desc">
+                Co-organizing a shared task track on statute prediction and
+                sycophancy detection in legal AI, with collaborators from IISER
+                Kolkata, Universit&eacute; de Bretagne Occidentale and the
+                University of Amsterdam.
+              </p>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">Oct 2025</p>
+            <div>
+              <h3 class="cv-title">Organizer, Qiskit Fallfest 2025</h3>
+              <p class="cv-meta">Sponsored by IBM Quantum</p>
+              <p class="cv-desc">
+                Organized the local chapter of Qiskit Fallfest, one of 150
+                institutes selected globally, with hands-on workshops on the Qiskit
+                SDK and quantum computing fundamentals.
+              </p>
+            </div>
+          </article>
           <article class="cv-row">
             <p class="cv-date">2024&ndash;2025</p>
             <div>
@@ -354,6 +765,72 @@
                 Discussions 2024. COVID-19 relief coordinator; Ek-Pehal
                 educational mentor. District Debate and Quiz finalist;
                 Shotokan Karate; Art and Painting (stroke art and portraits).
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="cv-section" aria-labelledby="talks-heading">
+        <h2 id="talks-heading">Talks and judging</h2>
+        <div class="cv-entries">
+          <article class="cv-row">
+            <p class="cv-date">Aug 2026</p>
+            <div>
+              <h3 class="cv-title">Guest lecturer and guest of honour, CBSE District-Level Deliberation, Kolkata</h3>
+              <p class="cv-meta">CBSE STEM workshop on computational thinking and AI, Abhinav Bharati High School, Kolkata</p>
+              <p class="cv-desc">
+                Invited as an AI subject expert to speak to 64 teachers from 38
+                schools on AI in the real-world context, and how to teach with
+                and about these tools responsibly. The talk is released as an
+                <a href="https://shuvam-banerji-seal.github.io/ai-in-real-world-context/" target="_blank" rel="noopener">interactive slide deck</a>.
+              </p>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">1 to 2 Aug 2026</p>
+            <div>
+              <h3 class="cv-title">Invited judge, Voice of Youth 2026 national summit and hackathon</h3>
+              <p class="cv-meta">Raajkutir, Kolkata</p>
+              <p class="cv-desc">
+                Judged shortlisted student teams presenting at the national offline
+                summit across technology and innovation domains, assessing technical
+                depth, feasibility and demonstrated impact.
+              </p>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">Aug 2025</p>
+            <div>
+              <h3 class="cv-title">Technical talk: running and optimizing local LLMs</h3>
+              <p class="cv-meta">Slashdot student chapter, IISER Kolkata</p>
+              <p class="cv-desc">
+                Hands-on session on hardware setups, quantization methods, embedding
+                pipelines, vector databases and practical optimization for local LLM
+                deployment.
+              </p>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">Aug 2025</p>
+            <div>
+              <h3 class="cv-title">Invited talk: sustainability, AI and emerging technologies</h3>
+              <p class="cv-meta">Valence chemistry society, IISER Kolkata</p>
+              <p class="cv-desc">
+                An interdisciplinary talk bridging sustainability science with
+                AI-driven modelling, retrieval systems and computational chemistry
+                tools.
+              </p>
+            </div>
+          </article>
+          <article class="cv-row">
+            <p class="cv-date">July 2025</p>
+            <div>
+              <h3 class="cv-title">Domain judge, computer science events</h3>
+              <p class="cv-meta">La Martiniere for Boys annual science fest, Kolkata</p>
+              <p class="cv-desc">
+                External judge for multiple computer science events involving project
+                demonstrations, live coding and problem-solving rounds.
               </p>
             </div>
           </article>
@@ -475,8 +952,12 @@
           <h3 class="cv-group-title">Hackathons</h3>
           <div class="cv-entries">
             <div class="cv-row">
+              <p class="cv-date">2026</p>
+              <p class="cv-list-text">UIDAI Data Hackathon: 1st prize (&#8377;2,00,000) from nearly 15,000 registered teams</p>
+            </div>
+            <div class="cv-row">
               <p class="cv-date">2025</p>
-              <p class="cv-list-text">Capital One Launchpad: Top 14 / 5000+ Teams</p>
+              <p class="cv-list-text">Capital One Launchpad: Top 14 of 5,073 teams</p>
             </div>
             <div class="cv-row">
               <p class="cv-date">2024</p>

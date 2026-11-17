@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var s = null;
+        try { s = localStorage.getItem("theme"); } catch (e) {}
+        var t = s === "light" ? "light" : s ? "dark" : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Research | Shuvam Banerji Seal</title>
+    <meta name="description" content="Papers, thesis projects, open datasets, talks and service of Shuvam Banerji Seal: information retrieval, language-model evaluation, DFT and molecular dynamics." />
+    <meta name="author" content="Shuvam Banerji Seal" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/research.html" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Research | Shuvam Banerji Seal" />
+    <meta property="og:description" content="Papers, thesis projects, datasets, talks and service in retrieval, language-model evaluation and computational chemistry." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/research.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Research | Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="Papers, thesis projects, datasets, talks and service in retrieval, language-model evaluation and computational chemistry." />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","@id":"https://shuvam-banerji-seal.github.io/pages/research.html#page","url":"https://shuvam-banerji-seal.github.io/pages/research.html","name":"Research | Shuvam Banerji Seal","description":"Publications, thesis projects, datasets, talks and service of Shuvam Banerji Seal, in information retrieval, language-model evaluation and computational chemistry.","author":{"@id":"https://shuvam-banerji-seal.github.io/#person"},"hasPart":[{"@type":"ScholarlyArticle","@id":"https://shuvam-banerji-seal.github.io/pages/research.html#agriir-ecir-2026","name":"AgriIR: A Scalable Framework for Domain-Specific Knowledge Retrieval","author":[{"@type":"Person","name":"Shuvam Banerji Seal","@id":"https://shuvam-banerji-seal.github.io/#person"},{"@type":"Person","name":"Aheli Poddar"},{"@type":"Person","name":"Alok Mishra"},{"@type":"Person","name":"Dwaipayan Roy"}],"datePublished":"2026","isPartOf":{"@type":"CreativeWork","name":"European Conference on Information Retrieval (ECIR 2026), Springer LNCS"},"url":"https://doi.org/10.1007/978-3-032-21324-2_37","sameAs":["https://doi.org/10.1007/978-3-032-21324-2_37","https://arxiv.org/abs/2604.16353"]},{"@type":"ScholarlyArticle","@id":"https://shuvam-banerji-seal.github.io/pages/research.html#fire-2025-opinion","name":"Hierarchical Opinion Classification using Large Language Models","author":[{"@type":"Person","name":"Shuvam Banerji Seal","@id":"https://shuvam-banerji-seal.github.io/#person"},{"@type":"Person","name":"Alok Mishra"},{"@type":"Person","name":"Utkarsha Ghosh"}],"datePublished":"2025","isPartOf":{"@type":"CreativeWork","name":"Forum for Information Retrieval Evaluation (FIRE 2025), CEUR-WS vol. 4173"},"url":"https://ceur-ws.org/Vol-4173/T10-3.pdf"},{"@type":"ScholarlyArticle","@id":"https://shuvam-banerji-seal.github.io/pages/research.html#trec-2024-tot","name":"IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items","author":[{"@type":"Person","name":"Shuvam Banerji Seal","@id":"https://shuvam-banerji-seal.github.io/#person"},{"@type":"Person","name":"Subinay Adhikary"},{"@type":"Person","name":"Soumyadeep Sar"},{"@type":"Person","name":"Dwaipayan Roy"}],"datePublished":"2024","isPartOf":{"@type":"CreativeWork","name":"Text REtrieval Conference (TREC 2024) proceedings, NIST"},"url":"https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf"}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://shuvam-banerji-seal.github.io/"},{"@type":"ListItem","position":2,"name":"Research","item":"https://shuvam-banerji-seal.github.io/pages/research.html"}]}]}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/site.css" />
+    <style>
+      .page-links { flex-wrap: wrap; gap: 6px 20px; font-size: 15px; }
+      .entry { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 4px 24px; }
+      .entry-when { font: 500 12.5px/1.7 var(--font-mono); color: var(--graphite); padding-top: 0.45em; overflow-wrap: anywhere; }
+      .entry h3 { margin: 0; font-family: var(--font-display); font-weight: 620; font-size: clamp(19px, 2vw, 23px); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: anywhere; }
+      .entry p { margin: 6px 0 0; max-width: 68ch; overflow-wrap: anywhere; }
+      .entry .meta { color: var(--graphite); font-size: 15px; }
+      .entry .venue { color: var(--ink); font-weight: 600; }
+      .entry .note { color: var(--graphite); font-size: 15px; }
+      .entry .links { display: flex; flex-wrap: wrap; gap: 2px 18px; margin-top: 10px; font-size: 15px; font-weight: 600; }
+      .more { margin: 20px 0 0; font-weight: 600; }
+      @media (max-width: 640px) {
+        .entry { grid-template-columns: minmax(0, 1fr); }
+        .entry-when { padding-top: 0; }
+      }
+    </style>
+  </head>
+  <body class="site-page">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="navbar-container"></div>
+    <script type="module" src="/assets/js/navbar.js"></script>
+    <main id="main-content" class="wrap page-main">
+      <header class="page-head">
+        <h1>Research</h1>
+        <p>Most of my published work is in information retrieval and the evaluation of language models: putting the right evidence in front of a person or a model, and measuring when the model ignores it. In chemistry I work computationally, with density functional theory on catalysts and molecular dynamics for simulation. This page lists the papers, thesis projects, datasets, talks and service in full.</p>
+        <p class="page-links">
+          <a href="#publications">Publications</a>
+          <a href="#thesis">Thesis</a>
+          <a href="#experience">Experience</a>
+          <a href="#datasets">Datasets</a>
+          <a href="#service">Talks and service</a>
+          <a href="#writing">Writing</a>
+          <a href="#profiles">Profiles</a>
+        </p>
+      </header>
+
+      <section id="publications" aria-labelledby="publications-h">
+        <h2 class="sec-h" id="publications-h">Publications</h2>
+        <ul class="rows">
+          <li class="entry" id="agriir-ecir-2026">
+            <span class="entry-when">2026</span>
+            <div>
+            <h3><a href="https://doi.org/10.1007/978-3-032-21324-2_37">AgriIR: A Scalable Framework for Domain-Specific Knowledge Retrieval</a></h3>
+            <p class="meta"><span class="venue">ECIR 2026</span></p>
+            <p class="meta"><b>Shuvam Banerji Seal</b>, Aheli Poddar, Alok Mishra, Dwaipayan Roy</p>
+            <p>A configurable six-stage retrieval-augmented generation framework for agricultural questions, with deterministic citations, released with a 15,247-entry open dataset.</p>
+            <p class="links"><a href="https://doi.org/10.1007/978-3-032-21324-2_37">Paper</a><a href="https://arxiv.org/abs/2604.16353">arXiv</a><a href="https://github.com/Shuvam-Banerji-Seal/AgriIR">Code</a><a href="https://huggingface.co/datasets/ShuvBan/AgriIR_dataset">Dataset</a></p>
+            </div>
+          </li>
+          <li class="entry" id="sycolex-cikm-2026">
+            <span class="entry-when">2026</span>
+            <div>
+            <h3><a href="https://huggingface.co/datasets/ShuvBan/SycoLex">SycoLex: A Cross-Jurisdictional Benchmark for Detecting Sycophancy in Legal Case Reasoning</a></h3>
+            <p class="meta"><span class="venue">CIKM 2026 resource track, under review</span></p>
+            <p class="meta"><b>Shuvam Banerji Seal</b>, collaborators at IISER Kolkata</p>
+            <p>1,954 legal cases from the US Supreme Court, the Supreme Court of India and Indian consumer courts, six sycophancy-inducing prompt variants, responses from five LLMs, and LLM-as-judge plus human-expert annotations. The evaluation data for the FIRE 2026 shared task.</p>
+            <p class="links"><a href="https://huggingface.co/datasets/ShuvBan/SycoLex">Dataset</a><a href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/">Shared task</a></p>
+            </div>
+          </li>
+          <li class="entry" id="fire-2025-opinion">
+            <span class="entry-when">2025</span>
+            <div>
+            <h3><a href="https://ceur-ws.org/Vol-4173/T10-3.pdf">Hierarchical Opinion Classification using Large Language Models</a></h3>
+            <p class="meta"><span class="venue">FIRE 2025</span></p>
+            <p class="meta"><b>Shuvam Banerji Seal</b>, Alok Mishra, Utkarsha Ghosh</p>
+            <p>Parameter-efficient fine-tuning of Gemma with a two-layer classification head and class-weighted loss; three-level opinion labels recast as an eight-class flat scheme.</p>
+            <p class="links"><a href="https://ceur-ws.org/Vol-4173/T10-3.pdf">Paper</a><a href="https://github.com/Shuvam-Banerji-Seal/FIRE_2025_Hierarchical_Opinion_Classification_using_Large_Language_Models">Code</a></p>
+            </div>
+          </li>
+          <li class="entry" id="trec-2024-tot">
+            <span class="entry-when">2024</span>
+            <div>
+            <h3><a href="https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf">IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items</a></h3>
+            <p class="meta"><span class="venue">TREC 2024</span></p>
+            <p class="meta"><b>Shuvam Banerji Seal</b>, Subinay Adhikary, Soumyadeep Sar, Dwaipayan Roy</p>
+            <p class="note">Joint first authors: <b>Shuvam Banerji Seal</b> and Subinay Adhikary.</p>
+            <p>Known-item search for half-remembered books and films: four-step LLM query reformulation followed by two-layer BM25 retrieval, reaching recall@1000 of 0.8067.</p>
+            <p class="links"><a href="https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf">Paper</a><a href="https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR">Code</a></p>
+            </div>
+          </li>
+          <li class="entry" id="vo-saliep-dft">
+            <span class="entry-when">2025</span>
+            <div>
+            <h3>Computational Modelling of [VO(SALIEP)(DTP)] as a Water-Reducing Catalyst</h3>
+            <p class="meta"><span class="venue">In preparation</span></p>
+            <p class="meta"><b>Shuvam Banerji Seal</b>, Soumyajit Roy</p>
+            <p>DFT (B3LYP, Gaussian) study of a vanadium complex: molecular-orbital energies, electronic structure and reaction pathways for water reduction.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="thesis" aria-labelledby="thesis-h">
+        <h2 class="sec-h" id="thesis-h">Master's thesis</h2>
+        <ul class="rows">
+          <li class="entry">
+            <span class="entry-when">2026 to now</span>
+            <div>
+            <h3>Gray-code and Karnaugh-map structure of nucleic-acid and protein sequences, formalised in Lean 4</h3>
+            <p>Encoding DNA, RNA and protein sequences as binary codewords on Gray-code orderings and Karnaugh maps, so that neighbours in the map differ by one mutation, with every theorem machine-checked in Lean 4 and Mathlib.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">2026 to now</span>
+            <div>
+            <h3>A transformer mixture-of-experts model for RNA structure prediction</h3>
+            <p>A sparse mixture-of-experts transformer for RNA secondary and tertiary structure, with experts routed by structural motif, trained with distributed mixed-precision training.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="experience" aria-labelledby="experience-h">
+        <h2 class="sec-h" id="experience-h">Research experience</h2>
+        <ul class="rows">
+          <li class="entry">
+            <span class="entry-when">July 2025</span>
+            <div>
+            <h3>Hybrid RAG with automated source citations</h3>
+            <p class="meta">With Dr. Dwaipayan Roy, IISER Kolkata</p>
+            <p>A retrieval-augmented generation pipeline over IISER Kolkata intranet documents. Documents are collected with Selenium and read with PyMuPDF and EasyOCR, then chunked with metadata and embedded with Qwen3-4B into a FAISS index. Dense retrieval and BM25 are fused with reciprocal rank fusion, queries are refined with hypothetical answers, and a Streamlit app shows answers with inline citations. The method is explained in <a href="/pages/blogs/hybrid-search-reciprocal-rank-fusion.html">an article on hybrid search</a>.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">2024</span>
+            <div>
+            <h3>A retrieval model for TREC tip-of-the-tongue queries</h3>
+            <p class="meta">Guided by Dr. Dwaipayan Roy, IISER Kolkata. <a href="#trec-2024-tot">Paper listed above.</a></p>
+            <p>A multi-layer BM25 filter in Lucene (Java) that narrows the search domain from extracted keywords, with query expansion and semantic matching by local language models using multi-shot and chain-of-thought prompting. Its results were on par with models modified specifically for dense passage retrieval.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">May to July 2025</span>
+            <div>
+            <h3>Research intern, HistoXai</h3>
+            <p class="meta">Astroloop Technologies Pvt. Ltd., Bangalore</p>
+            <p>A comparison of tools that assess the quality of digital histopathology slides, reviewing more than 30 open-source frameworks (among them HistoQC, PathProfiler, GrandQC, HistoROI and FASTPathology) for architecture, datasets, performance metrics and limits, to inform later model integration. Work was in Python with OpenCV, PyTorch, scikit-learn and pandas.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="datasets" aria-labelledby="datasets-h">
+        <h2 class="sec-h" id="datasets-h">Open datasets</h2>
+        <ul class="rows">
+          <li class="entry">
+            <span class="entry-when">Hugging Face</span>
+            <div>
+            <h3><a href="https://huggingface.co/datasets/ShuvBan/SycoLex">SycoLex</a></h3>
+            <p>Sycophancy in legal case reasoning: 1,954 cases, three jurisdictions, CC-BY-4.0. The cases are 300 from the US Supreme Court, 1,500 from the Supreme Court of India and 154 from Indian consumer courts. Tasks are text classification and text generation.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">Hugging Face</span>
+            <div>
+            <h3><a href="https://huggingface.co/datasets/ShuvBan/AgriIR_dataset">AgriIR_dataset</a></h3>
+            <p>15,247 curated Indian agricultural knowledge entries with quality scores, CC-BY-4.0. It carries domain metadata (crops, soils, regions, farming practices) and was released with the AgriIR paper.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="service" aria-labelledby="service-h">
+        <h2 class="sec-h" id="service-h">Talks, judging and service</h2>
+        <ul class="rows">
+          <li class="entry">
+            <span class="entry-when">Present</span>
+            <div>
+            <h3>Peer reviewer, AAAI and ICWSM</h3>
+            <p>Program committee member and reviewer for the AAAI Conference on Artificial Intelligence and the International AAAI Conference on Web and Social Media (ICWSM).</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">2026</span>
+            <div>
+            <h3>Co-organiser, FIRE 2026 shared task</h3>
+            <p>A shared task on explainable AI in legal reasoning, from statute prediction to sycophancy detection, run with collaborators at IISER Kolkata, Université de Bretagne Occidentale in France and the University of Amsterdam. SycoLex provides its evaluation data. <a href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/">Shared task site</a>.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">Aug 2026</span>
+            <div>
+            <h3>Guest lecturer, CBSE District-Level Deliberation, Kolkata</h3>
+            <p class="meta">CBSE STEM workshop on computational thinking and AI, Abhinav Bharati High School</p>
+            <p>Invited by the Central Board of Secondary Education as an AI subject expert to speak to 64 teachers from 38 schools. The 60-minute talk, "AI in the Real-World Context", covered what today's AI tools are, the next-token prediction underneath them, and how to teach with and about them responsibly. The slides are public as an HTML deck and a Beamer PDF so schools can reuse them. <a href="https://shuvam-banerji-seal.github.io/ai-in-real-world-context/">Open the deck</a>.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">1 to 2 Aug 2026</span>
+            <div>
+            <h3>Invited judge, Voice of Youth 2026</h3>
+            <p class="meta">National summit and hackathon, Raajkutir, Kolkata</p>
+            <p>I sat on the panel that judged shortlisted student teams in technology and innovation, assessing technical depth, feasibility and demonstrated impact.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">Oct 2025</span>
+            <div>
+            <h3>Organiser, Qiskit Fallfest 2025</h3>
+            <p class="meta">IISER Kolkata chapter, sponsored by IBM Quantum</p>
+            <p>The chapter was one of 150 institutes selected worldwide. I ran hands-on workshops and tutorials on the Qiskit SDK and the basics of quantum computing.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">Aug 2025</span>
+            <div>
+            <h3>Talk: running and optimising local LLMs</h3>
+            <p class="meta">Slashdot Student Chapter, IISER Kolkata</p>
+            <p>A hands-on session on hardware set-ups, quantisation, embedding pipelines, vector databases and practical optimisation for local deployment.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">Aug 2025</span>
+            <div>
+            <h3>Talk: sustainability, AI and emerging technologies</h3>
+            <p class="meta">Valence, the chemistry society, IISER Kolkata</p>
+            <p>An interdisciplinary talk connecting sustainability science with AI-driven modelling, retrieval systems and computational chemistry tools.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when">July 2025</span>
+            <div>
+            <h3>Domain judge, computer science events</h3>
+            <p class="meta">La Martiniere for Boys annual science fest, Kolkata</p>
+            <p>External judge for project demonstrations, live coding and problem-solving rounds.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="writing" aria-labelledby="writing-h">
+        <h2 class="sec-h" id="writing-h">Related writing</h2>
+        <ul class="rows">
+          <li class="entry">
+            <span class="entry-when"><time datetime="2026-11-17">17 Nov 2026</time></span>
+            <div>
+            <h3><a href="/pages/blogs/bm25-explained.html">BM25, explained through this site&#x27;s search box</a></h3>
+            <p>How BM25 scores a document, term by term: saturation with k1, length normalisation with b, a never-negative IDF, and a worked example by hand.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when"><time datetime="2026-11-17">17 Nov 2026</time></span>
+            <div>
+            <h3><a href="/pages/blogs/hybrid-search-reciprocal-rank-fusion.html">Hybrid search with BM25, dense embeddings and reciprocal rank fusion</a></h3>
+            <p>Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when"><time datetime="2026-11-17">17 Nov 2026</time></span>
+            <div>
+            <h3><a href="/pages/blogs/tip-of-the-tongue-trec-2024.html">Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries</a></h3>
+            <p>How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when"><time datetime="2026-11-17">17 Nov 2026</time></span>
+            <div>
+            <h3><a href="/pages/blogs/sycolex-sycophancy-legal-llms.html">Sycophancy in LLMs, and why we test it on court cases</a></h3>
+            <p>What sycophancy in language models is, why legal reasoning exposes it sharply, and how the SycoLex benchmark measures it with paired, opposite prompts.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when"><time datetime="2026-11-17">17 Nov 2026</time></span>
+            <div>
+            <h3><a href="/pages/blogs/agriir-domain-specific-rag.html">AgriIR, a configurable RAG pipeline for agricultural questions</a></h3>
+            <p>How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated.</p>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-when"><time datetime="2026-11-17">17 Nov 2026</time></span>
+            <div>
+            <h3><a href="/pages/blogs/kohn-sham-dft-on-one-page.html">Kohn–Sham DFT on one page</a></h3>
+            <p>The chain of ideas behind a DFT calculation, from Born–Oppenheimer and the Hohenberg–Kohn theorems to the Kohn–Sham equations, functionals and basis sets.</p>
+            </div>
+          </li>
+        </ul>
+        <p class="more"><a href="/pages/blog.html">All articles</a></p>
+      </section>
+
+      <section id="profiles" aria-labelledby="profiles-h">
+        <h2 class="sec-h" id="profiles-h">Profiles</h2>
+        <ul class="rows">
+          <li class="entry"><span class="entry-when">ORCID</span><div><a href="https://orcid.org/0009-0000-0714-569X">orcid.org/0009-0000-0714-569X</a></div></li>
+          <li class="entry"><span class="entry-when">Hugging Face</span><div><a href="https://huggingface.co/ShuvBan">huggingface.co/ShuvBan</a></div></li>
+          <li class="entry"><span class="entry-when">GitHub</span><div><a href="https://github.com/Shuvam-Banerji-Seal">github.com/Shuvam-Banerji-Seal</a></div></li>
+        </ul>
+      </section>
+    </main>
+    <footer class="site-foot">
+      <div class="wrap">
+        <p>&copy; <span data-year>2026</span> Shuvam Banerji Seal. Source on <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io">GitHub</a>.</p>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/">Home</a><a href="/pages/research.html">Research</a><a href="/pages/projects.html">Projects</a><a href="/pages/tools.html">Tools</a><a href="/pages/blog.html">Blog</a><a href="/feed.xml">RSS</a>
+        </nav>
+      </div>
+    </footer>
+    <script>document.querySelectorAll("[data-year]").forEach(function (e) { e.textContent = new Date().getFullYear(); });</script>
+  </body>
+</html>

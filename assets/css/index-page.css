@@ -1,18 +1,18 @@
 /* ================================================================
-   INDEX PAGE CSS ENTRY — single ordered bundle for index.html.
+   INDEX PAGE CSS ENTRY: single ordered bundle for index.html.
    Vite reorders separately linked stylesheets in multi-page builds
    (plans/05-audit-log.md B48/B49) but keeps @import order within a
    file, so the homepage links only this file.
 
-   1. theme.css        tokens (Element, plans/design-element.md)
-   2. main.css         shared navbar + legacy base
-   3. mobile-fixes.css mobile menu sheet
-   4. home.css         homepage layout
-   5. element.css      shared components and guards (always last)
+   1. theme.css    tokens (plans/design-element.md)
+   2. element.css  shared components and guards
+   3. home.css     homepage layout (v5, 2026-11)
+
+   The homepage no longer loads main.css or mobile-fixes.css: the
+   shared navbar (assets/js/navbar.js) carries its own styles, and the
+   legacy global rules there padded <main> and resized headings.
    ================================================================ */
 
 @import "./theme.css";
-@import "./main.css";
-@import "./mobile-fixes.css";
-@import "./home.css";
 @import "./element.css";
+@import "./home.css";

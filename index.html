@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        // Element theme: saved choice wins, else follow the system.
+        // Theme: saved choice wins, else follow the system.
+        var d = document.documentElement;
         var s = null;
         try {
           s = localStorage.getItem("theme");
@@ -17,47 +18,145 @@
               : matchMedia("(prefers-color-scheme: dark)").matches
                 ? "dark"
                 : "light";
-        document.documentElement.setAttribute("data-theme", t);
-        document.documentElement.style.colorScheme = t;
+        d.setAttribute("data-theme", t);
+        d.style.colorScheme = t;
+        // Intro: once per tab session, never for reduced motion or crawlers;
+        // ?intro forces it. assets/js/intro-loader.js plays it.
+        try {
+          var force = /[?&]intro\b/.test(location.search);
+          var seen = sessionStorage.getItem("sbs-intro");
+          var bot =
+            /bot|crawl|spider|slurp|lighthouse|headless|prerender|preview/i.test(
+              navigator.userAgent,
+            );
+          var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (force || (!seen && !bot && !still)) {
+            d.classList.add("intro-running");
+            setTimeout(function () {
+              if (!d.classList.contains("intro-running")) return;
+              d.classList.remove("intro-running");
+              var o = document.getElementById("intro");
+              if (o) o.hidden = true;
+              document.dispatchEvent(new CustomEvent("intro:done"));
+            }, 12000);
+          }
+        } catch (e) {}
       })();
     </script>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
-    />
-    <meta
-      name="google-site-verification"
-      content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g"
-    />
+    <style>
+      #intro { display: none; }
+      html.intro-running { overflow: hidden; }
+      html.intro-running #intro { display: block; position: fixed; inset: 0; z-index: 2000; background: #f1f4ee; }
+      html[data-theme="dark"].intro-running #intro { background: #0b1311; }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Shuvam Banerji Seal | Computational chemistry and information retrieval</title>
     <meta
       name="description"
-      content="Shuvam Banerji Seal: BS-MS chemistry student at IISER Kolkata. Retrieval and LLM research (ECIR 2026, FIRE 2025, TREC 2024), computational chemistry, and open-source scientific software."
+      content="Shuvam Banerji Seal, BS-MS chemistry student at IISER Kolkata: retrieval and LLM research (ECIR 2026, FIRE 2025, TREC 2024), DFT, LAMMPS and open-source tools."
     />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="author" content="Shuvam Banerji Seal" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="google-site-verification" content="YrLWgqBYsHm8f4f6UHH8RrbiXvd9PJwR1lb4BmgjC9g" />
     <link rel="canonical" href="https://shuvam-banerji-seal.github.io/" />
-    <meta property="og:title" content="Shuvam Banerji Seal" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#F1F4EE" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B1311" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="profile:first_name" content="Shuvam" />
+    <meta property="profile:last_name" content="Banerji Seal" />
+    <meta property="og:site_name" content="Shuvam Banerji Seal" />
+    <meta property="og:title" content="Shuvam Banerji Seal: computational chemistry and information retrieval" />
     <meta
       property="og:description"
-      content="Chemistry student at IISER Kolkata working on information retrieval, language-model evaluation, molecular simulation and scientific software."
+      content="BS-MS student at IISER Kolkata. Retrieval and LLM research, DFT and molecular dynamics, and Molecule3D, a LAMMPS workbench in the browser."
     />
-    <meta property="og:type" content="website" />
     <meta property="og:url" content="https://shuvam-banerji-seal.github.io/" />
-    <meta
-      property="og:image"
-      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png"
-    />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Shuvam Banerji Seal" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:image"
-      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png"
-    />
-    <meta name="twitter:title" content="Shuvam Banerji Seal" />
+    <meta name="twitter:title" content="Shuvam Banerji Seal: computational chemistry and information retrieval" />
     <meta
       name="twitter:description"
-      content="Chemistry student at IISER Kolkata working on information retrieval, language-model evaluation and molecular simulation."
+      content="BS-MS student at IISER Kolkata. Retrieval and LLM research, DFT and molecular dynamics, and open-source scientific software."
     />
-    <meta name="robots" content="index, follow" />
-    <title>Shuvam Banerji Seal</title>
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://shuvam-banerji-seal.github.io/#website",
+            "url": "https://shuvam-banerji-seal.github.io/",
+            "name": "Shuvam Banerji Seal",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://shuvam-banerji-seal.github.io/#person" }
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://shuvam-banerji-seal.github.io/#profile",
+            "url": "https://shuvam-banerji-seal.github.io/",
+            "name": "Shuvam Banerji Seal",
+            "isPartOf": { "@id": "https://shuvam-banerji-seal.github.io/#website" },
+            "mainEntity": { "@id": "https://shuvam-banerji-seal.github.io/#person" },
+            "dateModified": "2026-11-18"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://shuvam-banerji-seal.github.io/#person",
+            "name": "Shuvam Banerji Seal",
+            "givenName": "Shuvam",
+            "familyName": "Banerji Seal",
+            "url": "https://shuvam-banerji-seal.github.io/",
+            "image": "https://shuvam-banerji-seal.github.io/assets/img/sbs_001.jpg",
+            "email": "mailto:sbs22ms076@iiserkol.ac.in",
+            "jobTitle": "BS-MS student and researcher in computational chemistry and information retrieval",
+            "description": "BS-MS student at IISER Kolkata (chemistry major, computer science minor) working on information retrieval, language-model evaluation, density functional theory, molecular dynamics and scientific software.",
+            "affiliation": {
+              "@type": "CollegeOrUniversity",
+              "name": "Indian Institute of Science Education and Research Kolkata",
+              "alternateName": "IISER Kolkata",
+              "url": "https://www.iiserkol.ac.in/"
+            },
+            "alumniOf": [{ "@type": "CollegeOrUniversity", "name": "University of Calcutta" }],
+            "knowsAbout": [
+              "Computational chemistry",
+              "Density functional theory",
+              "Molecular dynamics",
+              "LAMMPS",
+              "Quantum ESPRESSO",
+              "Information retrieval",
+              "BM25",
+              "Retrieval-augmented generation",
+              "Large language models",
+              "LLM evaluation",
+              "Sycophancy in language models",
+              "Lean 4",
+              "Scientific software"
+            ],
+            "award": [
+              "First prize, UIDAI Data Hackathon 2026",
+              "Top 14 of 5,073 teams, Capital One Launchpad 2025",
+              "First place, ChemEnigma 2025, IISc Bangalore",
+              "Reliance Foundation Undergraduate Scholar, 2023"
+            ],
+            "sameAs": [
+              "https://github.com/Shuvam-Banerji-Seal",
+              "https://www.linkedin.com/in/mastersbs",
+              "https://orcid.org/0009-0000-0714-569X",
+              "https://huggingface.co/ShuvBan"
+            ]
+          }
+        ]
+      }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -65,738 +164,606 @@
       href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap"
       rel="stylesheet"
     />
-
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
-    ></script>
-
+    <link rel="preload" href="/assets/data/portrait-ascii.json" as="fetch" crossorigin />
     <!-- One ordered CSS entry (Vite keeps @import order): see index-page.css -->
     <link rel="stylesheet" href="assets/css/index-page.css" />
+    <script type="module" src="assets/js/intro-loader.js"></script>
   </head>
   <body class="home">
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="intro">
+      <canvas aria-hidden="true"></canvas>
+      <div class="intro-meta">
+        <p class="intro-name">Shuvam Banerji Seal</p>
+        <div class="intro-log" data-intro-log role="status" aria-live="polite"></div>
+      </div>
+      <button type="button" class="intro-skip" data-intro-skip>Skip intro</button>
+    </div>
 
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="navbar-container"></div>
     <script type="module" src="assets/js/navbar.js"></script>
 
-    <main id="main-content">
+    <main id="main-content" class="h-main">
       <!-- ========== HERO ========== -->
-      <section class="hero-el" aria-labelledby="hero-name">
-        <div class="hero-intro">
-          <h1 id="hero-name" class="hero-name">
-            <span>Shuvam</span> <span>Banerji Seal</span>
-          </h1>
-          <p class="hero-statement">
-            Computational chemist and AI researcher at IISER Kolkata.
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="pages/resume.html">Read my CV</a>
-            <a class="btn" href="mailto:sbs22ms076@iiserkol.ac.in">Email me</a>
-          </div>
-        </div>
-
-        <div class="hero-stage">
-          <div
-            class="terminal-window"
-            id="hero-terminal"
-            role="region"
-            aria-label="Interactive terminal"
-          >
-            <div class="term-titlebar">
-              <span class="term-path">
-                <span class="path-host">shuvam@archbox</span>
-                <span class="path-sep" aria-hidden="true">&#9656;</span>
-                <span class="path-dir">~/portfolio</span>
-              </span>
-              <span class="term-meta">branch main, zsh</span>
-            </div>
-            <div class="term-body" id="term-body"></div>
+      <section class="h-hero" aria-labelledby="hero-name">
+        <div class="wrap">
+          <div class="h-head">
+            <h1 id="hero-name" class="h-name">Shuvam Banerji Seal</h1>
+            <p class="h-role">
+              Computational chemistry, information retrieval, and the software
+              that connects them.
+            </p>
+            <p class="h-sub">
+              BS-MS student at IISER Kolkata, chemistry major with a computer
+              science minor. I publish retrieval and language-model research
+              (ECIR, FIRE, TREC), run DFT and molecular dynamics, and build
+              Molecule3D, a LAMMPS workbench that runs in the browser.
+            </p>
+            <p class="h-actions">
+              <a class="btn btn-primary" href="/pages/resume.html">Read my CV</a>
+              <a class="btn" href="/pages/research.html">Papers</a>
+              <a class="btn" href="https://github.com/Shuvam-Banerji-Seal">GitHub</a>
+            </p>
           </div>
 
-          <figure class="orbital" data-orbital-root data-accent>
-            <canvas
-              class="orbital-canvas"
-              data-orbital-canvas
-              tabindex="0"
-              role="img"
-              aria-label="Dot-density plot of a hydrogen orbital. Drag or use arrow keys to rotate."
-            ></canvas>
-            <figcaption class="orbital-caption">
-              <div
-                class="orbital-picker"
-                role="group"
-                aria-label="Choose an orbital"
-              >
-                <button type="button" data-orbital="1s" aria-pressed="false">
-                  1s
-                </button>
-                <button type="button" data-orbital="2pz" aria-pressed="false">
-                  2p<sub>z</sub>
-                </button>
-                <button type="button" data-orbital="3dz2" aria-pressed="true">
-                  3d<sub>z²</sub>
-                </button>
-                <button type="button" data-orbital="3dxy" aria-pressed="false">
-                  3d<sub>xy</sub>
-                </button>
-                <button type="button" data-orbital="4fxyz" aria-pressed="false">
-                  4f<sub>xyz</sub>
-                </button>
+          <div class="h-grid">
+            <!-- Terminal: neofetch with an ASCII portrait, then a live prompt -->
+            <div class="term" id="hero-terminal" role="region" aria-label="Terminal about Shuvam">
+              <div class="term-bar">
+                <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="term-title">shuvam@iiserkol: ~</span>
+                <span class="term-shell">zsh</span>
               </div>
-              <p class="orbital-title">
-                <span data-orbital-name>3d<sub>z²</sub></span> orbital of
-                hydrogen
-                <span class="orbital-qn" data-orbital-qn
-                  >n = 3, l = 2, m = 0</span
-                >
+              <div class="term-body" data-term-body>
+                <p class="term-line term-cmdline">
+                  <span class="ps1">shuvam@iiserkol <b>~</b> $</span>
+                  <span class="term-typed" data-type="neofetch">neofetch</span>
+                </p>
+                <div class="nf">
+                  <div class="nf-art" data-portrait aria-hidden="true"></div>
+                  <div class="nf-info">
+                    <p class="nf-host"><b>shuvam</b>@<b>iiserkol</b></p>
+                    <p class="nf-rule" aria-hidden="true">---------------</p>
+                    <dl>
+                      <div><dt>Name</dt><dd>Shuvam Banerji Seal</dd></div>
+                      <div><dt>Studies</dt><dd>IISER Kolkata, 2022–27</dd></div>
+                      <div><dt>Degree</dt><dd>BS-MS, chemistry + CS</dd></div>
+                      <div><dt>Research</dt><dd>IR, LLM evals, DFT, MD</dd></div>
+                      <div><dt>Papers</dt><dd>ECIR · FIRE · TREC</dd></div>
+                      <div><dt>Thesis</dt><dd>Lean 4, MoE for RNA</dd></div>
+                      <div><dt>Builds</dt><dd>Molecule3D (LAMMPS)</dd></div>
+                      <div><dt>Startups</dt><dd>iFiNN, UnderWater AI</dd></div>
+                      <div><dt>Reviews</dt><dd>AAAI, ICWSM</dd></div>
+                      <div><dt>Code</dt><dd>Python C TS Kotlin Lean</dd></div>
+                      <div><dt>Shell</dt><dd>zsh on Arch Linux</dd></div>
+                    </dl>
+                    <p class="nf-palette" aria-hidden="true">
+                      <i style="--c: var(--term-ink)"></i><i style="--c: var(--term-dim)"></i><i style="--c: var(--term-accent)"></i><i style="--c: var(--term-plus)"></i><i style="--c: var(--term-sulfur)"></i><i style="--c: var(--term-rule)"></i>
+                    </p>
+                  </div>
+                </div>
+                <div class="term-out" data-term-out aria-live="polite"></div>
+                <form class="term-input" data-term-form autocomplete="off">
+                  <label class="ps1" for="term-cmd">shuvam@iiserkol <b>~</b> $</label>
+                  <input id="term-cmd" name="cmd" type="text" spellcheck="false" autocapitalize="off"
+                    aria-describedby="term-hint" enterkeyhint="go" />
+                </form>
+              </div>
+              <p class="term-hint" id="term-hint">
+                Type <kbd>help</kbd>, or try
+                <button type="button" data-cmd="search lammps">search lammps</button>
+                <button type="button" data-cmd="papers">papers</button>
+                <button type="button" data-cmd="open pdf">open pdf</button>
               </p>
-              <p class="orbital-note">
-                Each of the <span data-orbital-count>2,400</span> dots is a
-                Monte Carlo sample of |ψ|², a place the electron is likely to
-                be.
-                <span class="phase phase-plus">Vermilion</span> and
-                <span class="phase phase-minus">teal</span> are the two signs of
-                ψ. Drag to rotate.
-              </p>
-            </figcaption>
-          </figure>
-        </div>
+            </div>
 
-        <div class="hero-about">
-          <p class="hero-lead">
-            I'm a fifth-year BS-MS student at IISER Kolkata, majoring in
-            chemistry with a minor in computer science. I work on information
-            retrieval and language-model evaluation, simulate molecules with
-            DFT and molecular dynamics, and write the software both need.
-          </p>
-          <p class="hero-now">
-            This year I'm co-organising the SycoLex track at FIRE 2026 and
-            building two companies, iFiNN and UnderWater AI.
-          </p>
+            <!-- Benzene and its π molecular orbitals -->
+            <figure class="stage" data-stage>
+              <figcaption class="stage-head">
+                <h2 class="stage-title">Benzene and its six π orbitals</h2>
+                <p class="stage-mo">
+                  <b data-mo-name>π<sub>1</sub></b>,
+                  <span data-mo-sym>a<sub>2u</sub></span>,
+                  E = <span data-mo-energy>α + 2β</span>
+                </p>
+              </figcaption>
+              <div class="stage-body">
+                <canvas class="stage-canvas" data-stage-canvas tabindex="0" role="img"
+                  aria-label="Benzene with its lowest π molecular orbital drawn as sampled points. Drag or use arrow keys to rotate."></canvas>
+                <ol class="mo-diagram" aria-label="π molecular orbital energy levels, highest first">
+                  <li class="mo-level">
+                    <span class="mo-e">α − 2β</span>
+                    <span class="mo-row">
+                      <button type="button" data-mo="pi6" aria-pressed="false" aria-label="π6 star, alpha minus 2 beta, empty"><span class="mo-bar"></span><span class="mo-l">π<sub>6</sub>*</span></button>
+                    </span>
+                  </li>
+                  <li class="mo-level">
+                    <span class="mo-e">α − β</span>
+                    <span class="mo-row">
+                      <button type="button" data-mo="pi4" aria-pressed="false" aria-label="π4 star, LUMO, alpha minus beta, empty"><span class="mo-bar"></span><span class="mo-l">π<sub>4</sub>*</span></button>
+                      <button type="button" data-mo="pi5" aria-pressed="false" aria-label="π5 star, LUMO, alpha minus beta, empty"><span class="mo-bar"></span><span class="mo-l">π<sub>5</sub>*</span></button>
+                    </span>
+                  </li>
+                  <li class="mo-level mo-alpha" aria-hidden="true"><span class="mo-e">α</span><span class="mo-row"><span class="mo-ref"></span></span></li>
+                  <li class="mo-level">
+                    <span class="mo-e">α + β</span>
+                    <span class="mo-row">
+                      <button type="button" data-mo="pi2" aria-pressed="false" aria-label="π2, HOMO, alpha plus beta, two electrons"><span class="mo-bar"><i aria-hidden="true">↑↓</i></span><span class="mo-l">π<sub>2</sub></span></button>
+                      <button type="button" data-mo="pi3" aria-pressed="false" aria-label="π3, HOMO, alpha plus beta, two electrons"><span class="mo-bar"><i aria-hidden="true">↑↓</i></span><span class="mo-l">π<sub>3</sub></span></button>
+                    </span>
+                  </li>
+                  <li class="mo-level">
+                    <span class="mo-e">α + 2β</span>
+                    <span class="mo-row">
+                      <button type="button" data-mo="pi1" aria-pressed="true" aria-label="π1, alpha plus 2 beta, two electrons"><span class="mo-bar"><i aria-hidden="true">↑↓</i></span><span class="mo-l">π<sub>1</sub></span></button>
+                    </span>
+                  </li>
+                </ol>
+              </div>
+              <div class="stage-foot">
+                <p data-mo-note>
+                  All six 2p<sub>z</sub> orbitals in phase: one ring of density
+                  above the plane and one below, with opposite signs.
+                </p>
+                <p class="stage-key">
+                  Each dot is a sample of |ψ|² from Hückel theory with Slater
+                  2p<sub>z</sub> orbitals.
+                  <span class="phase phase-plus">Vermilion</span> is ψ &gt; 0,
+                  <span class="phase phase-minus">teal</span> is ψ &lt; 0. Pick a
+                  level, drag to rotate.
+                  <a href="/pages/blogs/benzene-pi-orbitals-huckel.html">How it is drawn</a>
+                </p>
+              </div>
+            </figure>
+          </div>
+
+          <dl class="h-areas">
+            <div>
+              <dt>Computational chemistry</dt>
+              <dd>
+                DFT with Gaussian and Quantum ESPRESSO, molecular dynamics with
+                LAMMPS, and the analysis in between: radial distribution
+                functions, diffusion, reaction pathways.
+              </dd>
+            </div>
+            <div>
+              <dt>Information retrieval</dt>
+              <dd>
+                BM25 and dense retrieval, retrieval-augmented generation that
+                cites its sources, and benchmarks for how language models fail,
+                such as sycophancy in legal reasoning.
+              </dd>
+            </div>
+            <div>
+              <dt>Programming</dt>
+              <dd>
+                Python, C, TypeScript, Kotlin, Rust and Lean 4. Browser tools,
+                Android apps, GTK apps in C, GPU shaders and machine-checked
+                proofs.
+              </dd>
+            </div>
+          </dl>
         </div>
       </section>
 
       <!-- ========== RESEARCH ========== -->
-      <section id="research" class="block" aria-labelledby="research-h">
-        <header class="block-head">
-          <h2 id="research-h">Research</h2>
-          <p>
-            Most of my published work is in information retrieval: getting the
-            right evidence in front of a person or a language model. In
-            chemistry I work computationally, with DFT on catalysts and
-            molecular dynamics.
-          </p>
-        </header>
+      <section id="research" class="h-sec" aria-labelledby="research-h">
+        <div class="wrap">
+          <header class="h-sec-head">
+            <h2 id="research-h">Research</h2>
+            <p>
+              Most of my published work is in information retrieval: putting
+              the right evidence in front of a person or a language model, and
+              measuring when the model ignores it. In chemistry I work
+              computationally, with DFT on catalysts and molecular dynamics.
+            </p>
+          </header>
 
-        <ol class="dated">
-          <li>
-            <span class="when">2026</span>
-            <div>
-              <h3>
-                <a href="https://doi.org/10.1007/978-3-032-21324-2_37"
-                  >AgriIR: A scalable framework for domain-specific knowledge
-                  retrieval</a
-                >
-              </h3>
-              <p>
-                ECIR 2026. First author, with Aheli Poddar, Alok Mishra and
-                Dwaipayan Roy. A configurable retrieval-augmented pipeline for
-                agricultural questions, released with a 15,247-entry dataset.
-              </p>
-              <p class="links">
-                <a href="https://doi.org/10.1007/978-3-032-21324-2_37">Paper</a>
-                <a href="https://arxiv.org/abs/2604.16353">arXiv</a>
-                <a href="https://github.com/Shuvam-Banerji-Seal/AgriIR">Code</a>
-                <a href="https://huggingface.co/datasets/ShuvBan/AgriIR_dataset"
-                  >Dataset</a
-                >
-              </p>
-            </div>
-          </li>
-          <li>
-            <span class="when">2026</span>
-            <div>
-              <h3>
-                <a href="https://huggingface.co/datasets/ShuvBan/SycoLex"
-                  >SycoLex: legal cases for testing statute prediction and
-                  sycophancy in language models</a
-                >
-              </h3>
-              <p>
-                1,954 cases from three jurisdictions. Under review for the CIKM
-                2026 resource track, and the data behind the FIRE 2026 shared
-                task I co-organise.
-              </p>
-              <p class="links">
-                <a href="https://huggingface.co/datasets/ShuvBan/SycoLex"
-                  >Dataset</a
-                >
-                <a
-                  href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/"
-                  >Shared task</a
-                >
-              </p>
-            </div>
-          </li>
-          <li>
-            <span class="when">2025</span>
-            <div>
-              <h3>
-                <a href="https://ceur-ws.org/Vol-4173/T10-3.pdf"
-                  >Hierarchical opinion classification using large language
-                  models</a
-                >
-              </h3>
-              <p>
-                FIRE 2025, CEUR-WS vol. 4173. First author, with Alok Mishra
-                and Utkarsha Ghosh.
-              </p>
-              <p class="links">
-                <a href="https://ceur-ws.org/Vol-4173/T10-3.pdf">Paper</a>
-                <a
-                  href="https://github.com/Shuvam-Banerji-Seal/FIRE_2025_Hierarchical_Opinion_Classification_using_Large_Language_Models"
-                  >Code</a
-                >
-              </p>
-            </div>
-          </li>
-          <li>
-            <span class="when">2024</span>
-            <div>
-              <h3>
-                <a
-                  href="https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf"
-                  >IISERK@ToT_2024: Query reformulation and layered retrieval
-                  for tip-of-tongue items</a
-                >
-              </h3>
-              <p>
-                TREC 2024. Joint first author with Subinay Adhikary, with
-                Soumyadeep Sar and Dwaipayan Roy. Finding a book or film from a
-                half-remembered description; recall@1000 of 0.807.
-              </p>
-              <p class="links">
-                <a
-                  href="https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf"
-                  >Paper</a
-                >
-                <a
-                  href="https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR"
-                  >Code</a
-                >
-              </p>
-            </div>
-          </li>
-          <li>
-            <span class="when">In prep.</span>
-            <div>
-              <h3>
-                Computational modelling of [VO(SALIEP)(DTP)] as a
-                water-reducing catalyst
-              </h3>
-              <p>DFT study of a vanadium complex, with Soumyajit Roy.</p>
-            </div>
-          </li>
-        </ol>
+          <ol class="pubs">
+            <li>
+              <span class="pub-when">2026</span>
+              <div>
+                <h3><a href="https://doi.org/10.1007/978-3-032-21324-2_37">AgriIR: a scalable framework for domain-specific knowledge retrieval</a></h3>
+                <p class="pub-meta"><span class="pub-venue">ECIR 2026</span> <b>Shuvam Banerji Seal</b>, Aheli Poddar, Alok Mishra, Dwaipayan Roy</p>
+                <p>A configurable six-stage retrieval-augmented generation pipeline for agricultural questions, with deterministic citations, released with a 15,247-entry open dataset.</p>
+                <p class="links">
+                  <a href="https://doi.org/10.1007/978-3-032-21324-2_37">Paper</a>
+                  <a href="https://arxiv.org/abs/2604.16353">arXiv</a>
+                  <a href="https://github.com/Shuvam-Banerji-Seal/AgriIR">Code</a>
+                  <a href="https://huggingface.co/datasets/ShuvBan/AgriIR_dataset">Dataset</a>
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="pub-when">2026</span>
+              <div>
+                <h3><a href="https://huggingface.co/datasets/ShuvBan/SycoLex">SycoLex: a cross-jurisdictional benchmark for detecting sycophancy in legal case reasoning</a></h3>
+                <p class="pub-meta"><span class="pub-venue">CIKM 2026, under review</span> <b>Shuvam Banerji Seal</b> and collaborators</p>
+                <p>1,954 cases from the US Supreme Court, the Supreme Court of India and Indian consumer courts, with six sycophancy-inducing prompts, five models and expert annotations. It is the data behind the FIRE 2026 shared task I co-organise.</p>
+                <p class="links">
+                  <a href="https://huggingface.co/datasets/ShuvBan/SycoLex">Dataset</a>
+                  <a href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/">Shared task</a>
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="pub-when">2025</span>
+              <div>
+                <h3><a href="https://ceur-ws.org/Vol-4173/T10-3.pdf">Hierarchical opinion classification using large language models</a></h3>
+                <p class="pub-meta"><span class="pub-venue">FIRE 2025</span> <b>Shuvam Banerji Seal</b>, Alok Mishra, Utkarsha Ghosh</p>
+                <p>Parameter-efficient fine-tuning of Gemma with a two-layer classification head and a class-weighted loss, after recasting three-level opinion labels as eight flat classes.</p>
+                <p class="links">
+                  <a href="https://ceur-ws.org/Vol-4173/T10-3.pdf">Paper</a>
+                  <a href="https://github.com/Shuvam-Banerji-Seal/FIRE_2025_Hierarchical_Opinion_Classification_using_Large_Language_Models">Code</a>
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="pub-when">2024</span>
+              <div>
+                <h3><a href="https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf">IISERK@ToT_2024: query reformulation and layered retrieval for tip-of-tongue items</a></h3>
+                <p class="pub-meta"><span class="pub-venue">TREC 2024</span> <b>Shuvam Banerji Seal</b> and Subinay Adhikary (joint first), Soumyadeep Sar, Dwaipayan Roy</p>
+                <p>Finding a book or film from a half-remembered description: four-step query reformulation with a language model, then two layers of BM25, for a recall@1000 of 0.8067.</p>
+                <p class="links">
+                  <a href="https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf">Paper</a>
+                  <a href="https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR">Code</a>
+                  <a href="/pages/blogs/tip-of-the-tongue-trec-2024.html">Write-up</a>
+                </p>
+              </div>
+            </li>
+            <li>
+              <span class="pub-when">In prep.</span>
+              <div>
+                <h3>Computational modelling of [VO(SALIEP)(DTP)] as a water-reducing catalyst</h3>
+                <p class="pub-meta"><span class="pub-venue">Manuscript</span> <b>Shuvam Banerji Seal</b>, with Soumyajit Roy</p>
+                <p>A DFT study (B3LYP, Gaussian) of a vanadium complex: orbital energies, electronic structure and the reaction pathway for water reduction.</p>
+              </div>
+            </li>
+          </ol>
+
+          <div class="h-two">
+            <section aria-labelledby="thesis-h">
+              <h3 id="thesis-h" class="h-sub-h">Master's thesis, in progress</h3>
+              <ul class="plain-list">
+                <li>
+                  <b>Gray codes and the genetic code, in Lean 4.</b> DNA, RNA and
+                  protein sequences placed on Gray-code orderings and Karnaugh
+                  maps so that neighbours differ by one mutation, with every
+                  theorem machine-checked in Mathlib.
+                </li>
+                <li>
+                  <b>A mixture-of-experts transformer for RNA structure.</b>
+                  Sparse experts routed by structural motif (helices, loops,
+                  pseudoknots) for secondary and tertiary structure prediction.
+                </li>
+              </ul>
+            </section>
+            <section aria-labelledby="data-h">
+              <h3 id="data-h" class="h-sub-h">Open data and service</h3>
+              <ul class="plain-list">
+                <li><a href="https://huggingface.co/datasets/ShuvBan/SycoLex">SycoLex</a> and <a href="https://huggingface.co/datasets/ShuvBan/AgriIR_dataset">AgriIR_dataset</a> on Hugging Face, both CC-BY-4.0.</li>
+                <li>Peer reviewer for AAAI and ICWSM.</li>
+                <li>Co-organiser of the <a href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/">FIRE 2026 shared task</a> on legal LLMs, with IISER Kolkata, Université de Bretagne Occidentale and the University of Amsterdam.</li>
+              </ul>
+            </section>
+          </div>
+          <p class="h-more"><a href="/pages/research.html">Publications, talks and service in full</a></p>
+        </div>
       </section>
 
-      <!-- ========== SOFTWARE ========== -->
-      <section id="software" class="block" aria-labelledby="software-h">
-        <span id="projects" class="anchor-alias" aria-hidden="true"></span>
-        <span id="work" class="anchor-alias" aria-hidden="true"></span>
-        <header class="block-head">
-          <h2 id="software-h">Software</h2>
-          <p>
-            Things I've built for simulation, retrieval and teaching. Nearly
-            all of it is open source.
-          </p>
-        </header>
-
-        <article class="feature">
-          <figure
-            class="molecule"
-            data-molecule-root
-            data-src="assets/pdb/ATP.pdb"
-          >
-            <canvas
-              class="molecule-canvas"
-              data-molecule-canvas
-              tabindex="0"
-              role="img"
-              aria-label="Ball-and-stick model of ATP, 44 atoms, coloured by element. Drag or use arrow keys to rotate."
-            ></canvas>
-            <figcaption>
-              <span class="molecule-readout" data-molecule-atom
-                >ATP, 44 atoms. Point at an atom to name it.</span
-              >
-              <span class="cpk-key" aria-label="Element colours">
-                <span><i class="cpk cpk-c"></i>C</span>
-                <span><i class="cpk cpk-h"></i>H</span>
-                <span><i class="cpk cpk-n"></i>N</span>
-                <span><i class="cpk cpk-o"></i>O</span>
-                <span><i class="cpk cpk-p"></i>P</span>
-              </span>
-            </figcaption>
-          </figure>
-          <div class="feature-text">
-            <h3>Molecule3D</h3>
+      <!-- ========== MOLECULE3D ========== -->
+      <section id="molecule3d" class="h-sec h-m3d" aria-labelledby="m3d-h">
+        <div class="wrap">
+          <div class="m3d-text">
+            <h2 id="m3d-h">Molecule3D: LAMMPS in your browser</h2>
             <p>
-              A molecular viewer and LAMMPS workbench that runs on the GPU in
-              your browser. Open LAMMPS data, XYZ, PDB or CIF files, assemble
-              input scripts from 186 commands, and play back dump trajectories.
+              Molecular dynamics has a steep first step: an input script in a
+              language of its own, a build with the right packages, and a
+              trajectory you cannot see. Molecule3D, the LAMMPS Web GUI, puts
+              all of it in a web page. Nothing is installed and nothing is
+              uploaded.
             </p>
-            <dl class="feature-facts">
-              <div>
-                <dt>Runs on</dt>
-                <dd>WebGPU and three.js, no install</dd>
-              </div>
-              <div>
-                <dt>Reads</dt>
-                <dd>LAMMPS data and dump, XYZ, PDB, CIF</dd>
-              </div>
-              <div>
-                <dt>Written in</dt>
-                <dd>TypeScript and React</dd>
-              </div>
-            </dl>
-            <p class="feature-actions">
-              <a
-                class="btn btn-primary"
-                href="https://shuvam-banerji-seal.github.io/lammps-web-gui/"
-                >Open Molecule3D</a
-              >
-              <a
-                class="btn"
-                href="https://github.com/Shuvam-Banerji-Seal/lammps-web-gui"
-                >Source</a
-              >
-            </p>
-            <p class="feature-note">
-              Teal marks links and the orbital's negative lobes. Vermilion
-              marks its positive lobes.
+            <ul class="m3d-list">
+              <li><b>MD notebook.</b> Type LAMMPS input into cells and run it on your GPU or CPU threads. 702 of the 894 scripts in LAMMPS's <code>examples/</code> tree run, checked against native LAMMPS on 2,736 parity cases.</li>
+              <li><b>Script builder.</b> Build an input script as a flowchart from 185 commands, import an existing <code>in.*</code> file, and check it against rules that cite the LAMMPS docs.</li>
+              <li><b>Compiler helper.</b> 46 CMake options and 71 packages turned into a build script you can run.</li>
+              <li><b>Viewer and analysis.</b> Data, dump, XYZ, PDB and CIF files on the GPU, with playback, measurements, RDF, MSD and density profiles.</li>
+            </ul>
+            <p class="m3d-stack">TypeScript, React, three.js, WebGL and WebGPU. 3,000+ tests. Free for education and non-commercial research.</p>
+            <p class="h-actions">
+              <button type="button" class="btn btn-primary" data-m3d-run>Run it on this page</button>
+              <a class="btn" href="https://shuvam-banerji-seal.github.io/lammps-web-gui/">Open full screen</a>
+              <a class="btn" href="https://github.com/Shuvam-Banerji-Seal/lammps-web-gui">Source</a>
             </p>
           </div>
-        </article>
-
-        <div class="index">
-          <section class="index-group" aria-labelledby="sw-chem">
-            <h3 id="sw-chem">Chemistry and simulation</h3>
-            <ul>
-              <li>
-                <a
-                  href="https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation"
-                  >Introduction to molecular simulation</a
-                >
-                <span>A beginner's talk with slides and a runnable workflow.</span>
-              </li>
-              <li>
-                <a href="https://shuvam-banerji-seal.github.io/DFT-notes/"
-                  >DFT notes</a
-                >
-                <span
-                  >Density functional theory from Hohenberg–Kohn to
-                  Kohn–Sham.</span
-                >
-              </li>
-              <li>
-                <a
-                  href="https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search"
-                  >Perlin-noise structure search</a
-                >
-                <span
-                  >Tests Perlin-noise moves in basin hopping. Across 13 test
-                  suites they never beat a matched Gaussian baseline.</span
-                >
-              </li>
-              <li>
-                <a href="https://github.com/Shuvam-Banerji-Seal/opngx">opngx</a>
-                <span
-                  >Reads Optronis high-speed camera files pixel-exactly, with
-                  sub-pixel tracking for optical-trap experiments.</span
-                >
-              </li>
-            </ul>
-          </section>
-
-          <section class="index-group" aria-labelledby="sw-ir">
-            <h3 id="sw-ir">Retrieval and language models</h3>
-            <ul>
-              <li>
-                <a href="https://github.com/Shuvam-Banerji-Seal/AgriIR"
-                  >AgriIR</a
-                >
-                <span>Six-stage retrieval-augmented generation framework.</span>
-              </li>
-              <li>
-                <a
-                  href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/"
-                  >FIRE 2026 SycoLex track</a
-                >
-                <span
-                  >Shared task on statute prediction and sycophancy in legal
-                  LLMs.</span
-                >
-              </li>
-              <li>
-                <a href="https://shuvam-banerji-seal.github.io/LLM-Whisperer/"
-                  >LLM Whisperer</a
-                >
-                <span
-                  >900+ curated resources on RAG, agents, fine-tuning,
-                  evaluation and safety.</span
-                >
-              </li>
-            </ul>
-          </section>
-
-          <section class="index-group" aria-labelledby="sw-teach">
-            <h3 id="sw-teach">Teaching</h3>
-            <ul>
-              <li>
-                <a
-                  href="https://shuvam-banerji-seal.github.io/C-Programming-for-Beginners/"
-                  >C programming for beginners</a
-                >
-                <span>20 modules with runnable examples and buggy code to fix.</span>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners"
-                  >Python for beginners</a
-                >
-                <span>From the basics to databases and GUIs, in notebooks.</span>
-              </li>
-              <li>
-                <a href="https://shuvam-banerji-seal.github.io/cbsexiexam/"
-                  >CBSE computer science mock test</a
-                >
-                <span>120 questions with exam and practice modes.</span>
-              </li>
-            </ul>
-          </section>
-
-          <section class="index-group" aria-labelledby="sw-apps">
-            <h3 id="sw-apps">Apps and games</h3>
-            <ul>
-              <li>
-                <a
-                  href="https://shuvam-banerji-seal.github.io/iiserkonnect-website/"
-                  >IISER Konnect for the web</a
-                >
-                <span>The IISER Kolkata campus app, ported to the browser.</span>
-              </li>
-              <li>
-                <a href="https://shuvam-banerji-seal.github.io/mobius-chess/"
-                  >Abyssal Fold</a
-                >
-                <span>3D chess on a one-sided Möbius surface.</span>
-              </li>
-              <li>
-                <a href="https://shuvam-banerji-seal.github.io/real_filters/"
-                  >Real Filters</a
-                >
-                <span
-                  >Android app that shows the matrices behind image
-                  filters.</span
-                >
-              </li>
-            </ul>
-          </section>
-        </div>
-
-        <div class="block-foot">
-          <p>
-            All 92 public repositories are on
-            <a href="https://github.com/Shuvam-Banerji-Seal">GitHub</a>, or
-            browse them <a href="pages/github-projects.html">by language</a>.
-          </p>
+          <div class="m3d-window" data-m3d>
+            <div class="m3d-bar">
+              <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span>shuvam-banerji-seal.github.io/lammps-web-gui</span>
+              <button type="button" class="m3d-close" data-m3d-close hidden>Close</button>
+            </div>
+            <div class="m3d-view" data-m3d-view>
+              <figure class="molecule" data-molecule-root data-src="/assets/pdb/ATP.pdb">
+                <canvas class="molecule-canvas" data-molecule-canvas tabindex="0" role="img"
+                  aria-label="Ball-and-stick model of ATP, 44 atoms, coloured by element. Drag or use arrow keys to rotate."></canvas>
+                <figcaption>
+                  <span class="molecule-readout" data-molecule-atom>ATP, 44 atoms. Point at an atom to name it.</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- ========== ROLES ========== -->
-      <section id="roles" class="block" aria-labelledby="roles-h">
-        <header class="block-head">
-          <h2 id="roles-h">Companies and roles</h2>
-        </header>
-        <ol class="dated">
-          <li>
-            <span class="when">2025 to now</span>
-            <div>
-              <h3>iFiNN</h3>
-              <p>
-                Co-founder and lead developer of an AI fintech company that
-                builds trading alerts. Funded by MeitY Startup Hub (GENESIS) and
-                incubated at RISE Foundation, IISER Kolkata.
-              </p>
-            </div>
-          </li>
-          <li>
-            <span class="when">2025 to now</span>
-            <div>
-              <h3><a href="https://underwater-ai.github.io/">UnderWater AI</a></h3>
-              <p>
-                Co-founder and CTO. Software that cleans up murky underwater
-                footage. Same funding and incubator.
-              </p>
-            </div>
-          </li>
-          <li>
-            <span class="when">2026</span>
-            <div>
-              <h3><a href="https://sycolex.com">FIRE 2026, SycoLex track</a></h3>
-              <p>
-                Co-organiser, with colleagues at IISER Kolkata, UBO in France
-                and the University of Amsterdam.
-              </p>
-            </div>
-          </li>
-          <li>
-            <span class="when">2025 to now</span>
-            <div>
-              <h3>
-                <a href="https://slashdot-iiserk.github.io/"
-                  >Slashdot, IISER Kolkata</a
-                >
-              </h3>
-              <p>President of the programming and design club.</p>
-            </div>
-          </li>
-          <li>
-            <span class="when">2025</span>
-            <div>
-              <h3>HistoXai, Astroloop Technologies, Bangalore</h3>
-              <p>
-                Research intern. Compared more than 30 open-source quality
-                control tools for digital pathology slides.
-              </p>
-            </div>
-          </li>
-          <li>
-            <span class="when">2025</span>
-            <div>
-              <h3>Hybrid RAG with cited answers, IISER Kolkata</h3>
-              <p>
-                With Dwaipayan Roy: BM25 and dense retrieval fused by
-                reciprocal rank fusion, answering questions with the sources
-                attached.
-              </p>
-            </div>
-          </li>
-        </ol>
-
-        <div class="prizes">
-          <h3 class="sub-h">Prizes and scholarships</h3>
-          <ul class="plain">
-          <li>
-            <strong>UIDAI Data Hackathon 2026</strong>, first prize
-            (₹2,00,000)
-          </li>
-          <li>
-            <strong>Capital One Launchpad 2025</strong>, top 14 of 5,073 teams
-            with IndicAgri
-          </li>
-          <li><strong>ChemEnigma 2025</strong>, IISc Bangalore, first place</li>
-          <li><strong>Reliance Foundation</strong> undergraduate scholar, 2023</li>
-          </ul>
+      <!-- ========== PROJECTS ========== -->
+      <section id="projects" class="h-sec" aria-labelledby="projects-h">
+        <span id="software" class="anchor-alias" aria-hidden="true"></span>
+        <div class="wrap">
+          <header class="h-sec-head">
+            <h2 id="projects-h">Projects</h2>
+            <p>
+              Software for simulation, retrieval and teaching, nearly all of it
+              open source. Stars and languages come from GitHub.
+            </p>
+          </header>
+          <div class="proj-groups">
+            <section aria-labelledby="pg-ir">
+              <h3 id="pg-ir">Retrieval and language models</h3>
+              <ul class="proj">
+                <li data-repo="AgriIR"><a href="https://github.com/Shuvam-Banerji-Seal/AgriIR">AgriIR</a><span>Configurable RAG framework with deterministic citations, the code for the ECIR 2026 paper.</span></li>
+                <li data-repo="FIRE-2026-Sycophancy-in-LLMs"><a href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/">FIRE 2026 sycophancy track</a><span>Shared task on statute prediction and sycophancy detection in legal LLMs.</span></li>
+                <li data-repo="LLM-Whisperer"><a href="https://shuvam-banerji-seal.github.io/LLM-Whisperer/">LLM Whisperer</a><span>900+ curated resources on RAG, agents, fine-tuning, evaluation and safety.</span></li>
+                <li data-repo="Tip-of-Tongue-TREC_2024---ThinkIR"><a href="https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR">Tip-of-the-tongue retrieval</a><span>Our TREC 2024 system: LLM query reformulation over layered BM25.</span></li>
+                <li data-repo="LLM-based-Searcher-for-GIAN-s-Abandoned-US-Patents"><a href="https://github.com/Shuvam-Banerji-Seal/LLM-based-Searcher-for-GIAN-s-Abandoned-US-Patents">Patent search in plain language</a><span>Embedding search over abandoned US patents. First in the GIAN track, StatusCode1 2024.</span></li>
+              </ul>
+            </section>
+            <section aria-labelledby="pg-chem">
+              <h3 id="pg-chem">Chemistry and simulation</h3>
+              <ul class="proj">
+                <li data-repo="lammps-web-gui"><a href="#molecule3d">Molecule3D</a><span>The LAMMPS workbench above.</span></li>
+                <li data-repo="introduction-to-molecular-simulation"><a href="https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation">Introduction to molecular simulation</a><span>A beginner's talk with notes and runnable LAMMPS examples.</span></li>
+                <li data-repo="DFT-notes"><a href="https://shuvam-banerji-seal.github.io/DFT-notes/">DFT notes</a><span>Density functional theory from Hohenberg–Kohn to Kohn–Sham, with runnable Python.</span></li>
+                <li data-repo="CH5103_Term_Paper"><a href="https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/">CH5103 term paper</a><span>Derivations checked with PySCF and SymPy, and proved in Lean 4.</span></li>
+                <li data-repo="Solvent-Structure-around-NanoParticles"><a href="https://github.com/Shuvam-Banerji-Seal/Solvent-Structure-around-NanoParticles">C<sub>60</sub> in water</a><span>LAMMPS solvation runs with AIREBO and a surrogate model for unsampled conditions.</span></li>
+                <li data-repo="perlin-noise-molecular-search"><a href="https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search">Perlin-noise structure search</a><span>Tests Perlin-noise moves in basin hopping. Across 13 suites they never beat a matched Gaussian baseline.</span></li>
+                <li data-repo="opngx"><a href="https://github.com/Shuvam-Banerji-Seal/opngx">opngx</a><span>Pixel-exact reader for Optronis high-speed camera files, with sub-pixel tracking.</span></li>
+              </ul>
+            </section>
+            <section aria-labelledby="pg-apps">
+              <h3 id="pg-apps">Apps and systems</h3>
+              <ul class="proj">
+                <li data-repo="iiserkonnect-website"><a href="https://github.com/Shuvam-Banerji-Seal/iiserkonnect-website">IISERKonnect</a><span>The IISER Kolkata campus app for Android and the web, in testing with 2,000+ users.</span></li>
+                <li data-repo="welearnbot_in_C"><a href="https://github.com/Shuvam-Banerji-Seal/welearnbot_in_C">WeLearn bot in C</a><span>Multi-threaded course-file downloader with a GTK4 interface.</span></li>
+                <li data-repo="rtl8852bd-bt-dkms"><a href="https://github.com/Shuvam-Banerji-Seal/rtl8852bd-bt-dkms">RTL8852BD Bluetooth for Linux</a><span>A patched btrtl DKMS module for a Realtek card that shipped without Linux support.</span></li>
+                <li data-repo="mobius-chess"><a href="https://shuvam-banerji-seal.github.io/mobius-chess/">Abyssal Fold</a><span>3D chess on a one-sided Möbius surface.</span></li>
+                <li data-repo="real_filters"><a href="https://shuvam-banerji-seal.github.io/real_filters/">Real Filters</a><span>Android app that shows the matrices behind image filters.</span></li>
+                <li data-repo="modern-design.md"><a href="https://shuvam-banerji-seal.github.io/modern-design.md/">modern-design.md</a><span>Design specs for 36 websites: colours, type and components.</span></li>
+              </ul>
+            </section>
+            <section aria-labelledby="pg-teach">
+              <h3 id="pg-teach">Teaching</h3>
+              <ul class="proj">
+                <li data-repo="C-Programming-for-Beginners"><a href="https://shuvam-banerji-seal.github.io/C-Programming-for-Beginners/">C programming for beginners</a><span>20 modules with runnable examples and buggy code to fix.</span></li>
+                <li data-repo="Python-Course-for-Beginners"><a href="https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners">Python for beginners</a><span>From the basics to databases and local LLMs, in notebooks.</span></li>
+                <li data-repo="shaders-for-beginners"><a href="https://shuvam-banerji-seal.github.io/shaders-for-beginners/">Shaders for beginners</a><span>11 lessons on GLSL with an editor in the browser.</span></li>
+                <li data-repo="ai-in-real-world-context"><a href="https://shuvam-banerji-seal.github.io/ai-in-real-world-context/">AI in the real-world context</a><span>My CBSE workshop for 64 teachers, as HTML slides and Beamer.</span></li>
+                <li data-repo="cbsexiexam"><a href="https://shuvam-banerji-seal.github.io/cbsexiexam/">CBSE computer science mock test</a><span>120 questions with exam and practice modes.</span></li>
+              </ul>
+            </section>
+          </div>
+          <p class="h-more">
+            <a href="/pages/projects.html">All selected projects</a>
+            <a href="/pages/github-projects.html">Every public repository, searchable</a>
+          </p>
         </div>
       </section>
 
       <!-- ========== TOOLS ========== -->
-      <section id="tools" class="block" aria-labelledby="tools-h">
-        <header class="block-head">
-          <h2 id="tools-h">Tools on this site</h2>
-          <p>
-            Utilities I built for coursework, research and friends. Most run
-            entirely in your browser, so your files stay on your machine.
-          </p>
-        </header>
-        <div class="tool-index">
-          <section aria-labelledby="t-chem">
-            <h3 id="t-chem">Chemistry</h3>
-            <ul>
-              <li><a href="pages/tools/periodic-table.html">Periodic table</a> <span>properties, configurations, isotopes</span></li>
-              <li><a href="pages/tools/mol-weight.html">Molecular weight</a> <span>molar mass with a per-element breakdown</span></li>
-              <li><a href="pages/tools/equation-balancer.html">Equation balancer</a> <span>with the matrix steps shown</span></li>
-              <li><a href="pages/tools/ph-calculator.html">pH calculator</a> <span>acids, bases and buffers</span></li>
-              <li><a href="pages/tools/molecule-viz.html">Molecule viewer</a> <span>PDB and SDF in 3D</span></li>
-              <li><a href="pages/thermodynamics.html">Thermodynamics</a> <span>open-source notes</span></li>
-              <li><a href="pages/tools/games.html">Chemistry games</a> <span>element quizzes</span></li>
-            </ul>
-          </section>
-          <section aria-labelledby="t-docs">
-            <h3 id="t-docs">Documents</h3>
-            <ul>
-              <li><a href="pages/tools/pdf-studio.html">PDF Studio</a> <span>compress, merge, split, convert</span></li>
-              <li><a href="pages/reader.html">Reader</a> <span>Markdown and maths</span></li>
-              <li><a href="pages/mermaid-tool.html">Mermaid editor</a> <span>diagrams from text</span></li>
-              <li><a href="pages/tools/paper-finder.html">Paper finder</a> <span>Semantic Scholar and arXiv</span></li>
-              <li><a href="pages/tools/unit-converter.html">Unit converter</a> <span>scientific units</span></li>
-            </ul>
-          </section>
-          <section aria-labelledby="t-media">
-            <h3 id="t-media">Audio and image</h3>
-            <ul>
-              <li><a href="pages/tools/audio-studio.html">Audio Studio</a> <span>record, edit, tune a guitar</span></li>
-              <li><a href="pages/music.html">Music player</a> <span>my library</span></li>
-              <li><a href="pages/tools/image-studio.html">Image Studio</a> <span>compress and convert</span></li>
-              <li><a href="pages/tools/webcam-tester.html">Webcam and air guitar</a> <span>strum with hand tracking</span></li>
-              <li><a href="pages/tools/youtube-downloader.html">YouTube downloader</a> <span>video and audio</span></li>
-            </ul>
-          </section>
-          <section aria-labelledby="t-llm">
-            <h3 id="t-llm">Language models and code</h3>
-            <ul>
-              <li><a href="pages/tools/llm-studio.html">LLM Studio</a> <span>GLM, GPT, Claude, Gemini, Groq</span></li>
-              <li><a href="pages/tools/llm-chat.html">LLM chat</a> <span>bring your own key</span></li>
-              <li><a href="pages/tools/playground.html">HTML playground</a> <span>edit and preview</span></li>
-              <li><a href="pages/apis.html">Public APIs</a> <span>800+ that need no key</span></li>
-              <li><a href="pages/tools/file-share.html">File sharing</a> <span>browser to browser</span></li>
-              <li><a href="pages/tools/fullscreen-timer.html">Fullscreen timer</a> <span>talk timer with overtime</span></li>
-            </ul>
-          </section>
+      <section id="tools" class="h-sec" aria-labelledby="tools-h">
+        <div class="wrap">
+          <header class="h-sec-head">
+            <h2 id="tools-h">Tools you can use here</h2>
+            <p>
+              Utilities I built for coursework, research and friends. Most run
+              entirely in your browser, so your files stay on your machine.
+              Press <kbd>/</kbd> to search for one.
+            </p>
+          </header>
+          <div class="tool-groups">
+            <section aria-labelledby="t-chem">
+              <h3 id="t-chem">Chemistry</h3>
+              <ul>
+                <li><a href="/pages/tools/periodic-table.html">Periodic table</a><span>Properties, configurations, isotopes</span></li>
+                <li><a href="/pages/tools/mol-weight.html">Molecular weight</a><span>Molar mass with a per-element breakdown</span></li>
+                <li><a href="/pages/tools/equation-balancer.html">Equation balancer</a><span>Balances reactions and shows the matrix</span></li>
+                <li><a href="/pages/tools/ph-calculator.html">pH calculator</a><span>Acids, bases and buffers</span></li>
+                <li><a href="/pages/tools/molecule-viz.html">Molecule viewer</a><span>PDB and SDF files in 3D</span></li>
+                <li><a href="/pages/thermodynamics.html">Thermodynamics notes</a><span>Open course notes</span></li>
+                <li><a href="/pages/tools/games.html">Chemistry games</a><span>Element quizzes</span></li>
+              </ul>
+            </section>
+            <section aria-labelledby="t-docs">
+              <h3 id="t-docs">Documents and research</h3>
+              <ul>
+                <li><a href="/pages/tools/pdf-studio.html">PDF Studio</a><span>Compress, merge, split, convert</span></li>
+                <li><a href="/pages/tools/paper-finder.html">Paper finder</a><span>Semantic Scholar and arXiv</span></li>
+                <li><a href="/pages/reader.html">Reader</a><span>Markdown, maths and e-books</span></li>
+                <li><a href="/pages/mermaid-tool.html">Mermaid editor</a><span>Diagrams from text</span></li>
+                <li><a href="/pages/tools/unit-converter.html">Unit converter</a><span>Scientific units</span></li>
+              </ul>
+            </section>
+            <section aria-labelledby="t-media">
+              <h3 id="t-media">Audio, image and video</h3>
+              <ul>
+                <li><a href="/pages/tools/audio-studio.html">Audio Studio</a><span>Record, edit, tune a guitar</span></li>
+                <li><a href="/pages/tools/image-studio.html">Image Studio</a><span>Compress and convert images</span></li>
+                <li><a href="/pages/music.html">Music player</a><span>My library, in the browser</span></li>
+                <li><a href="/pages/tools/webcam-tester.html">Webcam and air guitar</a><span>Strum with hand tracking</span></li>
+                <li><a href="/pages/tools/youtube-downloader.html">YouTube downloader</a><span>Video and audio</span></li>
+              </ul>
+            </section>
+            <section aria-labelledby="t-llm">
+              <h3 id="t-llm">Language models and code</h3>
+              <ul>
+                <li><a href="/pages/tools/llm-studio.html">LLM Studio</a><span>GLM, GPT, Claude, Gemini, Groq</span></li>
+                <li><a href="/pages/tools/llm-chat.html">LLM chat</a><span>Bring your own key</span></li>
+                <li><a href="/pages/tools/playground.html">HTML playground</a><span>Edit and preview</span></li>
+                <li><a href="/pages/apis.html">Public APIs</a><span>800+ that need no key</span></li>
+                <li><a href="/pages/tools/file-share.html">Beam file sharing</a><span>Browser to browser</span></li>
+                <li><a href="/pages/tools/fullscreen-timer.html">Fullscreen timer</a><span>Talk timer with overtime</span></li>
+              </ul>
+            </section>
+          </div>
+          <p class="h-more"><a href="/pages/tools.html">Every tool on one page</a></p>
         </div>
       </section>
 
       <!-- ========== WRITING ========== -->
-      <section id="writing" class="block" aria-labelledby="writing-h">
-        <header class="block-head">
-          <h2 id="writing-h">Writing</h2>
-        </header>
-        <ul class="posts">
-          <li>
-            <a href="pages/blogs/dft-catalyst-design.html"
-              >Understanding DFT methods in catalyst design</a
-            >
-            <time datetime="2025-10-31">31 Oct 2025</time>
-          </li>
-          <li>
-            <a href="pages/blogs/rag-architecture-explained.html"
-              >Building effective RAG architectures</a
-            >
-            <time datetime="2025-10-31">31 Oct 2025</time>
-          </li>
-          <li>
-            <a href="pages/blogs/python-chemistry-tools.html"
-              >Python libraries for computational chemistry</a
-            >
-            <time datetime="2025-10-31">31 Oct 2025</time>
-          </li>
-        </ul>
-        <div class="block-foot">
-          <p>
-            More on the <a href="pages/blog.html">blog</a> and in my
-            <a href="pages/notes.html">notes</a>.
-          </p>
+      <section id="writing" class="h-sec" aria-labelledby="writing-h">
+        <div class="wrap">
+          <header class="h-sec-head">
+            <h2 id="writing-h">Writing</h2>
+            <p>
+              Notes on the methods I use, written so that a second-year student
+              can follow them: retrieval, quantum chemistry, simulation.
+            </p>
+          </header>
+          <!-- posts:start (generated by scripts/build-blog.mjs) -->
+          <ul class="posts">
+            <li><a href="/pages/blogs/agriir-domain-specific-rag.html">AgriIR, a configurable RAG pipeline for agricultural questions</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated.</p></li>
+            <li><a href="/pages/blogs/bm25-explained.html">BM25, explained through this site&#39;s search box</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How BM25 scores a document, term by term: saturation with k1, length normalisation with b, a never-negative IDF, and a worked example by hand.</p></li>
+            <li><a href="/pages/blogs/benzene-pi-orbitals-huckel.html">Drawing benzene&#39;s π orbitals from Hückel theory</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How the benzene figure on the homepage is made: Hückel π orbitals, Slater 2p functions, and points sampled from the probability density, coloured by sign.</p></li>
+            <li><a href="/pages/blogs/hybrid-search-reciprocal-rank-fusion.html">Hybrid search with BM25, dense embeddings and reciprocal rank fusion</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.</p></li>
+            <li><a href="/pages/blogs/kohn-sham-dft-on-one-page.html">Kohn–Sham DFT on one page</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">The chain of ideas behind a DFT calculation, from Born–Oppenheimer and the Hohenberg–Kohn theorems to the Kohn–Sham equations, functionals and basis sets.</p></li>
+            <li><a href="/pages/blogs/molecule3d-lammps-in-the-browser.html">Molecule3D: a LAMMPS workbench that runs in your browser</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">What Molecule3D (LAMMPS Web GUI) does, who it is for, and what a first session looks like, from a starter script to a trajectory and its RDF.</p></li>
+          </ul>
+          <!-- posts:end -->
+          <p class="h-more"><a href="/pages/blog.html">All articles</a> <a href="/pages/notes.html">Notes</a></p>
         </div>
       </section>
 
-      <!-- ========== ABOUT + CONTACT ========== -->
-      <section id="contact" class="block contact" aria-labelledby="contact-h">
-        <div id="about" class="about">
-          <img
-            src="assets/img/sbs_001.webp"
-            alt="Shuvam Banerji Seal"
-            width="320"
-            height="400"
-            loading="lazy"
-            decoding="async"
-          />
-          <div>
-            <h2 id="contact-h">Get in touch</h2>
-            <p>
-              Before IISER I spent a year studying physics at the University of
-              Calcutta. I've taught programming and science privately since
-              2018, and I wrote a book, <cite>MindScapes</cite>, in 2020.
-            </p>
-            <p>
-              I'm looking for PhD positions and research collaborations in
-              retrieval, language-model evaluation and computational
-              chemistry. Email is the quickest way to reach me.
-            </p>
-            <p class="mail">
-              <a href="mailto:sbs22ms076@iiserkol.ac.in"
-                >sbs22ms076@iiserkol.ac.in</a
-              >
-            </p>
-            <ul class="elsewhere">
-              <li><a href="https://github.com/Shuvam-Banerji-Seal">GitHub</a></li>
-              <li><a href="https://www.linkedin.com/in/mastersbs">LinkedIn</a></li>
-              <li><a href="https://orcid.org/0009-0000-0714-569X">ORCID</a></li>
-              <li><a href="https://huggingface.co/ShuvBan">Hugging Face</a></li>
-            </ul>
+      <!-- ========== EXPERIENCE ========== -->
+      <section id="experience" class="h-sec" aria-labelledby="exp-h">
+        <span id="roles" class="anchor-alias" aria-hidden="true"></span>
+        <div class="wrap">
+          <header class="h-sec-head">
+            <h2 id="exp-h">Work, prizes and talks</h2>
+          </header>
+          <div class="h-two">
+            <section aria-labelledby="roles-h">
+              <h3 id="roles-h" class="h-sub-h">Companies and roles</h3>
+              <ol class="dated">
+                <li><span class="when">2025 to now</span><div><b>iFiNN</b>, co-founder and lead developer. AI trading alerts for stocks, crypto and mutual funds. Funded by MeitY Startup Hub (GENESIS), incubated at RISE Foundation, IISER Kolkata.</div></li>
+                <li><span class="when">2025 to now</span><div><b><a href="https://underwater-ai.github.io/">UnderWater AI</a></b>, co-founder and CTO. Deep networks that clean up underwater footage for marine species identification. Same funding and incubator.</div></li>
+                <li><span class="when">2025 to now</span><div><b><a href="https://slashdot-iiserk.github.io/">Slashdot</a></b>, president of IISER Kolkata's programming and design club, elected with 99% approval.</div></li>
+                <li><span class="when">2025</span><div><b>HistoXai</b>, Astroloop Technologies, research intern. Compared 30+ open-source quality-control tools for digital pathology slides.</div></li>
+                <li><span class="when">2024 to 2025</span><div><b><a href="https://chemactiva.com">ChemActiva</a></b>, freelance web developer. Designed and built the company's website.</div></li>
+              </ol>
+            </section>
+            <section aria-labelledby="prizes-h">
+              <h3 id="prizes-h" class="h-sub-h">Prizes and scholarships</h3>
+              <ul class="plain-list">
+                <li><b>UIDAI Data Hackathon 2026</b>, first prize (₹2,00,000). Nearly 15,000 teams registered.</li>
+                <li><b>Capital One Launchpad 2025</b>, top 14 of 5,073 teams, with IndicAgri.</li>
+                <li><b>StatusCode1 2024</b>, IIIT Kalyani, first in the GIAN track.</li>
+                <li><b>ChemEnigma 2025</b>, IISc Bangalore, first place.</li>
+                <li><b>Reliance Foundation</b> undergraduate scholar, 2023.</li>
+              </ul>
+              <h3 class="h-sub-h">Talks and judging</h3>
+              <ul class="plain-list">
+                <li>Guest lecturer, CBSE District-Level Deliberation, Kolkata, 2026: “AI in the real-world context” for 64 teachers from 38 schools.</li>
+                <li>Judge, Voice of Youth 2026 national summit and hackathon.</li>
+                <li>Running and optimising local LLMs, Slashdot, 2025.</li>
+                <li>Organiser, Qiskit Fallfest 2025 at IISER Kolkata, sponsored by IBM Quantum.</li>
+              </ul>
+            </section>
           </div>
         </div>
+      </section>
 
-        <form
-          id="contact-form"
-          class="contact-form"
-          action="https://formspree.io/f/manepvkq"
-          method="POST"
-        >
-          <h3>Or leave a message</h3>
-          <div class="field-row">
-            <label for="contact_name"
-              >Name
-              <input id="contact_name" type="text" name="name" required autocomplete="name"
-            /></label>
-            <label for="contact_email"
-              >Email
-              <input
-                id="contact_email"
-                type="email"
-                name="email"
-                required
-                autocomplete="email"
-            /></label>
+      <!-- ========== CONTACT ========== -->
+      <section id="contact" class="h-sec h-contact" aria-labelledby="contact-h">
+        <span id="about" class="anchor-alias" aria-hidden="true"></span>
+        <div class="wrap">
+          <div class="about">
+            <img src="/assets/img/sbs_001.webp" alt="Shuvam Banerji Seal" width="320" height="427" loading="lazy" decoding="async" />
+            <div>
+              <h2 id="contact-h">Get in touch</h2>
+              <p>
+                Before IISER I spent a year studying physics at the University
+                of Calcutta. I have taught programming and science privately
+                since 2018, and I published a book, <cite>MindScapes</cite>, in
+                2020.
+              </p>
+              <p>
+                I am looking for PhD positions and research collaborations in
+                retrieval, language-model evaluation and computational
+                chemistry. Email is the quickest way to reach me.
+              </p>
+              <p class="mail"><a href="mailto:sbs22ms076@iiserkol.ac.in">sbs22ms076@iiserkol.ac.in</a></p>
+              <ul class="elsewhere">
+                <li><a href="https://github.com/Shuvam-Banerji-Seal" rel="me">GitHub</a></li>
+                <li><a href="https://www.linkedin.com/in/mastersbs" rel="me">LinkedIn</a></li>
+                <li><a href="https://orcid.org/0009-0000-0714-569X" rel="me">ORCID</a></li>
+                <li><a href="https://huggingface.co/ShuvBan" rel="me">Hugging Face</a></li>
+              </ul>
+            </div>
           </div>
-          <label for="contact_subject"
-            >Subject
-            <input id="contact_subject" type="text" name="subject"
-          /></label>
-          <label for="contact_message"
-            >Message
-            <textarea id="contact_message" name="message" rows="5" required></textarea>
-          </label>
-          <div class="form-foot">
-            <button type="submit" class="btn btn-primary">Send message</button>
-            <p id="form-status" role="status" aria-live="polite"></p>
-          </div>
-        </form>
+
+          <form id="contact-form" class="contact-form" action="https://formspree.io/f/manepvkq" method="POST">
+            <h3>Or leave a message</h3>
+            <div class="field-row">
+              <label for="contact_name">Name
+                <input id="contact_name" type="text" name="name" required autocomplete="name" /></label>
+              <label for="contact_email">Email
+                <input id="contact_email" type="email" name="email" required autocomplete="email" /></label>
+            </div>
+            <label for="contact_subject">Subject
+              <input id="contact_subject" type="text" name="subject" /></label>
+            <label for="contact_message">Message
+              <textarea id="contact_message" name="message" rows="5" required></textarea></label>
+            <div class="form-foot">
+              <button type="submit" class="btn btn-primary">Send message</button>
+              <p id="form-status" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </div>
       </section>
     </main>
 
     <footer class="site-foot">
-      <p>
-        © <span id="year">2026</span> Shuvam Banerji Seal. The source for this
-        site is on
-        <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io"
-          >GitHub</a
-        >.
-      </p>
-      <p class="foot-credit">
-        Orbital figure drawn with techniques from
-        <a href="https://github.com/Jakubantalik/thinking-orbs">thinking-orbs</a>
-        by Jakub Antalik (MIT).
-      </p>
+      <div class="wrap">
+        <p>
+          © <span id="year">2026</span> Shuvam Banerji Seal. The source for this
+          site is on
+          <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io">GitHub</a>.
+        </p>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/pages/research.html">Research</a>
+          <a href="/pages/projects.html">Projects</a>
+          <a href="/pages/tools.html">Tools</a>
+          <a href="/pages/blog.html">Blog</a>
+          <a href="/pages/resume.html">CV</a>
+          <a href="/sitemap.xml">Sitemap</a>
+        </nav>
+      </div>
     </footer>
 
     <script>
       (function () {
         document.getElementById("year").textContent = new Date().getFullYear();
-        const form = document.getElementById("contact-form");
-        const status = document.getElementById("form-status");
+        var form = document.getElementById("contact-form");
+        var status = document.getElementById("form-status");
         if (!form) return;
-        const submitBtn = form.querySelector('[type="submit"]');
-        form.addEventListener("submit", async (e) => {
+        var submitBtn = form.querySelector('[type="submit"]');
+        form.addEventListener("submit", async function (e) {
           e.preventDefault();
           if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = "Sending…";
           }
           try {
-            const res = await fetch(form.action, {
+            var res = await fetch(form.action, {
               method: "POST",
               body: new FormData(form),
               headers: { Accept: "application/json" },
@@ -806,13 +773,11 @@
               status.classList.remove("is-error");
               form.reset();
             } else {
-              status.textContent =
-                "The message didn't send. Please email me directly.";
+              status.textContent = "The message didn't send. Please email me directly.";
               status.classList.add("is-error");
             }
-          } catch {
-            status.textContent =
-              "No connection. Check your network or email me directly.";
+          } catch (err) {
+            status.textContent = "No connection. Check your network or email me directly.";
             status.classList.add("is-error");
           }
           if (submitBtn) {
@@ -822,8 +787,9 @@
         });
       })();
     </script>
-    <script type="module" src="assets/js/terminal.js"></script>
-    <script type="module" src="assets/js/orbital.js"></script>
+    <script type="module" src="assets/js/hero-terminal.js"></script>
+    <script type="module" src="assets/js/benzene-stage.js"></script>
     <script type="module" src="assets/js/molecule-figure.js"></script>
+    <script type="module" src="assets/js/home.js"></script>
   </body>
 </html>

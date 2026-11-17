@@ -45,6 +45,7 @@ html[data-theme="light"],
   --nitrogen-wash: #D5EEEA;
   --oxygen: #E0432A;
   --oxygen-wash: #FBE2DC;
+  --oxygen-text: #C2371F; /* vermilion for small text: 4.9:1 on paper */
   --sulfur: #FFC93C;
   --on-nitrogen: #FFFFFF;
   --lift: 0 1px 2px rgba(26, 29, 34, 0.08), 0 10px 28px rgba(26, 29, 34, 0.12);
@@ -166,6 +167,7 @@ html[data-theme="dark"],
   --nitrogen-wash: #153B38;
   --oxygen: #FF7458;
   --oxygen-wash: #3D1E19;
+  --oxygen-text: var(--oxygen);
   --sulfur: #F2C94C;
   --on-nitrogen: #04201D;
   --lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.4);

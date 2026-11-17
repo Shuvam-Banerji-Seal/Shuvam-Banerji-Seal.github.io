@@ -1,0 +1,147 @@
+/* ================================================================
+   SITE BASE for content pages (research, projects, GitHub, blog).
+   Tokens: theme.css. Components: element.css. Navbar: navbar.js.
+   Pages link this file, then add a small page <style> if needed.
+   ================================================================ */
+@import "./theme.css";
+@import "./element.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+  -webkit-text-size-adjust: 100%;
+}
+body.site-page,
+body.article-page {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.65 var(--font-body);
+  overflow-x: clip;
+}
+.site-page a,
+.article-page a {
+  color: var(--nitrogen);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.site-page a:hover,
+.article-page a:hover {
+  text-decoration-thickness: 2px;
+}
+.site-page :focus-visible,
+.article-page :focus-visible {
+  outline: 2px solid var(--nitrogen);
+  outline-offset: 2px;
+}
+.wrap {
+  width: min(1200px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+/* page header: h1 + intro, ruled off */
+.page-main {
+  padding: calc(60px + clamp(28px, 5vw, 56px)) 0 clamp(64px, 8vw, 104px);
+}
+.page-head {
+  max-width: 760px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--ink);
+}
+.page-head h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 620;
+  font-size: clamp(40px, 5.4vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.page-head p {
+  margin: 16px 0 0;
+  color: var(--graphite);
+  max-width: 64ch;
+}
+.page-links {
+  display: flex;
+  gap: 20px;
+  font-weight: 600;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 24px 0 4px;
+}
+.filters button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-s);
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 14px/1 var(--font-body);
+  cursor: pointer;
+}
+.filters button[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.filter-status {
+  min-height: 1.4em;
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: var(--graphite);
+}
+/* section heading inside a page */
+.sec-h {
+  margin: 56px 0 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--font-display);
+  font-weight: 620;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+/* rows: the default way to list things (projects, papers, repos) */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rows > li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.mono-meta {
+  font: 500 12.5px/1.7 var(--font-mono);
+  color: var(--graphite);
+}
+/* ---------- footer ---------- */
+.site-foot {
+  border-top: 1px solid var(--rule);
+  padding: 28px 0 calc(28px + env(safe-area-inset-bottom));
+  color: var(--graphite);
+  font-size: 14px;
+}
+.site-foot .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+.site-foot p {
+  margin: 0;
+}
+.foot-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+

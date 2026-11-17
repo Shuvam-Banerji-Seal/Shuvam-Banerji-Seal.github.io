@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var s = null;
+        try { s = localStorage.getItem("theme"); } catch (e) {}
+        var t = s === "light" ? "light" : s ? "dark" : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Projects | Shuvam Banerji Seal</title>
+    <meta name="description" content="Selected software by Shuvam Banerji Seal: Molecule3D, a LAMMPS workbench in the browser, retrieval systems, simulation code, apps and open teaching material." />
+    <meta name="author" content="Shuvam Banerji Seal" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/projects.html" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Projects | Shuvam Banerji Seal" />
+    <meta property="og:description" content="Molecule3D, retrieval systems, simulation code, apps and open teaching material, most of it open source." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/projects.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Projects | Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="Molecule3D, retrieval systems, simulation code, apps and open teaching material, most of it open source." />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ItemList","@id":"https://shuvam-banerji-seal.github.io/pages/projects.html#projects","name":"Projects by Shuvam Banerji Seal","itemListOrder":"https://schema.org/ItemListUnordered","numberOfItems":34,"itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"SoftwareSourceCode","name":"Molecule3D (LAMMPS Web GUI)","description":"A browser-based workbench for LAMMPS molecular dynamics: a visual input-script builder, an MD notebook, a CMake compiler helper and a 3D structure viewer.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/lammps-web-gui","programmingLanguage":"TypeScript","url":"https://shuvam-banerji-seal.github.io/lammps-web-gui/"}},{"@type":"ListItem","position":2,"item":{"@type":"SoftwareSourceCode","name":"AgriIR","description":"A configurable six-stage RAG pipeline with deterministic citations and hybrid BM25 and dense retrieval, released as the code for the ECIR 2026 paper.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/AgriIR","programmingLanguage":"Python","url":"https://github.com/Shuvam-Banerji-Seal/AgriIR"}},{"@type":"ListItem","position":3,"item":{"@type":"SoftwareSourceCode","name":"FIRE 2026 sycophancy track","description":"The site for the FIRE 2026 shared track on statute prediction and sycophancy detection in legal language models, which I co-organise.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/FIRE-2026-Sycophancy-in-LLMs","programmingLanguage":"HTML","url":"https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/"}},{"@type":"ListItem","position":4,"item":{"@type":"SoftwareSourceCode","name":"LLM Whisperer","description":"A repository of 900+ resources for LLM engineering: skills, agents, fine-tuning, RAG, inference, evaluation, safety and operations.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer","programmingLanguage":"Python","url":"https://shuvam-banerji-seal.github.io/LLM-Whisperer/"}},{"@type":"ListItem","position":5,"item":{"@type":"SoftwareSourceCode","name":"Tip-of-the-tongue retrieval","description":"Our TREC 2024 system for known-item search: four-step language-model query reformulation over two layers of BM25, with recall@1000 of 0.8067.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR","url":"https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR"}},{"@type":"ListItem","position":6,"item":{"@type":"SoftwareSourceCode","name":"DFT notes","description":"Open notes on density functional theory, from the Schrödinger equation through Hartree–Fock and the Hohenberg–Kohn theorems to the Kohn–Sham equations and functionals, with runnable Python.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/DFT-notes","programmingLanguage":"Python","url":"https://shuvam-banerji-seal.github.io/DFT-notes/"}},{"@type":"ListItem","position":7,"item":{"@type":"SoftwareSourceCode","name":"CH5103 term paper","description":"Step-by-step derivations for a WIREs CMS 2015 review by Gryn'ova, Coote and Corminboeuf, checked with PySCF and SymPy and proved in Lean 4, with an annotated slide deck and a sign error found in print.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper","programmingLanguage":"Python","url":"https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/"}},{"@type":"ListItem","position":8,"item":{"@type":"SoftwareSourceCode","name":"C60 in water","description":"LAMMPS molecular dynamics of C60 solvation with AIREBO potentials, feature extraction (RDF and coordination numbers), and a surrogate model that predicts properties at unsampled conditions.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/Solvent-Structure-around-NanoParticles","programmingLanguage":"Python","url":"https://github.com/Shuvam-Banerji-Seal/Solvent-Structure-around-NanoParticles"}},{"@type":"ListItem","position":9,"item":{"@type":"SoftwareSourceCode","name":"Perlin-noise structure search","description":"A controlled test of Perlin-noise moves for molecular structure search against a correlation-matched Gaussian baseline. Across 13 test suites the Perlin moves never significantly beat the Gaussian ones.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search","programmingLanguage":"Python","url":"https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search"}},{"@type":"ListItem","position":10,"item":{"@type":"SoftwareSourceCode","name":"opngx","description":"Pixel-exact extraction of Optronis .bin high-speed camera footage, with sub-pixel motion tracking and a Python package.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/opngx","programmingLanguage":"Python","url":"https://github.com/Shuvam-Banerji-Seal/opngx"}},{"@type":"ListItem","position":11,"item":{"@type":"SoftwareSourceCode","name":"Twist mechanism simulator","description":"A Python molecular dynamics simulator that shows the Ray-Dutt and Bailar twist mechanisms in coordination complexes in 3D.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/Ray-Dutt-and-Bailar-Twists-Simulator","programmingLanguage":"Python","url":"https://github.com/Shuvam-Banerji-Seal/Ray-Dutt-and-Bailar-Twists-Simulator"}},{"@type":"ListItem","position":12,"item":{"@type":"SoftwareSourceCode","name":"Spherical harmonics visualiser","description":"An interactive 3D visualiser that computes and draws spherical harmonics in real time with Flask and Plotly.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/simple-spherical-harmonics-visualizer","programmingLanguage":"Python","url":"https://github.com/Shuvam-Banerji-Seal/simple-spherical-harmonics-visualizer"}},{"@type":"ListItem","position":13,"item":{"@type":"SoftwareSourceCode","name":"CH4202 symmetry assignment","description":"Solutions to the CH4202 Symmetry in Chemistry assignment, typeset in LaTeX, with interactive orbital visualisations.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/CH4202-Assignment-22MS076","programmingLanguage":"HTML","url":"https://shuvam-banerji-seal.github.io/CH4202-Assignment-22MS076/"}},{"@type":"ListItem","position":14,"item":{"@type":"SoftwareSourceCode","name":"IISERKonnect","description":"The IISER Kolkata campus app for Android and the web, which I build alone. It is in campus-wide testing with 2,000+ users, and this repository holds its showcase site.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/iiserkonnect-website","programmingLanguage":"JavaScript","url":"https://github.com/Shuvam-Banerji-Seal/iiserkonnect-website"}},{"@type":"ListItem","position":15,"item":{"@type":"SoftwareSourceCode","name":"WeLearn bot in C","description":"A multi-threaded tool that bulk-downloads course files from WeLearn, with a command-line and a GTK4 interface and encrypted credential storage.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/welearnbot_in_C","programmingLanguage":"C","url":"https://github.com/Shuvam-Banerji-Seal/welearnbot_in_C"}},{"@type":"ListItem","position":16,"item":{"@type":"SoftwareSourceCode","name":"RTL8852BD Bluetooth for Linux","description":"A patched btrtl DKMS module and Arch package for the Realtek RTL8852BD Bluetooth chip, with an upstream RFC patch.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/rtl8852bd-bt-dkms","programmingLanguage":"C","url":"https://github.com/Shuvam-Banerji-Seal/rtl8852bd-bt-dkms"}},{"@type":"ListItem","position":17,"item":{"@type":"SoftwareSourceCode","name":"TCP activity monitor","description":"A systemd service for Arch Linux that logs kernel TCP statistics, socket states, per-process connections and conntrack entries into rotating daily files.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/TCP-Count-Monitor-for-Arch-Linux","programmingLanguage":"Shell","url":"https://github.com/Shuvam-Banerji-Seal/TCP-Count-Monitor-for-Arch-Linux"}},{"@type":"ListItem","position":18,"item":{"@type":"SoftwareSourceCode","name":"Wi-Fi channel optimiser","description":"A Bash script that scans nearby networks, benchmarks speed and picks a Wi-Fi channel on Linux.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/Wi-Fi-channel-optimizer","programmingLanguage":"Shell","url":"https://github.com/Shuvam-Banerji-Seal/Wi-Fi-channel-optimizer"}},{"@type":"ListItem","position":19,"item":{"@type":"SoftwareSourceCode","name":"Event coupon system","description":"A Flask event system with Google OAuth 2.0 sign-in, bulk emailing and QR code coupons checked by a mobile scanner.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/Automated-Event-Coupon-Sender-Email-and-Verification-Application","programmingLanguage":"Python","url":"https://github.com/Shuvam-Banerji-Seal/Automated-Event-Coupon-Sender-Email-and-Verification-Application"}},{"@type":"ListItem","position":20,"item":{"@type":"SoftwareSourceCode","name":"E-commerce GUI in C","description":"A GTK4 and SQLite3 storefront in C, with a chatbot that answers from a static context using BM25 retrieval. Written under Dr. Kripabandhu Ghosh.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/CS3101-E-Commerce-App-in-C","programmingLanguage":"C","url":"https://github.com/Shuvam-Banerji-Seal/CS3101-E-Commerce-App-in-C"}},{"@type":"ListItem","position":21,"item":{"@type":"SoftwareSourceCode","name":"Abyssal Fold","description":"Playable 3D chess on a one-sided Möbius surface, with non-Euclidean moves.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/mobius-chess","programmingLanguage":"HTML","url":"https://Shuvam-Banerji-Seal.github.io/mobius-chess"}},{"@type":"ListItem","position":22,"item":{"@type":"SoftwareSourceCode","name":"Real Filters","description":"An Android app that shows the mathematics behind image filters: write your own matrices and layer effects.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/real_filters","programmingLanguage":"Kotlin","url":"https://shuvam-banerji-seal.github.io/real_filters/"}},{"@type":"ListItem","position":23,"item":{"@type":"SoftwareSourceCode","name":"AnimeMate","description":"An Android app for finding anime, manga and light novels by swiping, built on the MyAnimeList API with watchlist sync and 74 genre filters.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/AnimeMate","programmingLanguage":"Kotlin","url":"https://shuvam-banerji-seal.github.io/AnimeMate/"}},{"@type":"ListItem","position":24,"item":{"@type":"SoftwareSourceCode","name":"Meshy GLB downloader","description":"A command-line and web tool that downloads Meshy AI 3D models as GLB files.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/meshy-glb-downloader","programmingLanguage":"Python","url":"https://shuvam-banerji-seal.github.io/meshy-glb-downloader/"}},{"@type":"ListItem","position":25,"item":{"@type":"SoftwareSourceCode","name":"modern-design.md","description":"Design specs for 36 modern websites covering colours, typography, components, motion and assets, each detailed enough for an AI agent to reproduce the design.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/modern-design.md","programmingLanguage":"CSS","url":"https://shuvam-banerji-seal.github.io/modern-design.md/"}},{"@type":"ListItem","position":26,"item":{"@type":"SoftwareSourceCode","name":"Introduction to molecular simulation","description":"An open talk for beginners with Marp slides, concept notes and runnable LAMMPS examples, from why simulation works to how to run one.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation","programmingLanguage":"TeX","url":"https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation"}},{"@type":"ListItem","position":27,"item":{"@type":"SoftwareSourceCode","name":"C programming for beginners","description":"A 20-module C course from the fundamentals to network programming, machine learning and GTK4 interfaces.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/C-Programming-for-Beginners","programmingLanguage":"C","url":"https://Shuvam-Banerji-Seal.github.io/C-Programming-for-Beginners/"}},{"@type":"ListItem","position":28,"item":{"@type":"SoftwareSourceCode","name":"Python for beginners","description":"Notebooks that take Python from core concepts to project work, databases and local LLM deployment.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners","programmingLanguage":"Jupyter Notebook","url":"https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners"}},{"@type":"ListItem","position":29,"item":{"@type":"SoftwareSourceCode","name":"Shaders for beginners","description":"Eleven lessons on GPU shader programming, from OpenGL and GLSL through an introduction to Vulkan to audio-reactive shaders, with an interactive WebGL editor.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/shaders-for-beginners","programmingLanguage":"C","url":"https://shuvam-banerji-seal.github.io/shaders-for-beginners/"}},{"@type":"ListItem","position":30,"item":{"@type":"SoftwareSourceCode","name":"AI in the real-world context","description":"My 60-minute talk for 64 teachers from 38 schools at the CBSE District-Level Deliberation in Kolkata, as HTML slides and a LaTeX Beamer PDF.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/ai-in-real-world-context","programmingLanguage":"HTML","url":"https://shuvam-banerji-seal.github.io/ai-in-real-world-context/"}},{"@type":"ListItem","position":31,"item":{"@type":"SoftwareSourceCode","name":"CH4114 tutorials","description":"Tutorial sessions for the CH4114 molecular simulation course at IISER Kolkata on Git, GitHub, project layout and uv-based Python environments.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/CH4114_Molecular_Simulation_Tutorials","programmingLanguage":"Jupyter Notebook","url":"https://github.com/Shuvam-Banerji-Seal/CH4114_Molecular_Simulation_Tutorials"}},{"@type":"ListItem","position":32,"item":{"@type":"SoftwareSourceCode","name":"CBSE computer science mock test","description":"A 120-question JEE-style mock test for CBSE computer science, with exam and practice modes and instant results.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/cbsexiexam","programmingLanguage":"JavaScript","url":"https://shuvam-banerji-seal.github.io/cbsexiexam/"}},{"@type":"ListItem","position":33,"item":{"@type":"SoftwareSourceCode","name":"Account creation tutorial","description":"Slides on setting up Gmail and GitHub accounts and hosting a site on GitHub Pages with GitHub Desktop.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/account-creation-tutorial","programmingLanguage":"HTML","url":"https://shuvam-banerji-seal.github.io/account-creation-tutorial/"}},{"@type":"ListItem","position":34,"item":{"@type":"SoftwareSourceCode","name":"Patent search in plain language","description":"Natural-language search over GIAN's abandoned US patents using Nomic embeddings of the abstracts, with a Selenium scraper to collect them. First in the GIAN track at StatusCode1, IIIT Kalyani, 2024.","codeRepository":"https://github.com/Shuvam-Banerji-Seal/LLM-based-Searcher-for-GIAN-s-Abandoned-US-Patents","programmingLanguage":"Python","url":"https://github.com/Shuvam-Banerji-Seal/LLM-based-Searcher-for-GIAN-s-Abandoned-US-Patents"}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://shuvam-banerji-seal.github.io/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://shuvam-banerji-seal.github.io/pages/projects.html"}]}]}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/site.css" />
+    <style>
+      .page-links { flex-wrap: wrap; gap: 6px 20px; font-size: 15px; }
+      .site-page a.btn { color: var(--ink); text-decoration: none; }
+      .site-page a.btn-primary { color: var(--on-nitrogen); }
+      .m3d-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 28px clamp(24px, 5vw, 64px); padding-top: 24px; align-items: start; }
+      .m3d-lead { margin: 0; max-width: 56ch; }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 14px; }
+      .m3d-facts { list-style: none; margin: 0; padding: 0; }
+      .m3d-facts li { padding: 12px 0; border-bottom: 1px solid var(--rule); overflow-wrap: anywhere; }
+      .m3d-facts li:first-child { padding-top: 0; }
+      .m3d-facts code { font-family: var(--font-mono); font-size: 0.85em; }
+      .proj > li { display: grid; grid-template-columns: minmax(150px, 17rem) minmax(0, 1fr); gap: 2px 24px; }
+      .proj h3 { margin: 0; font: 600 18px/1.35 var(--font-body); overflow-wrap: anywhere; }
+      .proj p { margin: 0; max-width: 70ch; overflow-wrap: anywhere; }
+      .proj .mono-meta { margin-top: 4px; }
+      @media (max-width: 760px) {
+        .m3d-grid { grid-template-columns: minmax(0, 1fr); }
+        .proj > li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+      }
+    </style>
+  </head>
+  <body class="site-page">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="navbar-container"></div>
+    <script type="module" src="/assets/js/navbar.js"></script>
+    <main id="main-content" class="wrap page-main">
+      <header class="page-head">
+        <h1>Projects</h1>
+        <p>Software for simulation, retrieval and teaching, nearly all of it open source. Languages, stars and years come from a GitHub snapshot of 17 November 2026, and the year is when the repository was created.</p>
+        <p class="page-links">
+          <a href="/pages/github-projects.html">Every public repository</a>
+          <a href="https://github.com/Shuvam-Banerji-Seal">GitHub profile</a>
+        </p>
+      </header>
+
+      <section aria-labelledby="m3d-h">
+        <h2 class="sec-h" id="m3d-h">Molecule3D: LAMMPS in the browser</h2>
+        <div class="m3d-grid">
+          <div>
+            <p class="m3d-lead">Molecular dynamics has a steep first step: an input script in a language of its own, a build with the right packages, and a trajectory you cannot see. Molecule3D, also called the LAMMPS Web GUI, puts all of it in a web page. Nothing is installed and nothing is uploaded.</p>
+            <p class="actions">
+              <a class="btn btn-primary" href="https://shuvam-banerji-seal.github.io/lammps-web-gui/">Open the app</a>
+              <a class="btn" href="https://github.com/Shuvam-Banerji-Seal/lammps-web-gui">Source</a>
+              <a class="btn" href="/pages/blogs/molecule3d-lammps-in-the-browser.html">Read the article</a>
+            </p>
+            <p class="mono-meta">TypeScript, React, three.js, WebGL and WebGPU · ★ 36 · created 2025</p>
+          </div>
+          <ul class="m3d-facts">
+            <li><b>MD notebook.</b> LAMMPS input runs in the page, on the GPU through WebGPU or on CPU threads. 702 of the 894 scripts in the LAMMPS <code>examples</code> tree run, and the engine is checked against native LAMMPS on 2,736 parity cases.</li>
+            <li><b>Script builder.</b> A flowchart over 185 LAMMPS commands that imports existing <code>in.*</code> files and checks a script against rules that each cite their docs.lammps.org page.</li>
+            <li><b>Compiler helper.</b> 46 CMake options and 71 packages become a build script for native LAMMPS.</li>
+            <li><b>Structure viewer.</b> LAMMPS data and dump files, XYZ, PDB and CIF, with playback, measurements, RDF and MSD analysis.</li>
+            <li><b>Licence and tests.</b> More than 3,000 tests. Free for education and non-commercial research under a source-available licence since 22 September 2026, and earlier releases were MIT.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section aria-labelledby="ir-h">
+        <h2 class="sec-h" id="ir-h">Retrieval and language models</h2>
+        <ul class="rows proj">
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/AgriIR">AgriIR</a></h3>
+            <div>
+            <p>A configurable six-stage RAG pipeline with deterministic citations and hybrid BM25 and dense retrieval, released as the code for the ECIR 2026 paper.</p>
+            <p class="mono-meta">Python · ★ 7 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/AgriIR">Source</a> · <a href="/pages/blogs/agriir-domain-specific-rag.html">Write-up</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/">FIRE 2026 sycophancy track</a></h3>
+            <div>
+            <p>The site for the FIRE 2026 shared track on statute prediction and sycophancy detection in legal language models, which I co-organise.</p>
+            <p class="mono-meta">HTML · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/FIRE-2026-Sycophancy-in-LLMs">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/LLM-Whisperer/">LLM Whisperer</a></h3>
+            <div>
+            <p>A repository of 900+ resources for LLM engineering: skills, agents, fine-tuning, RAG, inference, evaluation, safety and operations.</p>
+            <p class="mono-meta">Python · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR">Tip-of-the-tongue retrieval</a></h3>
+            <div>
+            <p>Our TREC 2024 system for known-item search: four-step language-model query reformulation over two layers of BM25, with recall@1000 of 0.8067.</p>
+            <p class="mono-meta">created 2024 · <a href="https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR">Source</a> · <a href="/pages/blogs/tip-of-the-tongue-trec-2024.html">Write-up</a></p>
+            </div>
+          </li>
+          <li>
+            <h3>Legal document retrieval</h3>
+            <div>
+            <p>A retrieval-augmented question answering stack for legal documents with LLaMA-3.2, Nomic embeddings and ChromaDB, a Streamlit interface and Mistral-OCR for complex texts.</p>
+            <p class="mono-meta">Feb 2025</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="chem-h">
+        <h2 class="sec-h" id="chem-h">Chemistry and simulation</h2>
+        <ul class="rows proj">
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/DFT-notes/">DFT notes</a></h3>
+            <div>
+            <p>Open notes on density functional theory, from the Schrödinger equation through Hartree–Fock and the Hohenberg–Kohn theorems to the Kohn–Sham equations and functionals, with runnable Python.</p>
+            <p class="mono-meta">Python · ★ 5 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/DFT-notes">Source</a> · <a href="/pages/blogs/kohn-sham-dft-on-one-page.html">Kohn–Sham article</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/">CH5103 term paper</a></h3>
+            <div>
+            <p>Step-by-step derivations for a WIREs CMS 2015 review by Gryn&#x27;ova, Coote and Corminboeuf, checked with PySCF and SymPy and proved in Lean 4, with an annotated slide deck and a sign error found in print.</p>
+            <p class="mono-meta">Python · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/Solvent-Structure-around-NanoParticles">C<sub>60</sub> in water</a></h3>
+            <div>
+            <p>LAMMPS molecular dynamics of C60 solvation with AIREBO potentials, feature extraction (RDF and coordination numbers), and a surrogate model that predicts properties at unsampled conditions.</p>
+            <p class="mono-meta">Python · created 2025 · <a href="https://github.com/Shuvam-Banerji-Seal/Solvent-Structure-around-NanoParticles">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search">Perlin-noise structure search</a></h3>
+            <div>
+            <p>A controlled test of Perlin-noise moves for molecular structure search against a correlation-matched Gaussian baseline. Across 13 test suites the Perlin moves never significantly beat the Gaussian ones.</p>
+            <p class="mono-meta">Python · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/opngx">opngx</a></h3>
+            <div>
+            <p>Pixel-exact extraction of Optronis .bin high-speed camera footage, with sub-pixel motion tracking and a Python package.</p>
+            <p class="mono-meta">Python · ★ 2 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/opngx">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/Ray-Dutt-and-Bailar-Twists-Simulator">Twist mechanism simulator</a></h3>
+            <div>
+            <p>A Python molecular dynamics simulator that shows the Ray-Dutt and Bailar twist mechanisms in coordination complexes in 3D.</p>
+            <p class="mono-meta">Python · created 2024 · <a href="https://github.com/Shuvam-Banerji-Seal/Ray-Dutt-and-Bailar-Twists-Simulator">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/simple-spherical-harmonics-visualizer">Spherical harmonics visualiser</a></h3>
+            <div>
+            <p>An interactive 3D visualiser that computes and draws spherical harmonics in real time with Flask and Plotly.</p>
+            <p class="mono-meta">Python · ★ 1 · created 2024 · <a href="https://github.com/Shuvam-Banerji-Seal/simple-spherical-harmonics-visualizer">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/CH4202-Assignment-22MS076/">CH4202 symmetry assignment</a></h3>
+            <div>
+            <p>Solutions to the CH4202 Symmetry in Chemistry assignment, typeset in LaTeX, with interactive orbital visualisations.</p>
+            <p class="mono-meta">HTML · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/CH4202-Assignment-22MS076">Source</a></p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="apps-h">
+        <h2 class="sec-h" id="apps-h">Apps and systems</h2>
+        <ul class="rows proj">
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/iiserkonnect-website">IISERKonnect</a></h3>
+            <div>
+            <p>The IISER Kolkata campus app for Android and the web, which I build alone. It is in campus-wide testing with 2,000+ users, and this repository holds its showcase site.</p>
+            <p class="mono-meta">JavaScript · ★ 4 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/iiserkonnect-website">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/welearnbot_in_C">WeLearn bot in C</a></h3>
+            <div>
+            <p>A multi-threaded tool that bulk-downloads course files from WeLearn, with a command-line and a GTK4 interface and encrypted credential storage.</p>
+            <p class="mono-meta">C · ★ 2 · created 2025 · <a href="https://github.com/Shuvam-Banerji-Seal/welearnbot_in_C">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/rtl8852bd-bt-dkms">RTL8852BD Bluetooth for Linux</a></h3>
+            <div>
+            <p>A patched btrtl DKMS module and Arch package for the Realtek RTL8852BD Bluetooth chip, with an upstream RFC patch.</p>
+            <p class="mono-meta">C · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/rtl8852bd-bt-dkms">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/TCP-Count-Monitor-for-Arch-Linux">TCP activity monitor</a></h3>
+            <div>
+            <p>A systemd service for Arch Linux that logs kernel TCP statistics, socket states, per-process connections and conntrack entries into rotating daily files.</p>
+            <p class="mono-meta">Shell · ★ 1 · created 2025 · <a href="https://github.com/Shuvam-Banerji-Seal/TCP-Count-Monitor-for-Arch-Linux">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/Wi-Fi-channel-optimizer">Wi-Fi channel optimiser</a></h3>
+            <div>
+            <p>A Bash script that scans nearby networks, benchmarks speed and picks a Wi-Fi channel on Linux.</p>
+            <p class="mono-meta">Shell · ★ 2 · created 2024 · <a href="https://github.com/Shuvam-Banerji-Seal/Wi-Fi-channel-optimizer">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/Automated-Event-Coupon-Sender-Email-and-Verification-Application">Event coupon system</a></h3>
+            <div>
+            <p>A Flask event system with Google OAuth 2.0 sign-in, bulk emailing and QR code coupons checked by a mobile scanner.</p>
+            <p class="mono-meta">Python · created 2025 · <a href="https://github.com/Shuvam-Banerji-Seal/Automated-Event-Coupon-Sender-Email-and-Verification-Application">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/CS3101-E-Commerce-App-in-C">E-commerce GUI in C</a></h3>
+            <div>
+            <p>A GTK4 and SQLite3 storefront in C, with a chatbot that answers from a static context using BM25 retrieval. Written under Dr. Kripabandhu Ghosh.</p>
+            <p class="mono-meta">C · created 2024 · <a href="https://github.com/Shuvam-Banerji-Seal/CS3101-E-Commerce-App-in-C">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://Shuvam-Banerji-Seal.github.io/mobius-chess">Abyssal Fold</a></h3>
+            <div>
+            <p>Playable 3D chess on a one-sided Möbius surface, with non-Euclidean moves.</p>
+            <p class="mono-meta">HTML · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/mobius-chess">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/real_filters/">Real Filters</a></h3>
+            <div>
+            <p>An Android app that shows the mathematics behind image filters: write your own matrices and layer effects.</p>
+            <p class="mono-meta">Kotlin · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/real_filters">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/AnimeMate/">AnimeMate</a></h3>
+            <div>
+            <p>An Android app for finding anime, manga and light novels by swiping, built on the MyAnimeList API with watchlist sync and 74 genre filters.</p>
+            <p class="mono-meta">Kotlin · ★ 1 · created 2025 · <a href="https://github.com/Shuvam-Banerji-Seal/AnimeMate">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/meshy-glb-downloader/">Meshy GLB downloader</a></h3>
+            <div>
+            <p>A command-line and web tool that downloads Meshy AI 3D models as GLB files.</p>
+            <p class="mono-meta">Python · ★ 2 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/meshy-glb-downloader">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/modern-design.md/">modern-design.md</a></h3>
+            <div>
+            <p>Design specs for 36 modern websites covering colours, typography, components, motion and assets, each detailed enough for an AI agent to reproduce the design.</p>
+            <p class="mono-meta">CSS · ★ 5 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/modern-design.md">Source</a></p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="teach-h">
+        <h2 class="sec-h" id="teach-h">Teaching and talks</h2>
+        <ul class="rows proj">
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation">Introduction to molecular simulation</a></h3>
+            <div>
+            <p>An open talk for beginners with Marp slides, concept notes and runnable LAMMPS examples, from why simulation works to how to run one.</p>
+            <p class="mono-meta">TeX · ★ 10 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://Shuvam-Banerji-Seal.github.io/C-Programming-for-Beginners/">C programming for beginners</a></h3>
+            <div>
+            <p>A 20-module C course from the fundamentals to network programming, machine learning and GTK4 interfaces.</p>
+            <p class="mono-meta">C · ★ 8 · created 2025 · <a href="https://github.com/Shuvam-Banerji-Seal/C-Programming-for-Beginners">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners">Python for beginners</a></h3>
+            <div>
+            <p>Notebooks that take Python from core concepts to project work, databases and local LLM deployment.</p>
+            <p class="mono-meta">Jupyter Notebook · ★ 3 · created 2024 · <a href="https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/shaders-for-beginners/">Shaders for beginners</a></h3>
+            <div>
+            <p>Eleven lessons on GPU shader programming, from OpenGL and GLSL through an introduction to Vulkan to audio-reactive shaders, with an interactive WebGL editor.</p>
+            <p class="mono-meta">C · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/shaders-for-beginners">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/ai-in-real-world-context/">AI in the real-world context</a></h3>
+            <div>
+            <p>My 60-minute talk for 64 teachers from 38 schools at the CBSE District-Level Deliberation in Kolkata, as HTML slides and a LaTeX Beamer PDF.</p>
+            <p class="mono-meta">HTML · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/ai-in-real-world-context">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/CH4114_Molecular_Simulation_Tutorials">CH4114 tutorials</a></h3>
+            <div>
+            <p>Tutorial sessions for the CH4114 molecular simulation course at IISER Kolkata on Git, GitHub, project layout and uv-based Python environments.</p>
+            <p class="mono-meta">Jupyter Notebook · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/CH4114_Molecular_Simulation_Tutorials">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/cbsexiexam/">CBSE computer science mock test</a></h3>
+            <div>
+            <p>A 120-question JEE-style mock test for CBSE computer science, with exam and practice modes and instant results.</p>
+            <p class="mono-meta">JavaScript · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/cbsexiexam">Source</a></p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://shuvam-banerji-seal.github.io/account-creation-tutorial/">Account creation tutorial</a></h3>
+            <div>
+            <p>Slides on setting up Gmail and GitHub accounts and hosting a site on GitHub Pages with GitHub Desktop.</p>
+            <p class="mono-meta">HTML · ★ 1 · created 2026 · <a href="https://github.com/Shuvam-Banerji-Seal/account-creation-tutorial">Source</a></p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="hack-h">
+        <h2 class="sec-h" id="hack-h">Hackathon builds</h2>
+        <ul class="rows proj">
+          <li>
+            <h3>IndicAgri</h3>
+            <div>
+            <p>A multi-modal RAG chatbot for Indian agriculture in 20+ languages, using Gemma and DeepSeek models and Indic-Conformer, with an autonomous pipeline that curated 15k+ documents. Team Fibonacci reached the top 14 of 5,073 teams at Capital One Launchpad 2025.</p>
+            <p class="mono-meta">Aug 2025</p>
+            </div>
+          </li>
+          <li>
+            <h3><a href="https://github.com/Shuvam-Banerji-Seal/LLM-based-Searcher-for-GIAN-s-Abandoned-US-Patents">Patent search in plain language</a></h3>
+            <div>
+            <p>Natural-language search over GIAN&#x27;s abandoned US patents using Nomic embeddings of the abstracts, with a Selenium scraper to collect them. First in the GIAN track at StatusCode1, IIIT Kalyani, 2024.</p>
+            <p class="mono-meta">Python · ★ 1 · created 2024 · <a href="https://github.com/Shuvam-Banerji-Seal/LLM-based-Searcher-for-GIAN-s-Abandoned-US-Patents">Source</a></p>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+    <footer class="site-foot">
+      <div class="wrap">
+        <p>&copy; <span data-year>2026</span> Shuvam Banerji Seal. Source on <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io">GitHub</a>.</p>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/">Home</a><a href="/pages/research.html">Research</a><a href="/pages/projects.html">Projects</a><a href="/pages/tools.html">Tools</a><a href="/pages/blog.html">Blog</a><a href="/feed.xml">RSS</a>
+        </nav>
+      </div>
+    </footer>
+    <script>document.querySelectorAll("[data-year]").forEach(function (e) { e.textContent = new Date().getFullYear(); });</script>
+  </body>
+</html>

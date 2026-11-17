@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var s = null;
+        try { s = localStorage.getItem("theme"); } catch (e) {}
+        var t = s === "light" ? "light" : s ? "dark" : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+        document.documentElement.style.colorScheme = t;
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries | Shuvam Banerji Seal</title>
+    <meta name="description" content="How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067." />
+    <meta name="author" content="Shuvam Banerji Seal" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title="Shuvam Banerji Seal, blog" href="https://shuvam-banerji-seal.github.io/feed.xml" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Shuvam Banerji Seal" />
+    <meta property="og:title" content="Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries" />
+    <meta property="og:description" content="How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <meta property="article:published_time" content="2026-11-17" />
+    <meta property="article:modified_time" content="2026-11-17" />
+    <meta property="article:author" content="https://shuvam-banerji-seal.github.io/" />
+    <meta property="article:tag" content="Information retrieval" />
+    <meta property="article:tag" content="TREC" />
+    <meta property="article:tag" content="BM25" />
+    <meta property="article:tag" content="Query reformulation" />
+    <meta property="article:tag" content="LLMs" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries" />
+    <meta name="twitter:description" content="How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067." />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BlogPosting","@id":"https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html#article","headline":"Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries","description":"How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067.","datePublished":"2026-11-17","dateModified":"2026-11-17","inLanguage":"en","keywords":"Information retrieval, TREC, BM25, Query reformulation, LLMs","wordCount":1836,"url":"https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html","mainEntityOfPage":"https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html","image":"https://shuvam-banerji-seal.github.io/assets/img/og-image.png","author":{"@type":"Person","@id":"https://shuvam-banerji-seal.github.io/#person","name":"Shuvam Banerji Seal","url":"https://shuvam-banerji-seal.github.io/"},"publisher":{"@type":"Person","@id":"https://shuvam-banerji-seal.github.io/#person","name":"Shuvam Banerji Seal"},"isPartOf":{"@type":"Blog","@id":"https://shuvam-banerji-seal.github.io/pages/blog.html#blog","name":"Shuvam Banerji Seal, blog"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://shuvam-banerji-seal.github.io/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://shuvam-banerji-seal.github.io/pages/blog.html"},{"@type":"ListItem","position":3,"name":"Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries","item":"https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html"}]}]}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/assets/css/article.css" />
+  </head>
+  <body class="article-page">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="navbar-container"></div>
+    <script type="module" src="/assets/js/navbar.js"></script>
+    <main id="main-content" class="wrap art-layout">
+      <article class="art" aria-labelledby="art-title">
+        <header class="art-head">
+          <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/pages/blog.html">Blog</a></nav>
+          <h1 id="art-title">Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries</h1>
+          <p class="art-desc">How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067.</p>
+          <p class="art-meta"><span>Shuvam Banerji Seal</span> <span aria-hidden="true">·</span> <time datetime="2026-11-17">17 Nov 2026</time> <span aria-hidden="true">·</span> <span>8 min read</span></p>
+          <p class="art-tags"><span class="tag">Information retrieval</span> <span class="tag">TREC</span> <span class="tag">BM25</span> <span class="tag">Query reformulation</span> <span class="tag">LLMs</span></p>
+        </header>
+        <nav class="toc" aria-labelledby="toc-h"><details open><summary id="toc-h">Contents</summary><ol><li><a href="#the-task">The task</a></li><li><a href="#design-choice-keep-the-retriever-simple">Design choice: keep the retriever simple</a></li><li><a href="#part-1-rewriting-the-query-in-four-phases">Part 1: rewriting the query in four phases</a></li><li><a href="#part-2-layered-bm25-retrieval">Part 2: layered BM25 retrieval</a></li><li><a href="#results">Results</a></li><li><a href="#what-the-paper-concludes-and-what-it-leaves-open">What the paper concludes, and what it leaves open</a></li><li><a href="#references">References</a></li></ol></details></nav>
+        <div class="prose">
+<p>You remember a film: a woman in many disguises trying to steal a jewel from an old man, a ski trip, a fake tattoo that washes off in a jacuzzi. You do not remember its name. This is the tip-of-the-tongue (ToT) problem, and the TREC 2024 Tip-of-the-Tongue track asked systems to solve it at scale. Our team at IISER Kolkata, taking part as ThinkIR, used a deliberately light approach: rewrite the vague description into something that reads like a Wikipedia passage, then search with plain BM25 in layers. The paper, &quot;IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items&quot;, is by Subinay Adhikary and me as joint first authors, with Soumyadeep Sar and Dwaipayan Roy [1]. Every result reported below is taken from that paper.</p>
+<h2 id="the-task"><a class="h-anchor" href="#the-task" aria-hidden="true" tabindex="-1">#</a>The task</h2>
+<p>Tip-of-the-tongue search is a kind of known-item retrieval: the searcher has seen the item before and is looking for that one item, not for information in general. People in this situation often post to forums such as I Remember This Movie rather than use a search engine, and Arguello and colleagues showed that ordinary retrieval systems handle such requests poorly [2]. The TREC track that followed began in 2023 with movies [3]. The 2024 edition added queries about landmarks and celebrities.</p>
+<p>The setup in 2024, as described in our paper [1]:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Corpus</td>
+<td>about 3.1 million Wikipedia documents</td>
+</tr>
+<tr>
+<td>Training queries</td>
+<td>150, all about movies</td>
+</tr>
+<tr>
+<td>Test queries</td>
+<td>600: 302 movies, 149 landmarks, 149 celebrities</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>a ranked list of 1,000 items per query</td>
+</tr>
+</tbody></table>
+</div><p>The difficulty is vocabulary. A ToT query is long, conversational and full of the searcher&#39;s own feelings, and it shares few words with the Wikipedia article it is looking for. Our paper quotes one example query that runs to about 260 words. It mentions summer, baseball, a dusty field, a monstrous dog and &quot;a lot of heart&quot;, and names no actor and no filming location. BM25 scores documents by exact word overlap (see <a href="./bm25-explained.html">the BM25 article</a>), so on queries like this it struggles.</p>
+<h2 id="design-choice-keep-the-retriever-simple"><a class="h-anchor" href="#design-choice-keep-the-retriever-simple" aria-hidden="true" tabindex="-1">#</a>Design choice: keep the retriever simple</h2>
+<p>The methodology section of the paper starts from a scaling argument. The corpus already has millions of documents, and a real system would face billions. Any preprocessing of the corpus, such as re-encoding every document with a neural model, would mean preprocessing the whole web if the method were used at scale. So the effort went into the query and into cheap filtering at search time, and the only retriever is BM25 [1].</p>
+<p>The pipeline has two parts: query reformulation (QR) with a large language model, and focused document retrieval (FDR) with BM25.</p>
+<h2 id="part-1-rewriting-the-query-in-four-phases"><a class="h-anchor" href="#part-1-rewriting-the-query-in-four-phases" aria-hidden="true" tabindex="-1">#</a>Part 1: rewriting the query in four phases</h2>
+<p>Each query passes through four prompting phases, each building on the previous one [1]:</p>
+<ol>
+<li><strong>Restructuring.</strong> Meta-Llama-3-70B rewrites the query in an encyclopedic, Wikipedia-like style, at temperature 0 so that the output is deterministic.</li>
+<li><strong>Accuracy and detail preservation.</strong> The restructured query is checked against the original, and details that were lost or distorted are restored.</li>
+<li><strong>Expansion.</strong> The refined query is enriched with context, definitions and words of similar meaning, so that BM25 has more chances to overlap with the relevant article even when that article uses different words.</li>
+<li><strong>Final cleanup.</strong> A last prompt turns the expanded query into a single, well-formed paragraph without stray characters or formatting.</li>
+</ol>
+<p>The paper notes that the temperature was non-zero in the third and fourth phases [1].</p>
+<p>Table 1 of the paper follows one query through the phases. The text listed at Phase 1 reads:</p>
+<pre tabindex="0"><code class="language-text">Woman tries to steal jewel from old man and she has different disguises.
+It is in color, and is a children&#39;s movie. She finally confronts him with
+a gun at a ski trip, and he wears a fake tattoo to hide from her. But it
+washes off in a jacuzzi.
+</code></pre>
+<p>and after Phase 4 it reads:</p>
+<pre tabindex="0"><code class="language-text">In a children&#39;s movie, a woman disguises herself in various ways to steal
+a jewel from an old man. The woman confronts the old man with a gun
+during a ski trip, and he uses a fake tattoo to hide from her. However,
+the tattoo washes off in a jacuzzi.
+</code></pre>
+<p>The rank of the correct answer after each phase was 40, 15, 145 and 1. The expansion phase on its own made this example worse, and the cleanup phase brought the answer to the top. This is a single example, and the paper does not report a phase-by-phase ablation over all 600 queries, so it shows the mechanism rather than measuring each phase&#39;s average effect.</p>
+<h2 id="part-2-layered-bm25-retrieval"><a class="h-anchor" href="#part-2-layered-bm25-retrieval" aria-hidden="true" tabindex="-1">#</a>Part 2: layered BM25 retrieval</h2>
+<h3 id="tuning-bm25"><a class="h-anchor" href="#tuning-bm25" aria-hidden="true" tabindex="-1">#</a>Tuning BM25</h3>
+<p>BM25 has two parameters [4], <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">k_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> for how quickly repeated terms saturate and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> for how strongly scores are normalised by document length. We ran a brute-force search for the pair that gave the best mean reciprocal rank (MRR) on the training queries over the full index, using the original queries. The best values were <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><mn>0.6</mn></mrow><annotation encoding="application/x-tex">k_1 = 0.6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.6</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mn>1.0</mn></mrow><annotation encoding="application/x-tex">b = 1.0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.0</span></span></span></span>, and they were used for every run [1]. Compared with the common defaults of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><mn>1.2</mn></mrow><annotation encoding="application/x-tex">k_1 = 1.2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.2</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mn>0.75</mn></mrow><annotation encoding="application/x-tex">b = 0.75</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.75</span></span></span></span>, this means term counts saturate sooner and document length is normalised fully.</p>
+<h3 id="one-layer-lr1"><a class="h-anchor" href="#one-layer-lr1" aria-hidden="true" tabindex="-1">#</a>One layer (LR1)</h3>
+<p>BM25 retrieves the top <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> documents for the reformulated query. The average word count of those documents is computed, and documents shorter than the average are dropped, on the reasoning that short Wikipedia articles carry less information. The remaining documents are re-ranked and the top <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> are kept, with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> much smaller than <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> [1]. In the paper&#39;s figure, this goes from the top 10,000 documents to a final list of 1,000.</p>
+<h3 id="shrinking-the-search-space-first-lr2"><a class="h-anchor" href="#shrinking-the-search-space-first-lr2" aria-hidden="true" tabindex="-1">#</a>Shrinking the search space first (LR2)</h3>
+<p>The second idea is search domain contraction. Start from the full set of searchable documents <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">SD</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span></span></span></span> and build a chain of smaller subsets <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>D</mi><mo>⊃</mo><mi>S</mi><msub><mi>D</mi><mn>1</mn></msub><mo>⊃</mo><mi>S</mi><msub><mi>D</mi><mn>2</mn></msub><mo>⊃</mo><mo>…</mo></mrow><annotation encoding="application/x-tex">SD \supset SD_1 \supset SD_2 \supset \dots</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊃</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊃</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊃</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.123em;"></span><span class="minner">…</span></span></span></span>, each containing documents more relevant to the query. With a relevance function <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>d</mi><mo separator="true">,</mo><mi>q</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(d, q)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="mclose">)</span></span></span></span> and a threshold <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span>, the goal is written as [1]:</p>
+<div class="math-display" tabindex="0"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mrow><mi>S</mi><msub><mi>D</mi><mi>n</mi></msub><mo>⊂</mo><mi>S</mi><mi>D</mi></mrow></munder><mo stretchy="false">∣</mo><mi>S</mi><msub><mi>D</mi><mi>n</mi></msub><mo stretchy="false">∣</mo><mspace width="1em"/><mtext>subject to</mtext><mspace width="1em"/><mi>f</mi><mo stretchy="false">(</mo><mi>d</mi><mo separator="true">,</mo><mi>q</mi><mo stretchy="false">)</mo><mo>≥</mo><mi>α</mi><mspace width="1em"/><mi mathvariant="normal">∀</mi><mtext> </mtext><mi>d</mi><mo>∈</mo><mi>S</mi><msub><mi>D</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\min_{SD_n \subset SD} \lvert SD_n \rvert \quad \text{subject to} \quad f(d, q) \ge \alpha \quad \forall\, d \in SD_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.5944em;vertical-align:-0.8444em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-2.3557em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0576em;">S</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:-0.0278em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mrel mtight">⊂</span><span class="mord mathnormal mtight" style="margin-right:0.0576em;">S</span><span class="mord mathnormal mtight" style="margin-right:0.0278em;">D</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8444em;"><span></span></span></span></span></span><span class="mopen">∣</span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">∣</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">subject to</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:1em;"></span><span class="mord">∀</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></div>
+<p>In practice the threshold was based on MRR from BM25 retrieval. Empirically, two contraction steps were enough: going beyond <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><msub><mi>D</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">SD_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> did not improve the subset and began to lose relevance [1].</p>
+<p>The two layers work like this:</p>
+<ol>
+<li>An LLM extracts category words from the query. For a movie query these might be &quot;movie, film, motion picture, flick&quot;. BM25 with these words retrieves the top 300,000 documents from the full corpus.</li>
+<li>Within that subset, BM25 with the Phase 4 reformulated query retrieves the top 10,000.</li>
+<li>Those are re-ranked to a final list of 1,000, in one of two ways: drop the shorter-than-average documents first (LR2), or keep them (LRS2, &quot;2-layer retrieval with small documents&quot;).</li>
+</ol>
+<h3 id="a-dense-baseline"><a class="h-anchor" href="#a-dense-baseline" aria-hidden="true" tabindex="-1">#</a>A dense baseline</h3>
+<p>As an ablation, we also tried a simple dense retriever: pre-trained BERT, using the [CLS] embedding for queries and documents, ranked by cosine similarity. The paper calls this run Semantic Search [1].</p>
+<h2 id="results"><a class="h-anchor" href="#results" aria-hidden="true" tabindex="-1">#</a>Results</h2>
+<p>Test-set results for the four runs [1]:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Run</th>
+<th>NDCG@10</th>
+<th>NDCG@1000</th>
+<th>Recall@5</th>
+<th>Recall@1000</th>
+<th>MRR</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Semantic Search (BERT [CLS])</td>
+<td>0.0018</td>
+<td>0.0234</td>
+<td>0.0033</td>
+<td>0.1700</td>
+<td>0.0021</td>
+</tr>
+<tr>
+<td>LR1</td>
+<td>0.3679</td>
+<td>0.4142</td>
+<td>0.4200</td>
+<td>0.7483</td>
+<td>0.3438</td>
+</tr>
+<tr>
+<td>LR2</td>
+<td>0.3555</td>
+<td>0.4056</td>
+<td>0.4117</td>
+<td>0.7517</td>
+<td>0.3332</td>
+</tr>
+<tr>
+<td>LRS2</td>
+<td><strong>0.3719</strong></td>
+<td><strong>0.4239</strong></td>
+<td><strong>0.4250</strong></td>
+<td><strong>0.8067</strong></td>
+<td>0.3435</td>
+</tr>
+</tbody></table>
+</div><p>LRS2, two-layer retrieval that keeps short documents, was the best run on all four metrics in the paper&#39;s main results table, finding the correct item within the top 1,000 for 484 of the 600 queries.</p>
+<p>Broken down by category, the number of queries whose answer appeared in the top 1,000 was [1]:</p>
+<div class="table-wrap" tabindex="0"><table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Landmarks (149)</th>
+<th>Movies (302)</th>
+<th>Celebrities (149)</th>
+<th>All (600)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Semantic Search</td>
+<td>48</td>
+<td>28</td>
+<td>26</td>
+<td>102</td>
+</tr>
+<tr>
+<td>LR1</td>
+<td>124</td>
+<td>202</td>
+<td>123</td>
+<td>449</td>
+</tr>
+<tr>
+<td>LR2</td>
+<td>124</td>
+<td>204</td>
+<td>123</td>
+<td>451</td>
+</tr>
+<tr>
+<td>LRS2</td>
+<td>144</td>
+<td>202</td>
+<td>138</td>
+<td>484</td>
+</tr>
+</tbody></table>
+</div><p>Four things stand out.</p>
+<p><strong>Off-the-shelf embeddings did badly here.</strong> The BERT [CLS] run found the answer for only 102 queries, and its MRR of 0.0021 means the answers it did find were deep in the list. This is a statement about untuned embeddings on this task, not about dense retrieval in general: as our paper&#39;s related-work section notes, the best run in the 2023 track used a dense passage retriever fine-tuned on ToT data [1].</p>
+<p><strong>The short-document filter removed correct answers.</strong> LRS2 differs from LR2 only in keeping documents shorter than the average. That one change recovered 20 more landmark queries and 15 more celebrity queries, at a cost of 2 movie queries. Whatever the merits of the &quot;short articles carry less information&quot; heuristic for movies, it was discarding right answers for landmarks and celebrities.</p>
+<p><strong>Movies were the hardest category.</strong> Even the best run found the answer for about two thirds of movie queries (202 of 302), against 144 of 149 landmarks and 138 of 149 celebrities. The MRR for movies in LRS2 was 0.240, against 0.524 for landmarks and 0.372 for celebrities.</p>
+<p><strong>Getting into the top 1,000 is easier than getting to the top.</strong> Recall@1000 reached 0.8067, but MRR stayed between 0.333 and 0.344 for all three BM25 runs, and the share of queries with the correct answer at rank 1 was 28.00% for LRS2. A stronger re-ranking stage over the top 1,000 is where further work would most likely help.</p>
+<h2 id="what-the-paper-concludes-and-what-it-leaves-open"><a class="h-anchor" href="#what-the-paper-concludes-and-what-it-leaves-open" aria-hidden="true" tabindex="-1">#</a>What the paper concludes, and what it leaves open</h2>
+<p>The paper&#39;s conclusion is that a classical retriever like BM25 remains useful when paired with the generative abilities of an LLM, and that the layered (stratified) prompting strategy produced highly effective queries [1]. It also names open questions: how the number of prompting layers relates to retrieval quality, and whether the non-zero temperature in the third and fourth phases, which trades reproducibility for more varied output, correlates with performance.</p>
+<p>Two further points follow from how the experiments were set up. The BM25 parameters were tuned on the original training queries, while the runs used reformulated ones, so the best <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">k_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> for rewritten queries may differ. And the per-phase effect of the reformulation is shown for one query only. Both are natural next experiments.</p>
+<p>For a different way to deal with the vocabulary gap, combining BM25 with dense retrieval instead of rewriting the query, see <a href="./hybrid-search-reciprocal-rank-fusion.html">the article on hybrid search and reciprocal rank fusion</a>.</p>
+<h2 id="references"><a class="h-anchor" href="#references" aria-hidden="true" tabindex="-1">#</a>References</h2>
+<ol>
+<li>Subinay Adhikary, Shuvam Banerji Seal, Soumyadeep Sar and Dwaipayan Roy. 2024. IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items. In <em>Proceedings of the Thirty-Third Text REtrieval Conference (TREC 2024)</em>. National Institute of Standards and Technology. Subinay Adhikary and Shuvam Banerji Seal contributed equally. <a href="https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf">https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf</a></li>
+<li>Jaime Arguello, Adam Ferguson, Emery Fine, Bhaskar Mitra, Hamed Zamani and Fernando Diaz. 2021. Tip of the Tongue Known-Item Retrieval: A Case Study in Movie Identification. In <em>Proceedings of the 2021 Conference on Human Information Interaction and Retrieval (CHIIR &#39;21)</em>, 5–14. <a href="https://doi.org/10.1145/3406522.3446021">https://doi.org/10.1145/3406522.3446021</a></li>
+<li>Jaime Arguello, Samarth Bhargav, Fernando Diaz, Evangelos Kanoulas and Bhaskar Mitra. 2023. Overview of the TREC 2023 Tip-of-the-Tongue Track. In <em>Proceedings of the Thirty-Second Text REtrieval Conference (TREC 2023)</em>. National Institute of Standards and Technology. <a href="https://trec-tot.github.io">https://trec-tot.github.io</a></li>
+<li>Stephen Robertson and Hugo Zaragoza. 2009. The Probabilistic Relevance Framework: BM25 and Beyond. <em>Foundations and Trends in Information Retrieval</em> 3(4), 333–389. <a href="https://doi.org/10.1561/1500000019">https://doi.org/10.1561/1500000019</a></li>
+</ol>
+
+        </div>
+        <footer class="art-foot">
+          <div class="byline">
+            <img src="/assets/img/sbs_001.webp" alt="" width="64" height="64" loading="lazy" />
+            <p><b>Shuvam Banerji Seal</b> is a BS-MS student at IISER Kolkata working on information retrieval, language-model evaluation and computational chemistry. <a href="/">More about me</a>, or write to <a href="mailto:sbs22ms076@iiserkol.ac.in">sbs22ms076@iiserkol.ac.in</a>.</p>
+          </div>
+          <section aria-labelledby="rel-h"><h2 id="rel-h">Read next</h2><ul class="post-list"><li data-tags="Retrieval"><a href="/pages/blogs/bm25-explained.html">BM25, explained through this site&#39;s search box</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How BM25 scores a document, term by term: saturation with k1, length normalisation with b, a never-negative IDF, and a worked example by hand.</p></li><li data-tags="Retrieval"><a href="/pages/blogs/agriir-domain-specific-rag.html">AgriIR, a configurable RAG pipeline for agricultural questions</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated.</p></li><li data-tags="Retrieval"><a href="/pages/blogs/hybrid-search-reciprocal-rank-fusion.html">Hybrid search with BM25, dense embeddings and reciprocal rank fusion</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.</p></li></ul></section>
+        </footer>
+      </article>
+    </main>
+    <footer class="site-foot">
+      <div class="wrap">
+        <p>© <span data-year>2026</span> Shuvam Banerji Seal. Source on <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io">GitHub</a>.</p>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/">Home</a><a href="/pages/research.html">Research</a><a href="/pages/projects.html">Projects</a><a href="/pages/tools.html">Tools</a><a href="/pages/blog.html">Blog</a><a href="/feed.xml">RSS</a>
+        </nav>
+      </div>
+    </footer>
+    <script>document.querySelectorAll("[data-year]").forEach(function (e) { e.textContent = new Date().getFullYear(); });</script>
+  </body>
+</html>

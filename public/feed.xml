@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shuvam Banerji Seal, blog</title>
+    <link>https://shuvam-banerji-seal.github.io/pages/blog.html</link>
+    <atom:link href="https://shuvam-banerji-seal.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <description>Information retrieval, quantum chemistry, molecular simulation and scientific software.</description>
+    <language>en</language>
+    <item>
+      <title>AgriIR, a configurable RAG pipeline for agricultural questions</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/agriir-domain-specific-rag.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/agriir-domain-specific-rag.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated.</description>
+      <category>Information retrieval</category>
+      <category>RAG</category>
+      <category>Agriculture</category>
+      <category>ECIR</category>
+    </item>
+    <item>
+      <title>BM25, explained through this site&#39;s search box</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/bm25-explained.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/bm25-explained.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>How BM25 scores a document, term by term: saturation with k1, length normalisation with b, a never-negative IDF, and a worked example by hand.</description>
+      <category>Information retrieval</category>
+      <category>BM25</category>
+      <category>Search</category>
+    </item>
+    <item>
+      <title>Drawing benzene&#39;s π orbitals from Hückel theory</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/benzene-pi-orbitals-huckel.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/benzene-pi-orbitals-huckel.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>How the benzene figure on the homepage is made: Hückel π orbitals, Slater 2p functions, and points sampled from the probability density, coloured by sign.</description>
+      <category>Quantum chemistry</category>
+      <category>Hückel theory</category>
+      <category>Visualisation</category>
+    </item>
+    <item>
+      <title>Hybrid search with BM25, dense embeddings and reciprocal rank fusion</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.</description>
+      <category>Information retrieval</category>
+      <category>RAG</category>
+      <category>Hybrid search</category>
+      <category>Reciprocal rank fusion</category>
+    </item>
+    <item>
+      <title>Kohn–Sham DFT on one page</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/kohn-sham-dft-on-one-page.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/kohn-sham-dft-on-one-page.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>The chain of ideas behind a DFT calculation, from Born–Oppenheimer and the Hohenberg–Kohn theorems to the Kohn–Sham equations, functionals and basis sets.</description>
+      <category>Density functional theory</category>
+      <category>Quantum chemistry</category>
+      <category>Electronic structure</category>
+    </item>
+    <item>
+      <title>Molecule3D: a LAMMPS workbench that runs in your browser</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/molecule3d-lammps-in-the-browser.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/molecule3d-lammps-in-the-browser.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>What Molecule3D (LAMMPS Web GUI) does, who it is for, and what a first session looks like, from a starter script to a trajectory and its RDF.</description>
+      <category>Molecular dynamics</category>
+      <category>LAMMPS</category>
+      <category>Software</category>
+    </item>
+    <item>
+      <title>Reading an MD trajectory: radial distribution function and mean squared displacement</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/rdf-and-msd-from-md-trajectories.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/rdf-and-msd-from-md-trajectories.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>How to compute g(r) and the mean squared displacement from a periodic MD trajectory, with a short numpy implementation tested on cases with known answers.</description>
+      <category>Molecular dynamics</category>
+      <category>Statistical mechanics</category>
+      <category>Python</category>
+    </item>
+    <item>
+      <title>Sycophancy in LLMs, and why we test it on court cases</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/sycolex-sycophancy-legal-llms.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/sycolex-sycophancy-legal-llms.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>What sycophancy in language models is, why legal reasoning exposes it sharply, and how the SycoLex benchmark measures it with paired, opposite prompts.</description>
+      <category>LLMs</category>
+      <category>Sycophancy</category>
+      <category>Legal AI</category>
+      <category>Evaluation</category>
+      <category>Datasets</category>
+    </item>
+    <item>
+      <title>Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries</title>
+      <link>https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html</link>
+      <guid>https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067.</description>
+      <category>Information retrieval</category>
+      <category>TREC</category>
+      <category>BM25</category>
+      <category>Query reformulation</category>
+      <category>LLMs</category>
+    </item>
+  </channel>
+</rss>

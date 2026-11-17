@@ -4,1018 +4,1674 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        // Element theme: saved choice wins, else follow the system.
         var s = null;
-        try {
-          s = localStorage.getItem("theme");
-        } catch (e) {}
-        var t =
-          s === "light"
-            ? "light"
-            : s
-              ? "dark"
-              : matchMedia("(prefers-color-scheme: dark)").matches
-                ? "dark"
-                : "light";
+        try { s = localStorage.getItem("theme"); } catch (e) {}
+        var t = s === "light" ? "light" : s ? "dark" : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         document.documentElement.setAttribute("data-theme", t);
         document.documentElement.style.colorScheme = t;
       })();
     </script>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover"
-    />
-    <meta
-      name="description"
-      content="GitHub Projects - Shuvam Banerji Seal's open source contributions and repositories"
-    />
-    <link
-      rel="canonical"
-      href="https://shuvam-banerji-seal.github.io/pages/github-projects.html"
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="GitHub Projects - Shuvam Banerji Seal" />
-    <meta
-      property="og:description"
-      content="Open source projects and repositories by Shuvam Banerji Seal."
-    />
-    <meta
-      property="og:url"
-      content="https://shuvam-banerji-seal.github.io/pages/github-projects.html"
-    />
-    <meta
-      property="og:image"
-      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
-    />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:image"
-      content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg"
-    />
-    <meta
-      name="twitter:title"
-      content="GitHub Projects - Shuvam Banerji Seal"
-    />
-    <meta
-      name="twitter:description"
-      content="Open source projects and repositories."
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>GitHub repositories | Shuvam Banerji Seal</title>
+    <meta name="description" content="Searchable index of every public repository by Shuvam Banerji Seal: computational chemistry, molecular simulation, retrieval, web tools and coursework." />
+    <meta name="author" content="Shuvam Banerji Seal" />
     <meta name="robots" content="index, follow" />
-    <title>GitHub Projects - Shuvam Banerji Seal</title>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"
-    ></script>
+    <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/github-projects.html" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="GitHub repositories | Shuvam Banerji Seal" />
+    <meta property="og:description" content="Every public repository by Shuvam Banerji Seal, searchable by name, language and topic." />
+    <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/github-projects.html" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="GitHub repositories | Shuvam Banerji Seal" />
+    <meta name="twitter:description" content="Every public repository by Shuvam Banerji Seal, searchable by name, language and topic." />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.png" />
+    <!-- repo-ld:start --><script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "CollectionPage",
+   "@id": "https://shuvam-banerji-seal.github.io/pages/github-projects.html#collection",
+   "url": "https://shuvam-banerji-seal.github.io/pages/github-projects.html",
+   "name": "GitHub repositories",
+   "description": "Public repositories by Shuvam Banerji Seal, searchable by name, language and topic.",
+   "author": {
+    "@id": "https://shuvam-banerji-seal.github.io/#person"
+   },
+   "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": 58,
+    "itemListElement": [
+     {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "My-CV",
+       "url": "https://github.com/Shuvam-Banerji-Seal/My-CV",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/My-CV",
+       "programmingLanguage": "JavaScript",
+       "description": "LaTeX CV with 3D Interactive Explorer | Three.js, AnimeJS | Live: shuvam-banerji-seal.github.io/My-CV"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "SAC_Website",
+       "url": "https://github.com/Shuvam-Banerji-Seal/SAC_Website",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/SAC_Website",
+       "programmingLanguage": "JavaScript",
+       "description": "Official website of the Student Academics Council (SAC) at IISER Kolkata, a cinematic, accessible, PWA-ready static site with Three.js particle loader, GSAP animations, warm brown / coffee green theme system with dark/light toggle, and full CI/CD via GitHub Actions."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "CH5103_Term_Paper",
+       "url": "https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper",
+       "programmingLanguage": "Python",
+       "description": "CH5103 term paper: step-by-step derivations, PySCF/SymPy checks, Lean 4 proofs and an annotated slide deck for Gryn'ova, Coote & Corminboeuf (WIREs CMS 2015), including a sign error found in print"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "lammps-web-gui",
+       "url": "https://github.com/Shuvam-Banerji-Seal/lammps-web-gui",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/lammps-web-gui",
+       "programmingLanguage": "TypeScript",
+       "description": "Run LAMMPS molecular dynamics in your browser: visual input-script builder, MD notebook with an engine checked against native LAMMPS, CMake compiler helper, and a GPU 3D viewer for LAMMPS data/dump, XYZ, PDB and CIF. No install, nothing uploaded."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "iiserkonnect-website",
+       "url": "https://github.com/Shuvam-Banerji-Seal/iiserkonnect-website",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/iiserkonnect-website",
+       "programmingLanguage": "JavaScript",
+       "description": "Showcase site for IISERKonnect, the all-in-one IISER Kolkata campus app. Modular, mobile-first, themed with the app's real palettes."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Email-HTML",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Email-HTML",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Email-HTML",
+       "programmingLanguage": "HTML",
+       "description": "Discover responsive HTML email designs and invitation templates for any occasion. Easily customizable, cross-client compatible, and optimized for engagement. Contribute your designs or improvements. Feedback and support are welcome."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "rtl8852bd-bt-dkms",
+       "url": "https://github.com/Shuvam-Banerji-Seal/rtl8852bd-bt-dkms",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/rtl8852bd-bt-dkms",
+       "programmingLanguage": "C",
+       "description": "Bluetooth for the Realtek RTL8852BD (0bda:b853) on Linux: patched btrtl DKMS module, Arch package, upstream RFC patch"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "opngx",
+       "url": "https://github.com/Shuvam-Banerji-Seal/opngx",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/opngx",
+       "programmingLanguage": "Python",
+       "description": "Pixel-exact Optronis .bin high-speed-camera footage extraction, sub-pixel motion tracking and Brownian/optical-trap analysis. C engine (SIMD, all cores), pip-installable Python package, Qt studio with modular analysis. Linux & Windows."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 9,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "cbsexiexam",
+       "url": "https://github.com/Shuvam-Banerji-Seal/cbsexiexam",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/cbsexiexam",
+       "programmingLanguage": "JavaScript",
+       "description": "120-question JEE-style CBSE Computer Science mock test site, take exams in Exam or Practice mode with instant results"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 10,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Shuvam-Banerji-Seal.github.io",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io",
+       "programmingLanguage": "HTML",
+       "description": "Computational Chemist & AI Researcher, Portfolio website with terminal homepage, music player, tools suite, and 7 dark themes"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 11,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "perlin-noise-molecular-search",
+       "url": "https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search",
+       "programmingLanguage": "Python",
+       "description": "Perlin-noise proposals for molecular structure search, tested against a correlation-matched Gaussian null model: code, all results and DFT inputs"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 12,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Automated-Event-Coupon-Sender-Email-and-Verification-Application",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Automated-Event-Coupon-Sender-Email-and-Verification-Application",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Automated-Event-Coupon-Sender-Email-and-Verification-Application",
+       "programmingLanguage": "Python",
+       "description": "Automated event coupon management system with QR code generation, bulk email distribution via Gmail OAuth, and real-time mobile verification. Flask-based web app with encrypted coupons, status tracking, and automated thank-you emails. Perfect for event organizers managing attendee verification."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 13,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "AnimeMate",
+       "url": "https://github.com/Shuvam-Banerji-Seal/AnimeMate",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/AnimeMate",
+       "programmingLanguage": "Kotlin",
+       "description": "AnimeMate - Tinder-style anime, manga & light novel recommendation app for Android. Swipe-to-discover powered by MyAnimeList API v2. Personalized MAL recommendations, watchlist sync, 74 genre filters, Material Design 3."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 14,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "meshy-glb-downloader",
+       "url": "https://github.com/Shuvam-Banerji-Seal/meshy-glb-downloader",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/meshy-glb-downloader",
+       "programmingLanguage": "Python",
+       "description": "Download Meshy AI 3D models as GLB, free open-source Meshy to GLB converter (CLI + web UI, uv + Node)"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 15,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Teacher-s-Day-Wishes",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Teacher-s-Day-Wishes",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Teacher-s-Day-Wishes",
+       "programmingLanguage": "JavaScript",
+       "description": "A 3D animated Teacher's Day wish, an envelope that opens into a letter of gratitude, with flowers, petals, and a song. Built with Three.js"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 16,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "HadezLabs",
+       "url": "https://github.com/Shuvam-Banerji-Seal/HadezLabs",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/HadezLabs",
+       "programmingLanguage": "HTML",
+       "description": "Hadez Labs, robotics + AI research lab building a system-agnostic, media-agnostic autonomy core. Own models, own labs, own manufacturing. Masterful AI at your hands."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 17,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "introduction-to-molecular-simulation",
+       "url": "https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation",
+       "programmingLanguage": "TeX",
+       "description": "Introduction to Molecular Simulation, talk companion: what it is, why it works, and how to make one. Slides (Marp), concept notes, and hands-on examples."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 18,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "DFT-notes",
+       "url": "https://github.com/Shuvam-Banerji-Seal/DFT-notes",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/DFT-notes",
+       "programmingLanguage": "Python",
+       "description": "A curated, SEO-friendly knowledge base on Density Functional Theory (DFT), Hohenberg–Kohn theorems, Kohn–Sham equations, exchange–correlation functionals, and computational chemistry methods. Notes in Markdown with LaTeX math, rendered as a static site via Jekyll + KaTeX on GitHub Pages."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 19,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "modern-design.md",
+       "url": "https://github.com/Shuvam-Banerji-Seal/modern-design.md",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/modern-design.md",
+       "programmingLanguage": "CSS",
+       "description": "Open-source library of design.md specs for 36 modern websites, colors, typography, components, motion, JavaScript libraries, and assets. Each spec is detailed enough that an AI agent can reproduce the design without ever seeing the original site. Live showcase on GitHub Pages."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 20,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "lammps_data_web_viewer",
+       "url": "https://github.com/Shuvam-Banerji-Seal/lammps_data_web_viewer",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/lammps_data_web_viewer",
+       "programmingLanguage": "HTML",
+       "description": "Moved to Shuvam-Banerji-Seal/molecule3d"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 21,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "CH4114_Molecular_Simulation_Tutorials",
+       "url": "https://github.com/Shuvam-Banerji-Seal/CH4114_Molecular_Simulation_Tutorials",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/CH4114_Molecular_Simulation_Tutorials",
+       "programmingLanguage": "Jupyter Notebook",
+       "description": "CH4114 Molecular Simulation, hands-on tutorials: Git, GitHub, project organization, and uv-based Python environments (tutorial_00_14-08-2026)."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 22,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "ai-in-real-world-context",
+       "url": "https://github.com/Shuvam-Banerji-Seal/ai-in-real-world-context",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/ai-in-real-world-context",
+       "programmingLanguage": "HTML",
+       "description": "AI in Real World Context, a 60-min pointer-friendly HTML deck + LaTeX Beamer (tools, services, next-token predictors)."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 23,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Python-Course-for-Beginners",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners",
+       "programmingLanguage": "Jupyter Notebook",
+       "description": "This is a repository dedicated to the python course, I am developing for my students. This is not designed for any Indian Educational board but rather has a heuristic approach to python coding."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 24,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "mobius-chess",
+       "url": "https://github.com/Shuvam-Banerji-Seal/mobius-chess",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/mobius-chess",
+       "programmingLanguage": "HTML",
+       "description": "Abyssal Fold, Möbius Strip Chess. A fully playable 3D chess game on a one-sided Möbius surface with non-Euclidean moves."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 25,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "website_try",
+       "url": "https://github.com/Shuvam-Banerji-Seal/website_try",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/website_try",
+       "programmingLanguage": "JavaScript",
+       "description": "Lumen Studio, cinematic 3D portfolio (vanilla Three.js + GSAP + Lenis, no build step)"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 26,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "account-creation-tutorial",
+       "url": "https://github.com/Shuvam-Banerji-Seal/account-creation-tutorial",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/account-creation-tutorial",
+       "programmingLanguage": "HTML",
+       "description": "A slide presentation guide: Gmail account creation, GitHub account setup, and GitHub Pages hosting tutorial using GitHub Desktop"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 27,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "FIRE-2026-Sycophancy-in-LLMs",
+       "url": "https://github.com/Shuvam-Banerji-Seal/FIRE-2026-Sycophancy-in-LLMs",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/FIRE-2026-Sycophancy-in-LLMs",
+       "programmingLanguage": "HTML",
+       "description": "FIRE 2026 Shared Track: LLM as a Judge? From Statute Prediction to Sycophancy Detection in Law"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 28,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "real_filters",
+       "url": "https://github.com/Shuvam-Banerji-Seal/real_filters",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/real_filters",
+       "programmingLanguage": "Kotlin",
+       "description": "Android app that reveals the mathematics behind image filters. Write your own matrices, layer effects, and understand how image processing really works."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 29,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "my_assets",
+       "url": "https://github.com/Shuvam-Banerji-Seal/my_assets",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/my_assets",
+       "description": "Static assets, memes, and images for use across repos"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 30,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "shaders-for-beginners",
+       "url": "https://github.com/Shuvam-Banerji-Seal/shaders-for-beginners",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/shaders-for-beginners",
+       "programmingLanguage": "C",
+       "description": "Learn OpenGL shaders from scratch - comprehensive docs, interactive WebGL editor, 11 lessons with 15+ shaders"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 31,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "LLM-Whisperer",
+       "url": "https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer",
+       "programmingLanguage": "Python",
+       "description": "Comprehensive LLM toolkit: RAG, agents, fine-tuning, inference optimization & 100+ production-ready skills"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 32,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "sbs-menti",
+       "url": "https://github.com/Shuvam-Banerji-Seal/sbs-menti",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/sbs-menti",
+       "description": "better menti better"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 33,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "C-Programming-for-Beginners",
+       "url": "https://github.com/Shuvam-Banerji-Seal/C-Programming-for-Beginners",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/C-Programming-for-Beginners",
+       "programmingLanguage": "C",
+       "description": "Complete C Programming Course: 20 modules from beginner to advanced. Learn C with interactive examples, buggy code analysis, Makefiles, GDB debugging, data structures, networking, ML & scientific computing. Includes browser-based code editor."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 34,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "AgriIR",
+       "url": "https://github.com/Shuvam-Banerji-Seal/AgriIR",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/AgriIR",
+       "programmingLanguage": "Python",
+       "description": "AgriIR: Configurable RAG framework for domain-specific knowledge retrieval in agriculture. Features 6-stage pipeline, deterministic citations, and domain-specific agents. ECIR'26."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 35,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Art_Bid",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Art_Bid",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Art_Bid",
+       "programmingLanguage": "JavaScript",
+       "description": "Live art auction and exhibition platform with realtime bidding, admin controls, and PostgreSQL-backed media for IISER Kolkata Arts Club."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 36,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "CH4217_Research_Methodology",
+       "url": "https://github.com/Shuvam-Banerji-Seal/CH4217_Research_Methodology",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/CH4217_Research_Methodology",
+       "programmingLanguage": "HTML",
+       "description": "CH4217 project website and essay on Birbal Sahni by Shuvam Banerji Seal."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 37,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "CH4202-Assignment-22MS076",
+       "url": "https://github.com/Shuvam-Banerji-Seal/CH4202-Assignment-22MS076",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/CH4202-Assignment-22MS076",
+       "programmingLanguage": "HTML",
+       "description": "CH4202 Symmetry in Chemistry assignment with LaTeX solutions and interactive orbital visualizations."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 38,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "how_to",
+       "url": "https://github.com/Shuvam-Banerji-Seal/how_to",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/how_to",
+       "description": "A repo with a lot of wiki that tell how to"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 39,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "3D-Mandelbrot-Explorer",
+       "url": "https://github.com/Shuvam-Banerji-Seal/3D-Mandelbrot-Explorer",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/3D-Mandelbrot-Explorer",
+       "programmingLanguage": "Python",
+       "description": "This Python project uses Matplotlib to animate a 3D view of the Mandelbrot set, allowing you to visualize complex dynamics with interactive rotations. Perfect for mathematicians, enthusiasts, or anyone curious about fractals and complex systems. Dive into a visual representation of infinite complexity with each frame offering a new perspective."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 40,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "TCP-Count-Monitor-for-Arch-Linux",
+       "url": "https://github.com/Shuvam-Banerji-Seal/TCP-Count-Monitor-for-Arch-Linux",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/TCP-Count-Monitor-for-Arch-Linux",
+       "programmingLanguage": "Shell",
+       "description": "A robust TCP activity monitor for Arch Linux that logs kernel stats, socket states, per-process connections, and conntrack entries into rotating daily files. Includes systemd service for continuous monitoring"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 41,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Automated-Whatsapp-Bulk-Message-Sender-using-Google-Forms-Sheets-and-Python",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Automated-Whatsapp-Bulk-Message-Sender-using-Google-Forms-Sheets-and-Python",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Automated-Whatsapp-Bulk-Message-Sender-using-Google-Forms-Sheets-and-Python",
+       "programmingLanguage": "Python",
+       "description": "Automated WhatsApp news broadcaster for bulk messaging with Google Sheets integration. Send personalized announcements to multiple contacts with session persistence and Unicode safety."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 42,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Wi-Fi-channel-optimizer",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Wi-Fi-channel-optimizer",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Wi-Fi-channel-optimizer",
+       "programmingLanguage": "Shell",
+       "description": "This Bash script automates the process of optimizing Wi-Fi channels for better network performance. It performs several tasks including scanning available networks, testing speed on different channels, and selecting the optimal channel based on speed tests."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 43,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "CS3101",
+       "url": "https://github.com/Shuvam-Banerji-Seal/CS3101",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/CS3101",
+       "programmingLanguage": "C",
+       "description": "This is the repository for all of the CS3101 course of IISER KOLKATA on \"Fundamentals of C programming\" except our project."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 44,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "scan-to-spreadsheet",
+       "url": "https://github.com/Shuvam-Banerji-Seal/scan-to-spreadsheet",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/scan-to-spreadsheet",
+       "programmingLanguage": "Python",
+       "description": "scan to spreadsheet"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 45,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "hertree_to_EV",
+       "url": "https://github.com/Shuvam-Banerji-Seal/hertree_to_EV",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/hertree_to_EV",
+       "programmingLanguage": "Python",
+       "description": "A simple hertree to electron volts conerter program. This is just here for my convenience."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 46,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "NAEST_Sample_Experiments",
+       "url": "https://github.com/Shuvam-Banerji-Seal/NAEST_Sample_Experiments",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/NAEST_Sample_Experiments",
+       "programmingLanguage": "TeX",
+       "description": "Well, I am just creating this repo for NAEST peeps. Explore the wonders of optics through hands-on experiments conducted at home. This repository delves into experiments from the National Anveshika Experimental Skill Test 2023, covering topics such as light refraction, total internal reflection, and prism angle discrepancies."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 47,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Simple-Banking-System-in-C",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Simple-Banking-System-in-C",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Simple-Banking-System-in-C",
+       "programmingLanguage": "C++",
+       "description": "A C++ program implementing a simple banking system. Users can create accounts, deposit/withdraw funds, and check balances. Account info is persisted in \"account.txt\". Error handling ensures data integrity. Well-commented code structure, documented methods, and comprehensive explanation make it easy to understand."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 48,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "AVL-Tree-Implementation-in-Python-and-C",
+       "url": "https://github.com/Shuvam-Banerji-Seal/AVL-Tree-Implementation-in-Python-and-C",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/AVL-Tree-Implementation-in-Python-and-C",
+       "programmingLanguage": "C",
+       "description": "This repository hosts optimized implementations of AVL trees in Python and C. Features include insertion, deletion, and BFS printing with balance factors. The interactive menu-based system provides operation management. Explore efficient code for AVL trees in both Python and C."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 49,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "fourier_transform_2d_images",
+       "url": "https://github.com/Shuvam-Banerji-Seal/fourier_transform_2d_images",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/fourier_transform_2d_images",
+       "programmingLanguage": "Python",
+       "description": "This kis a python code that helps in transforming any 2d image into its Fourier transform and also implement its inverse by sinosodial grating. All thanks to https://thepythoncodingbook.com for providing the information and coding helprequired."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 50,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Tree-fundamentals-in-c",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Tree-fundamentals-in-c",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Tree-fundamentals-in-c",
+       "programmingLanguage": "C",
+       "description": "This code implements a Binary Search Tree (BST) in C with various functionalities accessible through a user-friendly menu. Users can perform operations like insertion, deletion, searching, finding the height, and traversing the tree using inorder, preorder, postorder, and level order methods. The code includes comments to explain each function."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 51,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "FTIR-Multipeak-Plot",
+       "url": "https://github.com/Shuvam-Banerji-Seal/FTIR-Multipeak-Plot",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/FTIR-Multipeak-Plot",
+       "programmingLanguage": "Python",
+       "description": "Reads, plots FTIR data, interactively adds user-defined annotations with labels and descriptions."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 52,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Queue_using_array_Linked_Lists",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Queue_using_array_Linked_Lists",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Queue_using_array_Linked_Lists",
+       "description": "Explore a versatile Queue data structure in C with efficient array and linked list implementations. Perform enqueue, dequeue, and display operations. Prevent overflow with a circular array. Choose your preferred approach."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 53,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Shannon_Index_Birds_biodiversity",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Shannon_Index_Birds_biodiversity",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Shannon_Index_Birds_biodiversity",
+       "programmingLanguage": "Python",
+       "description": "I made this python program to make life easier for students who are stuck doing their ecology projects regarding shanon index. Hope you like it!!!"
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 54,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "weak_acid_concentration-pH-graph-",
+       "url": "https://github.com/Shuvam-Banerji-Seal/weak_acid_concentration-pH-graph-",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/weak_acid_concentration-pH-graph-",
+       "programmingLanguage": "Python",
+       "description": "This is a very simple python program that creates the graph plot for the titration data of weak polyprotic or monoprotic acid against some strong base, say NaOH. This uses the first derivative concept."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 55,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Basic-Linked-List-Functions-for-Beginners",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Basic-Linked-List-Functions-for-Beginners",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Basic-Linked-List-Functions-for-Beginners",
+       "programmingLanguage": "C",
+       "description": "This concise C implementation offers fundamental linked list operations: Insertion: Beginning, End, Position Deletion: Beginning, End, Position Display and Reversal User-friendly Menu Clone, compile, and run for interactive linked list manipulation."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 56,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "Stack-Implementation-C-Array-LinkedList",
+       "url": "https://github.com/Shuvam-Banerji-Seal/Stack-Implementation-C-Array-LinkedList",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/Stack-Implementation-C-Array-LinkedList",
+       "programmingLanguage": "C",
+       "description": "C program for stack implementation using array and linked list. Menu-driven interface allows push, pop, and display operations. Array uses a fixed-size array, while linked list dynamically manages nodes. Demonstrates flexibility in choosing data structures for basic stack operations."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 57,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "File-Programming-In-C",
+       "url": "https://github.com/Shuvam-Banerji-Seal/File-Programming-In-C",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/File-Programming-In-C",
+       "programmingLanguage": "C",
+       "description": "This is a compilation of major file programing basic operations for students and beginners alike."
+      }
+     },
+     {
+      "@type": "ListItem",
+      "position": 58,
+      "item": {
+       "@type": "SoftwareSourceCode",
+       "name": "2d_hcp",
+       "url": "https://github.com/Shuvam-Banerji-Seal/2d_hcp",
+       "codeRepository": "https://github.com/Shuvam-Banerji-Seal/2d_hcp",
+       "programmingLanguage": "Python",
+       "description": "This will help you draw the 2d hexagonal closed packing structure in python using simple turtle."
+      }
+     }
+    ]
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://shuvam-banerji-seal.github.io/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Projects",
+     "item": "https://shuvam-banerji-seal.github.io/pages/projects.html"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "GitHub repositories",
+     "item": "https://shuvam-banerji-seal.github.io/pages/github-projects.html"
+    }
+   ]
+  }
+ ]
+}</script><!-- repo-ld:end -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Enhanced CSS System -->
-    <link rel="stylesheet" href="../assets/css/mobile-fixes.css" />
-    <link rel="stylesheet" href="../assets/css/theme.css" />
-    <link rel="stylesheet" href="../assets/css/main.css" />
-    <link rel="stylesheet" href="../assets/css/animations.css" />
-    <link rel="stylesheet" href="../assets/css/mobile.css" />
-    <link rel="stylesheet" href="../assets/css/chemistry-theme.css" />
-    <!-- Overrides - Must be last -->
-    <link rel="stylesheet" href="../assets/css/overrides.css" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/site.css" />
     <style>
-      /* GitHub page: flat Element styling */
-      .github-hero {
-        background: var(--paper);
-        color: var(--ink);
-        padding: 4rem 0 3rem;
-      }
-      .github-hero h1 {
-        font-family: var(--font-display);
-        font-stretch: 68%;
-        letter-spacing: -0.01em;
-      }
-      .github-stats {
-        margin-top: 1.5rem;
-        font-size: 1.0625rem;
-        color: var(--graphite);
-      }
-      .github-stats span {
-        color: var(--ink);
-        font-weight: 600;
-      }
-
-      .repo-card {
-        background: var(--surface);
-        border: 1px solid var(--rule);
-        border-radius: var(--r-l);
-        padding: 1.5rem;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        transition: border-color 150ms;
-      }
-      .repo-card:hover {
-        border-color: var(--ink);
-      }
-      .repo-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem;
-        margin-bottom: 1rem;
-      }
-      .repo-name {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: var(--ink);
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-      }
-      .repo-name:hover {
-        color: var(--nitrogen);
-      }
-      .repo-visibility {
-        padding: 0.125rem 0.5rem;
-        border-radius: var(--r-s);
-        border: 1px solid var(--rule);
-        font-size: 0.8125rem;
-        font-weight: 500;
-        color: var(--graphite);
-        white-space: nowrap;
-      }
-      .visibility-private {
-        color: var(--oxygen);
-      }
-      .repo-description {
-        color: var(--graphite);
-        margin-bottom: 1rem;
-        line-height: 1.6;
-        min-height: 3rem;
-      }
-      .repo-topics {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-      }
-      .topic-tag {
-        padding: 0.125rem 0.5rem;
-        border-radius: var(--r-s);
-        border: 1px solid var(--rule);
-        color: var(--graphite);
-        font-size: 0.8125rem;
-      }
-      .repo-stats {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: auto;
-        padding-top: 1rem;
-        border-top: 1px solid var(--rule);
-      }
-      .repo-stat {
-        display: flex;
-        align-items: center;
-        font-size: 0.875rem;
-        color: var(--graphite);
-      }
-      .repo-stat i {
-        margin-right: 0.25rem;
-        width: 1rem;
-        height: 1rem;
-      }
-      .language-dot {
-        width: 0.75rem;
-        height: 0.75rem;
-        border-radius: 50%;
-        margin-right: 0.5rem;
-      }
-      .skeleton-block {
-        height: 200px;
-        background: var(--surface-2);
-        border-radius: var(--r-m);
-      }
-
-      .search-filter {
-        background: var(--surface);
-        border: 1px solid var(--rule);
-        border-radius: var(--r-l);
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-      }
-      .filter-controls {
-        display: grid;
-        grid-template-columns: 1fr auto auto;
-        gap: 1rem;
-        align-items: stretch;
-      }
-      .search-input,
-      .sort-select,
-      .language-filter {
-        height: 48px;
-        padding: 0.875rem 1rem;
-        border: 1px solid var(--rule);
-        border-radius: var(--r-m);
-        background: var(--surface);
-        color: var(--ink);
-        font-size: 1rem;
-        line-height: 1.25;
-        box-sizing: border-box;
-      }
-      .search-input {
-        width: 100%;
-      }
-      .sort-select,
-      .language-filter {
-        min-width: 180px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-      }
-      .search-input:focus,
-      .sort-select:focus,
-      .language-filter:focus {
-        outline: 2px solid var(--nitrogen);
-        outline-offset: 2px;
-      }
-      .error-state {
-        text-align: center;
-        padding: 3rem;
-        color: var(--oxygen);
-      }
-      .error-state i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-      }
-
-      /* Quote section styling */
-      .bg-gray-50 {
-        background-color: var(--paper);
-      }
-
-      .py-16 {
-        padding-top: 4rem;
-        padding-bottom: 4rem;
-      }
-
-      .max-w-4xl {
-        max-width: 56rem;
-      }
-
-      .mx-auto {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .text-xl {
-        font-size: 1.25rem;
-        line-height: 1.75rem;
-      }
-
-      .md\:text-2xl {
-        font-size: 1.5rem;
-        line-height: 2rem;
-      }
-
-      .font-light {
-        font-weight: 300;
-      }
-
-      .text-gray-700 {
-        color: var(--text-secondary);
-      }
-
-      .text-gray-500 {
-        color: var(--text-muted);
-      }
-
-      .italic {
-        font-style: italic;
-      }
-
-      .leading-relaxed {
-        line-height: 1.625;
-      }
-
-      .mb-6 {
-        margin-bottom: 1.5rem;
-      }
-
-      .font-medium {
-        font-weight: 500;
-      }
-
-      .opacity-70 {
-        opacity: 0.7;
-      }
-
-      .text-cyan-500 {
-        color: var(--graphite);
-      }
-
-      .w-12 {
-        width: 3rem;
-      }
-
-      .h-12 {
-        height: 3rem;
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      @media (min-width: 768px) {
-        .md\:text-2xl {
-          font-size: 1.5rem;
-          line-height: 2rem;
-        }
-
-        .md\:block {
-          display: block;
-        }
-      }
-
-      /* Additional utility classes for search */
-      .relative {
-        position: relative;
-      }
-
-      .absolute {
-        position: absolute;
-      }
-
-      .right-3 {
-        right: 1rem;
-      }
-
-      .top-3 {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      .w-5 {
-        width: 1.25rem;
-      }
-
-      .h-5 {
-        height: 1.25rem;
-      }
-
-      .text-gray-400 {
-        color: var(--text-muted);
-      }
-
-      .github-hero-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .skeleton-block {
-        height: 200px;
-        background: var(--bg-elevated);
-        border-radius: 0.5rem;
-      }
-
-      .relative {
-        position: relative;
-      }
-      .absolute {
-        position: absolute;
-      }
-      .right-3 {
-        right: 1rem;
-      }
-      .top-3 {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-      .w-5 {
-        width: 1.25rem;
-      }
-      .h-5 {
-        height: 1.25rem;
-      }
-      .text-gray-400 {
-        color: var(--graphite);
-      }
-      .github-hero-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      @media (max-width: 480px) {
-        .filter-controls {
-          gap: 0.5rem;
-        }
-        .search-input,
-        .sort-select,
-        .language-filter {
-          font-size: 16px;
-        }
-        .github-hero h1 {
-          font-size: 1.75rem !important;
-        }
-        .github-hero p {
-          font-size: 1rem !important;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .filter-controls {
-          grid-template-columns: 1fr;
-          gap: 0.75rem;
-        }
-        .sort-select,
-        .language-filter {
-          min-width: 100%;
-        }
-        .github-hero {
-          padding: 2rem 0;
-        }
-        .repo-card {
-          padding: 1rem;
-        }
-        .search-filter {
-          padding: 1rem;
-        }
-        .py-16 {
-          padding-top: 2rem;
-          padding-bottom: 2rem;
-        }
-        .text-xl {
-          font-size: 1.125rem;
-          line-height: 1.75rem;
-        }
+      .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+      .toolbar { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin: 28px 0 0; }
+      .toolbar label { display: block; margin: 0 0 6px; font: 600 14px/1.3 var(--font-body); }
+      .toolbar input, .toolbar select { box-sizing: border-box; width: 100%; min-height: 44px; padding: 0 12px; font: 400 16px/1.2 var(--font-body); }
+      .result-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin: 18px 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--ink); }
+      .result-line .filter-status { margin: 0; }
+      .link-btn { padding: 4px 0; border: 0; background: none; color: var(--nitrogen); font: 500 14px/1.4 var(--font-body); text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; }
+      .link-btn[hidden] { display: none; }
+      .rows > li { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px 32px; }
+      .rows > li[hidden] { display: none; }
+      .repo-head { grid-column: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 16px; }
+      .repo-name { margin: 0; font: 650 19px/1.3 var(--font-body); letter-spacing: 0; overflow-wrap: anywhere; }
+      .repo-live { font-size: 15px; }
+      .repo-desc { grid-column: 1; margin: 0; max-width: 68ch; }
+      .repo-desc.is-empty { color: var(--graphite); }
+      .rows .mono-meta { margin: 0; overflow-wrap: anywhere; }
+      .repo-tags { grid-column: 1; display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+      .repo-tags .tag { font-size: 12.5px; }
+      @media (min-width: 480px) {
+        .toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .toolbar .f-q { grid-column: 1 / -1; }
+      }
+      @media (min-width: 860px) {
+        .toolbar { grid-template-columns: minmax(0, 1fr) 15rem 13rem; }
+        .toolbar .f-q { grid-column: auto; }
+        .rows > li { grid-template-columns: minmax(0, 1fr) 21rem; }
+        .rows .mono-meta { grid-column: 2; grid-row: 1; padding-top: 4px; }
       }
     </style>
-    <link rel="stylesheet" href="../assets/css/element.css" />
   </head>
-
-  <body>
+  <body class="site-page">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="navbar-container"></div>
-    <script type="module" src="../assets/js/navbar.js"></script>
-
-    <!-- GitHub Hero Section -->
-    <section class="github-hero" data-animate="fade-in">
-      <div class="container">
-        <div class="text-center github-hero-content">
-          <h1
-            class="text-4xl md:text-6xl font-bold mb-4 typewriter"
-            data-speed="120"
-          >
-            <i data-lucide="code-2" class="inline-block mr-4"></i>
-            GitHub Projects
-          </h1>
-          <p
-            class="text-xl md:text-2xl opacity-90 mb-8"
-            data-animate="slide-up"
-            data-delay="1000"
-          >
-            Open Source Contributions & Research Code
-          </p>
-
-          <!-- GitHub stats: plain text, the JS fills the spans by ID -->
-          <p class="github-stats" data-animate="fade-in" data-delay="1500">
-            <span id="total-repos">--</span> public repositories,
-            <span id="total-stars">--</span> total stars,
-            <span id="total-forks">--</span> total forks,
-            <span id="followers-count">--</span> followers
-          </p>
+    <script type="module" src="/assets/js/navbar.js"></script>
+    <main id="main-content" class="wrap page-main">
+      <header class="page-head">
+        <h1>GitHub repositories</h1>
+        <p>These are my <!-- repo-count:start -->93<!-- repo-count:end --> public repositories, forks left out, also listed on <a href="https://github.com/Shuvam-Banerji-Seal">my GitHub profile</a>; the curated selection is on the <a href="/pages/projects.html">projects page</a>.</p>
+      </header>
+      <form class="toolbar" role="search" aria-label="Filter repositories" id="toolbar">
+        <div class="f-q">
+          <label for="q">Search repositories</label>
+          <input id="q" name="q" type="search" placeholder="Name, topic or a word from the description" autocomplete="off" spellcheck="false" />
         </div>
-      </div>
-    </section>
-
-    <!-- Humble Quote Section -->
-    <section class="py-16 bg-gray-50" data-animate="fade-in" data-delay="500">
-      <div class="container text-center">
-        <div class="max-w-4xl mx-auto">
-          <i
-            data-lucide="quote"
-            class="w-12 h-12 text-cyan-500 mx-auto mb-6 opacity-70"
-          ></i>
-          <blockquote
-            class="text-xl md:text-2xl font-light text-gray-700 italic leading-relaxed mb-6"
-            data-animate="slide-up"
-            data-delay="700"
-          >
-            "I know I'm not that big of a developer, but I'm trying to better
-            myself every day...
-            <br class="hidden md:block" />
-            Btw, I'm not a developer again, just a science enthusiast...
-            <br class="hidden md:block" />
-            so only the latter part of what I said applies."
-          </blockquote>
-          <footer
-            class="text-gray-500 font-medium"
-            data-animate="fade-in"
-            data-delay="1200"
-          >
-            Honest thoughts from a curious mind
-          </footer>
+        <div>
+          <label for="lang">Language</label>
+          <select id="lang" name="lang">
+            <option value="">All languages</option>
+            <!-- repo-langs:start -->
+            <option value="Python">Python (27)</option>
+            <option value="HTML">HTML (17)</option>
+            <option value="C">C (11)</option>
+            <option value="JavaScript">JavaScript (8)</option>
+            <option value="Jupyter Notebook">Jupyter Notebook (5)</option>
+            <option value="TeX">TeX (5)</option>
+            <option value="Kotlin">Kotlin (2)</option>
+            <option value="Shell">Shell (2)</option>
+            <option value="C++">C++ (1)</option>
+            <option value="CSS">CSS (1)</option>
+            <option value="Mermaid">Mermaid (1)</option>
+            <option value="Processing">Processing (1)</option>
+            <option value="TypeScript">TypeScript (1)</option>
+            <option value="none">No language (11)</option>
+            <!-- repo-langs:end -->
+          </select>
         </div>
+        <div>
+          <label for="sort">Sort by</label>
+          <select id="sort" name="sort">
+            <option value="updated">Recently updated</option>
+            <option value="stars">Most stars</option>
+            <option value="name">Name</option>
+          </select>
+        </div>
+      </form>
+      <noscript><p class="filter-status">Search and filters need JavaScript. The full list follows.</p></noscript>
+      <div class="result-line">
+        <p class="filter-status" id="count" role="status" aria-live="polite"><!-- repo-status:start -->93 repositories<!-- repo-status:end --></p>
+        <button type="button" class="link-btn" id="clear" hidden>Clear filters</button>
       </div>
-    </section>
-
-    <main class="container section">
-      <!-- Search and Filter Controls -->
-      <div class="search-filter" data-animate="slide-up" data-delay="500">
-        <div class="filter-controls">
-          <div class="relative">
-            <input
-              type="text"
-              id="repo-search"
-              class="search-input"
-              placeholder="Search repositories..."
-              aria-label="Search repositories"
-            />
-            <i
-              data-lucide="search"
-              class="absolute right-3 top-3 w-5 h-5 text-gray-400"
-            ></i>
+      <!-- repos:start -->
+      <ul class="rows" id="repo-list" data-generated="2026-11-17">
+        <li data-lang="JavaScript" data-stars="2" data-pushed="2026-11-17">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/My-CV">My-CV</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/My-CV/" aria-label="Live site for My-CV">Live site</a>
           </div>
-          <select
-            id="sort-repos"
-            class="sort-select"
-            aria-label="Sort repositories"
-          >
-            <option value="updated">Recently Updated</option>
-            <option value="created">Recently Created</option>
-            <option value="name">Name A-Z</option>
-            <option value="stars">Most Stars</option>
-            <option value="forks">Most Forks</option>
-          </select>
-          <select
-            id="language-filter"
-            class="language-filter"
-            aria-label="Filter by language"
-          >
-            <option value="">All Languages</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Repository Grid -->
-      <div
-        id="repos-container"
-        class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-        data-animate="fade-in"
-        data-delay="800"
-      >
-        <!-- Loading skeletons -->
-        <div class="repo-card loading-skeleton">
-          <div class="skeleton-block"></div>
-        </div>
-        <div class="repo-card loading-skeleton">
-          <div class="skeleton-block"></div>
-        </div>
-        <div class="repo-card loading-skeleton">
-          <div class="skeleton-block"></div>
-        </div>
-      </div>
-
-      <!-- Load More Button -->
-      <div class="text-center mt-12">
-        <button id="load-more" class="btn btn-secondary hidden">
-          <i data-lucide="plus" class="w-5 h-5 mr-2"></i>
-          Load More Repositories
-        </button>
-      </div>
+          <p class="repo-desc">LaTeX CV with 3D Interactive Explorer | Three.js, AnimeJS | Live: shuvam-banerji-seal.github.io/My-CV</p>
+          <p class="mono-meta"><span class="repo-lang">JavaScript</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2026-11-17">Nov 2026</time></p>
+        </li>
+        <li data-lang="none" data-stars="6" data-pushed="2026-11-17">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal">Shuvam-Banerji-Seal</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="6 stars">★ 6</span> · updated <time datetime="2026-11-17">Nov 2026</time></p>
+        </li>
+        <li data-lang="JavaScript" data-stars="1" data-pushed="2026-11-11">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/SAC_Website">SAC_Website</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/SAC_Website/" aria-label="Live site for SAC_Website">Live site</a>
+          </div>
+          <p class="repo-desc">Official website of the Student Academics Council (SAC) at IISER Kolkata, a cinematic, accessible, PWA-ready static site with Three.js particle loader, GSAP animations, warm brown / coffee green theme system with dark/light toggle, and full CI/CD via GitHub Actions.</p>
+          <p class="mono-meta"><span class="repo-lang">JavaScript</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-11-11">Nov 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">animation</li><li class="tag">cinematic-loader</li><li class="tag">dark-mode</li><li class="tag">github-pages</li><li class="tag">gsap</li><li class="tag">iiser-kolkata</li><li class="tag">light-mode</li><li class="tag">lighthouse-ci</li><li class="tag">playwright</li><li class="tag">pwa</li><li class="tag">sac</li><li class="tag">static-site</li><li class="tag">student-council</li><li class="tag">threejs</li><li class="tag">vite</li><li class="tag">vitest</li><li class="tag">website</li></ul>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2026-11-09">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/CH5103_Term_Paper">CH5103_Term_Paper</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/CH5103_Term_Paper/" aria-label="Live site for CH5103_Term_Paper">Live site</a>
+          </div>
+          <p class="repo-desc">CH5103 term paper: step-by-step derivations, PySCF/SymPy checks, Lean 4 proofs and an annotated slide deck for Gryn'ova, Coote &amp; Corminboeuf (WIREs CMS 2015), including a sign error found in print</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-11-09">Nov 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">beamer</li><li class="tag">computational-chemistry</li><li class="tag">diradicals</li><li class="tag">electronic-structure</li><li class="tag">github-pages</li><li class="tag">hunds-rule</li><li class="tag">latex</li><li class="tag">lean4</li><li class="tag">mathlib</li><li class="tag">pyscf</li><li class="tag">quantum-chemistry</li><li class="tag">uv</li></ul>
+        </li>
+        <li data-lang="TypeScript" data-stars="36" data-pushed="2026-11-09">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/lammps-web-gui">lammps-web-gui</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/lammps-web-gui/" aria-label="Live site for lammps-web-gui">Live site</a>
+          </div>
+          <p class="repo-desc">Run LAMMPS molecular dynamics in your browser: visual input-script builder, MD notebook with an engine checked against native LAMMPS, CMake compiler helper, and a GPU 3D viewer for LAMMPS data/dump, XYZ, PDB and CIF. No install, nothing uploaded.</p>
+          <p class="mono-meta"><span class="repo-lang">TypeScript</span> · <span class="stars" role="img" aria-label="36 stars">★ 36</span> · updated <time datetime="2026-11-09">Nov 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">3d-visualizer</li><li class="tag">cif-viewer</li><li class="tag">computational-chemistry</li><li class="tag">computational-physics</li><li class="tag">crystal-structure</li><li class="tag">lammps</li><li class="tag">lammps-gui</li><li class="tag">lammps-input</li><li class="tag">materials-science</li><li class="tag">molecular-dynamics</li><li class="tag">molecular-dynamics-simulation</li><li class="tag">molecular-visualization</li><li class="tag">pdb-viewer</li><li class="tag">react</li><li class="tag">scientific-computing</li><li class="tag">threejs</li><li class="tag">typescript</li><li class="tag">webgl</li><li class="tag">webgpu</li><li class="tag">xyz-viewer</li></ul>
+        </li>
+        <li data-lang="JavaScript" data-stars="4" data-pushed="2026-11-01">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/iiserkonnect-website">iiserkonnect-website</a></h2>
+          </div>
+          <p class="repo-desc">Showcase site for IISERKonnect, the all-in-one IISER Kolkata campus app. Modular, mobile-first, themed with the app's real palettes.</p>
+          <p class="mono-meta"><span class="repo-lang">JavaScript</span> · <span class="stars" role="img" aria-label="4 stars">★ 4</span> · updated <time datetime="2026-11-01">Nov 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="2" data-pushed="2026-10-29">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Email-HTML">Email-HTML</a></h2>
+          </div>
+          <p class="repo-desc">Discover responsive HTML email designs and invitation templates for any occasion. Easily customizable, cross-client compatible, and optimized for engagement. Contribute your designs or improvements. Feedback and support are welcome.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2026-10-29">Oct 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">css</li><li class="tag">email</li><li class="tag">html</li><li class="tag">htmlemail</li></ul>
+        </li>
+        <li data-lang="C" data-stars="0" data-pushed="2026-10-28">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/rtl8852bd-bt-dkms">rtl8852bd-bt-dkms</a></h2>
+          </div>
+          <p class="repo-desc">Bluetooth for the Realtek RTL8852BD (0bda:b853) on Linux: patched btrtl DKMS module, Arch package, upstream RFC patch</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-10-28">Oct 2026</time></p>
+        </li>
+        <li data-lang="Python" data-stars="2" data-pushed="2026-10-18">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/opngx">opngx</a></h2>
+          </div>
+          <p class="repo-desc">Pixel-exact Optronis .bin high-speed-camera footage extraction, sub-pixel motion tracking and Brownian/optical-trap analysis. C engine (SIMD, all cores), pip-installable Python package, Qt studio with modular analysis. Linux &amp; Windows.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2026-10-18">Oct 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">brownian-motion</li><li class="tag">c</li><li class="tag">deflate</li><li class="tag">high-speed-camera</li><li class="tag">image-processing</li><li class="tag">libdeflate</li><li class="tag">linux</li><li class="tag">motion-tracking</li><li class="tag">openmp</li><li class="tag">optical-tweezers</li><li class="tag">optronis</li><li class="tag">particle-tracking</li><li class="tag">png</li><li class="tag">pyside6</li><li class="tag">python</li><li class="tag">qt</li><li class="tag">scientific-computing</li><li class="tag">windows</li></ul>
+        </li>
+        <li data-lang="JavaScript" data-stars="0" data-pushed="2026-10-17">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/cbsexiexam">cbsexiexam</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/cbsexiexam/" aria-label="Live site for cbsexiexam">Live site</a>
+          </div>
+          <p class="repo-desc">120-question JEE-style CBSE Computer Science mock test site, take exams in Exam or Practice mode with instant results</p>
+          <p class="mono-meta"><span class="repo-lang">JavaScript</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-10-17">Oct 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">cbse</li><li class="tag">computer-science</li><li class="tag">jee-preparation</li><li class="tag">mock-exam</li></ul>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-10-10">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io">Shuvam-Banerji-Seal.github.io</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io" aria-label="Live site for Shuvam-Banerji-Seal.github.io">Live site</a>
+          </div>
+          <p class="repo-desc">Computational Chemist &amp; AI Researcher, Portfolio website with terminal homepage, music player, tools suite, and 7 dark themes</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-10-10">Oct 2026</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2026-10-03">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/perlin-noise-molecular-search">perlin-noise-molecular-search</a></h2>
+          </div>
+          <p class="repo-desc">Perlin-noise proposals for molecular structure search, tested against a correlation-matched Gaussian null model: code, all results and DFT inputs</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-10-03">Oct 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">basin-hopping</li><li class="tag">computational-chemistry</li><li class="tag">conformer-search</li><li class="tag">dft</li><li class="tag">lennard-jones</li><li class="tag">molecular-modeling</li><li class="tag">perlin-noise</li><li class="tag">rdkit</li></ul>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2026-09-30">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/SIH_2D-to-3D">SIH_2D-to-3D</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-09-30">Sep 2026</time></p>
+        </li>
+        <li data-lang="Jupyter Notebook" data-stars="0" data-pushed="2026-09-21">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/My-Notes">My-Notes</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Jupyter Notebook</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-09-21">Sep 2026</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2026-09-20">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Automated-Event-Coupon-Sender-Email-and-Verification-Application">Automated-Event-Coupon-Sender-Email-and-Verification-Application</a></h2>
+          </div>
+          <p class="repo-desc">Automated event coupon management system with QR code generation, bulk email distribution via Gmail OAuth, and real-time mobile verification. Flask-based web app with encrypted coupons, status tracking, and automated thank-you emails. Perfect for event organizers managing attendee verification.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-09-20">Sep 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">attendance-monitoring</li><li class="tag">coupon-system</li><li class="tag">email-automation</li><li class="tag">email-verification</li><li class="tag">event-management</li><li class="tag">event-ticketing</li><li class="tag">flask</li><li class="tag">gmail-api</li><li class="tag">ngrok</li><li class="tag">oauth2</li><li class="tag">python</li><li class="tag">qr-code</li><li class="tag">qr-scanner</li><li class="tag">real-time-verification</li><li class="tag">web-application</li></ul>
+        </li>
+        <li data-lang="Kotlin" data-stars="1" data-pushed="2026-09-12">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/AnimeMate">AnimeMate</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/AnimeMate/" aria-label="Live site for AnimeMate">Live site</a>
+          </div>
+          <p class="repo-desc">AnimeMate - Tinder-style anime, manga &amp; light novel recommendation app for Android. Swipe-to-discover powered by MyAnimeList API v2. Personalized MAL recommendations, watchlist sync, 74 genre filters, Material Design 3.</p>
+          <p class="mono-meta"><span class="repo-lang">Kotlin</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-09-12">Sep 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">android</li><li class="tag">anime</li><li class="tag">anime-recommendation</li><li class="tag">anime-tracker</li><li class="tag">kotlin</li><li class="tag">light-novel</li><li class="tag">mal-client</li><li class="tag">manga</li><li class="tag">material-design-3</li><li class="tag">mvvm-architecture</li><li class="tag">myanimelist</li><li class="tag">recommendation-engine</li><li class="tag">retrofit</li><li class="tag">tinder-swipe</li></ul>
+        </li>
+        <li data-lang="Python" data-stars="2" data-pushed="2026-09-05">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/meshy-glb-downloader">meshy-glb-downloader</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/meshy-glb-downloader/" aria-label="Live site for meshy-glb-downloader">Live site</a>
+          </div>
+          <p class="repo-desc">Download Meshy AI 3D models as GLB, free open-source Meshy to GLB converter (CLI + web UI, uv + Node)</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2026-09-05">Sep 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">3d-models</li><li class="tag">ai-3d</li><li class="tag">downloader</li><li class="tag">glb</li><li class="tag">gltf</li><li class="tag">meshy</li><li class="tag">python</li><li class="tag">text-to-3d</li><li class="tag">threejs</li><li class="tag">uv</li></ul>
+        </li>
+        <li data-lang="JavaScript" data-stars="0" data-pushed="2026-09-05">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Teacher-s-Day-Wishes">Teacher-s-Day-Wishes</a></h2>
+          </div>
+          <p class="repo-desc">A 3D animated Teacher's Day wish, an envelope that opens into a letter of gratitude, with flowers, petals, and a song. Built with Three.js</p>
+          <p class="mono-meta"><span class="repo-lang">JavaScript</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-09-05">Sep 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-09-03">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/HadezLabs">HadezLabs</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/HadezLabs/" aria-label="Live site for HadezLabs">Live site</a>
+          </div>
+          <p class="repo-desc">Hadez Labs, robotics + AI research lab building a system-agnostic, media-agnostic autonomy core. Own models, own labs, own manufacturing. Masterful AI at your hands.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-09-03">Sep 2026</time></p>
+        </li>
+        <li data-lang="TeX" data-stars="10" data-pushed="2026-08-29">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/introduction-to-molecular-simulation">introduction-to-molecular-simulation</a></h2>
+          </div>
+          <p class="repo-desc">Introduction to Molecular Simulation, talk companion: what it is, why it works, and how to make one. Slides (Marp), concept notes, and hands-on examples.</p>
+          <p class="mono-meta"><span class="repo-lang">TeX</span> · <span class="stars" role="img" aria-label="10 stars">★ 10</span> · updated <time datetime="2026-08-29">Aug 2026</time></p>
+        </li>
+        <li data-lang="Python" data-stars="5" data-pushed="2026-08-25">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/DFT-notes">DFT-notes</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/DFT-notes/" aria-label="Live site for DFT-notes">Live site</a>
+          </div>
+          <p class="repo-desc">A curated, SEO-friendly knowledge base on Density Functional Theory (DFT), Hohenberg–Kohn theorems, Kohn–Sham equations, exchange–correlation functionals, and computational chemistry methods. Notes in Markdown with LaTeX math, rendered as a static site via Jekyll + KaTeX on GitHub Pages.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="5 stars">★ 5</span> · updated <time datetime="2026-08-25">Aug 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">ab-initio</li><li class="tag">chemistry</li><li class="tag">computational-chemistry</li><li class="tag">density-functional-theory</li><li class="tag">dft</li><li class="tag">education</li><li class="tag">electronic-structure</li><li class="tag">first-principles</li><li class="tag">github-pages</li><li class="tag">hohenberg-kohn</li><li class="tag">jekyll</li><li class="tag">katex</li><li class="tag">knowledge-base</li><li class="tag">kohn-sham</li><li class="tag">markdown</li><li class="tag">materials-science</li><li class="tag">notes</li><li class="tag">physics</li><li class="tag">quantum-chemistry</li><li class="tag">tutorial</li></ul>
+        </li>
+        <li data-lang="CSS" data-stars="5" data-pushed="2026-08-24">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/modern-design.md">modern-design.md</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/modern-design.md/" aria-label="Live site for modern-design.md">Live site</a>
+          </div>
+          <p class="repo-desc">Open-source library of design.md specs for 36 modern websites, colors, typography, components, motion, JavaScript libraries, and assets. Each spec is detailed enough that an AI agent can reproduce the design without ever seeing the original site. Live showcase on GitHub Pages.</p>
+          <p class="mono-meta"><span class="repo-lang">CSS</span> · <span class="stars" role="img" aria-label="5 stars">★ 5</span> · updated <time datetime="2026-08-24">Aug 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">agents</li><li class="tag">ai-agents</li><li class="tag">design-specifications</li><li class="tag">design-system</li><li class="tag">design-tools</li><li class="tag">documentation</li><li class="tag">gsap</li><li class="tag">inspiration</li><li class="tag">interactive-design</li><li class="tag">llm</li><li class="tag">markdown</li><li class="tag">mcp</li><li class="tag">open-source</li><li class="tag">portfolio</li><li class="tag">reference</li><li class="tag">showcase</li><li class="tag">three-js</li><li class="tag">web-design</li><li class="tag">webgl</li></ul>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-08-23">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/lammps_data_web_viewer">lammps_data_web_viewer</a></h2>
+          </div>
+          <p class="repo-desc">Moved to Shuvam-Banerji-Seal/molecule3d</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-08-23">Aug 2026</time></p>
+        </li>
+        <li data-lang="TeX" data-stars="1" data-pushed="2026-08-20">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Computational-Chemistry-CH5104">Computational-Chemistry-CH5104</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">TeX</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-08-20">Aug 2026</time></p>
+        </li>
+        <li data-lang="Jupyter Notebook" data-stars="1" data-pushed="2026-08-18">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/CH4114_Molecular_Simulation_Tutorials">CH4114_Molecular_Simulation_Tutorials</a></h2>
+          </div>
+          <p class="repo-desc">CH4114 Molecular Simulation, hands-on tutorials: Git, GitHub, project organization, and uv-based Python environments (tutorial_00_14-08-2026).</p>
+          <p class="mono-meta"><span class="repo-lang">Jupyter Notebook</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-08-18">Aug 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-08-12">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/ai-in-real-world-context">ai-in-real-world-context</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/ai-in-real-world-context/" aria-label="Live site for ai-in-real-world-context">Live site</a>
+          </div>
+          <p class="repo-desc">AI in Real World Context, a 60-min pointer-friendly HTML deck + LaTeX Beamer (tools, services, next-token predictors).</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-08-12">Aug 2026</time></p>
+        </li>
+        <li data-lang="Jupyter Notebook" data-stars="3" data-pushed="2026-07-20">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Python-Course-for-Beginners">Python-Course-for-Beginners</a></h2>
+          </div>
+          <p class="repo-desc">This is a repository dedicated to the python course, I am developing for my students. This is not designed for any Indian Educational board but rather has a heuristic approach to python coding.</p>
+          <p class="mono-meta"><span class="repo-lang">Jupyter Notebook</span> · <span class="stars" role="img" aria-label="3 stars">★ 3</span> · updated <time datetime="2026-07-20">Jul 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-07-18">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/mobius-chess">mobius-chess</a></h2>
+            <a class="repo-live" href="https://Shuvam-Banerji-Seal.github.io/mobius-chess" aria-label="Live site for mobius-chess">Live site</a>
+          </div>
+          <p class="repo-desc">Abyssal Fold, Möbius Strip Chess. A fully playable 3D chess game on a one-sided Möbius surface with non-Euclidean moves.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-07-18">Jul 2026</time></p>
+        </li>
+        <li data-lang="JavaScript" data-stars="1" data-pushed="2026-07-17">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/website_try">website_try</a></h2>
+          </div>
+          <p class="repo-desc">Lumen Studio, cinematic 3D portfolio (vanilla Three.js + GSAP + Lenis, no build step)</p>
+          <p class="mono-meta"><span class="repo-lang">JavaScript</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-07-17">Jul 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-07-15">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/zoro">zoro</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-07-15">Jul 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-07-14">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/account-creation-tutorial">account-creation-tutorial</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/account-creation-tutorial/" aria-label="Live site for account-creation-tutorial">Live site</a>
+          </div>
+          <p class="repo-desc">A slide presentation guide: Gmail account creation, GitHub account setup, and GitHub Pages hosting tutorial using GitHub Desktop</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-07-14">Jul 2026</time></p>
+        </li>
+        <li data-lang="Python" data-stars="1" data-pushed="2026-07-01">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/ISRO-BAH-IISERK">ISRO-BAH-IISERK</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-07-01">Jul 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-06-14">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/FIRE-2026-Sycophancy-in-LLMs">FIRE-2026-Sycophancy-in-LLMs</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/FIRE-2026-Sycophancy-in-LLMs/" aria-label="Live site for FIRE-2026-Sycophancy-in-LLMs">Live site</a>
+          </div>
+          <p class="repo-desc">FIRE 2026 Shared Track: LLM as a Judge? From Statute Prediction to Sycophancy Detection in Law</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-06-14">Jun 2026</time></p>
+        </li>
+        <li data-lang="Kotlin" data-stars="1" data-pushed="2026-06-12">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/real_filters">real_filters</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/real_filters/" aria-label="Live site for real_filters">Live site</a>
+          </div>
+          <p class="repo-desc">Android app that reveals the mathematics behind image filters. Write your own matrices, layer effects, and understand how image processing really works.</p>
+          <p class="mono-meta"><span class="repo-lang">Kotlin</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-06-12">Jun 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">android</li><li class="tag">convolution</li><li class="tag">filters</li><li class="tag">image-processing</li><li class="tag">jetpack-compose</li><li class="tag">kotlin</li><li class="tag">material3</li><li class="tag">matrix</li><li class="tag">mvvm</li><li class="tag">open-source</li></ul>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2026-06-09">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/my_assets">my_assets</a></h2>
+          </div>
+          <p class="repo-desc">Static assets, memes, and images for use across repos</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-06-09">Jun 2026</time></p>
+        </li>
+        <li data-lang="C" data-stars="1" data-pushed="2026-05-18">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/shaders-for-beginners">shaders-for-beginners</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/shaders-for-beginners/" aria-label="Live site for shaders-for-beginners">Live site</a>
+          </div>
+          <p class="repo-desc">Learn OpenGL shaders from scratch - comprehensive docs, interactive WebGL editor, 11 lessons with 15+ shaders</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-05-18">May 2026</time></p>
+        </li>
+        <li data-lang="Python" data-stars="1" data-pushed="2026-05-17">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer">LLM-Whisperer</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/LLM-Whisperer/" aria-label="Live site for LLM-Whisperer">Live site</a>
+          </div>
+          <p class="repo-desc">Comprehensive LLM toolkit: RAG, agents, fine-tuning, inference optimization &amp; 100+ production-ready skills</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-05-17">May 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">agent-frameworks</li><li class="tag">agents</li><li class="tag">code-examples</li><li class="tag">fine-tuning</li><li class="tag">huggingface</li><li class="tag">inference-optimization</li><li class="tag">langchain</li><li class="tag">llm</li><li class="tag">llm-serving</li><li class="tag">machine-learning</li><li class="tag">mlops</li><li class="tag">model-deployment</li><li class="tag">prompt-engineering</li><li class="tag">pytorch</li><li class="tag">quantization</li><li class="tag">rag</li><li class="tag">skills-library</li><li class="tag">transformers</li><li class="tag">vllm</li></ul>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2026-05-15">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/sbs-menti">sbs-menti</a></h2>
+          </div>
+          <p class="repo-desc">better menti better</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-05-15">May 2026</time></p>
+        </li>
+        <li data-lang="C" data-stars="8" data-pushed="2026-05-04">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/C-Programming-for-Beginners">C-Programming-for-Beginners</a></h2>
+            <a class="repo-live" href="https://Shuvam-Banerji-Seal.github.io/C-Programming-for-Beginners/" aria-label="Live site for C-Programming-for-Beginners">Live site</a>
+          </div>
+          <p class="repo-desc">Complete C Programming Course: 20 modules from beginner to advanced. Learn C with interactive examples, buggy code analysis, Makefiles, GDB debugging, data structures, networking, ML &amp; scientific computing. Includes browser-based code editor.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="8 stars">★ 8</span> · updated <time datetime="2026-05-04">May 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">algorithms</li><li class="tag">c-language</li><li class="tag">c-programming</li><li class="tag">c-tutorial</li><li class="tag">clang</li><li class="tag">data-structures</li><li class="tag">debugging</li><li class="tag">embedded-systems</li><li class="tag">gcc</li><li class="tag">gdb</li><li class="tag">learn-c</li><li class="tag">machine-learning</li><li class="tag">makefile</li><li class="tag">memory-management</li><li class="tag">network-programming</li><li class="tag">open-source</li><li class="tag">pointers</li><li class="tag">programming-course</li><li class="tag">scientific-computing</li><li class="tag">systems-programming</li></ul>
+        </li>
+        <li data-lang="Python" data-stars="7" data-pushed="2026-04-29">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/AgriIR">AgriIR</a></h2>
+          </div>
+          <p class="repo-desc">AgriIR: Configurable RAG framework for domain-specific knowledge retrieval in agriculture. Features 6-stage pipeline, deterministic citations, and domain-specific agents. ECIR'26.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="7 stars">★ 7</span> · updated <time datetime="2026-04-29">Apr 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">agriculture</li><li class="tag">agriir</li><li class="tag">ai-for-good</li><li class="tag">domain-specific</li><li class="tag">ecir2026</li><li class="tag">faiss</li><li class="tag">indian-agriculture</li><li class="tag">information-retrieval</li><li class="tag">knowledge-retrieval</li><li class="tag">llm</li><li class="tag">nlp</li><li class="tag">ollama</li><li class="tag">rag</li><li class="tag">retrieval-augmented-generation</li></ul>
+        </li>
+        <li data-lang="Jupyter Notebook" data-stars="2" data-pushed="2026-04-17">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/CS4201-Information-Retrieval-Assignment">CS4201-Information-Retrieval-Assignment</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Jupyter Notebook</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2026-04-17">Apr 2026</time></p>
+        </li>
+        <li data-lang="JavaScript" data-stars="0" data-pushed="2026-04-16">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Art_Bid">Art_Bid</a></h2>
+          </div>
+          <p class="repo-desc">Live art auction and exhibition platform with realtime bidding, admin controls, and PostgreSQL-backed media for IISER Kolkata Arts Club.</p>
+          <p class="mono-meta"><span class="repo-lang">JavaScript</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-04-16">Apr 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">admin-dashboard</li><li class="tag">art-auction</li><li class="tag">express</li><li class="tag">full-stack</li><li class="tag">iiser-kolkata</li><li class="tag">live-bidding</li><li class="tag">nodejs</li><li class="tag">postgresql</li><li class="tag">react</li><li class="tag">realtime</li><li class="tag">socket-io</li><li class="tag">vite</li></ul>
+        </li>
+        <li data-lang="HTML" data-stars="0" data-pushed="2026-04-16">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/CH4217_Research_Methodology">CH4217_Research_Methodology</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/CH4217_Research_Methodology/" aria-label="Live site for CH4217_Research_Methodology">Live site</a>
+          </div>
+          <p class="repo-desc">CH4217 project website and essay on Birbal Sahni by Shuvam Banerji Seal.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-04-16">Apr 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-04-15">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/CH4202-Assignment-22MS076">CH4202-Assignment-22MS076</a></h2>
+            <a class="repo-live" href="https://shuvam-banerji-seal.github.io/CH4202-Assignment-22MS076/" aria-label="Live site for CH4202-Assignment-22MS076">Live site</a>
+          </div>
+          <p class="repo-desc">CH4202 Symmetry in Chemistry assignment with LaTeX solutions and interactive orbital visualizations.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-04-15">Apr 2026</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">chemistry</li><li class="tag">educational</li><li class="tag">group-theory</li><li class="tag">latex</li><li class="tag">molecular-orbitals</li><li class="tag">symmetry-in-chemistry</li><li class="tag">threejs</li></ul>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2026-03-28">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/ChemDrawWeb">ChemDrawWeb</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-03-28">Mar 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="1" data-pushed="2026-03-21">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Inter-Batch-Website-Design-2026-">Inter-Batch-Website-Design-2026-</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2026-03-21">Mar 2026</time></p>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2026-02-28">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/how_to">how_to</a></h2>
+          </div>
+          <p class="repo-desc">A repo with a lot of wiki that tell how to</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-02-28">Feb 2026</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="0" data-pushed="2026-02-28">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Platonic-Solids-Visualizer">Platonic-Solids-Visualizer</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2026-02-28">Feb 2026</time></p>
+        </li>
+        <li data-lang="Jupyter Notebook" data-stars="2" data-pushed="2026-01-18">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/slashdot_ml_workshop">slashdot_ml_workshop</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Jupyter Notebook</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2026-01-18">Jan 2026</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2025-12-17">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/FIRE_2025_Hierarchical_Opinion_Classification_using_Large_Language_Models">FIRE_2025_Hierarchical_Opinion_Classification_using_Large_Language_Models</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-12-17">Dec 2025</time></p>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2025-12-05">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/assets_for_my_website">assets_for_my_website</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-12-05">Dec 2025</time></p>
+        </li>
+        <li data-lang="C" data-stars="2" data-pushed="2025-11-29">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/welearnbot_in_C">welearnbot_in_C</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2025-11-29">Nov 2025</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2025-11-27">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Solvent-Structure-around-NanoParticles">Solvent-Structure-around-NanoParticles</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-11-27">Nov 2025</time></p>
+        </li>
+        <li data-lang="TeX" data-stars="0" data-pushed="2025-11-09">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/sUs_stARTup_Project">sUs_stARTup_Project</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">TeX</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-11-09">Nov 2025</time></p>
+        </li>
+        <li data-lang="Python" data-stars="1" data-pushed="2025-10-31">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/3D-Mandelbrot-Explorer">3D-Mandelbrot-Explorer</a></h2>
+          </div>
+          <p class="repo-desc">This Python project uses Matplotlib to animate a 3D view of the Mandelbrot set, allowing you to visualize complex dynamics with interactive rotations. Perfect for mathematicians, enthusiasts, or anyone curious about fractals and complex systems. Dive into a visual representation of infinite complexity with each frame offering a new perspective.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2025-10-31">Oct 2025</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="0" data-pushed="2025-10-31">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/ChemActiva">ChemActiva</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-10-31">Oct 2025</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="0" data-pushed="2025-10-31">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/research_paper_searcher_from-notes">research_paper_searcher_from-notes</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-10-31">Oct 2025</time></p>
+        </li>
+        <li data-lang="Shell" data-stars="1" data-pushed="2025-10-10">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/TCP-Count-Monitor-for-Arch-Linux">TCP-Count-Monitor-for-Arch-Linux</a></h2>
+          </div>
+          <p class="repo-desc">A robust TCP activity monitor for Arch Linux that logs kernel stats, socket states, per-process connections, and conntrack entries into rotating daily files. Includes systemd service for continuous monitoring</p>
+          <p class="mono-meta"><span class="repo-lang">Shell</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2025-10-10">Oct 2025</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">archlinux</li><li class="tag">automation</li><li class="tag">linux</li><li class="tag">shell</li></ul>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2025-10-03">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Automated-Whatsapp-Bulk-Message-Sender-using-Google-Forms-Sheets-and-Python">Automated-Whatsapp-Bulk-Message-Sender-using-Google-Forms-Sheets-and-Python</a></h2>
+          </div>
+          <p class="repo-desc">Automated WhatsApp news broadcaster for bulk messaging with Google Sheets integration. Send personalized announcements to multiple contacts with session persistence and Unicode safety.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-10-03">Oct 2025</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">automation</li><li class="tag">bulk-messages</li><li class="tag">google-forms</li><li class="tag">google-sheets</li><li class="tag">mass-communication</li><li class="tag">news-bot</li><li class="tag">sele</li><li class="tag">whats</li><li class="tag">whatsapp-bot</li></ul>
+        </li>
+        <li data-lang="HTML" data-stars="0" data-pushed="2025-08-22">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/EAAI_AI_for_Menopause_Education">EAAI_AI_for_Menopause_Education</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-08-22">Aug 2025</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2025-08-14">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Agentic_Database_Builder">Agentic_Database_Builder</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-08-14">Aug 2025</time></p>
+        </li>
+        <li data-lang="JavaScript" data-stars="0" data-pushed="2025-05-03">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/EFAML_WEB">EFAML_WEB</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">JavaScript</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-05-03">May 2025</time></p>
+        </li>
+        <li data-lang="HTML" data-stars="0" data-pushed="2025-04-25">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/LAB_WEB">LAB_WEB</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">HTML</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-04-25">Apr 2025</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2025-04-14">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/text-to-qr-code">text-to-qr-code</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-04-14">Apr 2025</time></p>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2025-04-03">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Machine_Learning_In_Energy_Conversion">Machine_Learning_In_Energy_Conversion</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-04-03">Apr 2025</time></p>
+        </li>
+        <li data-lang="TeX" data-stars="0" data-pushed="2025-04-02">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Thermodynamics-Open-Source">Thermodynamics-Open-Source</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">TeX</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2025-04-02">Apr 2025</time></p>
+        </li>
+        <li data-lang="Shell" data-stars="2" data-pushed="2025-03-08">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Wi-Fi-channel-optimizer">Wi-Fi-channel-optimizer</a></h2>
+          </div>
+          <p class="repo-desc">This Bash script automates the process of optimizing Wi-Fi channels for better network performance. It performs several tasks including scanning available networks, testing speed on different channels, and selecting the optimal channel based on speed tests.</p>
+          <p class="mono-meta"><span class="repo-lang">Shell</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2025-03-08">Mar 2025</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">bash</li><li class="tag">networking</li><li class="tag">optimization</li><li class="tag">wifi</li></ul>
+        </li>
+        <li data-lang="Python" data-stars="1" data-pushed="2025-01-18">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/simple-spherical-harmonics-visualizer">simple-spherical-harmonics-visualizer</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2025-01-18">Jan 2025</time></p>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2024-12-13">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/my_svg_designs">my_svg_designs</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-12-13">Dec 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2024-11-29">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Ray-Dutt-and-Bailar-Twists-Simulator">Ray-Dutt-and-Bailar-Twists-Simulator</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-11-29">Nov 2024</time></p>
+        </li>
+        <li data-lang="C" data-stars="0" data-pushed="2024-11-20">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/CS3101-E-Commerce-App-in-C">CS3101-E-Commerce-App-in-C</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-11-20">Nov 2024</time></p>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2024-11-12">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Tip-of-Tongue-TREC_2024---ThinkIR">Tip-of-Tongue-TREC_2024---ThinkIR</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-11-12">Nov 2024</time></p>
+        </li>
+        <li data-lang="C" data-stars="0" data-pushed="2024-11-11">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/CS3101">CS3101</a></h2>
+          </div>
+          <p class="repo-desc">This is the repository for all of the CS3101 course of IISER KOLKATA on &quot;Fundamentals of C programming&quot; except our project.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-11-11">Nov 2024</time></p>
+        </li>
+        <li data-lang="Mermaid" data-stars="0" data-pushed="2024-11-10">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/my_mermaid_designs">my_mermaid_designs</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Mermaid</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-11-10">Nov 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2024-10-21">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/My-Manim-Codes">My-Manim-Codes</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-10-21">Oct 2024</time></p>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2024-10-19">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Lammps_fundamentals">Lammps_fundamentals</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-10-19">Oct 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2024-10-19">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/scan-to-spreadsheet">scan-to-spreadsheet</a></h2>
+          </div>
+          <p class="repo-desc">scan to spreadsheet</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-10-19">Oct 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="1" data-pushed="2024-08-27">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/LLM-based-Searcher-for-GIAN-s-Abandoned-US-Patents">LLM-based-Searcher-for-GIAN-s-Abandoned-US-Patents</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2024-08-27">Aug 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2024-07-09">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/hertree_to_EV">hertree_to_EV</a></h2>
+          </div>
+          <p class="repo-desc">A simple hertree to electron volts conerter program. This is just here for my convenience.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-07-09">Jul 2024</time></p>
+        </li>
+        <li data-lang="Processing" data-stars="0" data-pushed="2024-06-02">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Koch-Curve">Koch-Curve</a></h2>
+          </div>
+          <p class="repo-desc is-empty">No description yet.</p>
+          <p class="mono-meta"><span class="repo-lang">Processing</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-06-02">Jun 2024</time></p>
+        </li>
+        <li data-lang="TeX" data-stars="2" data-pushed="2024-04-19">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/NAEST_Sample_Experiments">NAEST_Sample_Experiments</a></h2>
+          </div>
+          <p class="repo-desc">Well, I am just creating this repo for NAEST peeps. Explore the wonders of optics through hands-on experiments conducted at home. This repository delves into experiments from the National Anveshika Experimental Skill Test 2023, covering topics such as light refraction, total internal reflection, and prism angle discrepancies.</p>
+          <p class="mono-meta"><span class="repo-lang">TeX</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2024-04-19">Apr 2024</time></p>
+          <ul class="repo-tags" aria-label="Topics"><li class="tag">naest</li><li class="tag">naest-sample</li><li class="tag">naestexperiments</li></ul>
+        </li>
+        <li data-lang="C++" data-stars="0" data-pushed="2024-03-24">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Simple-Banking-System-in-C">Simple-Banking-System-in-C</a></h2>
+          </div>
+          <p class="repo-desc">A C++ program implementing a simple banking system. Users can create accounts, deposit/withdraw funds, and check balances. Account info is persisted in &quot;account.txt&quot;. Error handling ensures data integrity. Well-commented code structure, documented methods, and comprehensive explanation make it easy to understand.</p>
+          <p class="mono-meta"><span class="repo-lang">C++</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-03-24">Mar 2024</time></p>
+        </li>
+        <li data-lang="C" data-stars="1" data-pushed="2024-03-22">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/AVL-Tree-Implementation-in-Python-and-C">AVL-Tree-Implementation-in-Python-and-C</a></h2>
+          </div>
+          <p class="repo-desc">This repository hosts optimized implementations of AVL trees in Python and C. Features include insertion, deletion, and BFS printing with balance factors. The interactive menu-based system provides operation management. Explore efficient code for AVL trees in both Python and C.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2024-03-22">Mar 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="2" data-pushed="2024-03-22">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/fourier_transform_2d_images">fourier_transform_2d_images</a></h2>
+          </div>
+          <p class="repo-desc">This kis a python code that helps in transforming any 2d image into its Fourier transform and also implement its inverse by sinosodial grating. All thanks to https://thepythoncodingbook.com for providing the information and coding helprequired.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2024-03-22">Mar 2024</time></p>
+        </li>
+        <li data-lang="C" data-stars="0" data-pushed="2024-03-22">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Tree-fundamentals-in-c">Tree-fundamentals-in-c</a></h2>
+          </div>
+          <p class="repo-desc">This code implements a Binary Search Tree (BST) in C with various functionalities accessible through a user-friendly menu. Users can perform operations like insertion, deletion, searching, finding the height, and traversing the tree using inorder, preorder, postorder, and level order methods. The code includes comments to explain each function.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-03-22">Mar 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="1" data-pushed="2024-03-20">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/FTIR-Multipeak-Plot">FTIR-Multipeak-Plot</a></h2>
+          </div>
+          <p class="repo-desc">Reads, plots FTIR data, interactively adds user-defined annotations with labels and descriptions.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2024-03-20">Mar 2024</time></p>
+        </li>
+        <li data-lang="none" data-stars="0" data-pushed="2024-01-25">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Queue_using_array_Linked_Lists">Queue_using_array_Linked_Lists</a></h2>
+          </div>
+          <p class="repo-desc">Explore a versatile Queue data structure in C with efficient array and linked list implementations. Perform enqueue, dequeue, and display operations. Prevent overflow with a circular array. Choose your preferred approach.</p>
+          <p class="mono-meta"><span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-01-25">Jan 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="1" data-pushed="2024-01-25">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Shannon_Index_Birds_biodiversity">Shannon_Index_Birds_biodiversity</a></h2>
+          </div>
+          <p class="repo-desc">I made this python program to make life easier for students who are stuck doing their ecology projects regarding shanon index. Hope you like it!!!</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="1 star">★ 1</span> · updated <time datetime="2024-01-25">Jan 2024</time></p>
+        </li>
+        <li data-lang="Python" data-stars="0" data-pushed="2024-01-25">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/weak_acid_concentration-pH-graph-">weak_acid_concentration-pH-graph-</a></h2>
+          </div>
+          <p class="repo-desc">This is a very simple python program that creates the graph plot for the titration data of weak polyprotic or monoprotic acid against some strong base, say NaOH. This uses the first derivative concept.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-01-25">Jan 2024</time></p>
+        </li>
+        <li data-lang="C" data-stars="0" data-pushed="2024-01-21">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Basic-Linked-List-Functions-for-Beginners">Basic-Linked-List-Functions-for-Beginners</a></h2>
+          </div>
+          <p class="repo-desc">This concise C implementation offers fundamental linked list operations: Insertion: Beginning, End, Position Deletion: Beginning, End, Position Display and Reversal User-friendly Menu Clone, compile, and run for interactive linked list manipulation.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-01-21">Jan 2024</time></p>
+        </li>
+        <li data-lang="C" data-stars="0" data-pushed="2024-01-21">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/Stack-Implementation-C-Array-LinkedList">Stack-Implementation-C-Array-LinkedList</a></h2>
+          </div>
+          <p class="repo-desc">C program for stack implementation using array and linked list. Menu-driven interface allows push, pop, and display operations. Array uses a fixed-size array, while linked list dynamically manages nodes. Demonstrates flexibility in choosing data structures for basic stack operations.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2024-01-21">Jan 2024</time></p>
+        </li>
+        <li data-lang="C" data-stars="0" data-pushed="2023-10-27">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/File-Programming-In-C">File-Programming-In-C</a></h2>
+          </div>
+          <p class="repo-desc">This is a compilation of major file programing basic operations for students and beginners alike.</p>
+          <p class="mono-meta"><span class="repo-lang">C</span> · <span class="stars" role="img" aria-label="0 stars">★ 0</span> · updated <time datetime="2023-10-27">Oct 2023</time></p>
+        </li>
+        <li data-lang="Python" data-stars="2" data-pushed="2022-11-13">
+          <div class="repo-head">
+            <h2 class="repo-name"><a href="https://github.com/Shuvam-Banerji-Seal/2d_hcp">2d_hcp</a></h2>
+          </div>
+          <p class="repo-desc">This will help you draw the 2d hexagonal closed packing structure in python using simple turtle.</p>
+          <p class="mono-meta"><span class="repo-lang">Python</span> · <span class="stars" role="img" aria-label="2 stars">★ 2</span> · updated <time datetime="2022-11-13">Nov 2022</time></p>
+        </li>
+      </ul>
+      <!-- repos:end -->
     </main>
-
-    <footer>
-      <div class="footer-social">
-        <a
-          href="https://github.com/Shuvam-Banerji-Seal"
-          target="_blank"
-          class="social-link"
-          aria-label="GitHub"
-        >
-          <i data-lucide="code-2" class="social-icon"></i>
-        </a>
-        <a
-          href="https://linkedin.com/in/mastersbs"
-          target="_blank"
-          class="social-link"
-          aria-label="LinkedIn"
-        >
-          <i data-lucide="briefcase" class="social-icon"></i>
-        </a>
-        <a
-          href="https://orcid.org/0009-0000-0714-569X"
-          target="_blank"
-          class="social-link"
-          aria-label="ORCID"
-        >
-          <i data-lucide="award" class="social-icon"></i>
-        </a>
-        <a
-          href="mailto:sbs22ms076@iiserkol.ac.in"
-          class="social-link"
-          aria-label="Email"
-        >
-          <i data-lucide="mail" class="social-icon"></i>
-        </a>
+    <footer class="site-foot">
+      <div class="wrap">
+        <p>© <span data-year>2026</span> Shuvam Banerji Seal. Source on <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io">GitHub</a>.</p>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/">Home</a><a href="/pages/research.html">Research</a><a href="/pages/projects.html">Projects</a><a href="/pages/tools.html">Tools</a><a href="/pages/blog.html">Blog</a><a href="/feed.xml">RSS</a>
+        </nav>
       </div>
-      <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal
-      </p>
     </footer>
+    <script type="module">
+      const $ = (id) => document.getElementById(id);
+      const list = $("repo-list");
+      const q = $("q");
+      const lang = $("lang");
+      const sort = $("sort");
+      const count = $("count");
+      const clear = $("clear");
+      const SORTS = ["updated", "stars", "name"];
 
-    <!-- Original functionality -->
-    <script type="module" src="../assets/js/main.js"></script>
-    <!-- Enhanced features -->
-    <script type="module" src="../assets/js/enhanced.js"></script>
+      document.querySelectorAll("[data-year]").forEach((e) => { e.textContent = new Date().getFullYear(); });
 
-    <!-- GitHub API Integration -->
-    <script>
-      class GitHubProjects {
-        constructor() {
-          this.username = "Shuvam-Banerji-Seal";
-          this.repos = [];
-          this.filteredRepos = [];
-          this.currentPage = 1;
-          this.languages = new Set();
-          this.init();
-        }
+      const rows = Array.from(list.children).map((li) => ({
+        li,
+        name: li.querySelector(".repo-name a").textContent,
+        lang: li.dataset.lang,
+        stars: Number(li.dataset.stars) || 0,
+        pushed: li.dataset.pushed,
+        text: [
+          li.querySelector(".repo-name a").textContent,
+          li.querySelector(".repo-desc")?.textContent,
+          li.dataset.lang,
+          ...Array.from(li.querySelectorAll(".tag"), (t) => t.textContent),
+        ].join(" ").toLowerCase(),
+      }));
+      const total = rows.length;
 
-        async init() {
-          await this.fetchUserStats();
-          await this.fetchRepositories();
-          this.bindEvents();
-          this.setupLanguageColors();
-        }
+      const byName = (a, b) => a.name.localeCompare(b.name, "en", { numeric: true, sensitivity: "base" });
+      const order = {
+        updated: (a, b) => b.pushed.localeCompare(a.pushed) || byName(a, b),
+        stars: (a, b) => b.stars - a.stars || b.pushed.localeCompare(a.pushed) || byName(a, b),
+        name: byName,
+      };
 
-        async fetchUserStats() {
-          try {
-            const response = await fetch(
-              `https://api.github.com/users/${this.username}`,
-            );
-            if (!response.ok) throw new Error(`GitHub API ${response.status}`);
-            const user = await response.json();
-
-            document.getElementById("followers-count").textContent =
-              user.followers || 0;
-            document.getElementById("total-repos").textContent =
-              user.public_repos || 0;
-          } catch (error) {
-            console.error("Error fetching user stats:", error);
-          }
-        }
-
-        // Cache successful fetches so repeat visits don't burn the
-        // unauthenticated GitHub API budget (60 req/hr per IP).
-        static get CACHE_KEY() {
-          return "gh-repos-cache-v1";
-        }
-        static get CACHE_TTL_MS() {
-          return 15 * 60 * 1000;
-        }
-        static get MAX_PAGES() {
-          return 10;
-        }
-
-        readCache(ignoreTtl = false) {
-          try {
-            const raw = localStorage.getItem(GitHubProjects.CACHE_KEY);
-            if (!raw) return null;
-            const entry = JSON.parse(raw);
-            if (!entry || !Array.isArray(entry.repos)) return null;
-            if (
-              !ignoreTtl &&
-              Date.now() - entry.t > GitHubProjects.CACHE_TTL_MS
-            ) {
-              return null;
-            }
-            return entry;
-          } catch (error) {
-            return null;
-          }
-        }
-
-        writeCache(repos) {
-          try {
-            localStorage.setItem(
-              GitHubProjects.CACHE_KEY,
-              JSON.stringify({ t: Date.now(), repos }),
-            );
-          } catch (error) {
-            /* storage unavailable (private mode/quota) — non-fatal */
-          }
-        }
-
-        async fetchAllRepos() {
-          const allRepos = [];
-          for (let page = 1; page <= GitHubProjects.MAX_PAGES; page++) {
-            const response = await fetch(
-              `https://api.github.com/users/${this.username}/repos?page=${page}&per_page=100&sort=updated`,
-            );
-            if (!response.ok) throw new Error(`GitHub API ${response.status}`);
-            const repos = await response.json();
-            if (!Array.isArray(repos)) {
-              throw new Error("Unexpected GitHub API response");
-            }
-            allRepos.push(...repos);
-            if (repos.length < 100) break; // last page — stop paginating
-          }
-          return allRepos;
-        }
-
-        async fetchRepositories() {
-          try {
-            const fresh = this.readCache();
-            if (fresh) {
-              this.applyRepos(fresh.repos);
-              return;
-            }
-
-            const allRepos = await this.fetchAllRepos();
-            this.writeCache(allRepos);
-            this.applyRepos(allRepos);
-          } catch (error) {
-            console.error("Error fetching repositories:", error);
-            // Stale-while-error: prefer showing slightly-old data over nothing.
-            const stale = this.readCache(true);
-            if (stale) {
-              this.applyRepos(stale.repos);
-              return;
-            }
-            const message = /403|429/.test(String(error))
-              ? "GitHub API rate limit reached. Please try again in about an hour."
-              : "Failed to load repositories. Please try again later.";
-            this.showError(message);
-          }
-        }
-
-        applyRepos(repos) {
-          this.repos = repos;
-          this.filteredRepos = [...this.repos];
-
-          // Calculate total stars and forks
-          const totalStars = this.repos.reduce(
-            (sum, repo) => sum + repo.stargazers_count,
-            0,
-          );
-          const totalForks = this.repos.reduce(
-            (sum, repo) => sum + repo.forks_count,
-            0,
-          );
-
-          document.getElementById("total-stars").textContent = totalStars;
-          document.getElementById("total-forks").textContent = totalForks;
-
-          // Collect languages
-          this.repos.forEach((repo) => {
-            if (repo.language) {
-              this.languages.add(repo.language);
-            }
-          });
-
-          this.populateLanguageFilter();
-          this.renderRepositories();
-        }
-
-        populateLanguageFilter() {
-          const filter = document.getElementById("language-filter");
-          const sortedLanguages = Array.from(this.languages).sort();
-
-          sortedLanguages.forEach((language) => {
-            const option = document.createElement("option");
-            option.value = language;
-            option.textContent = language;
-            filter.appendChild(option);
-          });
-        }
-
-        renderRepositories() {
-          const container = document.getElementById("repos-container");
-          container.innerHTML = "";
-
-          if (this.filteredRepos.length === 0) {
-            container.innerHTML = `
-                        <div class="col-span-full text-center py-12">
-                            <i data-lucide="search-x" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
-                            <h2 class="text-xl font-semibold text-gray-600 mb-2">No repositories found</h2>
-                            <p class="text-gray-500">Try adjusting your search or filter criteria.</p>
-                        </div>
-                    `;
-            return;
-          }
-
-          this.filteredRepos.forEach((repo, index) => {
-            const repoCard = this.createRepoCard(repo, index);
-            container.appendChild(repoCard);
-          });
-
-          // Re-initialize Lucide icons
-          if (typeof lucide !== "undefined") lucide.createIcons();
-        }
-
-        createRepoCard(repo, index) {
-          const card = document.createElement("div");
-          card.className =
-            "repo-card";
-          card.setAttribute("data-animate", "scale-up");
-          card.setAttribute("data-delay", (800 + index * 100).toString());
-
-          const languageColor = this.getLanguageColor(repo.language);
-          const updatedDate = new Date(repo.updated_at).toLocaleDateString();
-
-          card.innerHTML = `
-                    <div class="repo-header">
-                        <span data-slot="repo-name"></span>
-                        <span class="repo-visibility visibility-${repo.private ? "private" : "public"}">
-                            ${repo.private ? "Private" : "Public"}
-                        </span>
-                    </div>
-                    
-                    <p class="repo-description">
-                        ${repo.description || "No description available."}
-                    </p>
-                    
-                    ${
-                      repo.topics && repo.topics.length > 0
-                        ? `
-                        <div class="repo-topics">
-                            ${repo.topics
-                              .slice(0, 3)
-                              .map(
-                                (topic) => `
-                                <span class="topic-tag">${topic}</span>
-                            `,
-                              )
-                              .join("")}
-                            ${repo.topics.length > 3 ? `<span class="topic-tag">+${repo.topics.length - 3} more</span>` : ""}
-                        </div>
-                    `
-                        : ""
-                    }
-                    
-                    <div class="repo-stats">
-                        <div class="flex items-center space-x-4">
-                            ${
-                              repo.language
-                                ? `
-                                <div class="repo-stat">
-                                    <div class="language-dot" style="background-color: ${languageColor}"></div>
-                                    ${repo.language}
-                                </div>
-                            `
-                                : ""
-                            }
-                            
-                            <div class="repo-stat">
-                                <i data-lucide="star" class="w-4 h-4 mr-1"></i>
-                                ${repo.stargazers_count}
-                            </div>
-                            
-                            <div class="repo-stat">
-                                <i data-lucide="git-fork" class="w-4 h-4 mr-1"></i>
-                                ${repo.forks_count}
-                            </div>
-                        </div>
-                        
-                        <div class="repo-stat">
-                            <i data-lucide="clock" class="w-4 h-4 mr-1"></i>
-                            ${updatedDate}
-                        </div>
-                    </div>
-                `;
-
-          // Repo link built with DOM APIs (not interpolated into the HTML
-          // template): the URL and the repo name come from the GitHub API,
-          // so keeping them out of innerHTML avoids both attribute injection
-          // and a literal `${...}` href that static link checkers flag.
-          const nameLink = document.createElement("a");
-          nameLink.href = repo.html_url;
-          nameLink.target = "_blank";
-          nameLink.rel = "noopener noreferrer";
-          nameLink.className = "repo-name";
-          const nameIcon = document.createElement("i");
-          nameIcon.setAttribute("data-lucide", "git-branch");
-          nameIcon.className = "w-5 h-5 mr-2";
-          const nameText = document.createElement("span");
-          nameText.textContent = repo.name;
-          nameLink.append(nameIcon, nameText);
-          const slot = card.querySelector('[data-slot="repo-name"]');
-          if (slot) slot.replaceWith(nameLink);
-
-          return card;
-        }
-
-        getLanguageColor(language) {
-          const colors = {
-            JavaScript: "#f1e05a",
-            Python: "#3572A5",
-            Java: "#b07219",
-            C: "#555555",
-            "C++": "#f34b7d",
-            HTML: "#e34c26",
-            CSS: "#563d7c",
-            TypeScript: "#2b7489",
-            Shell: "#89e051",
-            "Jupyter Notebook": "#DA5B0B",
-            R: "#198CE7",
-            Go: "#00ADD8",
-            Rust: "#dea584",
-            PHP: "#4F5D95",
-            Ruby: "#701516",
-            Swift: "#ffac45",
-          };
-
-          return colors[language] || "#6b7280";
-        }
-
-        setupLanguageColors() {
-          // This method can be extended for more sophisticated language color management
-        }
-
-        bindEvents() {
-          const searchInput = document.getElementById("repo-search");
-          const sortSelect = document.getElementById("sort-repos");
-          const languageFilter = document.getElementById("language-filter");
-
-          searchInput.addEventListener("input", () => this.filterAndSort());
-          sortSelect.addEventListener("change", () => this.filterAndSort());
-          languageFilter.addEventListener("change", () => this.filterAndSort());
-        }
-
-        filterAndSort() {
-          const searchTerm = document
-            .getElementById("repo-search")
-            .value.toLowerCase();
-          const sortBy = document.getElementById("sort-repos").value;
-          const languageFilter =
-            document.getElementById("language-filter").value;
-
-          // Filter
-          this.filteredRepos = this.repos.filter((repo) => {
-            const matchesSearch =
-              !searchTerm ||
-              repo.name.toLowerCase().includes(searchTerm) ||
-              (repo.description &&
-                repo.description.toLowerCase().includes(searchTerm)) ||
-              (repo.topics &&
-                repo.topics.some((topic) =>
-                  topic.toLowerCase().includes(searchTerm),
-                ));
-
-            const matchesLanguage =
-              !languageFilter || repo.language === languageFilter;
-
-            return matchesSearch && matchesLanguage;
-          });
-
-          // Sort
-          this.filteredRepos.sort((a, b) => {
-            switch (sortBy) {
-              case "name":
-                return a.name.localeCompare(b.name);
-              case "stars":
-                return b.stargazers_count - a.stargazers_count;
-              case "forks":
-                return b.forks_count - a.forks_count;
-              case "created":
-                return new Date(b.created_at) - new Date(a.created_at);
-              case "updated":
-              default:
-                return new Date(b.updated_at) - new Date(a.updated_at);
-            }
-          });
-
-          this.renderRepositories();
-        }
-
-        showError(message) {
-          const container = document.getElementById("repos-container");
-          container.innerHTML = `
-                    <div class="col-span-full error-state">
-                        <i data-lucide="alert-circle"></i>
-                        <h2 class="text-xl font-semibold mb-2">Error Loading Repositories</h2>
-                        <p>${message}</p>
-                        <button onclick="location.reload()" class="btn btn-primary mt-4">
-                            <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i>
-                            Try Again
-                        </button>
-                    </div>
-                `;
-        }
+      function writeUrl() {
+        const p = new URLSearchParams();
+        if (q.value.trim()) p.set("q", q.value.trim());
+        if (lang.value) p.set("lang", lang.value);
+        if (sort.value !== "updated") p.set("sort", sort.value);
+        const s = p.toString();
+        try { history.replaceState(null, "", location.pathname + (s ? "?" + s : "") + location.hash); } catch (e) {}
       }
 
-      // Initialize when DOM is loaded
-      document.addEventListener("DOMContentLoaded", () => {
-        new GitHubProjects();
+      function apply(save) {
+        const words = q.value.toLowerCase().split(/\s+/).filter(Boolean);
+        const l = lang.value;
+        rows.sort(order[sort.value]);
+        let shown = 0;
+        for (const r of rows) {
+          const ok = (!l || r.lang === l) && words.every((w) => r.text.includes(w));
+          r.li.hidden = !ok;
+          if (ok) shown++;
+        }
+        list.append(...rows.map((r) => r.li));
+        const filtered = words.length > 0 || l !== "";
+        count.textContent = !filtered
+          ? total + " repositories"
+          : shown === 0
+            ? "No repositories match these filters"
+            : shown + " of " + total + " repositories";
+        clear.hidden = !filtered;
+        if (save) writeUrl();
+      }
 
-        // Set current year
-        document.getElementById("year").textContent = new Date().getFullYear();
+      const params = new URLSearchParams(location.search);
+      q.value = params.get("q") || "";
+      const wantLang = (params.get("lang") || "").toLowerCase();
+      const opt = Array.from(lang.options).find((o) => o.value.toLowerCase() === wantLang);
+      lang.value = opt ? opt.value : "";
+      sort.value = SORTS.includes(params.get("sort")) ? params.get("sort") : "updated";
+      apply(false);
+
+      q.addEventListener("input", () => apply(true));
+      lang.addEventListener("change", () => apply(true));
+      sort.addEventListener("change", () => apply(true));
+      $("toolbar").addEventListener("submit", (e) => e.preventDefault());
+      clear.addEventListener("click", () => {
+        q.value = "";
+        lang.value = "";
+        apply(true);
+        q.focus();
       });
-    </script>
 
-    <script>
-      if (typeof lucide !== "undefined") lucide.createIcons();
+      // The snapshot is rebuilt on every deploy. If it has gone stale, refresh star
+      // counts from the public API. Cached for the session; every failure is silent.
+      async function refreshStars() {
+        try {
+          const KEY = "gh-stars-v1";
+          let map = null;
+          try {
+            const c = JSON.parse(sessionStorage.getItem(KEY));
+            if (c && Date.now() - c.t < 36e5) map = c.m;
+          } catch (e) {}
+          if (!map) {
+            const res = await fetch("https://api.github.com/users/Shuvam-Banerji-Seal/repos?per_page=100", {
+              headers: { Accept: "application/vnd.github+json" },
+            });
+            if (!res.ok) return;
+            map = {};
+            for (const r of await res.json()) if (!r.fork) map[r.name] = r.stargazers_count;
+            try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), m: map })); } catch (e) {}
+          }
+          for (const r of rows) {
+            const n = map[r.name];
+            if (typeof n !== "number" || n === r.stars) continue;
+            r.stars = n;
+            const el = r.li.querySelector(".stars");
+            el.textContent = "★ " + n;
+            el.setAttribute("aria-label", n + (n === 1 ? " star" : " stars"));
+          }
+          apply(false);
+        } catch (e) {}
+      }
+      const gen = Date.parse(list.dataset.generated);
+      if (gen && Date.now() - gen > 2 * 864e5) (window.requestIdleCallback || setTimeout)(refreshStars);
     </script>
   </body>
 </html>
