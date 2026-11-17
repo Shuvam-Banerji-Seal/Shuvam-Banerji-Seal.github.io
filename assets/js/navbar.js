@@ -14,43 +14,70 @@
  * Search: "/" or Ctrl/Cmd+K opens the BM25 site search (site-search.js).
  */
 
-// ---------- Theme: two modes, system default, explicit choice wins ----------
-const DARK_ALIASES = [
-  "dark",
-  "quantum",
-  "dark-coffee",
-  "amber",
-  "tokyo-night",
-  "absolute-dark",
-  "forest",
-  "dracula",
+// ---------- Theme: a mode (light | dark) plus an optional named palette ----------
+// Keep in step with the inline head script on every page and with the
+// [data-palette] blocks in assets/css/theme.css. Swatches: paper, ink,
+// accent (nitrogen), + lobe (oxygen).
+const THEMES = [
+  { id: "light", name: "Light", mode: "light", desc: "Lab-bench paper, teal and vermilion", sw: ["#F1F4EE", "#0F1B18", "#00776F", "#E0432A"] },
+  { id: "dark", name: "Dark", mode: "dark", desc: "The same bench after hours", sw: ["#0B1311", "#E7F0EB", "#3CCFC4", "#FF7458"] },
+  { id: "cpk", name: "CPK", mode: "light", desc: "Atom colours: nitrogen blue, oxygen red", sw: ["#F7F8FA", "#1A1D22", "#2445C2", "#D3303F"] },
+  { id: "pencil", name: "Pencil", mode: "light", desc: "Graphite on paper, red-pen links", sw: ["#F2F2F1", "#141414", "#B3261E", "#2E2E2E"] },
+  { id: "cyanotype", name: "Cyanotype", mode: "dark", desc: "White on Prussian blue", sw: ["#0B2545", "#EEF4FB", "#8FD3FF", "#FFB08A"] },
+  { id: "sodium", name: "Sodium lamp", mode: "dark", desc: "Amber of the sodium D line, 589 nm", sw: ["#110C05", "#FFDCA8", "#FFB01F", "#FF6A3D"] },
+  { id: "contrast", name: "High contrast", mode: "dark", desc: "Black and white, yellow links (AAA)", sw: ["#000000", "#FFFFFF", "#FFE14D", "#FF9A8F"] },
 ];
+const THEME_BY_ID = Object.fromEntries(THEMES.map((t) => [t.id, t]));
+// Theme names from earlier versions of the site all meant "dark".
+const DARK_ALIASES = ["dark", "quantum", "dark-coffee", "amber", "tokyo-night", "absolute-dark", "forest", "dracula"];
 
 function isDarkTheme(theme) {
-  return DARK_ALIASES.includes(theme);
+  return DARK_ALIASES.includes(theme) || THEME_BY_ID[theme]?.mode === "dark";
 }
 
-function resolveTheme() {
-  let saved = null;
+function savedTheme() {
   try {
-    saved = localStorage.getItem("theme");
+    return localStorage.getItem("theme");
   } catch (_) {
-    /* storage blocked: fall through to system preference */
+    return null; /* storage blocked: follow the system */
   }
-  if (saved === "light") return "light";
-  if (saved && isDarkTheme(saved)) return "dark";
+}
+
+function systemTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function setThemeAttr(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
-  if (document.body) document.body.setAttribute("data-theme", theme);
-  document.documentElement.style.colorScheme = theme;
+function resolveTheme() {
+  const s = savedTheme();
+  if (s && THEME_BY_ID[s]) return s;
+  if (s) return "dark"; // a legacy dark alias
+  return systemTheme();
+}
+
+function setThemeAttr(id) {
+  const t = THEME_BY_ID[id] || THEME_BY_ID[isDarkTheme(id) ? "dark" : "light"];
+  for (const el of [document.documentElement, document.body]) {
+    if (!el) continue;
+    el.setAttribute("data-theme", t.mode);
+    if (t.id !== t.mode) el.setAttribute("data-palette", t.id);
+    else el.removeAttribute("data-palette");
+  }
+  document.documentElement.style.colorScheme = t.mode;
+  // Browser chrome (mobile address bar) follows the page colour.
+  const metas = document.querySelectorAll('meta[name="theme-color"]');
+  if (metas.length) metas.forEach((m) => (m.content = t.sw[0]));
+  else if (document.head) {
+    const m = document.createElement("meta");
+    m.name = "theme-color";
+    m.content = t.sw[0];
+    document.head.appendChild(m);
+  }
 }
 
 setThemeAttr(resolveTheme());
 // main.js binds its own theme toggles unless this flag is set.
 window.__themeToggleWired = true;
+window.SITE_THEMES = THEMES;
 
 // ---------- Site map ----------
 const TOOL_GROUPS = [
@@ -125,6 +152,7 @@ const NAV = [
 ];
 
 const ICON = {
+  theme: '<svg class="sn-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17Z" fill="currentColor" stroke="none"/></svg>',
   caret: '<svg class="sn-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>',
   search: '<svg class="sn-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
   moon: '<svg class="sn-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>',
@@ -225,6 +253,27 @@ const CSS = `
 @media (max-width:420px){#sn-sheet .sn-sub ul{grid-template-columns:1fr}#site-nav .sn-brand{font-size:18px}}
 @media (prefers-reduced-motion:reduce){#site-nav,#sn-sheet,#sn-sheet .sn-anim,#site-nav .sn-ind,#site-nav .sn-panel,#site-nav .sn-mark,#site-nav .sn-burger span{transition:none!important}}
 html.sn-lock{overflow:hidden}
+#site-nav .sn-theme{position:relative}
+#site-nav .sn-theme-pop{position:absolute;right:0;top:calc(100% + 8px);width:min(320px,calc(100vw - 24px));max-height:calc(100vh - 84px);overflow-y:auto;
+  padding:6px;background:var(--surface);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--lift);
+  opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .16s,transform .16s,visibility 0s .16s}
+#site-nav .sn-theme.is-open .sn-theme-pop{opacity:1;visibility:visible;transform:none;transition:opacity .16s,transform .16s}
+#site-nav .sn-theme-pop button,#sn-sheet .sn-theme-grid button{display:grid;grid-template-columns:44px minmax(0,1fr) 16px;align-items:center;gap:10px;
+  width:100%;min-height:48px;padding:7px 10px;border:0;border-radius:8px;background:none;color:var(--ink);text-align:left;cursor:pointer}
+#site-nav .sn-theme-pop button:hover,#site-nav .sn-theme-pop button:focus-visible,#sn-sheet .sn-theme-grid button:hover{background:var(--surface-2)}
+#site-nav .sn-theme-pop button:focus-visible,#sn-sheet .sn-theme-grid button:focus-visible{outline:2px solid var(--nitrogen);outline-offset:-2px}
+#site-nav .sn-theme-pop [aria-checked="true"],#sn-sheet .sn-theme-grid [aria-checked="true"]{background:var(--surface-2)}
+#site-nav .sn-sw,#sn-sheet .sn-sw{display:flex;height:22px;border:1px solid var(--rule-strong);border-radius:4px;overflow:hidden}
+#site-nav .sn-sw i,#sn-sheet .sn-sw i{flex:1}
+#site-nav .sn-tn b,#sn-sheet .sn-tn b{display:block;font:600 14.5px/1.25 var(--font-body)}
+#site-nav .sn-tn small,#sn-sheet .sn-tn small{display:block;margin-top:1px;font:400 12.5px/1.35 var(--font-body);color:var(--graphite)}
+#site-nav .sn-check,#sn-sheet .sn-check{color:var(--nitrogen);font:700 14px/1 var(--font-body);visibility:hidden}
+#site-nav [aria-checked="true"] .sn-check,#sn-sheet [aria-checked="true"] .sn-check{visibility:visible}
+#sn-sheet .sn-sheet-theme{margin-top:28px}
+#sn-sheet .sn-sheet-theme h3{margin:0 0 6px;font:600 13px/1.4 var(--font-body);color:var(--graphite)}
+#sn-sheet .sn-theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px}
+@media (max-width:520px){#sn-sheet .sn-theme-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){#site-nav .sn-theme-pop{transition:none!important}}
 dialog.ss{width:min(680px,calc(100vw - 24px));max-height:min(72vh,640px);margin:12vh auto auto;padding:0;border:1px solid var(--rule);
   border-radius:14px;background:var(--surface);color:var(--ink);box-shadow:var(--lift);overflow:hidden;flex-direction:column}
 dialog.ss[open]{display:flex}
@@ -289,11 +338,24 @@ function barHTML() {
       <span class="sn-ind" aria-hidden="true"></span>
       <div class="sn-actions">
         <button class="sn-search" type="button" data-sn-search aria-label="Search this site" aria-keyshortcuts="/ Control+K">${ICON.search}<span>Search</span><kbd>/</kbd></button>
-        <button class="sn-icon sn-icon--keep" type="button" data-theme-toggle aria-label="Switch to dark mode">${ICON.moon}</button>
+        <div class="sn-theme">
+          <button class="sn-icon sn-icon--keep" type="button" data-theme-menu aria-haspopup="menu" aria-expanded="false" aria-controls="sn-theme-pop" aria-label="Change theme">${ICON.theme}</button>
+          <div class="sn-theme-pop" id="sn-theme-pop" role="menu" aria-label="Theme">${themeItems("menuitemradio")}</div>
+        </div>
         <button class="sn-burger" type="button" aria-expanded="false" aria-controls="sn-sheet" aria-label="Open menu"><span></span><span></span><span></span></button>
       </div>
     </nav>
   </header>`;
+}
+
+function themeItems(role) {
+  const sw = (cols) => `<span class="sn-sw" aria-hidden="true">${cols.map((c) => `<i style="background:${c}"></i>`).join("")}</span>`;
+  const item = (id, name, desc, cols) =>
+    `<button type="button" role="${role}" aria-checked="false" data-set-theme="${id}" tabindex="-1">${sw(cols)}<span class="sn-tn"><b>${name}</b><small>${desc}</small></span><span class="sn-check" aria-hidden="true">✓</span></button>`;
+  return (
+    item("system", "Match system", "Light or dark, as your device is set", ["#F1F4EE", "#F1F4EE", "#0B1311", "#0B1311"]) +
+    THEMES.map((t) => item(t.id, t.name, t.desc, t.sw)).join("")
+  );
 }
 
 function sheetHTML() {
@@ -326,8 +388,11 @@ function sheetHTML() {
     <div class="sn-sheet-in">
       <button class="sn-sheet-search sn-anim" ${n()} type="button" data-sn-search>${ICON.search}<span>Search pages, tools and papers</span></button>
       <ul class="sn-sheet-main">${main}</ul>
+      <section class="sn-sheet-theme sn-anim" ${n()} aria-labelledby="sn-theme-h">
+        <h3 id="sn-theme-h">Theme</h3>
+        <div class="sn-theme-grid" role="radiogroup" aria-labelledby="sn-theme-h">${themeItems("radio")}</div>
+      </section>
       <div class="sn-sheet-foot sn-anim" ${n()}>
-        <button type="button" data-theme-toggle aria-label="Switch to dark mode">${ICON.moon}<span class="sn-theme-label">Dark mode</span></button>
         <a href="https://github.com/Shuvam-Banerji-Seal">GitHub</a>
         <a href="mailto:sbs22ms076@iiserkol.ac.in">Email</a>
       </div>
@@ -556,34 +621,128 @@ function initSearch() {
 }
 
 function initThemeToggle() {
-  function paintToggles(theme) {
-    const dark = isDarkTheme(theme);
+  const choice = () => {
+    const s = savedTheme();
+    return s && THEME_BY_ID[s] ? s : s ? "dark" : "system";
+  };
+
+  function paint() {
+    const id = resolveTheme();
+    const picked = choice();
+    const t = THEME_BY_ID[id];
+    document.querySelectorAll("[data-set-theme]").forEach((b) => {
+      const on = b.dataset.setTheme === picked;
+      b.setAttribute("aria-checked", String(on));
+      if (b.getAttribute("role") === "radio") b.tabIndex = on ? 0 : -1;
+    });
+    document.querySelectorAll("[data-theme-menu]").forEach((b) =>
+      b.setAttribute("aria-label", `Theme: ${picked === "system" ? `match system (${t.name})` : t.name}. Change theme`),
+    );
+    // Older pages carry their own light/dark toggle buttons.
+    const dark = t.mode === "dark";
     document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
       btn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
       const svg = btn.querySelector("svg.sn-svg");
       if (svg) svg.outerHTML = dark ? ICON.sun : ICON.moon;
-      const label = btn.querySelector(".sn-theme-label");
-      if (label) label.textContent = dark ? "Light mode" : "Dark mode";
       const icon = btn.querySelector("i[data-lucide]");
       if (icon) icon.setAttribute("data-lucide", dark ? "sun" : "moon");
     });
     if (typeof lucide !== "undefined") lucide.createIcons();
   }
 
-  function applyTheme(theme, persist) {
-    setThemeAttr(theme);
-    if (persist) {
+  function applyTheme(id, persist) {
+    if (id === "system") {
       try {
-        localStorage.setItem("theme", theme);
+        localStorage.removeItem("theme");
+      } catch (_) {}
+      id = systemTheme();
+    } else if (persist) {
+      try {
+        localStorage.setItem("theme", id);
       } catch (_) {
         /* preference just won't persist */
       }
     }
-    paintToggles(theme);
-    document.dispatchEvent(new CustomEvent("themechange", { detail: { theme } }));
+    setThemeAttr(id);
+    paint();
+    const t = THEME_BY_ID[id] || THEME_BY_ID.dark;
+    document.dispatchEvent(
+      new CustomEvent("themechange", { detail: { theme: t.mode, mode: t.mode, palette: t.id } }),
+    );
   }
 
   applyTheme(resolveTheme(), false);
+
+  document.querySelectorAll("[data-set-theme]").forEach((b) =>
+    b.addEventListener("click", () => applyTheme(b.dataset.setTheme, true)),
+  );
+
+  // Mobile sheet: a radio group, arrow keys move and select.
+  document.querySelectorAll('[role="radiogroup"]').forEach((group) =>
+    group.addEventListener("keydown", (e) => {
+      const items = [...group.querySelectorAll('[role="radio"]')];
+      const i = items.indexOf(document.activeElement);
+      const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (i < 0 || !step) return;
+      e.preventDefault();
+      const next = items[(i + step + items.length) % items.length];
+      next.focus();
+      next.click();
+    }),
+  );
+
+  // Desktop and bar: a menu of radio items.
+  let menuOpen = false;
+  const wrap = document.querySelector("#site-nav .sn-theme");
+  if (wrap) {
+    const btn = wrap.querySelector("[data-theme-menu]");
+    const pop = wrap.querySelector(".sn-theme-pop");
+    const items = () => [...pop.querySelectorAll('[role="menuitemradio"]')];
+    const setOpen = (v, focusBtn) => {
+      menuOpen = v;
+      wrap.classList.toggle("is-open", v);
+      btn.setAttribute("aria-expanded", String(v));
+      if (v) (pop.querySelector('[aria-checked="true"]') || items()[0]).focus();
+      else if (focusBtn) btn.focus();
+    };
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setOpen(!menuOpen);
+    });
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        setOpen(true);
+      }
+    });
+    pop.addEventListener("keydown", (e) => {
+      const list = items();
+      const i = list.indexOf(document.activeElement);
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        list[(i + (e.key === "ArrowDown" ? 1 : -1) + list.length) % list.length].focus();
+      } else if (e.key === "Home" || e.key === "End") {
+        e.preventDefault();
+        list[e.key === "Home" ? 0 : list.length - 1].focus();
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        document.activeElement.click();
+        setOpen(false, true);
+      } else if (e.key === " ") {
+        e.preventDefault();
+        document.activeElement.click(); // Space applies and keeps the menu open
+      } else if (e.key === "Escape") {
+        e.stopPropagation();
+        setOpen(false, true);
+      } else if (e.key === "Tab") {
+        setOpen(false);
+      }
+    });
+    pop.addEventListener("click", (e) => e.stopPropagation());
+    document.addEventListener("click", () => menuOpen && setOpen(false));
+  }
+
+  // Older pages' own toggles flip the mode.
   document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
     // Replace the node so listeners other scripts attached never double-toggle.
     const fresh = btn.cloneNode(true);
@@ -593,14 +752,14 @@ function initThemeToggle() {
       applyTheme(isDarkTheme(now) ? "light" : "dark", true);
     });
   });
+  paint();
+
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    let saved = null;
-    try {
-      saved = localStorage.getItem("theme");
-    } catch (_) {}
-    if (!saved) applyTheme(resolveTheme(), false);
+    if (choice() === "system") applyTheme("system", false);
   });
-  window.setSiteTheme = (t) => applyTheme(t === "light" ? "light" : "dark", true);
+  // Used by the homepage terminal: setSiteTheme("cyanotype"), "system", ...
+  window.setSiteTheme = (id) => applyTheme(THEME_BY_ID[id] || id === "system" ? id : "dark", true);
+  return () => menuOpen;
 }
 
 function mount() {
@@ -622,9 +781,9 @@ function mount() {
   const menuOpen = initMenus(bar);
   const sheetOpen = initSheet(bar, sheet);
   initIndicator(bar);
-  initScroll(bar, () => menuOpen() || sheetOpen());
   initSearch();
-  initThemeToggle();
+  const themeOpen = initThemeToggle();
+  initScroll(bar, () => menuOpen() || sheetOpen() || themeOpen());
   if (typeof lucide !== "undefined") lucide.createIcons();
   document.dispatchEvent(new Event("navbarLoaded"));
 }

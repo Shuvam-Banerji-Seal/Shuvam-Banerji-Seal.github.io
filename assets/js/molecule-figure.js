@@ -403,7 +403,7 @@ export async function initMolecule(root) {
   document.addEventListener("themechange", onTheme);
   new MutationObserver(onTheme).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["data-theme"],
+    attributeFilter: ["data-theme", "data-palette"],
   });
   new ResizeObserver(resize).observe(canvas);
   resize();

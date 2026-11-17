@@ -1482,6 +1482,36 @@ test("navbar.js exists and has required functions", () => {
   );
 });
 
+test("Theme palettes agree across navbar.js, theme.css and every page's head script", () => {
+  // navbar.js lists the themes; the inline head script on each page must know
+  // the same names (or a saved palette would fall back to plain dark on first
+  // paint), and theme.css must define tokens for each named palette.
+  const navbar = readFileSync(join(ROOT, "assets/js/navbar.js"), "utf8");
+  const themeCss = readFileSync(join(ROOT, "assets/css/theme.css"), "utf8");
+  const themes = [...navbar.matchAll(/\{ id: "([a-z]+)", name: "[^"]+", mode: "(light|dark)"/g)].map(
+    (m) => ({ id: m[1], mode: m[2] }),
+  );
+  assert(themes.length >= 7, `expected at least 7 themes in navbar.js, found ${themes.length}`);
+  for (const t of themes) {
+    if (t.id === t.mode) continue;
+    assert(
+      themeCss.includes(`[data-theme][data-palette="${t.id}"]`),
+      `theme.css has no [data-palette="${t.id}"] block`,
+    );
+  }
+  for (const htmlFile of htmlFiles) {
+    const content = readFileSync(htmlFile, "utf8");
+    if (!/localStorage\.getItem\("theme"\)/.test(content) || !content.includes('"data-theme"')) continue;
+    for (const t of themes) {
+      if (t.id === t.mode) continue;
+      assert(
+        content.includes(`${t.id}: 1`),
+        `${htmlFile.replace(ROOT + "/", "")}: head theme script does not know "${t.id}"`,
+      );
+    }
+  }
+});
+
 test("air-guitar.js binds the camera video element (send-gate dependency)", () => {
   // Regression guard: air-guitar.js receives only the MediaStream from
   // webcam-tester.js; its rAF loop gates hands.send() on this.video.

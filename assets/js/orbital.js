@@ -604,7 +604,7 @@ export function initOrbital(root) {
   document.addEventListener("themechange", onTheme);
   new MutationObserver(onTheme).observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["data-theme"],
+    attributeFilter: ["data-theme", "data-palette"],
   });
   REDUCED.addEventListener("change", () => {
     introDone = true;

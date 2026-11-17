@@ -230,7 +230,7 @@ function init(root) {
       "  open &lt;tool&gt;       jump to a tool, e.g. open pdf",
       "  orbital &lt;1-6&gt;     pick a benzene π orbital (or homo, lumo)",
       "  cv, contact       CV and how to reach me",
-      "  theme light|dark  switch the colour theme",
+      "  theme &lt;name&gt;      switch theme; theme list shows all",
       "  neofetch, intro   replay the portrait or the intro",
       "  clear, history    tidy up",
     ],
@@ -323,9 +323,20 @@ function init(root) {
         location.href = "/?intro";
         return;
       case "theme": {
-        const t = arg === "light" || arg === "dark" ? arg : document.documentElement.dataset.theme === "light" ? "dark" : "light";
-        if (window.setSiteTheme) window.setSiteTheme(t);
-        return print([`theme set to ${t}`]);
+        const list = window.SITE_THEMES || [];
+        const key = arg.toLowerCase().replace(/\s+/g, "");
+        if (!key || key === "list") {
+          const now = document.documentElement.dataset.palette || document.documentElement.dataset.theme;
+          return print([
+            ...list.map((t) => `${t.id === now ? '<span class="t-acc">*</span>' : " "} ${pad(t.id, 11)} ${esc(t.desc)}`),
+            "  system      follow your device",
+            '<span class="t-dim">usage: theme &lt;name&gt;</span>',
+          ]);
+        }
+        const hit = key === "system" ? { id: "system", name: "match system" } : list.find((t) => t.id === key || t.name.toLowerCase().replace(/\s+/g, "") === key);
+        if (!hit) return print([`<span class="t-err">no theme called “${esc(arg)}”. Try theme list</span>`]);
+        if (window.setSiteTheme) window.setSiteTheme(hit.id);
+        return print([`theme set to ${esc(hit.name)}`]);
       }
       case "orbital":
       case "mo": {

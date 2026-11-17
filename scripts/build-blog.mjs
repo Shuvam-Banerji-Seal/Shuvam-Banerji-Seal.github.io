@@ -152,11 +152,20 @@ const earlier = all.filter((p) => p.legacy);
 // ------------------------------------------------------------ shared head
 const THEME_SCRIPT = `<script>
       (function () {
+        // Theme: saved choice wins, else follow the system. data-theme is the
+        // mode (light | dark); data-palette names a palette (assets/js/navbar.js).
+        var d = document.documentElement;
         var s = null;
-        try { s = localStorage.getItem("theme"); } catch (e) {}
-        var t = s === "light" ? "light" : s ? "dark" : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme", t);
-        document.documentElement.style.colorScheme = t;
+        try {
+          s = localStorage.getItem("theme");
+        } catch (e) {}
+        var light = { light: 1, cpk: 1, pencil: 1 };
+        var dark = { dark: 1, cyanotype: 1, sodium: 1, contrast: 1 };
+        var p = light[s] || dark[s] ? s : s ? "dark" : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        var m = light[p] ? "light" : "dark";
+        d.setAttribute("data-theme", m);
+        if (p !== m) d.setAttribute("data-palette", p);
+        d.style.colorScheme = m;
       })();
     </script>`;
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com" />

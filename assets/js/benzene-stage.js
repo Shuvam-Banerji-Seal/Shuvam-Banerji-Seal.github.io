@@ -352,7 +352,7 @@ export function initStage(root) {
   new MutationObserver(() => {
     readColors();
     draw(performance.now());
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-palette"] });
 
   readColors();
   setTargets(current);

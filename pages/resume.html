@@ -4,21 +4,20 @@
     <meta charset="UTF-8" />
     <script>
       (function () {
-        // Element theme: saved choice wins, else follow the system.
+        // Theme: saved choice wins, else follow the system. data-theme is the
+        // mode (light | dark); data-palette names a palette (assets/js/navbar.js).
+        var d = document.documentElement;
         var s = null;
         try {
           s = localStorage.getItem("theme");
         } catch (e) {}
-        var t =
-          s === "light"
-            ? "light"
-            : s
-              ? "dark"
-              : matchMedia("(prefers-color-scheme: dark)").matches
-                ? "dark"
-                : "light";
-        document.documentElement.setAttribute("data-theme", t);
-        document.documentElement.style.colorScheme = t;
+        var light = { light: 1, cpk: 1, pencil: 1 };
+        var dark = { dark: 1, cyanotype: 1, sodium: 1, contrast: 1 };
+        var p = light[s] || dark[s] ? s : s ? "dark" : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        var m = light[p] ? "light" : "dark";
+        d.setAttribute("data-theme", m);
+        if (p !== m) d.setAttribute("data-palette", p);
+        d.style.colorScheme = m;
       })();
     </script>
     <meta

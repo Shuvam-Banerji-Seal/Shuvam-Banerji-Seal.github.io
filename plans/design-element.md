@@ -168,3 +168,29 @@ Type v2:
 - Body: **Hanken Grotesk** 400/500/600, 17px / 1.6.
 - Terminal and code only: **Martian Mono**. Never for labels or captions.
 - Sentence case everywhere. No all-caps tracking.
+
+## Rev 2026-11-18: named palettes (supersedes "only two modes exist")
+
+Seven themes, picked from the navbar's theme menu (or the mobile sheet, or
+`theme <name>` in the homepage terminal); "Match system" clears the choice.
+
+| id | Mode | Idea |
+| --- | --- | --- |
+| `light` | light | Lab-bench paper, teal and vermilion (default light) |
+| `dark` | dark | Same bench after hours (default dark) |
+| `cpk` | light | CPK atom colours: nitrogen blue, oxygen red (the v1 palette) |
+| `pencil` | light | Graphite on paper, red-pen links |
+| `cyanotype` | dark | White on Prussian blue |
+| `sodium` | dark | Amber of the sodium D line (589 nm) |
+| `contrast` | dark | Black and white, yellow links, every text pair AAA |
+
+Mechanics: `data-theme` is always the mode (`light`/`dark`), so all existing
+dark-mode CSS and script checks still work; `data-palette` (on `<html>` and
+`<body>`) swaps the tokens via `[data-theme][data-palette="…"]` blocks in
+`assets/css/theme.css`. The list lives in `assets/js/navbar.js` (THEMES) and
+in the inline head script of every page; `tests/comprehensive-tests.js`
+fails if they drift. A new palette needs: a token block (all text pairs
+≥ 4.5:1, checked), an entry in THEMES, the id in the head script (update
+`scripts/build-blog.mjs`, `scripts/generate-apis-pages.js` and run
+`python3` over pages/ as in the 2026-11-18 change), terminal tokens in
+`assets/css/home.css`, and the intro background in `index.html`.

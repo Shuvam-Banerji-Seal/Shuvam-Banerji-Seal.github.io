@@ -20,6 +20,55 @@ html[data-theme="dark"] {
   --term-bar: #0d1816;
   --term-rule: #22332f;
 }
+/* The terminal follows the named palettes (theme.css) but stays dark. */
+html[data-palette="cpk"] {
+  --term-bg: #12151b;
+  --term-bar: #1b2029;
+  --term-rule: #2c3442;
+  --term-ink: #e8ebf0;
+  --term-dim: #98a2b3;
+  --term-accent: #8fa4ff;
+  --term-plus: #ff6170;
+}
+html[data-palette="pencil"] {
+  --term-bg: #161616;
+  --term-bar: #202020;
+  --term-rule: #343434;
+  --term-ink: #ededed;
+  --term-dim: #a3a3a3;
+  --term-accent: #ff8a80;
+  --term-plus: #e6e6e6;
+}
+html[data-palette="cyanotype"] {
+  --term-bg: #061a33;
+  --term-bar: #0a2244;
+  --term-rule: #1d3f6b;
+  --term-ink: #eef4fb;
+  --term-dim: #93adcb;
+  --term-accent: #8fd3ff;
+  --term-plus: #ffb08a;
+  --term-sulfur: #f2d06b;
+}
+html[data-palette="sodium"] {
+  --term-bg: #0a0703;
+  --term-bar: #140e06;
+  --term-rule: #33260f;
+  --term-ink: #ffdca8;
+  --term-dim: #b8935e;
+  --term-accent: #ffb01f;
+  --term-plus: #ff6a3d;
+  --term-sulfur: #ffe08a;
+}
+html[data-palette="contrast"] {
+  --term-bg: #000;
+  --term-bar: #000;
+  --term-rule: #8c8c8c;
+  --term-ink: #fff;
+  --term-dim: #dadada;
+  --term-accent: #ffe14d;
+  --term-plus: #ff9a8f;
+  --term-sulfur: #ffe14d;
+}
 
 /* ---------- base ---------- */
 *,
