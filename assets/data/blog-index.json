@@ -1,22 +1,9 @@
 [
  {
-  "slug": "agriir-domain-specific-rag",
-  "title": "AgriIR, a configurable RAG pipeline for agricultural questions",
-  "description": "How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated.",
-  "date": "2026-11-17",
-  "tags": [
-   "Information retrieval",
-   "RAG",
-   "Agriculture",
-   "ECIR"
-  ],
-  "legacy": false
- },
- {
   "slug": "bm25-explained",
   "title": "BM25, explained through this site's search box",
   "description": "How BM25 scores a document, term by term: saturation with k1, length normalisation with b, a never-negative IDF, and a worked example by hand.",
-  "date": "2026-11-17",
+  "date": "2026-11-18",
   "tags": [
    "Information retrieval",
    "BM25",
@@ -37,47 +24,10 @@
   "legacy": false
  },
  {
-  "slug": "hybrid-search-reciprocal-rank-fusion",
-  "title": "Hybrid search with BM25, dense embeddings and reciprocal rank fusion",
-  "description": "Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.",
-  "date": "2026-11-17",
-  "tags": [
-   "Information retrieval",
-   "RAG",
-   "Hybrid search",
-   "Reciprocal rank fusion"
-  ],
-  "legacy": false
- },
- {
-  "slug": "kohn-sham-dft-on-one-page",
-  "title": "Kohn–Sham DFT on one page",
-  "description": "The chain of ideas behind a DFT calculation, from Born–Oppenheimer and the Hohenberg–Kohn theorems to the Kohn–Sham equations, functionals and basis sets.",
-  "date": "2026-11-17",
-  "tags": [
-   "Density functional theory",
-   "Quantum chemistry",
-   "Electronic structure"
-  ],
-  "legacy": false
- },
- {
-  "slug": "molecule3d-lammps-in-the-browser",
-  "title": "Molecule3D: a LAMMPS workbench that runs in your browser",
-  "description": "What Molecule3D (LAMMPS Web GUI) does, who it is for, and what a first session looks like, from a starter script to a trajectory and its RDF.",
-  "date": "2026-11-17",
-  "tags": [
-   "Molecular dynamics",
-   "LAMMPS",
-   "Software"
-  ],
-  "legacy": false
- },
- {
   "slug": "rdf-and-msd-from-md-trajectories",
   "title": "Reading an MD trajectory: radial distribution function and mean squared displacement",
   "description": "How to compute g(r) and the mean squared displacement from a periodic MD trajectory, with a short numpy implementation tested on cases with known answers.",
-  "date": "2026-11-17",
+  "date": "2026-10-25",
   "tags": [
    "Molecular dynamics",
    "Statistical mechanics",
@@ -86,10 +36,22 @@
   "legacy": false
  },
  {
+  "slug": "molecule3d-lammps-in-the-browser",
+  "title": "Molecule3D: a LAMMPS workbench that runs in your browser",
+  "description": "What Molecule3D (LAMMPS Web GUI) does, who it is for, and what a first session looks like, from a starter script to a trajectory and its RDF.",
+  "date": "2026-10-04",
+  "tags": [
+   "Molecular dynamics",
+   "LAMMPS",
+   "Software"
+  ],
+  "legacy": false
+ },
+ {
   "slug": "sycolex-sycophancy-legal-llms",
   "title": "Sycophancy in LLMs, and why we test it on court cases",
   "description": "What sycophancy in language models is, why legal reasoning exposes it sharply, and how the SycoLex benchmark measures it with paired, opposite prompts.",
-  "date": "2026-11-17",
+  "date": "2026-07-12",
   "tags": [
    "LLMs",
    "Sycophancy",
@@ -100,16 +62,40 @@
   "legacy": false
  },
  {
-  "slug": "tip-of-the-tongue-trec-2024",
-  "title": "Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries",
-  "description": "How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067.",
-  "date": "2026-11-17",
+  "slug": "kohn-sham-dft-on-one-page",
+  "title": "Kohn–Sham DFT on one page",
+  "description": "The chain of ideas behind a DFT calculation, from Born–Oppenheimer and the Hohenberg–Kohn theorems to the Kohn–Sham equations, functionals and basis sets.",
+  "date": "2026-06-28",
+  "tags": [
+   "Density functional theory",
+   "Quantum chemistry",
+   "Electronic structure"
+  ],
+  "legacy": false
+ },
+ {
+  "slug": "agriir-domain-specific-rag",
+  "title": "AgriIR, a configurable RAG pipeline for agricultural questions",
+  "description": "How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated.",
+  "date": "2026-04-26",
   "tags": [
    "Information retrieval",
-   "TREC",
-   "BM25",
-   "Query reformulation",
-   "LLMs"
+   "RAG",
+   "Agriculture",
+   "ECIR"
+  ],
+  "legacy": false
+ },
+ {
+  "slug": "hybrid-search-reciprocal-rank-fusion",
+  "title": "Hybrid search with BM25, dense embeddings and reciprocal rank fusion",
+  "description": "Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.",
+  "date": "2026-01-25",
+  "tags": [
+   "Information retrieval",
+   "RAG",
+   "Hybrid search",
+   "Reciprocal rank fusion"
   ],
   "legacy": false
  },
@@ -127,15 +113,14 @@
   "legacy": true
  },
  {
-  "slug": "llm-deep-dive",
-  "title": "Large Language Models: A Deep Dive into Architecture and Capabilities",
-  "description": "An in-depth exploration of Transformer architecture, Attention mechanisms, and the evolution of LLMs from GPT-1 to GPT-4 and beyond.",
-  "date": "2025-12-08",
+  "slug": "rag-architecture-explained",
+  "title": "Building a RAG system: lessons from a campus intranet",
+  "description": "Lessons from a retrieval-augmented generation system for the IISER Kolkata intranet: the data pipeline, hybrid dense and BM25 search, chunking, cited answers.",
+  "date": "2025-08-24",
   "tags": [
-   "AI",
-   "LLM",
-   "Deep Learning",
-   "NLP"
+   "RAG",
+   "Information retrieval",
+   "LLMs"
   ],
   "legacy": true
  },
@@ -143,7 +128,7 @@
   "slug": "scalable-web-apps",
   "title": "Building Scalable Web Apps with Modern Stacks",
   "description": "A guide to modern web architecture, focusing on performance, scalability, and the shift towards edge computing and serverless patterns.",
-  "date": "2025-12-07",
+  "date": "2025-07-13",
   "tags": [
    "Web Dev",
    "Architecture",
@@ -156,7 +141,7 @@
   "slug": "future-computational-chemistry",
   "title": "The Future of Computational Chemistry: AI & Quantum Computing",
   "description": "Exploring how Artificial Intelligence and Quantum Computing are revolutionizing the field of computational chemistry, from drug discovery to materials science.",
-  "date": "2025-12-06",
+  "date": "2025-06-08",
   "tags": [
    "Chemistry",
    "AI",
@@ -166,35 +151,53 @@
   "legacy": true
  },
  {
-  "slug": "python-chemistry-tools",
-  "title": "\n      Essential Python Libraries for Computational Chemistry - Shuvam Banerji\n      Seal\n    ",
-  "description": "Essential Python Libraries for Computational Chemistry",
-  "date": "2025-10-31",
+  "slug": "llm-deep-dive",
+  "title": "Large Language Models: A Deep Dive into Architecture and Capabilities",
+  "description": "An in-depth exploration of Transformer architecture, Attention mechanisms, and the evolution of LLMs from GPT-1 to GPT-4 and beyond.",
+  "date": "2025-04-20",
   "tags": [
-   "Python",
-   "Chemistry"
+   "AI",
+   "LLM",
+   "Deep Learning",
+   "NLP"
   ],
   "legacy": true
+ },
+ {
+  "slug": "tip-of-the-tongue-trec-2024",
+  "title": "Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries",
+  "description": "How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067.",
+  "date": "2025-03-16",
+  "tags": [
+   "Information retrieval",
+   "TREC",
+   "BM25",
+   "Query reformulation",
+   "LLMs"
+  ],
+  "legacy": false
  },
  {
   "slug": "dft-catalyst-design",
-  "title": "\n      Understanding DFT Methods in Catalyst Design",
-  "description": "Understanding DFT Methods in Catalyst Design - Computational Chemistry Blog Post",
-  "date": "2025-10-31",
+  "title": "Understanding DFT methods in catalyst design",
+  "description": "How density functional theory is used to design catalysts: the workflow, choosing a functional and basis set, the main pitfalls, and where the field is going.",
+  "date": "2025-01-26",
   "tags": [
-   "DFT",
-   "Catalysis"
+   "Density functional theory",
+   "Catalysis",
+   "Quantum chemistry"
   ],
   "legacy": true
  },
  {
-  "slug": "rag-architecture-explained",
-  "title": "Building RAG architectures: a practical guide",
-  "description": "Building RAG architectures: a practical guide",
-  "date": "2025-10-31",
+  "slug": "python-chemistry-tools",
+  "title": "Python libraries for computational chemistry",
+  "description": "The Python libraries computational chemists use most (RDKit, ASE, PySCF, MDAnalysis, py3Dmol), what each is for, and a worked example joining them.",
+  "date": "2024-12-08",
   "tags": [
-   "RAG",
-   "Information retrieval"
+   "Python",
+   "Quantum chemistry",
+   "Software"
   ],
   "legacy": true
  }

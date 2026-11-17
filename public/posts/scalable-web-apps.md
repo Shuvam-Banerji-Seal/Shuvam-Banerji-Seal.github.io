@@ -1,6 +1,6 @@
 ---
 title: Building Scalable Web Apps with Modern Stacks
-date: 2025-12-07
+date: 2025-07-13
 tags: [Web Dev, Architecture, Performance, JavaScript]
 description: A guide to modern web architecture, focusing on performance, scalability, and the shift towards edge computing and serverless patterns.
 ---

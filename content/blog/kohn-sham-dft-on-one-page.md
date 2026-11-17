@@ -1,7 +1,7 @@
 ---
 title: Kohn–Sham DFT on one page
 description: The chain of ideas behind a DFT calculation, from Born–Oppenheimer and the Hohenberg–Kohn theorems to the Kohn–Sham equations, functionals and basis sets.
-date: 2026-11-17
+date: 2026-06-28
 tags: [Density functional theory, Quantum chemistry, Electronic structure]
 slug: kohn-sham-dft-on-one-page
 ---

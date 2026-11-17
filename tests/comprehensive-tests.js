@@ -1512,6 +1512,54 @@ test("Theme palettes agree across navbar.js, theme.css and every page's head scr
   }
 });
 
+test("Every blog article is set up to be indexed on its own", () => {
+  // What Google's article guidelines and AI search crawlers need per page.
+  const SITE = "https://shuvam-banerji-seal.github.io";
+  const sitemap = readFileSync(join(ROOT, "public/sitemap.xml"), "utf8");
+  const blogIndex = readFileSync(join(ROOT, "pages/blog.html"), "utf8");
+  const dir = join(ROOT, "pages/blogs");
+  const files = readdirSync(dir).filter((f) => f.endsWith(".html"));
+  assert(files.length >= 16, `expected at least 16 articles, found ${files.length}`);
+  const titles = new Set();
+  const descs = new Set();
+  for (const f of files) {
+    const slug = f.slice(0, -5);
+    const s = readFileSync(join(dir, f), "utf8");
+    const where = `pages/blogs/${f}`;
+    assert(!/name="robots"[^>]*noindex/.test(s), `${where}: noindex`);
+    const title = (s.match(/<title>([^<]*)<\/title>/) || [])[1] || "";
+    const desc = (s.match(/name="description"\s+content="([^"]*)"/) || [])[1] || "";
+    assert(title && !titles.has(title), `${where}: missing or duplicate title`);
+    assert(desc.length >= 110 && desc.length <= 165, `${where}: description is ${desc.length} chars`);
+    assert(!descs.has(desc), `${where}: duplicate description`);
+    titles.add(title);
+    descs.add(desc);
+    assert(s.includes(`<link rel="canonical" href="${SITE}/pages/blogs/${f}"`), `${where}: canonical is not itself`);
+    const og = (s.match(/property="og:image" content="([^"]+)"/) || [])[1] || "";
+    assert(og === `${SITE}/assets/img/og/${slug}.png`, `${where}: og:image is not the article's own card`);
+    assert(existsSync(join(ROOT, `assets/img/og/${slug}.png`)), `${where}: preview image file missing`);
+    assert((s.match(/<h1[\s>]/g) || []).length === 1, `${where}: needs exactly one h1`);
+    const ld = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].flatMap((m) => {
+      const j = JSON.parse(m[1]);
+      return j["@graph"] || [j];
+    });
+    const post = ld.find((n) => n["@type"] === "BlogPosting");
+    assert(post, `${where}: no BlogPosting structured data`);
+    assert(post.headline && post.headline.length <= 110, `${where}: headline missing or over 110 chars`);
+    assert(post.image && post.image.url === og, `${where}: BlogPosting image does not match og:image`);
+    assert(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/.test(post.datePublished), `${where}: datePublished not ISO 8601 with offset`);
+    assert(post.author && post.author.name && post.author.url, `${where}: author needs name and url`);
+    assert(post.publisher && post.publisher.name, `${where}: publisher missing`);
+    assert(ld.some((n) => n["@type"] === "BreadcrumbList"), `${where}: no BreadcrumbList`);
+    assert(sitemap.includes(`<loc>${SITE}/pages/blogs/${f}</loc>`), `${where}: not in sitemap.xml`);
+    assert(blogIndex.includes(`href="/pages/blogs/${f}"`), `${where}: not linked from the blog index`);
+    assert(existsSync(join(ROOT, `public/pages/blogs/${slug}.md`)), `${where}: Markdown copy missing`);
+  }
+  const robots = readFileSync(join(ROOT, "public/robots.txt"), "utf8");
+  assert(/Sitemap:\s*https:\/\/shuvam-banerji-seal\.github\.io\/sitemap\.xml/.test(robots), "robots.txt must list the sitemap");
+  assert(!/Disallow:\s*\/\s*$/m.test(robots), "robots.txt must not disallow the site");
+});
+
 test("air-guitar.js binds the camera video element (send-gate dependency)", () => {
   // Regression guard: air-guitar.js receives only the MediaStream from
   // webcam-tester.js; its rAF loop gates hands.send() on this.video.

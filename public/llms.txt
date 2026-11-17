@@ -1,0 +1,42 @@
+# Shuvam Banerji Seal
+
+> BS-MS student at IISER Kolkata (chemistry major, computer science minor). Research in information retrieval and language-model evaluation (ECIR 2026, FIRE 2025, TREC 2024), computational chemistry (DFT, molecular dynamics), and scientific software such as Molecule3D, a LAMMPS workbench that runs in the browser.
+
+## Pages
+
+- [Home](https://shuvam-banerji-seal.github.io/): overview, research, projects, tools and contact
+- [Research](https://shuvam-banerji-seal.github.io/pages/research.html): publications, thesis, datasets, talks and service
+- [Projects](https://shuvam-banerji-seal.github.io/pages/projects.html): selected software, research code and teaching material
+- [CV](https://shuvam-banerji-seal.github.io/pages/resume.html): full curriculum vitae
+- [GitHub repositories](https://shuvam-banerji-seal.github.io/pages/github-projects.html): every public repository
+- [Tools](https://shuvam-banerji-seal.github.io/pages/tools.html): chemistry, document, media and language-model tools that run in the browser
+
+## Articles
+
+- [BM25, explained through this site's search box](https://shuvam-banerji-seal.github.io/pages/blogs/bm25-explained.html): How BM25 scores a document, term by term: saturation with k1, length normalisation with b, a never-negative IDF, and a worked example by hand. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/bm25-explained.md
+- [Drawing benzene's π orbitals from Hückel theory](https://shuvam-banerji-seal.github.io/pages/blogs/benzene-pi-orbitals-huckel.html): How the benzene figure on the homepage is made: Hückel π orbitals, Slater 2p functions, and points sampled from the probability density, coloured by sign. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/benzene-pi-orbitals-huckel.md
+- [Reading an MD trajectory: radial distribution function and mean squared displacement](https://shuvam-banerji-seal.github.io/pages/blogs/rdf-and-msd-from-md-trajectories.html): How to compute g(r) and the mean squared displacement from a periodic MD trajectory, with a short numpy implementation tested on cases with known answers. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/rdf-and-msd-from-md-trajectories.md
+- [Molecule3D: a LAMMPS workbench that runs in your browser](https://shuvam-banerji-seal.github.io/pages/blogs/molecule3d-lammps-in-the-browser.html): What Molecule3D (LAMMPS Web GUI) does, who it is for, and what a first session looks like, from a starter script to a trajectory and its RDF. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/molecule3d-lammps-in-the-browser.md
+- [Sycophancy in LLMs, and why we test it on court cases](https://shuvam-banerji-seal.github.io/pages/blogs/sycolex-sycophancy-legal-llms.html): What sycophancy in language models is, why legal reasoning exposes it sharply, and how the SycoLex benchmark measures it with paired, opposite prompts. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/sycolex-sycophancy-legal-llms.md
+- [Kohn–Sham DFT on one page](https://shuvam-banerji-seal.github.io/pages/blogs/kohn-sham-dft-on-one-page.html): The chain of ideas behind a DFT calculation, from Born–Oppenheimer and the Hohenberg–Kohn theorems to the Kohn–Sham equations, functionals and basis sets. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/kohn-sham-dft-on-one-page.md
+- [AgriIR, a configurable RAG pipeline for agricultural questions](https://shuvam-banerji-seal.github.io/pages/blogs/agriir-domain-specific-rag.html): How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/agriir-domain-specific-rag.md
+- [Hybrid search with BM25, dense embeddings and reciprocal rank fusion](https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.html): Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/hybrid-search-reciprocal-rank-fusion.md
+- [Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries](https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.html): How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/tip-of-the-tongue-trec-2024.md
+
+## Publications
+
+- AgriIR: A Scalable Framework for Domain-Specific Knowledge Retrieval (ECIR 2026). Shuvam Banerji Seal, Aheli Poddar, Alok Mishra, Dwaipayan Roy. https://doi.org/10.1007/978-3-032-21324-2_37
+- SycoLex: A Cross-Jurisdictional Benchmark for Detecting Sycophancy in Legal Case Reasoning (CIKM 2026 resource track, under review). Shuvam Banerji Seal, collaborators at IISER Kolkata. https://huggingface.co/datasets/ShuvBan/SycoLex
+- Hierarchical Opinion Classification using Large Language Models (FIRE 2025). Shuvam Banerji Seal, Alok Mishra, Utkarsha Ghosh. https://ceur-ws.org/Vol-4173/T10-3.pdf
+- IISERK@ToT_2024: Query Reformulation and Layered Retrieval for Tip-of-Tongue Items (TREC 2024). Shuvam Banerji Seal, Subinay Adhikary, Soumyadeep Sar, Dwaipayan Roy. https://trec.nist.gov/pubs/trec33/papers/IISER-K.tot.pdf
+- Computational Modelling of [VO(SALIEP)(DTP)] as a Water-Reducing Catalyst (In preparation). Shuvam Banerji Seal, Soumyajit Roy. 
+
+## Optional
+
+- [Computational Chemistry in the Age of AI: From DFT to Neural Potentials](https://shuvam-banerji-seal.github.io/pages/blogs/chemistry-ai-revolution.html): A comprehensive look at how Machine Learning is revolutionizing computational chemistry, bridging the gap between quantum accuracy and classical speed. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/chemistry-ai-revolution.md
+- [Building a RAG system: lessons from a campus intranet](https://shuvam-banerji-seal.github.io/pages/blogs/rag-architecture-explained.html): Lessons from a retrieval-augmented generation system for the IISER Kolkata intranet: the data pipeline, hybrid dense and BM25 search, chunking, cited answers. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/rag-architecture-explained.md
+- [Building Scalable Web Apps with Modern Stacks](https://shuvam-banerji-seal.github.io/pages/blogs/scalable-web-apps.html): A guide to modern web architecture, focusing on performance, scalability, and the shift towards edge computing and serverless patterns. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/scalable-web-apps.md
+- [The Future of Computational Chemistry: AI & Quantum Computing](https://shuvam-banerji-seal.github.io/pages/blogs/future-computational-chemistry.html): Exploring how Artificial Intelligence and Quantum Computing are revolutionizing the field of computational chemistry, from drug discovery to materials science. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/future-computational-chemistry.md
+- [Large Language Models: A Deep Dive into Architecture and Capabilities](https://shuvam-banerji-seal.github.io/pages/blogs/llm-deep-dive.html): An in-depth exploration of Transformer architecture, Attention mechanisms, and the evolution of LLMs from GPT-1 to GPT-4 and beyond. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/llm-deep-dive.md
+- [Understanding DFT methods in catalyst design](https://shuvam-banerji-seal.github.io/pages/blogs/dft-catalyst-design.html): How density functional theory is used to design catalysts: the workflow, choosing a functional and basis set, the main pitfalls, and where the field is going. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/dft-catalyst-design.md
+- [Python libraries for computational chemistry](https://shuvam-banerji-seal.github.io/pages/blogs/python-chemistry-tools.html): The Python libraries computational chemists use most (RDKit, ASE, PySCF, MDAnalysis, py3Dmol), what each is for, and a worked example joining them. Markdown: https://shuvam-banerji-seal.github.io/pages/blogs/python-chemistry-tools.md

@@ -18,6 +18,7 @@ import { readFileSync, readdirSync, writeFileSync, existsSync, mkdirSync } from 
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
+import { execFileSync } from "node:child_process";
 import { Marked, Renderer } from "marked";
 import katex from "katex";
 
@@ -113,7 +114,8 @@ const contentDir = join(ROOT, "content/blog");
 if (existsSync(contentDir)) {
   for (const f of readdirSync(contentDir).filter((f) => f.endsWith(".md")).sort()) {
     const { meta, body } = parse(readFileSync(join(contentDir, f), "utf8"), f);
-    posts.push({ ...meta, slug: meta.slug || basename(f, ".md"), body, tags: meta.tags || [], legacy: false });
+    // `earlier: true` lists a post under "Earlier posts" on the blog index.
+    posts.push({ ...meta, slug: meta.slug || basename(f, ".md"), body, tags: meta.tags || [], legacy: meta.earlier === "true", file: join(contentDir, f) });
   }
 }
 const legacyDir = join(ROOT, "public/posts");
@@ -121,23 +123,27 @@ if (existsSync(legacyDir)) {
   for (const f of readdirSync(legacyDir).filter((f) => f.endsWith(".md") && f !== "welcome.md")) {
     const { meta, body } = parse(readFileSync(join(legacyDir, f), "utf8"), f);
     // Earlier posts open with their own H1; the template prints the title.
-    posts.push({ ...meta, slug: basename(f, ".md"), body: body.replace(/^\s*#\s[^\n]*\n/, ""), tags: meta.tags || [], legacy: true });
+    posts.push({ ...meta, slug: basename(f, ".md"), body: body.replace(/^\s*#\s[^\n]*\n/, ""), tags: meta.tags || [], legacy: true, file: join(legacyDir, f) });
   }
 }
-// Hand-written HTML articles that predate this build.
-const HANDWRITTEN = [
-  ["dft-catalyst-design", ["DFT", "Catalysis"]],
-  ["rag-architecture-explained", ["RAG", "Information retrieval"]],
-  ["python-chemistry-tools", ["Python", "Chemistry"]],
-];
-const handwritten = HANDWRITTEN.filter(([s]) => existsSync(join(ROOT, `pages/blogs/${s}.html`))).map(([slug, tags]) => {
-  const h = readFileSync(join(ROOT, `pages/blogs/${slug}.html`), "utf8");
-  const title = (h.match(/<title>([^<]+)<\/title>/) || [, slug])[1].replace(/\s*[-|]\s*Shuvam Banerji Seal\s*$/, "");
-  const description = (h.match(/name="description"\s+content="([^"]*)"/) || [, ""])[1];
-  return { slug, title, description, date: "2025-10-31", tags, legacy: true, handwritten: true };
-});
+// "updated" is the source file's last commit date (today while it has
+// uncommitted edits), unless front matter sets it; shown when it differs.
+function lastChanged(file) {
+  try {
+    const rel = file.slice(ROOT.length + 1);
+    if (execFileSync("git", ["status", "--porcelain", "--", rel], { cwd: ROOT, encoding: "utf8" }).trim())
+      return new Date(Date.now() + 5.5 * 36e5).toISOString().slice(0, 10); // IST
+    return execFileSync("git", ["log", "-1", "--format=%cs", "--", rel], { cwd: ROOT, encoding: "utf8" }).trim() || null;
+  } catch {
+    return null;
+  }
+}
 
 for (const p of posts) {
+  if (!p.updated) {
+    const changed = lastChanged(p.file);
+    if (changed && changed > p.date) p.updated = changed;
+  }
   for (const k of ["title", "description", "date"]) if (!p[k]) throw new Error(`${p.slug}: missing ${k}`);
   const r = render(p.body);
   p.html = r.html;
@@ -145,7 +151,7 @@ for (const p of posts) {
   p.words = p.body.replace(/```[\s\S]*?```/g, "").split(/\s+/).filter(Boolean).length;
   p.minutes = Math.max(1, Math.round(p.words / 220));
 }
-const all = [...posts, ...handwritten].sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+const all = [...posts].sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 const current = all.filter((p) => !p.legacy);
 const earlier = all.filter((p) => p.legacy);
 
@@ -185,6 +191,33 @@ const FOOTER = `<footer class="site-foot">
     </footer>
     <script>document.querySelectorAll("[data-year]").forEach(function (e) { e.textContent = new Date().getFullYear(); });</script>`;
 
+// ------------------------------------------------------------ SEO helpers
+// Author identity, repeated in full on every article: search engines read
+// each page on its own and do not resolve @id references across pages.
+const PERSON = {
+  "@type": "Person",
+  "@id": `${SITE}/#person`,
+  name: AUTHOR,
+  url: `${SITE}/`,
+  image: `${SITE}/assets/img/sbs_001.jpg`,
+  jobTitle: "BS-MS student and researcher in computational chemistry and information retrieval",
+  affiliation: { "@type": "CollegeOrUniversity", name: "Indian Institute of Science Education and Research Kolkata", url: "https://www.iiserkol.ac.in/" },
+  sameAs: [
+    "https://github.com/Shuvam-Banerji-Seal",
+    "https://www.linkedin.com/in/mastersbs",
+    "https://orcid.org/0009-0000-0714-569X",
+    "https://huggingface.co/ShuvBan",
+  ],
+};
+// Dates in front matter are days; publish them as India Standard Time.
+const isoDate = (d) => `${d}T09:00:00+05:30`;
+// Google shows about 60 to 70 characters of a title; keep the site name
+// only when it fits.
+const pageTitle = (t) => (t.length + 22 <= 70 ? `${t} | Shuvam Banerji Seal` : t);
+// Per-article preview images (scripts/generate-og-images.py); default otherwise.
+const ogImage = (slug) =>
+  existsSync(join(ROOT, `assets/img/og/${slug}.png`)) ? `${SITE}/assets/img/og/${slug}.png` : `${SITE}/assets/img/og-image.png`;
+
 // Filters on the blog index group the many tags into a few topics.
 const TOPICS = [
   ["Retrieval", ["information retrieval", "bm25", "search", "rag", "hybrid search", "query reformulation", "trec", "reciprocal rank fusion", "agriculture"]],
@@ -214,16 +247,19 @@ function articlePage(p) {
         "@id": `${url}#article`,
         headline: p.title,
         description: p.description,
-        datePublished: p.date,
-        dateModified: p.updated || p.date,
+        datePublished: isoDate(p.date),
+        dateModified: isoDate(p.updated || p.date),
         inLanguage: "en",
         keywords: p.tags.join(", "),
+        articleSection: topicsOf(p)[0] || "Notes",
         wordCount: p.words,
+        timeRequired: `PT${p.minutes}M`,
+        isAccessibleForFree: true,
         url,
-        mainEntityOfPage: url,
-        image: `${SITE}/assets/img/og-image.png`,
-        author: { "@type": "Person", "@id": `${SITE}/#person`, name: AUTHOR, url: `${SITE}/` },
-        publisher: { "@type": "Person", "@id": `${SITE}/#person`, name: AUTHOR },
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        image: { "@type": "ImageObject", url: ogImage(p.slug), width: 1200, height: 630 },
+        author: PERSON,
+        publisher: PERSON,
         isPartOf: { "@type": "Blog", "@id": `${SITE}/pages/blog.html#blog`, name: "Shuvam Banerji Seal, blog" },
       },
       {
@@ -248,7 +284,7 @@ function articlePage(p) {
     <meta charset="UTF-8" />
     ${THEME_SCRIPT}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>${esc(p.title)} | Shuvam Banerji Seal</title>
+    <title>${esc(pageTitle(p.seotitle || p.title))}</title>
     <meta name="description" content="${esc(p.description)}" />
     <meta name="author" content="${AUTHOR}" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -259,15 +295,22 @@ function articlePage(p) {
     <meta property="og:title" content="${esc(p.title)}" />
     <meta property="og:description" content="${esc(p.description)}" />
     <meta property="og:url" content="${url}" />
-    <meta property="og:image" content="${SITE}/assets/img/og-image.png" />
-    <meta property="article:published_time" content="${p.date}" />
-    <meta property="article:modified_time" content="${p.updated || p.date}" />
+    <meta property="og:image" content="${ogImage(p.slug)}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="${esc(p.title)}" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="article:published_time" content="${isoDate(p.date)}" />
+    <meta property="article:modified_time" content="${isoDate(p.updated || p.date)}" />
     <meta property="article:author" content="${SITE}/" />
+    <meta property="article:section" content="${esc(topicsOf(p)[0] || "Notes")}" />
 ${p.tags.map((t) => `    <meta property="article:tag" content="${esc(t)}" />`).join("\n")}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${esc(p.title)}" />
     <meta name="twitter:description" content="${esc(p.description)}" />
-    <meta name="twitter:image" content="${SITE}/assets/img/og-image.png" />
+    <meta name="twitter:image" content="${ogImage(p.slug)}" />
+    <meta name="twitter:image:alt" content="${esc(p.title)}" />
+    <link rel="alternate" type="text/markdown" title="${esc(p.title)} (Markdown)" href="/pages/blogs/${p.slug}.md" />
     <script type="application/ld+json">${JSON.stringify(ld)}</script>
     ${FONTS}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@${KATEX_VER}/dist/katex.min.css" crossorigin="anonymous" />
@@ -283,7 +326,7 @@ ${p.tags.map((t) => `    <meta property="article:tag" content="${esc(t)}" />`).j
           <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/pages/blog.html">Blog</a></nav>
           <h1 id="art-title">${esc(p.title)}</h1>
           <p class="art-desc">${esc(p.description)}</p>
-          <p class="art-meta"><span>${AUTHOR}</span> <span aria-hidden="true">·</span> <time datetime="${p.date}">${fmtDate(p.date)}</time> <span aria-hidden="true">·</span> <span>${p.minutes} min read</span></p>
+          <p class="art-meta"><span>${AUTHOR}</span> <span aria-hidden="true">·</span> <time datetime="${p.date}">${fmtDate(p.date)}</time>${p.updated ? ` <span aria-hidden="true">·</span> <span>updated <time datetime="${p.updated}">${fmtDate(p.updated)}</time></span>` : ""} <span aria-hidden="true">·</span> <span>${p.minutes} min read</span></p>
           <p class="art-tags">${tagChips(p.tags)}</p>
         </header>
         ${toc}
@@ -325,7 +368,7 @@ function indexPage() {
         url: `${SITE}/pages/blog.html`,
         name: "Shuvam Banerji Seal, blog",
         description: "Articles on information retrieval, quantum chemistry, molecular simulation and scientific software.",
-        author: { "@id": `${SITE}/#person` },
+        author: PERSON,
         blogPost: current.map((p) => ({
           "@type": "BlogPosting",
           headline: p.title,
@@ -460,8 +503,46 @@ ${p.tags.map((t) => `      <category>${esc(t)}</category>`).join("\n")}
 </rss>
 `;
 writeFileSync(join(ROOT, "public/feed.xml"), rss);
+
+// Plain Markdown copies for language-model crawlers and readers, and an
+// llms.txt index (https://llmstxt.org) that points at them.
+mkdirSync(join(ROOT, "public/pages/blogs"), { recursive: true });
+for (const p of posts) {
+  const md = `# ${p.title}\n\n> ${p.description}\n\nBy ${AUTHOR}, ${fmtDate(p.date)}. Canonical page: ${SITE}/pages/blogs/${p.slug}.html\n\n${p.body.trim()}\n`;
+  writeFileSync(join(ROOT, `public/pages/blogs/${p.slug}.md`), md);
+}
+const llmLine = (p) => `- [${p.title}](${SITE}/pages/blogs/${p.slug}.html): ${p.description} Markdown: ${SITE}/pages/blogs/${p.slug}.md`;
+const research = JSON.parse(readFileSync(join(ROOT, "assets/data/research.json"), "utf8"));
+writeFileSync(
+  join(ROOT, "public/llms.txt"),
+  `# Shuvam Banerji Seal
+
+> BS-MS student at IISER Kolkata (chemistry major, computer science minor). Research in information retrieval and language-model evaluation (ECIR 2026, FIRE 2025, TREC 2024), computational chemistry (DFT, molecular dynamics), and scientific software such as Molecule3D, a LAMMPS workbench that runs in the browser.
+
+## Pages
+
+- [Home](${SITE}/): overview, research, projects, tools and contact
+- [Research](${SITE}/pages/research.html): publications, thesis, datasets, talks and service
+- [Projects](${SITE}/pages/projects.html): selected software, research code and teaching material
+- [CV](${SITE}/pages/resume.html): full curriculum vitae
+- [GitHub repositories](${SITE}/pages/github-projects.html): every public repository
+- [Tools](${SITE}/pages/tools.html): chemistry, document, media and language-model tools that run in the browser
+
+## Articles
+
+${current.map(llmLine).join("\n")}
+
+## Publications
+
+${research.publications.map((r) => `- ${r.title} (${r.venue}). ${r.authors.join(", ")}. ${Object.values(r.links || {})[0] || ""}`).join("\n")}
+
+## Optional
+
+${earlier.map(llmLine).join("\n")}
+`,
+);
 writeFileSync(
   join(ROOT, "assets/data/blog-index.json"),
   JSON.stringify(all.map(({ slug, title, description, date, tags, legacy }) => ({ slug, title, description, date, tags, legacy })), null, 1) + "\n",
 );
-console.log(`blog: ${posts.length} pages built (${current.length} current, ${earlier.length} earlier incl. hand-written)`);
+console.log(`blog: ${posts.length} pages built (${current.length} current, ${earlier.length} earlier), feed, llms.txt, Markdown copies`);

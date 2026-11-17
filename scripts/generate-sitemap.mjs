@@ -7,7 +7,7 @@
  *   node scripts/generate-sitemap.mjs
  */
 import { execFileSync } from "node:child_process";
-import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { join, relative, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -53,11 +53,17 @@ for (const file of [join(ROOT, "index.html"), ...walk(join(ROOT, "pages"))]) {
   const rel = relative(ROOT, file).replace(/\\/g, "/");
   const [priority, freq] = rank(rel);
   const loc = rel === "index.html" ? `${SITE}/` : `${SITE}/${rel}`;
-  urls.push(`  <url><loc>${loc}</loc><lastmod>${lastmod(file)}</lastmod><changefreq>${freq}</changefreq><priority>${priority}</priority></url>`);
+  // Image sitemap entries: each article's preview card, and the site card on the homepage.
+  const slug = rel.startsWith("pages/blogs/") ? rel.slice(12, -5) : null;
+  const img = slug && existsSync(join(ROOT, `assets/img/og/${slug}.png`))
+    ? `${SITE}/assets/img/og/${slug}.png`
+    : rel === "index.html" ? `${SITE}/assets/img/og-image.png` : null;
+  const image = img ? `<image:image><image:loc>${img}</image:loc></image:image>` : "";
+  urls.push(`  <url><loc>${loc}</loc><lastmod>${lastmod(file)}</lastmod><changefreq>${freq}</changefreq><priority>${priority}</priority>${image}</url>`);
 }
 urls.sort((a, b) => Number(b.match(/<priority>([\d.]+)/)[1]) - Number(a.match(/<priority>([\d.]+)/)[1]) || a.localeCompare(b));
 writeFileSync(
   join(ROOT, "public/sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.join("\n")}\n</urlset>\n`,
 );
 console.log(`sitemap: ${urls.length} URLs → public/sitemap.xml`);

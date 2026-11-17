@@ -1,7 +1,8 @@
 ---
 title: "Reading an MD trajectory: radial distribution function and mean squared displacement"
+seotitle: Radial distribution function and MSD from an MD trajectory
 description: How to compute g(r) and the mean squared displacement from a periodic MD trajectory, with a short numpy implementation tested on cases with known answers.
-date: 2026-11-17
+date: 2026-10-25
 tags: [Molecular dynamics, Statistical mechanics, Python]
 slug: rdf-and-msd-from-md-trajectories
 ---

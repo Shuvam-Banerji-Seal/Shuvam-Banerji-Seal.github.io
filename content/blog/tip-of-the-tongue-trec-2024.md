@@ -1,7 +1,7 @@
 ---
 title: Tip-of-the-tongue search at TREC 2024, with BM25 and rewritten queries
 description: How our TREC 2024 Tip-of-the-Tongue runs rewrote vague queries with an LLM in four phases and used layered BM25 retrieval to reach Recall@1000 of 0.8067.
-date: 2026-11-17
+date: 2025-03-16
 tags: [Information retrieval, TREC, BM25, Query reformulation, LLMs]
 slug: tip-of-the-tongue-trec-2024
 ---

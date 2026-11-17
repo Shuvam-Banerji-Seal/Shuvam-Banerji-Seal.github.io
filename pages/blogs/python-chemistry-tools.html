@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <script>
       (function () {
         // Theme: saved choice wins, else follow the system. data-theme is the
@@ -19,280 +20,99 @@
         d.style.colorScheme = m;
       })();
     </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Essential Python Libraries for Computational Chemistry"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Python libraries for computational chemistry | Shuvam Banerji Seal</title>
+    <meta name="description" content="The Python libraries computational chemists use most (RDKit, ASE, PySCF, MDAnalysis, py3Dmol), what each is for, and a worked example joining them." />
+    <meta name="author" content="Shuvam Banerji Seal" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://shuvam-banerji-seal.github.io/pages/blogs/python-chemistry-tools.html" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title="Shuvam Banerji Seal, blog" href="https://shuvam-banerji-seal.github.io/feed.xml" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Essential Python Libraries for Computational Chemistry" />
-    <meta property="og:description" content="Essential Python libraries and tools for computational chemistry." />
+    <meta property="og:site_name" content="Shuvam Banerji Seal" />
+    <meta property="og:title" content="Python libraries for computational chemistry" />
+    <meta property="og:description" content="The Python libraries computational chemists use most (RDKit, ASE, PySCF, MDAnalysis, py3Dmol), what each is for, and a worked example joining them." />
     <meta property="og:url" content="https://shuvam-banerji-seal.github.io/pages/blogs/python-chemistry-tools.html" />
-    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
+    <meta property="og:image" content="https://shuvam-banerji-seal.github.io/assets/img/og/python-chemistry-tools.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Python libraries for computational chemistry" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="article:published_time" content="2024-12-08T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-11-18T09:00:00+05:30" />
+    <meta property="article:author" content="https://shuvam-banerji-seal.github.io/" />
+    <meta property="article:section" content="Quantum chemistry" />
+    <meta property="article:tag" content="Python" />
+    <meta property="article:tag" content="Quantum chemistry" />
+    <meta property="article:tag" content="Software" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Essential Python Libraries for Computational Chemistry" />
-    <meta name="twitter:description" content="Essential Python libraries and tools for computational chemistry." />
-    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og-image.svg" />
-    <meta name="robots" content="index, follow" />
-    <title>
-      Essential Python Libraries for Computational Chemistry - Shuvam Banerji
-      Seal
-    </title>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@1.33.0/dist/umd/lucide.min.js"></script>
+    <meta name="twitter:title" content="Python libraries for computational chemistry" />
+    <meta name="twitter:description" content="The Python libraries computational chemists use most (RDKit, ASE, PySCF, MDAnalysis, py3Dmol), what each is for, and a worked example joining them." />
+    <meta name="twitter:image" content="https://shuvam-banerji-seal.github.io/assets/img/og/python-chemistry-tools.png" />
+    <meta name="twitter:image:alt" content="Python libraries for computational chemistry" />
+    <link rel="alternate" type="text/markdown" title="Python libraries for computational chemistry (Markdown)" href="/pages/blogs/python-chemistry-tools.md" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BlogPosting","@id":"https://shuvam-banerji-seal.github.io/pages/blogs/python-chemistry-tools.html#article","headline":"Python libraries for computational chemistry","description":"The Python libraries computational chemists use most (RDKit, ASE, PySCF, MDAnalysis, py3Dmol), what each is for, and a worked example joining them.","datePublished":"2024-12-08T09:00:00+05:30","dateModified":"2026-11-18T09:00:00+05:30","inLanguage":"en","keywords":"Python, Quantum chemistry, Software","articleSection":"Quantum chemistry","wordCount":450,"timeRequired":"PT2M","isAccessibleForFree":true,"url":"https://shuvam-banerji-seal.github.io/pages/blogs/python-chemistry-tools.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://shuvam-banerji-seal.github.io/pages/blogs/python-chemistry-tools.html"},"image":{"@type":"ImageObject","url":"https://shuvam-banerji-seal.github.io/assets/img/og/python-chemistry-tools.png","width":1200,"height":630},"author":{"@type":"Person","@id":"https://shuvam-banerji-seal.github.io/#person","name":"Shuvam Banerji Seal","url":"https://shuvam-banerji-seal.github.io/","image":"https://shuvam-banerji-seal.github.io/assets/img/sbs_001.jpg","jobTitle":"BS-MS student and researcher in computational chemistry and information retrieval","affiliation":{"@type":"CollegeOrUniversity","name":"Indian Institute of Science Education and Research Kolkata","url":"https://www.iiserkol.ac.in/"},"sameAs":["https://github.com/Shuvam-Banerji-Seal","https://www.linkedin.com/in/mastersbs","https://orcid.org/0009-0000-0714-569X","https://huggingface.co/ShuvBan"]},"publisher":{"@type":"Person","@id":"https://shuvam-banerji-seal.github.io/#person","name":"Shuvam Banerji Seal","url":"https://shuvam-banerji-seal.github.io/","image":"https://shuvam-banerji-seal.github.io/assets/img/sbs_001.jpg","jobTitle":"BS-MS student and researcher in computational chemistry and information retrieval","affiliation":{"@type":"CollegeOrUniversity","name":"Indian Institute of Science Education and Research Kolkata","url":"https://www.iiserkol.ac.in/"},"sameAs":["https://github.com/Shuvam-Banerji-Seal","https://www.linkedin.com/in/mastersbs","https://orcid.org/0009-0000-0714-569X","https://huggingface.co/ShuvBan"]},"isPartOf":{"@type":"Blog","@id":"https://shuvam-banerji-seal.github.io/pages/blog.html#blog","name":"Shuvam Banerji Seal, blog"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://shuvam-banerji-seal.github.io/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://shuvam-banerji-seal.github.io/pages/blog.html"},{"@type":"ListItem","position":3,"name":"Python libraries for computational chemistry","item":"https://shuvam-banerji-seal.github.io/pages/blogs/python-chemistry-tools.html"}]}]}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../../assets/css/mobile-fixes.css" />
-    <link rel="stylesheet" href="../../assets/css/theme.css" />
-    <link rel="stylesheet" href="../../assets/css/main.css" />
-    <link rel="stylesheet" href="../../assets/css/animations.css" />
-    <link rel="stylesheet" href="../../assets/css/mobile.css" />
-    <link rel="stylesheet" href="../../assets/css/chemistry-theme.css" />
-    <style>
-      .blog-post {
-        width: var(--container);
-        margin: 0 auto;
-        padding: 6rem 0 3rem;
-      }
-      /* Header and body share one centred reading column. A rem width, not
-         ch: ch follows each element's own font size, so the edges drifted. */
-      .blog-header {
-        max-width: 40rem;
-        margin-inline: auto;
-        margin-bottom: 2.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid var(--rule);
-      }
-      .blog-title {
-        font-family: var(--font-display);
-        font-stretch: 68%;
-        font-weight: 800;
-        font-size: 2.75rem;
-        line-height: 1.04;
-        letter-spacing: -0.01em;
-        color: var(--ink);
-        margin-bottom: 0.75rem;
-        text-wrap: balance;
-      }
-      @media (max-width: 600px) {
-        .blog-title {
-          font-size: 2.125rem;
-        }
-      }
-      .blog-meta {
-        color: var(--graphite);
-        font-size: 0.9375rem;
-      }
-      .blog-header .tag {
-        margin-bottom: 0.5rem;
-      }
-      .blog-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.375rem;
-        margin-bottom: 1rem;
-      }
-      .blog-tag {
-        padding: 0.1rem 0.45rem;
-        border: 1px solid var(--rule);
-        border-radius: var(--r-s);
-        color: var(--graphite);
-        font: 500 0.8125rem/1.5 var(--font-body);
-      }
-      /* Long-form reading */
-      .blog-content {
-        max-width: 40rem;
-        margin-inline: auto;
-        font-size: 18px;
-        line-height: 1.65;
-        color: var(--ink);
-      }
-      .blog-content h2,
-      .blog-content h3 {
-        font-family: var(--font-display);
-        font-stretch: 68%;
-        font-weight: 760;
-        line-height: 1.1;
-        letter-spacing: -0.01em;
-        color: var(--ink);
-      }
-      .blog-content h2 {
-        font-size: 26px;
-        margin: 2em 0 0.6em;
-      }
-      .blog-content h3 {
-        font-size: 21px;
-        margin: 1.6em 0 0.5em;
-      }
-      .blog-content p {
-        margin-bottom: 1.2em;
-      }
-      .blog-content ul,
-      .blog-content ol {
-        margin: 0 0 1.2em 1.5em;
-      }
-      .blog-content li {
-        margin-bottom: 0.35em;
-      }
-      .blog-content strong {
-        font-weight: 650;
-      }
-      .blog-content a {
-        color: var(--nitrogen);
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 0.18em;
-      }
-      .blog-content a:hover {
-        text-decoration-thickness: 2px;
-      }
-      .blog-content code {
-        font-family: var(--font-mono);
-        font-size: 0.875em;
-        background: var(--surface-2);
-        padding: 0.1em 0.35em;
-        border-radius: var(--r-s);
-      }
-      .blog-content pre {
-        font-family: var(--font-mono);
-        font-size: 14px;
-        line-height: 1.55;
-        background: var(--surface-2);
-        border: 1px solid var(--rule);
-        border-radius: var(--r-m);
-        padding: 1rem 1.25rem;
-        overflow-x: auto;
-        margin: 0 0 1.4em;
-      }
-      .blog-content pre code {
-        background: none;
-        padding: 0;
-        font-size: inherit;
-      }
-      .blog-author {
-        margin-top: 3rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--rule);
-        color: var(--graphite);
-        font-size: 0.9375rem;
-      }
-      .back-row {
-        max-width: 68ch;
-        margin-top: 3rem;
-      }
-      .back-row .btn i {
-        margin-right: 0.25rem;
-      }
-      footer {
-        border-top: 1px solid var(--rule);
-        padding: 3rem var(--gutter);
-        text-align: center;
-        color: var(--graphite);
-        font-size: 0.9375rem;
-      }
-      .footer-social {
-        display: flex;
-        justify-content: center;
-        gap: 0.75rem;
-        margin-bottom: 1rem;
-      }
-      .social-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: var(--r-m);
-        border: 1px solid var(--rule);
-        color: var(--ink);
-        text-decoration: none;
-        transition: border-color 0.15s ease;
-      }
-      .social-link:hover {
-        border-color: var(--ink);
-      }
-    </style>
-    <link rel="stylesheet" href="../../assets/css/element.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&family=Newsreader:opsz,wght@6..72,300..800&family=Martian+Mono:wdth,wght@75..112,100..800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/assets/css/article.css" />
   </head>
-  <body>
+  <body class="article-page">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="navbar-container"></div>
-    <script type="module" src="../../assets/js/navbar.js"></script>
-
-    <main class="blog-post">
-      <header class="blog-header">
-        <div class="blog-tags">
-          <span class="blog-tag">Python</span>
-          <span class="blog-tag">Computational Chemistry</span>
-          <span class="blog-tag">Programming</span>
-        </div>
-        <h1 class="blog-title">
-          Essential Python Libraries for Computational Chemistry
-        </h1>
-        <p class="blog-meta">
-          Published on: October 31, 2025 • By Shuvam Banerji Seal
-        </p>
-      </header>
-
-      <article class="blog-content">
-        <h2>Introduction</h2>
-        <p>
-          Python has become the de facto language for computational chemistry,
-          offering a rich ecosystem of libraries for molecular modeling, quantum
-          chemistry calculations, and data analysis. In this guide, I'll
-          introduce you to the most essential tools every computational chemist
-          should know.
-        </p>
-
-        <h2>1. RDKit: general-purpose cheminformatics</h2>
-        <p>
-          RDKit is arguably the most important library for cheminformatics work.
-          It provides tools for:
-        </p>
-        <ul>
-          <li>Reading and writing molecular file formats (SMILES, MOL, SDF)</li>
-          <li>Computing molecular descriptors and fingerprints</li>
-          <li>Substructure searching</li>
-          <li>2D and 3D molecular visualization</li>
-        </ul>
-
-        <pre><code>from rdkit import Chem
+    <script type="module" src="/assets/js/navbar.js"></script>
+    <main id="main-content" class="wrap art-layout">
+      <article class="art" aria-labelledby="art-title">
+        <header class="art-head">
+          <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/pages/blog.html">Blog</a></nav>
+          <h1 id="art-title">Python libraries for computational chemistry</h1>
+          <p class="art-desc">The Python libraries computational chemists use most (RDKit, ASE, PySCF, MDAnalysis, py3Dmol), what each is for, and a worked example joining them.</p>
+          <p class="art-meta"><span>Shuvam Banerji Seal</span> <span aria-hidden="true">·</span> <time datetime="2024-12-08">8 Dec 2024</time> <span aria-hidden="true">·</span> <span>updated <time datetime="2026-11-18">18 Nov 2026</time></span> <span aria-hidden="true">·</span> <span>2 min read</span></p>
+          <p class="art-tags"><span class="tag">Python</span> <span class="tag">Quantum chemistry</span> <span class="tag">Software</span></p>
+        </header>
+        <nav class="toc" aria-labelledby="toc-h"><details open><summary id="toc-h">Contents</summary><ol><li><a href="#introduction">Introduction</a></li><li><a href="#1-rdkit-general-purpose-cheminformatics">1. RDKit: general-purpose cheminformatics</a></li><li><a href="#2-ase-atomic-simulation-environment">2. ASE: Atomic Simulation Environment</a></li><li><a href="#3-pyscf-python-based-simulations-of-chemistry-framework">3. PySCF: Python-based Simulations of Chemistry Framework</a></li><li><a href="#4-mdanalysis-trajectory-analysis">4. MDAnalysis: trajectory analysis</a></li><li><a href="#5-py3dmol-interactive-3d-visualization">5. Py3Dmol: Interactive 3D Visualization</a></li><li><a href="#6-scipy-and-numpy-the-foundation">6. SciPy and NumPy: The Foundation</a></li><li><a href="#7-pandas-data-management">7. Pandas: Data Management</a></li><li><a href="#practical-workflow-example">Practical Workflow Example</a></li><li><a href="#tips-for-getting-started">Tips for Getting Started</a></li><li><a href="#installation-tips">Installation Tips</a></li><li><a href="#conclusion">Conclusion</a></li></ol></details></nav>
+        <div class="prose">
+<h2 id="introduction"><a class="h-anchor" href="#introduction" aria-hidden="true" tabindex="-1">#</a>Introduction</h2>
+<p>Python has become the de facto language for computational chemistry, offering a rich ecosystem of libraries for molecular modeling, quantum chemistry calculations, and data analysis. In this guide, I&#39;ll introduce you to the most essential tools every computational chemist should know.</p>
+<h2 id="1-rdkit-general-purpose-cheminformatics"><a class="h-anchor" href="#1-rdkit-general-purpose-cheminformatics" aria-hidden="true" tabindex="-1">#</a>1. RDKit: general-purpose cheminformatics</h2>
+<p>RDKit is arguably the most important library for cheminformatics work. It provides tools for:</p>
+<ul>
+<li>Reading and writing molecular file formats (SMILES, MOL, SDF)</li>
+<li>Computing molecular descriptors and fingerprints</li>
+<li>Substructure searching</li>
+<li>2D and 3D molecular visualization</li>
+</ul>
+<pre tabindex="0"><code class="language-python">from rdkit import Chem
 from rdkit.Chem import Descriptors
 
 # Create molecule from SMILES
-mol = Chem.MolFromSmiles('CC(=O)OC1=CC=CC=C1C(=O)O')
+mol = Chem.MolFromSmiles(&#39;CC(=O)OC1=CC=CC=C1C(=O)O&#39;)
 
 # Calculate molecular weight
 mw = Descriptors.MolWt(mol)
-print(f"Molecular Weight: {mw:.2f} g/mol")
+print(f&quot;Molecular Weight: {mw:.2f} g/mol&quot;)
 
 # Calculate LogP
 logp = Descriptors.MolLogP(mol)
-print(f"LogP: {logp:.2f}")</code></pre>
-
-        <h2>2. ASE: Atomic Simulation Environment</h2>
-        <p>
-          ASE is a Python library for working with atoms. It provides a unified
-          interface to various quantum chemistry and molecular dynamics codes:
-        </p>
-        <ul>
-          <li>Structure optimization</li>
-          <li>Molecular dynamics simulations</li>
-          <li>Interface to calculators (Gaussian, VASP, GPAW, etc.)</li>
-          <li>Trajectory analysis</li>
-        </ul>
-
-        <pre><code>from ase import Atoms
+print(f&quot;LogP: {logp:.2f}&quot;)
+</code></pre>
+<h2 id="2-ase-atomic-simulation-environment"><a class="h-anchor" href="#2-ase-atomic-simulation-environment" aria-hidden="true" tabindex="-1">#</a>2. ASE: Atomic Simulation Environment</h2>
+<p>ASE is a Python library for working with atoms. It provides a unified interface to various quantum chemistry and molecular dynamics codes:</p>
+<ul>
+<li>Structure optimization</li>
+<li>Molecular dynamics simulations</li>
+<li>Interface to calculators (Gaussian, VASP, GPAW, etc.)</li>
+<li>Trajectory analysis</li>
+</ul>
+<pre tabindex="0"><code class="language-python">from ase import Atoms
 from ase.optimize import BFGS
 from ase.calculators.emt import EMT
 
 # Create a simple molecule
-atoms = Atoms('H2O',
+atoms = Atoms(&#39;H2O&#39;,
               positions=[[0, 0, 0],
                         [0, 0, 1],
                         [0, 1, 0]])
@@ -302,146 +122,93 @@ atoms.calc = EMT()
 
 # Optimize geometry
 opt = BFGS(atoms)
-opt.run(fmax=0.01)</code></pre>
-
-        <h2>3. PySCF: Python-based Simulations of Chemistry Framework</h2>
-        <p>
-          PySCF is a quantum chemistry package implemented entirely in
-          Python. It supports:
-        </p>
-        <ul>
-          <li>Hartree-Fock and DFT calculations</li>
-          <li>Post-HF methods (MP2, CCSD, CASSCF)</li>
-          <li>Excited state calculations</li>
-          <li>Periodic boundary conditions</li>
-        </ul>
-
-        <h2>4. MDAnalysis: trajectory analysis</h2>
-        <p>
-          For molecular dynamics simulations, MDAnalysis is useful here. It can
-          read trajectories from virtually any MD package and provides tools
-          for:
-        </p>
-        <ul>
-          <li>RMSD calculations</li>
-          <li>Distance analysis</li>
-          <li>Hydrogen bonding analysis</li>
-          <li>Custom atom selections</li>
-        </ul>
-
-        <pre><code>import MDAnalysis as mda
+opt.run(fmax=0.01)
+</code></pre>
+<h2 id="3-pyscf-python-based-simulations-of-chemistry-framework"><a class="h-anchor" href="#3-pyscf-python-based-simulations-of-chemistry-framework" aria-hidden="true" tabindex="-1">#</a>3. PySCF: Python-based Simulations of Chemistry Framework</h2>
+<p>PySCF is a quantum chemistry package implemented entirely in Python. It supports:</p>
+<ul>
+<li>Hartree-Fock and DFT calculations</li>
+<li>Post-HF methods (MP2, CCSD, CASSCF)</li>
+<li>Excited state calculations</li>
+<li>Periodic boundary conditions</li>
+</ul>
+<h2 id="4-mdanalysis-trajectory-analysis"><a class="h-anchor" href="#4-mdanalysis-trajectory-analysis" aria-hidden="true" tabindex="-1">#</a>4. MDAnalysis: trajectory analysis</h2>
+<p>For molecular dynamics simulations, MDAnalysis is useful here. It can read trajectories from virtually any MD package and provides tools for:</p>
+<ul>
+<li>RMSD calculations</li>
+<li>Distance analysis</li>
+<li>Hydrogen bonding analysis</li>
+<li>Custom atom selections</li>
+</ul>
+<pre tabindex="0"><code class="language-python">import MDAnalysis as mda
 
 # Load trajectory
-u = mda.Universe('protein.pdb', 'trajectory.dcd')
+u = mda.Universe(&#39;protein.pdb&#39;, &#39;trajectory.dcd&#39;)
 
 # Select protein backbone
-protein = u.select_atoms('protein and backbone')
+protein = u.select_atoms(&#39;protein and backbone&#39;)
 
 # Calculate RMSD over time
 from MDAnalysis.analysis import rms
-R = rms.RMSD(protein, select='backbone')
+R = rms.RMSD(protein, select=&#39;backbone&#39;)
 R.run()
-print(R.results.rmsd)</code></pre>
-
-        <h2>5. Py3Dmol: Interactive 3D Visualization</h2>
-        <p>
-          Py3Dmol brings interactive molecular visualization to Jupyter
-          notebooks:
-        </p>
-        <ul>
-          <li>Multiple visualization styles (stick, sphere, cartoon)</li>
-          <li>Surface rendering</li>
-          <li>Animation support</li>
-          <li>Integrates with RDKit and other libraries</li>
-        </ul>
-
-        <h2>6. SciPy and NumPy: The Foundation</h2>
-        <p>
-          While not chemistry-specific, these are essential for any
-          computational work:
-        </p>
-        <ul>
-          <li><strong>NumPy:</strong> Fast array operations, linear algebra</li>
-          <li>
-            <strong>SciPy:</strong> Optimization, curve fitting, statistical
-            analysis
-          </li>
-        </ul>
-
-        <h2>7. Pandas: Data Management</h2>
-        <p>Useful for managing molecular properties and screening results:</p>
-        <pre><code>import pandas as pd
+print(R.results.rmsd)
+</code></pre>
+<h2 id="5-py3dmol-interactive-3d-visualization"><a class="h-anchor" href="#5-py3dmol-interactive-3d-visualization" aria-hidden="true" tabindex="-1">#</a>5. Py3Dmol: Interactive 3D Visualization</h2>
+<p>Py3Dmol brings interactive molecular visualization to Jupyter notebooks:</p>
+<ul>
+<li>Multiple visualization styles (stick, sphere, cartoon)</li>
+<li>Surface rendering</li>
+<li>Animation support</li>
+<li>Integrates with RDKit and other libraries</li>
+</ul>
+<h2 id="6-scipy-and-numpy-the-foundation"><a class="h-anchor" href="#6-scipy-and-numpy-the-foundation" aria-hidden="true" tabindex="-1">#</a>6. SciPy and NumPy: The Foundation</h2>
+<p>While not chemistry-specific, these are essential for any computational work:</p>
+<ul>
+<li><strong>NumPy:</strong> Fast array operations, linear algebra</li>
+<li><strong>SciPy:</strong> Optimization, curve fitting, statistical analysis</li>
+</ul>
+<h2 id="7-pandas-data-management"><a class="h-anchor" href="#7-pandas-data-management" aria-hidden="true" tabindex="-1">#</a>7. Pandas: Data Management</h2>
+<p>Useful for managing molecular properties and screening results:</p>
+<pre tabindex="0"><code class="language-python">import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import Descriptors
 
 # Create dataset of molecules
-smiles = ['CC', 'CCC', 'CCCC']
+smiles = [&#39;CC&#39;, &#39;CCC&#39;, &#39;CCCC&#39;]
 data = []
 
 for smi in smiles:
     mol = Chem.MolFromSmiles(smi)
     data.append({
-        'SMILES': smi,
-        'MW': Descriptors.MolWt(mol),
-        'LogP': Descriptors.MolLogP(mol),
-        'TPSA': Descriptors.TPSA(mol)
+        &#39;SMILES&#39;: smi,
+        &#39;MW&#39;: Descriptors.MolWt(mol),
+        &#39;LogP&#39;: Descriptors.MolLogP(mol),
+        &#39;TPSA&#39;: Descriptors.TPSA(mol)
     })
 
 df = pd.DataFrame(data)
-print(df)</code></pre>
-
-        <h2>Practical Workflow Example</h2>
-        <p>
-          Here's how these libraries work together in a typical computational
-          chemistry workflow:
-        </p>
-        <ol>
-          <li>
-            <strong>Data Preparation:</strong> Use RDKit to read and standardize
-            molecular structures
-          </li>
-          <li>
-            <strong>Descriptor Calculation:</strong> Compute properties with
-            RDKit or custom functions
-          </li>
-          <li>
-            <strong>Quantum Calculations:</strong> Use PySCF or ASE interfaces
-            for accurate energies
-          </li>
-          <li>
-            <strong>MD Simulations:</strong> Run dynamics and analyze with
-            MDAnalysis
-          </li>
-          <li>
-            <strong>Visualization:</strong> Create publication-quality figures
-            with Py3Dmol and Matplotlib
-          </li>
-          <li>
-            <strong>Data Analysis:</strong> Statistical analysis with Pandas,
-            SciPy, and scikit-learn
-          </li>
-        </ol>
-
-        <h2>Tips for Getting Started</h2>
-        <ul>
-          <li>
-            <strong>Environment Management:</strong> Use conda to manage
-            dependencies
-          </li>
-          <li>
-            <strong>Jupyter Notebooks:</strong> Suited to interactive development
-          </li>
-          <li>
-            <strong>Documentation:</strong> Each library documents its API. Read the docs first.
-          </li>
-          <li>
-            <strong>Community:</strong> Join chemistry-focused Python
-            communities
-          </li>
-        </ul>
-
-        <h2>Installation Tips</h2>
-        <pre><code># Create a new conda environment
+print(df)
+</code></pre>
+<h2 id="practical-workflow-example"><a class="h-anchor" href="#practical-workflow-example" aria-hidden="true" tabindex="-1">#</a>Practical Workflow Example</h2>
+<p>Here&#39;s how these libraries work together in a typical computational chemistry workflow:</p>
+<ol>
+<li><strong>Data Preparation:</strong> Use RDKit to read and standardize molecular structures</li>
+<li><strong>Descriptor Calculation:</strong> Compute properties with RDKit or custom functions</li>
+<li><strong>Quantum Calculations:</strong> Use PySCF or ASE interfaces for accurate energies</li>
+<li><strong>MD Simulations:</strong> Run dynamics and analyze with MDAnalysis</li>
+<li><strong>Visualization:</strong> Create publication-quality figures with Py3Dmol and Matplotlib</li>
+<li><strong>Data Analysis:</strong> Statistical analysis with Pandas, SciPy, and scikit-learn</li>
+</ol>
+<h2 id="tips-for-getting-started"><a class="h-anchor" href="#tips-for-getting-started" aria-hidden="true" tabindex="-1">#</a>Tips for Getting Started</h2>
+<ul>
+<li><strong>Environment Management:</strong> Use conda to manage dependencies</li>
+<li><strong>Jupyter Notebooks:</strong> Suited to interactive development</li>
+<li><strong>Documentation:</strong> Each library documents its API. Read the docs first.</li>
+<li><strong>Community:</strong> Join chemistry-focused Python communities</li>
+</ul>
+<h2 id="installation-tips"><a class="h-anchor" href="#installation-tips" aria-hidden="true" tabindex="-1">#</a>Installation Tips</h2>
+<pre tabindex="0"><code class="language-python"># Create a new conda environment
 conda create -n chempy python=3.10
 conda activate chempy
 
@@ -449,68 +216,30 @@ conda activate chempy
 conda install -c conda-forge rdkit
 pip install ase pyscf
 pip install MDAnalysis py3Dmol
-pip install pandas numpy scipy matplotlib</code></pre>
+pip install pandas numpy scipy matplotlib
+</code></pre>
+<h2 id="conclusion"><a class="h-anchor" href="#conclusion" aria-hidden="true" tabindex="-1">#</a>Conclusion</h2>
+<p>The Python ecosystem for computational chemistry is mature. By mastering these libraries, you&#39;ll be equipped to tackle a wide range of problems from drug design to materials science. Start with RDKit and NumPy, then expand based on your specific needs.</p>
+<p>Happy computing!</p>
 
-        <h2>Conclusion</h2>
-        <p>
-          The Python ecosystem for computational chemistry is mature. By mastering these libraries, you'll be equipped to tackle a
-          wide range of problems from drug design to materials science. Start
-          with RDKit and NumPy, then expand based on your specific needs.
-        </p>
-        <p>Happy computing!</p>
+        </div>
+        <footer class="art-foot">
+          <div class="byline">
+            <img src="/assets/img/sbs_001.webp" alt="" width="64" height="64" loading="lazy" />
+            <p><b>Shuvam Banerji Seal</b> is a BS-MS student at IISER Kolkata working on information retrieval, language-model evaluation and computational chemistry. <a href="/">More about me</a>, or write to <a href="mailto:sbs22ms076@iiserkol.ac.in">sbs22ms076@iiserkol.ac.in</a>.</p>
+          </div>
+          <section aria-labelledby="rel-h"><h2 id="rel-h">Read next</h2><ul class="post-list"><li data-tags="Quantum chemistry|Software"><a href="/pages/blogs/benzene-pi-orbitals-huckel.html">Drawing benzene&#39;s π orbitals from Hückel theory</a><time datetime="2026-11-17">17 Nov 2026</time><p class="post-desc">How the benzene figure on the homepage is made: Hückel π orbitals, Slater 2p functions, and points sampled from the probability density, coloured by sign.</p></li><li data-tags="Simulation|Software"><a href="/pages/blogs/rdf-and-msd-from-md-trajectories.html">Reading an MD trajectory: radial distribution function and mean squared displacement</a><time datetime="2026-10-25">25 Oct 2026</time><p class="post-desc">How to compute g(r) and the mean squared displacement from a periodic MD trajectory, with a short numpy implementation tested on cases with known answers.</p></li><li data-tags="Simulation|Software"><a href="/pages/blogs/molecule3d-lammps-in-the-browser.html">Molecule3D: a LAMMPS workbench that runs in your browser</a><time datetime="2026-10-04">4 Oct 2026</time><p class="post-desc">What Molecule3D (LAMMPS Web GUI) does, who it is for, and what a first session looks like, from a starter script to a trajectory and its RDF.</p></li></ul></section>
+        </footer>
       </article>
-
-      <div class="back-row">
-        <a href="../blog.html" class="btn btn-secondary">
-          <i data-lucide="arrow-left"></i> Back to blog
-        </a>
-      </div>
     </main>
-
-    <footer>
-      <div class="footer-social">
-        <a
-          href="https://github.com/Shuvam-Banerji-Seal"
-          target="_blank"
-          class="social-link"
-          aria-label="GitHub"
-        >
-          <i data-lucide="code-2" class="social-icon"></i>
-        </a>
-        <a
-          href="https://linkedin.com/in/mastersbs"
-          target="_blank"
-          class="social-link"
-          aria-label="LinkedIn"
-        >
-          <i data-lucide="briefcase" class="social-icon"></i>
-        </a>
-        <a
-          href="https://orcid.org/0009-0000-0714-569X"
-          target="_blank"
-          class="social-link"
-          aria-label="ORCID"
-        >
-          <i data-lucide="award" class="social-icon"></i>
-        </a>
-        <a
-          href="mailto:sbs22ms076@iiserkol.ac.in"
-          class="social-link"
-          aria-label="Email"
-        >
-          <i data-lucide="mail" class="social-icon"></i>
-        </a>
+    <footer class="site-foot">
+      <div class="wrap">
+        <p>© <span data-year>2026</span> Shuvam Banerji Seal. Source on <a href="https://github.com/Shuvam-Banerji-Seal/Shuvam-Banerji-Seal.github.io">GitHub</a>.</p>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/">Home</a><a href="/pages/research.html">Research</a><a href="/pages/projects.html">Projects</a><a href="/pages/tools.html">Tools</a><a href="/pages/blog.html">Blog</a><a href="/feed.xml">RSS</a>
+        </nav>
       </div>
-      <p>
-        &copy; <span id="year"></span> Shuvam Banerji Seal
-      </p>
     </footer>
-
-    <script type="module" src="../../assets/js/main.js"></script>
-    <script type="module" src="../../assets/js/enhanced.js"></script>
-    <script>
-      if (typeof lucide !== "undefined") lucide.createIcons();
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
+    <script>document.querySelectorAll("[data-year]").forEach(function (e) { e.textContent = new Date().getFullYear(); });</script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 ---
 title: AgriIR, a configurable RAG pipeline for agricultural questions
 description: How AgriIR answers agricultural questions with small open models in six configurable stages, attaches citations deterministically, and how it was evaluated.
-date: 2026-11-17
+date: 2026-04-26
 tags: [Information retrieval, RAG, Agriculture, ECIR]
 slug: agriir-domain-specific-rag
 ---

@@ -1,7 +1,7 @@
 ---
 title: Sycophancy in LLMs, and why we test it on court cases
 description: What sycophancy in language models is, why legal reasoning exposes it sharply, and how the SycoLex benchmark measures it with paired, opposite prompts.
-date: 2026-11-17
+date: 2026-07-12
 tags: [LLMs, Sycophancy, Legal AI, Evaluation, Datasets]
 slug: sycolex-sycophancy-legal-llms
 ---

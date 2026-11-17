@@ -1,7 +1,7 @@
 ---
 title: "Molecule3D: a LAMMPS workbench that runs in your browser"
 description: What Molecule3D (LAMMPS Web GUI) does, who it is for, and what a first session looks like, from a starter script to a trajectory and its RDF.
-date: 2026-11-17
+date: 2026-10-04
 tags: [Molecular dynamics, LAMMPS, Software]
 slug: molecule3d-lammps-in-the-browser
 ---

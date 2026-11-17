@@ -1,7 +1,7 @@
 ---
 title: Hybrid search with BM25, dense embeddings and reciprocal rank fusion
 description: Why a RAG system should run keyword and embedding search side by side, and how reciprocal rank fusion merges them without calibrating scores.
-date: 2026-11-17
+date: 2026-01-25
 tags: [Information retrieval, RAG, Hybrid search, Reciprocal rank fusion]
 slug: hybrid-search-reciprocal-rank-fusion
 ---

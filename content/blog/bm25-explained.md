@@ -1,7 +1,7 @@
 ---
 title: BM25, explained through this site's search box
 description: How BM25 scores a document, term by term: saturation with k1, length normalisation with b, a never-negative IDF, and a worked example by hand.
-date: 2026-11-17
+date: 2026-11-18
 tags: [Information retrieval, BM25, Search]
 slug: bm25-explained
 ---

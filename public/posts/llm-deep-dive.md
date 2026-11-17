@@ -1,6 +1,6 @@
 ---
 title: "Large Language Models: A Deep Dive into Architecture and Capabilities"
-date: 2025-12-08
+date: 2025-04-20
 tags: [AI, LLM, Deep Learning, NLP]
 description: An in-depth exploration of Transformer architecture, Attention mechanisms, and the evolution of LLMs from GPT-1 to GPT-4 and beyond.
 ---

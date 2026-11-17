@@ -1,6 +1,6 @@
 ---
 title: The Future of Computational Chemistry: AI & Quantum Computing
-date: 2025-12-06
+date: 2025-06-08
 tags: [Chemistry, AI, Quantum Computing, Research]
 description: Exploring how Artificial Intelligence and Quantum Computing are revolutionizing the field of computational chemistry, from drug discovery to materials science.
 ---
